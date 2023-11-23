@@ -60,7 +60,7 @@ func ExampleJobsClient_NewListPager() {
 		// 			Properties: &armdatabox.JobProperties{
 		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 		// 				IsCancellable: to.Ptr(false),
@@ -68,7 +68,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				IsDeletable: to.Ptr(true),
 		// 				IsPrepareToShipEnabled: to.Ptr(false),
 		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T14:44:39.77401+05:30"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-30T09:14:39.774Z"); return t}()),
 		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
 		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 		// 			},
@@ -89,7 +89,7 @@ func ExampleJobsClient_NewListPager() {
 		// 			Properties: &armdatabox.JobProperties{
 		// 				CancellationReason: to.Ptr("Old job which is still in ordered state cancelled by the service"),
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 		// 				IsCancellable: to.Ptr(false),
@@ -97,7 +97,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				IsDeletable: to.Ptr(true),
 		// 				IsPrepareToShipEnabled: to.Ptr(false),
 		// 				IsShippingAddressEditable: to.Ptr(false),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-10T18:03:22.2578238+05:30"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-10T12:33:22.257Z"); return t}()),
 		// 				Status: to.Ptr(armdatabox.StageNameCancelled),
 		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 		// 			},
@@ -169,7 +169,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 		// 				IsCancellable: to.Ptr(true),
@@ -177,7 +177,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 				IsDeletable: to.Ptr(false),
 		// 				IsPrepareToShipEnabled: to.Ptr(true),
 		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-03T11:55:54.463792+05:30"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-03T06:25:54.463Z"); return t}()),
 		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 		// 			},
@@ -197,7 +197,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName2"),
 		// 			Properties: &armdatabox.JobProperties{
 		// 				DeliveryInfo: &armdatabox.JobDeliveryInfo{
-		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 		// 				IsCancellable: to.Ptr(true),
@@ -205,7 +205,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 				IsDeletable: to.Ptr(false),
 		// 				IsPrepareToShipEnabled: to.Ptr(true),
 		// 				IsShippingAddressEditable: to.Ptr(true),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:50:36.3341513+05:30"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:20:36.334Z"); return t}()),
 		// 				Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 		// 				TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 		// 			},
@@ -247,7 +247,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
@@ -255,7 +255,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsPrepareToShipEnabled: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:50:36.3341513+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:20:36.334Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -311,7 +311,7 @@ func ExampleJobsClient_Get_jobsGet() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:50:40.1872217+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:20:40.187Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -409,7 +409,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
@@ -417,7 +417,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsPrepareToShipEnabled: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:47:42.0009935+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:17:42.000Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -473,7 +473,7 @@ func ExampleJobsClient_Get_jobsGetCmk() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:47:44.8736499+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:17:44.873Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -577,7 +577,7 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 		IsDeletable: to.Ptr(true),
 	// 		IsPrepareToShipEnabled: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(false),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T12:56:12.6384315+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T07:26:12.638Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameCompletedWithWarnings),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -640,54 +640,54 @@ func ExampleJobsClient_Get_jobsGetCopyStuck() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T12:56:25.3911023+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T07:26:25.391Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDevicePrepared),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T13:07:49.676421+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T07:37:49.676Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Dispatched"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDispatched),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T02:21:06+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-04T20:51:06.000Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Delivered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDelivered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T02:21:13+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-04T20:51:13.000Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Picked up"),
 	// 						StageName: to.Ptr(armdatabox.StageNamePickedUp),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T02:23:10+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-04T20:53:10.000Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Received"),
 	// 						StageName: to.Ptr(armdatabox.StageNameAtAzureDC),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T02:23:17+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-04T20:53:17.000Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Data copy in progress"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDataCopy),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T13:34:20.1497635+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T08:04:20.149Z"); return t}()),
 	// 					},
 	// 					{
 	// 						StageName: to.Ptr(armdatabox.StageNameCompletedWithWarnings),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T14:08:38.250614+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T08:38:38.250Z"); return t}()),
 	// 				}},
 	// 				KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
 	// 					KekType: to.Ptr(armdatabox.KekTypeMicrosoftManaged),
 	// 				},
 	// 				LastMitigationActionOnJob: &armdatabox.LastMitigationActionOnJob{
-	// 					ActionDateTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T08:28:18.8107951Z"); return t}()),
+	// 					ActionDateTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-05T08:28:18.810Z"); return t}()),
 	// 					CustomerResolution: to.Ptr(armdatabox.CustomerResolutionCodeMoveToCleanUpDevice),
 	// 					IsPerformedByCustomer: to.Ptr(true),
 	// 				},
@@ -766,7 +766,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 	Properties: &armdatabox.JobProperties{
 	// 		CancellationReason: to.Ptr("CancelTest"),
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(false),
@@ -774,7 +774,7 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 		IsDeletable: to.Ptr(true),
 	// 		IsPrepareToShipEnabled: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(false),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:49:08.7195419+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:19:08.719Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameCancelled),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -823,13 +823,13 @@ func ExampleJobsClient_Get_jobsGetExport() {
 	// 					DisplayName: to.Ptr("Ordered"),
 	// 					StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 					StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 					StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:49:12.7675644+05:30"); return t}()),
+	// 					StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:19:12.767Z"); return t}()),
 	// 				},
 	// 				{
 	// 					DisplayName: to.Ptr("Canceled"),
 	// 					StageName: to.Ptr(armdatabox.StageNameCancelled),
 	// 					StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 					StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:49:57.2572438+05:30"); return t}()),
+	// 					StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:19:57.257Z"); return t}()),
 	// 			}},
 	// 			KeyEncryptionKey: &armdatabox.KeyEncryptionKey{
 	// 				KekType: to.Ptr(armdatabox.KekTypeMicrosoftManaged),
@@ -913,7 +913,7 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsPrepareToShipEnabled: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(false),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:49.5177298+00:00"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:49.517Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDataCopy),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -988,43 +988,43 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 							DisplayName: to.Ptr("Ordered"),
 	// 							StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:53.81509+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-14T23:49:53.815Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Processed"),
 	// 							StageName: to.Ptr(armdatabox.StageNameDevicePrepared),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:05:18.7350971+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:05:18.735Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Dispatched"),
 	// 							StageName: to.Ptr(armdatabox.StageNameDispatched),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:25:19+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:25:19.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Delivered"),
 	// 							StageName: to.Ptr(armdatabox.StageNameDelivered),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:25:26+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:25:26.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Picked up"),
 	// 							StageName: to.Ptr(armdatabox.StageNamePickedUp),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:30:22+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:30:22.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Received"),
 	// 							StageName: to.Ptr(armdatabox.StageNameAtAzureDC),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:30:29+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:30:29.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Data copy in progress"),
 	// 							StageName: to.Ptr(armdatabox.StageNameDataCopy),
 	// 							StageStatus: to.Ptr(armdatabox.StageStatusWaitingForCustomerAction),
-	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:45:26.2679756+00:00"); return t}()),
+	// 							StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-15T00:45:26.267Z"); return t}()),
 	// 						},
 	// 						{
 	// 							DisplayName: to.Ptr("Completed"),
@@ -1035,7 +1035,7 @@ func ExampleJobsClient_Get_jobsGetWaitingForAction() {
 	// 						KekType: to.Ptr(armdatabox.KekTypeMicrosoftManaged),
 	// 					},
 	// 					LastMitigationActionOnJob: &armdatabox.LastMitigationActionOnJob{
-	// 						ActionDateTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T05:00:22.5047578Z"); return t}()),
+	// 						ActionDateTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T05:00:22.504Z"); return t}()),
 	// 						CustomerResolution: to.Ptr(armdatabox.CustomerResolutionCodeMoveToCleanUpDevice),
 	// 						IsPerformedByCustomer: to.Ptr(true),
 	// 					},
@@ -1168,14 +1168,14 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsCancellableWithoutFee: to.Ptr(true),
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:49.0027611+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:49.002Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -1219,7 +1219,7 @@ func ExampleJobsClient_BeginCreate_jobsCreate() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:52.3995743+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:52.399Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -1344,14 +1344,14 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsCancellableWithoutFee: to.Ptr(true),
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:49.0027611+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:49.002Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -1395,7 +1395,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDevicePassword() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:52.3995743+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:52.399Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -1523,14 +1523,14 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsCancellableWithoutFee: to.Ptr(true),
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:49.0027611+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:49.002Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -1574,7 +1574,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateDoubleEncryption() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:52.3995743+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:52.399Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -1707,14 +1707,14 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsCancellableWithoutFee: to.Ptr(true),
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:49.0027611+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:49.002Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -1758,7 +1758,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateExport() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:52.3995743+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:52.399Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -1887,14 +1887,14 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 	ID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.DataBox/jobs/TestJobName1"),
 	// 	Properties: &armdatabox.JobProperties{
 	// 		DeliveryInfo: &armdatabox.JobDeliveryInfo{
-	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			ScheduledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		DeliveryType: to.Ptr(armdatabox.JobDeliveryTypeNonScheduled),
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsCancellableWithoutFee: to.Ptr(true),
 	// 		IsDeletable: to.Ptr(false),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:49.0027611+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:49.002Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeExportFromAzure),
 	// 		Details: &armdatabox.JobDetails{
@@ -1938,7 +1938,7 @@ func ExampleJobsClient_BeginCreate_jobsCreateWithUserAssignedIdentity() {
 	// 						DisplayName: to.Ptr("Ordered"),
 	// 						StageName: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 						StageStatus: to.Ptr(armdatabox.StageStatusSucceeded),
-	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T14:49:52.3995743+05:30"); return t}()),
+	// 						StageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T09:19:52.399Z"); return t}()),
 	// 					},
 	// 					{
 	// 						DisplayName: to.Ptr("Processed"),
@@ -2070,7 +2070,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatch() {
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T16:28:38.9999793+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T10:58:38.999Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 	},
@@ -2122,7 +2122,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchCmk() {
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T16:28:38.9999793+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T10:58:38.999Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 	},
@@ -2186,7 +2186,7 @@ func ExampleJobsClient_BeginUpdate_jobsPatchSystemAssignedToUserAssigned() {
 	// 	Properties: &armdatabox.JobProperties{
 	// 		IsCancellable: to.Ptr(true),
 	// 		IsShippingAddressEditable: to.Ptr(true),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T16:28:38.9999793+05:30"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-13T10:58:38.999Z"); return t}()),
 	// 		Status: to.Ptr(armdatabox.StageNameDeviceOrdered),
 	// 		TransferType: to.Ptr(armdatabox.TransferTypeImportToAzure),
 	// 	},
@@ -2205,9 +2205,9 @@ func ExampleJobsClient_BookShipmentPickUp() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewJobsClient().BookShipmentPickUp(ctx, "YourResourceGroupName", "TestJobName1", armdatabox.ShipmentPickUpRequest{
-		EndTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-22T18:30:00Z"); return t }()),
+		EndTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-22T18:30:00.000Z"); return t }()),
 		ShipmentLocation: to.Ptr("Front desk"),
-		StartTime:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t }()),
+		StartTime:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -2217,7 +2217,7 @@ func ExampleJobsClient_BookShipmentPickUp() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ShipmentPickUpResponse = armdatabox.ShipmentPickUpResponse{
 	// 	ConfirmationNumber: to.Ptr("XXXXXXXXXXX"),
-	// 	ReadyByTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00Z"); return t}()),
+	// 	ReadyByTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-20T18:30:00.000Z"); return t}()),
 	// }
 }
 

@@ -60,8 +60,8 @@ func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -105,8 +105,8 @@ func ExampleExportsClient_List_exportsGetByBillingAccount() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -155,8 +155,8 @@ func ExampleExportsClient_List_exportsGetByDepartment() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -200,8 +200,8 @@ func ExampleExportsClient_List_exportsGetByDepartment() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -250,8 +250,8 @@ func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -295,8 +295,8 @@ func ExampleExportsClient_List_exportsGetByEnrollmentAccount() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -345,8 +345,8 @@ func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -390,8 +390,8 @@ func ExampleExportsClient_List_exportsGetByManagementGroup() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -440,8 +440,8 @@ func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -485,8 +485,8 @@ func ExampleExportsClient_List_exportsGetByResourceGroup() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -535,8 +535,8 @@ func ExampleExportsClient_List_exportsGetBySubscription() {
 	// 							Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 						},
 	// 						TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 							From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 							To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 						},
 	// 						Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 					},
@@ -580,8 +580,8 @@ func ExampleExportsClient_List_exportsGetBySubscription() {
 	// 						Schedule: &armcostmanagement.ExportSchedule{
 	// 							Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 							RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 						},
@@ -628,8 +628,8 @@ func ExampleExportsClient_Get_exportGetByBillingAccount() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -682,8 +682,8 @@ func ExampleExportsClient_Get_exportGetByDepartment() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-30T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-30T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -736,8 +736,8 @@ func ExampleExportsClient_Get_exportGetByEnrollmentAccount() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -790,8 +790,8 @@ func ExampleExportsClient_Get_exportGetByManagementGroup() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -844,8 +844,8 @@ func ExampleExportsClient_Get_exportGetByResourceGroup() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-30T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-30T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -898,8 +898,8 @@ func ExampleExportsClient_Get_exportGetBySubscription() {
 	// 					Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 				},
 	// 				TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 			},
@@ -953,8 +953,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() 
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -997,8 +997,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByBillingAccount() 
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1045,8 +1045,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -1089,8 +1089,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByDepartment() {
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1137,8 +1137,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -1181,8 +1181,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByEnrollmentAccount
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1229,8 +1229,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup()
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -1273,8 +1273,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByManagementGroup()
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1321,8 +1321,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -1365,8 +1365,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateByResourceGroup() {
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1413,8 +1413,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 			Schedule: &armcostmanagement.ExportSchedule{
 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t }()),
-					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t }()),
+					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t }()),
+					To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t }()),
 				},
 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 			},
@@ -1457,8 +1457,8 @@ func ExampleExportsClient_CreateOrUpdate_exportCreateOrUpdateBySubscription() {
 	// 			Schedule: &armcostmanagement.ExportSchedule{
 	// 				Recurrence: to.Ptr(armcostmanagement.RecurrenceTypeWeekly),
 	// 				RecurrencePeriod: &armcostmanagement.ExportRecurrencePeriod{
-	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 					From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 					To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				Status: to.Ptr(armcostmanagement.StatusTypeActive),
 	// 			},
@@ -1695,8 +1695,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -1713,8 +1713,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -1728,7 +1728,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -1736,8 +1736,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -1754,8 +1754,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -1769,7 +1769,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByBillingAccoun
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}
@@ -1800,8 +1800,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -1818,8 +1818,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -1833,7 +1833,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -1841,8 +1841,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -1859,8 +1859,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -1874,7 +1874,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByDepartment() 
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}
@@ -1905,8 +1905,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -1923,8 +1923,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -1938,7 +1938,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -1946,8 +1946,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -1964,8 +1964,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -1979,7 +1979,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByEnrollmentAcc
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}
@@ -2010,8 +2010,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledForTestExport/TestExportSchedule/20180729-20180804/TestExportSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -2028,8 +2028,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -2043,7 +2043,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -2051,8 +2051,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledForTestExport/TestExportSchedule/20180729-20180804/TestExportSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -2069,8 +2069,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -2084,7 +2084,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByManagementGro
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}
@@ -2115,8 +2115,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -2133,8 +2133,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -2148,7 +2148,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -2156,8 +2156,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -2174,8 +2174,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -2189,7 +2189,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetByResourceGroup
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}
@@ -2220,8 +2220,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 			Properties: &armcostmanagement.ExportRunProperties{
 	// 				ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeOnDemand),
 	// 				FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_1e25d58a-a3b0-4916-9542-6e04a89bc100.csv"),
-	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.0373318Z"); return t}()),
-	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.9123797Z"); return t}()),
+	// 				ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:28.037Z"); return t}()),
+	// 				ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:16.912Z"); return t}()),
 	// 				RunSettings: &armcostmanagement.CommonExportProperties{
 	// 					Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 					Definition: &armcostmanagement.ExportDefinition{
@@ -2238,8 +2238,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 								Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 							},
 	// 							TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 								From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 								To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 							},
 	// 							Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 						},
@@ -2253,7 +2253,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 					},
 	// 					Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 					SubmittedBy: to.Ptr("john.doe@gmail.com"),
-	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.6016681Z"); return t}()),
+	// 					SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T07:52:15.601Z"); return t}()),
 	// 				},
 	// 			},
 	// 			{
@@ -2261,8 +2261,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 				Properties: &armcostmanagement.ExportRunProperties{
 	// 					ExecutionType: to.Ptr(armcostmanagement.ExecutionTypeScheduled),
 	// 					FileName: to.Ptr("ScheduledTestsForJohnDoe/JohnDoeSchedule/20180729-20180804/JohnDoeSchedule_11ac6811-dca3-46ad-b326-4704cf0c58ef.csv"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.7223808Z"); return t}()),
-	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:04:19.722Z"); return t}()),
+	// 					ProcessingStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					RunSettings: &armcostmanagement.CommonExportProperties{
 	// 						Format: to.Ptr(armcostmanagement.FormatTypeCSV),
 	// 						Definition: &armcostmanagement.ExportDefinition{
@@ -2279,8 +2279,8 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 									Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 	// 								},
 	// 								TimePeriod: &armcostmanagement.ExportTimePeriod{
-	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00Z"); return t}()),
-	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00Z"); return t}()),
+	// 									From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-01T00:00:00.000Z"); return t}()),
+	// 									To: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-31T00:00:00.000Z"); return t}()),
 	// 								},
 	// 								Timeframe: to.Ptr(armcostmanagement.TimeframeTypeCustom),
 	// 							},
@@ -2294,7 +2294,7 @@ func ExampleExportsClient_GetExecutionHistory_exportRunHistoryGetBySubscription(
 	// 						},
 	// 						Status: to.Ptr(armcostmanagement.ExecutionStatusCompleted),
 	// 						SubmittedBy: to.Ptr("System"),
-	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.5710244Z"); return t}()),
+	// 						SubmittedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-03T09:03:58.571Z"); return t}()),
 	// 					},
 	// 			}},
 	// 		}

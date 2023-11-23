@@ -169,7 +169,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "coordinatorServerEdition", c.CoordinatorServerEdition)
 	populate(objectMap, "coordinatorStorageQuotaInMb", c.CoordinatorStorageQuotaInMb)
 	populate(objectMap, "coordinatorVCores", c.CoordinatorVCores)
-	populateTimeRFC3339(objectMap, "earliestRestoreTime", c.EarliestRestoreTime)
+	populateDateTimeRFC3339(objectMap, "earliestRestoreTime", c.EarliestRestoreTime)
 	populate(objectMap, "enableHa", c.EnableHa)
 	populate(objectMap, "enableShardsOnCoordinator", c.EnableShardsOnCoordinator)
 	populate(objectMap, "maintenanceWindow", c.MaintenanceWindow)
@@ -178,7 +178,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nodeServerEdition", c.NodeServerEdition)
 	populate(objectMap, "nodeStorageQuotaInMb", c.NodeStorageQuotaInMb)
 	populate(objectMap, "nodeVCores", c.NodeVCores)
-	populateTimeRFC3339(objectMap, "pointInTimeUTC", c.PointInTimeUTC)
+	populateDateTimeRFC3339(objectMap, "pointInTimeUTC", c.PointInTimeUTC)
 	populate(objectMap, "postgresqlVersion", c.PostgresqlVersion)
 	populate(objectMap, "preferredPrimaryZone", c.PreferredPrimaryZone)
 	populate(objectMap, "privateEndpointConnections", c.PrivateEndpointConnections)
@@ -222,7 +222,7 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CoordinatorVCores", &c.CoordinatorVCores)
 			delete(rawMsg, key)
 		case "earliestRestoreTime":
-			err = unpopulateTimeRFC3339(val, "EarliestRestoreTime", &c.EarliestRestoreTime)
+			err = unpopulateDateTimeRFC3339(val, "EarliestRestoreTime", &c.EarliestRestoreTime)
 			delete(rawMsg, key)
 		case "enableHa":
 			err = unpopulate(val, "EnableHa", &c.EnableHa)
@@ -249,7 +249,7 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "NodeVCores", &c.NodeVCores)
 			delete(rawMsg, key)
 		case "pointInTimeUTC":
-			err = unpopulateTimeRFC3339(val, "PointInTimeUTC", &c.PointInTimeUTC)
+			err = unpopulateDateTimeRFC3339(val, "PointInTimeUTC", &c.PointInTimeUTC)
 			delete(rawMsg, key)
 		case "postgresqlVersion":
 			err = unpopulate(val, "PostgresqlVersion", &c.PostgresqlVersion)
@@ -1623,10 +1623,10 @@ func (s *SimplePrivateEndpointConnection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1642,7 +1642,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -1651,7 +1651,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)

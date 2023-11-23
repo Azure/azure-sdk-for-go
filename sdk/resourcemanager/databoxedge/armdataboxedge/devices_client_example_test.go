@@ -757,10 +757,10 @@ func ExampleDevicesClient_GetUpdateSummary() {
 	// 	Type: to.Ptr("Microsoft.DataBoxEdge/dataBoxEdgeDevices/updateSummary"),
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/updateSummary/default"),
 	// 	Properties: &armdataboxedge.UpdateSummaryProperties{
-	// 		DeviceLastScannedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T19:51:51.7864634Z"); return t}()),
+	// 		DeviceLastScannedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T19:51:51.786Z"); return t}()),
 	// 		DeviceVersionNumber: to.Ptr("2.1.1377.2170"),
 	// 		FriendlyDeviceVersionName: to.Ptr("Azure Stack Edge 2010"),
-	// 		LastCompletedScanJobDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T19:47:46.1595547Z"); return t}()),
+	// 		LastCompletedScanJobDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T19:47:46.159Z"); return t}()),
 	// 		LastDownloadJobStatus: to.Ptr(armdataboxedge.JobStatusInvalid),
 	// 		LastInstallJobStatus: to.Ptr(armdataboxedge.JobStatusInvalid),
 	// 		OngoingUpdateOperation: to.Ptr(armdataboxedge.UpdateOperationInstall),

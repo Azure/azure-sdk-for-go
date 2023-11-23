@@ -48,7 +48,7 @@ func ExampleContainersClient_NewListByStorageAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/EAuToWIN-6LJVNIFFB411021190437191/storageAccounts/storageaccount1/containers/blobcontainer1"),
 		// 			Properties: &armdataboxedge.ContainerProperties{
 		// 				ContainerStatus: to.Ptr(armdataboxedge.ContainerStatusOK),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:14:32.3016929Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:14:32.301Z"); return t}()),
 		// 				DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 		// 				RefreshDetails: &armdataboxedge.RefreshDetails{
 		// 				},
@@ -60,7 +60,7 @@ func ExampleContainersClient_NewListByStorageAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/EAuToWIN-6LJVNIFFB411021190437191/storageAccounts/storageaccount1/containers/blobcontainer2"),
 		// 			Properties: &armdataboxedge.ContainerProperties{
 		// 				ContainerStatus: to.Ptr(armdataboxedge.ContainerStatusOK),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:15:38.0077675Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:15:38.007Z"); return t}()),
 		// 				DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 		// 				RefreshDetails: &armdataboxedge.RefreshDetails{
 		// 				},
@@ -72,7 +72,7 @@ func ExampleContainersClient_NewListByStorageAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/EAuToWIN-6LJVNIFFB411021190437191/storageAccounts/storageaccount1/containers/blobcontainer3"),
 		// 			Properties: &armdataboxedge.ContainerProperties{
 		// 				ContainerStatus: to.Ptr(armdataboxedge.ContainerStatusOK),
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.8545799Z"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.854Z"); return t}()),
 		// 				DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 		// 				RefreshDetails: &armdataboxedge.RefreshDetails{
 		// 				},
@@ -106,7 +106,7 @@ func ExampleContainersClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/storageAccounts/storageaccount1/containers/blobcontainer1"),
 	// 	Properties: &armdataboxedge.ContainerProperties{
 	// 		ContainerStatus: to.Ptr(armdataboxedge.ContainerStatusOK),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.8545799Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.854Z"); return t}()),
 	// 		DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 	// 		RefreshDetails: &armdataboxedge.RefreshDetails{
 	// 		},
@@ -146,7 +146,7 @@ func ExampleContainersClient_BeginCreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/storageAccounts/storageaccount1/containers/blobcontainer1"),
 	// 	Properties: &armdataboxedge.ContainerProperties{
 	// 		ContainerStatus: to.Ptr(armdataboxedge.ContainerStatusOK),
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.8545799Z"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-20T23:13:27.854Z"); return t}()),
 	// 		DataFormat: to.Ptr(armdataboxedge.AzureContainerDataFormatBlockBlob),
 	// 		RefreshDetails: &armdataboxedge.RefreshDetails{
 	// 		},

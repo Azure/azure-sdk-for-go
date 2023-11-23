@@ -197,22 +197,6 @@ func PossibleAzureOperatorNexusArtifactTypeValues() []AzureOperatorNexusArtifact
 	}
 }
 
-// ConfigurationGenerationType - The configuration generation type.
-type ConfigurationGenerationType string
-
-const (
-	ConfigurationGenerationTypeHandlebarTemplate ConfigurationGenerationType = "HandlebarTemplate"
-	ConfigurationGenerationTypeUnknown           ConfigurationGenerationType = "Unknown"
-)
-
-// PossibleConfigurationGenerationTypeValues returns the possible values for the ConfigurationGenerationType const type.
-func PossibleConfigurationGenerationTypeValues() []ConfigurationGenerationType {
-	return []ConfigurationGenerationType{
-		ConfigurationGenerationTypeHandlebarTemplate,
-		ConfigurationGenerationTypeUnknown,
-	}
-}
-
 // ConfigurationGroupValueConfigurationType - The secret type which indicates if secret or not.
 type ConfigurationGroupValueConfigurationType string
 

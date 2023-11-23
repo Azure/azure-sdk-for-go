@@ -3,7 +3,6 @@
 ## 2.0.0 (2023-11-24)
 ### Breaking Changes
 
-- Support for test fakes and OpenTelemetry trace spans.
 - Type of `NetworkFunction.Properties` has been changed from `*NetworkFunctionPropertiesFormat` to `NetworkFunctionPropertiesFormatClassification`
 - `StatusDeleted`, `StatusNotRegistered`, `StatusRegistered` from enum `Status` has been removed
 - Enum `DeviceType` has been removed
@@ -116,6 +115,7 @@
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - New value `ProvisioningStateConverging` added to enum type `ProvisioningState`
 - New value `StatusDeployed`, `StatusDownloading`, `StatusFailed`, `StatusInstalling`, `StatusPendingInstall`, `StatusPendingRollback`, `StatusPendingUpgrade`, `StatusReinstalling`, `StatusRollingback`, `StatusSuperseded`, `StatusUninstalled`, `StatusUninstalling`, `StatusUpgrading` added to enum type `Status`
 - New enum type `ActionType` with values `ActionTypeInternal`
@@ -128,7 +128,6 @@
 - New enum type `AzureArcKubernetesArtifactType` with values `AzureArcKubernetesArtifactTypeHelmPackage`, `AzureArcKubernetesArtifactTypeUnknown`
 - New enum type `AzureCoreArtifactType` with values `AzureCoreArtifactTypeArmTemplate`, `AzureCoreArtifactTypeUnknown`, `AzureCoreArtifactTypeVhdImageFile`
 - New enum type `AzureOperatorNexusArtifactType` with values `AzureOperatorNexusArtifactTypeArmTemplate`, `AzureOperatorNexusArtifactTypeImageFile`, `AzureOperatorNexusArtifactTypeUnknown`
-- New enum type `ConfigurationGenerationType` with values `ConfigurationGenerationTypeHandlebarTemplate`, `ConfigurationGenerationTypeUnknown`
 - New enum type `ConfigurationGroupValueConfigurationType` with values `ConfigurationGroupValueConfigurationTypeOpen`, `ConfigurationGroupValueConfigurationTypeSecret`, `ConfigurationGroupValueConfigurationTypeUnknown`
 - New enum type `ContainerizedNetworkFunctionNFVIType` with values `ContainerizedNetworkFunctionNFVITypeAzureArcKubernetes`, `ContainerizedNetworkFunctionNFVITypeUnknown`
 - New enum type `CredentialType` with values `CredentialTypeAzureContainerRegistryScopedToken`, `CredentialTypeAzureStorageAccountToken`, `CredentialTypeUnknown`
@@ -288,7 +287,6 @@
 - New struct `ArtifactManifestListResult`
 - New struct `ArtifactManifestPropertiesFormat`
 - New struct `ArtifactManifestUpdateState`
-- New struct `ArtifactProfile`
 - New struct `ArtifactStore`
 - New struct `ArtifactStoreListResult`
 - New struct `ArtifactStorePropertiesFormat`
@@ -329,7 +327,6 @@
 - New struct `ConfigurationValueWithSecrets`
 - New struct `ConfigurationValueWithoutSecrets`
 - New struct `ContainerizedNetworkFunctionDefinitionVersion`
-- New struct `CustomLocationResourceID`
 - New struct `DaemonSet`
 - New struct `DependsOnProfile`
 - New struct `Deployment`
@@ -345,9 +342,7 @@
 - New struct `ManagedResourceGroupConfiguration`
 - New struct `ManagedServiceIdentity`
 - New struct `ManifestArtifactFormat`
-- New struct `MappingRuleProfile`
 - New struct `NSDArtifactProfile`
-- New struct `NetworkFunctionApplication`
 - New struct `NetworkFunctionDefinitionGroup`
 - New struct `NetworkFunctionDefinitionGroupListResult`
 - New struct `NetworkFunctionDefinitionGroupPropertiesFormat`
@@ -370,9 +365,7 @@
 - New struct `Pod`
 - New struct `PodEvent`
 - New struct `ProxyArtifactListOverview`
-- New struct `ProxyArtifactOverview`
 - New struct `ProxyArtifactOverviewListResult`
-- New struct `ProxyArtifactOverviewPropertiesFormat`
 - New struct `ProxyArtifactOverviewPropertiesValue`
 - New struct `ProxyArtifactVersionsListOverview`
 - New struct `ProxyArtifactVersionsOverviewListResult`
@@ -399,9 +392,6 @@
 - New field `Identity` in struct `NetworkFunction`
 - New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
 - New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
-- New field `SystemData` in struct `ProxyResource`
-- New field `SystemData` in struct `Resource`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 1.1.1 (2023-04-14)

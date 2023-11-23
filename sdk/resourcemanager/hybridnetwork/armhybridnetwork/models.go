@@ -134,12 +134,6 @@ type ArtifactManifestUpdateState struct {
 	ArtifactManifestState *ArtifactManifestState
 }
 
-// ArtifactProfile - Artifact profile properties.
-type ArtifactProfile struct {
-	// The reference to artifact store.
-	ArtifactStore *ReferencedResource
-}
-
 // ArtifactStore - Artifact store properties.
 type ArtifactStore struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -936,12 +930,6 @@ func (c *ContainerizedNetworkFunctionTemplate) GetContainerizedNetworkFunctionTe
 	return c
 }
 
-// CustomLocationResourceID - Reference to an Azure ARC custom location resource.
-type CustomLocationResourceID struct {
-	// Azure ARC custom location resource ID.
-	ID *string
-}
-
 // DaemonSet - Helm DaemonSet status properties.
 type DaemonSet struct {
 	// Number of available pods.
@@ -1026,40 +1014,6 @@ type DeploymentStatusProperties struct {
 
 	// The status of the component resource.
 	Status *Status
-}
-
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
 }
 
 // ExecuteRequestParameters - Payload for execute request post call.
@@ -1193,12 +1147,6 @@ type ManifestArtifactFormat struct {
 	ArtifactVersion *string
 }
 
-// MappingRuleProfile - Mapping rule profile properties.
-type MappingRuleProfile struct {
-	// The application enablement.
-	ApplicationEnablement *ApplicationEnablement
-}
-
 // NFVIs - The NFVI object.
 type NFVIs struct {
 	// REQUIRED; The NFVI type.
@@ -1251,15 +1199,6 @@ type NetworkFunction struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// NetworkFunctionApplication - Network function application definition.
-type NetworkFunctionApplication struct {
-	// Depends on profile definition.
-	DependsOnProfile *DependsOnProfile
-
-	// The name of the network function application.
-	Name *string
 }
 
 // NetworkFunctionDefinitionGroup - Network function definition group resource.
@@ -1795,24 +1734,6 @@ type ProxyArtifactListOverview struct {
 	Type *string
 }
 
-// ProxyArtifactOverview - The proxy artifact overview.
-type ProxyArtifactOverview struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Proxy Artifact properties overview.
-	Properties *ProxyArtifactOverviewPropertiesFormat
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // ProxyArtifactOverviewListResult - The proxy artifact list result.
 type ProxyArtifactOverviewListResult struct {
 	// A list of available proxy artifacts.
@@ -1820,12 +1741,6 @@ type ProxyArtifactOverviewListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string
-}
-
-// ProxyArtifactOverviewPropertiesFormat - Proxy Artifact overview properties.
-type ProxyArtifactOverviewPropertiesFormat struct {
-	// The proxy artifact overview properties.
-	ArtifactVersions []*ProxyArtifactOverviewPropertiesValue
 }
 
 type ProxyArtifactOverviewPropertiesValue struct {
@@ -1864,22 +1779,6 @@ type ProxyArtifactVersionsOverviewListResult struct {
 
 	// READ-ONLY; The URL to get the next set of results.
 	NextLink *string
-}
-
-// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-// location
-type ProxyResource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // Publisher - publisher resource.
@@ -1967,21 +1866,6 @@ type RequestMetadata struct {
 
 	// The api version of the request.
 	APIVersion *string
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // ResourceElementTemplate - The resource element template object.
@@ -2209,28 +2093,6 @@ type SystemData struct {
 type TagsObject struct {
 	// Resource tags.
 	Tags map[string]*string
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UserAssignedIdentity - User assigned identity properties

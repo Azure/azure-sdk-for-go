@@ -1,5 +1,44 @@
 # Release History
 
+## 1.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New enum type `AvailablePromotion` with values `AvailablePromotionFreeTrial`, `AvailablePromotionNone`
+- New enum type `ManagedPrivateEndpointConnectionStatus` with values `ManagedPrivateEndpointConnectionStatusApproved`, `ManagedPrivateEndpointConnectionStatusDisconnected`, `ManagedPrivateEndpointConnectionStatusPending`, `ManagedPrivateEndpointConnectionStatusRejected`
+- New enum type `MarketplaceAutoRenew` with values `MarketplaceAutoRenewDisabled`, `MarketplaceAutoRenewEnabled`
+- New enum type `StartTLSPolicy` with values `StartTLSPolicyMandatoryStartTLS`, `StartTLSPolicyNoStartTLS`, `StartTLSPolicyOpportunisticStartTLS`
+- New function `*ClientFactory.NewManagedPrivateEndpointsClient() *ManagedPrivateEndpointsClient`
+- New function `*GrafanaClient.CheckEnterpriseDetails(context.Context, string, string, *GrafanaClientCheckEnterpriseDetailsOptions) (GrafanaClientCheckEnterpriseDetailsResponse, error)`
+- New function `*GrafanaClient.FetchAvailablePlugins(context.Context, string, string, *GrafanaClientFetchAvailablePluginsOptions) (GrafanaClientFetchAvailablePluginsResponse, error)`
+- New function `NewManagedPrivateEndpointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedPrivateEndpointsClient, error)`
+- New function `*ManagedPrivateEndpointsClient.BeginCreate(context.Context, string, string, string, ManagedPrivateEndpointModel, *ManagedPrivateEndpointsClientBeginCreateOptions) (*runtime.Poller[ManagedPrivateEndpointsClientCreateResponse], error)`
+- New function `*ManagedPrivateEndpointsClient.BeginDelete(context.Context, string, string, string, *ManagedPrivateEndpointsClientBeginDeleteOptions) (*runtime.Poller[ManagedPrivateEndpointsClientDeleteResponse], error)`
+- New function `*ManagedPrivateEndpointsClient.Get(context.Context, string, string, string, *ManagedPrivateEndpointsClientGetOptions) (ManagedPrivateEndpointsClientGetResponse, error)`
+- New function `*ManagedPrivateEndpointsClient.NewListPager(string, string, *ManagedPrivateEndpointsClientListOptions) *runtime.Pager[ManagedPrivateEndpointsClientListResponse]`
+- New function `*ManagedPrivateEndpointsClient.BeginRefresh(context.Context, string, string, *ManagedPrivateEndpointsClientBeginRefreshOptions) (*runtime.Poller[ManagedPrivateEndpointsClientRefreshResponse], error)`
+- New function `*ManagedPrivateEndpointsClient.BeginUpdate(context.Context, string, string, string, ManagedPrivateEndpointUpdateParameters, *ManagedPrivateEndpointsClientBeginUpdateOptions) (*runtime.Poller[ManagedPrivateEndpointsClientUpdateResponse], error)`
+- New struct `EnterpriseConfigurations`
+- New struct `EnterpriseDetails`
+- New struct `GrafanaAvailablePlugin`
+- New struct `GrafanaAvailablePluginListResponse`
+- New struct `GrafanaConfigurations`
+- New struct `GrafanaPlugin`
+- New struct `ManagedPrivateEndpointConnectionState`
+- New struct `ManagedPrivateEndpointModel`
+- New struct `ManagedPrivateEndpointModelListResponse`
+- New struct `ManagedPrivateEndpointModelProperties`
+- New struct `ManagedPrivateEndpointUpdateParameters`
+- New struct `MarketplaceTrialQuota`
+- New struct `SMTP`
+- New struct `SaasSubscriptionDetails`
+- New struct `SubscriptionTerm`
+- New field `AzureAsyncOperation` in struct `GrafanaClientUpdateResponse`
+- New field `EnterpriseConfigurations`, `GrafanaConfigurations`, `GrafanaMajorVersion`, `GrafanaPlugins` in struct `ManagedGrafanaProperties`
+- New field `EnterpriseConfigurations`, `GrafanaConfigurations`, `GrafanaMajorVersion`, `GrafanaPlugins` in struct `ManagedGrafanaPropertiesUpdateParameters`
+- New field `SKU` in struct `ManagedGrafanaUpdateParameters`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

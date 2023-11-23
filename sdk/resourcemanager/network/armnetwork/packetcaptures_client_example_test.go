@@ -166,7 +166,7 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PacketCaptureQueryStatusResult = armnetwork.PacketCaptureQueryStatusResult{
 	// 	Name: to.Ptr("pc1"),
-	// 	CaptureStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-07T12:35:24Z"); return t}()),
+	// 	CaptureStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-07T12:35:24.000Z"); return t}()),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1/packetCaptures/pc1"),
 	// 	PacketCaptureError: []*armnetwork.PcError{
 	// 	},

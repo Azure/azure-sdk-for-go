@@ -32,7 +32,7 @@ type ManagedEnvironmentsStoragesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedEnvironmentsStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentsStoragesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedEnvironmentsStoragesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewManagedEnvironmentsStoragesClient(subscriptionID string, credential azco
 //     method.
 func (client *ManagedEnvironmentsStoragesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, storageName string, storageEnvelope ManagedEnvironmentStorage, options *ManagedEnvironmentsStoragesClientCreateOrUpdateOptions) (ManagedEnvironmentsStoragesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentsStoragesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, storageName, storageEnvelope, options)
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *ManagedEnvironmentsStoragesClient) createOrUpdateHandleResponse(re
 //     method.
 func (client *ManagedEnvironmentsStoragesClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, storageName string, options *ManagedEnvironmentsStoragesClientDeleteOptions) (ManagedEnvironmentsStoragesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentsStoragesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, storageName, options)
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *ManagedEnvironmentsStoragesClient) deleteCreateRequest(ctx context
 //     method.
 func (client *ManagedEnvironmentsStoragesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, storageName string, options *ManagedEnvironmentsStoragesClientGetOptions) (ManagedEnvironmentsStoragesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentsStoragesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, storageName, options)
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientGetResponse{}, err
@@ -245,6 +257,10 @@ func (client *ManagedEnvironmentsStoragesClient) getHandleResponse(resp *http.Re
 //     method.
 func (client *ManagedEnvironmentsStoragesClient) List(ctx context.Context, resourceGroupName string, environmentName string, options *ManagedEnvironmentsStoragesClientListOptions) (ManagedEnvironmentsStoragesClientListResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentsStoragesClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientListResponse{}, err

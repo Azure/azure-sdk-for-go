@@ -32,7 +32,7 @@ type ContainerAppsRevisionReplicasClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsRevisionReplicasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsRevisionReplicasClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContainerAppsRevisionReplicasClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewContainerAppsRevisionReplicasClient(subscriptionID string, credential az
 //     method.
 func (client *ContainerAppsRevisionReplicasClient) GetReplica(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, replicaName string, options *ContainerAppsRevisionReplicasClientGetReplicaOptions) (ContainerAppsRevisionReplicasClientGetReplicaResponse, error) {
 	var err error
+	const operationName = "ContainerAppsRevisionReplicasClient.GetReplica"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getReplicaCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, replicaName, options)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
@@ -125,6 +129,10 @@ func (client *ContainerAppsRevisionReplicasClient) getReplicaHandleResponse(resp
 //     method.
 func (client *ContainerAppsRevisionReplicasClient) ListReplicas(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, options *ContainerAppsRevisionReplicasClientListReplicasOptions) (ContainerAppsRevisionReplicasClientListReplicasResponse, error) {
 	var err error
+	const operationName = "ContainerAppsRevisionReplicasClient.ListReplicas"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listReplicasCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, options)
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err

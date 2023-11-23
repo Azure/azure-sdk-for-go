@@ -32,7 +32,7 @@ type CloudLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCloudLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudLinksClient, error) {
-	cl, err := arm.NewClient(moduleName+".CloudLinksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CloudLinksClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudLinksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CloudLinksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudLinksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // Generated from API version 2023-03-01
 func (client *CloudLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink, options *CloudLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudLinksClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, cloudLinkName, cloudLink, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +142,14 @@ func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CloudLinksClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudLinksClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CloudLinksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudLinksClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +159,10 @@ func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2023-03-01
 func (client *CloudLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CloudLinksClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, cloudLinkName, options)
 	if err != nil {
 		return nil, err
@@ -202,6 +218,10 @@ func (client *CloudLinksClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - CloudLinksClientGetOptions contains the optional parameters for the CloudLinksClient.Get method.
 func (client *CloudLinksClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientGetOptions) (CloudLinksClientGetResponse, error) {
 	var err error
+	const operationName = "CloudLinksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, cloudLinkName, options)
 	if err != nil {
 		return CloudLinksClientGetResponse{}, err
@@ -269,25 +289,20 @@ func (client *CloudLinksClient) NewListPager(resourceGroupName string, privateCl
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CloudLinksClientListResponse) (CloudLinksClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CloudLinksClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return CloudLinksClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CloudLinksClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CloudLinksClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

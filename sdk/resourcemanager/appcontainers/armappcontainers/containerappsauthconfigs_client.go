@@ -32,7 +32,7 @@ type ContainerAppsAuthConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsAuthConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsAuthConfigsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContainerAppsAuthConfigsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewContainerAppsAuthConfigsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ContainerAppsAuthConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerAppName string, authConfigName string, authConfigEnvelope AuthConfig, options *ContainerAppsAuthConfigsClientCreateOrUpdateOptions) (ContainerAppsAuthConfigsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ContainerAppsAuthConfigsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, containerAppName, authConfigName, authConfigEnvelope, options)
 	if err != nil {
 		return ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *ContainerAppsAuthConfigsClient) createOrUpdateHandleResponse(resp 
 //     method.
 func (client *ContainerAppsAuthConfigsClient) Delete(ctx context.Context, resourceGroupName string, containerAppName string, authConfigName string, options *ContainerAppsAuthConfigsClientDeleteOptions) (ContainerAppsAuthConfigsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ContainerAppsAuthConfigsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, containerAppName, authConfigName, options)
 	if err != nil {
 		return ContainerAppsAuthConfigsClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *ContainerAppsAuthConfigsClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *ContainerAppsAuthConfigsClient) Get(ctx context.Context, resourceGroupName string, containerAppName string, authConfigName string, options *ContainerAppsAuthConfigsClientGetOptions) (ContainerAppsAuthConfigsClientGetResponse, error) {
 	var err error
+	const operationName = "ContainerAppsAuthConfigsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, containerAppName, authConfigName, options)
 	if err != nil {
 		return ContainerAppsAuthConfigsClientGetResponse{}, err
@@ -248,25 +260,20 @@ func (client *ContainerAppsAuthConfigsClient) NewListByContainerAppPager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerAppsAuthConfigsClientListByContainerAppResponse) (ContainerAppsAuthConfigsClientListByContainerAppResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByContainerAppCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerAppsAuthConfigsClient.NewListByContainerAppPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByContainerAppCreateRequest(ctx, resourceGroupName, containerAppName, options)
+			}, nil)
 			if err != nil {
 				return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByContainerAppHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -32,7 +32,7 @@ type NamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
-	cl, err := arm.NewClient(moduleName+".NamespacesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, environmentName string, checkNameAvailabilityRequest CheckNameAvailabilityRequest, options *NamespacesClientCheckNameAvailabilityOptions) (NamespacesClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "NamespacesClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, environmentName, checkNameAvailabilityRequest, options)
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err

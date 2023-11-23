@@ -32,7 +32,7 @@ type ConnectedEnvironmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConnectedEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedEnvironmentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConnectedEnvironmentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewConnectedEnvironmentsClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *ConnectedEnvironmentsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, checkNameAvailabilityRequest CheckNameAvailabilityRequest, options *ConnectedEnvironmentsClientCheckNameAvailabilityOptions) (ConnectedEnvironmentsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest, options)
 	if err != nil {
 		return ConnectedEnvironmentsClientCheckNameAvailabilityResponse{}, err
@@ -125,10 +129,13 @@ func (client *ConnectedEnvironmentsClient) BeginCreateOrUpdate(ctx context.Conte
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ConnectedEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -138,6 +145,10 @@ func (client *ConnectedEnvironmentsClient) BeginCreateOrUpdate(ctx context.Conte
 // Generated from API version 2023-05-01
 func (client *ConnectedEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, options *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, environmentEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -198,10 +209,13 @@ func (client *ConnectedEnvironmentsClient) BeginDelete(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ConnectedEnvironmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -211,6 +225,10 @@ func (client *ConnectedEnvironmentsClient) BeginDelete(ctx context.Context, reso
 // Generated from API version 2023-05-01
 func (client *ConnectedEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
 	if err != nil {
 		return nil, err
@@ -262,6 +280,10 @@ func (client *ConnectedEnvironmentsClient) deleteCreateRequest(ctx context.Conte
 //     method.
 func (client *ConnectedEnvironmentsClient) Get(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientGetOptions) (ConnectedEnvironmentsClientGetResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
 	if err != nil {
 		return ConnectedEnvironmentsClientGetResponse{}, err
@@ -325,25 +347,20 @@ func (client *ConnectedEnvironmentsClient) NewListByResourceGroupPager(resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectedEnvironmentsClientListByResourceGroupResponse) (ConnectedEnvironmentsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedEnvironmentsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ConnectedEnvironmentsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ConnectedEnvironmentsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ConnectedEnvironmentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -389,25 +406,20 @@ func (client *ConnectedEnvironmentsClient) NewListBySubscriptionPager(options *C
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectedEnvironmentsClientListBySubscriptionResponse) (ConnectedEnvironmentsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedEnvironmentsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ConnectedEnvironmentsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ConnectedEnvironmentsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ConnectedEnvironmentsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -448,6 +460,10 @@ func (client *ConnectedEnvironmentsClient) listBySubscriptionHandleResponse(resp
 //     method.
 func (client *ConnectedEnvironmentsClient) Update(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientUpdateOptions) (ConnectedEnvironmentsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
 	if err != nil {
 		return ConnectedEnvironmentsClientUpdateResponse{}, err

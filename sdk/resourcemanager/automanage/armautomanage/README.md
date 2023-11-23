@@ -72,6 +72,13 @@ configProfilesClient := clientFactory.NewReportsClient()
 assignmentClient := clientFactory.NewReportsClient()
 ```
 
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
+
 ## Create or Update a Custom Automanage Configuration Profile
 
 To update a profile, provide a value for all properties as if you were creating a configuration profile (ID, Name, Type, Location, Properties, Tags)

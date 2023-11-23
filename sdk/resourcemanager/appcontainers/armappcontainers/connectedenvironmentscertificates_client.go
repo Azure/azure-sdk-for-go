@@ -32,7 +32,7 @@ type ConnectedEnvironmentsCertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConnectedEnvironmentsCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedEnvironmentsCertificatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConnectedEnvironmentsCertificatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewConnectedEnvironmentsCertificatesClient(subscriptionID string, credentia
 //     method.
 func (client *ConnectedEnvironmentsCertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *ConnectedEnvironmentsCertificatesClientCreateOrUpdateOptions) (ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsCertificatesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, certificateName, options)
 	if err != nil {
 		return ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse{}, err
@@ -126,6 +130,10 @@ func (client *ConnectedEnvironmentsCertificatesClient) createOrUpdateHandleRespo
 //     method.
 func (client *ConnectedEnvironmentsCertificatesClient) Delete(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *ConnectedEnvironmentsCertificatesClientDeleteOptions) (ConnectedEnvironmentsCertificatesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsCertificatesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, certificateName, options)
 	if err != nil {
 		return ConnectedEnvironmentsCertificatesClientDeleteResponse{}, err
@@ -182,6 +190,10 @@ func (client *ConnectedEnvironmentsCertificatesClient) deleteCreateRequest(ctx c
 //     method.
 func (client *ConnectedEnvironmentsCertificatesClient) Get(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, options *ConnectedEnvironmentsCertificatesClientGetOptions) (ConnectedEnvironmentsCertificatesClientGetResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsCertificatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, certificateName, options)
 	if err != nil {
 		return ConnectedEnvironmentsCertificatesClientGetResponse{}, err
@@ -250,25 +262,20 @@ func (client *ConnectedEnvironmentsCertificatesClient) NewListPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ConnectedEnvironmentsCertificatesClientListResponse) (ConnectedEnvironmentsCertificatesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectedEnvironmentsCertificatesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
+			}, nil)
 			if err != nil {
 				return ConnectedEnvironmentsCertificatesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ConnectedEnvironmentsCertificatesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ConnectedEnvironmentsCertificatesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -319,6 +326,10 @@ func (client *ConnectedEnvironmentsCertificatesClient) listHandleResponse(resp *
 //     method.
 func (client *ConnectedEnvironmentsCertificatesClient) Update(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, certificateName string, certificateEnvelope CertificatePatch, options *ConnectedEnvironmentsCertificatesClientUpdateOptions) (ConnectedEnvironmentsCertificatesClientUpdateResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsCertificatesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, options)
 	if err != nil {
 		return ConnectedEnvironmentsCertificatesClientUpdateResponse{}, err

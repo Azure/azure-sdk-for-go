@@ -82,7 +82,7 @@ func ExampleDomainsClient_NewListPager() {
 		// 				AuthCode: to.Ptr("exampleAuthCode"),
 		// 				AutoRenew: to.Ptr(true),
 		// 				Consent: &armappservice.DomainPurchaseConsent{
-		// 					AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+		// 					AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 		// 					AgreedBy: to.Ptr("192.0.2.1"),
 		// 					AgreementKeys: []*string{
 		// 						to.Ptr("agreementKey1")},
@@ -155,11 +155,11 @@ func ExampleDomainsClient_NewListPager() {
 		// 						Organization: to.Ptr("Microsoft Inc."),
 		// 						Phone: to.Ptr("1-245-534-2242"),
 		// 					},
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 		// 					DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 		// 					DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 		// 						to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-		// 						ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+		// 						ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 		// 						ManagedHostNames: []*armappservice.HostName{
 		// 						},
 		// 						NameServers: []*string{
@@ -275,7 +275,7 @@ func ExampleDomainsClient_NewListByResourceGroupPager() {
 		// 				AuthCode: to.Ptr("exampleAuthCode"),
 		// 				AutoRenew: to.Ptr(true),
 		// 				Consent: &armappservice.DomainPurchaseConsent{
-		// 					AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+		// 					AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 		// 					AgreedBy: to.Ptr("192.0.2.1"),
 		// 					AgreementKeys: []*string{
 		// 						to.Ptr("agreementKey1")},
@@ -348,11 +348,11 @@ func ExampleDomainsClient_NewListByResourceGroupPager() {
 		// 						Organization: to.Ptr("Microsoft Inc."),
 		// 						Phone: to.Ptr("1-245-534-2242"),
 		// 					},
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 		// 					DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 		// 					DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 		// 						to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-		// 						ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+		// 						ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 		// 						ManagedHostNames: []*armappservice.HostName{
 		// 						},
 		// 						NameServers: []*string{
@@ -397,7 +397,7 @@ func ExampleDomainsClient_Get() {
 	// 		AuthCode: to.Ptr("exampleAuthCode"),
 	// 		AutoRenew: to.Ptr(true),
 	// 		Consent: &armappservice.DomainPurchaseConsent{
-	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			AgreedBy: to.Ptr("192.0.2.1"),
 	// 			AgreementKeys: []*string{
 	// 				to.Ptr("agreementKey1")},
@@ -470,11 +470,11 @@ func ExampleDomainsClient_Get() {
 	// 				Organization: to.Ptr("Microsoft Inc."),
 	// 				Phone: to.Ptr("1-245-534-2242"),
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 	// 			DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 	// 				to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 	// 				ManagedHostNames: []*armappservice.HostName{
 	// 				},
 	// 				NameServers: []*string{
@@ -506,7 +506,7 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 			AuthCode:  to.Ptr("exampleAuthCode"),
 			AutoRenew: to.Ptr(true),
 			Consent: &armappservice.DomainPurchaseConsent{
-				AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t }()),
+				AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t }()),
 				AgreedBy: to.Ptr("192.0.2.1"),
 				AgreementKeys: []*string{
 					to.Ptr("agreementKey1")},
@@ -604,7 +604,7 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	// 		AuthCode: to.Ptr("exampleAuthCode"),
 	// 		AutoRenew: to.Ptr(true),
 	// 		Consent: &armappservice.DomainPurchaseConsent{
-	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			AgreedBy: to.Ptr("192.0.2.1"),
 	// 			AgreementKeys: []*string{
 	// 				to.Ptr("agreementKey1")},
@@ -677,11 +677,11 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	// 				Organization: to.Ptr("Microsoft Inc."),
 	// 				Phone: to.Ptr("1-245-534-2242"),
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 	// 			DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 	// 				to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 	// 				ManagedHostNames: []*armappservice.HostName{
 	// 				},
 	// 				NameServers: []*string{
@@ -728,7 +728,7 @@ func ExampleDomainsClient_Update() {
 			AuthCode:  to.Ptr("exampleAuthCode"),
 			AutoRenew: to.Ptr(true),
 			Consent: &armappservice.DomainPurchaseConsent{
-				AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t }()),
+				AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t }()),
 				AgreedBy: to.Ptr("192.0.2.1"),
 				AgreementKeys: []*string{
 					to.Ptr("agreementKey1")},
@@ -822,7 +822,7 @@ func ExampleDomainsClient_Update() {
 	// 		AuthCode: to.Ptr("exampleAuthCode"),
 	// 		AutoRenew: to.Ptr(true),
 	// 		Consent: &armappservice.DomainPurchaseConsent{
-	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			AgreedBy: to.Ptr("192.0.2.1"),
 	// 			AgreementKeys: []*string{
 	// 				to.Ptr("agreementKey1")},
@@ -895,11 +895,11 @@ func ExampleDomainsClient_Update() {
 	// 				Organization: to.Ptr("Microsoft Inc."),
 	// 				Phone: to.Ptr("1-245-534-2242"),
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 	// 			DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 	// 				to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 	// 				ManagedHostNames: []*armappservice.HostName{
 	// 				},
 	// 				NameServers: []*string{
@@ -1104,7 +1104,7 @@ func ExampleDomainsClient_TransferOut() {
 	// 		AuthCode: to.Ptr("exampleAuthCode"),
 	// 		AutoRenew: to.Ptr(true),
 	// 		Consent: &armappservice.DomainPurchaseConsent{
-	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			AgreedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			AgreedBy: to.Ptr("192.0.2.1"),
 	// 			AgreementKeys: []*string{
 	// 				to.Ptr("agreementKey1")},
@@ -1177,11 +1177,11 @@ func ExampleDomainsClient_TransferOut() {
 	// 				Organization: to.Ptr("Microsoft Inc."),
 	// 				Phone: to.Ptr("1-245-534-2242"),
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53Z"); return t}()),
+	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T19:30:53.000Z"); return t}()),
 	// 			DNSType: to.Ptr(armappservice.DNSTypeDefaultDomainRegistrarDNS),
 	// 			DomainNotRenewableReasons: []*armappservice.ResourceNotRenewableReason{
 	// 				to.Ptr(armappservice.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange)},
-	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T19:30:53.000Z"); return t}()),
 	// 				ManagedHostNames: []*armappservice.HostName{
 	// 				},
 	// 				NameServers: []*string{

@@ -32,7 +32,7 @@ type CertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CertificatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientCreateOrUpdateOptions) (CertificatesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
@@ -125,6 +129,10 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
 func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientDeleteOptions) (CertificatesClientDeleteResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
 func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, certificateName, options)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
@@ -247,25 +259,20 @@ func (client *CertificatesClient) NewListPager(resourceGroupName string, environ
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CertificatesClientListResponse) (CertificatesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CertificatesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
+			}, nil)
 			if err != nil {
 				return CertificatesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CertificatesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CertificatesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -315,6 +322,10 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 //   - options - CertificatesClientUpdateOptions contains the optional parameters for the CertificatesClient.Update method.
 func (client *CertificatesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, certificateName string, certificateEnvelope CertificatePatch, options *CertificatesClientUpdateOptions) (CertificatesClientUpdateResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, certificateName, certificateEnvelope, options)
 	if err != nil {
 		return CertificatesClientUpdateResponse{}, err

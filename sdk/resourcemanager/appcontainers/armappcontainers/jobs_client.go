@@ -32,7 +32,7 @@ type JobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *JobsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *JobsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *JobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, jobName string, jobEnvelope Job, options *JobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, jobName, jobEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -132,10 +139,13 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -145,6 +155,10 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 // Generated from API version 2023-05-01
 func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +209,10 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 //   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
 func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	var err error
+	const operationName = "JobsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
 		return JobsClientGetResponse{}, err
@@ -258,25 +276,20 @@ func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobsClientListByResourceGroupResponse) (JobsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return JobsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,25 +335,20 @@ func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySu
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobsClientListBySubscriptionResponse) (JobsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return JobsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -380,6 +388,10 @@ func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 //   - options - JobsClientListSecretsOptions contains the optional parameters for the JobsClient.ListSecrets method.
 func (client *JobsClient) ListSecrets(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientListSecretsOptions) (JobsClientListSecretsResponse, error) {
 	var err error
+	const operationName = "JobsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
 		return JobsClientListSecretsResponse{}, err
@@ -446,10 +458,13 @@ func (client *JobsClient) BeginStart(ctx context.Context, resourceGroupName stri
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -459,6 +474,10 @@ func (client *JobsClient) BeginStart(ctx context.Context, resourceGroupName stri
 // Generated from API version 2023-05-01
 func (client *JobsClient) start(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -522,10 +541,13 @@ func (client *JobsClient) BeginStopExecution(ctx context.Context, resourceGroupN
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientStopExecutionResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientStopExecutionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientStopExecutionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -535,6 +557,10 @@ func (client *JobsClient) BeginStopExecution(ctx context.Context, resourceGroupN
 // Generated from API version 2023-05-01
 func (client *JobsClient) stopExecution(ctx context.Context, resourceGroupName string, jobName string, jobExecutionName string, options *JobsClientBeginStopExecutionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginStopExecution"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopExecutionCreateRequest(ctx, resourceGroupName, jobName, jobExecutionName, options)
 	if err != nil {
 		return nil, err
@@ -596,10 +622,13 @@ func (client *JobsClient) BeginStopMultipleExecutions(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientStopMultipleExecutionsResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientStopMultipleExecutionsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientStopMultipleExecutionsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -609,6 +638,10 @@ func (client *JobsClient) BeginStopMultipleExecutions(ctx context.Context, resou
 // Generated from API version 2023-05-01
 func (client *JobsClient) stopMultipleExecutions(ctx context.Context, resourceGroupName string, jobName string, options *JobsClientBeginStopMultipleExecutionsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginStopMultipleExecutions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopMultipleExecutionsCreateRequest(ctx, resourceGroupName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -664,10 +697,14 @@ func (client *JobsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[JobsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -677,6 +714,10 @@ func (client *JobsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 // Generated from API version 2023-05-01
 func (client *JobsClient) update(ctx context.Context, resourceGroupName string, jobName string, jobEnvelope JobPatchProperties, options *JobsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, jobName, jobEnvelope, options)
 	if err != nil {
 		return nil, err

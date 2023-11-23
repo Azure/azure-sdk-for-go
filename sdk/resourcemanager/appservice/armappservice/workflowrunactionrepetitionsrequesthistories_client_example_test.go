@@ -46,7 +46,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 		// 			Type: to.Ptr("/workflows/runs/actions/requestHistories"),
 		// 			ID: to.Ptr("/workflows/test-workflow/runs/08586611142736787787412824395CU21/actions/HTTP_Webhook/requestHistories/08586611142732800686"),
 		// 			Properties: &armappservice.RequestHistoryProperties{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.1863033Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.186Z"); return t}()),
 		// 				Response: &armappservice.Response{
 		// 					BodyLink: &armappservice.ContentLink{
 		// 						ContentHash: &armappservice.ContentHash{
@@ -67,7 +67,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 		// 					},
 		// 					StatusCode: to.Ptr[int32](302),
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.9206732Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.920Z"); return t}()),
 		// 				Request: &armappservice.Request{
 		// 					Method: to.Ptr("GET"),
 		// 					Headers: map[string]any{
@@ -121,7 +121,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 	// 	Type: to.Ptr("/workflows/runs/actions/requestHistories"),
 	// 	ID: to.Ptr("/workflows/test-workflow/runs/08586611142736787787412824395CU21/actions/HTTP_Webhook/requestHistories/08586611142732800686"),
 	// 	Properties: &armappservice.RequestHistoryProperties{
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.1863033Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.186Z"); return t}()),
 	// 		Response: &armappservice.Response{
 	// 			BodyLink: &armappservice.ContentLink{
 	// 				ContentHash: &armappservice.ContentHash{
@@ -142,7 +142,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 	// 			},
 	// 			StatusCode: to.Ptr[int32](302),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.9206732Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.920Z"); return t}()),
 	// 		Request: &armappservice.Request{
 	// 			Method: to.Ptr("GET"),
 	// 			Headers: map[string]any{

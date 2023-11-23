@@ -47,9 +47,9 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testcontainerApp0/revisions/testcontainerApp0-pjxhsye"),
 		// 			Properties: &armappcontainers.RevisionProperties{
 		// 				Active: to.Ptr(true),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 		// 				Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-		// 				LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+		// 				LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 		// 				Replicas: to.Ptr[int32](1),
 		// 				Template: &armappcontainers.Template{
 		// 					Containers: []*armappcontainers.Container{
@@ -106,9 +106,9 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.AppcontainerApps/testcontainerApp0/revisions/testcontainerApp0-pjxhsye"),
 	// 	Properties: &armappcontainers.RevisionProperties{
 	// 		Active: to.Ptr(true),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 	// 		Fqdn: to.Ptr("testcontainerApp0-pjxhsye.politehill-ab123456.eastus.azurecontainerapps.io"),
-	// 		LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22+00:00"); return t}()),
+	// 		LastActiveTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-24T21:24:22.000Z"); return t}()),
 	// 		Replicas: to.Ptr[int32](1),
 	// 		RunningState: to.Ptr(armappcontainers.RevisionRunningStateRunning),
 	// 		Template: &armappcontainers.Template{

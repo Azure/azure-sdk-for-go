@@ -32,7 +32,7 @@ type PrivateCloudsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateCloudsClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateCloudsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateCloudsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateCloudsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateCloudsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateCloudsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-03-01
 func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloud, options)
 	if err != nil {
 		return nil, err
@@ -129,10 +137,14 @@ func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateCloudsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateCloudsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateCloudsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateCloudsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -142,6 +154,10 @@ func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-03-01
 func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -192,6 +208,10 @@ func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
 func (client *PrivateCloudsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientGetOptions) (PrivateCloudsClientGetResponse, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return PrivateCloudsClientGetResponse{}, err
@@ -254,25 +274,20 @@ func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, option
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateCloudsClientListResponse) (PrivateCloudsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateCloudsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return PrivateCloudsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateCloudsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateCloudsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -317,6 +332,10 @@ func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (Priv
 //     method.
 func (client *PrivateCloudsClient) ListAdminCredentials(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientListAdminCredentialsOptions) (PrivateCloudsClientListAdminCredentialsResponse, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.ListAdminCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listAdminCredentialsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return PrivateCloudsClientListAdminCredentialsResponse{}, err
@@ -379,25 +398,20 @@ func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCl
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateCloudsClientListInSubscriptionResponse) (PrivateCloudsClientListInSubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listInSubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateCloudsClient.NewListInSubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listInSubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return PrivateCloudsClientListInSubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateCloudsClientListInSubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateCloudsClientListInSubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listInSubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -442,10 +456,14 @@ func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateCloudsClientRotateNsxtPasswordResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateCloudsClientRotateNsxtPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateCloudsClientRotateNsxtPasswordResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateCloudsClientRotateNsxtPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -455,6 +473,10 @@ func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, 
 // Generated from API version 2023-03-01
 func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.BeginRotateNsxtPassword"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rotateNsxtPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -510,10 +532,14 @@ func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateCloudsClientRotateVcenterPasswordResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateCloudsClientRotateVcenterPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateCloudsClientRotateVcenterPasswordResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateCloudsClientRotateVcenterPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -523,6 +549,10 @@ func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Contex
 // Generated from API version 2023-03-01
 func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.BeginRotateVcenterPassword"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.rotateVcenterPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -579,10 +609,14 @@ func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateCloudsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateCloudsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateCloudsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateCloudsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -592,6 +626,10 @@ func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGrou
 // Generated from API version 2023-03-01
 func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateCloudsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloudUpdate, options)
 	if err != nil {
 		return nil, err

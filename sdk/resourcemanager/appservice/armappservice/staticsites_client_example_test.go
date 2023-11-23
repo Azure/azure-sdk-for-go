@@ -194,7 +194,7 @@ func ExampleStaticSitesClient_GetStaticSite() {
 	// 		LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 	// 			{
 	// 				BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-26T20:57:24.805Z"); return t}()),
 	// 				ProvisioningState: to.Ptr("Succeeded"),
 	// 		}},
 	// 		PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
@@ -475,7 +475,7 @@ func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
 		// 				LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 		// 					{
 		// 						BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-26T20:57:24.805Z"); return t}()),
 		// 						ProvisioningState: to.Ptr("Succeeded"),
 		// 				}},
 		// 				PullRequestTitle: to.Ptr("Update README.md"),
@@ -515,7 +515,7 @@ func ExampleStaticSitesClient_GetStaticSiteBuild() {
 	// 		LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
 	// 			{
 	// 				BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-27T04:57:24.8058474"); return t}()),
+	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-26T20:57:24.805Z"); return t}()),
 	// 				ProvisioningState: to.Ptr("Succeeded"),
 	// 		}},
 	// 		PullRequestTitle: to.Ptr("Update README.md"),

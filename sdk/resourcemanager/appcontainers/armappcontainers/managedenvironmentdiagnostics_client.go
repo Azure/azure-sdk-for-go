@@ -32,7 +32,7 @@ type ManagedEnvironmentDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedEnvironmentDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentDiagnosticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedEnvironmentDiagnosticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewManagedEnvironmentDiagnosticsClient(subscriptionID string, credential az
 //     method.
 func (client *ManagedEnvironmentDiagnosticsClient) GetDetector(ctx context.Context, resourceGroupName string, environmentName string, detectorName string, options *ManagedEnvironmentDiagnosticsClientGetDetectorOptions) (ManagedEnvironmentDiagnosticsClientGetDetectorResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentDiagnosticsClient.GetDetector"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, environmentName, detectorName, options)
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
@@ -119,6 +123,10 @@ func (client *ManagedEnvironmentDiagnosticsClient) getDetectorHandleResponse(res
 //     method.
 func (client *ManagedEnvironmentDiagnosticsClient) ListDetectors(ctx context.Context, resourceGroupName string, environmentName string, options *ManagedEnvironmentDiagnosticsClientListDetectorsOptions) (ManagedEnvironmentDiagnosticsClientListDetectorsResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentDiagnosticsClient.ListDetectors"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listDetectorsCreateRequest(ctx, resourceGroupName, environmentName, options)
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err

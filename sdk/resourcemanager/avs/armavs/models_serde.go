@@ -2467,7 +2467,7 @@ func (s ScriptExecutionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "errors", s.Errors)
 	populate(objectMap, "failureReason", s.FailureReason)
-	populateTimeRFC3339(objectMap, "finishedAt", s.FinishedAt)
+	populateDateTimeRFC3339(objectMap, "finishedAt", s.FinishedAt)
 	populate(objectMap, "hiddenParameters", s.HiddenParameters)
 	populate(objectMap, "information", s.Information)
 	populate(objectMap, "namedOutputs", s.NamedOutputs)
@@ -2476,8 +2476,8 @@ func (s ScriptExecutionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "retention", s.Retention)
 	populate(objectMap, "scriptCmdletId", s.ScriptCmdletID)
-	populateTimeRFC3339(objectMap, "startedAt", s.StartedAt)
-	populateTimeRFC3339(objectMap, "submittedAt", s.SubmittedAt)
+	populateDateTimeRFC3339(objectMap, "startedAt", s.StartedAt)
+	populateDateTimeRFC3339(objectMap, "submittedAt", s.SubmittedAt)
 	populate(objectMap, "timeout", s.Timeout)
 	populate(objectMap, "warnings", s.Warnings)
 	return json.Marshal(objectMap)
@@ -2499,7 +2499,7 @@ func (s *ScriptExecutionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FailureReason", &s.FailureReason)
 			delete(rawMsg, key)
 		case "finishedAt":
-			err = unpopulateTimeRFC3339(val, "FinishedAt", &s.FinishedAt)
+			err = unpopulateDateTimeRFC3339(val, "FinishedAt", &s.FinishedAt)
 			delete(rawMsg, key)
 		case "hiddenParameters":
 			s.HiddenParameters, err = unmarshalScriptExecutionParameterClassificationArray(val)
@@ -2526,10 +2526,10 @@ func (s *ScriptExecutionProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScriptCmdletID", &s.ScriptCmdletID)
 			delete(rawMsg, key)
 		case "startedAt":
-			err = unpopulateTimeRFC3339(val, "StartedAt", &s.StartedAt)
+			err = unpopulateDateTimeRFC3339(val, "StartedAt", &s.StartedAt)
 			delete(rawMsg, key)
 		case "submittedAt":
-			err = unpopulateTimeRFC3339(val, "SubmittedAt", &s.SubmittedAt)
+			err = unpopulateDateTimeRFC3339(val, "SubmittedAt", &s.SubmittedAt)
 			delete(rawMsg, key)
 		case "timeout":
 			err = unpopulate(val, "Timeout", &s.Timeout)

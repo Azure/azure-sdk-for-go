@@ -2449,7 +2449,7 @@ func ExampleEnvironmentsClient_NewListWebAppsPager() {
 		// 						HyperV: to.Ptr(false),
 		// 						IsXenon: to.Ptr(false),
 		// 						KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 						LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-08T20:41:04.1233333"); return t}()),
+		// 						LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-08T12:41:04.123Z"); return t}()),
 		// 						OutboundIPAddresses: to.Ptr("20.112.141.120"),
 		// 						PossibleOutboundIPAddresses: to.Ptr("20.112.141.120"),
 		// 						RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
@@ -2540,7 +2540,7 @@ func ExampleEnvironmentsClient_NewListUsagesPager() {
 		// 			},
 		// 			CurrentValue: to.Ptr[int64](37888),
 		// 			Limit: to.Ptr[int64](1099511627776),
-		// 			NextResetTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 			NextResetTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 			Unit: to.Ptr("Bytes"),
 		// 	}},
 		// }

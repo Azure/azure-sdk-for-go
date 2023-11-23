@@ -9,11 +9,8 @@
 package fake
 
 import (
-	"io"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
-	"reflect"
-	"regexp"
-	"strings"
 	"sync"
 )
 
@@ -25,30 +22,13 @@ func (nonRetriableError) NonRetriable() {
 	// marker method
 }
 
-func getOptional[T any](v T) *T {
-	if reflect.ValueOf(v).IsZero() {
-		return nil
+func contains[T comparable](s []T, v T) bool {
+	for _, vv := range s {
+		if vv == v {
+			return true
+		}
 	}
-	return &v
-}
-
-func getHeaderValue(h http.Header, k string) string {
-	v := h[k]
-	if len(v) == 0 {
-		return ""
-	}
-	return v[0]
-}
-
-func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
-	if v == "" {
-		return nil, nil
-	}
-	t, err := parse(v)
-	if err != nil {
-		return nil, err
-	}
-	return &t, err
+	return false
 }
 
 func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
@@ -57,27 +37,6 @@ func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) 
 		return *new(T), err
 	}
 	return t, err
-}
-
-func readRequestBody(req *http.Request) ([]byte, error) {
-	if req.Body == nil {
-		return nil, nil
-	}
-	body, err := io.ReadAll(req.Body)
-	if err != nil {
-		return nil, err
-	}
-	req.Body.Close()
-	return body, nil
-}
-
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
 }
 
 func newTracker[T any]() *tracker[T] {
@@ -91,20 +50,10 @@ type tracker[T any] struct {
 	mu    sync.Mutex
 }
 
-func (p *tracker[T]) key(req *http.Request) string {
-	path := req.URL.Path
-	if match, _ := regexp.Match(`/page_\d+$`, []byte(path)); match {
-		path = path[:strings.LastIndex(path, "/")]
-	} else if strings.HasSuffix(path, "/get/fake/status") {
-		path = path[:len(path)-16]
-	}
-	return path
-}
-
 func (p *tracker[T]) get(req *http.Request) *T {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	if item, ok := p.items[p.key(req)]; ok {
+	if item, ok := p.items[server.SanitizePagerPollerPath(req.URL.Path)]; ok {
 		return item
 	}
 	return nil
@@ -113,11 +62,11 @@ func (p *tracker[T]) get(req *http.Request) *T {
 func (p *tracker[T]) add(req *http.Request, item *T) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.items[p.key(req)] = item
+	p.items[server.SanitizePagerPollerPath(req.URL.Path)] = item
 }
 
 func (p *tracker[T]) remove(req *http.Request) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	delete(p.items, p.key(req))
+	delete(p.items, server.SanitizePagerPollerPath(req.URL.Path))
 }

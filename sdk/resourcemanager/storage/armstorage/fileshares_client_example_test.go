@@ -54,8 +54,8 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 		// 			Etag: to.Ptr("\"0x8D589847D51C7DE\""),
 		// 			Properties: &armstorage.FileShareProperties{
 		// 				Deleted: to.Ptr(true),
-		// 				DeletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-14T08:20:47Z"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 				DeletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-14T08:20:47.000Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
 		// 				RemainingRetentionDays: to.Ptr[int32](30),
 		// 				ShareQuota: to.Ptr[int32](1024),
 		// 				Version: to.Ptr("1234567890"),
@@ -67,7 +67,7 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 			Properties: &armstorage.FileShareProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
 		// 				ShareQuota: to.Ptr[int32](1024),
 		// 			},
 		// 	}},
@@ -108,7 +108,7 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 			Properties: &armstorage.FileShareProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.0000000Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.000Z"); return t}()),
 		// 				ShareQuota: to.Ptr[int32](1024),
 		// 			},
 		// 		},
@@ -118,9 +118,9 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 			Properties: &armstorage.FileShareProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.0000000Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.000Z"); return t}()),
 		// 				ShareQuota: to.Ptr[int32](1024),
-		// 				SnapshotTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:48:07.0000000Z"); return t}()),
+		// 				SnapshotTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:48:07.000Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -160,7 +160,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644"),
 		// 			Etag: to.Ptr("\"0x8D589847D51C7DE\""),
 		// 			Properties: &armstorage.FileShareProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
 		// 				ShareQuota: to.Ptr[int32](1024),
 		// 			},
 		// 		},
@@ -170,7 +170,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 			Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 			Properties: &armstorage.FileShareProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47.000Z"); return t}()),
 		// 				ShareQuota: to.Ptr[int32](1024),
 		// 			},
 		// 	}},
@@ -283,9 +283,9 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 			SignedIdentifiers: []*armstorage.SignedIdentifier{
 				{
 					AccessPolicy: &armstorage.AccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.000Z"); return t }()),
 						Permission: to.Ptr("rwd"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.000Z"); return t }()),
 					},
 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 				}},
@@ -305,9 +305,9 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 	// 		SignedIdentifiers: []*armstorage.SignedIdentifier{
 	// 			{
 	// 				AccessPolicy: &armstorage.AccessPolicy{
-	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.0000000Z"); return t}()),
+	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.000Z"); return t}()),
 	// 					Permission: to.Ptr("rwd"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.0000000Z"); return t}()),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.000Z"); return t}()),
 	// 				},
 	// 				ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 	// 		}},
@@ -377,7 +377,7 @@ func ExampleFileSharesClient_Get_getShareStats() {
 	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
 	// 	Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
 	// 	FileShareProperties: &armstorage.FileShareProperties{
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14.000Z"); return t}()),
 	// 		ShareQuota: to.Ptr[int32](1024),
 	// 		ShareUsageBytes: to.Ptr[int64](652945),
 	// 	},
@@ -410,7 +410,7 @@ func ExampleFileSharesClient_Get_getShares() {
 	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
 	// 	Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
 	// 	FileShareProperties: &armstorage.FileShareProperties{
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14.000Z"); return t}()),
 	// 		ShareQuota: to.Ptr[int32](1024),
 	// 	},
 	// }

@@ -50,7 +50,7 @@ func ExampleMetricsServer() {
 	}
 
 	// now create the corresponding client, connecting the fake server via the client options
-	client, err := armmonitor.NewMetricsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armmonitor.NewMetricsClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewMetricsServerTransport(&fakeMetricsServer),
 		},

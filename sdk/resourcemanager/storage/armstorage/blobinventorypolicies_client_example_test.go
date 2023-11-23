@@ -41,7 +41,7 @@ func ExampleBlobInventoryPoliciesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 	// 	Properties: &armstorage.BlobInventoryPolicyProperties{
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.093Z"); return t}()),
 	// 		Policy: &armstorage.BlobInventoryPolicySchema{
 	// 			Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 	// 			Enabled: to.Ptr(true),
@@ -173,7 +173,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// 	Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 	// 	Properties: &armstorage.BlobInventoryPolicyProperties{
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.093Z"); return t}()),
 	// 		Policy: &armstorage.BlobInventoryPolicySchema{
 	// 			Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 	// 			Enabled: to.Ptr(true),
@@ -664,7 +664,7 @@ func ExampleBlobInventoryPoliciesClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 		// 			ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 		// 			Properties: &armstorage.BlobInventoryPolicyProperties{
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.093Z"); return t}()),
 		// 				Policy: &armstorage.BlobInventoryPolicySchema{
 		// 					Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 		// 					Enabled: to.Ptr(true),

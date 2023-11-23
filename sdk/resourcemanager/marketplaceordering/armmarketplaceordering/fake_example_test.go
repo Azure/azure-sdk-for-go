@@ -48,7 +48,7 @@ func ExampleMarketplaceAgreementsServer() {
 	}
 
 	// now create the corresponding client, connecting the fake server via the client options
-	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armmarketplaceordering.NewMarketplaceAgreementsClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewMarketplaceAgreementsServerTransport(&fakeServer),
 		},

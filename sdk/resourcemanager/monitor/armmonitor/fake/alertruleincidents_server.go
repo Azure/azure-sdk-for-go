@@ -80,25 +80,25 @@ func (a *AlertRuleIncidentsServerTransport) dispatchGet(req *http.Request) (*htt
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents/(?P<incidentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents/(?P<incidentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err
 	}
-	incidentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("incidentName")])
+	incidentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("incidentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameUnescaped, ruleNameUnescaped, incidentNameUnescaped, nil)
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, ruleNameParam, incidentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -119,21 +119,21 @@ func (a *AlertRuleIncidentsServerTransport) dispatchNewListByAlertRulePager(req 
 	}
 	newListByAlertRulePager := a.newListByAlertRulePager.get(req)
 	if newListByAlertRulePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/alertrules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/incidents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		ruleNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+		ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListByAlertRulePager(resourceGroupNameUnescaped, ruleNameUnescaped, nil)
+		resp := a.srv.NewListByAlertRulePager(resourceGroupNameParam, ruleNameParam, nil)
 		newListByAlertRulePager = &resp
 		a.newListByAlertRulePager.add(req, newListByAlertRulePager)
 	}

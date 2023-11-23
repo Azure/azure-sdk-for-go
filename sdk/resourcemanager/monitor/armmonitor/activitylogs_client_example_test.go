@@ -80,7 +80,7 @@ func ExampleActivityLogsClient_NewListPager_getActivityLogsWithFilter() {
 		// 				LocalizedValue: to.Ptr("End request"),
 		// 				Value: to.Ptr("EndRequest"),
 		// 			},
-		// 			EventTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:26.9792776Z"); return t}()),
+		// 			EventTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:26.979Z"); return t}()),
 		// 			HTTPRequest: &armmonitor.HTTPRequestInfo{
 		// 				Method: to.Ptr("PUT"),
 		// 				ClientIPAddress: to.Ptr("192.168.35.115"),
@@ -108,7 +108,7 @@ func ExampleActivityLogsClient_NewListPager_getActivityLogsWithFilter() {
 		// 				LocalizedValue: to.Ptr("Created (HTTP Status Code: 201)"),
 		// 				Value: to.Ptr("Created"),
 		// 			},
-		// 			SubmissionTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:39.9936304Z"); return t}()),
+		// 			SubmissionTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:39.993Z"); return t}()),
 		// 			SubscriptionID: to.Ptr("089bd33f-d4ec-47fe-8ba5-0753aa5c5b33"),
 		// 	}},
 		// }
@@ -145,7 +145,7 @@ func ExampleActivityLogsClient_NewListPager_getActivityLogsWithFilterAndSelect()
 		// 				LocalizedValue: to.Ptr("End request"),
 		// 				Value: to.Ptr("EndRequest"),
 		// 			},
-		// 			EventTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:26.9792776Z"); return t}()),
+		// 			EventTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:26.979Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/089bd33f-d4ec-47fe-8ba5-0753aa5c5b33/resourceGroups/MSSupportGroup/providers/microsoft.support/supporttickets/115012112305841/events/44ade6b4-3813-45e6-ae27-7420a95fa2f8/ticks/635574752669792776"),
 		// 			Level: to.Ptr(armmonitor.EventLevelInformational),
 		// 			OperationName: &armmonitor.LocalizableString{
@@ -161,7 +161,7 @@ func ExampleActivityLogsClient_NewListPager_getActivityLogsWithFilterAndSelect()
 		// 				LocalizedValue: to.Ptr("Succeeded"),
 		// 				Value: to.Ptr("Succeeded"),
 		// 			},
-		// 			SubmissionTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:39.9936304Z"); return t}()),
+		// 			SubmissionTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-01-21T22:14:39.993Z"); return t}()),
 		// 	}},
 		// }
 	}

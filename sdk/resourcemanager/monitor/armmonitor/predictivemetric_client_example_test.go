@@ -38,19 +38,19 @@ func ExamplePredictiveMetricClient_Get() {
 	// res.PredictiveResponse = armmonitor.PredictiveResponse{
 	// 	Data: []*armmonitor.PredictiveValue{
 	// 		{
-	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:00:00Z"); return t}()),
+	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:00:00.000Z"); return t}()),
 	// 			Value: to.Ptr[float64](123),
 	// 		},
 	// 		{
-	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00Z"); return t}()),
+	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00.000Z"); return t}()),
 	// 			Value: to.Ptr[float64](120),
 	// 		},
 	// 		{
-	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00Z"); return t}()),
+	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:02:00.000Z"); return t}()),
 	// 			Value: to.Ptr[float64](88),
 	// 		},
 	// 		{
-	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:03:00Z"); return t}()),
+	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-14T22:03:00.000Z"); return t}()),
 	// 			Value: to.Ptr[float64](100),
 	// 	}},
 	// 	Interval: to.Ptr("PT1H"),

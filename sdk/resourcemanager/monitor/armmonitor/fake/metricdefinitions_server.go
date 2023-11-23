@@ -83,14 +83,14 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 		if err != nil {
 			return nil, err
 		}
@@ -105,7 +105,7 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListPager(req *http.Reques
 				Metricnamespace: metricnamespaceParam,
 			}
 		}
-		resp := m.srv.NewListPager(resourceURIUnescaped, options)
+		resp := m.srv.NewListPager(resourceURIParam, options)
 		newListPager = &resp
 		m.newListPager.add(req, newListPager)
 	}
@@ -129,14 +129,14 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 	}
 	newListAtSubscriptionScopePager := m.newListAtSubscriptionScopePager.get(req)
 	if newListAtSubscriptionScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metricDefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricDefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		regionUnescaped, err := url.QueryUnescape(qp.Get("region"))
+		regionParam, err := url.QueryUnescape(qp.Get("region"))
 		if err != nil {
 			return nil, err
 		}
@@ -151,7 +151,7 @@ func (m *MetricDefinitionsServerTransport) dispatchNewListAtSubscriptionScopePag
 				Metricnamespace: metricnamespaceParam,
 			}
 		}
-		resp := m.srv.NewListAtSubscriptionScopePager(regionUnescaped, options)
+		resp := m.srv.NewListAtSubscriptionScopePager(regionParam, options)
 		newListAtSubscriptionScopePager = &resp
 		m.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
 	}

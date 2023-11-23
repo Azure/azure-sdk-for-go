@@ -7682,7 +7682,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	// 		PlatformFaultDomainCount: to.Ptr[int32](1),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		SinglePlacementGroup: to.Ptr(false),
-	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.313Z"); return t}()),
 	// 		UpgradePolicy: &armcompute.UpgradePolicy{
 	// 			AutomaticOSUpgradePolicy: &armcompute.AutomaticOSUpgradePolicy{
 	// 				EnableAutomaticOSUpgrade: to.Ptr(false),

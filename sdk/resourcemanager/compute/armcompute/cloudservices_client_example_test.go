@@ -136,8 +136,8 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithMul
 	// 		UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 	},
 	// 	SystemData: &armcompute.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 	},
 	// }
 }
@@ -262,8 +262,8 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithMul
 	// 		UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 	},
 	// 	SystemData: &armcompute.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 	},
 	// 	Zones: []*string{
 	// 		to.Ptr("1")},
@@ -372,8 +372,8 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	// 		UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 	},
 	// 	SystemData: &armcompute.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 	},
 	// }
 }
@@ -500,8 +500,8 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	// 		UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 	},
 	// 	SystemData: &armcompute.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 	},
 	// }
 }
@@ -638,8 +638,8 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate_createNewCloudServiceWithSin
 	// 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 		},
 	// 		SystemData: &armcompute.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		},
 	// 	}
 }
@@ -834,8 +834,8 @@ func ExampleCloudServicesClient_Get() {
 	// 			UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 	// 		},
 	// 		SystemData: &armcompute.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		},
 	// 	}
 }
@@ -882,13 +882,13 @@ func ExampleCloudServicesClient_GetInstanceView() {
 	// 				Code: to.Ptr("ProvisioningState/succeeded"),
 	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-12T16:50:07.0953535+05:30"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-12T11:20:07.095Z"); return t}()),
 	// 			},
 	// 			{
 	// 				Code: to.Ptr("PowerState/started"),
 	// 				DisplayStatus: to.Ptr("Started"),
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-12T16:50:07.0953535+05:30"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-12T11:20:07.095Z"); return t}()),
 	// 			},
 	// 			{
 	// 				Code: to.Ptr("CurrentUpgradeDomain/-1"),

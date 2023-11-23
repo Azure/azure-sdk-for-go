@@ -33,7 +33,6 @@
 - New struct `SMTP`
 - New struct `SaasSubscriptionDetails`
 - New struct `SubscriptionTerm`
-- New struct `TrackedResource`
 - New field `AzureAsyncOperation` in struct `GrafanaClientUpdateResponse`
 - New field `EnterpriseConfigurations`, `GrafanaConfigurations`, `GrafanaMajorVersion`, `GrafanaPlugins` in struct `ManagedGrafanaProperties`
 - New field `EnterpriseConfigurations`, `GrafanaConfigurations`, `GrafanaMajorVersion`, `GrafanaPlugins` in struct `ManagedGrafanaPropertiesUpdateParameters`

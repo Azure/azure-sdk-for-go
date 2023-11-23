@@ -8,6 +8,40 @@
 
 package armeventgrid
 
+// CaCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CaCertificatesClient.BeginCreateOrUpdate
+// method.
+type CaCertificatesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CaCertificatesClientBeginDeleteOptions contains the optional parameters for the CaCertificatesClient.BeginDelete method.
+type CaCertificatesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CaCertificatesClientGetOptions contains the optional parameters for the CaCertificatesClient.Get method.
+type CaCertificatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CaCertificatesClientListByNamespaceOptions contains the optional parameters for the CaCertificatesClient.NewListByNamespacePager
+// method.
+type CaCertificatesClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
 // ChannelsClientBeginDeleteOptions contains the optional parameters for the ChannelsClient.BeginDelete method.
 type ChannelsClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
@@ -48,6 +82,72 @@ type ChannelsClientListByPartnerNamespaceOptions struct {
 // ChannelsClientUpdateOptions contains the optional parameters for the ChannelsClient.Update method.
 type ChannelsClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ClientGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClientGroupsClient.BeginCreateOrUpdate
+// method.
+type ClientGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientGroupsClientBeginDeleteOptions contains the optional parameters for the ClientGroupsClient.BeginDelete method.
+type ClientGroupsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientGroupsClientGetOptions contains the optional parameters for the ClientGroupsClient.Get method.
+type ClientGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientGroupsClientListByNamespaceOptions contains the optional parameters for the ClientGroupsClient.NewListByNamespacePager
+// method.
+type ClientGroupsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// ClientsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClientsClient.BeginCreateOrUpdate method.
+type ClientsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientsClientBeginDeleteOptions contains the optional parameters for the ClientsClient.BeginDelete method.
+type ClientsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientsClientGetOptions contains the optional parameters for the ClientsClient.Get method.
+type ClientsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientsClientListByNamespaceOptions contains the optional parameters for the ClientsClient.NewListByNamespacePager method.
+type ClientsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
 }
 
 // DomainEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainEventSubscriptionsClient.BeginCreateOrUpdate
@@ -461,6 +561,196 @@ type ExtensionTopicsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientBeginDeleteOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginDelete
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.BeginUpdate
+// method.
+type NamespaceTopicEventSubscriptionsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes
+// method.
+type NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicEventSubscriptionsClientGetOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.Get
+// method.
+type NamespaceTopicEventSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions contains the optional parameters for the NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager
+// method.
+type NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespaceTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespaceTopicsClient.BeginCreateOrUpdate
+// method.
+type NamespaceTopicsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginDeleteOptions contains the optional parameters for the NamespaceTopicsClient.BeginDelete method.
+type NamespaceTopicsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginRegenerateKeyOptions contains the optional parameters for the NamespaceTopicsClient.BeginRegenerateKey
+// method.
+type NamespaceTopicsClientBeginRegenerateKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientBeginUpdateOptions contains the optional parameters for the NamespaceTopicsClient.BeginUpdate method.
+type NamespaceTopicsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespaceTopicsClientGetOptions contains the optional parameters for the NamespaceTopicsClient.Get method.
+type NamespaceTopicsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespaceTopicsClientListByNamespaceOptions contains the optional parameters for the NamespaceTopicsClient.NewListByNamespacePager
+// method.
+type NamespaceTopicsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespaceTopicsClientListSharedAccessKeysOptions contains the optional parameters for the NamespaceTopicsClient.ListSharedAccessKeys
+// method.
+type NamespaceTopicsClientListSharedAccessKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
+// method.
+type NamespacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
+type NamespacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginRegenerateKeyOptions contains the optional parameters for the NamespacesClient.BeginRegenerateKey
+// method.
+type NamespacesClientBeginRegenerateKeyOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientBeginUpdateOptions contains the optional parameters for the NamespacesClient.BeginUpdate method.
+type NamespacesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
+type NamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
+// method.
+type NamespacesClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespacesClientListBySubscriptionOptions contains the optional parameters for the NamespacesClient.NewListBySubscriptionPager
+// method.
+type NamespacesClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// NamespacesClientListSharedAccessKeysOptions contains the optional parameters for the NamespacesClient.ListSharedAccessKeys
+// method.
+type NamespacesClientListSharedAccessKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginReconcile
+// method.
+type NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.Get
+// method.
+type NetworkSecurityPerimeterConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListPager
+// method.
+type NetworkSecurityPerimeterConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -524,6 +814,69 @@ type PartnerConfigurationsClientListBySubscriptionOptions struct {
 // method.
 type PartnerConfigurationsClientUnauthorizePartnerOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PartnerDestinationsClientActivateOptions contains the optional parameters for the PartnerDestinationsClient.Activate method.
+type PartnerDestinationsClientActivateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerDestinationsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginCreateOrUpdate
+// method.
+type PartnerDestinationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientBeginDeleteOptions contains the optional parameters for the PartnerDestinationsClient.BeginDelete
+// method.
+type PartnerDestinationsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientBeginUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginUpdate
+// method.
+type PartnerDestinationsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PartnerDestinationsClientGetOptions contains the optional parameters for the PartnerDestinationsClient.Get method.
+type PartnerDestinationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PartnerDestinationsClientListByResourceGroupOptions contains the optional parameters for the PartnerDestinationsClient.NewListByResourceGroupPager
+// method.
+type PartnerDestinationsClientListByResourceGroupOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// PartnerDestinationsClientListBySubscriptionOptions contains the optional parameters for the PartnerDestinationsClient.NewListBySubscriptionPager
+// method.
+type PartnerDestinationsClientListBySubscriptionOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
 }
 
 // PartnerNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerNamespacesClient.BeginCreateOrUpdate
@@ -772,6 +1125,41 @@ type PartnerTopicsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PermissionBindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the PermissionBindingsClient.BeginCreateOrUpdate
+// method.
+type PermissionBindingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PermissionBindingsClientBeginDeleteOptions contains the optional parameters for the PermissionBindingsClient.BeginDelete
+// method.
+type PermissionBindingsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PermissionBindingsClientGetOptions contains the optional parameters for the PermissionBindingsClient.Get method.
+type PermissionBindingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionBindingsClientListByNamespaceOptions contains the optional parameters for the PermissionBindingsClient.NewListByNamespacePager
+// method.
+type PermissionBindingsClientListByNamespaceOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
@@ -981,6 +1369,40 @@ type TopicEventSubscriptionsClientGetOptions struct {
 // TopicEventSubscriptionsClientListOptions contains the optional parameters for the TopicEventSubscriptionsClient.NewListPager
 // method.
 type TopicEventSubscriptionsClientListOptions struct {
+	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
+	// with limited number of OData operations. These operations are: the 'contains'
+	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+	// operations are supported. The following is a valid filter example:
+	// $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location
+	// eq 'westus'.
+	Filter *string
+
+	// The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified,
+	// the default number of results to be returned is 20 items per page.
+	Top *int32
+}
+
+// TopicSpacesClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicSpacesClient.BeginCreateOrUpdate
+// method.
+type TopicSpacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TopicSpacesClientBeginDeleteOptions contains the optional parameters for the TopicSpacesClient.BeginDelete method.
+type TopicSpacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TopicSpacesClientGetOptions contains the optional parameters for the TopicSpacesClient.Get method.
+type TopicSpacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TopicSpacesClientListByNamespaceOptions contains the optional parameters for the TopicSpacesClient.NewListByNamespacePager
+// method.
+type TopicSpacesClientListByNamespaceOptions struct {
 	// The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and
 	// with limited number of OData operations. These operations are: the 'contains'
 	// function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic

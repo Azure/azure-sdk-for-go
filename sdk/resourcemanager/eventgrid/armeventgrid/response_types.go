@@ -8,6 +8,29 @@
 
 package armeventgrid
 
+// CaCertificatesClientCreateOrUpdateResponse contains the response from method CaCertificatesClient.BeginCreateOrUpdate.
+type CaCertificatesClientCreateOrUpdateResponse struct {
+	// The CA Certificate resource.
+	CaCertificate
+}
+
+// CaCertificatesClientDeleteResponse contains the response from method CaCertificatesClient.BeginDelete.
+type CaCertificatesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CaCertificatesClientGetResponse contains the response from method CaCertificatesClient.Get.
+type CaCertificatesClientGetResponse struct {
+	// The CA Certificate resource.
+	CaCertificate
+}
+
+// CaCertificatesClientListByNamespaceResponse contains the response from method CaCertificatesClient.NewListByNamespacePager.
+type CaCertificatesClientListByNamespaceResponse struct {
+	// Result of the List CA Certificate operation.
+	CaCertificatesListResult
+}
+
 // ChannelsClientCreateOrUpdateResponse contains the response from method ChannelsClient.CreateOrUpdate.
 type ChannelsClientCreateOrUpdateResponse struct {
 	// Channel info.
@@ -42,9 +65,55 @@ type ChannelsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
+// ClientGroupsClientCreateOrUpdateResponse contains the response from method ClientGroupsClient.BeginCreateOrUpdate.
+type ClientGroupsClientCreateOrUpdateResponse struct {
+	// The Client group resource.
+	ClientGroup
+}
+
+// ClientGroupsClientDeleteResponse contains the response from method ClientGroupsClient.BeginDelete.
+type ClientGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientGroupsClientGetResponse contains the response from method ClientGroupsClient.Get.
+type ClientGroupsClientGetResponse struct {
+	// The Client group resource.
+	ClientGroup
+}
+
+// ClientGroupsClientListByNamespaceResponse contains the response from method ClientGroupsClient.NewListByNamespacePager.
+type ClientGroupsClientListByNamespaceResponse struct {
+	// Result of the List Client Group operation.
+	ClientGroupsListResult
+}
+
+// ClientsClientCreateOrUpdateResponse contains the response from method ClientsClient.BeginCreateOrUpdate.
+type ClientsClientCreateOrUpdateResponse struct {
+	// The Client resource.
+	Client
+}
+
+// ClientsClientDeleteResponse contains the response from method ClientsClient.BeginDelete.
+type ClientsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientsClientGetResponse contains the response from method ClientsClient.Get.
+type ClientsClientGetResponse struct {
+	// The Client resource.
+	Client
+}
+
+// ClientsClientListByNamespaceResponse contains the response from method ClientsClient.NewListByNamespacePager.
+type ClientsClientListByNamespaceResponse struct {
+	// Result of the List Client operation.
+	ClientsListResult
+}
+
 // DomainEventSubscriptionsClientCreateOrUpdateResponse contains the response from method DomainEventSubscriptionsClient.BeginCreateOrUpdate.
 type DomainEventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -67,7 +136,7 @@ type DomainEventSubscriptionsClientGetFullURLResponse struct {
 
 // DomainEventSubscriptionsClientGetResponse contains the response from method DomainEventSubscriptionsClient.Get.
 type DomainEventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -79,13 +148,13 @@ type DomainEventSubscriptionsClientListResponse struct {
 
 // DomainEventSubscriptionsClientUpdateResponse contains the response from method DomainEventSubscriptionsClient.BeginUpdate.
 type DomainEventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
 // DomainTopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method DomainTopicEventSubscriptionsClient.BeginCreateOrUpdate.
 type DomainTopicEventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -108,7 +177,7 @@ type DomainTopicEventSubscriptionsClientGetFullURLResponse struct {
 
 // DomainTopicEventSubscriptionsClientGetResponse contains the response from method DomainTopicEventSubscriptionsClient.Get.
 type DomainTopicEventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -120,7 +189,7 @@ type DomainTopicEventSubscriptionsClientListResponse struct {
 
 // DomainTopicEventSubscriptionsClientUpdateResponse contains the response from method DomainTopicEventSubscriptionsClient.BeginUpdate.
 type DomainTopicEventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -196,7 +265,7 @@ type DomainsClientUpdateResponse struct {
 
 // EventSubscriptionsClientCreateOrUpdateResponse contains the response from method EventSubscriptionsClient.BeginCreateOrUpdate.
 type EventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -219,7 +288,7 @@ type EventSubscriptionsClientGetFullURLResponse struct {
 
 // EventSubscriptionsClientGetResponse contains the response from method EventSubscriptionsClient.Get.
 type EventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -285,7 +354,7 @@ type EventSubscriptionsClientListRegionalBySubscriptionResponse struct {
 
 // EventSubscriptionsClientUpdateResponse contains the response from method EventSubscriptionsClient.BeginUpdate.
 type EventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -293,6 +362,147 @@ type EventSubscriptionsClientUpdateResponse struct {
 type ExtensionTopicsClientGetResponse struct {
 	// Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 	ExtensionTopic
+}
+
+// NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate.
+type NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse struct {
+	// Event Subscription.
+	Subscription
+}
+
+// NamespaceTopicEventSubscriptionsClientDeleteResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginDelete.
+type NamespaceTopicEventSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse contains the response from method NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes.
+type NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse struct {
+	// Result of the Get delivery attributes operation.
+	DeliveryAttributeListResult
+}
+
+// NamespaceTopicEventSubscriptionsClientGetResponse contains the response from method NamespaceTopicEventSubscriptionsClient.Get.
+type NamespaceTopicEventSubscriptionsClientGetResponse struct {
+	// Event Subscription.
+	Subscription
+}
+
+// NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse contains the response from method NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager.
+type NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse struct {
+	// Result of the List event subscriptions operation.
+	SubscriptionsListResult
+}
+
+// NamespaceTopicEventSubscriptionsClientUpdateResponse contains the response from method NamespaceTopicEventSubscriptionsClient.BeginUpdate.
+type NamespaceTopicEventSubscriptionsClientUpdateResponse struct {
+	// Event Subscription.
+	Subscription
+}
+
+// NamespaceTopicsClientCreateOrUpdateResponse contains the response from method NamespaceTopicsClient.BeginCreateOrUpdate.
+type NamespaceTopicsClientCreateOrUpdateResponse struct {
+	// Namespace topic details.
+	NamespaceTopic
+}
+
+// NamespaceTopicsClientDeleteResponse contains the response from method NamespaceTopicsClient.BeginDelete.
+type NamespaceTopicsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespaceTopicsClientGetResponse contains the response from method NamespaceTopicsClient.Get.
+type NamespaceTopicsClientGetResponse struct {
+	// Namespace topic details.
+	NamespaceTopic
+}
+
+// NamespaceTopicsClientListByNamespaceResponse contains the response from method NamespaceTopicsClient.NewListByNamespacePager.
+type NamespaceTopicsClientListByNamespaceResponse struct {
+	// Result of the List namespace topics operation.
+	NamespaceTopicsListResult
+}
+
+// NamespaceTopicsClientListSharedAccessKeysResponse contains the response from method NamespaceTopicsClient.ListSharedAccessKeys.
+type NamespaceTopicsClientListSharedAccessKeysResponse struct {
+	// Shared access keys of the Topic
+	TopicSharedAccessKeys
+}
+
+// NamespaceTopicsClientRegenerateKeyResponse contains the response from method NamespaceTopicsClient.BeginRegenerateKey.
+type NamespaceTopicsClientRegenerateKeyResponse struct {
+	// Shared access keys of the Topic
+	TopicSharedAccessKeys
+}
+
+// NamespaceTopicsClientUpdateResponse contains the response from method NamespaceTopicsClient.BeginUpdate.
+type NamespaceTopicsClientUpdateResponse struct {
+	// Namespace topic details.
+	NamespaceTopic
+}
+
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
+type NamespacesClientCreateOrUpdateResponse struct {
+	// Namespace resource.
+	Namespace
+}
+
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
+type NamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
+type NamespacesClientGetResponse struct {
+	// Namespace resource.
+	Namespace
+}
+
+// NamespacesClientListByResourceGroupResponse contains the response from method NamespacesClient.NewListByResourceGroupPager.
+type NamespacesClientListByResourceGroupResponse struct {
+	// Result of the List Namespaces operation.
+	NamespacesListResult
+}
+
+// NamespacesClientListBySubscriptionResponse contains the response from method NamespacesClient.NewListBySubscriptionPager.
+type NamespacesClientListBySubscriptionResponse struct {
+	// Result of the List Namespaces operation.
+	NamespacesListResult
+}
+
+// NamespacesClientListSharedAccessKeysResponse contains the response from method NamespacesClient.ListSharedAccessKeys.
+type NamespacesClientListSharedAccessKeysResponse struct {
+	// Shared access keys of the Namespace.
+	NamespaceSharedAccessKeys
+}
+
+// NamespacesClientRegenerateKeyResponse contains the response from method NamespacesClient.BeginRegenerateKey.
+type NamespacesClientRegenerateKeyResponse struct {
+	// Shared access keys of the Namespace.
+	NamespaceSharedAccessKeys
+}
+
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.BeginUpdate.
+type NamespacesClientUpdateResponse struct {
+	// Namespace resource.
+	Namespace
+}
+
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network security perimeter configuration.
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListPager.
+type NetworkSecurityPerimeterConfigurationsClientListResponse struct {
+	// Network security perimeter configuration List.
+	NetworkSecurityPerimeterConfigurationList
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// Network security perimeter configuration.
+	NetworkSecurityPerimeterConfiguration
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -346,6 +556,47 @@ type PartnerConfigurationsClientUnauthorizePartnerResponse struct {
 type PartnerConfigurationsClientUpdateResponse struct {
 	// Partner configuration information
 	PartnerConfiguration
+}
+
+// PartnerDestinationsClientActivateResponse contains the response from method PartnerDestinationsClient.Activate.
+type PartnerDestinationsClientActivateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientCreateOrUpdateResponse contains the response from method PartnerDestinationsClient.BeginCreateOrUpdate.
+type PartnerDestinationsClientCreateOrUpdateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientDeleteResponse contains the response from method PartnerDestinationsClient.BeginDelete.
+type PartnerDestinationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PartnerDestinationsClientGetResponse contains the response from method PartnerDestinationsClient.Get.
+type PartnerDestinationsClientGetResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
+}
+
+// PartnerDestinationsClientListByResourceGroupResponse contains the response from method PartnerDestinationsClient.NewListByResourceGroupPager.
+type PartnerDestinationsClientListByResourceGroupResponse struct {
+	// Result of the List Partner Destinations operation.
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientListBySubscriptionResponse contains the response from method PartnerDestinationsClient.NewListBySubscriptionPager.
+type PartnerDestinationsClientListBySubscriptionResponse struct {
+	// Result of the List Partner Destinations operation.
+	PartnerDestinationsListResult
+}
+
+// PartnerDestinationsClientUpdateResponse contains the response from method PartnerDestinationsClient.BeginUpdate.
+type PartnerDestinationsClientUpdateResponse struct {
+	// Event Grid Partner Destination.
+	PartnerDestination
 }
 
 // PartnerNamespacesClientCreateOrUpdateResponse contains the response from method PartnerNamespacesClient.BeginCreateOrUpdate.
@@ -432,7 +683,7 @@ type PartnerRegistrationsClientUpdateResponse struct {
 
 // PartnerTopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method PartnerTopicEventSubscriptionsClient.BeginCreateOrUpdate.
 type PartnerTopicEventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -455,7 +706,7 @@ type PartnerTopicEventSubscriptionsClientGetFullURLResponse struct {
 
 // PartnerTopicEventSubscriptionsClientGetResponse contains the response from method PartnerTopicEventSubscriptionsClient.Get.
 type PartnerTopicEventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -467,7 +718,7 @@ type PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse struct {
 
 // PartnerTopicEventSubscriptionsClientUpdateResponse contains the response from method PartnerTopicEventSubscriptionsClient.BeginUpdate.
 type PartnerTopicEventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -518,6 +769,29 @@ type PartnerTopicsClientUpdateResponse struct {
 	PartnerTopic
 }
 
+// PermissionBindingsClientCreateOrUpdateResponse contains the response from method PermissionBindingsClient.BeginCreateOrUpdate.
+type PermissionBindingsClientCreateOrUpdateResponse struct {
+	// The Permission binding resource.
+	PermissionBinding
+}
+
+// PermissionBindingsClientDeleteResponse contains the response from method PermissionBindingsClient.BeginDelete.
+type PermissionBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PermissionBindingsClientGetResponse contains the response from method PermissionBindingsClient.Get.
+type PermissionBindingsClientGetResponse struct {
+	// The Permission binding resource.
+	PermissionBinding
+}
+
+// PermissionBindingsClientListByNamespaceResponse contains the response from method PermissionBindingsClient.NewListByNamespacePager.
+type PermissionBindingsClientListByNamespaceResponse struct {
+	// Result of the List Permission Binding operation.
+	PermissionBindingsListResult
+}
+
 // PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -553,7 +827,7 @@ type PrivateLinkResourcesClientListByResourceResponse struct {
 
 // SystemTopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate.
 type SystemTopicEventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -576,7 +850,7 @@ type SystemTopicEventSubscriptionsClientGetFullURLResponse struct {
 
 // SystemTopicEventSubscriptionsClientGetResponse contains the response from method SystemTopicEventSubscriptionsClient.Get.
 type SystemTopicEventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -588,7 +862,7 @@ type SystemTopicEventSubscriptionsClientListBySystemTopicResponse struct {
 
 // SystemTopicEventSubscriptionsClientUpdateResponse contains the response from method SystemTopicEventSubscriptionsClient.BeginUpdate.
 type SystemTopicEventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -629,7 +903,7 @@ type SystemTopicsClientUpdateResponse struct {
 
 // TopicEventSubscriptionsClientCreateOrUpdateResponse contains the response from method TopicEventSubscriptionsClient.BeginCreateOrUpdate.
 type TopicEventSubscriptionsClientCreateOrUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -652,7 +926,7 @@ type TopicEventSubscriptionsClientGetFullURLResponse struct {
 
 // TopicEventSubscriptionsClientGetResponse contains the response from method TopicEventSubscriptionsClient.Get.
 type TopicEventSubscriptionsClientGetResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
 }
 
@@ -664,8 +938,31 @@ type TopicEventSubscriptionsClientListResponse struct {
 
 // TopicEventSubscriptionsClientUpdateResponse contains the response from method TopicEventSubscriptionsClient.BeginUpdate.
 type TopicEventSubscriptionsClientUpdateResponse struct {
-	// Event Subscription
+	// Event Subscription.
 	EventSubscription
+}
+
+// TopicSpacesClientCreateOrUpdateResponse contains the response from method TopicSpacesClient.BeginCreateOrUpdate.
+type TopicSpacesClientCreateOrUpdateResponse struct {
+	// The Topic space resource.
+	TopicSpace
+}
+
+// TopicSpacesClientDeleteResponse contains the response from method TopicSpacesClient.BeginDelete.
+type TopicSpacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TopicSpacesClientGetResponse contains the response from method TopicSpacesClient.Get.
+type TopicSpacesClientGetResponse struct {
+	// The Topic space resource.
+	TopicSpace
+}
+
+// TopicSpacesClientListByNamespaceResponse contains the response from method TopicSpacesClient.NewListByNamespacePager.
+type TopicSpacesClientListByNamespaceResponse struct {
+	// Result of the List Topic Space operation.
+	TopicSpacesListResult
 }
 
 // TopicTypesClientGetResponse contains the response from method TopicTypesClient.Get.

@@ -48,11 +48,12 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // Get - Get properties of a private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
-//   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
-//   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
-//   - privateLinkResourceName - The name of private link resource.
+//   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\' or \'namespaces\'.
+//   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name or
+//     namespace name).
+//   - privateLinkResourceName - The name of private link resource will be either topic, domain, partnerNamespace or namespace.
 //   - options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
 //     method.
 func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateLinkResourceName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
@@ -105,7 +106,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,12 +121,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListByResourcePager - List all the private link resources under a topic, domain, or partner namespace.
+// NewListByResourcePager - List all the private link resources under a topic, domain, or partner namespace or namespace.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
-//   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
-//   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
+//   - parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\' or \'namespaces\'.
+//   - parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace or namespace
+//     name).
 //   - options - PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByResourcePager
 //     method.
 func (client *PrivateLinkResourcesClient) NewListByResourcePager(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
@@ -175,7 +177,7 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

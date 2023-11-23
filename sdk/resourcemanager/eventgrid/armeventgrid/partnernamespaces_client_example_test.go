@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_Get.json
 func ExamplePartnerNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExamplePartnerNamespacesClient_Get() {
 	// res.PartnerNamespace = armeventgrid.PartnerNamespace{
 	// 	Name: to.Ptr("examplePartnerNamespaceName1"),
 	// 	Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces"),
-	// 	ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1"),
+	// 	ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/examplePartnerNamespaceName1"),
 	// 	Location: to.Ptr("Central US EUAP"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -48,13 +48,13 @@ func ExamplePartnerNamespacesClient_Get() {
 	// 	},
 	// 	Properties: &armeventgrid.PartnerNamespaceProperties{
 	// 		Endpoint: to.Ptr("https://examplePartnerNamespaceName1.centraluseuap-1.eventgrid.azure.net/api/events"),
-	// 		PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
+	// 		PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
 	// 		ProvisioningState: to.Ptr(armeventgrid.PartnerNamespaceProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_CreateOrUpdate.json
 func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 			"tag2": to.Ptr("value2"),
 		},
 		Properties: &armeventgrid.PartnerNamespaceProperties{
-			PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
+			PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
 		},
 	}, nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_Delete.json
 func ExamplePartnerNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExamplePartnerNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_Update.json
 func ExamplePartnerNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExamplePartnerNamespacesClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_ListBySubscription.json
 func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 		// 		{
 		// 			Name: to.Ptr("partnerNamespace123"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/amh/providers/Microsoft.EventGrid/partnerNamespaces/partnerNamespace123"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/amh/providers/Microsoft.EventGrid/partnerNamespaces/partnerNamespace123"),
 		// 			Location: to.Ptr("Central US EUAP"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -168,7 +168,7 @@ func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armeventgrid.PartnerNamespaceProperties{
 		// 				Endpoint: to.Ptr("https://partnernamespace123.centraluseuap-1.eventgrid.azure.net/api/events"),
-		// 				PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/amh/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
+		// 				PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/amh/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
 		// 				ProvisioningState: to.Ptr(armeventgrid.PartnerNamespaceProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -176,7 +176,7 @@ func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_ListByResourceGroup.json
 func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("partnerNamespace123"),
 		// 			Type: to.Ptr("Microsoft.EventGrid/partnerNamespaces"),
-		// 			ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/partnerNamespace123"),
+		// 			ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerNamespaces/partnerNamespace123"),
 		// 			Location: to.Ptr("Central US EUAP"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -214,7 +214,7 @@ func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armeventgrid.PartnerNamespaceProperties{
 		// 				Endpoint: to.Ptr("https://partnernamespace123.centraluseuap-1.eventgrid.azure.net/api/events"),
-		// 				PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
+		// 				PartnerRegistrationFullyQualifiedID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/partnerRegistrations/ContosoCorpAccount1"),
 		// 				ProvisioningState: to.Ptr(armeventgrid.PartnerNamespaceProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -222,7 +222,7 @@ func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_ListSharedAccessKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
 func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f88928d723133dc392e3297e6d61b7f6d10501fd/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerNamespaces_RegenerateKey.json
 func ExamplePartnerNamespacesClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

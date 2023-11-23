@@ -167,24 +167,6 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// OsSKU - The particular KubernetesVersion's Image's OS SKU (CBLMariner, Windows, Windows2022)
-type OsSKU string
-
-const (
-	OsSKUCBLMariner  OsSKU = "CBLMariner"
-	OsSKUWindows2019 OsSKU = "Windows2019"
-	OsSKUWindows2022 OsSKU = "Windows2022"
-)
-
-// PossibleOsSKUValues returns the possible values for the OsSKU const type.
-func PossibleOsSKUValues() []OsSKU {
-	return []OsSKU{
-		OsSKUCBLMariner,
-		OsSKUWindows2019,
-		OsSKUWindows2022,
-	}
-}
-
 // OsType - The particular KubernetesVersion's Image's OS Type (Linux, Windows)
 type OsType string
 

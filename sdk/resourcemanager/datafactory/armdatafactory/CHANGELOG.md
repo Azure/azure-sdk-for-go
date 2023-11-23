@@ -3,7 +3,6 @@
 ## 4.0.0 (2023-12-22)
 ### Breaking Changes
 
-- Support for test fakes and OpenTelemetry trace spans.
 - Type of `AmazonMWSLinkedServiceTypeProperties.EncryptedCredential` has been changed from `any` to `*string`
 - Type of `AmazonRdsForLinkedServiceTypeProperties.EncryptedCredential` has been changed from `any` to `*string`
 - Type of `AmazonRdsForSQLServerLinkedServiceTypeProperties.EncryptedCredential` has been changed from `any` to `*string`
@@ -112,6 +111,7 @@
 
 ### Features Added
 
+- Support for test fakes and OpenTelemetry trace spans.
 - Type of `AmazonS3CompatibleReadSettings.EnablePartitionDiscovery` has been changed from `*bool` to `any`
 - Type of `AmazonS3ReadSettings.EnablePartitionDiscovery` has been changed from `*bool` to `any`
 - Type of `AzureBlobFSReadSettings.EnablePartitionDiscovery` has been changed from `*bool` to `any`

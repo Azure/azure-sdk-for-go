@@ -32,7 +32,7 @@ type EmailConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEmailConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EmailConfigurationClient, error) {
-	cl, err := arm.NewClient(moduleName+".EmailConfigurationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewEmailConfigurationClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *EmailConfigurationClient) Create(ctx context.Context, resourceGroupName string, vaultName string, emailConfigurationName string, body EmailConfigurationModel, options *EmailConfigurationClientCreateOptions) (EmailConfigurationClientCreateResponse, error) {
 	var err error
+	const operationName = "EmailConfigurationClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vaultName, emailConfigurationName, body, options)
 	if err != nil {
 		return EmailConfigurationClientCreateResponse{}, err
@@ -74,6 +78,9 @@ func (client *EmailConfigurationClient) Create(ctx context.Context, resourceGrou
 // createCreateRequest creates the Create request.
 func (client *EmailConfigurationClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, emailConfigurationName string, body EmailConfigurationModel, options *EmailConfigurationClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings/{emailConfigurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -120,6 +127,10 @@ func (client *EmailConfigurationClient) createHandleResponse(resp *http.Response
 //   - options - EmailConfigurationClientGetOptions contains the optional parameters for the EmailConfigurationClient.Get method.
 func (client *EmailConfigurationClient) Get(ctx context.Context, resourceGroupName string, vaultName string, emailConfigurationName string, options *EmailConfigurationClientGetOptions) (EmailConfigurationClientGetResponse, error) {
 	var err error
+	const operationName = "EmailConfigurationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, emailConfigurationName, options)
 	if err != nil {
 		return EmailConfigurationClientGetResponse{}, err
@@ -139,6 +150,9 @@ func (client *EmailConfigurationClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *EmailConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, emailConfigurationName string, options *EmailConfigurationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings/{emailConfigurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -185,31 +199,29 @@ func (client *EmailConfigurationClient) NewListPager(resourceGroupName string, v
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EmailConfigurationClientListResponse) (EmailConfigurationClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EmailConfigurationClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			}, nil)
 			if err != nil {
 				return EmailConfigurationClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EmailConfigurationClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EmailConfigurationClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *EmailConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *EmailConfigurationClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/alertSettings"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

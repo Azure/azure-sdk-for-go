@@ -32,7 +32,7 @@ type PolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyClient, error) {
-	cl, err := arm.NewClient(moduleName+".PolicyClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *PolicyClient) BeginCreate(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PolicyClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *PolicyClient) BeginCreate(ctx context.Context, resourceGroupName s
 // Generated from API version 2021-02-16-preview
 func (client *PolicyClient) create(ctx context.Context, resourceGroupName string, vaultName string, policyName string, body PolicyModel, options *PolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PolicyClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vaultName, policyName, body, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *PolicyClient) create(ctx context.Context, resourceGroupName string
 // createCreateRequest creates the Create request.
 func (client *PolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, body PolicyModel, options *PolicyClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -134,10 +144,13 @@ func (client *PolicyClient) BeginDelete(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PolicyClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +160,10 @@ func (client *PolicyClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Generated from API version 2021-02-16-preview
 func (client *PolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PolicyClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -165,6 +182,9 @@ func (client *PolicyClient) deleteOperation(ctx context.Context, resourceGroupNa
 // deleteCreateRequest creates the Delete request.
 func (client *PolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -199,6 +219,10 @@ func (client *PolicyClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - PolicyClientGetOptions contains the optional parameters for the PolicyClient.Get method.
 func (client *PolicyClient) Get(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientGetOptions) (PolicyClientGetResponse, error) {
 	var err error
+	const operationName = "PolicyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, policyName, options)
 	if err != nil {
 		return PolicyClientGetResponse{}, err
@@ -218,6 +242,9 @@ func (client *PolicyClient) Get(ctx context.Context, resourceGroupName string, v
 // getCreateRequest creates the Get request.
 func (client *PolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -263,31 +290,29 @@ func (client *PolicyClient) NewListPager(resourceGroupName string, vaultName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PolicyClientListResponse) (PolicyClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			}, nil)
 			if err != nil {
 				return PolicyClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PolicyClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PolicyClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *PolicyClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PolicyClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

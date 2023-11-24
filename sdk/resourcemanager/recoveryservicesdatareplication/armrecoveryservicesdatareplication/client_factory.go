@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,96 +37,115 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAzureSiteRecoveryManagementServiceAPIClient creates a new instance of AzureSiteRecoveryManagementServiceAPIClient.
 func (c *ClientFactory) NewAzureSiteRecoveryManagementServiceAPIClient() *AzureSiteRecoveryManagementServiceAPIClient {
 	subClient, _ := NewAzureSiteRecoveryManagementServiceAPIClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDraClient creates a new instance of DraClient.
 func (c *ClientFactory) NewDraClient() *DraClient {
 	subClient, _ := NewDraClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDraOperationStatusClient creates a new instance of DraOperationStatusClient.
 func (c *ClientFactory) NewDraOperationStatusClient() *DraOperationStatusClient {
 	subClient, _ := NewDraOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEmailConfigurationClient creates a new instance of EmailConfigurationClient.
 func (c *ClientFactory) NewEmailConfigurationClient() *EmailConfigurationClient {
 	subClient, _ := NewEmailConfigurationClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEventClient creates a new instance of EventClient.
 func (c *ClientFactory) NewEventClient() *EventClient {
 	subClient, _ := NewEventClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFabricClient creates a new instance of FabricClient.
 func (c *ClientFactory) NewFabricClient() *FabricClient {
 	subClient, _ := NewFabricClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFabricOperationsStatusClient creates a new instance of FabricOperationsStatusClient.
 func (c *ClientFactory) NewFabricOperationsStatusClient() *FabricOperationsStatusClient {
 	subClient, _ := NewFabricOperationsStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPolicyClient creates a new instance of PolicyClient.
 func (c *ClientFactory) NewPolicyClient() *PolicyClient {
 	subClient, _ := NewPolicyClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPolicyOperationStatusClient creates a new instance of PolicyOperationStatusClient.
 func (c *ClientFactory) NewPolicyOperationStatusClient() *PolicyOperationStatusClient {
 	subClient, _ := NewPolicyOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProtectedItemClient creates a new instance of ProtectedItemClient.
 func (c *ClientFactory) NewProtectedItemClient() *ProtectedItemClient {
 	subClient, _ := NewProtectedItemClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProtectedItemOperationStatusClient creates a new instance of ProtectedItemOperationStatusClient.
 func (c *ClientFactory) NewProtectedItemOperationStatusClient() *ProtectedItemOperationStatusClient {
 	subClient, _ := NewProtectedItemOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewRecoveryPointsClient creates a new instance of RecoveryPointsClient.
 func (c *ClientFactory) NewRecoveryPointsClient() *RecoveryPointsClient {
 	subClient, _ := NewRecoveryPointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationExtensionClient creates a new instance of ReplicationExtensionClient.
 func (c *ClientFactory) NewReplicationExtensionClient() *ReplicationExtensionClient {
 	subClient, _ := NewReplicationExtensionClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationExtensionOperationStatusClient creates a new instance of ReplicationExtensionOperationStatusClient.
 func (c *ClientFactory) NewReplicationExtensionOperationStatusClient() *ReplicationExtensionOperationStatusClient {
 	subClient, _ := NewReplicationExtensionOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVaultClient creates a new instance of VaultClient.
 func (c *ClientFactory) NewVaultClient() *VaultClient {
 	subClient, _ := NewVaultClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVaultOperationStatusClient creates a new instance of VaultOperationStatusClient.
 func (c *ClientFactory) NewVaultOperationStatusClient() *VaultOperationStatusClient {
 	subClient, _ := NewVaultOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewWorkflowClient creates a new instance of WorkflowClient.
 func (c *ClientFactory) NewWorkflowClient() *WorkflowClient {
 	subClient, _ := NewWorkflowClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewWorkflowOperationStatusClient creates a new instance of WorkflowOperationStatusClient.
 func (c *ClientFactory) NewWorkflowOperationStatusClient() *WorkflowOperationStatusClient {
 	subClient, _ := NewWorkflowOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient

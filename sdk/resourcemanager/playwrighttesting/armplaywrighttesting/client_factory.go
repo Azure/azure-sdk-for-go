@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,16 +37,19 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAccountsClient creates a new instance of AccountsClient.
 func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	subClient, _ := NewAccountsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewQuotasClient creates a new instance of QuotasClient.
 func (c *ClientFactory) NewQuotasClient() *QuotasClient {
 	subClient, _ := NewQuotasClient(c.subscriptionID, c.credential, c.options)
 	return subClient

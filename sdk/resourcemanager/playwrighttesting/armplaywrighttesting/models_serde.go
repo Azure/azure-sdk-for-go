@@ -211,8 +211,8 @@ func (f FreeTrialProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountId", f.AccountID)
 	populate(objectMap, "allocatedValue", f.AllocatedValue)
-	populateTimeRFC3339(objectMap, "createdAt", f.CreatedAt)
-	populateTimeRFC3339(objectMap, "expiryAt", f.ExpiryAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", f.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "expiryAt", f.ExpiryAt)
 	populate(objectMap, "percentageUsed", f.PercentageUsed)
 	populate(objectMap, "state", f.State)
 	populate(objectMap, "usedValue", f.UsedValue)
@@ -235,10 +235,10 @@ func (f *FreeTrialProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AllocatedValue", &f.AllocatedValue)
 			delete(rawMsg, key)
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &f.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &f.CreatedAt)
 			delete(rawMsg, key)
 		case "expiryAt":
-			err = unpopulateTimeRFC3339(val, "ExpiryAt", &f.ExpiryAt)
+			err = unpopulateDateTimeRFC3339(val, "ExpiryAt", &f.ExpiryAt)
 			delete(rawMsg, key)
 		case "percentageUsed":
 			err = unpopulate(val, "PercentageUsed", &f.PercentageUsed)
@@ -478,10 +478,10 @@ func (q *QuotaProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -497,7 +497,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -506,7 +506,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)

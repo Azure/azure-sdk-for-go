@@ -41,7 +41,7 @@ func ExampleOperationsResultsClient_BeginGet() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperationResult = armorbital.OperationResult{
 	// 	Name: to.Ptr("30972f1b-b61d-4fd8-bd34-3dcfa24670f3"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-10T13:54:55.7025301Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-10T13:54:55.702Z"); return t}()),
 	// 	Error: &armorbital.OperationResultErrorProperties{
 	// 		Code: to.Ptr("ReadOnlyPropertyError"),
 	// 		Message: to.Ptr("Cannot write to property, AuthorizationStatus, as it is read-only."),
@@ -50,7 +50,7 @@ func ExampleOperationsResultsClient_BeginGet() {
 	// 	PercentComplete: to.Ptr[float64](1),
 	// 	Properties: map[string]any{
 	// 	},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-10T13:54:53.6554616Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-10T13:54:53.655Z"); return t}()),
 	// 	Status: to.Ptr(armorbital.StatusFailed),
 	// }
 }

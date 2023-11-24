@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/paloaltonetworksngfw/armpanngfw"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_ListBySubscription_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,9 +43,9 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// page.FirewallResourceListResult = armpanngfw.FirewallResourceListResult{
 		// 	Value: []*armpanngfw.FirewallResource{
 		// 		{
-		// 			Name: to.Ptr("armid1"),
+		// 			Name: to.Ptr("aaaaaaaaaaaaa"),
 		// 			Type: to.Ptr("aaaaaa"),
-		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
+		// 			ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 			SystemData: &armpanngfw.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 		// 				CreatedBy: to.Ptr("praval"),
@@ -123,69 +123,71 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// 							Address: to.Ptr("20.22.92.11"),
 		// 							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 		// 					}},
-		// 					VnetConfiguration: &armpanngfw.VnetConfiguration{
-		// 						IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-		// 							Address: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 					TrustedRanges: []*string{
+		// 						to.Ptr("20.22.92.11")},
+		// 						VnetConfiguration: &armpanngfw.VnetConfiguration{
+		// 							IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+		// 								Address: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							TrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+		// 							},
+		// 							UnTrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							Vnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.0.0/16"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+		// 							},
 		// 						},
-		// 						TrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-		// 						},
-		// 						UnTrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						Vnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.0.0/16"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+		// 						VwanConfiguration: &armpanngfw.VwanConfiguration{
+		// 							IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+		// 								Address: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+		// 							TrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+		// 							},
+		// 							UnTrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							VHub: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
 		// 						},
 		// 					},
-		// 					VwanConfiguration: &armpanngfw.VwanConfiguration{
-		// 						IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-		// 							Address: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-		// 						TrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-		// 						},
-		// 						UnTrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						VHub: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
+		// 					PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+		// 					PanoramaConfig: &armpanngfw.PanoramaConfig{
+		// 						CgName: to.Ptr("PanoramaCollectorGroup"),
+		// 						ConfigString: to.Ptr("bas64EncodedString"),
+		// 						DgName: to.Ptr("PanoramaDeviceGroup"),
+		// 						HostName: to.Ptr("hostname"),
+		// 						PanoramaServer: to.Ptr("10.25.1.1"),
+		// 						PanoramaServer2: to.Ptr("10.20.1.1"),
+		// 						TplName: to.Ptr("PanoramaTemplateStack"),
+		// 						VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
 		// 					},
+		// 					PlanData: &armpanngfw.PlanData{
+		// 						BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
+		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
+		// 						PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
 		// 				},
-		// 				PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-		// 				PanoramaConfig: &armpanngfw.PanoramaConfig{
-		// 					CgName: to.Ptr("PanoramaCollectorGroup"),
-		// 					ConfigString: to.Ptr("bas64EncodedString"),
-		// 					DgName: to.Ptr("PanoramaDeviceGroup"),
-		// 					HostName: to.Ptr("hostname"),
-		// 					PanoramaServer: to.Ptr("10.25.1.1"),
-		// 					PanoramaServer2: to.Ptr("10.20.1.1"),
-		// 					TplName: to.Ptr("PanoramaTemplateStack"),
-		// 					VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
-		// 				},
-		// 				PlanData: &armpanngfw.PlanData{
-		// 					BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
-		// 					PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_ListBySubscription_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +212,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// page.FirewallResourceListResult = armpanngfw.FirewallResourceListResult{
 		// 	Value: []*armpanngfw.FirewallResource{
 		// 		{
-		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
+		// 			ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpanngfw.FirewallDeploymentProperties{
 		// 				DNSSettings: &armpanngfw.DNSSettings{
@@ -238,7 +240,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,69 +345,71 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 		// 							Address: to.Ptr("20.22.92.11"),
 		// 							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 		// 					}},
-		// 					VnetConfiguration: &armpanngfw.VnetConfiguration{
-		// 						IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-		// 							Address: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 					TrustedRanges: []*string{
+		// 						to.Ptr("20.22.92.11")},
+		// 						VnetConfiguration: &armpanngfw.VnetConfiguration{
+		// 							IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+		// 								Address: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							TrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+		// 							},
+		// 							UnTrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							Vnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.0.0/16"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+		// 							},
 		// 						},
-		// 						TrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-		// 						},
-		// 						UnTrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						Vnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.0.0/16"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+		// 						VwanConfiguration: &armpanngfw.VwanConfiguration{
+		// 							IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+		// 								Address: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+		// 							TrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+		// 							},
+		// 							UnTrustSubnet: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
+		// 							VHub: &armpanngfw.IPAddressSpace{
+		// 								AddressSpace: to.Ptr("10.1.1.0/24"),
+		// 								ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+		// 							},
 		// 						},
 		// 					},
-		// 					VwanConfiguration: &armpanngfw.VwanConfiguration{
-		// 						IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-		// 							Address: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-		// 						TrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-		// 						},
-		// 						UnTrustSubnet: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
-		// 						VHub: &armpanngfw.IPAddressSpace{
-		// 							AddressSpace: to.Ptr("10.1.1.0/24"),
-		// 							ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-		// 						},
+		// 					PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+		// 					PanoramaConfig: &armpanngfw.PanoramaConfig{
+		// 						CgName: to.Ptr("PanoramaCollectorGroup"),
+		// 						ConfigString: to.Ptr("bas64EncodedString"),
+		// 						DgName: to.Ptr("PanoramaDeviceGroup"),
+		// 						HostName: to.Ptr("hostname"),
+		// 						PanoramaServer: to.Ptr("10.25.1.1"),
+		// 						PanoramaServer2: to.Ptr("10.20.1.1"),
+		// 						TplName: to.Ptr("PanoramaTemplateStack"),
+		// 						VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
 		// 					},
+		// 					PlanData: &armpanngfw.PlanData{
+		// 						BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
+		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
+		// 						PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 						UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
 		// 				},
-		// 				PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-		// 				PanoramaConfig: &armpanngfw.PanoramaConfig{
-		// 					CgName: to.Ptr("PanoramaCollectorGroup"),
-		// 					ConfigString: to.Ptr("bas64EncodedString"),
-		// 					DgName: to.Ptr("PanoramaDeviceGroup"),
-		// 					HostName: to.Ptr("hostname"),
-		// 					PanoramaServer: to.Ptr("10.25.1.1"),
-		// 					PanoramaServer2: to.Ptr("10.20.1.1"),
-		// 					TplName: to.Ptr("PanoramaTemplateStack"),
-		// 					VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
-		// 				},
-		// 				PlanData: &armpanngfw.PlanData{
-		// 					BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
-		// 					PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
-		// 				},
-		// 				ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
-		// 			},
-		// 	}},
-		// }
+		// 		}},
+		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +462,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Get_MaximumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +483,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
+	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -557,67 +561,69 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// 					Address: to.Ptr("20.22.92.11"),
 	// 					ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 	// 			}},
-	// 			VnetConfiguration: &armpanngfw.VnetConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 			TrustedRanges: []*string{
+	// 				to.Ptr("20.22.92.11")},
+	// 				VnetConfiguration: &armpanngfw.VnetConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					Vnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.0.0/16"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 					},
 	// 				},
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				Vnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.0.0/16"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 				VwanConfiguration: &armpanngfw.VwanConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					VHub: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
 	// 				},
 	// 			},
-	// 			VwanConfiguration: &armpanngfw.VwanConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				VHub: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
+	// 			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 			PanoramaConfig: &armpanngfw.PanoramaConfig{
+	// 				CgName: to.Ptr("PanoramaCollectorGroup"),
+	// 				ConfigString: to.Ptr("bas64EncodedString"),
+	// 				DgName: to.Ptr("PanoramaDeviceGroup"),
+	// 				HostName: to.Ptr("hostname"),
+	// 				PanoramaServer: to.Ptr("10.25.1.1"),
+	// 				PanoramaServer2: to.Ptr("10.20.1.1"),
+	// 				TplName: to.Ptr("PanoramaTemplateStack"),
+	// 				VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
 	// 			},
+	// 			PlanData: &armpanngfw.PlanData{
+	// 				BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
+	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
+	// 				PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
 	// 		},
-	// 		PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 		PanoramaConfig: &armpanngfw.PanoramaConfig{
-	// 			CgName: to.Ptr("PanoramaCollectorGroup"),
-	// 			ConfigString: to.Ptr("bas64EncodedString"),
-	// 			DgName: to.Ptr("PanoramaDeviceGroup"),
-	// 			HostName: to.Ptr("hostname"),
-	// 			PanoramaServer: to.Ptr("10.25.1.1"),
-	// 			PanoramaServer2: to.Ptr("10.20.1.1"),
-	// 			TplName: to.Ptr("PanoramaTemplateStack"),
-	// 			VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
-	// 		},
-	// 		PlanData: &armpanngfw.PlanData{
-	// 			BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
-	// 			PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Get_MinimumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +668,7 @@ func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -740,6 +746,8 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 						Address:    to.Ptr("20.22.92.11"),
 						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 					}},
+				TrustedRanges: []*string{
+					to.Ptr("20.22.92.11")},
 				VnetConfiguration: &armpanngfw.VnetConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
 						Address:    to.Ptr("10.1.1.0/24"),
@@ -803,7 +811,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("armid1"),
 	// 	Type: to.Ptr("firewalls"),
-	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
+	// 	ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/firewalls/armid1"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -881,67 +889,69 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// 					Address: to.Ptr("20.22.92.11"),
 	// 					ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 	// 			}},
-	// 			VnetConfiguration: &armpanngfw.VnetConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 			TrustedRanges: []*string{
+	// 				to.Ptr("20.22.92.11")},
+	// 				VnetConfiguration: &armpanngfw.VnetConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					Vnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.0.0/16"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 					},
 	// 				},
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				Vnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.0.0/16"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 				VwanConfiguration: &armpanngfw.VwanConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					VHub: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
 	// 				},
 	// 			},
-	// 			VwanConfiguration: &armpanngfw.VwanConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				VHub: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
+	// 			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 			PanoramaConfig: &armpanngfw.PanoramaConfig{
+	// 				CgName: to.Ptr("PanoramaCollectorGroup"),
+	// 				ConfigString: to.Ptr("bas64EncodedString"),
+	// 				DgName: to.Ptr("PanoramaDeviceGroup"),
+	// 				HostName: to.Ptr("hostname"),
+	// 				PanoramaServer: to.Ptr("10.25.1.1"),
+	// 				PanoramaServer2: to.Ptr("10.20.1.1"),
+	// 				TplName: to.Ptr("PanoramaTemplateStack"),
+	// 				VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
 	// 			},
+	// 			PlanData: &armpanngfw.PlanData{
+	// 				BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
+	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
+	// 				PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
 	// 		},
-	// 		PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 		PanoramaConfig: &armpanngfw.PanoramaConfig{
-	// 			CgName: to.Ptr("PanoramaCollectorGroup"),
-	// 			ConfigString: to.Ptr("bas64EncodedString"),
-	// 			DgName: to.Ptr("PanoramaDeviceGroup"),
-	// 			HostName: to.Ptr("hostname"),
-	// 			PanoramaServer: to.Ptr("10.25.1.1"),
-	// 			PanoramaServer2: to.Ptr("10.20.1.1"),
-	// 			TplName: to.Ptr("PanoramaTemplateStack"),
-	// 			VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
-	// 		},
-	// 		PlanData: &armpanngfw.PlanData{
-	// 			BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
-	// 			PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1022,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Update_MaximumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1086,6 +1096,8 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 						Address:    to.Ptr("20.22.92.11"),
 						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 					}},
+				TrustedRanges: []*string{
+					to.Ptr("20.22.92.11")},
 				VnetConfiguration: &armpanngfw.VnetConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
 						Address:    to.Ptr("10.1.1.0/24"),
@@ -1147,7 +1159,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// res.FirewallResource = armpanngfw.FirewallResource{
 	// 	Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 	Type: to.Ptr("aaaaaa"),
-	// 	ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/acctest4136/providers/PaloAltoNetworks.Cloudngfw/firewalls/armid1"),
+	// 	ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 	SystemData: &armpanngfw.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
 	// 		CreatedBy: to.Ptr("praval"),
@@ -1225,67 +1237,69 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// 					Address: to.Ptr("20.22.92.11"),
 	// 					ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 	// 			}},
-	// 			VnetConfiguration: &armpanngfw.VnetConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 			TrustedRanges: []*string{
+	// 				to.Ptr("20.22.92.11")},
+	// 				VnetConfiguration: &armpanngfw.VnetConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					Vnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.0.0/16"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 					},
 	// 				},
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				Vnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.0.0/16"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+	// 				VwanConfiguration: &armpanngfw.VwanConfiguration{
+	// 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
+	// 						Address: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 					TrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+	// 					},
+	// 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
+	// 					VHub: &armpanngfw.IPAddressSpace{
+	// 						AddressSpace: to.Ptr("10.1.1.0/24"),
+	// 						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+	// 					},
 	// 				},
 	// 			},
-	// 			VwanConfiguration: &armpanngfw.VwanConfiguration{
-	// 				IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-	// 					Address: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 				TrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
-	// 				},
-	// 				UnTrustSubnet: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
-	// 				VHub: &armpanngfw.IPAddressSpace{
-	// 					AddressSpace: to.Ptr("10.1.1.0/24"),
-	// 					ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
-	// 				},
+	// 			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 			PanoramaConfig: &armpanngfw.PanoramaConfig{
+	// 				CgName: to.Ptr("PanoramaCollectorGroup"),
+	// 				ConfigString: to.Ptr("bas64EncodedString"),
+	// 				DgName: to.Ptr("PanoramaDeviceGroup"),
+	// 				HostName: to.Ptr("hostname"),
+	// 				PanoramaServer: to.Ptr("10.25.1.1"),
+	// 				PanoramaServer2: to.Ptr("10.20.1.1"),
+	// 				TplName: to.Ptr("PanoramaTemplateStack"),
+	// 				VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
 	// 			},
+	// 			PlanData: &armpanngfw.PlanData{
+	// 				BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
+	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
+	// 				PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 				UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
 	// 		},
-	// 		PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-	// 		PanoramaConfig: &armpanngfw.PanoramaConfig{
-	// 			CgName: to.Ptr("PanoramaCollectorGroup"),
-	// 			ConfigString: to.Ptr("bas64EncodedString"),
-	// 			DgName: to.Ptr("PanoramaDeviceGroup"),
-	// 			HostName: to.Ptr("hostname"),
-	// 			PanoramaServer: to.Ptr("10.25.1.1"),
-	// 			PanoramaServer2: to.Ptr("10.20.1.1"),
-	// 			TplName: to.Ptr("PanoramaTemplateStack"),
-	// 			VMAuthKey: to.Ptr("SSH_AUTH_KEY"),
-	// 		},
-	// 		PlanData: &armpanngfw.PlanData{
-	// 			BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-13T00:46:05.283Z"); return t}()),
-	// 			PlanID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 			UsageType: to.Ptr(armpanngfw.UsageTypePAYG),
-	// 		},
-	// 		ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Update_MinimumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1329,7 +1343,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Delete_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1350,7 +1364,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_Delete_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1371,7 +1385,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1394,7 +1408,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1417,7 +1431,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getLogProfile_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1529,7 +1543,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getLogProfile_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1551,7 +1565,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getSupportInfo_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getSupportInfo_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1585,7 +1599,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_getSupportInfo_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_getSupportInfo_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1607,7 +1621,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1716,7 +1730,7 @@ func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

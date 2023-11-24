@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0 (2023-11-24)
+### Breaking Changes
+
+- Struct `ArcConnectivityProperties` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 2.0.0-beta.1 (2023-10-27)
 ### Breaking Changes
 

@@ -10,145 +10,98 @@ package armazurestackhci
 
 import "time"
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
+// ArcIdentityResponse - ArcIdentity details.
+type ArcIdentityResponse struct {
+	// READ-ONLY; ArcIdentity properties.
+	Properties *ArcIdentityResponseProperties
+}
 
-	// READ-ONLY; The additional info type.
+type ArcIdentityResponseProperties struct {
+	ArcApplicationClientID      *string
+	ArcApplicationObjectID      *string
+	ArcApplicationTenantID      *string
+	ArcServicePrincipalObjectID *string
+}
+
+// ArcSetting details.
+type ArcSetting struct {
+	// ArcSetting properties.
+	Properties *ArcSettingProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; System data of ArcSetting resource
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
+// ArcSettingList - List of ArcSetting proxy resources for the HCI cluster.
+type ArcSettingList struct {
+	// READ-ONLY; Link to the next set of results.
+	NextLink *string
 
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
+	// READ-ONLY; List of ArcSetting proxy resources.
+	Value []*ArcSetting
 }
 
-// ExtendedLocation - The complex type of the extended location.
-type ExtendedLocation struct {
-	// The name of the extended location.
-	Name *string
+// ArcSettingProperties - ArcSetting properties.
+type ArcSettingProperties struct {
+	// App id of arc AAD identity.
+	ArcApplicationClientID *string
 
-	// The type of the extended location.
-	Type *ExtendedLocationTypes
+	// Object id of arc AAD identity.
+	ArcApplicationObjectID *string
+
+	// Tenant id of arc AAD identity.
+	ArcApplicationTenantID *string
+
+	// The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
+	ArcInstanceResourceGroup *string
+
+	// Object id of arc AAD service principal.
+	ArcServicePrincipalObjectID *string
+
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties any
+
+	// READ-ONLY; Aggregate state of Arc agent across the nodes in this HCI cluster.
+	AggregateState *ArcSettingAggregateState
+
+	// READ-ONLY; State of Arc agent in each of the nodes.
+	PerNodeDetails []*PerNodeState
+
+	// READ-ONLY; Provisioning state of the ArcSetting proxy resource.
+	ProvisioningState *ProvisioningState
 }
 
-// GalleryImageIdentifier - This is the gallery image definition identifier.
-type GalleryImageIdentifier struct {
-	// REQUIRED; The name of the gallery image definition offer.
-	Offer *string
+// ArcSettingsPatch - ArcSetting details to update.
+type ArcSettingsPatch struct {
+	// ArcSettings properties.
+	Properties *ArcSettingsPatchProperties
 
-	// REQUIRED; The name of the gallery image definition publisher.
-	Publisher *string
-
-	// REQUIRED; The name of the gallery image definition SKU.
-	SKU *string
+	// Resource tags.
+	Tags map[string]*string
 }
 
-// GalleryImageProperties - Properties under the gallery image resource
-type GalleryImageProperties struct {
-	// REQUIRED; Operating system type that the gallery image uses [Windows, Linux]
-	OSType *OperatingSystemTypes
-
-	// Datasource for the gallery image when provisioning with cloud-init [NoCloud, Azure]
-	CloudInitDataSource *CloudInitDataSource
-
-	// Storage ContainerID of the storage container to be used for gallery image
-	ContainerID *string
-
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration *HyperVGeneration
-
-	// This is the gallery image definition identifier.
-	Identifier *GalleryImageIdentifier
-
-	// location of the image the gallery image should be created from
-	ImagePath *string
-
-	// Specifies information about the gallery image version that you want to create or update.
-	Version *GalleryImageVersion
-
-	// READ-ONLY; Provisioning state of the gallery image.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of gallery images
-	Status *GalleryImageStatus
+// ArcSettingsPatchProperties - ArcSettings properties.
+type ArcSettingsPatchProperties struct {
+	// contains connectivity related configuration for ARC resources
+	ConnectivityProperties any
 }
 
-// GalleryImageStatus - The observed state of gallery images
-type GalleryImageStatus struct {
-	// The download status of the gallery image
-	DownloadStatus *GalleryImageStatusDownloadStatus
-
-	// GalleryImage provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage *string
-
-	// The progress of the operation in percentage
-	ProgressPercentage *int64
-	ProvisioningStatus *GalleryImageStatusProvisioningStatus
-}
-
-// GalleryImageStatusDownloadStatus - The download status of the gallery image
-type GalleryImageStatusDownloadStatus struct {
-	// The downloaded sized of the image in MB
-	DownloadSizeInMB *int64
-}
-
-type GalleryImageStatusProvisioningStatus struct {
-	// The ID of the operation performed on the gallery image
-	OperationID *string
-
-	// The status of the operation performed on the gallery image [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// GalleryImageVersion - Specifies information about the gallery image version that you want to create or update.
-type GalleryImageVersion struct {
-	// This is the version of the gallery image.
-	Name *string
-
-	// Describes the properties of a gallery image version.
-	Properties *GalleryImageVersionProperties
-}
-
-// GalleryImageVersionProperties - Describes the properties of a gallery image version.
-type GalleryImageVersionProperties struct {
-	// REQUIRED; This is the storage profile of a Gallery Image Version.
-	StorageProfile *GalleryImageVersionStorageProfile
-}
-
-// GalleryImageVersionStorageProfile - This is the storage profile of a Gallery Image Version.
-type GalleryImageVersionStorageProfile struct {
-	// This is the OS disk image.
-	OSDiskImage *GalleryOSDiskImage
-}
-
-// GalleryImages - The gallery images resource definition.
-type GalleryImages struct {
+// Cluster details.
+type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the gallery image resource
-	Properties *GalleryImageProperties
+	// Cluster properties.
+	Properties *ClusterProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -159,409 +112,180 @@ type GalleryImages struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; System data of Cluster resource
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// GalleryImagesListResult - List of gallery images.
-type GalleryImagesListResult struct {
-	Value []*GalleryImages
+// ClusterDesiredProperties - Desired properties of the cluster.
+type ClusterDesiredProperties struct {
+	// Desired level of diagnostic data emitted by the cluster.
+	DiagnosticLevel *DiagnosticLevel
+
+	// Desired state of Windows Server Subscription.
+	WindowsServerSubscription *WindowsServerSubscription
+}
+
+// ClusterIdentityResponse - Cluster Identity details.
+type ClusterIdentityResponse struct {
+	// READ-ONLY; Cluster identity properties.
+	Properties *ClusterIdentityResponseProperties
+}
+
+type ClusterIdentityResponseProperties struct {
+	AADApplicationObjectID      *string
+	AADClientID                 *string
+	AADServicePrincipalObjectID *string
+	AADTenantID                 *string
+}
+
+// ClusterList - List of clusters.
+type ClusterList struct {
+	// List of clusters.
+	Value []*Cluster
 
 	// READ-ONLY; Link to the next set of results.
 	NextLink *string
 }
 
-// GalleryImagesUpdateRequest - The gallery images resource patch definition.
-type GalleryImagesUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
+// ClusterNode - Cluster node details.
+type ClusterNode struct {
+	// READ-ONLY; Number of physical cores on the cluster node.
+	CoreCount *float32
 
-// GalleryOSDiskImage - This is the OS disk image.
-type GalleryOSDiskImage struct {
-	// READ-ONLY; This property indicates the size of the VHD to be created.
-	SizeInMB *int64
-}
+	// READ-ONLY; Id of the node in the cluster.
+	ID *float32
 
-// GuestAgent - Defines the GuestAgent.
-type GuestAgent struct {
-	// REQUIRED; Resource properties.
-	Properties *GuestAgentProperties
+	// READ-ONLY; Manufacturer of the cluster node hardware.
+	Manufacturer *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+	// READ-ONLY; Total available memory on the cluster node (in GiB).
+	MemoryInGiB *float32
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Model name of the cluster node hardware.
+	Model *string
+
+	// READ-ONLY; Name of the cluster node.
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
+	// READ-ONLY; Operating system running on the cluster node.
+	OSName *string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// READ-ONLY; Version of the operating system running on the cluster node.
+	OSVersion *string
+
+	// READ-ONLY; Immutable id of the cluster node.
+	SerialNumber *string
+
+	// READ-ONLY; State of Windows Server Subscription.
+	WindowsServerSubscription *WindowsServerSubscription
 }
 
-// GuestAgentInstallStatus - Defines the status of a guest agent installation.
-type GuestAgentInstallStatus struct {
-	// READ-ONLY; The hybrid machine agent full version.
-	AgentVersion *string
-
-	// READ-ONLY; Details about the error state.
-	ErrorDetails []*ErrorDetail
-
-	// READ-ONLY; The time of the last status change.
-	LastStatusChange *time.Time
-
-	// READ-ONLY; The installation status of the hybrid machine agent installation.
-	Status *StatusTypes
-
-	// READ-ONLY; Specifies the VM's unique SMBIOS ID.
-	VMUUID *string
-}
-
-// GuestAgentList - List of GuestAgent.
-type GuestAgentList struct {
-	// REQUIRED; Array of GuestAgent
-	Value []*GuestAgent
-
-	// Url to follow for getting next page of GuestAgent.
-	NextLink *string
-}
-
-// GuestAgentProperties - Defines the resource properties.
-type GuestAgentProperties struct {
-	// Username / Password Credentials to provision guest agent.
-	Credentials *GuestCredential
-
-	// The guest agent provisioning action.
-	ProvisioningAction *ProvisioningAction
-
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *string
-
-	// READ-ONLY; The guest agent status.
-	Status *string
-}
-
-// GuestCredential - Username / Password Credentials to connect to guest.
-type GuestCredential struct {
-	// The password to connect with the guest.
-	Password *string
-
-	// The username to connect with the guest.
-	Username *string
-}
-
-// HTTPProxyConfiguration - HTTP Proxy configuration for the VM.
-type HTTPProxyConfiguration struct {
-	// The HTTP proxy server endpoint to use.
-	HTTPProxy *string
-
-	// The HTTPS proxy server endpoint to use.
-	HTTPSProxy *string
-
-	// The endpoints that should not go through proxy.
-	NoProxy []*string
-
-	// Alternative CA cert to use for connecting to proxy servers.
-	TrustedCa *string
-}
-
-// HardwareProfileUpdate - HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-type HardwareProfileUpdate struct {
-	// RAM in MB for the virtual machine instance
-	MemoryMB *int64
-
-	// number of processors for the virtual machine instance
-	Processors *int32
-	VMSize     *VMSizeEnum
-}
-
-// HybridIdentityMetadata - Defines the HybridIdentityMetadata.
-type HybridIdentityMetadata struct {
-	// REQUIRED; Resource properties.
-	Properties *HybridIdentityMetadataProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// HybridIdentityMetadataList - List of HybridIdentityMetadata.
-type HybridIdentityMetadataList struct {
-	// REQUIRED; Array of HybridIdentityMetadata
-	Value []*HybridIdentityMetadata
-
-	// Url to follow for getting next page of HybridIdentityMetadata.
-	NextLink *string
-}
-
-// HybridIdentityMetadataProperties - Defines the resource properties.
-type HybridIdentityMetadataProperties struct {
-	// The Public Key.
-	PublicKey *string
-
-	// The unique identifier for the resource.
-	ResourceUID *string
-
-	// READ-ONLY; Identity for the resource.
-	Identity *Identity
-
-	// READ-ONLY; The provisioning state.
-	ProvisioningState *string
-}
-
-// IPConfiguration - InterfaceIPConfiguration iPConfiguration in a network interface.
-type IPConfiguration struct {
-	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string
-
-	// InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
-	Properties *IPConfigurationProperties
-}
-
-// IPConfigurationProperties - InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
-type IPConfigurationProperties struct {
-	// PrivateIPAddress - Private IP address of the IP configuration.
-	PrivateIPAddress *string
-
-	// Subnet - Name of Subnet bound to the IP configuration.
-	Subnet *IPConfigurationPropertiesSubnet
-
-	// READ-ONLY; Gateway for network interface
-	Gateway *string
-
-	// READ-ONLY; prefixLength for network interface
-	PrefixLength *string
-}
-
-// IPConfigurationPropertiesSubnet - Subnet - Name of Subnet bound to the IP configuration.
-type IPConfigurationPropertiesSubnet struct {
-	// ID - The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/…
-	ID *string
-}
-
-type IPPool struct {
-	// End of the IP address pool
-	End *string
-
-	// Type of the IP Pool [vm, vippool]
-	IPPoolType *IPPoolTypeEnum
-	Info       *IPPoolInfo
-
-	// Name of the IP-Pool
-	Name *string
-
-	// Start of the IP address pool
-	Start *string
-}
-
-type IPPoolInfo struct {
-	// READ-ONLY; Number of IP addresses available in the IP Pool
-	Available *string
-
-	// READ-ONLY; Number of IP addresses allocated from the IP Pool
-	Used *string
-}
-
-// Identity for the resource.
-type Identity struct {
-	// The identity type.
-	Type *string
-
-	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of resource.
-	TenantID *string
-}
-
-// InstanceViewStatus - Instance view status.
-type InstanceViewStatus struct {
-	// The status code.
-	Code *string
-
-	// The short localizable label for the status.
-	DisplayStatus *string
-
-	// The level code.
-	Level *StatusLevelTypes
-
-	// The detailed status message, including for alerts and error messages.
-	Message *string
-
-	// The time of the status.
-	Time *time.Time
-}
-
-type InterfaceDNSSettings struct {
-	// List of DNS server IP Addresses for the interface
-	DNSServers []*string
-}
-
-// LogicalNetworkProperties - Properties under the logical network resource
-type LogicalNetworkProperties struct {
-	// DhcpOptions contains an array of DNS servers available to VMs deployed in the logical network. Standard DHCP option for
-	// a subnet overrides logical network DHCP options.
-	DhcpOptions *LogicalNetworkPropertiesDhcpOptions
-
-	// Subnet - list of subnets under the logical network
-	Subnets []*Subnet
-
-	// name of the network switch to be used for VMs
-	VMSwitchName *string
-
-	// READ-ONLY; Provisioning state of the logical network.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of logical networks
-	Status *LogicalNetworkStatus
-}
-
-// LogicalNetworkPropertiesDhcpOptions - DhcpOptions contains an array of DNS servers available to VMs deployed in the logical
-// network. Standard DHCP option for a subnet overrides logical network DHCP options.
-type LogicalNetworkPropertiesDhcpOptions struct {
-	// The list of DNS servers IP addresses.
-	DNSServers []*string
-}
-
-// LogicalNetworkStatus - The observed state of logical networks
-type LogicalNetworkStatus struct {
-	// LogicalNetwork provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *LogicalNetworkStatusProvisioningStatus
-}
-
-type LogicalNetworkStatusProvisioningStatus struct {
-	// The ID of the operation performed on the logical network
-	OperationID *string
-
-	// The status of the operation performed on the logical network [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// LogicalNetworks - The logical network resource definition.
-type LogicalNetworks struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the logical network resource
-	Properties *LogicalNetworkProperties
+// ClusterPatch - Cluster details to update.
+type ClusterPatch struct {
+	// Cluster properties.
+	Properties *ClusterPatchProperties
 
 	// Resource tags.
 	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
-type LogicalNetworksListResult struct {
-	NextLink *string
-	Value    []*LogicalNetworks
+// ClusterPatchProperties - Cluster properties.
+type ClusterPatchProperties struct {
+	// App id of cluster AAD identity.
+	AADClientID *string
+
+	// Tenant id of cluster AAD identity.
+	AADTenantID *string
+
+	// Endpoint configured for management from the Azure portal
+	CloudManagementEndpoint *string
+
+	// Desired properties of the cluster.
+	DesiredProperties *ClusterDesiredProperties
 }
 
-// LogicalNetworksUpdateRequest - The logical network resource patch definition.
-type LogicalNetworksUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
+// ClusterProperties - Cluster properties.
+type ClusterProperties struct {
+	// Object id of cluster AAD identity.
+	AADApplicationObjectID *string
 
-// MarketplaceGalleryImageProperties - Properties under the marketplace gallery image resource
-type MarketplaceGalleryImageProperties struct {
-	// REQUIRED; Operating system type that the gallery image uses [Windows, Linux]
-	OSType *OperatingSystemTypes
+	// App id of cluster AAD identity.
+	AADClientID *string
 
-	// Datasource for the gallery image when provisioning with cloud-init [NoCloud, Azure]
-	CloudInitDataSource *CloudInitDataSource
+	// Id of cluster identity service principal.
+	AADServicePrincipalObjectID *string
 
-	// Storage ContainerID of the storage container to be used for marketplace gallery image
-	ContainerID *string
+	// Tenant id of cluster AAD identity.
+	AADTenantID *string
 
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration *HyperVGeneration
+	// Endpoint configured for management from the Azure portal.
+	CloudManagementEndpoint *string
 
-	// This is the gallery image definition identifier.
-	Identifier *GalleryImageIdentifier
+	// Desired properties of the cluster.
+	DesiredProperties *ClusterDesiredProperties
 
-	// Specifies information about the gallery image version that you want to create or update.
-	Version *GalleryImageVersion
+	// READ-ONLY; Type of billing applied to the resource.
+	BillingModel *string
 
-	// READ-ONLY; Provisioning state of the marketplace gallery image.
-	ProvisioningState *ProvisioningStateEnum
+	// READ-ONLY; Unique, immutable resource id.
+	CloudID *string
 
-	// READ-ONLY; The observed state of marketplace gallery images
-	Status *MarketplaceGalleryImageStatus
-}
+	// READ-ONLY; Most recent billing meter timestamp.
+	LastBillingTimestamp *time.Time
 
-// MarketplaceGalleryImageStatus - The observed state of marketplace gallery images
-type MarketplaceGalleryImageStatus struct {
-	// The download status of the gallery image
-	DownloadStatus *MarketplaceGalleryImageStatusDownloadStatus
+	// READ-ONLY; Most recent cluster sync timestamp.
+	LastSyncTimestamp *time.Time
 
-	// MarketplaceGalleryImage provisioning error code
-	ErrorCode *string
+	// READ-ONLY; Provisioning state.
+	ProvisioningState *ProvisioningState
 
-	// Descriptive error message
-	ErrorMessage *string
+	// READ-ONLY; First cluster sync timestamp.
+	RegistrationTimestamp *time.Time
 
-	// The progress of the operation in percentage
-	ProgressPercentage *int64
-	ProvisioningStatus *MarketplaceGalleryImageStatusProvisioningStatus
-}
+	// READ-ONLY; Properties reported by cluster agent.
+	ReportedProperties *ClusterReportedProperties
 
-// MarketplaceGalleryImageStatusDownloadStatus - The download status of the gallery image
-type MarketplaceGalleryImageStatusDownloadStatus struct {
-	// The downloaded sized of the image in MB
-	DownloadSizeInMB *int64
-}
+	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
+	ServiceEndpoint *string
 
-type MarketplaceGalleryImageStatusProvisioningStatus struct {
-	// The ID of the operation performed on the gallery image
-	OperationID *string
-
-	// The status of the operation performed on the gallery image [Succeeded, Failed, InProgress]
+	// READ-ONLY; Status of the cluster agent.
 	Status *Status
+
+	// READ-ONLY; Number of days remaining in the trial period.
+	TrialDaysRemaining *float32
 }
 
-// MarketplaceGalleryImages - The marketplace gallery image resource definition.
-type MarketplaceGalleryImages struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
+// ClusterReportedProperties - Properties reported by cluster agent.
+type ClusterReportedProperties struct {
+	// Level of diagnostic data emitted by the cluster.
+	DiagnosticLevel *DiagnosticLevel
 
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
+	// READ-ONLY; Unique id generated by the on-prem cluster.
+	ClusterID *string
 
-	// Properties under the marketplace gallery image resource
-	Properties *MarketplaceGalleryImageProperties
+	// READ-ONLY; Name of the on-prem cluster connected to this resource.
+	ClusterName *string
 
-	// Resource tags.
-	Tags map[string]*string
+	// READ-ONLY; Version of the cluster software.
+	ClusterVersion *string
+
+	// READ-ONLY; IMDS attestation status of the cluster.
+	ImdsAttestation *ImdsAttestation
+
+	// READ-ONLY; Last time the cluster reported the data.
+	LastUpdated *time.Time
+
+	// READ-ONLY; List of nodes reported by the cluster.
+	Nodes []*ClusterNode
+}
+
+// Extension - Details of a particular extension in HCI Cluster.
+type Extension struct {
+	// Describes Machine Extension Properties.
+	Properties *ExtensionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -569,107 +293,61 @@ type MarketplaceGalleryImages struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; System data of Extension resource.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-type MarketplaceGalleryImagesListResult struct {
+// ExtensionList - List of Extensions in HCI cluster.
+type ExtensionList struct {
+	// READ-ONLY; Link to the next set of results.
 	NextLink *string
-	Value    []*MarketplaceGalleryImages
+
+	// READ-ONLY; List of Extensions in HCI cluster.
+	Value []*Extension
 }
 
-// MarketplaceGalleryImagesUpdateRequest - The marketplace gallery image resource patch definition.
-type MarketplaceGalleryImagesUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
+// ExtensionParameters - Describes the properties of a Machine Extension. This object mirrors the definition in HybridCompute.
+type ExtensionParameters struct {
+	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
+	// however, the extension will not upgrade minor versions unless redeployed, even
+	// with this property set to true.
+	AutoUpgradeMinorVersion *bool
 
-// NetworkInterfaceProperties - Properties under the network interface resource
-type NetworkInterfaceProperties struct {
-	// DNS Settings for the interface
-	DNSSettings *InterfaceDNSSettings
+	// How the extension handler should be forced to update even if the extension configuration has not changed.
+	ForceUpdateTag *string
 
-	// IPConfigurations - A list of IPConfigurations of the network interface.
-	IPConfigurations []*IPConfiguration
+	// Protected settings (may contain secrets).
+	ProtectedSettings any
 
-	// MacAddress - The MAC address of the network interface.
-	MacAddress *string
+	// The name of the extension handler publisher.
+	Publisher *string
 
-	// READ-ONLY; Provisioning state of the network interface.
-	ProvisioningState *ProvisioningStateEnum
+	// Json formatted public settings for the extension.
+	Settings any
 
-	// READ-ONLY; The observed state of network interfaces
-	Status *NetworkInterfaceStatus
-}
-
-// NetworkInterfaceStatus - The observed state of network interfaces
-type NetworkInterfaceStatus struct {
-	// NetworkInterface provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *NetworkInterfaceStatusProvisioningStatus
-}
-
-type NetworkInterfaceStatusProvisioningStatus struct {
-	// The ID of the operation performed on the network interface
-	OperationID *string
-
-	// The status of the operation performed on the network interface [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// NetworkInterfaces - The network interface resource definition.
-type NetworkInterfaces struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the network interface resource
-	Properties *NetworkInterfaceProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string
+
+	// Specifies the version of the script handler.
+	TypeHandlerVersion *string
 }
 
-type NetworkInterfacesListResult struct {
-	NextLink *string
-	Value    []*NetworkInterfaces
-}
+// ExtensionProperties - Status of Arc Extension for a particular node in HCI Cluster.
+type ExtensionProperties struct {
+	// Parameters specific to this extension type.
+	ExtensionParameters *ExtensionParameters
 
-// NetworkInterfacesUpdateRequest - The network interface resource patch definition.
-type NetworkInterfacesUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
+	// READ-ONLY; Aggregate state of Arc Extensions across the nodes in this HCI cluster.
+	AggregateState *ExtensionAggregateState
 
-// NetworkProfileUpdate - NetworkProfile - describes the network update configuration the virtual machine instance
-type NetworkProfileUpdate struct {
-	// NetworkInterfaces - list of network interfaces to be attached to the virtual machine instance
-	NetworkInterfaces []*NetworkProfileUpdateNetworkInterfacesItem
-}
+	// READ-ONLY; State of Arc Extension in each of the nodes.
+	PerNodeExtensionDetails []*PerNodeExtensionState
 
-type NetworkProfileUpdateNetworkInterfacesItem struct {
-	// ID - Resource ID of the network interface
-	ID *string
+	// READ-ONLY; Provisioning state of the Extension proxy resource.
+	ProvisioningState *ProvisioningState
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -721,210 +399,39 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// OsProfileUpdate - OsProfile - describes the update configuration of the operating system
-type OsProfileUpdate struct {
-	// ComputerName - name of the computer
-	ComputerName         *string
-	LinuxConfiguration   *OsProfileUpdateLinuxConfiguration
-	WindowsConfiguration *OsProfileUpdateWindowsConfiguration
+type PasswordCredential struct {
+	EndDateTime   *time.Time
+	KeyID         *string
+	SecretText    *string
+	StartDateTime *time.Time
 }
 
-type OsProfileUpdateLinuxConfiguration struct {
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
+// PerNodeExtensionState - Status of Arc Extension for a particular node in HCI Cluster.
+type PerNodeExtensionState struct {
+	// READ-ONLY; Fully qualified resource ID for the particular Arc Extension on this node.
+	Extension *string
 
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-}
-
-type OsProfileUpdateWindowsConfiguration struct {
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-}
-
-// Route - Route resource.
-type Route struct {
-	// Name - name of the subnet
+	// READ-ONLY; Name of the node in HCI Cluster.
 	Name *string
 
-	// Properties of the route.
-	Properties *RoutePropertiesFormat
+	// READ-ONLY; State of Arc Extension in this node.
+	State *NodeExtensionState
 }
 
-// RoutePropertiesFormat - Route resource.
-type RoutePropertiesFormat struct {
-	// The destination CIDR to which the route applies.
-	AddressPrefix *string
+// PerNodeState - Status of Arc agent for a particular node in HCI Cluster.
+type PerNodeState struct {
+	// READ-ONLY; Fully qualified resource ID for the Arc agent of this node.
+	ArcInstance *string
 
-	// The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
-	NextHopIPAddress *string
-}
-
-// RouteTable - Route table resource.
-type RouteTable struct {
-	// Properties of the route table.
-	Properties *RouteTablePropertiesFormat
-
-	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string
-
-	// READ-ONLY; Resource name.
+	// READ-ONLY; Name of the Node in HCI Cluster
 	Name *string
 
-	// READ-ONLY; Resource type.
-	Type *string
+	// READ-ONLY; State of Arc agent in this node.
+	State *NodeArcState
 }
 
-// RouteTablePropertiesFormat - Route Table resource.
-type RouteTablePropertiesFormat struct {
-	// Collection of routes contained within a route table.
-	Routes []*Route
-}
-
-// SSHConfiguration - SSH configuration for Linux based VMs running on Azure
-type SSHConfiguration struct {
-	// The list of SSH public keys used to authenticate with linux based VMs.
-	PublicKeys []*SSHPublicKey
-}
-
-// SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
-// is placed.
-type SSHPublicKey struct {
-	// SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa
-	// format.
-	// For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure]https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
-	KeyData *string
-
-	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
-	// is appended to the file. Example: /home/user/.ssh/authorized_keys
-	Path *string
-}
-
-// StorageContainerProperties - Properties under the storage container resource
-type StorageContainerProperties struct {
-	// REQUIRED; Path of the storage container on the disk
-	Path *string
-
-	// READ-ONLY; Provisioning state of the storage container.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of storage containers
-	Status *StorageContainerStatus
-}
-
-// StorageContainerStatus - The observed state of storage containers
-type StorageContainerStatus struct {
-	// Amount of space available on the disk in MB
-	AvailableSizeMB *int64
-
-	// Total size of the disk in MB
-	ContainerSizeMB *int64
-
-	// StorageContainer provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *StorageContainerStatusProvisioningStatus
-}
-
-type StorageContainerStatusProvisioningStatus struct {
-	// The ID of the operation performed on the storage container
-	OperationID *string
-
-	// The status of the operation performed on the storage container [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// StorageContainers - The storage container resource definition.
-type StorageContainers struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the storage container resource
-	Properties *StorageContainerProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-type StorageContainersListResult struct {
-	NextLink *string
-	Value    []*StorageContainers
-}
-
-// StorageContainersUpdateRequest - The storage container resource patch definition.
-type StorageContainersUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
-type StorageProfileUpdate struct {
-	// adds data disks to the virtual machine instance for the update call
-	DataDisks []*StorageProfileUpdateDataDisksItem
-}
-
-type StorageProfileUpdateDataDisksItem struct {
-	ID *string
-}
-
-type Subnet struct {
-	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
-	Name *string
-
-	// Properties of the subnet.
-	Properties *SubnetPropertiesFormat
-}
-
-// SubnetPropertiesFormat - Properties of the subnet.
-type SubnetPropertiesFormat struct {
-	// The address prefix for the subnet: Cidr for this subnet - IPv4, IPv6.
-	AddressPrefix *string
-
-	// List of address prefixes for the subnet.
-	AddressPrefixes []*string
-
-	// IPAllocationMethod - The IP address allocation method. Possible values include: 'Static', 'Dynamic'
-	IPAllocationMethod *IPAllocationMethodEnum
-
-	// IPConfigurationReferences - list of IPConfigurationReferences
-	IPConfigurationReferences []*SubnetPropertiesFormatIPConfigurationReferencesItem
-
-	// network associated pool of IP Addresses
-	IPPools []*IPPool
-
-	// Route table resource.
-	RouteTable *RouteTable
-
-	// Vlan to use for the subnet
-	Vlan *int32
-}
-
-// SubnetPropertiesFormatIPConfigurationReferencesItem - IPConfigurationReference - Describes a IPConfiguration under the
-// virtual network
-type SubnetPropertiesFormatIPConfigurationReferencesItem struct {
-	// IPConfigurationID
-	ID *string
+type RawCertificateData struct {
+	Certificates []*string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -948,355 +455,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// VirtualHardDiskProperties - Properties under the virtual hard disk resource
-type VirtualHardDiskProperties struct {
-	BlockSizeBytes *int32
-
-	// Storage ContainerID of the storage container to be used for VHD
-	ContainerID *string
-
-	// The format of the actual VHD file [vhd, vhdx]
-	DiskFileFormat *DiskFileFormat
-
-	// Size of the disk in GB
-	DiskSizeGB *int64
-
-	// Boolean for enabling dynamic sizing on the virtual hard disk
-	Dynamic *bool
-
-	// The hypervisor generation of the Virtual Machine [V1, V2]
-	HyperVGeneration    *HyperVGeneration
-	LogicalSectorBytes  *int32
-	PhysicalSectorBytes *int32
-
-	// READ-ONLY; Provisioning state of the virtual hard disk.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of virtual hard disks
-	Status *VirtualHardDiskStatus
-}
-
-// VirtualHardDiskStatus - The observed state of virtual hard disks
-type VirtualHardDiskStatus struct {
-	// VirtualHardDisk provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage       *string
-	ProvisioningStatus *VirtualHardDiskStatusProvisioningStatus
-}
-
-type VirtualHardDiskStatusProvisioningStatus struct {
-	// The ID of the operation performed on the virtual hard disk
-	OperationID *string
-
-	// The status of the operation performed on the virtual hard disk [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// VirtualHardDisks - The virtual hard disk resource definition.
-type VirtualHardDisks struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Properties under the virtual hard disk resource
-	Properties *VirtualHardDiskProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-type VirtualHardDisksListResult struct {
-	NextLink *string
-	Value    []*VirtualHardDisks
-}
-
-// VirtualHardDisksUpdateRequest - The virtual hard disk resource patch definition.
-type VirtualHardDisksUpdateRequest struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
-// VirtualMachineConfigAgentInstanceView - The instance view of the VM Config Agent running on the virtual machine.
-type VirtualMachineConfigAgentInstanceView struct {
-	// The resource status information.
-	Statuses []*InstanceViewStatus
-
-	// The VM Config Agent full version.
-	VMConfigAgentVersion *string
-}
-
-// VirtualMachineInstance - The virtual machine instance resource definition.
-type VirtualMachineInstance struct {
-	// The extendedLocation of the resource.
-	ExtendedLocation *ExtendedLocation
-
-	// Identity for the resource.
-	Identity *Identity
-
-	// Properties under the virtual machine instance resource
-	Properties *VirtualMachineInstanceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-type VirtualMachineInstanceListResult struct {
-	NextLink *string
-	Value    []*VirtualMachineInstance
-}
-
-// VirtualMachineInstanceProperties - Properties under the virtual machine instance resource
-type VirtualMachineInstanceProperties struct {
-	// Guest agent install status.
-	GuestAgentInstallStatus *GuestAgentInstallStatus
-
-	// HTTP Proxy configuration for the VM.
-	HTTPProxyConfig *HTTPProxyConfiguration
-
-	// HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-	HardwareProfile *VirtualMachineInstancePropertiesHardwareProfile
-
-	// NetworkProfile - describes the network configuration the virtual machine instance
-	NetworkProfile *VirtualMachineInstancePropertiesNetworkProfile
-
-	// OsProfile - describes the configuration of the operating system and sets login data
-	OSProfile *VirtualMachineInstancePropertiesOsProfile
-
-	// Unique identifier defined by ARC to identify the guest of the VM.
-	ResourceUID *string
-
-	// SecurityProfile - Specifies the security settings for the virtual machine instance.
-	SecurityProfile *VirtualMachineInstancePropertiesSecurityProfile
-
-	// StorageProfile - contains information about the disks and storage information for the virtual machine instance
-	StorageProfile *VirtualMachineInstancePropertiesStorageProfile
-
-	// READ-ONLY; The virtual machine instance view.
-	InstanceView *VirtualMachineInstanceView
-
-	// READ-ONLY; Provisioning state of the virtual machine instance.
-	ProvisioningState *ProvisioningStateEnum
-
-	// READ-ONLY; The observed state of virtual machine instances
-	Status *VirtualMachineInstanceStatus
-
-	// READ-ONLY; Unique identifier for the vm resource.
-	VMID *string
-}
-
-// VirtualMachineInstancePropertiesHardwareProfile - HardwareProfile - Specifies the hardware settings for the virtual machine
-// instance.
-type VirtualMachineInstancePropertiesHardwareProfile struct {
-	DynamicMemoryConfig *VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig
-
-	// RAM in MB for the virtual machine instance
-	MemoryMB *int64
-
-	// number of processors for the virtual machine instance
-	Processors *int32
-	VMSize     *VMSizeEnum
-}
-
-type VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig struct {
-	MaximumMemoryMB *int64
-	MinimumMemoryMB *int64
-
-	// Defines the amount of extra memory that should be reserved for a virtual machine instance at runtime, as a percentage of
-	// the total memory that the virtual machine instance is thought to need. This
-	// only applies to virtual systems with dynamic memory enabled. This property can be in the range of 5 to 2000.
-	TargetMemoryBuffer *int32
-}
-
-// VirtualMachineInstancePropertiesNetworkProfile - NetworkProfile - describes the network configuration the virtual machine
-// instance
-type VirtualMachineInstancePropertiesNetworkProfile struct {
-	// NetworkInterfaces - list of network interfaces to be attached to the virtual machine instance
-	NetworkInterfaces []*VirtualMachineInstancePropertiesNetworkProfileNetworkInterfacesItem
-}
-
-type VirtualMachineInstancePropertiesNetworkProfileNetworkInterfacesItem struct {
-	// ID - Resource Id of the network interface
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesOsProfile - OsProfile - describes the configuration of the operating system and sets login
-// data
-type VirtualMachineInstancePropertiesOsProfile struct {
-	// AdminPassword - admin password
-	AdminPassword *string
-
-	// AdminUsername - admin username
-	AdminUsername *string
-
-	// ComputerName - name of the compute
-	ComputerName *string
-
-	// LinuxConfiguration - linux specific configuration values for the virtual machine instance
-	LinuxConfiguration *VirtualMachineInstancePropertiesOsProfileLinuxConfiguration
-
-	// Windows Configuration for the virtual machine instance
-	WindowsConfiguration *VirtualMachineInstancePropertiesOsProfileWindowsConfiguration
-}
-
-// VirtualMachineInstancePropertiesOsProfileLinuxConfiguration - LinuxConfiguration - linux specific configuration values
-// for the virtual machine instance
-type VirtualMachineInstancePropertiesOsProfileLinuxConfiguration struct {
-	// DisablePasswordAuthentication - whether password authentication should be disabled
-	DisablePasswordAuthentication *bool
-
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-
-	// Specifies the ssh key configuration for a Linux OS.
-	SSH *SSHConfiguration
-}
-
-// VirtualMachineInstancePropertiesOsProfileWindowsConfiguration - Windows Configuration for the virtual machine instance
-type VirtualMachineInstancePropertiesOsProfileWindowsConfiguration struct {
-	// Whether to EnableAutomaticUpdates on the machine
-	EnableAutomaticUpdates *bool
-
-	// Used to indicate whether Arc for Servers agent onboarding should be triggered during the virtual machine instance creation
-	// process.
-	ProvisionVMAgent *bool
-
-	// Used to indicate whether the VM Config Agent should be installed during the virtual machine creation process.
-	ProvisionVMConfigAgent *bool
-
-	// Specifies the ssh key configuration for Windows OS.
-	SSH *SSHConfiguration
-
-	// TimeZone for the virtual machine instance
-	TimeZone *string
-}
-
-// VirtualMachineInstancePropertiesSecurityProfile - SecurityProfile - Specifies the security settings for the virtual machine
-// instance.
-type VirtualMachineInstancePropertiesSecurityProfile struct {
-	EnableTPM *bool
-
-	// Specifies the SecurityType of the virtual machine. EnableTPM and SecureBootEnabled must be set to true for SecurityType
-	// to function.
-	SecurityType *SecurityTypes
-	UefiSettings *VirtualMachineInstancePropertiesSecurityProfileUefiSettings
-}
-
-type VirtualMachineInstancePropertiesSecurityProfileUefiSettings struct {
-	// Specifies whether secure boot should be enabled on the virtual machine instance.
-	SecureBootEnabled *bool
-}
-
-// VirtualMachineInstancePropertiesStorageProfile - StorageProfile - contains information about the disks and storage information
-// for the virtual machine instance
-type VirtualMachineInstancePropertiesStorageProfile struct {
-	// adds data disks to the virtual machine instance
-	DataDisks []*VirtualMachineInstancePropertiesStorageProfileDataDisksItem
-
-	// Which Image to use for the virtual machine instance
-	ImageReference *VirtualMachineInstancePropertiesStorageProfileImageReference
-
-	// VHD to attach as OS disk
-	OSDisk *VirtualMachineInstancePropertiesStorageProfileOsDisk
-
-	// Id of the storage container that hosts the VM configuration file
-	VMConfigStoragePathID *string
-}
-
-type VirtualMachineInstancePropertiesStorageProfileDataDisksItem struct {
-	// Resource ID of the data disk
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesStorageProfileImageReference - Which Image to use for the virtual machine instance
-type VirtualMachineInstancePropertiesStorageProfileImageReference struct {
-	// Resource ID of the image
-	ID *string
-}
-
-// VirtualMachineInstancePropertiesStorageProfileOsDisk - VHD to attach as OS disk
-type VirtualMachineInstancePropertiesStorageProfileOsDisk struct {
-	// Resource ID of the OS disk
-	ID *string
-
-	// This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or
-	// a specialized VHD. Possible values are: Windows, Linux.
-	OSType *OperatingSystemTypes
-}
-
-// VirtualMachineInstanceStatus - The observed state of virtual machine instances
-type VirtualMachineInstanceStatus struct {
-	// VirtualMachine provisioning error code
-	ErrorCode *string
-
-	// Descriptive error message
-	ErrorMessage *string
-
-	// The power state of the virtual machine instance
-	PowerState         *PowerStateEnum
-	ProvisioningStatus *VirtualMachineInstanceStatusProvisioningStatus
-}
-
-type VirtualMachineInstanceStatusProvisioningStatus struct {
-	// The ID of the operation performed on the virtual machine instance
-	OperationID *string
-
-	// The status of the operation performed on the virtual machine instance [Succeeded, Failed, InProgress]
-	Status *Status
-}
-
-// VirtualMachineInstanceUpdateProperties - Defines the resource properties for the update.
-type VirtualMachineInstanceUpdateProperties struct {
-	// HardwareProfile - Specifies the hardware settings for the virtual machine instance.
-	HardwareProfile *HardwareProfileUpdate
-
-	// NetworkProfile - describes the network update configuration the virtual machine instance
-	NetworkProfile *NetworkProfileUpdate
-
-	// OsProfile - describes the update configuration of the operating system
-	OSProfile      *OsProfileUpdate
-	StorageProfile *StorageProfileUpdate
-}
-
-// VirtualMachineInstanceUpdateRequest - The virtual machine instance resource patch definition.
-type VirtualMachineInstanceUpdateRequest struct {
-	// Identity for the resource.
-	Identity *Identity
-
-	// Defines the resource properties for the update.
-	Properties *VirtualMachineInstanceUpdateProperties
-}
-
-// VirtualMachineInstanceView - The instance view of a virtual machine.
-type VirtualMachineInstanceView struct {
-	// The VM Config Agent running on the virtual machine.
-	VMAgent *VirtualMachineConfigAgentInstanceView
+type UploadCertificateRequest struct {
+	Properties *RawCertificateData
 }

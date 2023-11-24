@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci
 
 go 1.18
 

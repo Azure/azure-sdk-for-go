@@ -9,8 +9,8 @@
 package armsearch
 
 const (
-	moduleName    = "armsearch"
-	moduleVersion = "v1.2.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
+	moduleVersion = "v1.3.0"
 )
 
 // AADAuthFailureMode - Describes what response the data plane API of a Search service would send for requests that failed

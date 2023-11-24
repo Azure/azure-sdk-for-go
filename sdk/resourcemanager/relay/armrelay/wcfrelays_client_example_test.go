@@ -223,12 +223,12 @@ func ExampleWCFRelaysClient_NewListByNamespacePager() {
 		// 			Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelays"),
 		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01"),
 		// 			Properties: &armrelay.WcfRelayProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.0049983Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.004Z"); return t}()),
 		// 				IsDynamic: to.Ptr(false),
 		// 				RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 		// 				RequiresClientAuthorization: to.Ptr(true),
 		// 				RequiresTransportSecurity: to.Ptr(true),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.0049983Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.004Z"); return t}()),
 		// 				UserMetadata: to.Ptr("usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored"),
 		// 			},
 		// 	}},
@@ -265,12 +265,12 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
 	// 	Properties: &armrelay.WcfRelayProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.501Z"); return t}()),
 	// 		IsDynamic: to.Ptr(false),
 	// 		RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 	// 		RequiresClientAuthorization: to.Ptr(true),
 	// 		RequiresTransportSecurity: to.Ptr(true),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.501Z"); return t}()),
 	// 	},
 	// }
 }
@@ -315,13 +315,13 @@ func ExampleWCFRelaysClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-ServiceBus-WestUS/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
 	// 	Properties: &armrelay.WcfRelayProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.501Z"); return t}()),
 	// 		IsDynamic: to.Ptr(false),
 	// 		ListenerCount: to.Ptr[int32](0),
 	// 		RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 	// 		RequiresClientAuthorization: to.Ptr(true),
 	// 		RequiresTransportSecurity: to.Ptr(true),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.501Z"); return t}()),
 	// 	},
 	// }
 }

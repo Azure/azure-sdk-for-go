@@ -33,7 +33,7 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateLinkResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +60,7 @@ func (client *PrivateLinkResourcesClient) NewListSupportedPager(resourceGroupNam
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListSupportedResponse) (PrivateLinkResourcesClientListSupportedResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkResourcesClient.NewListSupportedPager")
 			req, err := client.listSupportedCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
 			if err != nil {
 				return PrivateLinkResourcesClientListSupportedResponse{}, err
@@ -73,6 +74,7 @@ func (client *PrivateLinkResourcesClient) NewListSupportedPager(resourceGroupNam
 			}
 			return client.listSupportedHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

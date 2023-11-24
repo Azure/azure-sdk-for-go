@@ -32,7 +32,7 @@ type AccessPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAccessPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPolicyClient, error) {
-	cl, err := arm.NewClient(moduleName+".AccessPolicyClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *AccessPolicyClient) BeginCreateUpdate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AccessPolicyClientCreateUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessPolicyClientCreateUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AccessPolicyClientCreateUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessPolicyClientCreateUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *AccessPolicyClient) BeginCreateUpdate(ctx context.Context, resourc
 // Generated from API version 2023-08-01
 func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, parameters CacheAccessPolicy, options *AccessPolicyClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AccessPolicyClient.BeginCreateUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createUpdateCreateRequest(ctx, resourceGroupName, cacheName, accessPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -137,10 +145,13 @@ func (client *AccessPolicyClient) BeginDelete(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessPolicyClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AccessPolicyClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessPolicyClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +161,10 @@ func (client *AccessPolicyClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-08-01
 func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, options *AccessPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AccessPolicyClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, accessPolicyName, options)
 	if err != nil {
 		return nil, err
@@ -205,6 +220,10 @@ func (client *AccessPolicyClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - AccessPolicyClientGetOptions contains the optional parameters for the AccessPolicyClient.Get method.
 func (client *AccessPolicyClient) Get(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, options *AccessPolicyClientGetOptions) (AccessPolicyClientGetResponse, error) {
 	var err error
+	const operationName = "AccessPolicyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cacheName, accessPolicyName, options)
 	if err != nil {
 		return AccessPolicyClientGetResponse{}, err
@@ -272,25 +291,20 @@ func (client *AccessPolicyClient) NewListPager(resourceGroupName string, cacheNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessPolicyClientListResponse) (AccessPolicyClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, cacheName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessPolicyClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, cacheName, options)
+			}, nil)
 			if err != nil {
 				return AccessPolicyClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccessPolicyClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AccessPolicyClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,21 +37,25 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewMoveCollectionsClient creates a new instance of MoveCollectionsClient.
 func (c *ClientFactory) NewMoveCollectionsClient() *MoveCollectionsClient {
 	subClient, _ := NewMoveCollectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewMoveResourcesClient creates a new instance of MoveResourcesClient.
 func (c *ClientFactory) NewMoveResourcesClient() *MoveResourcesClient {
 	subClient, _ := NewMoveResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsDiscoveryClient creates a new instance of OperationsDiscoveryClient.
 func (c *ClientFactory) NewOperationsDiscoveryClient() *OperationsDiscoveryClient {
 	subClient, _ := NewOperationsDiscoveryClient(c.credential, c.options)
 	return subClient
 }
 
+// NewUnresolvedDependenciesClient creates a new instance of UnresolvedDependenciesClient.
 func (c *ClientFactory) NewUnresolvedDependenciesClient() *UnresolvedDependenciesClient {
 	subClient, _ := NewUnresolvedDependenciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

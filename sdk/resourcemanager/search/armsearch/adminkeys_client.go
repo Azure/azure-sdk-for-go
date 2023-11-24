@@ -33,7 +33,7 @@ type AdminKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAdminKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdminKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".AdminKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAdminKeysClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - AdminKeysClientGetOptions contains the optional parameters for the AdminKeysClient.Get method.
 func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientGetOptions) (AdminKeysClientGetResponse, error) {
 	var err error
+	const operationName = "AdminKeysClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
 	if err != nil {
 		return AdminKeysClientGetResponse{}, err
@@ -123,6 +127,10 @@ func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeys
 //   - options - AdminKeysClientRegenerateOptions contains the optional parameters for the AdminKeysClient.Regenerate method.
 func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientRegenerateOptions) (AdminKeysClientRegenerateResponse, error) {
 	var err error
+	const operationName = "AdminKeysClient.Regenerate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateCreateRequest(ctx, resourceGroupName, searchServiceName, keyKind, searchManagementRequestOptions, options)
 	if err != nil {
 		return AdminKeysClientRegenerateResponse{}, err

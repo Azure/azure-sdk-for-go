@@ -33,7 +33,7 @@ type SharedPrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedPrivateLinkResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".SharedPrivateLinkResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -67,10 +67,13 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SharedPrivateLinkResourcesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -81,6 +84,10 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 // Generated from API version 2023-11-01
 func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, sharedPrivateLinkResource SharedPrivateLinkResource, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, sharedPrivateLinkResource, searchManagementRequestOptions, options)
 	if err != nil {
 		return nil, err
@@ -153,10 +160,13 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SharedPrivateLinkResourcesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -166,6 +176,10 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 // Generated from API version 2023-11-01
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SharedPrivateLinkResourcesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, searchManagementRequestOptions, options)
 	if err != nil {
 		return nil, err
@@ -229,6 +243,10 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientGetOptions) (SharedPrivateLinkResourcesClientGetResponse, error) {
 	var err error
+	const operationName = "SharedPrivateLinkResourcesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, searchManagementRequestOptions, options)
 	if err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
@@ -303,25 +321,20 @@ func (client *SharedPrivateLinkResourcesClient) NewListByServicePager(resourceGr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SharedPrivateLinkResourcesClientListByServiceResponse) (SharedPrivateLinkResourcesClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SharedPrivateLinkResourcesClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
+			}, nil)
 			if err != nil {
 				return SharedPrivateLinkResourcesClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SharedPrivateLinkResourcesClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SharedPrivateLinkResourcesClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

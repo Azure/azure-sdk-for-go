@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport
 
 go 1.18
 

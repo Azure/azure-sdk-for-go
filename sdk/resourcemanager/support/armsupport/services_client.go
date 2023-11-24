@@ -30,7 +30,7 @@ type ServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServicesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -43,11 +43,15 @@ func NewServicesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // Get - Gets a specific Azure service for support ticket creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2020-04-01
 //   - serviceName - Name of the Azure service.
 //   - options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
 func (client *ServicesClient) Get(ctx context.Context, serviceName string, options *ServicesClientGetOptions) (ServicesClientGetResponse, error) {
 	var err error
+	const operationName = "ServicesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, serviceName, options)
 	if err != nil {
 		return ServicesClientGetResponse{}, err
@@ -76,7 +80,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, serviceName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +102,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 // obtained programmatically for support ticket creation. This practice ensures that you always have the most recent set of
 // service and problem classification Ids.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2020-04-01
 //   - options - ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *runtime.Pager[ServicesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServicesClientListResponse]{
@@ -106,6 +110,7 @@ func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ServicesClientListResponse) (ServicesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServicesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return ServicesClientListResponse{}, err
@@ -119,6 +124,7 @@ func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -130,7 +136,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, options *Se
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -30,7 +30,7 @@ type ProblemClassificationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProblemClassificationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProblemClassificationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProblemClassificationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -43,13 +43,17 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 // Get - Get problem classification details for a specific Azure service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2020-04-01
 //   - serviceName - Name of the Azure service available for support.
 //   - problemClassificationName - Name of problem classification.
 //   - options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
 //     method.
 func (client *ProblemClassificationsClient) Get(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsClientGetOptions) (ProblemClassificationsClientGetResponse, error) {
 	var err error
+	const operationName = "ProblemClassificationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, serviceName, problemClassificationName, options)
 	if err != nil {
 		return ProblemClassificationsClientGetResponse{}, err
@@ -82,7 +86,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,7 +105,7 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 // service and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2020-04-01
 //   - serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 //   - options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.NewListPager
 //     method.
@@ -111,6 +115,7 @@ func (client *ProblemClassificationsClient) NewListPager(serviceName string, opt
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ProblemClassificationsClientListResponse) (ProblemClassificationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProblemClassificationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, serviceName, options)
 			if err != nil {
 				return ProblemClassificationsClientListResponse{}, err
@@ -124,6 +129,7 @@ func (client *ProblemClassificationsClient) NewListPager(serviceName string, opt
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -139,7 +145,7 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2020-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

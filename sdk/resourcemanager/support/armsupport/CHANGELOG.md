@@ -1,5 +1,17 @@
 # Release History
 
+## 2.0.0 (2023-11-24)
+### Breaking Changes
+
+- Struct `ExceptionResponse` has been removed
+- Struct `ServiceError` has been removed
+- Struct `ServiceErrorDetail` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 2.0.0-beta.1 (2023-10-27)
 ### Breaking Changes
 

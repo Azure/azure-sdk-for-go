@@ -8,6 +8,8 @@
 
 package armkusto
 
+import "encoding/json"
+
 // AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse contains the response from method AttachedDatabaseConfigurationsClient.CheckNameAvailability.
 type AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse struct {
 	// The result returned from a check name availability request.
@@ -184,6 +186,11 @@ type DataConnectionsClientCreateOrUpdateResponse struct {
 	DataConnectionClassification
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DataConnectionsClientCreateOrUpdateResponse.
+func (d DataConnectionsClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.DataConnectionClassification)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectionsClientCreateOrUpdateResponse.
 func (d *DataConnectionsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDataConnectionClassification(data)
@@ -231,6 +238,11 @@ type DataConnectionsClientListByDatabaseResponse struct {
 type DataConnectionsClientUpdateResponse struct {
 	// Class representing an data connection.
 	DataConnectionClassification
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DataConnectionsClientUpdateResponse.
+func (d DataConnectionsClientUpdateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.DataConnectionClassification)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type DataConnectionsClientUpdateResponse.
@@ -296,6 +308,11 @@ type DatabasesClientCreateOrUpdateResponse struct {
 	DatabaseClassification
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DatabasesClientCreateOrUpdateResponse.
+func (d DatabasesClientCreateOrUpdateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.DatabaseClassification)
+}
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type DatabasesClientCreateOrUpdateResponse.
 func (d *DatabasesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDatabaseClassification(data)
@@ -349,6 +366,11 @@ type DatabasesClientRemovePrincipalsResponse struct {
 type DatabasesClientUpdateResponse struct {
 	// Class representing a Kusto database.
 	DatabaseClassification
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DatabasesClientUpdateResponse.
+func (d DatabasesClientUpdateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.DatabaseClassification)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type DatabasesClientUpdateResponse.

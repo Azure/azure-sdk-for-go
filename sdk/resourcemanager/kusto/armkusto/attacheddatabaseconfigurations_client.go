@@ -32,7 +32,7 @@ type AttachedDatabaseConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AttachedDatabaseConfigurationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential a
 //     method.
 func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "AttachedDatabaseConfigurationsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
@@ -124,10 +128,14 @@ func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -137,6 +145,10 @@ func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx cont
 // Generated from API version 2023-08-15
 func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -200,10 +212,14 @@ func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AttachedDatabaseConfigurationsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedDatabaseConfigurationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AttachedDatabaseConfigurationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -213,6 +229,10 @@ func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Cont
 // Generated from API version 2023-08-15
 func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AttachedDatabaseConfigurationsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
 		return nil, err
@@ -269,6 +289,10 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 //     method.
 func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientGetOptions) (AttachedDatabaseConfigurationsClientGetResponse, error) {
 	var err error
+	const operationName = "AttachedDatabaseConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
@@ -337,6 +361,7 @@ func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resour
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *AttachedDatabaseConfigurationsClientListByClusterResponse) (AttachedDatabaseConfigurationsClientListByClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttachedDatabaseConfigurationsClient.NewListByClusterPager")
 			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
@@ -350,6 +375,7 @@ func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resour
 			}
 			return client.listByClusterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

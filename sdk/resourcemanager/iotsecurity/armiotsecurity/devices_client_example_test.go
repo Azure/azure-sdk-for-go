@@ -57,13 +57,13 @@ func ExampleDevicesClient_NewListPager() {
 		// 				DeviceSubTypeID: to.Ptr[int32](2),
 		// 				DeviceTypeDisplayName: to.Ptr("Industrial"),
 		// 				DeviceTypeID: to.Ptr[int32](17),
-		// 				FirstSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
+		// 				FirstSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
 		// 				Nics: []*armiotsecurity.Nic{
 		// 					{
 		// 						IPv4Address: to.Ptr("10.168.140.1"),
-		// 						LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
+		// 						LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
 		// 						MacAddress: to.Ptr("34-E1-2D-77-80-D0"),
 		// 						MacCertainty: to.Ptr(armiotsecurity.MacCertaintyCertain),
 		// 						Vlans: []*string{
@@ -87,10 +87,10 @@ func ExampleDevicesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armiotsecurity.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.092Z"); return t}()),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armiotsecurity.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.092Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armiotsecurity.CreatedByTypeUser),
 		// 				},
@@ -133,13 +133,13 @@ func ExampleDevicesClient_Get() {
 	// 		DeviceSubTypeID: to.Ptr[int32](2),
 	// 		DeviceTypeDisplayName: to.Ptr("Industrial"),
 	// 		DeviceTypeID: to.Ptr[int32](17),
-	// 		FirstSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
-	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
-	// 		LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
+	// 		FirstSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
+	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
+	// 		LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
 	// 		Nics: []*armiotsecurity.Nic{
 	// 			{
 	// 				IPv4Address: to.Ptr("10.168.140.1"),
-	// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25Z"); return t}()),
+	// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-13T06:32:25.000Z"); return t}()),
 	// 				MacAddress: to.Ptr("34-E1-2D-77-80-D0"),
 	// 				MacCertainty: to.Ptr(armiotsecurity.MacCertaintyCertain),
 	// 				Vlans: []*string{
@@ -163,10 +163,10 @@ func ExampleDevicesClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armiotsecurity.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.092Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armiotsecurity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.092Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armiotsecurity.CreatedByTypeUser),
 	// 		},

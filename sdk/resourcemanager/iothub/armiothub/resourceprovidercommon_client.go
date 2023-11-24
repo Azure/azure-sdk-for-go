@@ -32,7 +32,7 @@ type ResourceProviderCommonClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceProviderCommonClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceProviderCommonClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceProviderCommonClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewResourceProviderCommonClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Context, options *ResourceProviderCommonClientGetSubscriptionQuotaOptions) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
 	var err error
+	const operationName = "ResourceProviderCommonClient.GetSubscriptionQuota"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSubscriptionQuotaCreateRequest(ctx, options)
 	if err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err

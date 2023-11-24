@@ -43,10 +43,10 @@ func ExampleWorkflowRunOperationsClient_Get() {
 	// 		Correlation: &armlogic.Correlation{
 	// 			ClientTrackingID: to.Ptr("08586774142730039209110422528"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:13.7177644Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:13.717Z"); return t}()),
 	// 		Outputs: map[string]*armlogic.WorkflowOutputParameter{
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.4741081Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.474Z"); return t}()),
 	// 		Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 	// 		Trigger: &armlogic.WorkflowRunTrigger{
 	// 			Name: to.Ptr("Recurrence"),
@@ -54,12 +54,12 @@ func ExampleWorkflowRunOperationsClient_Get() {
 	// 			Correlation: &armlogic.Correlation{
 	// 				ClientTrackingID: to.Ptr("08586774142730039209110422528"),
 	// 			},
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.460076Z"); return t}()),
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.1412543Z"); return t}()),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.460076Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.460Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.141Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.460Z"); return t}()),
 	// 			Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 	// 		},
-	// 		WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.4741081Z"); return t}()),
+	// 		WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-20T02:50:12.474Z"); return t}()),
 	// 		Workflow: &armlogic.ResourceReference{
 	// 			Name: to.Ptr("08586993867806980512"),
 	// 			Type: to.Ptr("Microsoft.Logic/workflows/versions"),

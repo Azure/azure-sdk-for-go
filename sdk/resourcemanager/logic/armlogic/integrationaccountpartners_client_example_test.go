@@ -51,7 +51,7 @@ func ExampleIntegrationAccountPartnersClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/partners"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/IntegrationAccount2431/partners/testIntegrationAccount"),
 		// 			Properties: &armlogic.IntegrationAccountPartnerProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T19:42:59.1987212Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T19:42:59.198Z"); return t}()),
 		// 				Content: &armlogic.PartnerContent{
 		// 					B2B: &armlogic.B2BPartnerContent{
 		// 						BusinessIdentities: []*armlogic.BusinessIdentity{
@@ -61,7 +61,7 @@ func ExampleIntegrationAccountPartnersClient_NewListPager() {
 		// 						}},
 		// 					},
 		// 				},
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T19:42:59.197919Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T19:42:59.197Z"); return t}()),
 		// 				Metadata: map[string]any{
 		// 				},
 		// 				PartnerType: to.Ptr(armlogic.PartnerTypeB2B),
@@ -94,7 +94,7 @@ func ExampleIntegrationAccountPartnersClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/partners"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/partners/testPartner"),
 	// 	Properties: &armlogic.IntegrationAccountPartnerProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:01:24.0525141Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:01:24.052Z"); return t}()),
 	// 		Content: &armlogic.PartnerContent{
 	// 			B2B: &armlogic.B2BPartnerContent{
 	// 				BusinessIdentities: []*armlogic.BusinessIdentity{
@@ -104,7 +104,7 @@ func ExampleIntegrationAccountPartnersClient_Get() {
 	// 				}},
 	// 			},
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:01:24.0517156Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:01:24.051Z"); return t}()),
 	// 		Metadata: map[string]any{
 	// 		},
 	// 		PartnerType: to.Ptr(armlogic.PartnerTypeB2B),
@@ -151,7 +151,7 @@ func ExampleIntegrationAccountPartnersClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/partners"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/flowrg/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/partners/testPartner"),
 	// 	Properties: &armlogic.IntegrationAccountPartnerProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:06:23.5904806Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:06:23.590Z"); return t}()),
 	// 		Content: &armlogic.PartnerContent{
 	// 			B2B: &armlogic.B2BPartnerContent{
 	// 				BusinessIdentities: []*armlogic.BusinessIdentity{
@@ -161,7 +161,7 @@ func ExampleIntegrationAccountPartnersClient_CreateOrUpdate() {
 	// 				}},
 	// 			},
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:06:23.5895246Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:06:23.589Z"); return t}()),
 	// 		Metadata: map[string]any{
 	// 		},
 	// 		PartnerType: to.Ptr(armlogic.PartnerTypeB2B),
@@ -199,7 +199,7 @@ func ExampleIntegrationAccountPartnersClient_ListContentCallbackURL() {
 	}
 	res, err := clientFactory.NewIntegrationAccountPartnersClient().ListContentCallbackURL(ctx, "testResourceGroup", "testIntegrationAccount", "testPartner", armlogic.GetCallbackURLParameters{
 		KeyType:  to.Ptr(armlogic.KeyTypePrimary),
-		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00Z"); return t }()),
+		NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-19T16:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

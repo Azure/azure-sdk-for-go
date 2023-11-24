@@ -32,7 +32,7 @@ type CertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CertificatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, certificateDescription CertificateDescription, options *CertificatesClientCreateOrUpdateOptions) (CertificatesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, certificateName, certificateDescription, options)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
@@ -127,6 +131,10 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
 func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, options *CertificatesClientDeleteOptions) (CertificatesClientDeleteResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, options)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
@@ -186,6 +194,10 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 //     method.
 func (client *CertificatesClient) GenerateVerificationCode(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, options *CertificatesClientGenerateVerificationCodeOptions) (CertificatesClientGenerateVerificationCodeResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.GenerateVerificationCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.generateVerificationCodeCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, options)
 	if err != nil {
 		return CertificatesClientGenerateVerificationCodeResponse{}, err
@@ -252,6 +264,10 @@ func (client *CertificatesClient) generateVerificationCodeHandleResponse(resp *h
 //   - options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
 func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, certificateName, options)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
@@ -317,6 +333,10 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 //     method.
 func (client *CertificatesClient) ListByIotHub(ctx context.Context, resourceGroupName string, resourceName string, options *CertificatesClientListByIotHubOptions) (CertificatesClientListByIotHubResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.ListByIotHub"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByIotHubCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return CertificatesClientListByIotHubResponse{}, err
@@ -381,6 +401,10 @@ func (client *CertificatesClient) listByIotHubHandleResponse(resp *http.Response
 //   - options - CertificatesClientVerifyOptions contains the optional parameters for the CertificatesClient.Verify method.
 func (client *CertificatesClient) Verify(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, certificateVerificationBody CertificateVerificationDescription, options *CertificatesClientVerifyOptions) (CertificatesClientVerifyResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Verify"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.verifyCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, options)
 	if err != nil {
 		return CertificatesClientVerifyResponse{}, err

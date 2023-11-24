@@ -51,8 +51,8 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_NewListPager() {
 		// 					ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					ActionTrackingID: to.Ptr("5c0e7c24-4891-44e8-b631-8084c5531dd5"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.6240967Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.209588Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.624Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.209Z"); return t}()),
 		// 				Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 		// 				RepetitionIndexes: []*armlogic.RepetitionIndex{
 		// 					{
@@ -71,8 +71,8 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_NewListPager() {
 		// 					ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					ActionTrackingID: to.Ptr("1682d0bd-7189-4478-b333-fe364a80bd69"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.2272796Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.0686808Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.227Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.068Z"); return t}()),
 		// 				Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 		// 				RepetitionIndexes: []*armlogic.RepetitionIndex{
 		// 					{
@@ -113,8 +113,8 @@ func ExampleWorkflowRunActionScopeRepetitionsClient_Get() {
 	// 			ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 	// 			ActionTrackingID: to.Ptr("5c0e7c24-4891-44e8-b631-8084c5531dd5"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.6240967Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.209588Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.624Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.209Z"); return t}()),
 	// 		Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 	// 		RepetitionIndexes: []*armlogic.RepetitionIndex{
 	// 			{

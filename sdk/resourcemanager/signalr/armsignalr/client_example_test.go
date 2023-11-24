@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_ListBySubscription.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,14 +74,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("mySignalRService"),
 		// 			Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService"),
-		// 			SystemData: &armsignalr.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -137,19 +129,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					NetworkACLs: &armsignalr.NetworkACLs{
 		// 						DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
-		// 						IPRules: []*armsignalr.IPRule{
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123/24"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("AppService"),
-		// 						}},
 		// 						PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 		// 							{
 		// 								Allow: []*armsignalr.SignalRRequestType{
@@ -166,14 +145,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 									Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 									Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
 		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/privateEndpointConnections/mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 									SystemData: &armsignalr.SystemData{
-		// 										CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 										CreatedBy: to.Ptr("string"),
-		// 										CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 										LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 										LastModifiedBy: to.Ptr("string"),
-		// 										LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 									},
 		// 									Properties: &armsignalr.PrivateEndpointConnectionProperties{
 		// 										PrivateEndpoint: &armsignalr.PrivateEndpoint{
 		// 											ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -184,11 +155,18 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 										},
 		// 										ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 									},
+		// 									SystemData: &armsignalr.SystemData{
+		// 										CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 										CreatedBy: to.Ptr("string"),
+		// 										CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 										LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 										LastModifiedBy: to.Ptr("string"),
+		// 										LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 									},
 		// 							}},
 		// 							ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 							PublicNetworkAccess: to.Ptr("Enabled"),
 		// 							PublicPort: to.Ptr[int32](443),
-		// 							RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 							ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 		// 								Categories: []*armsignalr.ResourceLogCategory{
 		// 									{
@@ -196,7 +174,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 										Enabled: to.Ptr("true"),
 		// 								}},
 		// 							},
-		// 							ResourceStopped: to.Ptr("false"),
 		// 							ServerPort: to.Ptr[int32](443),
 		// 							Serverless: &armsignalr.ServerlessSettings{
 		// 								ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -218,12 +195,20 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 							Size: to.Ptr("P1"),
 		// 							Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
 		// 						},
+		// 						SystemData: &armsignalr.SystemData{
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 							CreatedBy: to.Ptr("string"),
+		// 							CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 							LastModifiedBy: to.Ptr("string"),
+		// 							LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 						},
 		// 				}},
 		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_ListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,14 +236,6 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("mySignalRService"),
 		// 			Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService"),
-		// 			SystemData: &armsignalr.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 			},
 		// 			Location: to.Ptr("eastus"),
 		// 			Tags: map[string]*string{
 		// 				"key1": to.Ptr("value1"),
@@ -314,19 +291,6 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					NetworkACLs: &armsignalr.NetworkACLs{
 		// 						DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
-		// 						IPRules: []*armsignalr.IPRule{
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123/24"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armsignalr.ACLActionAllow),
-		// 								Value: to.Ptr("AppService"),
-		// 						}},
 		// 						PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 		// 							{
 		// 								Allow: []*armsignalr.SignalRRequestType{
@@ -343,14 +307,6 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 									Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 									Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
 		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/privateEndpointConnections/mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 									SystemData: &armsignalr.SystemData{
-		// 										CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 										CreatedBy: to.Ptr("string"),
-		// 										CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 										LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-		// 										LastModifiedBy: to.Ptr("string"),
-		// 										LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-		// 									},
 		// 									Properties: &armsignalr.PrivateEndpointConnectionProperties{
 		// 										PrivateEndpoint: &armsignalr.PrivateEndpoint{
 		// 											ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -361,11 +317,18 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 										},
 		// 										ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 									},
+		// 									SystemData: &armsignalr.SystemData{
+		// 										CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 										CreatedBy: to.Ptr("string"),
+		// 										CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 										LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 										LastModifiedBy: to.Ptr("string"),
+		// 										LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 									},
 		// 							}},
 		// 							ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 		// 							PublicNetworkAccess: to.Ptr("Enabled"),
 		// 							PublicPort: to.Ptr[int32](443),
-		// 							RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 							ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 		// 								Categories: []*armsignalr.ResourceLogCategory{
 		// 									{
@@ -373,7 +336,6 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 										Enabled: to.Ptr("true"),
 		// 								}},
 		// 							},
-		// 							ResourceStopped: to.Ptr("false"),
 		// 							ServerPort: to.Ptr[int32](443),
 		// 							Serverless: &armsignalr.ServerlessSettings{
 		// 								ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -395,12 +357,20 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 							Size: to.Ptr("P1"),
 		// 							Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
 		// 						},
+		// 						SystemData: &armsignalr.SystemData{
+		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 							CreatedBy: to.Ptr("string"),
+		// 							CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+		// 							LastModifiedBy: to.Ptr("string"),
+		// 							LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+		// 						},
 		// 				}},
 		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,14 +392,6 @@ func ExampleClient_Get() {
 	// 	Name: to.Ptr("mySignalRService"),
 	// 	Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService"),
-	// 	SystemData: &armsignalr.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 	},
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -485,19 +447,6 @@ func ExampleClient_Get() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
-	// 				IPRules: []*armsignalr.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -514,14 +463,6 @@ func ExampleClient_Get() {
 	// 							Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 							Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
 	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/privateEndpointConnections/mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 							SystemData: &armsignalr.SystemData{
-	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								CreatedBy: to.Ptr("string"),
-	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								LastModifiedBy: to.Ptr("string"),
-	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 							},
 	// 							Properties: &armsignalr.PrivateEndpointConnectionProperties{
 	// 								PrivateEndpoint: &armsignalr.PrivateEndpoint{
 	// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -532,11 +473,18 @@ func ExampleClient_Get() {
 	// 								},
 	// 								ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 							},
+	// 							SystemData: &armsignalr.SystemData{
+	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								CreatedBy: to.Ptr("string"),
+	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								LastModifiedBy: to.Ptr("string"),
+	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 							},
 	// 					}},
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
-	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -544,7 +492,6 @@ func ExampleClient_Get() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
-	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -566,10 +513,18 @@ func ExampleClient_Get() {
 	// 					Size: to.Ptr("P1"),
 	// 					Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
 	// 				},
+	// 				SystemData: &armsignalr.SystemData{
+	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					CreatedBy: to.Ptr("string"),
+	// 					CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					LastModifiedBy: to.Ptr("string"),
+	// 					LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,14 +637,6 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("mySignalRService"),
 	// 	Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService"),
-	// 	SystemData: &armsignalr.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 	},
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -745,19 +692,6 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
-	// 				IPRules: []*armsignalr.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -774,14 +708,6 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 							Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 							Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
 	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/privateEndpointConnections/mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 							SystemData: &armsignalr.SystemData{
-	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								CreatedBy: to.Ptr("string"),
-	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								LastModifiedBy: to.Ptr("string"),
-	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 							},
 	// 							Properties: &armsignalr.PrivateEndpointConnectionProperties{
 	// 								PrivateEndpoint: &armsignalr.PrivateEndpoint{
 	// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -792,11 +718,18 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 								},
 	// 								ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 							},
+	// 							SystemData: &armsignalr.SystemData{
+	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								CreatedBy: to.Ptr("string"),
+	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								LastModifiedBy: to.Ptr("string"),
+	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 							},
 	// 					}},
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
-	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -804,7 +737,6 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
-	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -826,10 +758,18 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 					Size: to.Ptr("P1"),
 	// 					Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
 	// 				},
+	// 				SystemData: &armsignalr.SystemData{
+	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					CreatedBy: to.Ptr("string"),
+	// 					CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					LastModifiedBy: to.Ptr("string"),
+	// 					LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -850,7 +790,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -963,14 +903,6 @@ func ExampleClient_BeginUpdate() {
 	// 	Name: to.Ptr("mySignalRService"),
 	// 	Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService"),
-	// 	SystemData: &armsignalr.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 	},
 	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"key1": to.Ptr("value1"),
@@ -1026,19 +958,6 @@ func ExampleClient_BeginUpdate() {
 	// 			},
 	// 			NetworkACLs: &armsignalr.NetworkACLs{
 	// 				DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
-	// 				IPRules: []*armsignalr.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armsignalr.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 				}},
 	// 				PrivateEndpoints: []*armsignalr.PrivateEndpointACL{
 	// 					{
 	// 						Allow: []*armsignalr.SignalRRequestType{
@@ -1055,14 +974,6 @@ func ExampleClient_BeginUpdate() {
 	// 							Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 							Type: to.Ptr("Microsoft.SignalRService/SignalR/privateEndpointConnections"),
 	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/privateEndpointConnections/mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 							SystemData: &armsignalr.SystemData{
-	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								CreatedBy: to.Ptr("string"),
-	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
-	// 								LastModifiedBy: to.Ptr("string"),
-	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 							},
 	// 							Properties: &armsignalr.PrivateEndpointConnectionProperties{
 	// 								PrivateEndpoint: &armsignalr.PrivateEndpoint{
 	// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
@@ -1073,11 +984,18 @@ func ExampleClient_BeginUpdate() {
 	// 								},
 	// 								ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 							},
+	// 							SystemData: &armsignalr.SystemData{
+	// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								CreatedBy: to.Ptr("string"),
+	// 								CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 								LastModifiedBy: to.Ptr("string"),
+	// 								LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 							},
 	// 					}},
 	// 					ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
 	// 					PublicNetworkAccess: to.Ptr("Enabled"),
 	// 					PublicPort: to.Ptr[int32](443),
-	// 					RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 					ResourceLogConfiguration: &armsignalr.ResourceLogConfiguration{
 	// 						Categories: []*armsignalr.ResourceLogCategory{
 	// 							{
@@ -1085,7 +1003,6 @@ func ExampleClient_BeginUpdate() {
 	// 								Enabled: to.Ptr("true"),
 	// 						}},
 	// 					},
-	// 					ResourceStopped: to.Ptr("false"),
 	// 					ServerPort: to.Ptr[int32](443),
 	// 					Serverless: &armsignalr.ServerlessSettings{
 	// 						ConnectionTimeoutInSeconds: to.Ptr[int32](5),
@@ -1107,10 +1024,18 @@ func ExampleClient_BeginUpdate() {
 	// 					Size: to.Ptr("P1"),
 	// 					Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
 	// 				},
+	// 				SystemData: &armsignalr.SystemData{
+	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					CreatedBy: to.Ptr("string"),
+	// 					CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
+	// 					LastModifiedBy: to.Ptr("string"),
+	// 					LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1132,7 +1057,7 @@ func ExampleClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1149,122 +1074,13 @@ func ExampleClient_BeginRegenerateKey() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Keys = armsignalr.Keys{
-	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListReplicaSkus.json
-func ExampleClient_ListReplicaSKUs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsignalr.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().ListReplicaSKUs(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SKUList = armsignalr.SKUList{
-	// 	Value: []*armsignalr.SKU{
-	// 		{
-	// 			Capacity: &armsignalr.SKUCapacity{
-	// 				Default: to.Ptr[int32](1),
-	// 				AllowedValues: []*int32{
-	// 					to.Ptr[int32](1)},
-	// 					Maximum: to.Ptr[int32](1),
-	// 					Minimum: to.Ptr[int32](0),
-	// 					ScaleType: to.Ptr(armsignalr.ScaleTypeManual),
-	// 				},
-	// 				ResourceType: to.Ptr("Microsoft.SignalRService/SignalR/replicas"),
-	// 				SKU: &armsignalr.ResourceSKU{
-	// 					Name: to.Ptr("Free_F1"),
-	// 					Tier: to.Ptr(armsignalr.SignalRSKUTierFree),
-	// 				},
-	// 			},
-	// 			{
-	// 				Capacity: &armsignalr.SKUCapacity{
-	// 					Default: to.Ptr[int32](1),
-	// 					AllowedValues: []*int32{
-	// 						to.Ptr[int32](1),
-	// 						to.Ptr[int32](2),
-	// 						to.Ptr[int32](3),
-	// 						to.Ptr[int32](4),
-	// 						to.Ptr[int32](5),
-	// 						to.Ptr[int32](6),
-	// 						to.Ptr[int32](7),
-	// 						to.Ptr[int32](8),
-	// 						to.Ptr[int32](9),
-	// 						to.Ptr[int32](10),
-	// 						to.Ptr[int32](20),
-	// 						to.Ptr[int32](30),
-	// 						to.Ptr[int32](40),
-	// 						to.Ptr[int32](50),
-	// 						to.Ptr[int32](60),
-	// 						to.Ptr[int32](70),
-	// 						to.Ptr[int32](80),
-	// 						to.Ptr[int32](90),
-	// 						to.Ptr[int32](100)},
-	// 						Maximum: to.Ptr[int32](100),
-	// 						Minimum: to.Ptr[int32](0),
-	// 						ScaleType: to.Ptr(armsignalr.ScaleTypeManual),
-	// 					},
-	// 					ResourceType: to.Ptr("Microsoft.SignalRService/SignalR/replicas"),
-	// 					SKU: &armsignalr.ResourceSKU{
-	// 						Name: to.Ptr("Standard_S1"),
-	// 						Tier: to.Ptr(armsignalr.SignalRSKUTierStandard),
-	// 					},
-	// 				},
-	// 				{
-	// 					Capacity: &armsignalr.SKUCapacity{
-	// 						Default: to.Ptr[int32](1),
-	// 						AllowedValues: []*int32{
-	// 							to.Ptr[int32](1),
-	// 							to.Ptr[int32](2),
-	// 							to.Ptr[int32](3),
-	// 							to.Ptr[int32](4),
-	// 							to.Ptr[int32](5),
-	// 							to.Ptr[int32](6),
-	// 							to.Ptr[int32](7),
-	// 							to.Ptr[int32](8),
-	// 							to.Ptr[int32](9),
-	// 							to.Ptr[int32](10),
-	// 							to.Ptr[int32](20),
-	// 							to.Ptr[int32](30),
-	// 							to.Ptr[int32](40),
-	// 							to.Ptr[int32](50),
-	// 							to.Ptr[int32](60),
-	// 							to.Ptr[int32](70),
-	// 							to.Ptr[int32](80),
-	// 							to.Ptr[int32](90),
-	// 							to.Ptr[int32](100)},
-	// 							Maximum: to.Ptr[int32](100),
-	// 							Minimum: to.Ptr[int32](0),
-	// 							ScaleType: to.Ptr(armsignalr.ScaleTypeAutomatic),
-	// 						},
-	// 						ResourceType: to.Ptr("Microsoft.SignalRService/SignalR/replicas"),
-	// 						SKU: &armsignalr.ResourceSKU{
-	// 							Name: to.Ptr("Premium_P1"),
-	// 							Tier: to.Ptr(armsignalr.SignalRSKUTierStandard),
-	// 						},
-	// 				}},
-	// 			}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1285,7 +1101,7 @@ func ExampleClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalR_ListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_ListSkus.json
 func ExampleClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1309,6 +1125,7 @@ func ExampleClient_ListSKUs() {
 	// 			Capacity: &armsignalr.SKUCapacity{
 	// 				Default: to.Ptr[int32](1),
 	// 				AllowedValues: []*int32{
+	// 					to.Ptr[int32](0),
 	// 					to.Ptr[int32](1)},
 	// 					Maximum: to.Ptr[int32](1),
 	// 					Minimum: to.Ptr[int32](0),
@@ -1324,67 +1141,23 @@ func ExampleClient_ListSKUs() {
 	// 				Capacity: &armsignalr.SKUCapacity{
 	// 					Default: to.Ptr[int32](1),
 	// 					AllowedValues: []*int32{
+	// 						to.Ptr[int32](0),
 	// 						to.Ptr[int32](1),
 	// 						to.Ptr[int32](2),
-	// 						to.Ptr[int32](3),
-	// 						to.Ptr[int32](4),
 	// 						to.Ptr[int32](5),
-	// 						to.Ptr[int32](6),
-	// 						to.Ptr[int32](7),
-	// 						to.Ptr[int32](8),
-	// 						to.Ptr[int32](9),
 	// 						to.Ptr[int32](10),
 	// 						to.Ptr[int32](20),
-	// 						to.Ptr[int32](30),
-	// 						to.Ptr[int32](40),
 	// 						to.Ptr[int32](50),
-	// 						to.Ptr[int32](60),
-	// 						to.Ptr[int32](70),
-	// 						to.Ptr[int32](80),
-	// 						to.Ptr[int32](90),
 	// 						to.Ptr[int32](100)},
 	// 						Maximum: to.Ptr[int32](100),
 	// 						Minimum: to.Ptr[int32](0),
-	// 						ScaleType: to.Ptr(armsignalr.ScaleTypeManual),
+	// 						ScaleType: to.Ptr(armsignalr.ScaleTypeAutomatic),
 	// 					},
 	// 					ResourceType: to.Ptr("Microsoft.SignalRService/SignalR"),
 	// 					SKU: &armsignalr.ResourceSKU{
 	// 						Name: to.Ptr("Standard_S1"),
 	// 						Tier: to.Ptr(armsignalr.SignalRSKUTierStandard),
 	// 					},
-	// 				},
-	// 				{
-	// 					Capacity: &armsignalr.SKUCapacity{
-	// 						Default: to.Ptr[int32](1),
-	// 						AllowedValues: []*int32{
-	// 							to.Ptr[int32](1),
-	// 							to.Ptr[int32](2),
-	// 							to.Ptr[int32](3),
-	// 							to.Ptr[int32](4),
-	// 							to.Ptr[int32](5),
-	// 							to.Ptr[int32](6),
-	// 							to.Ptr[int32](7),
-	// 							to.Ptr[int32](8),
-	// 							to.Ptr[int32](9),
-	// 							to.Ptr[int32](10),
-	// 							to.Ptr[int32](20),
-	// 							to.Ptr[int32](30),
-	// 							to.Ptr[int32](40),
-	// 							to.Ptr[int32](50),
-	// 							to.Ptr[int32](60),
-	// 							to.Ptr[int32](70),
-	// 							to.Ptr[int32](80),
-	// 							to.Ptr[int32](90),
-	// 							to.Ptr[int32](100)},
-	// 							Maximum: to.Ptr[int32](100),
-	// 							Minimum: to.Ptr[int32](0),
-	// 							ScaleType: to.Ptr(armsignalr.ScaleTypeAutomatic),
-	// 						},
-	// 						ResourceType: to.Ptr("Microsoft.SignalRService/SignalR/replicas"),
-	// 						SKU: &armsignalr.ResourceSKU{
-	// 							Name: to.Ptr("Premium_P1"),
-	// 							Tier: to.Ptr(armsignalr.SignalRSKUTierStandard),
-	// 						},
-	// 				}},
-	// 			}
+	// 			}},
+	// 		}
 }

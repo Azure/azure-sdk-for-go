@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T08:19:18.00+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T08:19:18.000Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("mysqltestserver-repl.orcabrci-seas1-a.mscds.com"),
@@ -95,7 +95,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armmysqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T08:19:18.00+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T08:19:18.000Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("mysqltestserver-repl2.orcabrci-seas1-a.mscds.com"),

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub
 
 go 1.18
 
@@ -8,7 +8,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2 v2.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.1.1
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub v1.1.1
 	github.com/stretchr/testify v1.8.4
 )
 

@@ -10,7 +10,7 @@ package armwebpubsub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.2.0"
 )
 
 // ACLAction - Azure Networking ACL Action.

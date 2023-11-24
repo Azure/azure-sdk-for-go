@@ -56,9 +56,9 @@ func (testsuite *DevcenterTestSuite) SetupSuite() {
 	testsuite.imageName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "imagenam", 14, false)
 	testsuite.networkConnectionName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "networkc", 14, false)
 	testsuite.projectName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "projectn", 14, false)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name

@@ -63,7 +63,7 @@ func ExampleJobDefinitionsClient_NewListByDataServicePager() {
 		// 				},
 		// 				DataSinkID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestAzureStorage1"),
 		// 				DataSourceID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestStorSimpleSource1"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.3662184Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.366Z"); return t}()),
 		// 				RunLocation: to.Ptr(armhybriddatamanager.RunLocationWestus),
 		// 				Schedules: []*armhybriddatamanager.Schedule{
 		// 				},
@@ -114,7 +114,7 @@ func ExampleJobDefinitionsClient_Get() {
 	// 		},
 	// 		DataSinkID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestAzureStorage1"),
 	// 		DataSourceID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestStorSimpleSource1"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.3662184Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.366Z"); return t}()),
 	// 		RunLocation: to.Ptr(armhybriddatamanager.RunLocationWestus),
 	// 		Schedules: []*armhybriddatamanager.Schedule{
 	// 		},
@@ -189,7 +189,7 @@ func ExampleJobDefinitionsClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		DataSinkID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestAzureStorage1"),
 	// 		DataSourceID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestStorSimpleSource1"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.3662184Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.366Z"); return t}()),
 	// 		RunLocation: to.Ptr(armhybriddatamanager.RunLocationWestus),
 	// 		Schedules: []*armhybriddatamanager.Schedule{
 	// 		},
@@ -303,7 +303,7 @@ func ExampleJobDefinitionsClient_NewListByDataManagerPager() {
 		// 				},
 		// 				DataSinkID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestAzureStorage1"),
 		// 				DataSourceID: to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestStorSimpleSource1"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.3662184Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-05T08:51:43.366Z"); return t}()),
 		// 				RunLocation: to.Ptr(armhybriddatamanager.RunLocationWestus),
 		// 				Schedules: []*armhybriddatamanager.Schedule{
 		// 				},

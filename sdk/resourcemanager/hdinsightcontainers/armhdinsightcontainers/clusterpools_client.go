@@ -32,7 +32,7 @@ type ClusterPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClusterPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPoolsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ClusterPoolsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ClusterPoolsClient) BeginCreateOrUpdate(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterPoolsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterPoolsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *ClusterPoolsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // Generated from API version 2023-06-01-preview
 func (client *ClusterPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPool ClusterPool, options *ClusterPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterPoolsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterPoolName, clusterPool, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *ClusterPoolsClient) createOrUpdate(ctx context.Context, resourceGr
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ClusterPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPool ClusterPool, options *ClusterPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -128,10 +138,14 @@ func (client *ClusterPoolsClient) BeginDelete(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClusterPoolsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterPoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterPoolsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterPoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -141,6 +155,10 @@ func (client *ClusterPoolsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-06-01-preview
 func (client *ClusterPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterPoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterPoolName, options)
 	if err != nil {
 		return nil, err
@@ -159,6 +177,9 @@ func (client *ClusterPoolsClient) deleteOperation(ctx context.Context, resourceG
 // deleteCreateRequest creates the Delete request.
 func (client *ClusterPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -188,6 +209,10 @@ func (client *ClusterPoolsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - ClusterPoolsClientGetOptions contains the optional parameters for the ClusterPoolsClient.Get method.
 func (client *ClusterPoolsClient) Get(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolsClientGetOptions) (ClusterPoolsClientGetResponse, error) {
 	var err error
+	const operationName = "ClusterPoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterPoolName, options)
 	if err != nil {
 		return ClusterPoolsClientGetResponse{}, err
@@ -207,6 +232,9 @@ func (client *ClusterPoolsClient) Get(ctx context.Context, resourceGroupName str
 // getCreateRequest creates the Get request.
 func (client *ClusterPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, options *ClusterPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -248,31 +276,29 @@ func (client *ClusterPoolsClient) NewListByResourceGroupPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClusterPoolsClientListByResourceGroupResponse) (ClusterPoolsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterPoolsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ClusterPoolsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClusterPoolsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClusterPoolsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ClusterPoolsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClusterPoolsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -309,31 +335,29 @@ func (client *ClusterPoolsClient) NewListBySubscriptionPager(options *ClusterPoo
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClusterPoolsClientListBySubscriptionResponse) (ClusterPoolsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterPoolsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ClusterPoolsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClusterPoolsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClusterPoolsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *ClusterPoolsClient) listBySubscriptionCreateRequest(ctx context.Context, options *ClusterPoolsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/clusterpools"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -372,10 +396,13 @@ func (client *ClusterPoolsClient) BeginUpdateTags(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterPoolsClientUpdateTagsResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterPoolsClientUpdateTagsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterPoolsClientUpdateTagsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -385,6 +412,10 @@ func (client *ClusterPoolsClient) BeginUpdateTags(ctx context.Context, resourceG
 // Generated from API version 2023-06-01-preview
 func (client *ClusterPoolsClient) updateTags(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterPoolTags TagsObject, options *ClusterPoolsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterPoolsClient.BeginUpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, clusterPoolName, clusterPoolTags, options)
 	if err != nil {
 		return nil, err
@@ -407,6 +438,9 @@ func (client *ClusterPoolsClient) updateTagsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if clusterPoolName == "" {
 		return nil, errors.New("parameter clusterPoolName cannot be empty")

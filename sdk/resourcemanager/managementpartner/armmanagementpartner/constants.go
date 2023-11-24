@@ -10,7 +10,7 @@ package armmanagementpartner
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementpartner/armmanagementpartner"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.7.0"
 )
 
 // ManagementPartnerState - this is the management partner state: Active or Deleted

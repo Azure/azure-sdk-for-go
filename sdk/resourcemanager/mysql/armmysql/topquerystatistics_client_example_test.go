@@ -46,14 +46,14 @@ func ExampleTopQueryStatisticsClient_Get() {
 	// 		AggregationFunction: to.Ptr("avg"),
 	// 		DatabaseNames: []*string{
 	// 			to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testResourceGroupName/providers/Microsoft.DBforMySQL/servers/testServerName/databases/mysql")},
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00.000Z"); return t}()),
 	// 			MetricDisplayName: to.Ptr("Query duration"),
 	// 			MetricName: to.Ptr("duration"),
 	// 			MetricValue: to.Ptr[float64](123.301446136),
 	// 			MetricValueUnit: to.Ptr("milliseconds"),
 	// 			QueryExecutionCount: to.Ptr[int64](1),
 	// 			QueryID: to.Ptr("66"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:00:00Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:00:00.000Z"); return t}()),
 	// 		},
 	// 	}
 }
@@ -99,14 +99,14 @@ func ExampleTopQueryStatisticsClient_NewListByServerPager() {
 		// 				AggregationFunction: to.Ptr("avg"),
 		// 				DatabaseNames: []*string{
 		// 					to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testResourceGroupName/providers/Microsoft.DBforMySQL/servers/testServerName/databases/mysql")},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00Z"); return t}()),
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00.000Z"); return t}()),
 		// 					MetricDisplayName: to.Ptr("Query duration"),
 		// 					MetricName: to.Ptr("duration"),
 		// 					MetricValue: to.Ptr[float64](123.301446136),
 		// 					MetricValueUnit: to.Ptr("milliseconds"),
 		// 					QueryExecutionCount: to.Ptr[int64](1),
 		// 					QueryID: to.Ptr("66"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:00:00Z"); return t}()),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:00:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 			{
@@ -117,14 +117,14 @@ func ExampleTopQueryStatisticsClient_NewListByServerPager() {
 		// 					AggregationFunction: to.Ptr("avg"),
 		// 					DatabaseNames: []*string{
 		// 						to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testResourceGroupName/providers/Microsoft.DBforMySQL/servers/testServerName/databases/mysql")},
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-03T03:00:00Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-03T03:00:00.000Z"); return t}()),
 		// 						MetricDisplayName: to.Ptr("Query duration"),
 		// 						MetricName: to.Ptr("duration"),
 		// 						MetricValue: to.Ptr[float64](1712.301446136),
 		// 						MetricValueUnit: to.Ptr("milliseconds"),
 		// 						QueryExecutionCount: to.Ptr[int64](1),
 		// 						QueryID: to.Ptr("66"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-03T02:45:00Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-03T02:45:00.000Z"); return t}()),
 		// 					},
 		// 			}},
 		// 		}

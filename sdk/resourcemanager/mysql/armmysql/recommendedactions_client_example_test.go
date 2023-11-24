@@ -42,8 +42,8 @@ func ExampleRecommendedActionsClient_Get() {
 	// 	Properties: &armmysql.RecommendationActionProperties{
 	// 		ActionID: to.Ptr[int32](1),
 	// 		AdvisorName: to.Ptr("Index"),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24Z"); return t}()),
-	// 		ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24.000Z"); return t}()),
+	// 		ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24.000Z"); return t}()),
 	// 		Reason: to.Ptr("Column `movies_genres`.`movie_id` appear in Join On clause(s)."),
 	// 		RecommendationType: to.Ptr("Add"),
 	// 		SessionID: to.Ptr("c63c2114-e2a4-4c7a-98c1-85577d1a5d50"),
@@ -93,8 +93,8 @@ func ExampleRecommendedActionsClient_NewListByServerPager() {
 		// 			Properties: &armmysql.RecommendationActionProperties{
 		// 				ActionID: to.Ptr[int32](1),
 		// 				AdvisorName: to.Ptr("Index"),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24Z"); return t}()),
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24.000Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24.000Z"); return t}()),
 		// 				Reason: to.Ptr("Column `movies_genres`.`movie_id` appear in Join On clause(s)."),
 		// 				RecommendationType: to.Ptr("Add"),
 		// 				SessionID: to.Ptr("c63c2114-e2a4-4c7a-98c1-85577d1a5d50"),
@@ -118,8 +118,8 @@ func ExampleRecommendedActionsClient_NewListByServerPager() {
 		// 			Properties: &armmysql.RecommendationActionProperties{
 		// 				ActionID: to.Ptr[int32](2),
 		// 				AdvisorName: to.Ptr("Index"),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24Z"); return t}()),
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T23:43:24.000Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-08T23:43:24.000Z"); return t}()),
 		// 				Reason: to.Ptr("Column `movies_genres`.`genre` appear in Group By clause(s)."),
 		// 				RecommendationType: to.Ptr("Add"),
 		// 				SessionID: to.Ptr("c63c2114-e2a4-4c7a-98c1-85577d1a5d50"),

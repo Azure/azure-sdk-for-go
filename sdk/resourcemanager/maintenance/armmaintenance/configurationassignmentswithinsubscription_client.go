@@ -33,7 +33,7 @@ type ConfigurationAssignmentsWithinSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsWithinSubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationAssignmentsWithinSubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,7 @@ func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(opt
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationAssignmentsWithinSubscriptionClientListResponse) (ConfigurationAssignmentsWithinSubscriptionClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationAssignmentsWithinSubscriptionClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
@@ -68,6 +69,7 @@ func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(opt
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

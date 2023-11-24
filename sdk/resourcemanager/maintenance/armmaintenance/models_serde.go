@@ -61,7 +61,7 @@ func (a *ApplyUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ApplyUpdateProperties.
 func (a ApplyUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "lastUpdateTime", a.LastUpdateTime)
+	populateDateTimeRFC3339(objectMap, "lastUpdateTime", a.LastUpdateTime)
 	populate(objectMap, "resourceId", a.ResourceID)
 	populate(objectMap, "status", a.Status)
 	return json.Marshal(objectMap)
@@ -77,7 +77,7 @@ func (a *ApplyUpdateProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lastUpdateTime":
-			err = unpopulateTimeRFC3339(val, "LastUpdateTime", &a.LastUpdateTime)
+			err = unpopulateDateTimeRFC3339(val, "LastUpdateTime", &a.LastUpdateTime)
 			delete(rawMsg, key)
 		case "resourceId":
 			err = unpopulate(val, "ResourceID", &a.ResourceID)
@@ -742,10 +742,10 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -761,7 +761,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -770,7 +770,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -823,7 +823,7 @@ func (u Update) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "impactDurationInSec", u.ImpactDurationInSec)
 	populate(objectMap, "impactType", u.ImpactType)
 	populate(objectMap, "maintenanceScope", u.MaintenanceScope)
-	populateTimeRFC3339(objectMap, "notBefore", u.NotBefore)
+	populateDateTimeRFC3339(objectMap, "notBefore", u.NotBefore)
 	populate(objectMap, "properties", u.Properties)
 	populate(objectMap, "status", u.Status)
 	return json.Marshal(objectMap)
@@ -848,7 +848,7 @@ func (u *Update) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "MaintenanceScope", &u.MaintenanceScope)
 			delete(rawMsg, key)
 		case "notBefore":
-			err = unpopulateTimeRFC3339(val, "NotBefore", &u.NotBefore)
+			err = unpopulateDateTimeRFC3339(val, "NotBefore", &u.NotBefore)
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, "Properties", &u.Properties)

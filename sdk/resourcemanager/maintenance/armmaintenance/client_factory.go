@@ -28,7 +28,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -38,56 +38,67 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewApplyUpdateForResourceGroupClient creates a new instance of ApplyUpdateForResourceGroupClient.
 func (c *ClientFactory) NewApplyUpdateForResourceGroupClient() *ApplyUpdateForResourceGroupClient {
 	subClient, _ := NewApplyUpdateForResourceGroupClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewApplyUpdatesClient creates a new instance of ApplyUpdatesClient.
 func (c *ClientFactory) NewApplyUpdatesClient() *ApplyUpdatesClient {
 	subClient, _ := NewApplyUpdatesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationAssignmentsClient creates a new instance of ConfigurationAssignmentsClient.
 func (c *ClientFactory) NewConfigurationAssignmentsClient() *ConfigurationAssignmentsClient {
 	subClient, _ := NewConfigurationAssignmentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationAssignmentsForResourceGroupClient creates a new instance of ConfigurationAssignmentsForResourceGroupClient.
 func (c *ClientFactory) NewConfigurationAssignmentsForResourceGroupClient() *ConfigurationAssignmentsForResourceGroupClient {
 	subClient, _ := NewConfigurationAssignmentsForResourceGroupClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationAssignmentsForSubscriptionsClient creates a new instance of ConfigurationAssignmentsForSubscriptionsClient.
 func (c *ClientFactory) NewConfigurationAssignmentsForSubscriptionsClient() *ConfigurationAssignmentsForSubscriptionsClient {
 	subClient, _ := NewConfigurationAssignmentsForSubscriptionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationAssignmentsWithinSubscriptionClient creates a new instance of ConfigurationAssignmentsWithinSubscriptionClient.
 func (c *ClientFactory) NewConfigurationAssignmentsWithinSubscriptionClient() *ConfigurationAssignmentsWithinSubscriptionClient {
 	subClient, _ := NewConfigurationAssignmentsWithinSubscriptionClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationsClient creates a new instance of ConfigurationsClient.
 func (c *ClientFactory) NewConfigurationsClient() *ConfigurationsClient {
 	subClient, _ := NewConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewConfigurationsForResourceGroupClient creates a new instance of ConfigurationsForResourceGroupClient.
 func (c *ClientFactory) NewConfigurationsForResourceGroupClient() *ConfigurationsForResourceGroupClient {
 	subClient, _ := NewConfigurationsForResourceGroupClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPublicMaintenanceConfigurationsClient creates a new instance of PublicMaintenanceConfigurationsClient.
 func (c *ClientFactory) NewPublicMaintenanceConfigurationsClient() *PublicMaintenanceConfigurationsClient {
 	subClient, _ := NewPublicMaintenanceConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewUpdatesClient creates a new instance of UpdatesClient.
 func (c *ClientFactory) NewUpdatesClient() *UpdatesClient {
 	subClient, _ := NewUpdatesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

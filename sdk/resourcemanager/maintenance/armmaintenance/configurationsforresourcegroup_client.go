@@ -33,7 +33,7 @@ type ConfigurationsForResourceGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationsForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsForResourceGroupClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationsForResourceGroupClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,7 @@ func (client *ConfigurationsForResourceGroupClient) NewListPager(resourceGroupNa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationsForResourceGroupClientListResponse) (ConfigurationsForResourceGroupClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationsForResourceGroupClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, options)
 			if err != nil {
 				return ConfigurationsForResourceGroupClientListResponse{}, err
@@ -69,6 +70,7 @@ func (client *ConfigurationsForResourceGroupClient) NewListPager(resourceGroupNa
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

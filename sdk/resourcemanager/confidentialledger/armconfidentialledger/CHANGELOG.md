@@ -1,5 +1,20 @@
 # Release History
 
+## 2.0.0 (2023-11-24)
+### Breaking Changes
+
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceLocation` has been removed
+- Struct `Tags` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 1.2.0-beta.1 (2023-04-28)
 
 ### Features Added

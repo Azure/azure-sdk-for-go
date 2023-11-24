@@ -9,8 +9,8 @@
 package armelasticsan
 
 const (
-	moduleName    = "armelasticsan"
-	moduleVersion = "v0.4.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	moduleVersion = "v0.5.0"
 )
 
 // Action - The action of virtual network rule.

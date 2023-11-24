@@ -274,7 +274,7 @@ func ExampleAPISClient_NewSearchInventoriesPager_searchInventoriesDetails() {
 		// 							DisplayName: to.Ptr("Delivered - Succeeded"),
 		// 							StageName: to.Ptr(armedgeorderpartner.StageNameDelivered),
 		// 							StageStatus: to.Ptr(armedgeorderpartner.StageStatusSucceeded),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T10:50:36.3341513+05:30"); return t}()),
+		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-07T05:20:36.334Z"); return t}()),
 		// 						},
 		// 						Subscription: &armedgeorderpartner.SubscriptionDetails{
 		// 							ID: to.Ptr("b783ea86-c85c-4175-b76d-3992656af50d"),

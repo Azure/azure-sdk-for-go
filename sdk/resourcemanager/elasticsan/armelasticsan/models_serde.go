@@ -209,12 +209,12 @@ func (i *IscsiTargetInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type KeyVaultProperties.
 func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "currentVersionedKeyExpirationTimestamp", k.CurrentVersionedKeyExpirationTimestamp)
+	populateDateTimeRFC3339(objectMap, "currentVersionedKeyExpirationTimestamp", k.CurrentVersionedKeyExpirationTimestamp)
 	populate(objectMap, "currentVersionedKeyIdentifier", k.CurrentVersionedKeyIdentifier)
 	populate(objectMap, "keyName", k.KeyName)
 	populate(objectMap, "keyVaultUri", k.KeyVaultURI)
 	populate(objectMap, "keyVersion", k.KeyVersion)
-	populateTimeRFC3339(objectMap, "lastKeyRotationTimestamp", k.LastKeyRotationTimestamp)
+	populateDateTimeRFC3339(objectMap, "lastKeyRotationTimestamp", k.LastKeyRotationTimestamp)
 	return json.Marshal(objectMap)
 }
 
@@ -228,7 +228,7 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "currentVersionedKeyExpirationTimestamp":
-			err = unpopulateTimeRFC3339(val, "CurrentVersionedKeyExpirationTimestamp", &k.CurrentVersionedKeyExpirationTimestamp)
+			err = unpopulateDateTimeRFC3339(val, "CurrentVersionedKeyExpirationTimestamp", &k.CurrentVersionedKeyExpirationTimestamp)
 			delete(rawMsg, key)
 		case "currentVersionedKeyIdentifier":
 			err = unpopulate(val, "CurrentVersionedKeyIdentifier", &k.CurrentVersionedKeyIdentifier)
@@ -243,7 +243,7 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "KeyVersion", &k.KeyVersion)
 			delete(rawMsg, key)
 		case "lastKeyRotationTimestamp":
-			err = unpopulateTimeRFC3339(val, "LastKeyRotationTimestamp", &k.LastKeyRotationTimestamp)
+			err = unpopulateDateTimeRFC3339(val, "LastKeyRotationTimestamp", &k.LastKeyRotationTimestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1151,10 +1151,10 @@ func (s *SourceCreationData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1170,7 +1170,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -1179,7 +1179,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)

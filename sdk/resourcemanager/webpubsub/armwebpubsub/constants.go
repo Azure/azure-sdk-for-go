@@ -9,8 +9,8 @@
 package armwebpubsub
 
 const (
-	moduleName    = "armwebpubsub"
-	moduleVersion = "v1.2.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
+	moduleVersion = "v2.0.0"
 )
 
 // ACLAction - Azure Networking ACL Action.
@@ -177,22 +177,6 @@ func PossibleScaleTypeValues() []ScaleType {
 		ScaleTypeAutomatic,
 		ScaleTypeManual,
 		ScaleTypeNone,
-	}
-}
-
-// ServiceKind - The kind of the service
-type ServiceKind string
-
-const (
-	ServiceKindSocketIO  ServiceKind = "SocketIO"
-	ServiceKindWebPubSub ServiceKind = "WebPubSub"
-)
-
-// PossibleServiceKindValues returns the possible values for the ServiceKind const type.
-func PossibleServiceKindValues() []ServiceKind {
-	return []ServiceKind{
-		ServiceKindSocketIO,
-		ServiceKindWebPubSub,
 	}
 }
 

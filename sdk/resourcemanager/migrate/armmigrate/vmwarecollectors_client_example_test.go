@@ -50,7 +50,7 @@ func ExampleVMwareCollectorsClient_NewListByProjectPager() {
 		// 			Properties: &armmigrate.CollectorProperties{
 		// 				AgentProperties: &armmigrate.CollectorAgentProperties{
 		// 					ID: to.Ptr("75b0f71e-1272-4f29-a801-29cfa4b34a6e"),
-		// 					LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.7794661Z"); return t}()),
+		// 					LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.779Z"); return t}()),
 		// 					SpnDetails: &armmigrate.CollectorBodyAgentSpnProperties{
 		// 						ApplicationID: to.Ptr("fc717575-8173-4b21-92a5-658b655e613e"),
 		// 						Audience: to.Ptr("https://72f988bf-86f1-41af-91ab-2d7cd011db47/PortalvCenterbc2fagentauthaadapp"),
@@ -95,7 +95,7 @@ func ExampleVMwareCollectorsClient_Get() {
 	// 	Properties: &armmigrate.CollectorProperties{
 	// 		AgentProperties: &armmigrate.CollectorAgentProperties{
 	// 			ID: to.Ptr("75b0f71e-1272-4f29-a801-29cfa4b34a6e"),
-	// 			LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.7794661Z"); return t}()),
+	// 			LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.779Z"); return t}()),
 	// 			SpnDetails: &armmigrate.CollectorBodyAgentSpnProperties{
 	// 				ApplicationID: to.Ptr("fc717575-8173-4b21-92a5-658b655e613e"),
 	// 				Audience: to.Ptr("https://72f988bf-86f1-41af-91ab-2d7cd011db47/PortalvCenterbc2fagentauthaadapp"),
@@ -153,7 +153,7 @@ func ExampleVMwareCollectorsClient_Create() {
 	// 	Properties: &armmigrate.CollectorProperties{
 	// 		AgentProperties: &armmigrate.CollectorAgentProperties{
 	// 			ID: to.Ptr("75b0f71e-1272-4f29-a801-29cfa4b34a6e"),
-	// 			LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.7794661Z"); return t}()),
+	// 			LastHeartbeatUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-28T06:21:28.779Z"); return t}()),
 	// 			SpnDetails: &armmigrate.CollectorBodyAgentSpnProperties{
 	// 				ApplicationID: to.Ptr("fc717575-8173-4b21-92a5-658b655e613e"),
 	// 				Audience: to.Ptr("https://72f988bf-86f1-41af-91ab-2d7cd011db47/PortalvCenterbc2fagentauthaadapp"),

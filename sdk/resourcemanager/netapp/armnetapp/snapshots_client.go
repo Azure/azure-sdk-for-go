@@ -32,7 +32,7 @@ type SnapshotsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SnapshotsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SnapshotsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
 		return nil, err
@@ -149,10 +156,13 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SnapshotsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -162,6 +172,10 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, options)
 	if err != nil {
 		return nil, err
@@ -226,6 +240,10 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error) {
 	var err error
+	const operationName = "SnapshotsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, options)
 	if err != nil {
 		return SnapshotsClientGetResponse{}, err
@@ -303,6 +321,7 @@ func (client *SnapshotsClient) NewListPager(resourceGroupName string, accountNam
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *SnapshotsClientListResponse) (SnapshotsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SnapshotsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 			if err != nil {
 				return SnapshotsClientListResponse{}, err
@@ -316,6 +335,7 @@ func (client *SnapshotsClient) NewListPager(resourceGroupName string, accountNam
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -382,10 +402,13 @@ func (client *SnapshotsClient) BeginRestoreFiles(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotsClientRestoreFilesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotsClientRestoreFilesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SnapshotsClientRestoreFilesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -395,6 +418,10 @@ func (client *SnapshotsClient) BeginRestoreFiles(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *SnapshotsClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body SnapshotRestoreFiles, options *SnapshotsClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginRestoreFiles"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restoreFilesCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
 		return nil, err
@@ -469,10 +496,13 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SnapshotsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -482,6 +512,10 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body any, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SnapshotsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
 		return nil, err

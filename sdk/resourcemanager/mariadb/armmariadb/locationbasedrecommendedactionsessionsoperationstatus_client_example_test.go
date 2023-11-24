@@ -37,7 +37,7 @@ func ExampleLocationBasedRecommendedActionSessionsOperationStatusClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RecommendedActionSessionsOperationStatus = armmariadb.RecommendedActionSessionsOperationStatus{
 	// 	Name: to.Ptr("aaaabbbb-cccc-dddd-0000-111122223333"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T17:15:00.000Z"); return t}()),
 	// 	Status: to.Ptr("succeeded"),
 	// }
 }

@@ -32,7 +32,7 @@ type RackSKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RackSKUsClient, error) {
-	cl, err := arm.NewClient(moduleName+".RackSKUsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - RackSKUsClientGetOptions contains the optional parameters for the RackSKUsClient.Get method.
 func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (RackSKUsClientGetResponse, error) {
 	var err error
+	const operationName = "RackSKUsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, rackSKUName, options)
 	if err != nil {
 		return RackSKUsClientGetResponse{}, err
@@ -70,6 +74,9 @@ func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, optio
 // getCreateRequest creates the Get request.
 func (client *RackSKUsClient) getCreateRequest(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/rackSkus/{rackSkuName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if rackSKUName == "" {
 		return nil, errors.New("parameter rackSKUName cannot be empty")
@@ -106,31 +113,29 @@ func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RackSKUsClientListBySubscriptionResponse) (RackSKUsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RackSKUsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return RackSKUsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RackSKUsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RackSKUsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *RackSKUsClient) listBySubscriptionCreateRequest(ctx context.Context, options *RackSKUsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/rackSkus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

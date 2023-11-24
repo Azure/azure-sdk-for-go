@@ -1,5 +1,18 @@
 # Release History
 
+## 4.6.0 (2023-11-24)
+### Features Added
+
+- New enum type `BackendPoolType` with values `BackendPoolTypeNodeIP`, `BackendPoolTypeNodeIPConfiguration`
+- New enum type `Protocol` with values `ProtocolTCP`, `ProtocolUDP`
+- New struct `AgentPoolNetworkProfile`
+- New struct `IPTag`
+- New struct `PortRange`
+- New field `CapacityReservationGroupID`, `NetworkProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `CapacityReservationGroupID`, `NetworkProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `BackendPoolType` in struct `ManagedClusterLoadBalancerProfile`
+
+
 ## 4.6.0-beta.1 (2023-11-24)
 ### Features Added
 

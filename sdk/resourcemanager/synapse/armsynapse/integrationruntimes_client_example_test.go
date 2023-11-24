@@ -225,7 +225,7 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 	// 		DataFactoryName: to.Ptr("exampleWorkspaceName"),
 	// 		State: to.Ptr(armsynapse.IntegrationRuntimeStateStarted),
 	// 		TypeProperties: &armsynapse.ManagedIntegrationRuntimeStatusTypeProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-13T21:11:01.8695494Z"); return t}()),
+	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-13T21:11:01.869Z"); return t}()),
 	// 			Nodes: []*armsynapse.ManagedIntegrationRuntimeNode{
 	// 			},
 	// 			OtherErrors: []*armsynapse.ManagedIntegrationRuntimeError{

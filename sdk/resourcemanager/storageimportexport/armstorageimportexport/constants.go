@@ -9,7 +9,7 @@
 package armstorageimportexport
 
 const (
-	moduleName    = "armstorageimportexport"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storageimportexport/armstorageimportexport"
 	moduleVersion = "v0.7.0"
 )
 

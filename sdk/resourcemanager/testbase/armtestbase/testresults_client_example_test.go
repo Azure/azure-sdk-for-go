@@ -80,7 +80,7 @@ func ExampleTestResultsClient_NewListPager() {
 		// 				PackageID: to.Ptr("b5ed1bcc-e74c-40d8-82f2-1773f616f93e"),
 		// 				PackageVersion: to.Ptr("3.0.1"),
 		// 				ReleaseName: to.Ptr("2020.11B"),
-		// 				ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-28T17:30:00Z"); return t}()),
+		// 				ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-28T17:30:00.000Z"); return t}()),
 		// 				TestRunTime: to.Ptr("00:21:30"),
 		// 				TestStatus: to.Ptr(armtestbase.TestStatusCompleted),
 		// 				TestType: to.Ptr("Out of box test"),
@@ -124,7 +124,7 @@ func ExampleTestResultsClient_NewListPager() {
 		// 				PackageID: to.Ptr("b5ed1bcc-e74c-40d8-82f2-1773f616f93e"),
 		// 				PackageVersion: to.Ptr("3.0.1"),
 		// 				ReleaseName: to.Ptr("2020.11B"),
-		// 				ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-28T17:30:00Z"); return t}()),
+		// 				ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-28T17:30:00.000Z"); return t}()),
 		// 				TestRunTime: to.Ptr("01:00:00"),
 		// 				TestStatus: to.Ptr(armtestbase.TestStatusTestFailure),
 		// 				TestType: to.Ptr("Out of box test"),
@@ -190,7 +190,7 @@ func ExampleTestResultsClient_Get() {
 	// 		PackageID: to.Ptr("b5ed1bcc-e74c-40d8-82f2-1773f616f93e"),
 	// 		PackageVersion: to.Ptr("3.0.1"),
 	// 		ReleaseName: to.Ptr("2020.12B"),
-	// 		ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+	// 		ReleaseVersionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 	// 		TestRunTime: to.Ptr("00:21:30"),
 	// 		TestStatus: to.Ptr(armtestbase.TestStatusCompleted),
 	// 		TestType: to.Ptr("Out of box test"),
@@ -218,7 +218,7 @@ func ExampleTestResultsClient_GetDownloadURL() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DownloadURLResponse = armtestbase.DownloadURLResponse{
 	// 	DownloadURL: to.Ptr("test result download URL"),
-	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00Z"); return t}()),
+	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00.000Z"); return t}()),
 	// }
 }
 
@@ -242,6 +242,6 @@ func ExampleTestResultsClient_GetVideoDownloadURL() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DownloadURLResponse = armtestbase.DownloadURLResponse{
 	// 	DownloadURL: to.Ptr("test result video download URL"),
-	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00Z"); return t}()),
+	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00.000Z"); return t}()),
 	// }
 }

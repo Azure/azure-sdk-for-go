@@ -81,9 +81,9 @@ func ExampleWorkflowsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/3a048283-338f-4002-a9dd-a50fdadcb392/resourceGroups/SampleResourceGroup_1/providers/Microsoft.StorageSync/storageSyncServices/SampleStorageSyncService_1/workflows/828219ea-083e-48b5-89ea-8fd9991b2e75"),
 	// 	Properties: &armstoragesync.WorkflowProperties{
 	// 		CommandName: to.Ptr("ICreateServerEndpointWorkflow"),
-	// 		CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 		CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.195Z"); return t}()),
 	// 		LastOperationID: to.Ptr("\"fe680c98-5725-49c8-b0dc-5e29745f752b\""),
-	// 		LastStatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 		LastStatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.195Z"); return t}()),
 	// 		LastStepName: to.Ptr("runServerJob"),
 	// 		Operation: to.Ptr(armstoragesync.OperationDirectionDo),
 	// 		Status: to.Ptr(armstoragesync.WorkflowStatusSucceeded),

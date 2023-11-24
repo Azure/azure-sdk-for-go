@@ -30,7 +30,7 @@ type LocationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LocationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +49,10 @@ func NewLocationsClient(credential azcore.TokenCredential, options *arm.ClientOp
 //   - options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, locationName string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
 	var err error
+	const operationName = "LocationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return LocationsClientGetResponse{}, err
@@ -106,6 +110,7 @@ func (client *LocationsClient) NewListPager(options *LocationsClientListOptions)
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *LocationsClientListResponse) (LocationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LocationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return LocationsClientListResponse{}, err
@@ -119,6 +124,7 @@ func (client *LocationsClient) NewListPager(options *LocationsClientListOptions)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

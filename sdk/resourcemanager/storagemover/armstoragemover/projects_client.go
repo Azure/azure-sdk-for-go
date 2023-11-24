@@ -32,7 +32,7 @@ type ProjectsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProjectsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - ProjectsClientCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.CreateOrUpdate method.
 func (client *ProjectsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, project Project, options *ProjectsClientCreateOrUpdateOptions) (ProjectsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProjectsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, project, options)
 	if err != nil {
 		return ProjectsClientCreateOrUpdateResponse{}, err
@@ -127,10 +131,13 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProjectsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProjectsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProjectsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -140,6 +147,10 @@ func (client *ProjectsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-10-01
 func (client *ProjectsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, options *ProjectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProjectsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +206,10 @@ func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
 func (client *ProjectsClient) Get(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, options *ProjectsClientGetOptions) (ProjectsClientGetResponse, error) {
 	var err error
+	const operationName = "ProjectsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, options)
 	if err != nil {
 		return ProjectsClientGetResponse{}, err
@@ -262,25 +277,20 @@ func (client *ProjectsClient) NewListPager(resourceGroupName string, storageMove
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProjectsClientListResponse) (ProjectsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProjectsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, storageMoverName, options)
+			}, nil)
 			if err != nil {
 				return ProjectsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProjectsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProjectsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -329,6 +339,10 @@ func (client *ProjectsClient) listHandleResponse(resp *http.Response) (ProjectsC
 //   - options - ProjectsClientUpdateOptions contains the optional parameters for the ProjectsClient.Update method.
 func (client *ProjectsClient) Update(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, project ProjectUpdateParameters, options *ProjectsClientUpdateOptions) (ProjectsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ProjectsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, project, options)
 	if err != nil {
 		return ProjectsClientUpdateResponse{}, err

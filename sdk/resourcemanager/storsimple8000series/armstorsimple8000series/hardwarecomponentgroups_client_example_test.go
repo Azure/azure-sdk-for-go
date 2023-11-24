@@ -56,7 +56,7 @@ func ExampleHardwareComponentGroupsClient_NewListByDevicePager() {
 		// 						StatusDisplayName: to.Ptr("Ok"),
 		// 				}},
 		// 				DisplayName: to.Ptr("CONTROLLER 0 COMPONENTS"),
-		// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T21:49:05.3244117Z"); return t}()),
+		// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-21T21:49:05.324Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

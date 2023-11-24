@@ -28,7 +28,7 @@ func ExampleLocationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewLocationsClient().NewListPager(nil)
+	pager := clientFactory.NewLocationsClient().NewListPager(&armstorageimportexport.LocationsClientListOptions{AcceptLanguage: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -96,7 +96,7 @@ func ExampleLocationsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewLocationsClient().Get(ctx, "West US", nil)
+	res, err := clientFactory.NewLocationsClient().Get(ctx, "West US", &armstorageimportexport.LocationsClientGetOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

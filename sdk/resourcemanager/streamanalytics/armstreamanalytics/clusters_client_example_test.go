@@ -64,7 +64,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 		CapacityAllocated: to.Ptr[int32](0),
 	// 		CapacityAssigned: to.Ptr[int32](0),
 	// 		ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 	// 	},
 	// 	SKU: &armstreamanalytics.ClusterSKU{
@@ -114,7 +114,7 @@ func ExampleClustersClient_BeginUpdate() {
 	// 		CapacityAllocated: to.Ptr[int32](36),
 	// 		CapacityAssigned: to.Ptr[int32](48),
 	// 		ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 	// 	},
 	// 	SKU: &armstreamanalytics.ClusterSKU{
@@ -155,7 +155,7 @@ func ExampleClustersClient_Get() {
 	// 		CapacityAllocated: to.Ptr[int32](48),
 	// 		CapacityAssigned: to.Ptr[int32](96),
 	// 		ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 	// 	},
 	// 	SKU: &armstreamanalytics.ClusterSKU{
@@ -223,7 +223,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 				CapacityAllocated: to.Ptr[int32](48),
 		// 				CapacityAssigned: to.Ptr[int32](96),
 		// 				ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 		// 			},
 		// 			SKU: &armstreamanalytics.ClusterSKU{
@@ -244,7 +244,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 				CapacityAllocated: to.Ptr[int32](48),
 		// 				CapacityAssigned: to.Ptr[int32](96),
 		// 				ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 		// 			},
 		// 			SKU: &armstreamanalytics.ClusterSKU{
@@ -293,7 +293,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				CapacityAllocated: to.Ptr[int32](48),
 		// 				CapacityAssigned: to.Ptr[int32](96),
 		// 				ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 		// 			},
 		// 			SKU: &armstreamanalytics.ClusterSKU{
@@ -314,7 +314,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				CapacityAllocated: to.Ptr[int32](48),
 		// 				CapacityAssigned: to.Ptr[int32](96),
 		// 				ClusterID: to.Ptr("B01C67EF-4739-4DDD-9FB2-427EB43DE839"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-25T01:00:00.000Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armstreamanalytics.ClusterProvisioningStateSucceeded),
 		// 			},
 		// 			SKU: &armstreamanalytics.ClusterSKU{

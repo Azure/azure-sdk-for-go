@@ -331,8 +331,8 @@ func ExampleManagersClient_UploadRegistrationCertificate() {
 	// 		ServicePrincipalObjectID: to.Ptr("86d19f0e-82b7-49bf-a16e-1fbb4e5288d5"),
 	// 		Subject: to.Ptr("CN=Windows Azure Tools"),
 	// 		Thumbprint: to.Ptr("0526BD0123A52EABDB586AF0C080ABEEF3BB4240"),
-	// 		ValidFrom: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-10T15:36:40+00:00"); return t}()),
-	// 		ValidTo: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:46:40+00:00"); return t}()),
+	// 		ValidFrom: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-10T15:36:40.000Z"); return t}()),
+	// 		ValidTo: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:46:40.000Z"); return t}()),
 	// 	},
 	// }
 }
@@ -551,10 +551,10 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Name: to.Ptr("Manager"),
 		// 					Value: to.Ptr("hAzureSDKOperations"),
 		// 			}},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00.000Z"); return t}()),
 		// 			PrimaryAggregation: to.Ptr(armstorsimple1200series.MetricAggregationTypeAverage),
 		// 			ResourceID: to.Ptr("https://pod01-cis2.sea.storsimple.windowsazure.com/managers/4239154091695873374"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-04T18:30:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-04T18:30:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("1.00:00:00"),
 		// 			Unit: to.Ptr(armstorsimple1200series.MetricUnitBytes),
 		// 			Values: []*armstorsimple1200series.MetricData{
@@ -564,7 +564,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
 		// 					Sum: to.Ptr[float64](0),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-07T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-07T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](1107165184),
@@ -572,7 +572,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](1107165184),
 		// 					Minimum: to.Ptr[float64](1107165184),
 		// 					Sum: to.Ptr[float64](1107165184),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](928645120),
@@ -580,7 +580,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](928645120),
 		// 					Minimum: to.Ptr[float64](928645120),
 		// 					Sum: to.Ptr[float64](928645120),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](0),
@@ -588,7 +588,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
 		// 					Sum: to.Ptr[float64](0),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](884342784),
@@ -596,7 +596,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](884342784),
 		// 					Minimum: to.Ptr[float64](884342784),
 		// 					Sum: to.Ptr[float64](884342784),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T00:00:00.000Z"); return t}()),
 		// 			}},
 		// 		},
 		// 		{
@@ -610,10 +610,10 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Name: to.Ptr("Manager"),
 		// 					Value: to.Ptr("hAzureSDKOperations"),
 		// 			}},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00.000Z"); return t}()),
 		// 			PrimaryAggregation: to.Ptr(armstorsimple1200series.MetricAggregationTypeAverage),
 		// 			ResourceID: to.Ptr("https://pod01-cis2.sea.storsimple.windowsazure.com/managers/4239154091695873374"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-04T18:30:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-04T18:30:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("1.00:00:00"),
 		// 			Unit: to.Ptr(armstorsimple1200series.MetricUnitBytes),
 		// 			Values: []*armstorsimple1200series.MetricData{
@@ -623,7 +623,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
 		// 					Sum: to.Ptr[float64](0),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-07T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-07T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](0),
@@ -631,7 +631,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
 		// 					Sum: to.Ptr[float64](0),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](298096),
@@ -639,7 +639,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](298096),
 		// 					Minimum: to.Ptr[float64](298096),
 		// 					Sum: to.Ptr[float64](298096),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](274728),
@@ -647,7 +647,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](274728),
 		// 					Minimum: to.Ptr[float64](274728),
 		// 					Sum: to.Ptr[float64](274728),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T00:00:00.000Z"); return t}()),
 		// 				},
 		// 				{
 		// 					Average: to.Ptr[float64](231725),
@@ -655,7 +655,7 @@ func ExampleManagersClient_NewListMetricsPager() {
 		// 					Maximum: to.Ptr[float64](231725),
 		// 					Minimum: to.Ptr[float64](231725),
 		// 					Sum: to.Ptr[float64](231725),
-		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T00:00:00Z"); return t}()),
+		// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T00:00:00.000Z"); return t}()),
 		// 			}},
 		// 	}},
 		// }

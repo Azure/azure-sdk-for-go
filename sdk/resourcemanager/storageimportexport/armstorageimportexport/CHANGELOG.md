@@ -1,9 +1,9 @@
 # Release History
 
-## 0.7.0 (Unreleased)
+## 0.7.0 (2023-11-24)
+### Features Added
 
-### Breaking Changes
-
+- Support for test fakes and OpenTelemetry trace spans.
 * The `acceptLanguage` parameter has been moved out of client constructors and into each method's options type.
 
 ## 0.6.1 (2023-04-14)

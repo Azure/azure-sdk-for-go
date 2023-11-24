@@ -59,7 +59,7 @@ func ExampleSQLPoolRestorePointsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Synapse/workspaces/testserver/sqlPools/testDatabase/restorePoints/131553636140000000"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsynapse.RestorePointProperties{
-		// 				RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:40:14Z"); return t}()),
+		// 				RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:40:14.000Z"); return t}()),
 		// 				RestorePointLabel: to.Ptr("mylabel2"),
 		// 				RestorePointType: to.Ptr(armsynapse.RestorePointTypeDISCRETE),
 		// 			},
@@ -70,7 +70,7 @@ func ExampleSQLPoolRestorePointsClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Synapse/workspaces/testserver/sqlPools/testDatabase/restorePoints/131553619750000000"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsynapse.RestorePointProperties{
-		// 				RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:12:55Z"); return t}()),
+		// 				RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:12:55.000Z"); return t}()),
 		// 				RestorePointType: to.Ptr(armsynapse.RestorePointTypeDISCRETE),
 		// 			},
 		// 	}},

@@ -62,7 +62,7 @@ func ExampleDeploymentsClient_NewListByDeviceGroupPager() {
 		// 							URI: to.Ptr("imageUri"),
 		// 						},
 		// 				}},
-		// 				DeploymentDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T21:51:39.2698729Z"); return t}()),
+		// 				DeploymentDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T21:51:39.269Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

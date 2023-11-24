@@ -32,7 +32,7 @@ type ApplicationDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewApplicationDefinitionsClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ApplicationDefinitionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientCreateOrUpdateOptions) (ApplicationDefinitionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
 		return ApplicationDefinitionsClientCreateOrUpdateResponse{}, err
@@ -119,6 +123,10 @@ func (client *ApplicationDefinitionsClient) createOrUpdateHandleResponse(resp *h
 //     method.
 func (client *ApplicationDefinitionsClient) CreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinition, options *ApplicationDefinitionsClientCreateOrUpdateByIDOptions) (ApplicationDefinitionsClientCreateOrUpdateByIDResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.CreateOrUpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
 		return ApplicationDefinitionsClientCreateOrUpdateByIDResponse{}, err
@@ -183,6 +191,10 @@ func (client *ApplicationDefinitionsClient) createOrUpdateByIDHandleResponse(res
 //     method.
 func (client *ApplicationDefinitionsClient) Delete(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientDeleteOptions) (ApplicationDefinitionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
 		return ApplicationDefinitionsClientDeleteResponse{}, err
@@ -234,6 +246,10 @@ func (client *ApplicationDefinitionsClient) deleteCreateRequest(ctx context.Cont
 //     method.
 func (client *ApplicationDefinitionsClient) DeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientDeleteByIDOptions) (ApplicationDefinitionsClientDeleteByIDResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.DeleteByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
 		return ApplicationDefinitionsClientDeleteByIDResponse{}, err
@@ -285,6 +301,10 @@ func (client *ApplicationDefinitionsClient) deleteByIDCreateRequest(ctx context.
 //     method.
 func (client *ApplicationDefinitionsClient) Get(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientGetOptions) (ApplicationDefinitionsClientGetResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
 		return ApplicationDefinitionsClientGetResponse{}, err
@@ -346,6 +366,10 @@ func (client *ApplicationDefinitionsClient) getHandleResponse(resp *http.Respons
 //     method.
 func (client *ApplicationDefinitionsClient) GetByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, options *ApplicationDefinitionsClientGetByIDOptions) (ApplicationDefinitionsClientGetByIDResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.GetByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, options)
 	if err != nil {
 		return ApplicationDefinitionsClientGetByIDResponse{}, err
@@ -409,25 +433,20 @@ func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resource
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationDefinitionsClientListByResourceGroupResponse) (ApplicationDefinitionsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationDefinitionsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ApplicationDefinitionsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationDefinitionsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationDefinitionsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -473,25 +492,20 @@ func (client *ApplicationDefinitionsClient) NewListBySubscriptionPager(options *
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationDefinitionsClientListBySubscriptionResponse) (ApplicationDefinitionsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationDefinitionsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ApplicationDefinitionsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationDefinitionsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationDefinitionsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -533,6 +547,10 @@ func (client *ApplicationDefinitionsClient) listBySubscriptionHandleResponse(res
 //     method.
 func (client *ApplicationDefinitionsClient) Update(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, options *ApplicationDefinitionsClientUpdateOptions) (ApplicationDefinitionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
 		return ApplicationDefinitionsClientUpdateResponse{}, err
@@ -598,6 +616,10 @@ func (client *ApplicationDefinitionsClient) updateHandleResponse(resp *http.Resp
 //     method.
 func (client *ApplicationDefinitionsClient) UpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters ApplicationDefinitionPatchable, options *ApplicationDefinitionsClientUpdateByIDOptions) (ApplicationDefinitionsClientUpdateByIDResponse, error) {
 	var err error
+	const operationName = "ApplicationDefinitionsClient.UpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByIDCreateRequest(ctx, resourceGroupName, applicationDefinitionName, parameters, options)
 	if err != nil {
 		return ApplicationDefinitionsClientUpdateByIDResponse{}, err

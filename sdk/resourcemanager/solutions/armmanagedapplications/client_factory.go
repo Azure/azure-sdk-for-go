@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,21 +37,25 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewApplicationClient creates a new instance of ApplicationClient.
 func (c *ClientFactory) NewApplicationClient() *ApplicationClient {
 	subClient, _ := NewApplicationClient(c.credential, c.options)
 	return subClient
 }
 
+// NewApplicationDefinitionsClient creates a new instance of ApplicationDefinitionsClient.
 func (c *ClientFactory) NewApplicationDefinitionsClient() *ApplicationDefinitionsClient {
 	subClient, _ := NewApplicationDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewApplicationsClient creates a new instance of ApplicationsClient.
 func (c *ClientFactory) NewApplicationsClient() *ApplicationsClient {
 	subClient, _ := NewApplicationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewJitRequestsClient creates a new instance of JitRequestsClient.
 func (c *ClientFactory) NewJitRequestsClient() *JitRequestsClient {
 	subClient, _ := NewJitRequestsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

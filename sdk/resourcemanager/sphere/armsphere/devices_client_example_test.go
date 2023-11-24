@@ -81,8 +81,8 @@ func ExampleDevicesClient_Get() {
 	// 		ChipSKU: to.Ptr("MyChipSku1"),
 	// 		LastAvailableOsVersion: to.Ptr("AvailableOsVersion1"),
 	// 		LastInstalledOsVersion: to.Ptr("InstalledOsVersion1"),
-	// 		LastOsUpdateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T23:54:21.96Z"); return t}()),
-	// 		LastUpdateRequestUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-01T23:54:21.96Z"); return t}()),
+	// 		LastOsUpdateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T23:54:21.960Z"); return t}()),
+	// 		LastUpdateRequestUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-01T23:54:21.960Z"); return t}()),
 	// 	},
 	// }
 }
@@ -147,8 +147,8 @@ func ExampleDevicesClient_BeginUpdate() {
 	// 		ChipSKU: to.Ptr("MyChipSku1"),
 	// 		LastAvailableOsVersion: to.Ptr("AvailableOsVersion1"),
 	// 		LastInstalledOsVersion: to.Ptr("InstalledOsVersion1"),
-	// 		LastOsUpdateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-30T23:54:21.96Z"); return t}()),
-	// 		LastUpdateRequestUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-01T23:54:21.96Z"); return t}()),
+	// 		LastOsUpdateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-30T23:54:21.960Z"); return t}()),
+	// 		LastUpdateRequestUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-01T23:54:21.960Z"); return t}()),
 	// 	},
 	// }
 }

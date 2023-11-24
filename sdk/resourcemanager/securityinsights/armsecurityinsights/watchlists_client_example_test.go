@@ -49,7 +49,7 @@ func ExampleWatchlistsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Properties: &armsecurityinsights.WatchlistProperties{
 		// 				Description: to.Ptr("Watchlist from CSV content"),
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.7746089+00:00"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.774Z"); return t}()),
 		// 				CreatedBy: &armsecurityinsights.UserInfo{
 		// 					Name: to.Ptr("john doe"),
 		// 					Email: to.Ptr("john@contoso.com"),
@@ -65,7 +65,7 @@ func ExampleWatchlistsClient_NewListPager() {
 		// 					Provider: to.Ptr("Microsoft"),
 		// 					Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 		// 					TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-		// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
+		// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57.000Z"); return t}()),
 		// 					UpdatedBy: &armsecurityinsights.UserInfo{
 		// 						Name: to.Ptr("john doe"),
 		// 						Email: to.Ptr("john@contoso.com"),
@@ -105,7 +105,7 @@ func ExampleWatchlistsClient_Get() {
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.WatchlistProperties{
 	// 		Description: to.Ptr("Watchlist from CSV content"),
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.7746089+00:00"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.774Z"); return t}()),
 	// 		CreatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
@@ -121,7 +121,7 @@ func ExampleWatchlistsClient_Get() {
 	// 			Provider: to.Ptr("Microsoft"),
 	// 			Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 			TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57.000Z"); return t}()),
 	// 			UpdatedBy: &armsecurityinsights.UserInfo{
 	// 				Name: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john@contoso.com"),
@@ -188,7 +188,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlistAndBulkCreat
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.WatchlistProperties{
 	// 		Description: to.Ptr("Watchlist from CSV content"),
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.7746089+00:00"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.774Z"); return t}()),
 	// 		CreatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
@@ -200,7 +200,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlistAndBulkCreat
 	// 		Provider: to.Ptr("Microsoft"),
 	// 		Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
+	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57.000Z"); return t}()),
 	// 		UpdatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
@@ -247,7 +247,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlist() {
 	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 	Properties: &armsecurityinsights.WatchlistProperties{
 	// 		Description: to.Ptr("Watchlist from CSV content"),
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.7746089+00:00"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:54.774Z"); return t}()),
 	// 		CreatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),
@@ -259,7 +259,7 @@ func ExampleWatchlistsClient_CreateOrUpdate_createOrUpdateAWatchlist() {
 	// 		Provider: to.Ptr("Microsoft"),
 	// 		Source: to.Ptr(armsecurityinsights.SourceLocalFile),
 	// 		TenantID: to.Ptr("f686d426-8d16-42db-81b7-ab578e110ccd"),
-	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57+00:00"); return t}()),
+	// 		Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-28T00:26:57.000Z"); return t}()),
 	// 		UpdatedBy: &armsecurityinsights.UserInfo{
 	// 			Name: to.Ptr("john doe"),
 	// 			Email: to.Ptr("john@contoso.com"),

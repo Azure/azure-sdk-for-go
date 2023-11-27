@@ -20,63 +20,63 @@ import (
 	"strings"
 )
 
-// PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
-// Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
-type PrivateLinkResourcesClient struct {
+// NetworkSecurityPerimeterConfigurationClient contains the methods for the NetworkSecurityPerimeterConfiguration group.
+// Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationClient() instead.
+type NetworkSecurityPerimeterConfigurationClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
+// NewNetworkSecurityPerimeterConfigurationClient creates a new instance of NetworkSecurityPerimeterConfigurationClient with the specified values.
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+func NewNetworkSecurityPerimeterConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PrivateLinkResourcesClient{
+	client := &NetworkSecurityPerimeterConfigurationClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets lists of resources that supports Privatelinks.
+// List - Gets list of current NetworkSecurityPerimeterConfiguration for Namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
+//   - options - NetworkSecurityPerimeterConfigurationClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationClient.List
 //     method.
-func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationClient) List(ctx context.Context, resourceGroupName string, namespaceName string, options *NetworkSecurityPerimeterConfigurationClientListOptions) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
 	var err error
-	const operationName = "PrivateLinkResourcesClient.Get"
+	const operationName = "NetworkSecurityPerimeterConfigurationClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, options)
+	req, err := client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
-		return PrivateLinkResourcesClientGetResponse{}, err
+		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PrivateLinkResourcesClientGetResponse{}, err
+		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientGetResponse{}, err
+		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp)
 	return resp, err
 }
 
-// getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/privateLinkResources"
+// listCreateRequest creates the List request.
+func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NetworkSecurityPerimeterConfigurationClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -100,11 +100,11 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
-	result := PrivateLinkResourcesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesListResult); err != nil {
-		return PrivateLinkResourcesClientGetResponse{}, err
+// listHandleResponse handles the List response.
+func (client *NetworkSecurityPerimeterConfigurationClient) listHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
+	result := NetworkSecurityPerimeterConfigurationClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationList); err != nil {
+		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
 	return result, nil
 }

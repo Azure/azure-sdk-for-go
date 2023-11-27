@@ -17,69 +17,68 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
-// SchemaRegistryClient contains the methods for the SchemaRegistry group.
-// Don't use this type directly, use NewSchemaRegistryClient() instead.
-type SchemaRegistryClient struct {
+// ApplicationGroupClient contains the methods for the ApplicationGroup group.
+// Don't use this type directly, use NewApplicationGroupClient() instead.
+type ApplicationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSchemaRegistryClient creates a new instance of SchemaRegistryClient with the specified values.
+// NewApplicationGroupClient creates a new instance of ApplicationGroupClient with the specified values.
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewSchemaRegistryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchemaRegistryClient, error) {
+func NewApplicationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGroupClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SchemaRegistryClient{
+	client := &ApplicationGroupClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate -
+// CreateOrUpdateApplicationGroup - Creates or updates an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - schemaGroupName - The Schema Group name
-//   - parameters - Parameters supplied to create an Event Hub resource.
-//   - options - SchemaRegistryClientCreateOrUpdateOptions contains the optional parameters for the SchemaRegistryClient.CreateOrUpdate
+//   - applicationGroupName - The Application Group name
+//   - parameters - The ApplicationGroup.
+//   - options - ApplicationGroupClientCreateOrUpdateApplicationGroupOptions contains the optional parameters for the ApplicationGroupClient.CreateOrUpdateApplicationGroup
 //     method.
-func (client *SchemaRegistryClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, parameters SchemaGroup, options *SchemaRegistryClientCreateOrUpdateOptions) (SchemaRegistryClientCreateOrUpdateResponse, error) {
+func (client *ApplicationGroupClient) CreateOrUpdateApplicationGroup(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, parameters ApplicationGroup, options *ApplicationGroupClientCreateOrUpdateApplicationGroupOptions) (ApplicationGroupClientCreateOrUpdateApplicationGroupResponse, error) {
 	var err error
-	const operationName = "SchemaRegistryClient.CreateOrUpdate"
+	const operationName = "ApplicationGroupClient.CreateOrUpdateApplicationGroup"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, schemaGroupName, parameters, options)
+	req, err := client.createOrUpdateApplicationGroupCreateRequest(ctx, resourceGroupName, namespaceName, applicationGroupName, parameters, options)
 	if err != nil {
-		return SchemaRegistryClientCreateOrUpdateResponse{}, err
+		return ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SchemaRegistryClientCreateOrUpdateResponse{}, err
+		return ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SchemaRegistryClientCreateOrUpdateResponse{}, err
+		return ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateApplicationGroupHandleResponse(httpResp)
 	return resp, err
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SchemaRegistryClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, parameters SchemaGroup, options *SchemaRegistryClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}"
+// createOrUpdateApplicationGroupCreateRequest creates the CreateOrUpdateApplicationGroup request.
+func (client *ApplicationGroupClient) createOrUpdateApplicationGroupCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, parameters ApplicationGroup, options *ApplicationGroupClientCreateOrUpdateApplicationGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -88,10 +87,10 @@ func (client *SchemaRegistryClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if schemaGroupName == "" {
-		return nil, errors.New("parameter schemaGroupName cannot be empty")
+	if applicationGroupName == "" {
+		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaGroupName}", url.PathEscape(schemaGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -110,47 +109,47 @@ func (client *SchemaRegistryClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SchemaRegistryClient) createOrUpdateHandleResponse(resp *http.Response) (SchemaRegistryClientCreateOrUpdateResponse, error) {
-	result := SchemaRegistryClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroup); err != nil {
-		return SchemaRegistryClientCreateOrUpdateResponse{}, err
+// createOrUpdateApplicationGroupHandleResponse handles the CreateOrUpdateApplicationGroup response.
+func (client *ApplicationGroupClient) createOrUpdateApplicationGroupHandleResponse(resp *http.Response) (ApplicationGroupClientCreateOrUpdateApplicationGroupResponse, error) {
+	result := ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroup); err != nil {
+		return ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete -
+// Delete - Deletes an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - schemaGroupName - The Schema Group name
-//   - options - SchemaRegistryClientDeleteOptions contains the optional parameters for the SchemaRegistryClient.Delete method.
-func (client *SchemaRegistryClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, options *SchemaRegistryClientDeleteOptions) (SchemaRegistryClientDeleteResponse, error) {
+//   - applicationGroupName - The Application Group name
+//   - options - ApplicationGroupClientDeleteOptions contains the optional parameters for the ApplicationGroupClient.Delete method.
+func (client *ApplicationGroupClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientDeleteOptions) (ApplicationGroupClientDeleteResponse, error) {
 	var err error
-	const operationName = "SchemaRegistryClient.Delete"
+	const operationName = "ApplicationGroupClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, schemaGroupName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, applicationGroupName, options)
 	if err != nil {
-		return SchemaRegistryClientDeleteResponse{}, err
+		return ApplicationGroupClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SchemaRegistryClientDeleteResponse{}, err
+		return ApplicationGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return SchemaRegistryClientDeleteResponse{}, err
+		return ApplicationGroupClientDeleteResponse{}, err
 	}
-	return SchemaRegistryClientDeleteResponse{}, nil
+	return ApplicationGroupClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SchemaRegistryClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, options *SchemaRegistryClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}"
+func (client *ApplicationGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -159,10 +158,10 @@ func (client *SchemaRegistryClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if schemaGroupName == "" {
-		return nil, errors.New("parameter schemaGroupName cannot be empty")
+	if applicationGroupName == "" {
+		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaGroupName}", url.PathEscape(schemaGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -178,39 +177,39 @@ func (client *SchemaRegistryClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// Get -
+// Get - Gets an ApplicationGroup for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2022-10-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - schemaGroupName - The Schema Group name
-//   - options - SchemaRegistryClientGetOptions contains the optional parameters for the SchemaRegistryClient.Get method.
-func (client *SchemaRegistryClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, options *SchemaRegistryClientGetOptions) (SchemaRegistryClientGetResponse, error) {
+//   - applicationGroupName - The Application Group name
+//   - options - ApplicationGroupClientGetOptions contains the optional parameters for the ApplicationGroupClient.Get method.
+func (client *ApplicationGroupClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientGetOptions) (ApplicationGroupClientGetResponse, error) {
 	var err error
-	const operationName = "SchemaRegistryClient.Get"
+	const operationName = "ApplicationGroupClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, schemaGroupName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, namespaceName, applicationGroupName, options)
 	if err != nil {
-		return SchemaRegistryClientGetResponse{}, err
+		return ApplicationGroupClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SchemaRegistryClientGetResponse{}, err
+		return ApplicationGroupClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SchemaRegistryClientGetResponse{}, err
+		return ApplicationGroupClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SchemaRegistryClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, schemaGroupName string, options *SchemaRegistryClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups/{schemaGroupName}"
+func (client *ApplicationGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, applicationGroupName string, options *ApplicationGroupClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups/{applicationGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -219,10 +218,10 @@ func (client *SchemaRegistryClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter namespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if schemaGroupName == "" {
-		return nil, errors.New("parameter schemaGroupName cannot be empty")
+	if applicationGroupName == "" {
+		return nil, errors.New("parameter applicationGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaGroupName}", url.PathEscape(schemaGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{applicationGroupName}", url.PathEscape(applicationGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -239,28 +238,28 @@ func (client *SchemaRegistryClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchemaRegistryClient) getHandleResponse(resp *http.Response) (SchemaRegistryClientGetResponse, error) {
-	result := SchemaRegistryClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroup); err != nil {
-		return SchemaRegistryClientGetResponse{}, err
+func (client *ApplicationGroupClient) getHandleResponse(resp *http.Response) (ApplicationGroupClientGetResponse, error) {
+	result := ApplicationGroupClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroup); err != nil {
+		return ApplicationGroupClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByNamespacePager - Gets all the Schema Groups in a Namespace.
+// NewListByNamespacePager - Gets a list of application groups for a Namespace.
 //
 // Generated from API version 2022-10-01-preview
 //   - resourceGroupName - Name of the resource group within the azure subscription.
 //   - namespaceName - The Namespace name
-//   - options - SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.NewListByNamespacePager
+//   - options - ApplicationGroupClientListByNamespaceOptions contains the optional parameters for the ApplicationGroupClient.NewListByNamespacePager
 //     method.
-func (client *SchemaRegistryClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SchemaRegistryClientListByNamespaceResponse]{
-		More: func(page SchemaRegistryClientListByNamespaceResponse) bool {
+func (client *ApplicationGroupClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *ApplicationGroupClientListByNamespaceOptions) *runtime.Pager[ApplicationGroupClientListByNamespaceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApplicationGroupClientListByNamespaceResponse]{
+		More: func(page ApplicationGroupClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SchemaRegistryClientListByNamespaceResponse) (SchemaRegistryClientListByNamespaceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchemaRegistryClient.NewListByNamespacePager")
+		Fetcher: func(ctx context.Context, page *ApplicationGroupClientListByNamespaceResponse) (ApplicationGroupClientListByNamespaceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGroupClient.NewListByNamespacePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -269,7 +268,7 @@ func (client *SchemaRegistryClient) NewListByNamespacePager(resourceGroupName st
 				return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
 			}, nil)
 			if err != nil {
-				return SchemaRegistryClientListByNamespaceResponse{}, err
+				return ApplicationGroupClientListByNamespaceResponse{}, err
 			}
 			return client.listByNamespaceHandleResponse(resp)
 		},
@@ -278,8 +277,8 @@ func (client *SchemaRegistryClient) NewListByNamespacePager(resourceGroupName st
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *SchemaRegistryClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/schemagroups"
+func (client *ApplicationGroupClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *ApplicationGroupClientListByNamespaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/applicationGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -298,22 +297,16 @@ func (client *SchemaRegistryClient) listByNamespaceCreateRequest(ctx context.Con
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-10-01-preview")
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *SchemaRegistryClient) listByNamespaceHandleResponse(resp *http.Response) (SchemaRegistryClientListByNamespaceResponse, error) {
-	result := SchemaRegistryClientListByNamespaceResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaGroupListResult); err != nil {
-		return SchemaRegistryClientListByNamespaceResponse{}, err
+func (client *ApplicationGroupClient) listByNamespaceHandleResponse(resp *http.Response) (ApplicationGroupClientListByNamespaceResponse, error) {
+	result := ApplicationGroupClientListByNamespaceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGroupListResult); err != nil {
+		return ApplicationGroupClientListByNamespaceResponse{}, err
 	}
 	return result, nil
 }

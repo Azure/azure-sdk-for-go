@@ -260,6 +260,12 @@ type ManifestAttributes struct {
 	// Writeable properties of the resource
 	ChangeableAttributes *ManifestWriteableProperties `json:"changeableAttributes,omitempty"`
 
+	// Config blob media type
+	ConfigMediaType *string `json:"configMediaType,omitempty"`
+
+	// Media type for this Manifest
+	MediaType *string `json:"mediaType,omitempty"`
+
 	// READ-ONLY; CPU architecture
 	Architecture *ArtifactArchitecture `json:"architecture,omitempty" azure:"ro"`
 

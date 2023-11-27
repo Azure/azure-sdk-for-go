@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -31,6 +31,10 @@ type BackupsServer struct {
 	// NewListByServerPager is the fake for method BackupsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armmysqlflexibleservers.BackupsClientListByServerOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.BackupsClientListByServerResponse])
+
+	// Put is the fake for method BackupsClient.Put
+	// HTTP status codes to indicate success: http.StatusOK
+	Put func(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *armmysqlflexibleservers.BackupsClientPutOptions) (resp azfake.Responder[armmysqlflexibleservers.BackupsClientPutResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBackupsServerTransport creates a new instance of BackupsServerTransport with the provided implementation.
@@ -66,6 +70,8 @@ func (b *BackupsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = b.dispatchGet(req)
 	case "BackupsClient.NewListByServerPager":
 		resp, err = b.dispatchNewListByServerPager(req)
+	case "BackupsClient.Put":
+		resp, err = b.dispatchPut(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -151,6 +157,43 @@ func (b *BackupsServerTransport) dispatchNewListByServerPager(req *http.Request)
 	}
 	if !server.PagerResponderMore(newListByServerPager) {
 		b.newListByServerPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BackupsServerTransport) dispatchPut(req *http.Request) (*http.Response, error) {
+	if b.srv.Put == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Put(req.Context(), resourceGroupNameParam, serverNameParam, backupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerBackup, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

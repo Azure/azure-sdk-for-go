@@ -37,6 +37,18 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAzureADAdministratorsClient creates a new instance of AzureADAdministratorsClient.
+func (c *ClientFactory) NewAzureADAdministratorsClient() *AzureADAdministratorsClient {
+	subClient, _ := NewAzureADAdministratorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewBackupAndExportClient creates a new instance of BackupAndExportClient.
+func (c *ClientFactory) NewBackupAndExportClient() *BackupAndExportClient {
+	subClient, _ := NewBackupAndExportClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewBackupsClient creates a new instance of BackupsClient.
 func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 	subClient, _ := NewBackupsClient(c.subscriptionID, c.credential, c.options)
@@ -46,6 +58,12 @@ func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
 	subClient, _ := NewCheckNameAvailabilityClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewCheckNameAvailabilityWithoutLocationClient creates a new instance of CheckNameAvailabilityWithoutLocationClient.
+func (c *ClientFactory) NewCheckNameAvailabilityWithoutLocationClient() *CheckNameAvailabilityWithoutLocationClient {
+	subClient, _ := NewCheckNameAvailabilityWithoutLocationClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -82,6 +100,12 @@ func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuf
 // NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient.
 func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapabilitiesClient {
 	subClient, _ := NewLocationBasedCapabilitiesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewLogFilesClient creates a new instance of LogFilesClient.
+func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
+	subClient, _ := NewLogFilesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

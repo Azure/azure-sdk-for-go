@@ -19,17 +19,21 @@ import (
 
 // ServerFactory is a fake server for instances of the armmysqlflexibleservers.ClientFactory type.
 type ServerFactory struct {
-	BackupsServer                        BackupsServer
-	CheckNameAvailabilityServer          CheckNameAvailabilityServer
-	CheckVirtualNetworkSubnetUsageServer CheckVirtualNetworkSubnetUsageServer
-	ConfigurationsServer                 ConfigurationsServer
-	DatabasesServer                      DatabasesServer
-	FirewallRulesServer                  FirewallRulesServer
-	GetPrivateDNSZoneSuffixServer        GetPrivateDNSZoneSuffixServer
-	LocationBasedCapabilitiesServer      LocationBasedCapabilitiesServer
-	OperationsServer                     OperationsServer
-	ReplicasServer                       ReplicasServer
-	ServersServer                        ServersServer
+	AzureADAdministratorsServer                AzureADAdministratorsServer
+	BackupAndExportServer                      BackupAndExportServer
+	BackupsServer                              BackupsServer
+	CheckNameAvailabilityServer                CheckNameAvailabilityServer
+	CheckNameAvailabilityWithoutLocationServer CheckNameAvailabilityWithoutLocationServer
+	CheckVirtualNetworkSubnetUsageServer       CheckVirtualNetworkSubnetUsageServer
+	ConfigurationsServer                       ConfigurationsServer
+	DatabasesServer                            DatabasesServer
+	FirewallRulesServer                        FirewallRulesServer
+	GetPrivateDNSZoneSuffixServer              GetPrivateDNSZoneSuffixServer
+	LocationBasedCapabilitiesServer            LocationBasedCapabilitiesServer
+	LogFilesServer                             LogFilesServer
+	OperationsServer                           OperationsServer
+	ReplicasServer                             ReplicasServer
+	ServersServer                              ServersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -44,19 +48,23 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armmysqlflexibleservers.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                    *ServerFactory
-	trMu                                   sync.Mutex
-	trBackupsServer                        *BackupsServerTransport
-	trCheckNameAvailabilityServer          *CheckNameAvailabilityServerTransport
-	trCheckVirtualNetworkSubnetUsageServer *CheckVirtualNetworkSubnetUsageServerTransport
-	trConfigurationsServer                 *ConfigurationsServerTransport
-	trDatabasesServer                      *DatabasesServerTransport
-	trFirewallRulesServer                  *FirewallRulesServerTransport
-	trGetPrivateDNSZoneSuffixServer        *GetPrivateDNSZoneSuffixServerTransport
-	trLocationBasedCapabilitiesServer      *LocationBasedCapabilitiesServerTransport
-	trOperationsServer                     *OperationsServerTransport
-	trReplicasServer                       *ReplicasServerTransport
-	trServersServer                        *ServersServerTransport
+	srv                                          *ServerFactory
+	trMu                                         sync.Mutex
+	trAzureADAdministratorsServer                *AzureADAdministratorsServerTransport
+	trBackupAndExportServer                      *BackupAndExportServerTransport
+	trBackupsServer                              *BackupsServerTransport
+	trCheckNameAvailabilityServer                *CheckNameAvailabilityServerTransport
+	trCheckNameAvailabilityWithoutLocationServer *CheckNameAvailabilityWithoutLocationServerTransport
+	trCheckVirtualNetworkSubnetUsageServer       *CheckVirtualNetworkSubnetUsageServerTransport
+	trConfigurationsServer                       *ConfigurationsServerTransport
+	trDatabasesServer                            *DatabasesServerTransport
+	trFirewallRulesServer                        *FirewallRulesServerTransport
+	trGetPrivateDNSZoneSuffixServer              *GetPrivateDNSZoneSuffixServerTransport
+	trLocationBasedCapabilitiesServer            *LocationBasedCapabilitiesServerTransport
+	trLogFilesServer                             *LogFilesServerTransport
+	trOperationsServer                           *OperationsServerTransport
+	trReplicasServer                             *ReplicasServerTransport
+	trServersServer                              *ServersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -72,6 +80,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AzureADAdministratorsClient":
+		initServer(s, &s.trAzureADAdministratorsServer, func() *AzureADAdministratorsServerTransport {
+			return NewAzureADAdministratorsServerTransport(&s.srv.AzureADAdministratorsServer)
+		})
+		resp, err = s.trAzureADAdministratorsServer.Do(req)
+	case "BackupAndExportClient":
+		initServer(s, &s.trBackupAndExportServer, func() *BackupAndExportServerTransport {
+			return NewBackupAndExportServerTransport(&s.srv.BackupAndExportServer)
+		})
+		resp, err = s.trBackupAndExportServer.Do(req)
 	case "BackupsClient":
 		initServer(s, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
 		resp, err = s.trBackupsServer.Do(req)
@@ -80,6 +98,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCheckNameAvailabilityServerTransport(&s.srv.CheckNameAvailabilityServer)
 		})
 		resp, err = s.trCheckNameAvailabilityServer.Do(req)
+	case "CheckNameAvailabilityWithoutLocationClient":
+		initServer(s, &s.trCheckNameAvailabilityWithoutLocationServer, func() *CheckNameAvailabilityWithoutLocationServerTransport {
+			return NewCheckNameAvailabilityWithoutLocationServerTransport(&s.srv.CheckNameAvailabilityWithoutLocationServer)
+		})
+		resp, err = s.trCheckNameAvailabilityWithoutLocationServer.Do(req)
 	case "CheckVirtualNetworkSubnetUsageClient":
 		initServer(s, &s.trCheckVirtualNetworkSubnetUsageServer, func() *CheckVirtualNetworkSubnetUsageServerTransport {
 			return NewCheckVirtualNetworkSubnetUsageServerTransport(&s.srv.CheckVirtualNetworkSubnetUsageServer)
@@ -108,6 +131,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewLocationBasedCapabilitiesServerTransport(&s.srv.LocationBasedCapabilitiesServer)
 		})
 		resp, err = s.trLocationBasedCapabilitiesServer.Do(req)
+	case "LogFilesClient":
+		initServer(s, &s.trLogFilesServer, func() *LogFilesServerTransport { return NewLogFilesServerTransport(&s.srv.LogFilesServer) })
+		resp, err = s.trLogFilesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

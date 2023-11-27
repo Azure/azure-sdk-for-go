@@ -46,7 +46,7 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // Get - List all the backups for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2022-09-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -97,7 +97,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClie
 
 // NewListByServerPager - List all the backups for a given server.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2022-09-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager
@@ -162,7 +162,7 @@ func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -173,6 +173,75 @@ func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (Ba
 	result := BackupsClientListByServerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackupListResult); err != nil {
 		return BackupsClientListByServerResponse{}, err
+	}
+	return result, nil
+}
+
+// Put - Create backup for a given server with specified backup name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-09-30-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - backupName - The name of the backup.
+//   - options - BackupsClientPutOptions contains the optional parameters for the BackupsClient.Put method.
+func (client *BackupsClient) Put(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientPutOptions) (BackupsClientPutResponse, error) {
+	var err error
+	const operationName = "BackupsClient.Put"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.putCreateRequest(ctx, resourceGroupName, serverName, backupName, options)
+	if err != nil {
+		return BackupsClientPutResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BackupsClientPutResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return BackupsClientPutResponse{}, err
+	}
+	resp, err := client.putHandleResponse(httpResp)
+	return resp, err
+}
+
+// putCreateRequest creates the Put request.
+func (client *BackupsClient) putCreateRequest(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsClientPutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups/{backupName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-09-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// putHandleResponse handles the Put response.
+func (client *BackupsClient) putHandleResponse(resp *http.Response) (BackupsClientPutResponse, error) {
+	result := BackupsClientPutResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
+		return BackupsClientPutResponse{}, err
 	}
 	return result, nil
 }

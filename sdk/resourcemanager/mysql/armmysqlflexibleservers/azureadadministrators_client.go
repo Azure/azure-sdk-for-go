@@ -20,67 +20,67 @@ import (
 	"strings"
 )
 
-// FirewallRulesClient contains the methods for the FirewallRules group.
-// Don't use this type directly, use NewFirewallRulesClient() instead.
-type FirewallRulesClient struct {
+// AzureADAdministratorsClient contains the methods for the AzureADAdministrators group.
+// Don't use this type directly, use NewAzureADAdministratorsClient() instead.
+type AzureADAdministratorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
+// NewAzureADAdministratorsClient creates a new instance of AzureADAdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallRulesClient, error) {
+func NewAzureADAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureADAdministratorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &FirewallRulesClient{
+	client := &AzureADAdministratorsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
+// BeginCreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - firewallRuleName - The name of the server firewall rule.
-//   - parameters - The required parameters for creating or updating a firewall rule.
-//   - options - FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
+//   - administratorName - The name of the Azure AD Administrator.
+//   - parameters - The required parameters for creating or updating an aad administrator.
+//   - options - AzureADAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureADAdministratorsClient.BeginCreateOrUpdate
 //     method.
-func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error) {
+func (client *AzureADAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters AzureADAdministrator, options *AzureADAdministratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AzureADAdministratorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, firewallRuleName, parameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, administratorName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallRulesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureADAdministratorsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallRulesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AzureADAdministratorsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates a new firewall rule or updates an existing firewall rule.
+// CreateOrUpdate - Creates or updates an existing Azure Active Directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
-func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AzureADAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters AzureADAdministrator, options *AzureADAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallRulesClient.BeginCreateOrUpdate"
+	const operationName = "AzureADAdministratorsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, administratorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +96,8 @@ func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}"
+func (client *AzureADAdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, parameters AzureADAdministrator, options *AzureADAdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -110,10 +110,10 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
+	if administratorName == "" {
+		return nil, errors.New("parameter administratorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{administratorName}", url.PathEscape(string(administratorName)))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -128,43 +128,44 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDelete - Deletes a firewall rule.
+// BeginDelete - Deletes an Azure AD Administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - firewallRuleName - The name of the server firewall rule.
-//   - options - FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete
+//   - administratorName - The name of the Azure AD Administrator.
+//   - options - AzureADAdministratorsClientBeginDeleteOptions contains the optional parameters for the AzureADAdministratorsClient.BeginDelete
 //     method.
-func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*runtime.Poller[FirewallRulesClientDeleteResponse], error) {
+func (client *AzureADAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientBeginDeleteOptions) (*runtime.Poller[AzureADAdministratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, firewallRuleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, administratorName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallRulesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureADAdministratorsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallRulesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AzureADAdministratorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes a firewall rule.
+// Delete - Deletes an Azure AD Administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
-func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AzureADAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallRulesClient.BeginDelete"
+	const operationName = "AzureADAdministratorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, administratorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -180,8 +181,8 @@ func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}"
+func (client *AzureADAdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -194,10 +195,10 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
+	if administratorName == "" {
+		return nil, errors.New("parameter administratorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{administratorName}", url.PathEscape(string(administratorName)))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -209,39 +210,40 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// Get - Gets information about a server firewall rule.
+// Get - Gets information about an azure ad administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2021-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - firewallRuleName - The name of the server firewall rule.
-//   - options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
-func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
+//   - administratorName - The name of the Azure AD Administrator.
+//   - options - AzureADAdministratorsClientGetOptions contains the optional parameters for the AzureADAdministratorsClient.Get
+//     method.
+func (client *AzureADAdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientGetOptions) (AzureADAdministratorsClientGetResponse, error) {
 	var err error
-	const operationName = "FirewallRulesClient.Get"
+	const operationName = "AzureADAdministratorsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, administratorName, options)
 	if err != nil {
-		return FirewallRulesClientGetResponse{}, err
+		return AzureADAdministratorsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return FirewallRulesClientGetResponse{}, err
+		return AzureADAdministratorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return FirewallRulesClientGetResponse{}, err
+		return AzureADAdministratorsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/firewallRules/{firewallRuleName}"
+func (client *AzureADAdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, administratorName AdministratorName, options *AzureADAdministratorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -254,10 +256,10 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
+	if administratorName == "" {
+		return nil, errors.New("parameter administratorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{administratorName}", url.PathEscape(string(administratorName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -270,28 +272,28 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesClientGetResponse, error) {
-	result := FirewallRulesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesClientGetResponse{}, err
+func (client *AzureADAdministratorsClient) getHandleResponse(resp *http.Response) (AzureADAdministratorsClientGetResponse, error) {
+	result := AzureADAdministratorsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AzureADAdministrator); err != nil {
+		return AzureADAdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByServerPager - List all the firewall rules in a given server.
+// NewListByServerPager - List all the AAD administrators in a given server.
 //
 // Generated from API version 2021-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - options - FirewallRulesClientListByServerOptions contains the optional parameters for the FirewallRulesClient.NewListByServerPager
+//   - options - AzureADAdministratorsClientListByServerOptions contains the optional parameters for the AzureADAdministratorsClient.NewListByServerPager
 //     method.
-func (client *FirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListByServerResponse]{
-		More: func(page FirewallRulesClientListByServerResponse) bool {
+func (client *AzureADAdministratorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *AzureADAdministratorsClientListByServerOptions) *runtime.Pager[AzureADAdministratorsClientListByServerResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureADAdministratorsClientListByServerResponse]{
+		More: func(page AzureADAdministratorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *FirewallRulesClientListByServerResponse) (FirewallRulesClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FirewallRulesClient.NewListByServerPager")
+		Fetcher: func(ctx context.Context, page *AzureADAdministratorsClientListByServerResponse) (AzureADAdministratorsClientListByServerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureADAdministratorsClient.NewListByServerPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -300,7 +302,7 @@ func (client *FirewallRulesClient) NewListByServerPager(resourceGroupName string
 				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			}, nil)
 			if err != nil {
-				return FirewallRulesClientListByServerResponse{}, err
+				return AzureADAdministratorsClientListByServerResponse{}, err
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -309,8 +311,8 @@ func (client *FirewallRulesClient) NewListByServerPager(resourceGroupName string
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *FirewallRulesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *FirewallRulesClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/firewallRules"
+func (client *AzureADAdministratorsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *AzureADAdministratorsClientListByServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -335,10 +337,10 @@ func (client *FirewallRulesClient) listByServerCreateRequest(ctx context.Context
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *FirewallRulesClient) listByServerHandleResponse(resp *http.Response) (FirewallRulesClientListByServerResponse, error) {
-	result := FirewallRulesClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
-		return FirewallRulesClientListByServerResponse{}, err
+func (client *AzureADAdministratorsClient) listByServerHandleResponse(resp *http.Response) (AzureADAdministratorsClientListByServerResponse, error) {
+	result := AzureADAdministratorsClientListByServerResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdministratorListResult); err != nil {
+		return AzureADAdministratorsClientListByServerResponse{}, err
 	}
 	return result, nil
 }

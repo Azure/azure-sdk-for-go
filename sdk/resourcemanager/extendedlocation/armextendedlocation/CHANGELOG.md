@@ -3,7 +3,6 @@
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New function `*ClientFactory.NewResourceSyncRulesClient() *ResourceSyncRulesClient`
 - New function `*CustomLocationsClient.FindTargetResourceGroup(context.Context, string, string, CustomLocationFindTargetResourceGroupProperties, *CustomLocationsClientFindTargetResourceGroupOptions) (CustomLocationsClientFindTargetResourceGroupResponse, error)`
 - New function `NewResourceSyncRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceSyncRulesClient, error)`

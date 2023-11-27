@@ -3,7 +3,6 @@
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `LanguageRuntime` with values `LanguageRuntimeCPP`, `LanguageRuntimeJS`
 - New enum type `RunningState` with values `RunningStateActive`, `RunningStatePaused`, `RunningStatePausing`, `RunningStateResuming`, `RunningStateUnknown`
 - New function `*ClientFactory.NewManagedCCFClient() *ManagedCCFClient`

@@ -3,7 +3,6 @@
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New value `PublicNetworkAccessFlagSecuredByPerimeter` added to enum type `PublicNetworkAccessFlag`
 - New enum type `ApplicationGroupPolicyType` with values `ApplicationGroupPolicyTypeThrottlingPolicy`
 - New enum type `CleanupPolicyRetentionDescription` with values `CleanupPolicyRetentionDescriptionCompaction`, `CleanupPolicyRetentionDescriptionDelete`

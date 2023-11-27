@@ -3,7 +3,6 @@
 ## 1.2.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `CatalogConnectionState` with values `CatalogConnectionStateConnected`, `CatalogConnectionStateDisconnected`
 - New enum type `CatalogResourceValidationStatus` with values `CatalogResourceValidationStatusFailed`, `CatalogResourceValidationStatusPending`, `CatalogResourceValidationStatusSucceeded`, `CatalogResourceValidationStatusUnknown`
 - New enum type `CatalogSyncType` with values `CatalogSyncTypeManual`, `CatalogSyncTypeScheduled`

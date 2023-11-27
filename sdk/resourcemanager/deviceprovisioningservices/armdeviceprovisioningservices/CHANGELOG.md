@@ -3,7 +3,6 @@
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New struct `ManagedServiceIdentity`
 - New struct `UserAssignedIdentity`

@@ -47,6 +47,30 @@ type AttachedNetworksClientListByProjectOptions struct {
 	Top *int32
 }
 
+// CatalogDevBoxDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.GetErrorDetails
+// method.
+type CatalogDevBoxDefinitionsClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogDevBoxDefinitionsClientGetOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.Get method.
+type CatalogDevBoxDefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CatalogDevBoxDefinitionsClientListByCatalogOptions contains the optional parameters for the CatalogDevBoxDefinitionsClient.NewListByCatalogPager
+// method.
+type CatalogDevBoxDefinitionsClientListByCatalogOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
+// CatalogsClientBeginConnectOptions contains the optional parameters for the CatalogsClient.BeginConnect method.
+type CatalogsClientBeginConnectOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // CatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the CatalogsClient.BeginCreateOrUpdate method.
 type CatalogsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -76,6 +100,11 @@ type CatalogsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CatalogsClientGetSyncErrorDetailsOptions contains the optional parameters for the CatalogsClient.GetSyncErrorDetails method.
+type CatalogsClientGetSyncErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.NewListByDevCenterPager method.
 type CatalogsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -86,6 +115,24 @@ type CatalogsClientListByDevCenterOptions struct {
 // method.
 type CheckNameAvailabilityClientExecuteOptions struct {
 	// placeholder for future optional parameters
+}
+
+// CustomizationTasksClientGetErrorDetailsOptions contains the optional parameters for the CustomizationTasksClient.GetErrorDetails
+// method.
+type CustomizationTasksClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizationTasksClientGetOptions contains the optional parameters for the CustomizationTasksClient.Get method.
+type CustomizationTasksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizationTasksClientListByCatalogOptions contains the optional parameters for the CustomizationTasksClient.NewListByCatalogPager
+// method.
+type CustomizationTasksClientListByCatalogOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // DevBoxDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginCreateOrUpdate
@@ -168,6 +215,24 @@ type DevCentersClientListByResourceGroupOptions struct {
 // DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.NewListBySubscriptionPager
 // method.
 type DevCentersClientListBySubscriptionOptions struct {
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
+}
+
+// EnvironmentDefinitionsClientGetErrorDetailsOptions contains the optional parameters for the EnvironmentDefinitionsClient.GetErrorDetails
+// method.
+type EnvironmentDefinitionsClientGetErrorDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentDefinitionsClientGetOptions contains the optional parameters for the EnvironmentDefinitionsClient.Get method.
+type EnvironmentDefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentDefinitionsClientListByCatalogOptions contains the optional parameters for the EnvironmentDefinitionsClient.NewListByCatalogPager
+// method.
+type EnvironmentDefinitionsClientListByCatalogOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }

@@ -47,7 +47,7 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 // Get - Gets a gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -103,7 +103,7 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +120,7 @@ func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClient
 
 // NewListByDevCenterPager - Lists images for a devcenter.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - options - ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.NewListByDevCenterPager
@@ -168,7 +168,7 @@ func (client *ImagesClient) listByDevCenterCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -188,7 +188,7 @@ func (client *ImagesClient) listByDevCenterHandleResponse(resp *http.Response) (
 
 // NewListByGalleryPager - Lists images for a gallery.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -241,7 +241,7 @@ func (client *ImagesClient) listByGalleryCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

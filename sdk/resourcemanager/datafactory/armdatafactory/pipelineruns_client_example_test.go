@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_QueryByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_QueryByFactory.json
 func ExamplePipelineRunsClient_QueryByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,8 +39,8 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 				Values: []*string{
 					to.Ptr("examplePipeline")},
 			}},
-		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
-		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),
+		LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.334Z"); return t }()),
+		LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.368Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -63,15 +63,15 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	// 				Name: to.Ptr("Manual"),
 	// 				ID: to.Ptr("80a01654a9d34ad18b3fcac5d5d76b67"),
 	// 			},
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.731Z"); return t}()),
 	// 			Message: to.Ptr(""),
 	// 			Parameters: map[string]*string{
 	// 				"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 			},
 	// 			PipelineName: to.Ptr("examplePipeline"),
-	// 			RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 			RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.731Z"); return t}()),
 	// 			RunID: to.Ptr("2f7fdb90-5df1-4b8e-ac2f-064cfa58202b"),
-	// 			RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.6257014Z"); return t}()),
+	// 			RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.625Z"); return t}()),
 	// 			Status: to.Ptr("Succeeded"),
 	// 		},
 	// 		{
@@ -86,20 +86,20 @@ func ExamplePipelineRunsClient_QueryByFactory() {
 	// 				Name: to.Ptr("Manual"),
 	// 				ID: to.Ptr("7c5fd7ef7e8a464b98b931cf15fcac66"),
 	// 			},
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:51.216097Z"); return t}()),
+	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:51.216Z"); return t}()),
 	// 			Message: to.Ptr(""),
 	// 			Parameters: map[string]*string{
 	// 				"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 			},
 	// 			PipelineName: to.Ptr("examplePipeline"),
 	// 			RunID: to.Ptr("16ac5348-ff82-4f95-a80d-638c1d47b721"),
-	// 			RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:49.2745128Z"); return t}()),
+	// 			RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:49.274Z"); return t}()),
 	// 			Status: to.Ptr("Cancelled"),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
 func ExamplePipelineRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,20 +127,20 @@ func ExamplePipelineRunsClient_Get() {
 	// 		Name: to.Ptr("Manual"),
 	// 		ID: to.Ptr("80a01654a9d34ad18b3fcac5d5d76b67"),
 	// 	},
-	// 	LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 	LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.731Z"); return t}()),
 	// 	Message: to.Ptr(""),
 	// 	Parameters: map[string]*string{
 	// 		"OutputBlobNameList": to.Ptr("[\"exampleoutput.csv\"]"),
 	// 	},
 	// 	PipelineName: to.Ptr("examplePipeline"),
-	// 	RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.7314495Z"); return t}()),
+	// 	RunEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:38:12.731Z"); return t}()),
 	// 	RunID: to.Ptr("2f7fdb90-5df1-4b8e-ac2f-064cfa58202b"),
-	// 	RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.6257014Z"); return t}()),
+	// 	RunStart: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:37:44.625Z"); return t}()),
 	// 	Status: to.Ptr("Succeeded"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/69ece3818b8b0929b43a07c3fe25716427734882/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.json
 func ExamplePipelineRunsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

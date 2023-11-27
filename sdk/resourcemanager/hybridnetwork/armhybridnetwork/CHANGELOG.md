@@ -1,5 +1,399 @@
 # Release History
 
+## 2.0.0 (2023-11-24)
+### Breaking Changes
+
+- Type of `NetworkFunction.Properties` has been changed from `*NetworkFunctionPropertiesFormat` to `NetworkFunctionPropertiesFormatClassification`
+- `StatusDeleted`, `StatusNotRegistered`, `StatusRegistered` from enum `Status` has been removed
+- Enum `DeviceType` has been removed
+- Enum `DiskCreateOptionTypes` has been removed
+- Enum `IPAllocationMethod` has been removed
+- Enum `IPVersion` has been removed
+- Enum `NetworkFunctionRoleConfigurationType` has been removed
+- Enum `OperatingSystemTypes` has been removed
+- Enum `OperationalState` has been removed
+- Enum `SKUDeploymentMode` has been removed
+- Enum `SKUType` has been removed
+- Enum `VMSwitchType` has been removed
+- Enum `VendorProvisioningState` has been removed
+- Enum `VirtualMachineSizeTypes` has been removed
+- Function `*AzureStackEdgeFormat.GetDevicePropertiesFormat` has been removed
+- Function `*ClientFactory.NewDevicesClient` has been removed
+- Function `*ClientFactory.NewNetworkFunctionVendorSKUsClient` has been removed
+- Function `*ClientFactory.NewNetworkFunctionVendorsClient` has been removed
+- Function `*ClientFactory.NewRoleInstancesClient` has been removed
+- Function `*ClientFactory.NewVendorNetworkFunctionsClient` has been removed
+- Function `*ClientFactory.NewVendorSKUPreviewClient` has been removed
+- Function `*ClientFactory.NewVendorSKUsClient` has been removed
+- Function `*ClientFactory.NewVendorsClient` has been removed
+- Function `*DevicePropertiesFormat.GetDevicePropertiesFormat` has been removed
+- Function `NewDevicesClient` has been removed
+- Function `*DevicesClient.BeginCreateOrUpdate` has been removed
+- Function `*DevicesClient.BeginDelete` has been removed
+- Function `*DevicesClient.Get` has been removed
+- Function `*DevicesClient.NewListByResourceGroupPager` has been removed
+- Function `*DevicesClient.NewListBySubscriptionPager` has been removed
+- Function `*DevicesClient.ListRegistrationKey` has been removed
+- Function `*DevicesClient.UpdateTags` has been removed
+- Function `NewRoleInstancesClient` has been removed
+- Function `*RoleInstancesClient.Get` has been removed
+- Function `*RoleInstancesClient.NewListPager` has been removed
+- Function `*RoleInstancesClient.BeginRestart` has been removed
+- Function `*RoleInstancesClient.BeginStart` has been removed
+- Function `*RoleInstancesClient.BeginStop` has been removed
+- Function `NewVendorNetworkFunctionsClient` has been removed
+- Function `*VendorNetworkFunctionsClient.BeginCreateOrUpdate` has been removed
+- Function `*VendorNetworkFunctionsClient.Get` has been removed
+- Function `*VendorNetworkFunctionsClient.NewListPager` has been removed
+- Function `NewVendorSKUPreviewClient` has been removed
+- Function `*VendorSKUPreviewClient.BeginCreateOrUpdate` has been removed
+- Function `*VendorSKUPreviewClient.BeginDelete` has been removed
+- Function `*VendorSKUPreviewClient.Get` has been removed
+- Function `*VendorSKUPreviewClient.NewListPager` has been removed
+- Function `NewVendorSKUsClient` has been removed
+- Function `*VendorSKUsClient.BeginCreateOrUpdate` has been removed
+- Function `*VendorSKUsClient.BeginDelete` has been removed
+- Function `*VendorSKUsClient.Get` has been removed
+- Function `*VendorSKUsClient.NewListPager` has been removed
+- Function `NewVendorsClient` has been removed
+- Function `*VendorsClient.BeginCreateOrUpdate` has been removed
+- Function `*VendorsClient.BeginDelete` has been removed
+- Function `*VendorsClient.Get` has been removed
+- Function `*VendorsClient.NewListBySubscriptionPager` has been removed
+- Function `NewNetworkFunctionVendorSKUsClient` has been removed
+- Function `*NetworkFunctionVendorSKUsClient.NewListBySKUPager` has been removed
+- Function `*NetworkFunctionVendorSKUsClient.NewListByVendorPager` has been removed
+- Function `NewNetworkFunctionVendorsClient` has been removed
+- Function `*NetworkFunctionVendorsClient.NewListPager` has been removed
+- Struct `AzureStackEdgeFormat` has been removed
+- Struct `CustomProfile` has been removed
+- Struct `DataDisk` has been removed
+- Struct `Device` has been removed
+- Struct `DeviceListResult` has been removed
+- Struct `DeviceRegistrationKey` has been removed
+- Struct `ImageReference` has been removed
+- Struct `LinuxConfiguration` has been removed
+- Struct `NetworkFunctionRoleConfiguration` has been removed
+- Struct `NetworkFunctionRoleInstanceListResult` has been removed
+- Struct `NetworkFunctionSKUDetails` has been removed
+- Struct `NetworkFunctionSKUListResult` has been removed
+- Struct `NetworkFunctionSKURoleDetails` has been removed
+- Struct `NetworkFunctionTemplate` has been removed
+- Struct `NetworkFunctionUserConfiguration` has been removed
+- Struct `NetworkFunctionUserConfigurationOsProfile` has been removed
+- Struct `NetworkFunctionVendor` has been removed
+- Struct `NetworkFunctionVendorConfiguration` has been removed
+- Struct `NetworkFunctionVendorListResult` has been removed
+- Struct `NetworkInterface` has been removed
+- Struct `NetworkInterfaceIPConfiguration` has been removed
+- Struct `OperationList` has been removed
+- Struct `OsDisk` has been removed
+- Struct `OsProfile` has been removed
+- Struct `PreviewSubscription` has been removed
+- Struct `PreviewSubscriptionProperties` has been removed
+- Struct `PreviewSubscriptionsList` has been removed
+- Struct `RoleInstance` has been removed
+- Struct `RoleInstanceProperties` has been removed
+- Struct `SKUOverview` has been removed
+- Struct `SSHConfiguration` has been removed
+- Struct `SSHPublicKey` has been removed
+- Struct `StorageProfile` has been removed
+- Struct `SubResource` has been removed
+- Struct `Vendor` has been removed
+- Struct `VendorDetails` has been removed
+- Struct `VendorListResult` has been removed
+- Struct `VendorNetworkFunction` has been removed
+- Struct `VendorNetworkFunctionListResult` has been removed
+- Struct `VendorNetworkFunctionPropertiesFormat` has been removed
+- Struct `VendorPropertiesFormat` has been removed
+- Struct `VendorSKU` has been removed
+- Struct `VendorSKUListResult` has been removed
+- Struct `VendorSKUPropertiesFormat` has been removed
+- Struct `VirtualHardDisk` has been removed
+- Field `Device`, `ManagedApplication`, `ManagedApplicationParameters`, `NetworkFunctionContainerConfigurations`, `NetworkFunctionUserConfigurations`, `SKUName`, `SKUType`, `ServiceKey`, `VendorName`, `VendorProvisioningState` of struct `NetworkFunctionPropertiesFormat` has been removed
+- Field `OperationList` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New value `ProvisioningStateConverging` added to enum type `ProvisioningState`
+- New value `StatusDeployed`, `StatusDownloading`, `StatusFailed`, `StatusInstalling`, `StatusPendingInstall`, `StatusPendingRollback`, `StatusPendingUpgrade`, `StatusReinstalling`, `StatusRollingback`, `StatusSuperseded`, `StatusUninstalled`, `StatusUninstalling`, `StatusUpgrading` added to enum type `Status`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `ApplicationEnablement` with values `ApplicationEnablementDisabled`, `ApplicationEnablementEnabled`, `ApplicationEnablementUnknown`
+- New enum type `ArtifactManifestState` with values `ArtifactManifestStateSucceeded`, `ArtifactManifestStateUnknown`, `ArtifactManifestStateUploaded`, `ArtifactManifestStateUploading`, `ArtifactManifestStateValidating`, `ArtifactManifestStateValidationFailed`
+- New enum type `ArtifactReplicationStrategy` with values `ArtifactReplicationStrategySingleReplication`, `ArtifactReplicationStrategyUnknown`
+- New enum type `ArtifactState` with values `ArtifactStateActive`, `ArtifactStateDeprecated`, `ArtifactStatePreview`, `ArtifactStateUnknown`
+- New enum type `ArtifactStoreType` with values `ArtifactStoreTypeAzureContainerRegistry`, `ArtifactStoreTypeAzureStorageAccount`, `ArtifactStoreTypeUnknown`
+- New enum type `ArtifactType` with values `ArtifactTypeArmTemplate`, `ArtifactTypeImageFile`, `ArtifactTypeOCIArtifact`, `ArtifactTypeUnknown`, `ArtifactTypeVhdImageFile`
+- New enum type `AzureArcKubernetesArtifactType` with values `AzureArcKubernetesArtifactTypeHelmPackage`, `AzureArcKubernetesArtifactTypeUnknown`
+- New enum type `AzureCoreArtifactType` with values `AzureCoreArtifactTypeArmTemplate`, `AzureCoreArtifactTypeUnknown`, `AzureCoreArtifactTypeVhdImageFile`
+- New enum type `AzureOperatorNexusArtifactType` with values `AzureOperatorNexusArtifactTypeArmTemplate`, `AzureOperatorNexusArtifactTypeImageFile`, `AzureOperatorNexusArtifactTypeUnknown`
+- New enum type `ConfigurationGroupValueConfigurationType` with values `ConfigurationGroupValueConfigurationTypeOpen`, `ConfigurationGroupValueConfigurationTypeSecret`, `ConfigurationGroupValueConfigurationTypeUnknown`
+- New enum type `ContainerizedNetworkFunctionNFVIType` with values `ContainerizedNetworkFunctionNFVITypeAzureArcKubernetes`, `ContainerizedNetworkFunctionNFVITypeUnknown`
+- New enum type `CredentialType` with values `CredentialTypeAzureContainerRegistryScopedToken`, `CredentialTypeAzureStorageAccountToken`, `CredentialTypeUnknown`
+- New enum type `HTTPMethod` with values `HTTPMethodDelete`, `HTTPMethodGet`, `HTTPMethodPatch`, `HTTPMethodPost`, `HTTPMethodPut`, `HTTPMethodUnknown`
+- New enum type `IDType` with values `IDTypeOpen`, `IDTypeSecret`, `IDTypeUnknown`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `NFVIType` with values `NFVITypeAzureArcKubernetes`, `NFVITypeAzureCore`, `NFVITypeAzureOperatorNexus`, `NFVITypeUnknown`
+- New enum type `NetworkFunctionConfigurationType` with values `NetworkFunctionConfigurationTypeOpen`, `NetworkFunctionConfigurationTypeSecret`, `NetworkFunctionConfigurationTypeUnknown`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `PodEventType` with values `PodEventTypeNormal`, `PodEventTypeWarning`
+- New enum type `PodStatus` with values `PodStatusFailed`, `PodStatusNotReady`, `PodStatusPending`, `PodStatusRunning`, `PodStatusSucceeded`, `PodStatusTerminating`, `PodStatusUnknown`
+- New enum type `PublisherScope` with values `PublisherScopePrivate`, `PublisherScopeUnknown`
+- New enum type `SKUName` with values `SKUNameBasic`, `SKUNameStandard`
+- New enum type `SKUTier` with values `SKUTierBasic`, `SKUTierStandard`
+- New enum type `TemplateType` with values `TemplateTypeArmTemplate`, `TemplateTypeUnknown`
+- New enum type `Type` with values `TypeArmResourceDefinition`, `TypeNetworkFunctionDefinition`, `TypeUnknown`
+- New enum type `VersionState` with values `VersionStateActive`, `VersionStateDeprecated`, `VersionStatePreview`, `VersionStateUnknown`, `VersionStateValidating`, `VersionStateValidationFailed`
+- New enum type `VirtualNetworkFunctionNFVIType` with values `VirtualNetworkFunctionNFVITypeAzureCore`, `VirtualNetworkFunctionNFVITypeAzureOperatorNexus`, `VirtualNetworkFunctionNFVITypeUnknown`
+- New function `*ArmResourceDefinitionResourceElementTemplateDetails.GetResourceElementTemplate() *ResourceElementTemplate`
+- New function `*ArtifactAccessCredential.GetArtifactAccessCredential() *ArtifactAccessCredential`
+- New function `NewArtifactManifestsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArtifactManifestsClient, error)`
+- New function `*ArtifactManifestsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, ArtifactManifest, *ArtifactManifestsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ArtifactManifestsClientCreateOrUpdateResponse], error)`
+- New function `*ArtifactManifestsClient.BeginDelete(context.Context, string, string, string, string, *ArtifactManifestsClientBeginDeleteOptions) (*runtime.Poller[ArtifactManifestsClientDeleteResponse], error)`
+- New function `*ArtifactManifestsClient.Get(context.Context, string, string, string, string, *ArtifactManifestsClientGetOptions) (ArtifactManifestsClientGetResponse, error)`
+- New function `*ArtifactManifestsClient.NewListByArtifactStorePager(string, string, string, *ArtifactManifestsClientListByArtifactStoreOptions) *runtime.Pager[ArtifactManifestsClientListByArtifactStoreResponse]`
+- New function `*ArtifactManifestsClient.ListCredential(context.Context, string, string, string, string, *ArtifactManifestsClientListCredentialOptions) (ArtifactManifestsClientListCredentialResponse, error)`
+- New function `*ArtifactManifestsClient.Update(context.Context, string, string, string, string, TagsObject, *ArtifactManifestsClientUpdateOptions) (ArtifactManifestsClientUpdateResponse, error)`
+- New function `*ArtifactManifestsClient.BeginUpdateState(context.Context, string, string, string, string, ArtifactManifestUpdateState, *ArtifactManifestsClientBeginUpdateStateOptions) (*runtime.Poller[ArtifactManifestsClientUpdateStateResponse], error)`
+- New function `NewArtifactStoresClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ArtifactStoresClient, error)`
+- New function `*ArtifactStoresClient.BeginCreateOrUpdate(context.Context, string, string, string, ArtifactStore, *ArtifactStoresClientBeginCreateOrUpdateOptions) (*runtime.Poller[ArtifactStoresClientCreateOrUpdateResponse], error)`
+- New function `*ArtifactStoresClient.BeginDelete(context.Context, string, string, string, *ArtifactStoresClientBeginDeleteOptions) (*runtime.Poller[ArtifactStoresClientDeleteResponse], error)`
+- New function `*ArtifactStoresClient.Get(context.Context, string, string, string, *ArtifactStoresClientGetOptions) (ArtifactStoresClientGetResponse, error)`
+- New function `*ArtifactStoresClient.NewListByPublisherPager(string, string, *ArtifactStoresClientListByPublisherOptions) *runtime.Pager[ArtifactStoresClientListByPublisherResponse]`
+- New function `*ArtifactStoresClient.Update(context.Context, string, string, string, TagsObject, *ArtifactStoresClientUpdateOptions) (ArtifactStoresClientUpdateResponse, error)`
+- New function `*AzureArcK8SClusterNFVIDetails.GetNFVIs() *NFVIs`
+- New function `*AzureArcKubernetesHelmApplication.GetAzureArcKubernetesNetworkFunctionApplication() *AzureArcKubernetesNetworkFunctionApplication`
+- New function `*AzureArcKubernetesNetworkFunctionApplication.GetAzureArcKubernetesNetworkFunctionApplication() *AzureArcKubernetesNetworkFunctionApplication`
+- New function `*AzureArcKubernetesNetworkFunctionTemplate.GetContainerizedNetworkFunctionTemplate() *ContainerizedNetworkFunctionTemplate`
+- New function `*AzureContainerRegistryScopedTokenCredential.GetArtifactAccessCredential() *ArtifactAccessCredential`
+- New function `*AzureCoreNFVIDetails.GetNFVIs() *NFVIs`
+- New function `*AzureCoreNetworkFunctionApplication.GetAzureCoreNetworkFunctionApplication() *AzureCoreNetworkFunctionApplication`
+- New function `*AzureCoreNetworkFunctionArmTemplateApplication.GetAzureCoreNetworkFunctionApplication() *AzureCoreNetworkFunctionApplication`
+- New function `*AzureCoreNetworkFunctionTemplate.GetVirtualNetworkFunctionTemplate() *VirtualNetworkFunctionTemplate`
+- New function `*AzureCoreNetworkFunctionVhdApplication.GetAzureCoreNetworkFunctionApplication() *AzureCoreNetworkFunctionApplication`
+- New function `*AzureOperatorNexusClusterNFVIDetails.GetNFVIs() *NFVIs`
+- New function `*AzureOperatorNexusNetworkFunctionApplication.GetAzureOperatorNexusNetworkFunctionApplication() *AzureOperatorNexusNetworkFunctionApplication`
+- New function `*AzureOperatorNexusNetworkFunctionArmTemplateApplication.GetAzureOperatorNexusNetworkFunctionApplication() *AzureOperatorNexusNetworkFunctionApplication`
+- New function `*AzureOperatorNexusNetworkFunctionImageApplication.GetAzureOperatorNexusNetworkFunctionApplication() *AzureOperatorNexusNetworkFunctionApplication`
+- New function `*AzureOperatorNexusNetworkFunctionTemplate.GetVirtualNetworkFunctionTemplate() *VirtualNetworkFunctionTemplate`
+- New function `*AzureStorageAccountCredential.GetArtifactAccessCredential() *ArtifactAccessCredential`
+- New function `*ClientFactory.NewArtifactManifestsClient() *ArtifactManifestsClient`
+- New function `*ClientFactory.NewArtifactStoresClient() *ArtifactStoresClient`
+- New function `*ClientFactory.NewComponentsClient() *ComponentsClient`
+- New function `*ClientFactory.NewConfigurationGroupSchemasClient() *ConfigurationGroupSchemasClient`
+- New function `*ClientFactory.NewConfigurationGroupValuesClient() *ConfigurationGroupValuesClient`
+- New function `*ClientFactory.NewNetworkFunctionDefinitionGroupsClient() *NetworkFunctionDefinitionGroupsClient`
+- New function `*ClientFactory.NewNetworkFunctionDefinitionVersionsClient() *NetworkFunctionDefinitionVersionsClient`
+- New function `*ClientFactory.NewNetworkServiceDesignGroupsClient() *NetworkServiceDesignGroupsClient`
+- New function `*ClientFactory.NewNetworkServiceDesignVersionsClient() *NetworkServiceDesignVersionsClient`
+- New function `*ClientFactory.NewProxyArtifactClient() *ProxyArtifactClient`
+- New function `*ClientFactory.NewPublishersClient() *PublishersClient`
+- New function `*ClientFactory.NewSiteNetworkServicesClient() *SiteNetworkServicesClient`
+- New function `*ClientFactory.NewSitesClient() *SitesClient`
+- New function `NewComponentsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ComponentsClient, error)`
+- New function `*ComponentsClient.Get(context.Context, string, string, string, *ComponentsClientGetOptions) (ComponentsClientGetResponse, error)`
+- New function `*ComponentsClient.NewListByNetworkFunctionPager(string, string, *ComponentsClientListByNetworkFunctionOptions) *runtime.Pager[ComponentsClientListByNetworkFunctionResponse]`
+- New function `NewConfigurationGroupSchemasClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ConfigurationGroupSchemasClient, error)`
+- New function `*ConfigurationGroupSchemasClient.BeginCreateOrUpdate(context.Context, string, string, string, ConfigurationGroupSchema, *ConfigurationGroupSchemasClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConfigurationGroupSchemasClientCreateOrUpdateResponse], error)`
+- New function `*ConfigurationGroupSchemasClient.BeginDelete(context.Context, string, string, string, *ConfigurationGroupSchemasClientBeginDeleteOptions) (*runtime.Poller[ConfigurationGroupSchemasClientDeleteResponse], error)`
+- New function `*ConfigurationGroupSchemasClient.Get(context.Context, string, string, string, *ConfigurationGroupSchemasClientGetOptions) (ConfigurationGroupSchemasClientGetResponse, error)`
+- New function `*ConfigurationGroupSchemasClient.NewListByPublisherPager(string, string, *ConfigurationGroupSchemasClientListByPublisherOptions) *runtime.Pager[ConfigurationGroupSchemasClientListByPublisherResponse]`
+- New function `*ConfigurationGroupSchemasClient.Update(context.Context, string, string, string, TagsObject, *ConfigurationGroupSchemasClientUpdateOptions) (ConfigurationGroupSchemasClientUpdateResponse, error)`
+- New function `*ConfigurationGroupSchemasClient.BeginUpdateState(context.Context, string, string, string, ConfigurationGroupSchemaVersionUpdateState, *ConfigurationGroupSchemasClientBeginUpdateStateOptions) (*runtime.Poller[ConfigurationGroupSchemasClientUpdateStateResponse], error)`
+- New function `*ConfigurationGroupValuePropertiesFormat.GetConfigurationGroupValuePropertiesFormat() *ConfigurationGroupValuePropertiesFormat`
+- New function `NewConfigurationGroupValuesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ConfigurationGroupValuesClient, error)`
+- New function `*ConfigurationGroupValuesClient.BeginCreateOrUpdate(context.Context, string, string, ConfigurationGroupValue, *ConfigurationGroupValuesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConfigurationGroupValuesClientCreateOrUpdateResponse], error)`
+- New function `*ConfigurationGroupValuesClient.BeginDelete(context.Context, string, string, *ConfigurationGroupValuesClientBeginDeleteOptions) (*runtime.Poller[ConfigurationGroupValuesClientDeleteResponse], error)`
+- New function `*ConfigurationGroupValuesClient.Get(context.Context, string, string, *ConfigurationGroupValuesClientGetOptions) (ConfigurationGroupValuesClientGetResponse, error)`
+- New function `*ConfigurationGroupValuesClient.NewListByResourceGroupPager(string, *ConfigurationGroupValuesClientListByResourceGroupOptions) *runtime.Pager[ConfigurationGroupValuesClientListByResourceGroupResponse]`
+- New function `*ConfigurationGroupValuesClient.NewListBySubscriptionPager(*ConfigurationGroupValuesClientListBySubscriptionOptions) *runtime.Pager[ConfigurationGroupValuesClientListBySubscriptionResponse]`
+- New function `*ConfigurationGroupValuesClient.UpdateTags(context.Context, string, string, TagsObject, *ConfigurationGroupValuesClientUpdateTagsOptions) (ConfigurationGroupValuesClientUpdateTagsResponse, error)`
+- New function `*ConfigurationValueWithSecrets.GetConfigurationGroupValuePropertiesFormat() *ConfigurationGroupValuePropertiesFormat`
+- New function `*ConfigurationValueWithoutSecrets.GetConfigurationGroupValuePropertiesFormat() *ConfigurationGroupValuePropertiesFormat`
+- New function `*ContainerizedNetworkFunctionDefinitionVersion.GetNetworkFunctionDefinitionVersionPropertiesFormat() *NetworkFunctionDefinitionVersionPropertiesFormat`
+- New function `*ContainerizedNetworkFunctionTemplate.GetContainerizedNetworkFunctionTemplate() *ContainerizedNetworkFunctionTemplate`
+- New function `*DeploymentResourceIDReference.GetDeploymentResourceIDReference() *DeploymentResourceIDReference`
+- New function `*NFVIs.GetNFVIs() *NFVIs`
+- New function `*OpenDeploymentResourceReference.GetDeploymentResourceIDReference() *DeploymentResourceIDReference`
+- New function `NewProxyArtifactClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ProxyArtifactClient, error)`
+- New function `*ProxyArtifactClient.NewGetPager(string, string, string, string, *ProxyArtifactClientGetOptions) *runtime.Pager[ProxyArtifactClientGetResponse]`
+- New function `*ProxyArtifactClient.NewListPager(string, string, string, *ProxyArtifactClientListOptions) *runtime.Pager[ProxyArtifactClientListResponse]`
+- New function `*ProxyArtifactClient.BeginUpdateState(context.Context, string, string, string, string, string, ArtifactChangeState, *ProxyArtifactClientBeginUpdateStateOptions) (*runtime.Poller[ProxyArtifactClientUpdateStateResponse], error)`
+- New function `NewPublishersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PublishersClient, error)`
+- New function `*PublishersClient.BeginCreateOrUpdate(context.Context, string, string, *PublishersClientBeginCreateOrUpdateOptions) (*runtime.Poller[PublishersClientCreateOrUpdateResponse], error)`
+- New function `*PublishersClient.BeginDelete(context.Context, string, string, *PublishersClientBeginDeleteOptions) (*runtime.Poller[PublishersClientDeleteResponse], error)`
+- New function `*PublishersClient.Get(context.Context, string, string, *PublishersClientGetOptions) (PublishersClientGetResponse, error)`
+- New function `*PublishersClient.NewListByResourceGroupPager(string, *PublishersClientListByResourceGroupOptions) *runtime.Pager[PublishersClientListByResourceGroupResponse]`
+- New function `*PublishersClient.NewListBySubscriptionPager(*PublishersClientListBySubscriptionOptions) *runtime.Pager[PublishersClientListBySubscriptionResponse]`
+- New function `*PublishersClient.Update(context.Context, string, string, *PublishersClientUpdateOptions) (PublishersClientUpdateResponse, error)`
+- New function `*ResourceElementTemplate.GetResourceElementTemplate() *ResourceElementTemplate`
+- New function `*SecretDeploymentResourceReference.GetDeploymentResourceIDReference() *DeploymentResourceIDReference`
+- New function `NewSiteNetworkServicesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SiteNetworkServicesClient, error)`
+- New function `*SiteNetworkServicesClient.BeginCreateOrUpdate(context.Context, string, string, SiteNetworkService, *SiteNetworkServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SiteNetworkServicesClientCreateOrUpdateResponse], error)`
+- New function `*SiteNetworkServicesClient.BeginDelete(context.Context, string, string, *SiteNetworkServicesClientBeginDeleteOptions) (*runtime.Poller[SiteNetworkServicesClientDeleteResponse], error)`
+- New function `*SiteNetworkServicesClient.Get(context.Context, string, string, *SiteNetworkServicesClientGetOptions) (SiteNetworkServicesClientGetResponse, error)`
+- New function `*SiteNetworkServicesClient.NewListByResourceGroupPager(string, *SiteNetworkServicesClientListByResourceGroupOptions) *runtime.Pager[SiteNetworkServicesClientListByResourceGroupResponse]`
+- New function `*SiteNetworkServicesClient.NewListBySubscriptionPager(*SiteNetworkServicesClientListBySubscriptionOptions) *runtime.Pager[SiteNetworkServicesClientListBySubscriptionResponse]`
+- New function `*SiteNetworkServicesClient.UpdateTags(context.Context, string, string, TagsObject, *SiteNetworkServicesClientUpdateTagsOptions) (SiteNetworkServicesClientUpdateTagsResponse, error)`
+- New function `NewSitesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SitesClient, error)`
+- New function `*SitesClient.BeginCreateOrUpdate(context.Context, string, string, Site, *SitesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SitesClientCreateOrUpdateResponse], error)`
+- New function `*SitesClient.BeginDelete(context.Context, string, string, *SitesClientBeginDeleteOptions) (*runtime.Poller[SitesClientDeleteResponse], error)`
+- New function `*SitesClient.Get(context.Context, string, string, *SitesClientGetOptions) (SitesClientGetResponse, error)`
+- New function `*SitesClient.NewListByResourceGroupPager(string, *SitesClientListByResourceGroupOptions) *runtime.Pager[SitesClientListByResourceGroupResponse]`
+- New function `*SitesClient.NewListBySubscriptionPager(*SitesClientListBySubscriptionOptions) *runtime.Pager[SitesClientListBySubscriptionResponse]`
+- New function `*SitesClient.UpdateTags(context.Context, string, string, TagsObject, *SitesClientUpdateTagsOptions) (SitesClientUpdateTagsResponse, error)`
+- New function `*VirtualNetworkFunctionDefinitionVersion.GetNetworkFunctionDefinitionVersionPropertiesFormat() *NetworkFunctionDefinitionVersionPropertiesFormat`
+- New function `*VirtualNetworkFunctionTemplate.GetVirtualNetworkFunctionTemplate() *VirtualNetworkFunctionTemplate`
+- New function `NewNetworkFunctionDefinitionGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkFunctionDefinitionGroupsClient, error)`
+- New function `*NetworkFunctionDefinitionGroupsClient.BeginCreateOrUpdate(context.Context, string, string, string, NetworkFunctionDefinitionGroup, *NetworkFunctionDefinitionGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkFunctionDefinitionGroupsClientCreateOrUpdateResponse], error)`
+- New function `*NetworkFunctionDefinitionGroupsClient.BeginDelete(context.Context, string, string, string, *NetworkFunctionDefinitionGroupsClientBeginDeleteOptions) (*runtime.Poller[NetworkFunctionDefinitionGroupsClientDeleteResponse], error)`
+- New function `*NetworkFunctionDefinitionGroupsClient.Get(context.Context, string, string, string, *NetworkFunctionDefinitionGroupsClientGetOptions) (NetworkFunctionDefinitionGroupsClientGetResponse, error)`
+- New function `*NetworkFunctionDefinitionGroupsClient.NewListByPublisherPager(string, string, *NetworkFunctionDefinitionGroupsClientListByPublisherOptions) *runtime.Pager[NetworkFunctionDefinitionGroupsClientListByPublisherResponse]`
+- New function `*NetworkFunctionDefinitionGroupsClient.Update(context.Context, string, string, string, TagsObject, *NetworkFunctionDefinitionGroupsClientUpdateOptions) (NetworkFunctionDefinitionGroupsClientUpdateResponse, error)`
+- New function `*NetworkFunctionDefinitionResourceElementTemplateDetails.GetResourceElementTemplate() *ResourceElementTemplate`
+- New function `*NetworkFunctionDefinitionVersionPropertiesFormat.GetNetworkFunctionDefinitionVersionPropertiesFormat() *NetworkFunctionDefinitionVersionPropertiesFormat`
+- New function `NewNetworkFunctionDefinitionVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkFunctionDefinitionVersionsClient, error)`
+- New function `*NetworkFunctionDefinitionVersionsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, NetworkFunctionDefinitionVersion, *NetworkFunctionDefinitionVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkFunctionDefinitionVersionsClientCreateOrUpdateResponse], error)`
+- New function `*NetworkFunctionDefinitionVersionsClient.BeginDelete(context.Context, string, string, string, string, *NetworkFunctionDefinitionVersionsClientBeginDeleteOptions) (*runtime.Poller[NetworkFunctionDefinitionVersionsClientDeleteResponse], error)`
+- New function `*NetworkFunctionDefinitionVersionsClient.Get(context.Context, string, string, string, string, *NetworkFunctionDefinitionVersionsClientGetOptions) (NetworkFunctionDefinitionVersionsClientGetResponse, error)`
+- New function `*NetworkFunctionDefinitionVersionsClient.NewListByNetworkFunctionDefinitionGroupPager(string, string, string, *NetworkFunctionDefinitionVersionsClientListByNetworkFunctionDefinitionGroupOptions) *runtime.Pager[NetworkFunctionDefinitionVersionsClientListByNetworkFunctionDefinitionGroupResponse]`
+- New function `*NetworkFunctionDefinitionVersionsClient.Update(context.Context, string, string, string, string, TagsObject, *NetworkFunctionDefinitionVersionsClientUpdateOptions) (NetworkFunctionDefinitionVersionsClientUpdateResponse, error)`
+- New function `*NetworkFunctionDefinitionVersionsClient.BeginUpdateState(context.Context, string, string, string, string, NetworkFunctionDefinitionVersionUpdateState, *NetworkFunctionDefinitionVersionsClientBeginUpdateStateOptions) (*runtime.Poller[NetworkFunctionDefinitionVersionsClientUpdateStateResponse], error)`
+- New function `*NetworkFunctionPropertiesFormat.GetNetworkFunctionPropertiesFormat() *NetworkFunctionPropertiesFormat`
+- New function `*NetworkFunctionValueWithSecrets.GetNetworkFunctionPropertiesFormat() *NetworkFunctionPropertiesFormat`
+- New function `*NetworkFunctionValueWithoutSecrets.GetNetworkFunctionPropertiesFormat() *NetworkFunctionPropertiesFormat`
+- New function `*NetworkFunctionsClient.BeginExecuteRequest(context.Context, string, string, ExecuteRequestParameters, *NetworkFunctionsClientBeginExecuteRequestOptions) (*runtime.Poller[NetworkFunctionsClientExecuteRequestResponse], error)`
+- New function `NewNetworkServiceDesignGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkServiceDesignGroupsClient, error)`
+- New function `*NetworkServiceDesignGroupsClient.BeginCreateOrUpdate(context.Context, string, string, string, NetworkServiceDesignGroup, *NetworkServiceDesignGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkServiceDesignGroupsClientCreateOrUpdateResponse], error)`
+- New function `*NetworkServiceDesignGroupsClient.BeginDelete(context.Context, string, string, string, *NetworkServiceDesignGroupsClientBeginDeleteOptions) (*runtime.Poller[NetworkServiceDesignGroupsClientDeleteResponse], error)`
+- New function `*NetworkServiceDesignGroupsClient.Get(context.Context, string, string, string, *NetworkServiceDesignGroupsClientGetOptions) (NetworkServiceDesignGroupsClientGetResponse, error)`
+- New function `*NetworkServiceDesignGroupsClient.NewListByPublisherPager(string, string, *NetworkServiceDesignGroupsClientListByPublisherOptions) *runtime.Pager[NetworkServiceDesignGroupsClientListByPublisherResponse]`
+- New function `*NetworkServiceDesignGroupsClient.Update(context.Context, string, string, string, TagsObject, *NetworkServiceDesignGroupsClientUpdateOptions) (NetworkServiceDesignGroupsClientUpdateResponse, error)`
+- New function `NewNetworkServiceDesignVersionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkServiceDesignVersionsClient, error)`
+- New function `*NetworkServiceDesignVersionsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, NetworkServiceDesignVersion, *NetworkServiceDesignVersionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NetworkServiceDesignVersionsClientCreateOrUpdateResponse], error)`
+- New function `*NetworkServiceDesignVersionsClient.BeginDelete(context.Context, string, string, string, string, *NetworkServiceDesignVersionsClientBeginDeleteOptions) (*runtime.Poller[NetworkServiceDesignVersionsClientDeleteResponse], error)`
+- New function `*NetworkServiceDesignVersionsClient.Get(context.Context, string, string, string, string, *NetworkServiceDesignVersionsClientGetOptions) (NetworkServiceDesignVersionsClientGetResponse, error)`
+- New function `*NetworkServiceDesignVersionsClient.NewListByNetworkServiceDesignGroupPager(string, string, string, *NetworkServiceDesignVersionsClientListByNetworkServiceDesignGroupOptions) *runtime.Pager[NetworkServiceDesignVersionsClientListByNetworkServiceDesignGroupResponse]`
+- New function `*NetworkServiceDesignVersionsClient.Update(context.Context, string, string, string, string, TagsObject, *NetworkServiceDesignVersionsClientUpdateOptions) (NetworkServiceDesignVersionsClientUpdateResponse, error)`
+- New function `*NetworkServiceDesignVersionsClient.BeginUpdateState(context.Context, string, string, string, string, NetworkServiceDesignVersionUpdateState, *NetworkServiceDesignVersionsClientBeginUpdateStateOptions) (*runtime.Poller[NetworkServiceDesignVersionsClientUpdateStateResponse], error)`
+- New struct `ArmResourceDefinitionResourceElementTemplate`
+- New struct `ArmResourceDefinitionResourceElementTemplateDetails`
+- New struct `ArmTemplateArtifactProfile`
+- New struct `ArmTemplateMappingRuleProfile`
+- New struct `ArtifactChangeState`
+- New struct `ArtifactChangeStateProperties`
+- New struct `ArtifactManifest`
+- New struct `ArtifactManifestListResult`
+- New struct `ArtifactManifestPropertiesFormat`
+- New struct `ArtifactManifestUpdateState`
+- New struct `ArtifactStore`
+- New struct `ArtifactStoreListResult`
+- New struct `ArtifactStorePropertiesFormat`
+- New struct `ArtifactStorePropertiesFormatManagedResourceGroupConfiguration`
+- New struct `AzureArcK8SClusterNFVIDetails`
+- New struct `AzureArcKubernetesArtifactProfile`
+- New struct `AzureArcKubernetesDeployMappingRuleProfile`
+- New struct `AzureArcKubernetesHelmApplication`
+- New struct `AzureArcKubernetesNetworkFunctionTemplate`
+- New struct `AzureContainerRegistryScopedTokenCredential`
+- New struct `AzureCoreArmTemplateArtifactProfile`
+- New struct `AzureCoreArmTemplateDeployMappingRuleProfile`
+- New struct `AzureCoreNFVIDetails`
+- New struct `AzureCoreNetworkFunctionArmTemplateApplication`
+- New struct `AzureCoreNetworkFunctionTemplate`
+- New struct `AzureCoreNetworkFunctionVhdApplication`
+- New struct `AzureCoreVhdImageArtifactProfile`
+- New struct `AzureCoreVhdImageDeployMappingRuleProfile`
+- New struct `AzureOperatorNexusArmTemplateArtifactProfile`
+- New struct `AzureOperatorNexusArmTemplateDeployMappingRuleProfile`
+- New struct `AzureOperatorNexusClusterNFVIDetails`
+- New struct `AzureOperatorNexusImageArtifactProfile`
+- New struct `AzureOperatorNexusImageDeployMappingRuleProfile`
+- New struct `AzureOperatorNexusNetworkFunctionArmTemplateApplication`
+- New struct `AzureOperatorNexusNetworkFunctionImageApplication`
+- New struct `AzureOperatorNexusNetworkFunctionTemplate`
+- New struct `AzureStorageAccountContainerCredential`
+- New struct `AzureStorageAccountCredential`
+- New struct `Component`
+- New struct `ComponentListResult`
+- New struct `ComponentProperties`
+- New struct `ConfigurationGroupSchema`
+- New struct `ConfigurationGroupSchemaListResult`
+- New struct `ConfigurationGroupSchemaPropertiesFormat`
+- New struct `ConfigurationGroupSchemaVersionUpdateState`
+- New struct `ConfigurationGroupValue`
+- New struct `ConfigurationGroupValueListResult`
+- New struct `ConfigurationValueWithSecrets`
+- New struct `ConfigurationValueWithoutSecrets`
+- New struct `ContainerizedNetworkFunctionDefinitionVersion`
+- New struct `DaemonSet`
+- New struct `DependsOnProfile`
+- New struct `Deployment`
+- New struct `DeploymentStatusProperties`
+- New struct `ExecuteRequestParameters`
+- New struct `HelmArtifactProfile`
+- New struct `HelmInstallOptions`
+- New struct `HelmMappingRuleProfile`
+- New struct `HelmMappingRuleProfileOptions`
+- New struct `HelmUpgradeOptions`
+- New struct `ImageArtifactProfile`
+- New struct `ImageMappingRuleProfile`
+- New struct `ManagedResourceGroupConfiguration`
+- New struct `ManagedServiceIdentity`
+- New struct `ManifestArtifactFormat`
+- New struct `NSDArtifactProfile`
+- New struct `NetworkFunctionDefinitionGroup`
+- New struct `NetworkFunctionDefinitionGroupListResult`
+- New struct `NetworkFunctionDefinitionGroupPropertiesFormat`
+- New struct `NetworkFunctionDefinitionResourceElementTemplateDetails`
+- New struct `NetworkFunctionDefinitionVersion`
+- New struct `NetworkFunctionDefinitionVersionListResult`
+- New struct `NetworkFunctionDefinitionVersionUpdateState`
+- New struct `NetworkFunctionValueWithSecrets`
+- New struct `NetworkFunctionValueWithoutSecrets`
+- New struct `NetworkServiceDesignGroup`
+- New struct `NetworkServiceDesignGroupListResult`
+- New struct `NetworkServiceDesignGroupPropertiesFormat`
+- New struct `NetworkServiceDesignVersion`
+- New struct `NetworkServiceDesignVersionListResult`
+- New struct `NetworkServiceDesignVersionPropertiesFormat`
+- New struct `NetworkServiceDesignVersionUpdateState`
+- New struct `NfviDetails`
+- New struct `OpenDeploymentResourceReference`
+- New struct `OperationListResult`
+- New struct `Pod`
+- New struct `PodEvent`
+- New struct `ProxyArtifactListOverview`
+- New struct `ProxyArtifactOverviewListResult`
+- New struct `ProxyArtifactOverviewPropertiesValue`
+- New struct `ProxyArtifactVersionsListOverview`
+- New struct `ProxyArtifactVersionsOverviewListResult`
+- New struct `Publisher`
+- New struct `PublisherListResult`
+- New struct `PublisherPropertiesFormat`
+- New struct `ReferencedResource`
+- New struct `ReplicaSet`
+- New struct `RequestMetadata`
+- New struct `Resources`
+- New struct `SKU`
+- New struct `SecretDeploymentResourceReference`
+- New struct `Site`
+- New struct `SiteListResult`
+- New struct `SiteNetworkService`
+- New struct `SiteNetworkServiceListResult`
+- New struct `SiteNetworkServicePropertiesFormat`
+- New struct `SitePropertiesFormat`
+- New struct `StatefulSet`
+- New struct `UserAssignedIdentity`
+- New struct `VhdImageArtifactProfile`
+- New struct `VhdImageMappingRuleProfile`
+- New struct `VirtualNetworkFunctionDefinitionVersion`
+- New field `Identity` in struct `NetworkFunction`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

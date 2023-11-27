@@ -3,7 +3,6 @@
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 
-- Support for test fakes and OpenTelemetry trace spans.
 - New enum type `ServiceKind` with values `ServiceKindSocketIO`, `ServiceKindWebPubSub`
 - New function `*Client.ListReplicaSKUs(context.Context, string, string, string, *ClientListReplicaSKUsOptions) (ClientListReplicaSKUsResponse, error)`
 - New function `*ClientFactory.NewReplicasClient() *ReplicasClient`

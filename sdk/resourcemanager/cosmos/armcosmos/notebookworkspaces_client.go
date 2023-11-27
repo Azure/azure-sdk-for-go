@@ -46,7 +46,7 @@ func NewNotebookWorkspacesClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Creates the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -73,7 +73,7 @@ func (client *NotebookWorkspacesClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Creates the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, notebookCreateUpdateParameters NotebookWorkspaceCreateUpdateParameters, options *NotebookWorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NotebookWorkspacesClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *NotebookWorkspacesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, notebookCreateUpdateParameters); err != nil {
@@ -131,7 +131,7 @@ func (client *NotebookWorkspacesClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - Deletes the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -157,7 +157,7 @@ func (client *NotebookWorkspacesClient) BeginDelete(ctx context.Context, resourc
 // Delete - Deletes the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NotebookWorkspacesClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *NotebookWorkspacesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *NotebookWorkspacesClient) deleteCreateRequest(ctx context.Context,
 // Get - Gets the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -263,7 +263,7 @@ func (client *NotebookWorkspacesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *NotebookWorkspacesClient) getHandleResponse(resp *http.Response) (
 
 // NewListByDatabaseAccountPager - Gets the notebook workspace resources of an existing Cosmos DB account.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - NotebookWorkspacesClientListByDatabaseAccountOptions contains the optional parameters for the NotebookWorkspacesClient.NewListByDatabaseAccountPager
@@ -329,7 +329,7 @@ func (client *NotebookWorkspacesClient) listByDatabaseAccountCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *NotebookWorkspacesClient) listByDatabaseAccountHandleResponse(resp
 // ListConnectionInfo - Retrieves the connection info for the notebook workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -399,7 +399,7 @@ func (client *NotebookWorkspacesClient) listConnectionInfoCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -417,7 +417,7 @@ func (client *NotebookWorkspacesClient) listConnectionInfoHandleResponse(resp *h
 // BeginRegenerateAuthToken - Regenerates the auth token for the notebook workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -443,7 +443,7 @@ func (client *NotebookWorkspacesClient) BeginRegenerateAuthToken(ctx context.Con
 // RegenerateAuthToken - Regenerates the auth token for the notebook workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NotebookWorkspacesClient.BeginRegenerateAuthToken"
@@ -489,7 +489,7 @@ func (client *NotebookWorkspacesClient) regenerateAuthTokenCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -498,7 +498,7 @@ func (client *NotebookWorkspacesClient) regenerateAuthTokenCreateRequest(ctx con
 // BeginStart - Starts the notebook workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - notebookWorkspaceName - The name of the notebook workspace resource.
@@ -524,7 +524,7 @@ func (client *NotebookWorkspacesClient) BeginStart(ctx context.Context, resource
 // Start - Starts the notebook workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15
+// Generated from API version 2023-03-15-preview
 func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NotebookWorkspacesClient.BeginStart"
@@ -570,7 +570,7 @@ func (client *NotebookWorkspacesClient) startCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15")
+	reqQP.Set("api-version", "2023-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

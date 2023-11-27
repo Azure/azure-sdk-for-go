@@ -32,7 +32,7 @@ type RestorableDroppedDatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorableDroppedDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableDroppedDatabasesClient, error) {
-	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName+".RestorableDroppedDatabasesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewRestorableDroppedDatabasesClient(subscriptionID string, credential azcor
 // Get - Gets a restorable dropped database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -54,10 +54,6 @@ func NewRestorableDroppedDatabasesClient(subscriptionID string, credential azcor
 //     method.
 func (client *RestorableDroppedDatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, restorableDroppedDatabaseID string, options *RestorableDroppedDatabasesClientGetOptions) (RestorableDroppedDatabasesClientGetResponse, error) {
 	var err error
-	const operationName = "RestorableDroppedDatabasesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, restorableDroppedDatabaseID, options)
 	if err != nil {
 		return RestorableDroppedDatabasesClientGetResponse{}, err
@@ -98,7 +94,13 @@ func (client *RestorableDroppedDatabasesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +117,7 @@ func (client *RestorableDroppedDatabasesClient) getHandleResponse(resp *http.Res
 
 // NewListByServerPager - Gets a list of restorable dropped databases.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -127,20 +129,25 @@ func (client *RestorableDroppedDatabasesClient) NewListByServerPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RestorableDroppedDatabasesClientListByServerResponse) (RestorableDroppedDatabasesClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RestorableDroppedDatabasesClient.NewListByServerPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
 			if err != nil {
 				return RestorableDroppedDatabasesClientListByServerResponse{}, err
 			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RestorableDroppedDatabasesClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RestorableDroppedDatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
 			return client.listByServerHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -164,7 +171,7 @@ func (client *RestorableDroppedDatabasesClient) listByServerCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

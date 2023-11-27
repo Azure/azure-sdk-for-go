@@ -33,7 +33,7 @@ type ElasticPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewElasticPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticPoolsClient, error) {
-	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName+".ElasticPoolsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewElasticPoolsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Creates or updates an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -62,26 +62,20 @@ func (client *ElasticPoolsClient) BeginCreateOrUpdate(ctx context.Context, resou
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticPoolsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticPoolsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		return runtime.NewPollerFromResumeToken[ElasticPoolsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ElasticPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, options *ElasticPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ElasticPoolsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -121,7 +115,7 @@ func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,7 +127,7 @@ func (client *ElasticPoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -147,26 +141,20 @@ func (client *ElasticPoolsClient) BeginDelete(ctx context.Context, resourceGroup
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticPoolsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticPoolsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		return runtime.NewPollerFromResumeToken[ElasticPoolsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ElasticPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ElasticPoolsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
 		return nil, err
@@ -206,7 +194,7 @@ func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -214,7 +202,7 @@ func (client *ElasticPoolsClient) deleteCreateRequest(ctx context.Context, resou
 // BeginFailover - Failovers an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -227,27 +215,19 @@ func (client *ElasticPoolsClient) BeginFailover(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticPoolsClientFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		poller, err := runtime.NewPoller[ElasticPoolsClientFailoverResponse](resp, client.internal.Pipeline(), nil)
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticPoolsClientFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		return runtime.NewPollerFromResumeToken[ElasticPoolsClientFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Failover - Failovers an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ElasticPoolsClient) failover(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ElasticPoolsClient.BeginFailover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
 		return nil, err
@@ -287,7 +267,7 @@ func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -295,7 +275,7 @@ func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, res
 // Get - Gets an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -303,10 +283,6 @@ func (client *ElasticPoolsClient) failoverCreateRequest(ctx context.Context, res
 //   - options - ElasticPoolsClientGetOptions contains the optional parameters for the ElasticPoolsClient.Get method.
 func (client *ElasticPoolsClient) Get(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientGetOptions) (ElasticPoolsClientGetResponse, error) {
 	var err error
-	const operationName = "ElasticPoolsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 	if err != nil {
 		return ElasticPoolsClientGetResponse{}, err
@@ -347,7 +323,7 @@ func (client *ElasticPoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +340,7 @@ func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (Elasti
 
 // NewListByServerPager - Gets all elastic pools in a server.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -376,20 +352,25 @@ func (client *ElasticPoolsClient) NewListByServerPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ElasticPoolsClientListByServerResponse) (ElasticPoolsClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ElasticPoolsClient.NewListByServerPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
 			if err != nil {
 				return ElasticPoolsClientListByServerResponse{}, err
 			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticPoolsClientListByServerResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ElasticPoolsClientListByServerResponse{}, runtime.NewResponseError(resp)
+			}
 			return client.listByServerHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -416,7 +397,7 @@ func (client *ElasticPoolsClient) listByServerCreateRequest(ctx context.Context,
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
 	}
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -446,7 +427,6 @@ func (client *ElasticPoolsClient) NewListMetricDefinitionsPager(resourceGroupNam
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ElasticPoolsClientListMetricDefinitionsResponse) (ElasticPoolsClientListMetricDefinitionsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ElasticPoolsClient.NewListMetricDefinitionsPager")
 			req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 			if err != nil {
 				return ElasticPoolsClientListMetricDefinitionsResponse{}, err
@@ -460,7 +440,6 @@ func (client *ElasticPoolsClient) NewListMetricDefinitionsPager(resourceGroupNam
 			}
 			return client.listMetricDefinitionsHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -519,7 +498,6 @@ func (client *ElasticPoolsClient) NewListMetricsPager(resourceGroupName string, 
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ElasticPoolsClientListMetricsResponse) (ElasticPoolsClientListMetricsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ElasticPoolsClient.NewListMetricsPager")
 			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, filter, options)
 			if err != nil {
 				return ElasticPoolsClientListMetricsResponse{}, err
@@ -533,7 +511,6 @@ func (client *ElasticPoolsClient) NewListMetricsPager(resourceGroupName string, 
 			}
 			return client.listMetricsHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -580,7 +557,7 @@ func (client *ElasticPoolsClient) listMetricsHandleResponse(resp *http.Response)
 // BeginUpdate - Updates an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -595,26 +572,20 @@ func (client *ElasticPoolsClient) BeginUpdate(ctx context.Context, resourceGroup
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticPoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ElasticPoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		return runtime.NewPollerFromResumeToken[ElasticPoolsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-08-01-preview
+// Generated from API version 2022-08-01-preview
 func (client *ElasticPoolsClient) update(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, options *ElasticPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ElasticPoolsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -654,7 +625,7 @@ func (client *ElasticPoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01-preview")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

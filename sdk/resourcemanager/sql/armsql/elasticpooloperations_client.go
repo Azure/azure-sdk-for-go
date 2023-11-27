@@ -32,7 +32,7 @@ type ElasticPoolOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticPoolOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName+".ElasticPoolOperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,10 +55,6 @@ func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *ElasticPoolOperationsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, operationID string, options *ElasticPoolOperationsClientCancelOptions) (ElasticPoolOperationsClientCancelResponse, error) {
 	var err error
-	const operationName = "ElasticPoolOperationsClient.Cancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, operationID, options)
 	if err != nil {
 		return ElasticPoolOperationsClientCancelResponse{}, err
@@ -89,9 +85,6 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter elasticPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticPoolName}", url.PathEscape(elasticPoolName))
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -121,20 +114,25 @@ func (client *ElasticPoolOperationsClient) NewListByElasticPoolPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ElasticPoolOperationsClientListByElasticPoolResponse) (ElasticPoolOperationsClientListByElasticPoolResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ElasticPoolOperationsClient.NewListByElasticPoolPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
-			}, nil)
 			if err != nil {
 				return ElasticPoolOperationsClientListByElasticPoolResponse{}, err
 			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticPoolOperationsClientListByElasticPoolResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ElasticPoolOperationsClientListByElasticPoolResponse{}, runtime.NewResponseError(resp)
+			}
 			return client.listByElasticPoolHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 

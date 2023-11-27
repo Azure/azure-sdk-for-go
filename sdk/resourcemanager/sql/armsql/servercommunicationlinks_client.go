@@ -32,7 +32,7 @@ type ServerCommunicationLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServerCommunicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerCommunicationLinksClient, error) {
-	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName+".ServerCommunicationLinksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,14 +60,10 @@ func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerCommunicationLinksClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		poller, err := runtime.NewPoller[ServerCommunicationLinksClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServerCommunicationLinksClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		return runtime.NewPollerFromResumeToken[ServerCommunicationLinksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -77,10 +73,6 @@ func (client *ServerCommunicationLinksClient) BeginCreateOrUpdate(ctx context.Co
 // Generated from API version 2014-04-01
 func (client *ServerCommunicationLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters ServerCommunicationLink, options *ServerCommunicationLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ServerCommunicationLinksClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +133,6 @@ func (client *ServerCommunicationLinksClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *ServerCommunicationLinksClient) Delete(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientDeleteOptions) (ServerCommunicationLinksClientDeleteResponse, error) {
 	var err error
-	const operationName = "ServerCommunicationLinksClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, options)
 	if err != nil {
 		return ServerCommunicationLinksClientDeleteResponse{}, err
@@ -201,10 +189,6 @@ func (client *ServerCommunicationLinksClient) deleteCreateRequest(ctx context.Co
 //     method.
 func (client *ServerCommunicationLinksClient) Get(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, options *ServerCommunicationLinksClientGetOptions) (ServerCommunicationLinksClientGetResponse, error) {
 	var err error
-	const operationName = "ServerCommunicationLinksClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, communicationLinkName, options)
 	if err != nil {
 		return ServerCommunicationLinksClientGetResponse{}, err
@@ -274,7 +258,6 @@ func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroup
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ServerCommunicationLinksClientListByServerResponse) (ServerCommunicationLinksClientListByServerResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerCommunicationLinksClient.NewListByServerPager")
 			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			if err != nil {
 				return ServerCommunicationLinksClientListByServerResponse{}, err
@@ -288,7 +271,6 @@ func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroup
 			}
 			return client.listByServerHandleResponse(resp)
 		},
-		Tracer: client.internal.Tracer(),
 	})
 }
 

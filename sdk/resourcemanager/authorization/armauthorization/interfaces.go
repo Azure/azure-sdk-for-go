@@ -8,6 +8,44 @@
 
 package armauthorization
 
+// AccessReviewDecisionIdentityClassification provides polymorphic access to related types.
+// Call the interface's GetAccessReviewDecisionIdentity() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccessReviewDecisionIdentity, *AccessReviewDecisionServicePrincipalIdentity, *AccessReviewDecisionUserIdentity
+type AccessReviewDecisionIdentityClassification interface {
+	// GetAccessReviewDecisionIdentity returns the AccessReviewDecisionIdentity content of the underlying type.
+	GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity
+}
+
+// AccessReviewDecisionInsightPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAccessReviewDecisionInsightProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccessReviewDecisionInsightProperties, *AccessReviewDecisionUserSignInInsightProperties
+type AccessReviewDecisionInsightPropertiesClassification interface {
+	// GetAccessReviewDecisionInsightProperties returns the AccessReviewDecisionInsightProperties content of the underlying type.
+	GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties
+}
+
+// AlertConfigurationPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAlertConfigurationProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AlertConfigurationProperties, *AzureRolesAssignedOutsidePimAlertConfigurationProperties, *DuplicateRoleCreatedAlertConfigurationProperties,
+// - *TooManyOwnersAssignedToResourceAlertConfigurationProperties, *TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties
+type AlertConfigurationPropertiesClassification interface {
+	// GetAlertConfigurationProperties returns the AlertConfigurationProperties content of the underlying type.
+	GetAlertConfigurationProperties() *AlertConfigurationProperties
+}
+
+// AlertIncidentPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAlertIncidentProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AlertIncidentProperties, *AzureRolesAssignedOutsidePimAlertIncidentProperties, *DuplicateRoleCreatedAlertIncidentProperties,
+// - *TooManyOwnersAssignedToResourceAlertIncidentProperties, *TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties
+type AlertIncidentPropertiesClassification interface {
+	// GetAlertIncidentProperties returns the AlertIncidentProperties content of the underlying type.
+	GetAlertIncidentProperties() *AlertIncidentProperties
+}
+
 // RoleManagementPolicyRuleClassification provides polymorphic access to related types.
 // Call the interface's GetRoleManagementPolicyRule() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

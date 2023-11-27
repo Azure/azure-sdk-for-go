@@ -8,6 +8,253 @@
 
 package armauthorization
 
+// AccessReviewDefaultSettingsClientGetResponse contains the response from method AccessReviewDefaultSettingsClient.Get.
+type AccessReviewDefaultSettingsClientGetResponse struct {
+	// Access Review Default Settings.
+	AccessReviewDefaultSettings
+}
+
+// AccessReviewDefaultSettingsClientPutResponse contains the response from method AccessReviewDefaultSettingsClient.Put.
+type AccessReviewDefaultSettingsClientPutResponse struct {
+	// Access Review Default Settings.
+	AccessReviewDefaultSettings
+}
+
+// AccessReviewHistoryDefinitionClientCreateResponse contains the response from method AccessReviewHistoryDefinitionClient.Create.
+type AccessReviewHistoryDefinitionClientCreateResponse struct {
+	// Access Review History Definition.
+	AccessReviewHistoryDefinition
+}
+
+// AccessReviewHistoryDefinitionClientDeleteByIDResponse contains the response from method AccessReviewHistoryDefinitionClient.DeleteByID.
+type AccessReviewHistoryDefinitionClientDeleteByIDResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIResponse contains the response from method AccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI.
+type AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIResponse struct {
+	// Access Review History Definition Instance.
+	AccessReviewHistoryInstance
+}
+
+// AccessReviewHistoryDefinitionInstancesClientListResponse contains the response from method AccessReviewHistoryDefinitionInstancesClient.NewListPager.
+type AccessReviewHistoryDefinitionInstancesClientListResponse struct {
+	// List of Access Review History Instances.
+	AccessReviewHistoryDefinitionInstanceListResult
+}
+
+// AccessReviewHistoryDefinitionsClientGetByIDResponse contains the response from method AccessReviewHistoryDefinitionsClient.GetByID.
+type AccessReviewHistoryDefinitionsClientGetByIDResponse struct {
+	// Access Review History Definition.
+	AccessReviewHistoryDefinition
+}
+
+// AccessReviewHistoryDefinitionsClientListResponse contains the response from method AccessReviewHistoryDefinitionsClient.NewListPager.
+type AccessReviewHistoryDefinitionsClientListResponse struct {
+	// List of Access Review History Definitions.
+	AccessReviewHistoryDefinitionListResult
+}
+
+// AccessReviewInstanceClientAcceptRecommendationsResponse contains the response from method AccessReviewInstanceClient.AcceptRecommendations.
+type AccessReviewInstanceClientAcceptRecommendationsResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewInstanceClientApplyDecisionsResponse contains the response from method AccessReviewInstanceClient.ApplyDecisions.
+type AccessReviewInstanceClientApplyDecisionsResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewInstanceClientResetDecisionsResponse contains the response from method AccessReviewInstanceClient.ResetDecisions.
+type AccessReviewInstanceClientResetDecisionsResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewInstanceClientSendRemindersResponse contains the response from method AccessReviewInstanceClient.SendReminders.
+type AccessReviewInstanceClientSendRemindersResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewInstanceClientStopResponse contains the response from method AccessReviewInstanceClient.Stop.
+type AccessReviewInstanceClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewInstanceContactedReviewersClientListResponse contains the response from method AccessReviewInstanceContactedReviewersClient.NewListPager.
+type AccessReviewInstanceContactedReviewersClientListResponse struct {
+	// List of access review contacted reviewers.
+	AccessReviewContactedReviewerListResult
+}
+
+// AccessReviewInstanceDecisionsClientListResponse contains the response from method AccessReviewInstanceDecisionsClient.NewListPager.
+type AccessReviewInstanceDecisionsClientListResponse struct {
+	// List of access review decisions.
+	AccessReviewDecisionListResult
+}
+
+// AccessReviewInstanceMyDecisionsClientGetByIDResponse contains the response from method AccessReviewInstanceMyDecisionsClient.GetByID.
+type AccessReviewInstanceMyDecisionsClientGetByIDResponse struct {
+	// Access Review.
+	AccessReviewDecision
+}
+
+// AccessReviewInstanceMyDecisionsClientListResponse contains the response from method AccessReviewInstanceMyDecisionsClient.NewListPager.
+type AccessReviewInstanceMyDecisionsClientListResponse struct {
+	// List of access review decisions.
+	AccessReviewDecisionListResult
+}
+
+// AccessReviewInstanceMyDecisionsClientPatchResponse contains the response from method AccessReviewInstanceMyDecisionsClient.Patch.
+type AccessReviewInstanceMyDecisionsClientPatchResponse struct {
+	// Access Review.
+	AccessReviewDecision
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse contains the response from method AccessReviewInstancesAssignedForMyApprovalClient.GetByID.
+type AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse struct {
+	// Access Review Instance.
+	AccessReviewInstance
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientListResponse contains the response from method AccessReviewInstancesAssignedForMyApprovalClient.NewListPager.
+type AccessReviewInstancesAssignedForMyApprovalClientListResponse struct {
+	// List of Access Review Instances.
+	AccessReviewInstanceListResult
+}
+
+// AccessReviewInstancesClientCreateResponse contains the response from method AccessReviewInstancesClient.Create.
+type AccessReviewInstancesClientCreateResponse struct {
+	// Access Review Instance.
+	AccessReviewInstance
+}
+
+// AccessReviewInstancesClientGetByIDResponse contains the response from method AccessReviewInstancesClient.GetByID.
+type AccessReviewInstancesClientGetByIDResponse struct {
+	// Access Review Instance.
+	AccessReviewInstance
+}
+
+// AccessReviewInstancesClientListResponse contains the response from method AccessReviewInstancesClient.NewListPager.
+type AccessReviewInstancesClientListResponse struct {
+	// List of Access Review Instances.
+	AccessReviewInstanceListResult
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse contains the response from method AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse struct {
+	// List of Access Review Schedule Definitions.
+	AccessReviewScheduleDefinitionListResult
+}
+
+// AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse contains the response from method AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID.
+type AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse struct {
+	// Access Review Schedule Definition.
+	AccessReviewScheduleDefinition
+}
+
+// AccessReviewScheduleDefinitionsClientDeleteByIDResponse contains the response from method AccessReviewScheduleDefinitionsClient.DeleteByID.
+type AccessReviewScheduleDefinitionsClientDeleteByIDResponse struct {
+	// placeholder for future response values
+}
+
+// AccessReviewScheduleDefinitionsClientGetByIDResponse contains the response from method AccessReviewScheduleDefinitionsClient.GetByID.
+type AccessReviewScheduleDefinitionsClientGetByIDResponse struct {
+	// Access Review Schedule Definition.
+	AccessReviewScheduleDefinition
+}
+
+// AccessReviewScheduleDefinitionsClientListResponse contains the response from method AccessReviewScheduleDefinitionsClient.NewListPager.
+type AccessReviewScheduleDefinitionsClientListResponse struct {
+	// List of Access Review Schedule Definitions.
+	AccessReviewScheduleDefinitionListResult
+}
+
+// AccessReviewScheduleDefinitionsClientStopResponse contains the response from method AccessReviewScheduleDefinitionsClient.Stop.
+type AccessReviewScheduleDefinitionsClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// AlertConfigurationsClientGetResponse contains the response from method AlertConfigurationsClient.Get.
+type AlertConfigurationsClientGetResponse struct {
+	// Alert configuration.
+	AlertConfiguration
+}
+
+// AlertConfigurationsClientListForScopeResponse contains the response from method AlertConfigurationsClient.NewListForScopePager.
+type AlertConfigurationsClientListForScopeResponse struct {
+	// Alert configuration list operation result.
+	AlertConfigurationListResult
+}
+
+// AlertConfigurationsClientUpdateResponse contains the response from method AlertConfigurationsClient.Update.
+type AlertConfigurationsClientUpdateResponse struct {
+	// placeholder for future response values
+}
+
+// AlertDefinitionsClientGetResponse contains the response from method AlertDefinitionsClient.Get.
+type AlertDefinitionsClientGetResponse struct {
+	// Alert definition
+	AlertDefinition
+}
+
+// AlertDefinitionsClientListForScopeResponse contains the response from method AlertDefinitionsClient.NewListForScopePager.
+type AlertDefinitionsClientListForScopeResponse struct {
+	// Alert definition list operation result.
+	AlertDefinitionListResult
+}
+
+// AlertIncidentsClientGetResponse contains the response from method AlertIncidentsClient.Get.
+type AlertIncidentsClientGetResponse struct {
+	// Alert incident
+	AlertIncident
+}
+
+// AlertIncidentsClientListForScopeResponse contains the response from method AlertIncidentsClient.NewListForScopePager.
+type AlertIncidentsClientListForScopeResponse struct {
+	// Alert incident list operation result.
+	AlertIncidentListResult
+}
+
+// AlertIncidentsClientRemediateResponse contains the response from method AlertIncidentsClient.Remediate.
+type AlertIncidentsClientRemediateResponse struct {
+	// placeholder for future response values
+}
+
+// AlertOperationClientGetResponse contains the response from method AlertOperationClient.Get.
+type AlertOperationClientGetResponse struct {
+	// Alert operation result
+	AlertOperationResult
+}
+
+// AlertsClientGetResponse contains the response from method AlertsClient.Get.
+type AlertsClientGetResponse struct {
+	// The alert.
+	Alert
+}
+
+// AlertsClientListForScopeResponse contains the response from method AlertsClient.NewListForScopePager.
+type AlertsClientListForScopeResponse struct {
+	// Alert list operation result.
+	AlertListResult
+}
+
+// AlertsClientRefreshAllResponse contains the response from method AlertsClient.BeginRefreshAll.
+type AlertsClientRefreshAllResponse struct {
+	// Alert operation result
+	AlertOperationResult
+}
+
+// AlertsClientRefreshResponse contains the response from method AlertsClient.BeginRefresh.
+type AlertsClientRefreshResponse struct {
+	// Alert operation result
+	AlertOperationResult
+}
+
+// AlertsClientUpdateResponse contains the response from method AlertsClient.Update.
+type AlertsClientUpdateResponse struct {
+	// placeholder for future response values
+}
+
 // ClassicAdministratorsClientListResponse contains the response from method ClassicAdministratorsClient.NewListPager.
 type ClassicAdministratorsClientListResponse struct {
 	// ClassicAdministrator list result information.
@@ -59,6 +306,12 @@ type EligibleChildResourcesClientGetResponse struct {
 // GlobalAdministratorClientElevateAccessResponse contains the response from method GlobalAdministratorClient.ElevateAccess.
 type GlobalAdministratorClientElevateAccessResponse struct {
 	// placeholder for future response values
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
+	// The result of a request to list Microsoft.Authorization operations.
+	OperationListResult
 }
 
 // PermissionsClientListForResourceGroupResponse contains the response from method PermissionsClient.NewListForResourceGroupPager.
@@ -325,4 +578,140 @@ type RoleManagementPolicyAssignmentsClientGetResponse struct {
 type RoleManagementPolicyAssignmentsClientListForScopeResponse struct {
 	// Role management policy assignment list operation result.
 	RoleManagementPolicyAssignmentListResult
+}
+
+// ScopeAccessReviewDefaultSettingsClientGetResponse contains the response from method ScopeAccessReviewDefaultSettingsClient.Get.
+type ScopeAccessReviewDefaultSettingsClientGetResponse struct {
+	// Access Review Default Settings.
+	AccessReviewDefaultSettings
+}
+
+// ScopeAccessReviewDefaultSettingsClientPutResponse contains the response from method ScopeAccessReviewDefaultSettingsClient.Put.
+type ScopeAccessReviewDefaultSettingsClientPutResponse struct {
+	// Access Review Default Settings.
+	AccessReviewDefaultSettings
+}
+
+// ScopeAccessReviewHistoryDefinitionClientCreateResponse contains the response from method ScopeAccessReviewHistoryDefinitionClient.Create.
+type ScopeAccessReviewHistoryDefinitionClientCreateResponse struct {
+	// Access Review History Definition.
+	AccessReviewHistoryDefinition
+}
+
+// ScopeAccessReviewHistoryDefinitionClientDeleteByIDResponse contains the response from method ScopeAccessReviewHistoryDefinitionClient.DeleteByID.
+type ScopeAccessReviewHistoryDefinitionClientDeleteByIDResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIResponse contains the response from method ScopeAccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI.
+type ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIResponse struct {
+	// Access Review History Definition Instance.
+	AccessReviewHistoryInstance
+}
+
+// ScopeAccessReviewHistoryDefinitionInstancesClientListResponse contains the response from method ScopeAccessReviewHistoryDefinitionInstancesClient.NewListPager.
+type ScopeAccessReviewHistoryDefinitionInstancesClientListResponse struct {
+	// List of Access Review History Instances.
+	AccessReviewHistoryDefinitionInstanceListResult
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientGetByIDResponse contains the response from method ScopeAccessReviewHistoryDefinitionsClient.GetByID.
+type ScopeAccessReviewHistoryDefinitionsClientGetByIDResponse struct {
+	// Access Review History Definition.
+	AccessReviewHistoryDefinition
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientListResponse contains the response from method ScopeAccessReviewHistoryDefinitionsClient.NewListPager.
+type ScopeAccessReviewHistoryDefinitionsClientListResponse struct {
+	// List of Access Review History Definitions.
+	AccessReviewHistoryDefinitionListResult
+}
+
+// ScopeAccessReviewInstanceClientApplyDecisionsResponse contains the response from method ScopeAccessReviewInstanceClient.ApplyDecisions.
+type ScopeAccessReviewInstanceClientApplyDecisionsResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewInstanceClientRecordAllDecisionsResponse contains the response from method ScopeAccessReviewInstanceClient.RecordAllDecisions.
+type ScopeAccessReviewInstanceClientRecordAllDecisionsResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewInstanceClientResetDecisionsResponse contains the response from method ScopeAccessReviewInstanceClient.ResetDecisions.
+type ScopeAccessReviewInstanceClientResetDecisionsResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewInstanceClientSendRemindersResponse contains the response from method ScopeAccessReviewInstanceClient.SendReminders.
+type ScopeAccessReviewInstanceClientSendRemindersResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewInstanceClientStopResponse contains the response from method ScopeAccessReviewInstanceClient.Stop.
+type ScopeAccessReviewInstanceClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewInstanceContactedReviewersClientListResponse contains the response from method ScopeAccessReviewInstanceContactedReviewersClient.NewListPager.
+type ScopeAccessReviewInstanceContactedReviewersClientListResponse struct {
+	// List of access review contacted reviewers.
+	AccessReviewContactedReviewerListResult
+}
+
+// ScopeAccessReviewInstanceDecisionsClientListResponse contains the response from method ScopeAccessReviewInstanceDecisionsClient.NewListPager.
+type ScopeAccessReviewInstanceDecisionsClientListResponse struct {
+	// List of access review decisions.
+	AccessReviewDecisionListResult
+}
+
+// ScopeAccessReviewInstancesClientCreateResponse contains the response from method ScopeAccessReviewInstancesClient.Create.
+type ScopeAccessReviewInstancesClientCreateResponse struct {
+	// Access Review Instance.
+	AccessReviewInstance
+}
+
+// ScopeAccessReviewInstancesClientGetByIDResponse contains the response from method ScopeAccessReviewInstancesClient.GetByID.
+type ScopeAccessReviewInstancesClientGetByIDResponse struct {
+	// Access Review Instance.
+	AccessReviewInstance
+}
+
+// ScopeAccessReviewInstancesClientListResponse contains the response from method ScopeAccessReviewInstancesClient.NewListPager.
+type ScopeAccessReviewInstancesClientListResponse struct {
+	// List of Access Review Instances.
+	AccessReviewInstanceListResult
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse contains the response from method ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID.
+type ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse struct {
+	// Access Review Schedule Definition.
+	AccessReviewScheduleDefinition
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientDeleteByIDResponse contains the response from method ScopeAccessReviewScheduleDefinitionsClient.DeleteByID.
+type ScopeAccessReviewScheduleDefinitionsClientDeleteByIDResponse struct {
+	// placeholder for future response values
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientGetByIDResponse contains the response from method ScopeAccessReviewScheduleDefinitionsClient.GetByID.
+type ScopeAccessReviewScheduleDefinitionsClientGetByIDResponse struct {
+	// Access Review Schedule Definition.
+	AccessReviewScheduleDefinition
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientListResponse contains the response from method ScopeAccessReviewScheduleDefinitionsClient.NewListPager.
+type ScopeAccessReviewScheduleDefinitionsClientListResponse struct {
+	// List of Access Review Schedule Definitions.
+	AccessReviewScheduleDefinitionListResult
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientStopResponse contains the response from method ScopeAccessReviewScheduleDefinitionsClient.Stop.
+type ScopeAccessReviewScheduleDefinitionsClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// TenantLevelAccessReviewInstanceContactedReviewersClientListResponse contains the response from method TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager.
+type TenantLevelAccessReviewInstanceContactedReviewersClientListResponse struct {
+	// List of access review contacted reviewers.
+	AccessReviewContactedReviewerListResult
 }

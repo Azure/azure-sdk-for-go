@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleInstancesByScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleAssignmentScheduleInstancesByScope.json
 func ExampleRoleAssignmentScheduleInstancesClient_NewListForScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleRoleAssignmentScheduleInstancesClient_NewListForScopePager() {
 		// 		{
 		// 			Name: to.Ptr("ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 		// 			Type: to.Ptr("Microsoft.Authorization/RoleAssignmentScheduleInstances"),
-		// 			ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleInstances/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleInstances/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 		// 			Properties: &armauthorization.RoleAssignmentScheduleInstanceProperties{
 		// 				AssignmentType: to.Ptr(armauthorization.AssignmentTypeAssigned),
 		// 				Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
@@ -76,9 +76,9 @@ func ExampleRoleAssignmentScheduleInstancesClient_NewListForScopePager() {
 		// 				OriginRoleAssignmentID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleAssignments/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 		// 				PrincipalID: to.Ptr("a3bb8764-cb92-4276-9d2a-ca1e895e55ea"),
 		// 				PrincipalType: to.Ptr(armauthorization.PrincipalTypeUser),
-		// 				RoleAssignmentScheduleID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
+		// 				RoleAssignmentScheduleID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 		// 				RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/c8d4ff99-41c3-41a8-9f60-21dfdad59608"),
-		// 				Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 		// 				Status: to.Ptr(armauthorization.StatusAccepted),
 		// 			},
@@ -87,7 +87,7 @@ func ExampleRoleAssignmentScheduleInstancesClient_NewListForScopePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleInstanceByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleAssignmentScheduleInstanceByName.json
 func ExampleRoleAssignmentScheduleInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleRoleAssignmentScheduleInstancesClient_Get() {
 	// res.RoleAssignmentScheduleInstance = armauthorization.RoleAssignmentScheduleInstance{
 	// 	Name: to.Ptr("ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleAssignmentScheduleInstances"),
-	// 	ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleInstances/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleInstances/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 	// 	Properties: &armauthorization.RoleAssignmentScheduleInstanceProperties{
 	// 		AssignmentType: to.Ptr(armauthorization.AssignmentTypeAssigned),
 	// 		Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
@@ -136,12 +136,12 @@ func ExampleRoleAssignmentScheduleInstancesClient_Get() {
 	// 		LinkedRoleEligibilityScheduleID: to.Ptr("b1477448-2cc6-4ceb-93b4-54a202a89413"),
 	// 		LinkedRoleEligibilityScheduleInstanceID: to.Ptr("21e4b59a-0499-4fe0-a3c3-43a3055b773a"),
 	// 		MemberType: to.Ptr(armauthorization.MemberTypeDirect),
-	// 		OriginRoleAssignmentID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleAssignments/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
+	// 		OriginRoleAssignmentID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleAssignments/ed9b8180-cef7-4c77-a63c-b8566ecfc412"),
 	// 		PrincipalID: to.Ptr("a3bb8764-cb92-4276-9d2a-ca1e895e55ea"),
 	// 		PrincipalType: to.Ptr(armauthorization.PrincipalTypeUser),
-	// 		RoleAssignmentScheduleID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
+	// 		RoleAssignmentScheduleID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 	// 		RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/c8d4ff99-41c3-41a8-9f60-21dfdad59608"),
-	// 		Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 	// 		Status: to.Ptr(armauthorization.StatusAccepted),
 	// 	},

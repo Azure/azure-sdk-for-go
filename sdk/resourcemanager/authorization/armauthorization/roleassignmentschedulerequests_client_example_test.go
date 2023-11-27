@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PutRoleAssignmentScheduleRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/PutRoleAssignmentScheduleRequest.json
 func ExampleRoleAssignmentScheduleRequestsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Create() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleRequestByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/GetRoleAssignmentScheduleRequestByName.json
 func ExampleRoleAssignmentScheduleRequestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Get() {
 	// res.RoleAssignmentScheduleRequest = armauthorization.RoleAssignmentScheduleRequest{
 	// 	Name: to.Ptr("fea7a502-9a96-4806-a26f-eee560e52045"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleAssignmentScheduleRequests"),
-	// 	ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
 	// 	Properties: &armauthorization.RoleAssignmentScheduleRequestProperties{
 	// 		Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
 	// 		ConditionVersion: to.Ptr("1.0"),
@@ -109,7 +109,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Get() {
 	// 			},
 	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 	// 		},
-	// 		Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 	// 		Status: to.Ptr(armauthorization.StatusProvisioned),
 	// 		TargetRoleAssignmentScheduleID: to.Ptr("b1477448-2cc6-4ceb-93b4-54a202a89413"),
 	// 		TicketInfo: &armauthorization.RoleAssignmentScheduleRequestPropertiesTicketInfo{
@@ -118,7 +118,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleRequestByScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/GetRoleAssignmentScheduleRequestByScope.json
 func ExampleRoleAssignmentScheduleRequestsClient_NewListForScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_NewListForScopePager() {
 		// 		{
 		// 			Name: to.Ptr("fea7a502-9a96-4806-a26f-eee560e52045"),
 		// 			Type: to.Ptr("Microsoft.Authorization/RoleAssignmentScheduleRequests"),
-		// 			ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
 		// 			Properties: &armauthorization.RoleAssignmentScheduleRequestProperties{
 		// 				Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
 		// 				ConditionVersion: to.Ptr("1.0"),
@@ -180,7 +180,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_NewListForScopePager() {
 		// 					},
 		// 					StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 		// 				},
-		// 				Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 		// 				Status: to.Ptr(armauthorization.StatusProvisioned),
 		// 				TargetRoleAssignmentScheduleID: to.Ptr("b1477448-2cc6-4ceb-93b4-54a202a89413"),
 		// 				TicketInfo: &armauthorization.RoleAssignmentScheduleRequestPropertiesTicketInfo{
@@ -191,7 +191,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_NewListForScopePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/CancelRoleAssignmentScheduleRequestByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/CancelRoleAssignmentScheduleRequestByName.json
 func ExampleRoleAssignmentScheduleRequestsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Cancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/ValidateRoleAssignmentScheduleRequestByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2022-04-01-preview/examples/ValidateRoleAssignmentScheduleRequestByName.json
 func ExampleRoleAssignmentScheduleRequestsClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Validate() {
 	// res.RoleAssignmentScheduleRequest = armauthorization.RoleAssignmentScheduleRequest{
 	// 	Name: to.Ptr("fea7a502-9a96-4806-a26f-eee560e52045"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleAssignmentScheduleRequests"),
-	// 	ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
 	// 	Properties: &armauthorization.RoleAssignmentScheduleRequestProperties{
 	// 		Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
 	// 		ConditionVersion: to.Ptr("1.0"),
@@ -280,7 +280,7 @@ func ExampleRoleAssignmentScheduleRequestsClient_Validate() {
 	// 			},
 	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 	// 		},
-	// 		Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 	// 		Status: to.Ptr(armauthorization.StatusProvisioned),
 	// 		TargetRoleAssignmentScheduleID: to.Ptr("c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 	// 		TicketInfo: &armauthorization.RoleAssignmentScheduleRequestPropertiesTicketInfo{

@@ -10,7 +10,7 @@ package armmysql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v1.3.0"
 )
 
 // CreateMode - The mode to create a new server.

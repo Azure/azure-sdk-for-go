@@ -8,121 +8,310 @@
 
 package armazurestackhci
 
-// ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
+// GalleryImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginCreateOrUpdate
 // method.
-type ArcSettingsClientBeginCreateIdentityOptions struct {
+type GalleryImagesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ArcSettingsClientBeginDeleteOptions contains the optional parameters for the ArcSettingsClient.BeginDelete method.
-type ArcSettingsClientBeginDeleteOptions struct {
+// GalleryImagesClientBeginDeleteOptions contains the optional parameters for the GalleryImagesClient.BeginDelete method.
+type GalleryImagesClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ArcSettingsClientCreateOptions contains the optional parameters for the ArcSettingsClient.Create method.
-type ArcSettingsClientCreateOptions struct {
+// GalleryImagesClientBeginUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginUpdate method.
+type GalleryImagesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GalleryImagesClientGetOptions contains the optional parameters for the GalleryImagesClient.Get method.
+type GalleryImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsClientGeneratePasswordOptions contains the optional parameters for the ArcSettingsClient.GeneratePassword method.
-type ArcSettingsClientGeneratePasswordOptions struct {
+// GalleryImagesClientListAllOptions contains the optional parameters for the GalleryImagesClient.NewListAllPager method.
+type GalleryImagesClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsClientGetOptions contains the optional parameters for the ArcSettingsClient.Get method.
-type ArcSettingsClientGetOptions struct {
+// GalleryImagesClientListOptions contains the optional parameters for the GalleryImagesClient.NewListPager method.
+type GalleryImagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsClientListByClusterOptions contains the optional parameters for the ArcSettingsClient.NewListByClusterPager
+// GuestAgentClientBeginCreateOptions contains the optional parameters for the GuestAgentClient.BeginCreate method.
+type GuestAgentClientBeginCreateOptions struct {
+	// Request payload.
+	Body *GuestAgent
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GuestAgentClientBeginDeleteOptions contains the optional parameters for the GuestAgentClient.BeginDelete method.
+type GuestAgentClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GuestAgentClientGetOptions contains the optional parameters for the GuestAgentClient.Get method.
+type GuestAgentClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GuestAgentsClientListOptions contains the optional parameters for the GuestAgentsClient.NewListPager method.
+type GuestAgentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get method.
+type HybridIdentityMetadataClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridIdentityMetadataClientListOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListPager
 // method.
-type ArcSettingsClientListByClusterOptions struct {
+type HybridIdentityMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcSettingsClientUpdateOptions contains the optional parameters for the ArcSettingsClient.Update method.
-type ArcSettingsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientBeginCreateIdentityOptions contains the optional parameters for the ClustersClient.BeginCreateIdentity method.
-type ClustersClientBeginCreateIdentityOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
-type ClustersClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
+// LogicalNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the LogicalNetworksClient.BeginCreateOrUpdate
 // method.
-type ClustersClientBeginUploadCertificateOptions struct {
+type LogicalNetworksClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ClustersClientCreateOptions contains the optional parameters for the ClustersClient.Create method.
-type ClustersClientCreateOptions struct {
+// LogicalNetworksClientBeginDeleteOptions contains the optional parameters for the LogicalNetworksClient.BeginDelete method.
+type LogicalNetworksClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LogicalNetworksClientBeginUpdateOptions contains the optional parameters for the LogicalNetworksClient.BeginUpdate method.
+type LogicalNetworksClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LogicalNetworksClientGetOptions contains the optional parameters for the LogicalNetworksClient.Get method.
+type LogicalNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
-type ClustersClientGetOptions struct {
+// LogicalNetworksClientListAllOptions contains the optional parameters for the LogicalNetworksClient.NewListAllPager method.
+type LogicalNetworksClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// LogicalNetworksClientListOptions contains the optional parameters for the LogicalNetworksClient.NewListPager method.
+type LogicalNetworksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarketplaceGalleryImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the MarketplaceGalleryImagesClient.BeginCreateOrUpdate
 // method.
-type ClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+type MarketplaceGalleryImagesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
-// ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
+// MarketplaceGalleryImagesClientBeginDeleteOptions contains the optional parameters for the MarketplaceGalleryImagesClient.BeginDelete
 // method.
-type ClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
-type ClustersClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
-type ExtensionsClientBeginCreateOptions struct {
+type MarketplaceGalleryImagesClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
-type ExtensionsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExtensionsClientBeginUpdateOptions contains the optional parameters for the ExtensionsClient.BeginUpdate method.
-type ExtensionsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
-type ExtensionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExtensionsClientListByArcSettingOptions contains the optional parameters for the ExtensionsClient.NewListByArcSettingPager
+// MarketplaceGalleryImagesClientBeginUpdateOptions contains the optional parameters for the MarketplaceGalleryImagesClient.BeginUpdate
 // method.
-type ExtensionsClientListByArcSettingOptions struct {
+type MarketplaceGalleryImagesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MarketplaceGalleryImagesClientGetOptions contains the optional parameters for the MarketplaceGalleryImagesClient.Get method.
+type MarketplaceGalleryImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// MarketplaceGalleryImagesClientListAllOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListAllPager
+// method.
+type MarketplaceGalleryImagesClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarketplaceGalleryImagesClientListOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListPager
+// method.
+type MarketplaceGalleryImagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkInterfacesClient.BeginCreateOrUpdate
+// method.
+type NetworkInterfacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkInterfacesClientBeginDeleteOptions contains the optional parameters for the NetworkInterfacesClient.BeginDelete
+// method.
+type NetworkInterfacesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkInterfacesClientBeginUpdateOptions contains the optional parameters for the NetworkInterfacesClient.BeginUpdate
+// method.
+type NetworkInterfacesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NetworkInterfacesClientGetOptions contains the optional parameters for the NetworkInterfacesClient.Get method.
+type NetworkInterfacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesClientListAllOptions contains the optional parameters for the NetworkInterfacesClient.NewListAllPager
+// method.
+type NetworkInterfacesClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesClientListOptions contains the optional parameters for the NetworkInterfacesClient.NewListPager method.
+type NetworkInterfacesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageContainersClient.BeginCreateOrUpdate
+// method.
+type StorageContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StorageContainersClientBeginDeleteOptions contains the optional parameters for the StorageContainersClient.BeginDelete
+// method.
+type StorageContainersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StorageContainersClientBeginUpdateOptions contains the optional parameters for the StorageContainersClient.BeginUpdate
+// method.
+type StorageContainersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StorageContainersClientGetOptions contains the optional parameters for the StorageContainersClient.Get method.
+type StorageContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageContainersClientListAllOptions contains the optional parameters for the StorageContainersClient.NewListAllPager
+// method.
+type StorageContainersClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageContainersClientListOptions contains the optional parameters for the StorageContainersClient.NewListPager method.
+type StorageContainersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualHardDisksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHardDisksClient.BeginCreateOrUpdate
+// method.
+type VirtualHardDisksClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualHardDisksClientBeginDeleteOptions contains the optional parameters for the VirtualHardDisksClient.BeginDelete method.
+type VirtualHardDisksClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualHardDisksClientBeginUpdateOptions contains the optional parameters for the VirtualHardDisksClient.BeginUpdate method.
+type VirtualHardDisksClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualHardDisksClientGetOptions contains the optional parameters for the VirtualHardDisksClient.Get method.
+type VirtualHardDisksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualHardDisksClientListAllOptions contains the optional parameters for the VirtualHardDisksClient.NewListAllPager method.
+type VirtualHardDisksClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualHardDisksClientListOptions contains the optional parameters for the VirtualHardDisksClient.NewListPager method.
+type VirtualHardDisksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualMachineInstancesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginCreateOrUpdate
+// method.
+type VirtualMachineInstancesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginDelete
+// method.
+type VirtualMachineInstancesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientBeginRestartOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginRestart
+// method.
+type VirtualMachineInstancesClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientBeginStartOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginStart
+// method.
+type VirtualMachineInstancesClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientBeginStopOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginStop
+// method.
+type VirtualMachineInstancesClientBeginStopOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginUpdate
+// method.
+type VirtualMachineInstancesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachineInstancesClientGetOptions contains the optional parameters for the VirtualMachineInstancesClient.Get method.
+type VirtualMachineInstancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualMachineInstancesClientListOptions contains the optional parameters for the VirtualMachineInstancesClient.NewListPager
+// method.
+type VirtualMachineInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }

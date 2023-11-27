@@ -8,17 +8,16 @@
 
 package armselfhelp
 
+// CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post method.
+type CheckNameAvailabilityClientPostOptions struct {
+	// The required parameters for availability check.
+	CheckNameAvailabilityRequest *CheckNameAvailabilityRequest
+}
+
 // DiagnosticsClientBeginCreateOptions contains the optional parameters for the DiagnosticsClient.BeginCreate method.
 type DiagnosticsClientBeginCreateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
-}
-
-// DiagnosticsClientCheckNameAvailabilityOptions contains the optional parameters for the DiagnosticsClient.CheckNameAvailability
-// method.
-type DiagnosticsClientCheckNameAvailabilityOptions struct {
-	// The required parameters for availability check.
-	CheckNameAvailabilityRequest *CheckNameAvailabilityRequest
 }
 
 // DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
@@ -28,18 +27,59 @@ type DiagnosticsClientGetOptions struct {
 
 // DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager method.
 type DiscoverySolutionClientListOptions struct {
-	// Can be used to filter solutionIds by 'ProblemClassificationId'. The filter supports only 'and' and 'eq' operators. Example:
-	// $filter=ProblemClassificationId eq '1ddda5b4-cf6c-4d4f-91ad-bc38ab0e811e'
-	// and ProblemClassificationId eq '0a9673c2-7af6-4e19-90d3-4ee2461076d9'.
+	// 'ProblemClassificationId' or 'Id' is a mandatory filter to get solutions ids. It also supports optional 'ResourceType'
+	// and 'SolutionType' filters. The filter supports only 'and', 'or' and 'eq'
+	// operators. Example: $filter=ProblemClassificationId eq '1ddda5b4-cf6c-4d4f-91ad-bc38ab0e811e'
 	Filter *string
 
-	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-	// the value of the nextLink element will include a skiptoken parameter that
-	// specifies a starting point to use for subsequent calls.
+	// Skiptoken is only used if a previous operation returned a partial result.
 	Skiptoken *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionClientBeginCreateOptions contains the optional parameters for the SolutionClient.BeginCreate method.
+type SolutionClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SolutionClientBeginUpdateOptions contains the optional parameters for the SolutionClient.BeginUpdate method.
+type SolutionClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SolutionClientGetOptions contains the optional parameters for the SolutionClient.Get method.
+type SolutionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TroubleshootersClientContinueOptions contains the optional parameters for the TroubleshootersClient.Continue method.
+type TroubleshootersClientContinueOptions struct {
+	// The required request body for going to next step in Troubleshooter resource.
+	ContinueRequestBody *ContinueRequestBody
+}
+
+// TroubleshootersClientCreateOptions contains the optional parameters for the TroubleshootersClient.Create method.
+type TroubleshootersClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TroubleshootersClientEndOptions contains the optional parameters for the TroubleshootersClient.End method.
+type TroubleshootersClientEndOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TroubleshootersClientGetOptions contains the optional parameters for the TroubleshootersClient.Get method.
+type TroubleshootersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TroubleshootersClientRestartOptions contains the optional parameters for the TroubleshootersClient.Restart method.
+type TroubleshootersClientRestartOptions struct {
 	// placeholder for future optional parameters
 }

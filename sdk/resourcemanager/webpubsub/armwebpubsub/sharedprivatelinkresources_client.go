@@ -28,8 +28,7 @@ type SharedPrivateLinkResourcesClient struct {
 }
 
 // NewSharedPrivateLinkResourcesClient creates a new instance of SharedPrivateLinkResourcesClient with the specified values.
-//   - subscriptionID - Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedPrivateLinkResourcesClient, error) {
@@ -47,10 +46,9 @@ func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
-//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-//     Resource Manager API or the portal.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - parameters - The shared private link resource
 //   - options - SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginCreateOrUpdate
@@ -62,7 +60,8 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -75,7 +74,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Create or update a shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-08-01-preview
 func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
@@ -121,7 +120,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,10 +132,9 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
-//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-//     Resource Manager API or the portal.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientBeginDeleteOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginDelete
 //     method.
@@ -161,7 +159,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 // Delete - Delete the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-08-01-preview
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginDelete"
@@ -207,7 +205,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -216,10 +214,9 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 // Get - Get the specified shared private link resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-02-01
+// Generated from API version 2023-08-01-preview
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource
-//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-//     Resource Manager API or the portal.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.Get
 //     method.
@@ -269,7 +266,7 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,9 +283,8 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List shared private link resources
 //
-// Generated from API version 2023-02-01
-//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-//     Resource Manager API or the portal.
+// Generated from API version 2023-08-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
 //   - options - SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
 //     method.
@@ -335,7 +331,7 @@ func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-02-01")
+	reqQP.Set("api-version", "2023-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

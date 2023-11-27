@@ -38,15 +38,18 @@ func NewDiscoverySolutionClient(credential azcore.TokenCredential, options *arm.
 	return client, nil
 }
 
-// NewListPager - Solutions Discovery is the initial point of entry within Help API, which helps you identify the relevant
-// solutions for your Azure issue.
-// You can discover solutions using resourceUri OR resourceUri + problemClassificationId.
-// We will do our best in returning relevant diagnostics for your Azure issue.
-// Get the problemClassificationId(s) using this reference [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP].
-// Note: ‘requiredParameterSets’ from Solutions Discovery API response must be passed via ‘additionalParameters’ as an input
-// to Diagnostics API.
+// NewListPager - Lists the relevant Azure diagnostics and solutions using problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
+// AND resourceUri or
+// resourceType. Discovery Solutions is the initial entry point within Help API, which identifies relevant Azure diagnostics
+// and solutions. We will do our best to return the most effective solutions
+// based on the type of inputs, in the request URL
+// Mandatory input : problemClassificationId (Use the problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
+// Optional input: resourceUri OR
+// resource Type
+// Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
+// and Solutions API.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-09-01-preview
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - options - DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager
 //     method.
@@ -82,7 +85,7 @@ func (client *DiscoverySolutionClient) listCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-09-01-preview")
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}

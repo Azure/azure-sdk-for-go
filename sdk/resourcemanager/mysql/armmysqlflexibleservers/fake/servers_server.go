@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -48,6 +48,10 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armmysqlflexibleservers.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse])
 
+	// BeginResetGtid is the fake for method ServersClient.BeginResetGtid
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResetGtid func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerGtidSetParameter, options *armmysqlflexibleservers.ServersClientBeginResetGtidOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse], errResp azfake.ErrorResponder)
+
 	// BeginRestart is the fake for method ServersClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRestart func(ctx context.Context, resourceGroupName string, serverName string, parameters armmysqlflexibleservers.ServerRestartParameter, options *armmysqlflexibleservers.ServersClientBeginRestartOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.ServersClientRestartResponse], errResp azfake.ErrorResponder)
@@ -76,6 +80,7 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 		beginFailover:               newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]](),
+		beginResetGtid:              newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientRestartResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStopResponse]](),
@@ -92,6 +97,7 @@ type ServersServerTransport struct {
 	beginFailover               *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientFailoverResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmysqlflexibleservers.ServersClientListByResourceGroupResponse]]
+	beginResetGtid              *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientResetGtidResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientRestartResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armmysqlflexibleservers.ServersClientStopResponse]]
@@ -122,6 +128,8 @@ func (s *ServersServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchNewListPager(req)
 	case "ServersClient.NewListByResourceGroupPager":
 		resp, err = s.dispatchNewListByResourceGroupPager(req)
+	case "ServersClient.BeginResetGtid":
+		resp, err = s.dispatchBeginResetGtid(req)
 	case "ServersClient.BeginRestart":
 		resp, err = s.dispatchBeginRestart(req)
 	case "ServersClient.BeginStart":
@@ -377,6 +385,54 @@ func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchBeginResetGtid(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginResetGtid == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResetGtid not implemented")}
+	}
+	beginResetGtid := s.beginResetGtid.get(req)
+	if beginResetGtid == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetGtid`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmysqlflexibleservers.ServerGtidSetParameter](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginResetGtid(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResetGtid = &respr
+		s.beginResetGtid.add(req, beginResetGtid)
+	}
+
+	resp, err := server.PollerResponderNext(beginResetGtid, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginResetGtid.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResetGtid) {
+		s.beginResetGtid.remove(req)
+	}
+
 	return resp, nil
 }
 

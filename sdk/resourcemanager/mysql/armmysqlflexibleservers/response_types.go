@@ -8,6 +8,41 @@
 
 package armmysqlflexibleservers
 
+// AzureADAdministratorsClientCreateOrUpdateResponse contains the response from method AzureADAdministratorsClient.BeginCreateOrUpdate.
+type AzureADAdministratorsClientCreateOrUpdateResponse struct {
+	// Represents a Administrator.
+	AzureADAdministrator
+}
+
+// AzureADAdministratorsClientDeleteResponse contains the response from method AzureADAdministratorsClient.BeginDelete.
+type AzureADAdministratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AzureADAdministratorsClientGetResponse contains the response from method AzureADAdministratorsClient.Get.
+type AzureADAdministratorsClientGetResponse struct {
+	// Represents a Administrator.
+	AzureADAdministrator
+}
+
+// AzureADAdministratorsClientListByServerResponse contains the response from method AzureADAdministratorsClient.NewListByServerPager.
+type AzureADAdministratorsClientListByServerResponse struct {
+	// A List of azure ad administrators.
+	AdministratorListResult
+}
+
+// BackupAndExportClientCreateResponse contains the response from method BackupAndExportClient.BeginCreate.
+type BackupAndExportClientCreateResponse struct {
+	// Represents BackupAndExport API Response
+	BackupAndExportResponse
+}
+
+// BackupAndExportClientValidateBackupResponse contains the response from method BackupAndExportClient.ValidateBackup.
+type BackupAndExportClientValidateBackupResponse struct {
+	// Represents ValidateBackup API Response
+	ValidateBackupResponse
+}
+
 // BackupsClientGetResponse contains the response from method BackupsClient.Get.
 type BackupsClientGetResponse struct {
 	// Server backup properties
@@ -20,8 +55,20 @@ type BackupsClientListByServerResponse struct {
 	ServerBackupListResult
 }
 
+// BackupsClientPutResponse contains the response from method BackupsClient.Put.
+type BackupsClientPutResponse struct {
+	// Server backup properties
+	ServerBackup
+}
+
 // CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
 type CheckNameAvailabilityClientExecuteResponse struct {
+	// Represents a resource name availability.
+	NameAvailability
+}
+
+// CheckNameAvailabilityWithoutLocationClientExecuteResponse contains the response from method CheckNameAvailabilityWithoutLocationClient.Execute.
+type CheckNameAvailabilityWithoutLocationClientExecuteResponse struct {
 	// Represents a resource name availability.
 	NameAvailability
 }
@@ -36,6 +83,12 @@ type CheckVirtualNetworkSubnetUsageClientExecuteResponse struct {
 type ConfigurationsClientBatchUpdateResponse struct {
 	// A list of server configurations.
 	ConfigurationListResult
+}
+
+// ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
+type ConfigurationsClientCreateOrUpdateResponse struct {
+	// Represents a Configuration.
+	Configuration
 }
 
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
@@ -114,6 +167,12 @@ type LocationBasedCapabilitiesClientListResponse struct {
 	CapabilitiesListResult
 }
 
+// LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
+type LogFilesClientListByServerResponse struct {
+	// A List of logFiles.
+	LogFileListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of resource provider operations.
@@ -158,6 +217,11 @@ type ServersClientListByResourceGroupResponse struct {
 type ServersClientListResponse struct {
 	// A list of servers.
 	ServerListResult
+}
+
+// ServersClientResetGtidResponse contains the response from method ServersClient.BeginResetGtid.
+type ServersClientResetGtidResponse struct {
+	// placeholder for future response values
 }
 
 // ServersClientRestartResponse contains the response from method ServersClient.BeginRestart.

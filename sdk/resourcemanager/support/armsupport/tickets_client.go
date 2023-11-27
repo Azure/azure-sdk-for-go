@@ -48,7 +48,7 @@ func NewTicketsClient(subscriptionID string, credential azcore.TokenCredential, 
 // name for support ticket creation for the selected subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - checkNameAvailabilityInput - Input to check.
 //   - options - TicketsClientCheckNameAvailabilityOptions contains the optional parameters for the TicketsClient.CheckNameAvailability
 //     method.
@@ -86,7 +86,7 @@ func (client *TicketsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkNameAvailabilityInput); err != nil {
@@ -124,7 +124,7 @@ func (client *TicketsClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 // (CSP) partner tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - supportTicketName - Support ticket name.
 //   - createSupportTicketParameters - Support ticket request payload.
 //   - options - TicketsClientBeginCreateOptions contains the optional parameters for the TicketsClient.BeginCreate method.
@@ -166,7 +166,7 @@ func (client *TicketsClient) BeginCreate(ctx context.Context, supportTicketName 
 // (CSP) partner tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 func (client *TicketsClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TicketsClient.BeginCreate"
@@ -204,7 +204,7 @@ func (client *TicketsClient) createCreateRequest(ctx context.Context, supportTic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createSupportTicketParameters); err != nil {
@@ -218,7 +218,7 @@ func (client *TicketsClient) createCreateRequest(ctx context.Context, supportTic
 // error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - supportTicketName - Support ticket name.
 //   - options - TicketsClientGetOptions contains the optional parameters for the TicketsClient.Get method.
 func (client *TicketsClient) Get(ctx context.Context, supportTicketName string, options *TicketsClientGetOptions) (TicketsClientGetResponse, error) {
@@ -259,7 +259,7 @@ func (client *TicketsClient) getCreateRequest(ctx context.Context, supportTicket
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,13 +274,13 @@ func (client *TicketsClient) getHandleResponse(resp *http.Response) (TicketsClie
 	return result, nil
 }
 
-// NewListPager - Lists all the support tickets for an Azure subscription. You can also filter the support tickets by Status
-// or CreatedDate using the $filter parameter. Output will be a paged result with nextLink,
-// using which you can retrieve the next set of support tickets.
+// NewListPager - Lists all the support tickets for an Azure subscription. You can also filter the support tickets by Status,
+// CreatedDate, ServiceId, and ProblemClassificationId using the $filter parameter. Output will
+// be a paged result with nextLink, using which you can retrieve the next set of support tickets.
 // Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago,
 // a request for data might cause an error.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - options - TicketsClientListOptions contains the optional parameters for the TicketsClient.NewListPager method.
 func (client *TicketsClient) NewListPager(options *TicketsClientListOptions) *runtime.Pager[TicketsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TicketsClientListResponse]{
@@ -323,7 +323,7 @@ func (client *TicketsClient) listCreateRequest(ctx context.Context, options *Tic
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,15 +338,14 @@ func (client *TicketsClient) listHandleResponse(resp *http.Response) (TicketsCli
 	return result, nil
 }
 
-// Update - This API allows you to update the severity level, ticket status, and your contact information in the support ticket.
+// Update - This API allows you to update the severity level, ticket status, advanced diagnostic consent and your contact
+// information in the support ticket.
 // Note: The severity levels cannot be changed if a support ticket is actively being worked upon by an Azure support engineer.
 // In such a case, contact your support engineer to request severity update by
 // adding a new communication using the Communications API.
-// Changing the ticket status to closed is allowed only on an unassigned case. When an engineer is actively working on the
-// ticket, send your ticket closure request by sending a note to your engineer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - supportTicketName - Support ticket name.
 //   - updateSupportTicket - UpdateSupportTicket object.
 //   - options - TicketsClientUpdateOptions contains the optional parameters for the TicketsClient.Update method.
@@ -388,7 +387,7 @@ func (client *TicketsClient) updateCreateRequest(ctx context.Context, supportTic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateSupportTicket); err != nil {

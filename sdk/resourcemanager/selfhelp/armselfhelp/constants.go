@@ -10,7 +10,7 @@ package armselfhelp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,6 +24,66 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AggregationType - Allowed values are Sum, Avg, Count, Min, Max. Default is Sum
+type AggregationType string
+
+const (
+	AggregationTypeAvg   AggregationType = "Avg"
+	AggregationTypeCount AggregationType = "Count"
+	AggregationTypeMax   AggregationType = "Max"
+	AggregationTypeMin   AggregationType = "Min"
+	AggregationTypeSum   AggregationType = "Sum"
+)
+
+// PossibleAggregationTypeValues returns the possible values for the AggregationType const type.
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{
+		AggregationTypeAvg,
+		AggregationTypeCount,
+		AggregationTypeMax,
+		AggregationTypeMin,
+		AggregationTypeSum,
+	}
+}
+
+// AutomatedCheckResultType - Type of Result.
+type AutomatedCheckResultType string
+
+const (
+	AutomatedCheckResultTypeError       AutomatedCheckResultType = "Error"
+	AutomatedCheckResultTypeInformation AutomatedCheckResultType = "Information"
+	AutomatedCheckResultTypeSuccess     AutomatedCheckResultType = "Success"
+	AutomatedCheckResultTypeWarning     AutomatedCheckResultType = "Warning"
+)
+
+// PossibleAutomatedCheckResultTypeValues returns the possible values for the AutomatedCheckResultType const type.
+func PossibleAutomatedCheckResultTypeValues() []AutomatedCheckResultType {
+	return []AutomatedCheckResultType{
+		AutomatedCheckResultTypeError,
+		AutomatedCheckResultTypeInformation,
+		AutomatedCheckResultTypeSuccess,
+		AutomatedCheckResultTypeWarning,
+	}
+}
+
+// Confidence - Confidence of the search result.
+type Confidence string
+
+const (
+	ConfidenceHigh   Confidence = "High"
+	ConfidenceLow    Confidence = "Low"
+	ConfidenceMedium Confidence = "Medium"
+)
+
+// PossibleConfidenceValues returns the possible values for the Confidence const type.
+func PossibleConfidenceValues() []Confidence {
+	return []Confidence{
+		ConfidenceHigh,
+		ConfidenceLow,
+		ConfidenceMedium,
 	}
 }
 
@@ -44,6 +104,50 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DiagnosticProvisioningState - Status of diagnostic provisioning.
+type DiagnosticProvisioningState string
+
+const (
+	// DiagnosticProvisioningStateCanceled - When Diagnostic request gets canceled.
+	DiagnosticProvisioningStateCanceled DiagnosticProvisioningState = "Canceled"
+	// DiagnosticProvisioningStateFailed - All Diagnostics failed to run.
+	DiagnosticProvisioningStateFailed DiagnosticProvisioningState = "Failed"
+	// DiagnosticProvisioningStatePartialComplete - Some Diagnostics are still running or failed.
+	DiagnosticProvisioningStatePartialComplete DiagnosticProvisioningState = "PartialComplete"
+	// DiagnosticProvisioningStateSucceeded - All Diagnostics in the Batch succeeded.
+	DiagnosticProvisioningStateSucceeded DiagnosticProvisioningState = "Succeeded"
+)
+
+// PossibleDiagnosticProvisioningStateValues returns the possible values for the DiagnosticProvisioningState const type.
+func PossibleDiagnosticProvisioningStateValues() []DiagnosticProvisioningState {
+	return []DiagnosticProvisioningState{
+		DiagnosticProvisioningStateCanceled,
+		DiagnosticProvisioningStateFailed,
+		DiagnosticProvisioningStatePartialComplete,
+		DiagnosticProvisioningStateSucceeded,
+	}
+}
+
+// ExecutionStatus - Status of Troubleshooter Step execution.
+type ExecutionStatus string
+
+const (
+	ExecutionStatusFailed  ExecutionStatus = "Failed"
+	ExecutionStatusRunning ExecutionStatus = "Running"
+	ExecutionStatusSuccess ExecutionStatus = "Success"
+	ExecutionStatusWarning ExecutionStatus = "Warning"
+)
+
+// PossibleExecutionStatusValues returns the possible values for the ExecutionStatus const type.
+func PossibleExecutionStatusValues() []ExecutionStatus {
+	return []ExecutionStatus{
+		ExecutionStatusFailed,
+		ExecutionStatusRunning,
+		ExecutionStatusSuccess,
+		ExecutionStatusWarning,
 	}
 }
 
@@ -68,6 +172,24 @@ func PossibleImportanceLevelValues() []ImportanceLevel {
 	}
 }
 
+// Name - Trigger criterion name.
+type Name string
+
+const (
+	NameProblemClassificationID Name = "ProblemClassificationId"
+	NameReplacementKey          Name = "ReplacementKey"
+	NameSolutionID              Name = "SolutionId"
+)
+
+// PossibleNameValues returns the possible values for the Name const type.
+func PossibleNameValues() []Name {
+	return []Name{
+		NameProblemClassificationID,
+		NameReplacementKey,
+		NameSolutionID,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -87,27 +209,97 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ProvisioningState - Status of diagnostic provisioning.
-type ProvisioningState string
+// QuestionContentType - Default is Text.
+type QuestionContentType string
 
 const (
-	// ProvisioningStateCanceled - When Diagnostic request gets canceled.
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateFailed - All Diagnostics failed to run.
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStatePartialComplete - Some Diagnostics are still running or failed.
-	ProvisioningStatePartialComplete ProvisioningState = "PartialComplete"
-	// ProvisioningStateSucceeded - All Diagnostics in the Batch succeeded.
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	QuestionContentTypeHTML     QuestionContentType = "Html"
+	QuestionContentTypeMarkdown QuestionContentType = "Markdown"
+	QuestionContentTypeText     QuestionContentType = "Text"
 )
 
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateCanceled,
-		ProvisioningStateFailed,
-		ProvisioningStatePartialComplete,
-		ProvisioningStateSucceeded,
+// PossibleQuestionContentTypeValues returns the possible values for the QuestionContentType const type.
+func PossibleQuestionContentTypeValues() []QuestionContentType {
+	return []QuestionContentType{
+		QuestionContentTypeHTML,
+		QuestionContentTypeMarkdown,
+		QuestionContentTypeText,
+	}
+}
+
+// QuestionType - Text Input. Will be a single line input.
+type QuestionType string
+
+const (
+	// QuestionTypeDropdown - SingleChoice dropdown.
+	QuestionTypeDropdown QuestionType = "Dropdown"
+	// QuestionTypeMultiLineInfoBox - MultiLineInfoBox
+	QuestionTypeMultiLineInfoBox QuestionType = "MultiLineInfoBox"
+	// QuestionTypeRadioButton - SingleChoice radio button
+	QuestionTypeRadioButton QuestionType = "RadioButton"
+	// QuestionTypeTextInput - Text Input
+	QuestionTypeTextInput QuestionType = "TextInput"
+)
+
+// PossibleQuestionTypeValues returns the possible values for the QuestionType const type.
+func PossibleQuestionTypeValues() []QuestionType {
+	return []QuestionType{
+		QuestionTypeDropdown,
+		QuestionTypeMultiLineInfoBox,
+		QuestionTypeRadioButton,
+		QuestionTypeTextInput,
+	}
+}
+
+// ResultType - Result type of the search result.
+type ResultType string
+
+const (
+	ResultTypeCommunity     ResultType = "Community"
+	ResultTypeDocumentation ResultType = "Documentation"
+)
+
+// PossibleResultTypeValues returns the possible values for the ResultType const type.
+func PossibleResultTypeValues() []ResultType {
+	return []ResultType{
+		ResultTypeCommunity,
+		ResultTypeDocumentation,
+	}
+}
+
+// SolutionProvisioningState - Status of solution provisioning.
+type SolutionProvisioningState string
+
+const (
+	SolutionProvisioningStateCanceled  SolutionProvisioningState = "Canceled"
+	SolutionProvisioningStateFailed    SolutionProvisioningState = "Failed"
+	SolutionProvisioningStateSucceeded SolutionProvisioningState = "Succeeded"
+)
+
+// PossibleSolutionProvisioningStateValues returns the possible values for the SolutionProvisioningState const type.
+func PossibleSolutionProvisioningStateValues() []SolutionProvisioningState {
+	return []SolutionProvisioningState{
+		SolutionProvisioningStateCanceled,
+		SolutionProvisioningStateFailed,
+		SolutionProvisioningStateSucceeded,
+	}
+}
+
+// SolutionType - Solution Type.
+type SolutionType string
+
+const (
+	// SolutionTypeDiagnostics - Diagnostics resource type.
+	SolutionTypeDiagnostics SolutionType = "Diagnostics"
+	// SolutionTypeSolutions - Solutions resource type.
+	SolutionTypeSolutions SolutionType = "Solutions"
+)
+
+// PossibleSolutionTypeValues returns the possible values for the SolutionType const type.
+func PossibleSolutionTypeValues() []SolutionType {
+	return []SolutionType{
+		SolutionTypeDiagnostics,
+		SolutionTypeSolutions,
 	}
 }
 
@@ -135,5 +327,47 @@ func PossibleStatusValues() []Status {
 		StatusRunning,
 		StatusSucceeded,
 		StatusTimeout,
+	}
+}
+
+// TroubleshooterProvisioningState - Status of troubleshooter provisioning.
+type TroubleshooterProvisioningState string
+
+const (
+	TroubleshooterProvisioningStateAutoContinue TroubleshooterProvisioningState = "AutoContinue"
+	TroubleshooterProvisioningStateCanceled     TroubleshooterProvisioningState = "Canceled"
+	TroubleshooterProvisioningStateFailed       TroubleshooterProvisioningState = "Failed"
+	TroubleshooterProvisioningStateRunning      TroubleshooterProvisioningState = "Running"
+	TroubleshooterProvisioningStateSucceeded    TroubleshooterProvisioningState = "Succeeded"
+)
+
+// PossibleTroubleshooterProvisioningStateValues returns the possible values for the TroubleshooterProvisioningState const type.
+func PossibleTroubleshooterProvisioningStateValues() []TroubleshooterProvisioningState {
+	return []TroubleshooterProvisioningState{
+		TroubleshooterProvisioningStateAutoContinue,
+		TroubleshooterProvisioningStateCanceled,
+		TroubleshooterProvisioningStateFailed,
+		TroubleshooterProvisioningStateRunning,
+		TroubleshooterProvisioningStateSucceeded,
+	}
+}
+
+// Type - Type of Troubleshooting step.
+type Type string
+
+const (
+	TypeAutomatedCheck Type = "AutomatedCheck"
+	TypeDecision       Type = "Decision"
+	TypeInsight        Type = "Insight"
+	TypeSolution       Type = "Solution"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeAutomatedCheck,
+		TypeDecision,
+		TypeInsight,
+		TypeSolution,
 	}
 }

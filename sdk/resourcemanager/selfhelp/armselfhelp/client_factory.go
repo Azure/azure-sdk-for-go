@@ -35,6 +35,12 @@ func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOpti
 	}, nil
 }
 
+// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
+func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
+	subClient, _ := NewCheckNameAvailabilityClient(c.credential, c.options)
+	return subClient
+}
+
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient.
 func (c *ClientFactory) NewDiagnosticsClient() *DiagnosticsClient {
 	subClient, _ := NewDiagnosticsClient(c.credential, c.options)
@@ -50,5 +56,17 @@ func (c *ClientFactory) NewDiscoverySolutionClient() *DiscoverySolutionClient {
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewSolutionClient creates a new instance of SolutionClient.
+func (c *ClientFactory) NewSolutionClient() *SolutionClient {
+	subClient, _ := NewSolutionClient(c.credential, c.options)
+	return subClient
+}
+
+// NewTroubleshootersClient creates a new instance of TroubleshootersClient.
+func (c *ClientFactory) NewTroubleshootersClient() *TroubleshootersClient {
+	subClient, _ := NewTroubleshootersClient(c.credential, c.options)
 	return subClient
 }

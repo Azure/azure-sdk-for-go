@@ -47,7 +47,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Creates an HDInsight cluster extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
@@ -74,7 +74,7 @@ func (client *ExtensionsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Creates an HDInsight cluster extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension, options *ExtensionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginCreate"
@@ -120,7 +120,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,7 +132,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Deletes the specified extension for HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
@@ -158,7 +158,7 @@ func (client *ExtensionsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Deletes the specified extension for HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, options *ExtensionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 // BeginDisableAzureMonitor - Disables the Azure Monitor on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientBeginDisableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitor
@@ -239,7 +239,7 @@ func (client *ExtensionsClient) BeginDisableAzureMonitor(ctx context.Context, re
 // DisableAzureMonitor - Disables the Azure Monitor on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) disableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableAzureMonitorOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginDisableAzureMonitor"
@@ -281,7 +281,7 @@ func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Con
 // BeginDisableMonitoring - Disables the Operations Management Suite (OMS) on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientBeginDisableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginDisableMonitoring
@@ -316,7 +316,7 @@ func (client *ExtensionsClient) BeginDisableMonitoring(ctx context.Context, reso
 // DisableMonitoring - Disables the Operations Management Suite (OMS) on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) disableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, options *ExtensionsClientBeginDisableMonitoringOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginDisableMonitoring"
@@ -358,7 +358,7 @@ func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -367,7 +367,7 @@ func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Conte
 // BeginEnableAzureMonitor - Enables the Azure Monitor on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - parameters - The Log Analytics workspace parameters.
@@ -394,7 +394,7 @@ func (client *ExtensionsClient) BeginEnableAzureMonitor(ctx context.Context, res
 // EnableAzureMonitor - Enables the Azure Monitor on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) enableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters AzureMonitorRequest, options *ExtensionsClientBeginEnableAzureMonitorOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginEnableAzureMonitor"
@@ -436,7 +436,7 @@ func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -448,7 +448,7 @@ func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Cont
 // BeginEnableMonitoring - Enables the Operations Management Suite (OMS) on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - parameters - The Operations Management Suite (OMS) workspace parameters.
@@ -475,7 +475,7 @@ func (client *ExtensionsClient) BeginEnableMonitoring(ctx context.Context, resou
 // EnableMonitoring - Enables the Operations Management Suite (OMS) on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ExtensionsClient) enableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, options *ExtensionsClientBeginEnableMonitoringOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExtensionsClient.BeginEnableMonitoring"
@@ -517,7 +517,7 @@ func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -529,7 +529,7 @@ func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Contex
 // Get - Gets the extension properties for the specified HDInsight cluster extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
@@ -580,7 +580,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -598,7 +598,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 // GetAzureAsyncOperationStatus - Gets the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
@@ -655,7 +655,7 @@ func (client *ExtensionsClient) getAzureAsyncOperationStatusCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -673,7 +673,7 @@ func (client *ExtensionsClient) getAzureAsyncOperationStatusHandleResponse(resp 
 // GetAzureMonitorStatus - Gets the status of Azure Monitor on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientGetAzureMonitorStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorStatus
@@ -720,7 +720,7 @@ func (client *ExtensionsClient) getAzureMonitorStatusCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -738,7 +738,7 @@ func (client *ExtensionsClient) getAzureMonitorStatusHandleResponse(resp *http.R
 // GetMonitoringStatus - Gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientGetMonitoringStatusOptions contains the optional parameters for the ExtensionsClient.GetMonitoringStatus
@@ -785,7 +785,7 @@ func (client *ExtensionsClient) getMonitoringStatusCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

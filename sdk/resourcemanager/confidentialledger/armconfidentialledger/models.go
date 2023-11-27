@@ -54,26 +54,35 @@ type CheckNameAvailabilityResponse struct {
 
 // ConfidentialLedger - Confidential Ledger. Contains the properties of Confidential Ledger Resource.
 type ConfidentialLedger struct {
-	// The Azure location where the Confidential Ledger is running.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Properties of Confidential Ledger Resource.
 	Properties *LedgerProperties
 
-	// Additional tags for Confidential Ledger
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; Name of the Resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// DeploymentType - Object representing DeploymentType for Managed CCF.
+type DeploymentType struct {
+	// Source Uri containing ManagedCCF code
+	AppSourceURI *string
+
+	// Unique name for the Managed CCF.
+	LanguageRuntime *LanguageRuntime
 }
 
 // LedgerProperties - Additional Confidential Ledger properties.
@@ -86,6 +95,9 @@ type LedgerProperties struct {
 
 	// Type of Confidential Ledger
 	LedgerType *LedgerType
+
+	// Object representing RunningState for Ledger.
+	RunningState *RunningState
 
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
@@ -110,6 +122,75 @@ type List struct {
 
 	// List of Confidential Ledgers
 	Value []*ConfidentialLedger
+}
+
+// ManagedCCF - Managed CCF. Contains the properties of Managed CCF Resource.
+type ManagedCCF struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of Managed CCF Resource.
+	Properties *ManagedCCFProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedCCFList - Object that includes an array of Managed CCF and a possible link for next set.
+type ManagedCCFList struct {
+	// The URL the client should use to fetch the next page (per server side paging).
+	NextLink *string
+
+	// List of Managed CCF
+	Value []*ManagedCCF
+}
+
+// ManagedCCFProperties - Additional Managed CCF properties.
+type ManagedCCFProperties struct {
+	// Deployment Type of Managed CCF
+	DeploymentType *DeploymentType
+
+	// List of member identity certificates for Managed CCF
+	MemberIdentityCertificates []*MemberIdentityCertificate
+
+	// Number of CCF nodes in the Managed CCF.
+	NodeCount *int32
+
+	// READ-ONLY; Unique name for the Managed CCF.
+	AppName *string
+
+	// READ-ONLY; Endpoint for calling Managed CCF Service.
+	AppURI *string
+
+	// READ-ONLY; Endpoint for accessing network identity.
+	IdentityServiceURI *string
+
+	// READ-ONLY; Provisioning state of Ledger Resource
+	ProvisioningState *ProvisioningState
+}
+
+// MemberIdentityCertificate - Object representing MemberIdentityCertificate for Managed CCF.
+type MemberIdentityCertificate struct {
+	// Member Identity Certificate
+	Certificate *string
+
+	// Member Identity Certificate Encryption Key
+	Encryptionkey *string
+
+	// Anything
+	Tags any
 }
 
 // ResourceProviderOperationDefinition - Describes the Resource Provider Operation.

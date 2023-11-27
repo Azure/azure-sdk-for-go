@@ -50,6 +50,43 @@ type LedgerClientListBySubscriptionOptions struct {
 	Filter *string
 }
 
+// ManagedCCFClientBeginCreateOptions contains the optional parameters for the ManagedCCFClient.BeginCreate method.
+type ManagedCCFClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedCCFClientBeginDeleteOptions contains the optional parameters for the ManagedCCFClient.BeginDelete method.
+type ManagedCCFClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedCCFClientBeginUpdateOptions contains the optional parameters for the ManagedCCFClient.BeginUpdate method.
+type ManagedCCFClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ManagedCCFClientGetOptions contains the optional parameters for the ManagedCCFClient.Get method.
+type ManagedCCFClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedCCFClientListByResourceGroupOptions contains the optional parameters for the ManagedCCFClient.NewListByResourceGroupPager
+// method.
+type ManagedCCFClientListByResourceGroupOptions struct {
+	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
+	Filter *string
+}
+
+// ManagedCCFClientListBySubscriptionOptions contains the optional parameters for the ManagedCCFClient.NewListBySubscriptionPager
+// method.
+type ManagedCCFClientListBySubscriptionOptions struct {
+	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
+	Filter *string
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

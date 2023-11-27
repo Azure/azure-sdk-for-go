@@ -20,66 +20,66 @@ import (
 	"strings"
 )
 
-// LedgerClient contains the methods for the Ledger group.
-// Don't use this type directly, use NewLedgerClient() instead.
-type LedgerClient struct {
+// ManagedCCFClient contains the methods for the ManagedCCF group.
+// Don't use this type directly, use NewManagedCCFClient() instead.
+type ManagedCCFClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewLedgerClient creates a new instance of LedgerClient with the specified values.
+// NewManagedCCFClient creates a new instance of ManagedCCFClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LedgerClient, error) {
+func NewManagedCCFClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedCCFClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &LedgerClient{
+	client := &ManagedCCFClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreate - Creates a Confidential Ledger with the specified ledger parameters.
+// BeginCreate - Creates a Managed CCF with the specified Managed CCF parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - confidentialLedger - Confidential Ledger Create Request Body
-//   - options - LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
-func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*runtime.Poller[LedgerClientCreateResponse], error) {
+//   - appName - Name of the Managed CCF
+//   - managedCCF - Managed CCF Create Request Body
+//   - options - ManagedCCFClientBeginCreateOptions contains the optional parameters for the ManagedCCFClient.BeginCreate method.
+func (client *ManagedCCFClient) BeginCreate(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginCreateOptions) (*runtime.Poller[ManagedCCFClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		resp, err := client.create(ctx, resourceGroupName, appName, managedCCF, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientCreateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Create - Creates a Confidential Ledger with the specified ledger parameters.
+// Create - Creates a Managed CCF with the specified Managed CCF parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
-func (client *LedgerClient) create(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*http.Response, error) {
+func (client *ManagedCCFClient) create(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LedgerClient.BeginCreate"
+	const operationName = "ManagedCCFClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func (client *LedgerClient) create(ctx context.Context, resourceGroupName string
 }
 
 // createCreateRequest creates the Create request.
-func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
+func (client *ManagedCCFClient) createCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,10 +105,10 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -117,47 +117,47 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2023-01-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
+	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Deletes an existing Confidential Ledger.
+// BeginDelete - Deletes an existing Managed CCF.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - options - LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
-func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*runtime.Poller[LedgerClientDeleteResponse], error) {
+//   - appName - Name of the Managed CCF
+//   - options - ManagedCCFClientBeginDeleteOptions contains the optional parameters for the ManagedCCFClient.BeginDelete method.
+func (client *ManagedCCFClient) BeginDelete(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientBeginDeleteOptions) (*runtime.Poller[ManagedCCFClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, ledgerName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, appName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes an existing Confidential Ledger.
+// Delete - Deletes an existing Managed CCF.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
-func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedCCFClient) deleteOperation(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LedgerClient.BeginDelete"
+	const operationName = "ManagedCCFClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ledgerName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, appName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,8 +173,8 @@ func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
+func (client *ManagedCCFClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -183,10 +183,10 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -198,38 +198,38 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// Get - Retrieves the properties of a Confidential Ledger.
+// Get - Retrieves the properties of a Managed CCF app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - options - LedgerClientGetOptions contains the optional parameters for the LedgerClient.Get method.
-func (client *LedgerClient) Get(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientGetOptions) (LedgerClientGetResponse, error) {
+//   - appName - Name of the Managed CCF
+//   - options - ManagedCCFClientGetOptions contains the optional parameters for the ManagedCCFClient.Get method.
+func (client *ManagedCCFClient) Get(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientGetOptions) (ManagedCCFClientGetResponse, error) {
 	var err error
-	const operationName = "LedgerClient.Get"
+	const operationName = "ManagedCCFClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, ledgerName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, appName, options)
 	if err != nil {
-		return LedgerClientGetResponse{}, err
+		return ManagedCCFClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return LedgerClientGetResponse{}, err
+		return ManagedCCFClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return LedgerClientGetResponse{}, err
+		return ManagedCCFClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
+func (client *ManagedCCFClient) getCreateRequest(ctx context.Context, resourceGroupName string, appName string, options *ManagedCCFClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -238,10 +238,10 @@ func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -254,27 +254,27 @@ func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClientGetResponse, error) {
-	result := LedgerClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConfidentialLedger); err != nil {
-		return LedgerClientGetResponse{}, err
+func (client *ManagedCCFClient) getHandleResponse(resp *http.Response) (ManagedCCFClientGetResponse, error) {
+	result := ManagedCCFClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedCCF); err != nil {
+		return ManagedCCFClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Retrieves the properties of all Confidential Ledgers.
+// NewListByResourceGroupPager - Retrieves the properties of all Managed CCF apps.
 //
 // Generated from API version 2023-01-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.NewListByResourceGroupPager
+//   - options - ManagedCCFClientListByResourceGroupOptions contains the optional parameters for the ManagedCCFClient.NewListByResourceGroupPager
 //     method.
-func (client *LedgerClient) NewListByResourceGroupPager(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *runtime.Pager[LedgerClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LedgerClientListByResourceGroupResponse]{
-		More: func(page LedgerClientListByResourceGroupResponse) bool {
+func (client *ManagedCCFClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedCCFClientListByResourceGroupOptions) *runtime.Pager[ManagedCCFClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedCCFClientListByResourceGroupResponse]{
+		More: func(page ManagedCCFClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LedgerClientListByResourceGroupResponse) (LedgerClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LedgerClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *ManagedCCFClientListByResourceGroupResponse) (ManagedCCFClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedCCFClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -283,7 +283,7 @@ func (client *LedgerClient) NewListByResourceGroupPager(resourceGroupName string
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return LedgerClientListByResourceGroupResponse{}, err
+				return ManagedCCFClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -292,8 +292,8 @@ func (client *LedgerClient) NewListByResourceGroupPager(resourceGroupName string
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LedgerClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *LedgerClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers"
+func (client *ManagedCCFClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ManagedCCFClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -317,26 +317,26 @@ func (client *LedgerClient) listByResourceGroupCreateRequest(ctx context.Context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Response) (LedgerClientListByResourceGroupResponse, error) {
-	result := LedgerClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
-		return LedgerClientListByResourceGroupResponse{}, err
+func (client *ManagedCCFClient) listByResourceGroupHandleResponse(resp *http.Response) (ManagedCCFClientListByResourceGroupResponse, error) {
+	result := ManagedCCFClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedCCFList); err != nil {
+		return ManagedCCFClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Retrieves the properties of all Confidential Ledgers.
+// NewListBySubscriptionPager - Retrieves the properties of all Managed CCF.
 //
 // Generated from API version 2023-01-26-preview
-//   - options - LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.NewListBySubscriptionPager
+//   - options - ManagedCCFClientListBySubscriptionOptions contains the optional parameters for the ManagedCCFClient.NewListBySubscriptionPager
 //     method.
-func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LedgerClientListBySubscriptionResponse]{
-		More: func(page LedgerClientListBySubscriptionResponse) bool {
+func (client *ManagedCCFClient) NewListBySubscriptionPager(options *ManagedCCFClientListBySubscriptionOptions) *runtime.Pager[ManagedCCFClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedCCFClientListBySubscriptionResponse]{
+		More: func(page ManagedCCFClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *LedgerClientListBySubscriptionResponse) (LedgerClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LedgerClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *ManagedCCFClientListBySubscriptionResponse) (ManagedCCFClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedCCFClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -345,7 +345,7 @@ func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientList
 				return client.listBySubscriptionCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return LedgerClientListBySubscriptionResponse{}, err
+				return ManagedCCFClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -354,8 +354,8 @@ func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientList
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *LedgerClient) listBySubscriptionCreateRequest(ctx context.Context, options *LedgerClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ConfidentialLedger/ledgers/"
+func (client *ManagedCCFClient) listBySubscriptionCreateRequest(ctx context.Context, options *ManagedCCFClientListBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ConfidentialLedger/managedCCFs/"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -375,50 +375,50 @@ func (client *LedgerClient) listBySubscriptionCreateRequest(ctx context.Context,
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response) (LedgerClientListBySubscriptionResponse, error) {
-	result := LedgerClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
-		return LedgerClientListBySubscriptionResponse{}, err
+func (client *ManagedCCFClient) listBySubscriptionHandleResponse(resp *http.Response) (ManagedCCFClientListBySubscriptionResponse, error) {
+	result := ManagedCCFClientListBySubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedCCFList); err != nil {
+		return ManagedCCFClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates properties of Confidential Ledger
+// BeginUpdate - Updates properties of Managed CCF
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ledgerName - Name of the Confidential Ledger
-//   - confidentialLedger - Confidential Ledger request body for Updating Ledger
-//   - options - LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
-func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*runtime.Poller[LedgerClientUpdateResponse], error) {
+//   - appName - Name of the Managed CCF
+//   - managedCCF - Request body for Updating Managed CCF App
+//   - options - ManagedCCFClientBeginUpdateOptions contains the optional parameters for the ManagedCCFClient.BeginUpdate method.
+func (client *ManagedCCFClient) BeginUpdate(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*runtime.Poller[ManagedCCFClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+		resp, err := client.update(ctx, resourceGroupName, appName, managedCCF, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LedgerClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCCFClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LedgerClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCCFClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Updates properties of Confidential Ledger
+// Update - Updates properties of Managed CCF
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-26-preview
-func (client *LedgerClient) update(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ManagedCCFClient) update(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "LedgerClient.BeginUpdate"
+	const operationName = "ManagedCCFClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, appName, managedCCF, options)
 	if err != nil {
 		return nil, err
 	}
@@ -426,7 +426,7 @@ func (client *LedgerClient) update(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -434,8 +434,8 @@ func (client *LedgerClient) update(ctx context.Context, resourceGroupName string
 }
 
 // updateCreateRequest creates the Update request.
-func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}"
+func (client *ManagedCCFClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appName string, managedCCF ManagedCCF, options *ManagedCCFClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/managedCCFs/{appName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -444,10 +444,10 @@ func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ledgerName == "" {
-		return nil, errors.New("parameter ledgerName cannot be empty")
+	if appName == "" {
+		return nil, errors.New("parameter appName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ledgerName}", url.PathEscape(ledgerName))
+	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -456,7 +456,7 @@ func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2023-01-26-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, confidentialLedger); err != nil {
+	if err := runtime.MarshalAsJSON(req, managedCCF); err != nil {
 		return nil, err
 	}
 	return req, nil

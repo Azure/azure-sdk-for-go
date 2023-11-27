@@ -32,7 +32,7 @@ type ReplicationRecoveryServicesProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationRecoveryServicesProvidersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationRecoveryServicesProvidersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginCreate(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationRecoveryServicesProvidersClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryServicesProvidersClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryServicesProvidersClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginCreate(ctx contex
 // Generated from API version 2023-06-01
 func (client *ReplicationRecoveryServicesProvidersClient) create(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, providerName string, addProviderInput AddRecoveryServicesProviderInput, options *ReplicationRecoveryServicesProvidersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationRecoveryServicesProvidersClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, fabricName, providerName, addProviderInput, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +149,14 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginDelete(ctx contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationRecoveryServicesProvidersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryServicesProvidersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryServicesProvidersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -154,6 +166,10 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginDelete(ctx contex
 // Generated from API version 2023-06-01
 func (client *ReplicationRecoveryServicesProvidersClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationRecoveryServicesProvidersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceName, resourceGroupName, fabricName, providerName, options)
 	if err != nil {
 		return nil, err
@@ -214,6 +230,10 @@ func (client *ReplicationRecoveryServicesProvidersClient) deleteCreateRequest(ct
 //     method.
 func (client *ReplicationRecoveryServicesProvidersClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientGetOptions) (ReplicationRecoveryServicesProvidersClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationRecoveryServicesProvidersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, providerName, options)
 	if err != nil {
 		return ReplicationRecoveryServicesProvidersClientGetResponse{}, err
@@ -286,25 +306,20 @@ func (client *ReplicationRecoveryServicesProvidersClient) NewListPager(resourceN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationRecoveryServicesProvidersClientListResponse) (ReplicationRecoveryServicesProvidersClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationRecoveryServicesProvidersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationRecoveryServicesProvidersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationRecoveryServicesProvidersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationRecoveryServicesProvidersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -357,25 +372,20 @@ func (client *ReplicationRecoveryServicesProvidersClient) NewListByReplicationFa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse) (ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationRecoveryServicesProvidersClient.NewListByReplicationFabricsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByReplicationFabricsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -434,10 +444,14 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginPurge(ctx context
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationRecoveryServicesProvidersClientPurgeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryServicesProvidersClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientPurgeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryServicesProvidersClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -447,6 +461,10 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginPurge(ctx context
 // Generated from API version 2023-06-01
 func (client *ReplicationRecoveryServicesProvidersClient) purge(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationRecoveryServicesProvidersClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.purgeCreateRequest(ctx, resourceName, resourceGroupName, fabricName, providerName, options)
 	if err != nil {
 		return nil, err
@@ -511,10 +529,14 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginRefreshProvider(c
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -524,6 +546,10 @@ func (client *ReplicationRecoveryServicesProvidersClient) BeginRefreshProvider(c
 // Generated from API version 2023-06-01
 func (client *ReplicationRecoveryServicesProvidersClient) refreshProvider(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, providerName string, options *ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshProviderCreateRequest(ctx, resourceName, resourceGroupName, fabricName, providerName, options)
 	if err != nil {
 		return nil, err

@@ -9,8 +9,8 @@
 package armrecoveryservicessiterecovery
 
 const (
-	moduleName    = "armrecoveryservicessiterecovery"
-	moduleVersion = "v2.1.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	moduleVersion = "v2.2.0"
 )
 
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.

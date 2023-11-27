@@ -58,7 +58,7 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 		// 						JobName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 		// 					},
 		// 					MachineName: to.Ptr("vm-0520-2"),
 		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -107,7 +107,7 @@ func ExampleReplicationMigrationItemsClient_Get() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -177,7 +177,7 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -255,7 +255,7 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -313,7 +313,7 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -365,7 +365,7 @@ func ExampleReplicationMigrationItemsClient_BeginPauseReplication() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateProtectionSuspended),
@@ -420,7 +420,7 @@ func ExampleReplicationMigrationItemsClient_BeginResumeReplication() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateResumeInitiated),
@@ -478,7 +478,7 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -537,7 +537,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -592,7 +592,7 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 	// 			CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 	// 				JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 	// 				JobName: to.Ptr("None"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 	// 			},
 	// 			MachineName: to.Ptr("vm-0520-2"),
 	// 			MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),
@@ -648,7 +648,7 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 		// 					CurrentJob: &armrecoveryservicessiterecovery.CurrentJobDetails{
 		// 						JobID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationJobs/None"),
 		// 						JobName: to.Ptr("None"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.808Z"); return t}()),
 		// 					},
 		// 					MachineName: to.Ptr("vm-0520-2"),
 		// 					MigrationState: to.Ptr(armrecoveryservicessiterecovery.MigrationStateReplicating),

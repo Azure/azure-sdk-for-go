@@ -9,8 +9,8 @@
 package armdevcenter
 
 const (
-	moduleName    = "armdevcenter"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,42 +24,6 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
-	}
-}
-
-// CatalogConnectionState - The connection state of the catalog.
-type CatalogConnectionState string
-
-const (
-	CatalogConnectionStateConnected    CatalogConnectionState = "Connected"
-	CatalogConnectionStateDisconnected CatalogConnectionState = "Disconnected"
-)
-
-// PossibleCatalogConnectionStateValues returns the possible values for the CatalogConnectionState const type.
-func PossibleCatalogConnectionStateValues() []CatalogConnectionState {
-	return []CatalogConnectionState{
-		CatalogConnectionStateConnected,
-		CatalogConnectionStateDisconnected,
-	}
-}
-
-// CatalogResourceValidationStatus - Catalog resource validation status
-type CatalogResourceValidationStatus string
-
-const (
-	CatalogResourceValidationStatusFailed    CatalogResourceValidationStatus = "Failed"
-	CatalogResourceValidationStatusPending   CatalogResourceValidationStatus = "Pending"
-	CatalogResourceValidationStatusSucceeded CatalogResourceValidationStatus = "Succeeded"
-	CatalogResourceValidationStatusUnknown   CatalogResourceValidationStatus = "Unknown"
-)
-
-// PossibleCatalogResourceValidationStatusValues returns the possible values for the CatalogResourceValidationStatus const type.
-func PossibleCatalogResourceValidationStatusValues() []CatalogResourceValidationStatus {
-	return []CatalogResourceValidationStatus{
-		CatalogResourceValidationStatusFailed,
-		CatalogResourceValidationStatusPending,
-		CatalogResourceValidationStatusSucceeded,
-		CatalogResourceValidationStatusUnknown,
 	}
 }
 
@@ -80,22 +44,6 @@ func PossibleCatalogSyncStateValues() []CatalogSyncState {
 		CatalogSyncStateFailed,
 		CatalogSyncStateInProgress,
 		CatalogSyncStateSucceeded,
-	}
-}
-
-// CatalogSyncType - Indicates the type of sync that is configured for the catalog.
-type CatalogSyncType string
-
-const (
-	CatalogSyncTypeManual    CatalogSyncType = "Manual"
-	CatalogSyncTypeScheduled CatalogSyncType = "Scheduled"
-)
-
-// PossibleCatalogSyncTypeValues returns the possible values for the CatalogSyncType const type.
-func PossibleCatalogSyncTypeValues() []CatalogSyncType {
-	return []CatalogSyncType{
-		CatalogSyncTypeManual,
-		CatalogSyncTypeScheduled,
 	}
 }
 
@@ -132,24 +80,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// CustomizationTaskInputType - Type of the input.
-type CustomizationTaskInputType string
-
-const (
-	CustomizationTaskInputTypeBoolean CustomizationTaskInputType = "boolean"
-	CustomizationTaskInputTypeNumber  CustomizationTaskInputType = "number"
-	CustomizationTaskInputTypeString  CustomizationTaskInputType = "string"
-)
-
-// PossibleCustomizationTaskInputTypeValues returns the possible values for the CustomizationTaskInputType const type.
-func PossibleCustomizationTaskInputTypeValues() []CustomizationTaskInputType {
-	return []CustomizationTaskInputType{
-		CustomizationTaskInputTypeBoolean,
-		CustomizationTaskInputTypeNumber,
-		CustomizationTaskInputTypeString,
 	}
 }
 
@@ -247,24 +177,6 @@ func PossibleHibernateSupportValues() []HibernateSupport {
 	}
 }
 
-// IdentityType - Values can be systemAssignedIdentity or userAssignedIdentity
-type IdentityType string
-
-const (
-	IdentityTypeDelegatedResourceIdentity IdentityType = "delegatedResourceIdentity"
-	IdentityTypeSystemAssignedIdentity    IdentityType = "systemAssignedIdentity"
-	IdentityTypeUserAssignedIdentity      IdentityType = "userAssignedIdentity"
-)
-
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeDelegatedResourceIdentity,
-		IdentityTypeSystemAssignedIdentity,
-		IdentityTypeUserAssignedIdentity,
-	}
-}
-
 // ImageValidationStatus - Image validation status
 type ImageValidationStatus string
 
@@ -301,8 +213,6 @@ func PossibleLicenseTypeValues() []LicenseType {
 	}
 }
 
-// LocalAdminStatus - Local Administrator enable or disable status. Indicates whether owners of Dev Boxes are added as local
-// administrators on the Dev Box.
 type LocalAdminStatus string
 
 const (
@@ -354,36 +264,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// ParameterType - The type of data a parameter accepts.
-type ParameterType string
-
-const (
-	// ParameterTypeArray - The parameter accepts an array of values.
-	ParameterTypeArray ParameterType = "array"
-	// ParameterTypeBoolean - The parameter accepts a boolean value.
-	ParameterTypeBoolean ParameterType = "boolean"
-	// ParameterTypeInteger - The parameter accepts an integer value.
-	ParameterTypeInteger ParameterType = "integer"
-	// ParameterTypeNumber - The parameter accepts a number value.
-	ParameterTypeNumber ParameterType = "number"
-	// ParameterTypeObject - The parameter accepts an object value.
-	ParameterTypeObject ParameterType = "object"
-	// ParameterTypeString - The parameter accepts a string value.
-	ParameterTypeString ParameterType = "string"
-)
-
-// PossibleParameterTypeValues returns the possible values for the ParameterType const type.
-func PossibleParameterTypeValues() []ParameterType {
-	return []ParameterType{
-		ParameterTypeArray,
-		ParameterTypeBoolean,
-		ParameterTypeInteger,
-		ParameterTypeNumber,
-		ParameterTypeObject,
-		ParameterTypeString,
 	}
 }
 
@@ -497,23 +377,6 @@ func PossibleScheduledTypeValues() []ScheduledType {
 	}
 }
 
-// SingleSignOnStatus - SingleSignOn (SSO) enable or disable status. Indicates whether Dev Boxes in the Pool will have SSO
-// enabled or disabled.
-type SingleSignOnStatus string
-
-const (
-	SingleSignOnStatusDisabled SingleSignOnStatus = "Disabled"
-	SingleSignOnStatusEnabled  SingleSignOnStatus = "Enabled"
-)
-
-// PossibleSingleSignOnStatusValues returns the possible values for the SingleSignOnStatus const type.
-func PossibleSingleSignOnStatusValues() []SingleSignOnStatus {
-	return []SingleSignOnStatus{
-		SingleSignOnStatusDisabled,
-		SingleSignOnStatusEnabled,
-	}
-}
-
 // StopOnDisconnectEnableStatus - Stop on disconnect enable or disable status. Indicates whether stop on disconnect to is
 // either enabled or disabled.
 type StopOnDisconnectEnableStatus string
@@ -542,22 +405,5 @@ const (
 func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
-	}
-}
-
-// VirtualNetworkType - Indicates a pool uses a Virtual Network managed by Microsoft (Managed), or a customer provided Network
-// (Unmanaged).
-type VirtualNetworkType string
-
-const (
-	VirtualNetworkTypeManaged   VirtualNetworkType = "Managed"
-	VirtualNetworkTypeUnmanaged VirtualNetworkType = "Unmanaged"
-)
-
-// PossibleVirtualNetworkTypeValues returns the possible values for the VirtualNetworkType const type.
-func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
-	return []VirtualNetworkType{
-		VirtualNetworkTypeManaged,
-		VirtualNetworkTypeUnmanaged,
 	}
 }

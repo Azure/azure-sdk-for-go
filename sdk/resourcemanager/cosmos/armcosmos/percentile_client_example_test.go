@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBPercentileGetMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBPercentileGetMetrics.json
 func ExamplePercentileClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,10 +46,10 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 				LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
 		// 				Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
 		// 			},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.278Z"); return t}()),
 		// 			MetricValues: []*armcosmos.PercentileMetricValue{
 		// 				{
-		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.278Z"); return t}()),
 		// 					P10: to.Ptr[float64](1.11),
 		// 					P25: to.Ptr[float64](2.5),
 		// 					P50: to.Ptr[float64](4.34),
@@ -58,7 +58,7 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 					P95: to.Ptr[float64](7.1),
 		// 					P99: to.Ptr[float64](8.3),
 		// 			}},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.278Z"); return t}()),
 		// 			TimeGrain: to.Ptr("PT5M"),
 		// 			Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 		},
@@ -67,10 +67,10 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 				LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
 		// 				Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
 		// 			},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.278Z"); return t}()),
 		// 			MetricValues: []*armcosmos.PercentileMetricValue{
 		// 				{
-		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.278Z"); return t}()),
 		// 					P10: to.Ptr[float64](1.11),
 		// 					P25: to.Ptr[float64](2.5),
 		// 					P50: to.Ptr[float64](4.34),
@@ -79,7 +79,7 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 					P95: to.Ptr[float64](7.1),
 		// 					P99: to.Ptr[float64](8.3),
 		// 			}},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.278Z"); return t}()),
 		// 			TimeGrain: to.Ptr("PT5M"),
 		// 			Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 	}},

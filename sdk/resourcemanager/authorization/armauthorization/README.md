@@ -101,6 +101,13 @@ Install the Azure Authorization module:
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization
 ```
 
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
+
 ## Authorization
 
 When creating a client, you will need to provide a credential for authenticating with Azure Authorization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.

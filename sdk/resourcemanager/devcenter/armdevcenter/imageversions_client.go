@@ -32,7 +32,7 @@ type ImageVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImageVersionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ImageVersionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets an image version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -55,6 +55,10 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 //   - options - ImageVersionsClientGetOptions contains the optional parameters for the ImageVersionsClient.Get method.
 func (client *ImageVersionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, versionName string, options *ImageVersionsClientGetOptions) (ImageVersionsClientGetResponse, error) {
 	var err error
+	const operationName = "ImageVersionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, versionName, options)
 	if err != nil {
 		return ImageVersionsClientGetResponse{}, err
@@ -103,7 +107,7 @@ func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,7 +124,7 @@ func (client *ImageVersionsClient) getHandleResponse(resp *http.Response) (Image
 
 // NewListByImagePager - Lists versions for an image.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2023-04-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - devCenterName - The name of the devcenter.
 //   - galleryName - The name of the gallery.
@@ -133,25 +137,20 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImageVersionsClientListByImageResponse) (ImageVersionsClientListByImageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByImageCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImageVersionsClient.NewListByImagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByImageCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, options)
+			}, nil)
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ImageVersionsClientListByImageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ImageVersionsClientListByImageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByImageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -183,7 +182,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2023-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

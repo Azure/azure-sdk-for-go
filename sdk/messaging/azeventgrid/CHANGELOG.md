@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (TBD)
+## 0.4.0 (2023-11-27)
 
 ### Features Added
 

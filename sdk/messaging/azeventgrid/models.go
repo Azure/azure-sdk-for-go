@@ -26,35 +26,6 @@ type AcknowledgeResult struct {
 	SucceededLockTokens []string
 }
 
-// Error - The error object.
-type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []Error
-
-	// An object containing more specific information than the current object about the error.
-	InnerError *InnerError
-
-	// The target of the error.
-	Target *string
-}
-
-// InnerError - An object containing more specific information about the error. As per Microsoft One API
-// guidelines -
-// https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-type InnerError struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	InnerError *InnerError
-}
-
 // BrokerProperties - Properties of the Event Broker operation.
 type BrokerProperties struct {
 	// REQUIRED; The attempt count for delivering the event.
@@ -62,6 +33,15 @@ type BrokerProperties struct {
 
 	// REQUIRED; The token of the lock on the event.
 	LockToken *string
+}
+
+// Error - The error object.
+type Error struct {
+	// REQUIRED; One of a server-defined set of error codes.
+	Code *string
+
+	// REQUIRED; A human-readable representation of the error.
+	message *string
 }
 
 // FailedLockToken - Failed LockToken information.

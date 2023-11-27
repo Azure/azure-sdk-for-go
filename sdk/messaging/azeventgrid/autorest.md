@@ -44,37 +44,38 @@ Fix the error type so it's a bit more presentable, and looks like an error for t
 
 ```yaml
 directive:
+  - from: swagger-document
+    where: $.definitions["Azure.Core.Foundations.Error"]
+    debug: true
+    transform: |
+      $.properties = { 
+        code: $.properties["code"],
+        message: {
+          ...$.properties["message"],
+          "x-ms-client-name": "InternalErrorMessageRename"
+        },
+      };
+      $["x-ms-client-name"] = "Error";
+  
+  - from: swagger-document
+    where: $.definitions
+    transform: delete $["Azure.Core.Foundations.InnerError"];
+
   - from: 
-    - models_serde.go
     - models.go
+    - models_serde.go
     where: $
-    transform: | 
+    transform: return $.replace(/InternalErrorMessageRename/g, "message");
+
+  - from: 
+    - models.go
+    - models_serde.go
+    where: $
+    transform: |
       return $
-        // remove some types that were generated to support the recursive error.
-        .replace(/\/\/ AzureCoreFoundationsInnerErrorInnererror.+?\n}/s, "")
-        // also, remove its marshalling functions
-        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsInnerErrorInnererror.+?\n}/sg, "")
-        .replace(/\/\/ AzureCoreFoundationsErrorInnererror.+?\n}/s, "")
-        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorInnererror.+?\n}/sg, "")
-        .replace(/\/\/ AzureCoreFoundationsErrorResponseError.+?\n}/s, "")
-        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponseError.+?\n}/sg, "")
-        .replace(/\/\/ AzureCoreFoundationsErrorResponse.+?\n}/s, "")
-        .replace(/\/\/ (Unmarshal|Marshal)JSON implements[^\n]+?for type AzureCoreFoundationsErrorResponse.+?\n}/sg, "")
-
-        // Remove any references to the type and replace them with InnerError.
-        //.replace(/Innererror \*(AzureCoreFoundationsInnerErrorInnererror|AzureCoreFoundationsErrorInnererror)/g, "InnerError *InnerError")
-
-        // Fix the marshallers/unmarshallers to use the right case.
-        .replace(/(a|c).Innererror/g, '$1.InnerError')
-        .replace(/Innererror \*AzureCoreFoundationsInnerError/g, "InnerError *InnerError")
-
-        // We have two "inner error" types that are identical (ErrorInnerError and InnerError). Let's eliminate the one that's not actually directly referenced.
-        .replace(/\/\/azureCoreFoundationsInnerError.+?\n}/s, "")
-        
-        //
-        // Fix the AzureCoreFoundation naming to match our style.
-        //
-        .replace(/AzureCoreFoundations/g, "")
+        .replace(/\/\/ AzureCoreFoundationsErrorResponse.+?\n}/gs, "")
+        .replace(/\/\/ MarshalJSON implements the json\.Marshaller interface for type AzureCoreFoundationsErrorResponse\..+?\n}/gs, "")
+        .replace(/\/\/ UnmarshalJSON implements the json\.Unmarshaller interface for type AzureCoreFoundationsErrorResponse\..+?\n}/gs, "");
 ```
 
 Trim out the 'Interface any' for types that are empty.

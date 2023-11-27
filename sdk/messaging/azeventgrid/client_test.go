@@ -47,48 +47,21 @@ func TestFailedAck(t *testing.T) {
 		resp, err := c.AcknowledgeCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []azeventgrid.FailedLockToken{
-			{
-				LockToken: recvResp.Value[0].BrokerProperties.LockToken,
-				Error: &azeventgrid.Error{
-					Code:    to.Ptr("TokenLost"),
-					Message: to.Ptr("Token has expired."),
-				},
-			},
-		}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("RejectCloudEvents", func(t *testing.T) {
 		resp, err := c.RejectCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []azeventgrid.FailedLockToken{
-			{
-				LockToken: recvResp.Value[0].BrokerProperties.LockToken,
-				Error: &azeventgrid.Error{
-					Code:    to.Ptr("TokenLost"),
-					Message: to.Ptr("Token has expired."),
-				},
-			},
-		}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 
 	t.Run("ReleaseCloudEvents", func(t *testing.T) {
 		resp, err := c.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, nil)
 		require.NoError(t, err)
 		require.Empty(t, resp.SucceededLockTokens)
-		// TODO: these two fields are not symmetrical - FailedLockTokens carries a reason.
-		require.Equal(t, []azeventgrid.FailedLockToken{
-			{
-				LockToken: recvResp.Value[0].BrokerProperties.LockToken,
-				Error: &azeventgrid.Error{
-					Code:    to.Ptr("TokenLost"),
-					Message: to.Ptr("Token has expired."),
-				},
-			},
-		}, resp.FailedLockTokens)
+		requireFailedLockTokens(t, []string{*recvResp.Value[0].BrokerProperties.LockToken}, resp.FailedLockTokens)
 	})
 }
 
@@ -124,15 +97,8 @@ func TestPartialAckFailure(t *testing.T) {
 		*events.Value[1].BrokerProperties.LockToken,
 	}, nil)
 	require.NoError(t, err)
-	require.Equal(t, []azeventgrid.FailedLockToken{
-		{
-			LockToken: events.Value[0].BrokerProperties.LockToken,
-			Error: &azeventgrid.Error{
-				Code:    to.Ptr("TokenLost"),
-				Message: to.Ptr("Token has expired."),
-			},
-		},
-	}, ackResp.FailedLockTokens)
+
+	requireFailedLockTokens(t, []string{*events.Value[0].BrokerProperties.LockToken}, ackResp.FailedLockTokens)
 	require.Equal(t, []string{*events.Value[1].BrokerProperties.LockToken}, ackResp.SucceededLockTokens)
 }
 
@@ -199,7 +165,7 @@ func TestRelease(t *testing.T) {
 
 	if len(rejectResp.FailedLockTokens) > 0 {
 		for _, flt := range rejectResp.FailedLockTokens {
-			t.Logf("FailedLockToken:\n  ec: %s\n  desc: %s\n  locktoken:%s", *flt.Error.Code, *flt.Error.Message, *flt.LockToken)
+			t.Logf("FailedLockToken:\n  ec: %s\n  desc: %s\n  locktoken:%s", *flt.Error.Code, flt.Error.Error(), *flt.LockToken)
 		}
 		require.Fail(t, "Failed to release events")
 	}
@@ -429,4 +395,13 @@ func mustCreateEvent(t *testing.T, source string, eventType string, data any, op
 	require.NoError(t, err)
 
 	return event
+}
+
+func requireFailedLockTokens(t *testing.T, lockTokens []string, flts []azeventgrid.FailedLockToken) {
+	for i, flt := range flts {
+		// make sure the lock tokens line up
+		require.Equal(t, lockTokens[i], *flt.LockToken)
+		require.Equal(t, flt.Error.Code, to.Ptr("TokenLost"))
+		require.EqualError(t, flt.Error, "Token has expired.")
+	}
 }

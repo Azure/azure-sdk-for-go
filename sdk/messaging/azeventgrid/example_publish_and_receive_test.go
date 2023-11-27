@@ -155,7 +155,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	if len(ackResp.FailedLockTokens) > 0 {
 		// some events failed when we tried to acknowledge them.
 		for _, failed := range ackResp.FailedLockTokens {
-			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, *failed.Error.Message)
+			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, failed.Error)
 		}
 
 		return azeventgrid.ReceiveDetails{}, errors.New("failed to acknowledge event")

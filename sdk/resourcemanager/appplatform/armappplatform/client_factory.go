@@ -38,6 +38,30 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAPIPortalCustomDomainsClient creates a new instance of APIPortalCustomDomainsClient.
+func (c *ClientFactory) NewAPIPortalCustomDomainsClient() *APIPortalCustomDomainsClient {
+	subClient, _ := NewAPIPortalCustomDomainsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAPIPortalsClient creates a new instance of APIPortalsClient.
+func (c *ClientFactory) NewAPIPortalsClient() *APIPortalsClient {
+	subClient, _ := NewAPIPortalsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewApplicationAcceleratorsClient creates a new instance of ApplicationAcceleratorsClient.
+func (c *ClientFactory) NewApplicationAcceleratorsClient() *ApplicationAcceleratorsClient {
+	subClient, _ := NewApplicationAcceleratorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewApplicationLiveViewsClient creates a new instance of ApplicationLiveViewsClient.
+func (c *ClientFactory) NewApplicationLiveViewsClient() *ApplicationLiveViewsClient {
+	subClient, _ := NewApplicationLiveViewsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewAppsClient creates a new instance of AppsClient.
 func (c *ClientFactory) NewAppsClient() *AppsClient {
 	subClient, _ := NewAppsClient(c.subscriptionID, c.credential, c.options)
@@ -98,9 +122,39 @@ func (c *ClientFactory) NewCustomDomainsClient() *CustomDomainsClient {
 	return subClient
 }
 
+// NewCustomizedAcceleratorsClient creates a new instance of CustomizedAcceleratorsClient.
+func (c *ClientFactory) NewCustomizedAcceleratorsClient() *CustomizedAcceleratorsClient {
+	subClient, _ := NewCustomizedAcceleratorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDeploymentsClient creates a new instance of DeploymentsClient.
 func (c *ClientFactory) NewDeploymentsClient() *DeploymentsClient {
 	subClient, _ := NewDeploymentsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDevToolPortalsClient creates a new instance of DevToolPortalsClient.
+func (c *ClientFactory) NewDevToolPortalsClient() *DevToolPortalsClient {
+	subClient, _ := NewDevToolPortalsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGatewayCustomDomainsClient creates a new instance of GatewayCustomDomainsClient.
+func (c *ClientFactory) NewGatewayCustomDomainsClient() *GatewayCustomDomainsClient {
+	subClient, _ := NewGatewayCustomDomainsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGatewayRouteConfigsClient creates a new instance of GatewayRouteConfigsClient.
+func (c *ClientFactory) NewGatewayRouteConfigsClient() *GatewayRouteConfigsClient {
+	subClient, _ := NewGatewayRouteConfigsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGatewaysClient creates a new instance of GatewaysClient.
+func (c *ClientFactory) NewGatewaysClient() *GatewaysClient {
+	subClient, _ := NewGatewaysClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -113,6 +167,12 @@ func (c *ClientFactory) NewMonitoringSettingsClient() *MonitoringSettingsClient 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewPredefinedAcceleratorsClient creates a new instance of PredefinedAcceleratorsClient.
+func (c *ClientFactory) NewPredefinedAcceleratorsClient() *PredefinedAcceleratorsClient {
+	subClient, _ := NewPredefinedAcceleratorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -137,5 +197,11 @@ func (c *ClientFactory) NewServiceRegistriesClient() *ServiceRegistriesClient {
 // NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	subClient, _ := NewServicesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewStoragesClient creates a new instance of StoragesClient.
+func (c *ClientFactory) NewStoragesClient() *StoragesClient {
+	subClient, _ := NewStoragesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

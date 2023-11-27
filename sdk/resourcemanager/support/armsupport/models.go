@@ -10,6 +10,42 @@ package armsupport
 
 import "time"
 
+// ChatTranscriptDetails - Object that represents a Chat Transcript resource.
+type ChatTranscriptDetails struct {
+	// Properties of the resource.
+	Properties *ChatTranscriptDetailsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ChatTranscriptDetailsProperties - Describes the properties of a Chat Transcript Details resource.
+type ChatTranscriptDetailsProperties struct {
+	// List of chat transcript communication resources.
+	Messages []*MessageProperties
+
+	// READ-ONLY; Time in UTC (ISO 8601 format) when the chat began.
+	StartTime *time.Time
+}
+
+// ChatTranscriptsListResult - Collection of Chat Transcripts resources.
+type ChatTranscriptsListResult struct {
+	// The URI to fetch the next page of Chat Transcripts resources.
+	NextLink *string
+
+	// List of Chat Transcripts resources.
+	Value []*ChatTranscriptDetails
+}
+
 // CheckNameAvailabilityInput - Input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The resource name to validate.
@@ -117,6 +153,93 @@ type Engineer struct {
 	EmailAddress *string
 }
 
+// FileDetails - Object that represents File Details resource
+type FileDetails struct {
+	// Properties of the resource
+	Properties *FileDetailsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FileDetailsProperties - Describes the properties of a file.
+type FileDetailsProperties struct {
+	// Size of each chunk
+	ChunkSize *float32
+
+	// Size of the file to be uploaded
+	FileSize *float32
+
+	// Number of chunks to be uploaded
+	NumberOfChunks *float32
+
+	// READ-ONLY; Time in UTC (ISO 8601 format) when file workspace was created.
+	CreatedOn *time.Time
+}
+
+// FileWorkspaceDetails - Object that represents FileWorkspaceDetails resource
+type FileWorkspaceDetails struct {
+	// Properties of the resource
+	Properties *FileWorkspaceDetailsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FileWorkspaceDetailsProperties - Describes the properties of a file workspace.
+type FileWorkspaceDetailsProperties struct {
+	// READ-ONLY; Time in UTC (ISO 8601 format) when file workspace was created.
+	CreatedOn *time.Time
+
+	// READ-ONLY; Time in UTC (ISO 8601 format) when file workspace is going to expire.
+	ExpirationTime *time.Time
+}
+
+// FilesListResult - Object that represents a collection of File resources.
+type FilesListResult struct {
+	// The URI to fetch the next page of File resources.
+	NextLink *string
+
+	// List of File resources.
+	Value []*FileDetails
+}
+
+// MessageProperties - Describes the properties of a Message Details resource.
+type MessageProperties struct {
+	// REQUIRED; Body of the communication.
+	Body *string
+
+	// Name of the sender.
+	Sender *string
+
+	// READ-ONLY; Direction of communication.
+	CommunicationDirection *CommunicationDirection
+
+	// READ-ONLY; Content type.
+	ContentType *TranscriptContentType
+
+	// READ-ONLY; Time in UTC (ISO 8601 format) when the communication was created.
+	CreatedDate *time.Time
+}
+
 // Operation - The operation supported by Microsoft Support resource provider.
 type Operation struct {
 	// The object that describes the operation.
@@ -166,6 +289,9 @@ type ProblemClassification struct {
 type ProblemClassificationProperties struct {
 	// Localized name of problem classification.
 	DisplayName *string
+
+	// This property indicates whether secondary consent is present for problem classification
+	SecondaryConsentEnabled []*SecondaryConsentEnabled
 }
 
 // ProblemClassificationsListResult - Collection of ProblemClassification resources.
@@ -195,6 +321,25 @@ type QuotaTicketDetails struct {
 
 	// This property is required for providing the region and new quota limits.
 	QuotaChangeRequests []*QuotaChangeRequest
+}
+
+// SecondaryConsent - This property indicates secondary consent for the support ticket.
+type SecondaryConsent struct {
+	// The service name for which the secondary consent is being provided. The value needs to be retrieved from the Problem Classification
+	// API response.
+	Type *string
+
+	// User consent value provided
+	UserConsent *UserConsent
+}
+
+// SecondaryConsentEnabled - This property indicates whether secondary consent is present for problem classification.
+type SecondaryConsentEnabled struct {
+	// User consent description.
+	Description *string
+
+	// The Azure service for which secondary consent is needed for case creation.
+	Type *string
 }
 
 // Service - Object that represents a Service resource.
@@ -237,6 +382,27 @@ type ServiceProperties struct {
 type ServicesListResult struct {
 	// List of Service resources.
 	Value []*Service
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // TechnicalTicketDetails - Additional information for technical support ticket.
@@ -285,6 +451,15 @@ type TicketDetailsProperties struct {
 	// REQUIRED; Title of the support ticket.
 	Title *string
 
+	// Advanced diagnostic consent to be updated on the support ticket.
+	AdvancedDiagnosticConsent *Consent
+
+	// File workspace name.
+	FileWorkspaceName *string
+
+	// Problem scoping questions associated with the support ticket.
+	ProblemScopingQuestions *string
+
 	// Time in UTC (ISO 8601 format) when the problem started.
 	ProblemStartTime *time.Time
 
@@ -294,11 +469,17 @@ type TicketDetailsProperties struct {
 	// Indicates if this requires a 24x7 response from Azure.
 	Require24X7Response *bool
 
+	// This property indicates secondary consents for the support ticket
+	SecondaryConsent []*SecondaryConsent
+
 	// Service Level Agreement information for this support ticket.
 	ServiceLevelAgreement *ServiceLevelAgreement
 
 	// Information about the support engineer working on this support ticket.
 	SupportEngineer *Engineer
+
+	// Support plan id associated with the support ticket.
+	SupportPlanID *string
 
 	// System generated support ticket Id that is unique.
 	SupportTicketID *string
@@ -323,6 +504,9 @@ type TicketDetailsProperties struct {
 
 	// READ-ONLY; Status of the support ticket.
 	Status *string
+
+	// READ-ONLY; Support plan type associated with the support ticket.
+	SupportPlanDisplayName *string
 
 	// READ-ONLY; Support plan type associated with the support ticket.
 	SupportPlanType *string
@@ -374,12 +558,27 @@ type UpdateContactProfile struct {
 
 // UpdateSupportTicket - Updates severity, ticket status, and contact details in the support ticket.
 type UpdateSupportTicket struct {
+	// Advanced diagnostic consent to be updated on the support ticket.
+	AdvancedDiagnosticConsent *Consent
+
 	// Contact details to be updated on the support ticket.
 	ContactDetails *UpdateContactProfile
+
+	// This property indicates secondary consents for the support ticket
+	SecondaryConsent []*SecondaryConsent
 
 	// Severity level.
 	Severity *SeverityLevel
 
 	// Status to be updated on the ticket.
 	Status *Status
+}
+
+// UploadFile - File content associated with the file under a workspace.
+type UploadFile struct {
+	// Index of the uploaded chunk (Index starts at 0)
+	ChunkIndex *float32
+
+	// File Content in base64 encoded format
+	Content *string
 }

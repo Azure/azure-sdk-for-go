@@ -23,50 +23,50 @@ import (
 	"strconv"
 )
 
-// TicketsServer is a fake server for instances of the armsupport.TicketsClient type.
-type TicketsServer struct {
-	// CheckNameAvailability is the fake for method TicketsClient.CheckNameAvailability
+// TicketsNoSubscriptionServer is a fake server for instances of the armsupport.TicketsNoSubscriptionClient type.
+type TicketsNoSubscriptionServer struct {
+	// CheckNameAvailability is the fake for method TicketsNoSubscriptionClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.TicketsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.TicketsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreate is the fake for method TicketsClient.BeginCreate
+	// BeginCreate is the fake for method TicketsNoSubscriptionClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreate func(ctx context.Context, supportTicketName string, createSupportTicketParameters armsupport.TicketDetails, options *armsupport.TicketsClientBeginCreateOptions) (resp azfake.PollerResponder[armsupport.TicketsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, supportTicketName string, createSupportTicketParameters armsupport.TicketDetails, options *armsupport.TicketsNoSubscriptionClientBeginCreateOptions) (resp azfake.PollerResponder[armsupport.TicketsNoSubscriptionClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method TicketsClient.Get
+	// Get is the fake for method TicketsNoSubscriptionClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, supportTicketName string, options *armsupport.TicketsClientGetOptions) (resp azfake.Responder[armsupport.TicketsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, supportTicketName string, options *armsupport.TicketsNoSubscriptionClientGetOptions) (resp azfake.Responder[armsupport.TicketsNoSubscriptionClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method TicketsClient.NewListPager
+	// NewListPager is the fake for method TicketsNoSubscriptionClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsupport.TicketsClientListOptions) (resp azfake.PagerResponder[armsupport.TicketsClientListResponse])
+	NewListPager func(options *armsupport.TicketsNoSubscriptionClientListOptions) (resp azfake.PagerResponder[armsupport.TicketsNoSubscriptionClientListResponse])
 
-	// Update is the fake for method TicketsClient.Update
+	// Update is the fake for method TicketsNoSubscriptionClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, supportTicketName string, updateSupportTicket armsupport.UpdateSupportTicket, options *armsupport.TicketsClientUpdateOptions) (resp azfake.Responder[armsupport.TicketsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, supportTicketName string, updateSupportTicket armsupport.UpdateSupportTicket, options *armsupport.TicketsNoSubscriptionClientUpdateOptions) (resp azfake.Responder[armsupport.TicketsNoSubscriptionClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewTicketsServerTransport creates a new instance of TicketsServerTransport with the provided implementation.
-// The returned TicketsServerTransport instance is connected to an instance of armsupport.TicketsClient via the
+// NewTicketsNoSubscriptionServerTransport creates a new instance of TicketsNoSubscriptionServerTransport with the provided implementation.
+// The returned TicketsNoSubscriptionServerTransport instance is connected to an instance of armsupport.TicketsNoSubscriptionClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewTicketsServerTransport(srv *TicketsServer) *TicketsServerTransport {
-	return &TicketsServerTransport{
+func NewTicketsNoSubscriptionServerTransport(srv *TicketsNoSubscriptionServer) *TicketsNoSubscriptionServerTransport {
+	return &TicketsNoSubscriptionServerTransport{
 		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armsupport.TicketsClientCreateResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armsupport.TicketsClientListResponse]](),
+		beginCreate:  newTracker[azfake.PollerResponder[armsupport.TicketsNoSubscriptionClientCreateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armsupport.TicketsNoSubscriptionClientListResponse]](),
 	}
 }
 
-// TicketsServerTransport connects instances of armsupport.TicketsClient to instances of TicketsServer.
-// Don't use this type directly, use NewTicketsServerTransport instead.
-type TicketsServerTransport struct {
-	srv          *TicketsServer
-	beginCreate  *tracker[azfake.PollerResponder[armsupport.TicketsClientCreateResponse]]
-	newListPager *tracker[azfake.PagerResponder[armsupport.TicketsClientListResponse]]
+// TicketsNoSubscriptionServerTransport connects instances of armsupport.TicketsNoSubscriptionClient to instances of TicketsNoSubscriptionServer.
+// Don't use this type directly, use NewTicketsNoSubscriptionServerTransport instead.
+type TicketsNoSubscriptionServerTransport struct {
+	srv          *TicketsNoSubscriptionServer
+	beginCreate  *tracker[azfake.PollerResponder[armsupport.TicketsNoSubscriptionClientCreateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armsupport.TicketsNoSubscriptionClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for TicketsServerTransport.
-func (t *TicketsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for TicketsNoSubscriptionServerTransport.
+func (t *TicketsNoSubscriptionServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -77,15 +77,15 @@ func (t *TicketsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch method {
-	case "TicketsClient.CheckNameAvailability":
+	case "TicketsNoSubscriptionClient.CheckNameAvailability":
 		resp, err = t.dispatchCheckNameAvailability(req)
-	case "TicketsClient.BeginCreate":
+	case "TicketsNoSubscriptionClient.BeginCreate":
 		resp, err = t.dispatchBeginCreate(req)
-	case "TicketsClient.Get":
+	case "TicketsNoSubscriptionClient.Get":
 		resp, err = t.dispatchGet(req)
-	case "TicketsClient.NewListPager":
+	case "TicketsNoSubscriptionClient.NewListPager":
 		resp, err = t.dispatchNewListPager(req)
-	case "TicketsClient.Update":
+	case "TicketsNoSubscriptionClient.Update":
 		resp, err = t.dispatchUpdate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
@@ -98,15 +98,9 @@ func (t *TicketsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-func (t *TicketsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+func (t *TicketsNoSubscriptionServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
 	if t.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsupport.CheckNameAvailabilityInput](req)
 	if err != nil {
@@ -127,16 +121,16 @@ func (t *TicketsServerTransport) dispatchCheckNameAvailability(req *http.Request
 	return resp, nil
 }
 
-func (t *TicketsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+func (t *TicketsNoSubscriptionServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
 	beginCreate := t.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armsupport.TicketDetails](req)
@@ -171,14 +165,14 @@ func (t *TicketsServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (t *TicketsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (t *TicketsNoSubscriptionServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	supportTicketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supportTicketName")])
@@ -200,18 +194,12 @@ func (t *TicketsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (t *TicketsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (t *TicketsNoSubscriptionServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
 		qp := req.URL.Query()
 		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
 		if err != nil {
@@ -232,9 +220,9 @@ func (t *TicketsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 			return nil, err
 		}
 		filterParam := getOptional(filterUnescaped)
-		var options *armsupport.TicketsClientListOptions
+		var options *armsupport.TicketsNoSubscriptionClientListOptions
 		if topParam != nil || filterParam != nil {
-			options = &armsupport.TicketsClientListOptions{
+			options = &armsupport.TicketsNoSubscriptionClientListOptions{
 				Top:    topParam,
 				Filter: filterParam,
 			}
@@ -242,7 +230,7 @@ func (t *TicketsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 		resp := t.srv.NewListPager(options)
 		newListPager = &resp
 		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsupport.TicketsClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsupport.TicketsNoSubscriptionClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -260,14 +248,14 @@ func (t *TicketsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (t *TicketsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+func (t *TicketsNoSubscriptionServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if t.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsupport.UpdateSupportTicket](req)

@@ -43,7 +43,7 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 // Get - Get problem classification details for a specific Azure service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - serviceName - Name of the Azure service available for support.
 //   - problemClassificationName - Name of problem classification.
 //   - options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
@@ -86,7 +86,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 // service and problem classifications obtained programmatically. This practice ensures that you
 // always have the most recent set of service and problem classification Ids.
 //
-// Generated from API version 2020-04-01
+// Generated from API version 2022-09-01-preview
 //   - serviceName - Name of the Azure service for which the problem classifications need to be retrieved.
 //   - options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.NewListPager
 //     method.
@@ -145,7 +145,7 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-01")
+	reqQP.Set("api-version", "2022-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

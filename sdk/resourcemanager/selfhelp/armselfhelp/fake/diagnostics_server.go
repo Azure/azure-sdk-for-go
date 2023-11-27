@@ -15,19 +15,14 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
 // DiagnosticsServer is a fake server for instances of the armselfhelp.DiagnosticsClient type.
 type DiagnosticsServer struct {
-	// CheckNameAvailability is the fake for method DiagnosticsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, scope string, options *armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armselfhelp.DiagnosticsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method DiagnosticsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest armselfhelp.DiagnosticResource, options *armselfhelp.DiagnosticsClientBeginCreateOptions) (resp azfake.PollerResponder[armselfhelp.DiagnosticsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -66,8 +61,6 @@ func (d *DiagnosticsServerTransport) Do(req *http.Request) (*http.Response, erro
 	var err error
 
 	switch method {
-	case "DiagnosticsClient.CheckNameAvailability":
-		resp, err = d.dispatchCheckNameAvailability(req)
 	case "DiagnosticsClient.BeginCreate":
 		resp, err = d.dispatchBeginCreate(req)
 	case "DiagnosticsClient.Get":
@@ -80,45 +73,6 @@ func (d *DiagnosticsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, err
 	}
 
-	return resp, nil
-}
-
-func (d *DiagnosticsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armselfhelp.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{
-			CheckNameAvailabilityRequest: &body,
-		}
-	}
-	respr, errRespr := d.srv.CheckNameAvailability(req.Context(), scopeParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 

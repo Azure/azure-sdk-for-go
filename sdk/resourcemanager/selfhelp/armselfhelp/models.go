@@ -10,6 +10,15 @@ package armselfhelp
 
 import "time"
 
+// AutomatedCheckResult - Only for AutomatedStep type
+type AutomatedCheckResult struct {
+	// Insight Article Content
+	Result *string
+
+	// Type of Result.
+	Type *AutomatedCheckResultType
+}
+
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
@@ -29,6 +38,14 @@ type CheckNameAvailabilityResponse struct {
 
 	// Reason for why value is not available. This field is returned if nameAvailable is false.
 	Reason *string
+}
+
+// ContinueRequestBody - Troubleshooter ContinueRequest body.
+type ContinueRequestBody struct {
+	Responses []*TroubleshooterResponse
+
+	// Unique id of the result.
+	StepID *string
 }
 
 // Diagnostic - Properties returned with in an insight.
@@ -60,7 +77,7 @@ type DiagnosticResource struct {
 	// Diagnostic Resource properties.
 	Properties *DiagnosticResourceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -88,7 +105,7 @@ type DiagnosticResourceProperties struct {
 	Diagnostics []*Diagnostic
 
 	// READ-ONLY; Status of diagnostic provisioning.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *DiagnosticProvisioningState
 }
 
 // DiscoveryResponse - Discovery response.
@@ -96,7 +113,7 @@ type DiscoveryResponse struct {
 	// The link used to get the next page of solution metadata.
 	NextLink *string
 
-	// The list of solution metadata.
+	// The list of metadata.
 	Value []*SolutionMetadataResource
 }
 
@@ -115,7 +132,52 @@ type Error struct {
 	Type *string
 }
 
-// Insight - Detailed insights(s) obtained via the invocation of an insight diagnostic troubleshooter.
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// Filter criterion
+type Filter struct {
+	// Filter name
+	Name *string
+
+	// Filter operator
+	Operator *string
+
+	// Filter values
+	Values *string
+}
+
+// FilterGroup - Filter group
+type FilterGroup struct {
+	// List of filters
+	Filter []*Filter
+}
+
+// Insight - Detailed insights(s) obtained via the invocation of an insight diagnostic
 type Insight struct {
 	// Article id.
 	ID *string
@@ -127,6 +189,27 @@ type Insight struct {
 	Results *string
 
 	// This insight's title.
+	Title *string
+}
+
+// MetricsBasedChart - Solutions metrics based chart
+type MetricsBasedChart struct {
+	// Allowed values are Sum, Avg, Count, Min, Max. Default is Sum
+	AggregationType *AggregationType
+
+	// Filter group
+	FilterGroup *FilterGroup
+
+	// Chart name
+	Name *string
+
+	// Place holder used in HTML Content replace control with the content
+	ReplacementKey *string
+
+	// Time span duration
+	TimeSpanDuration *string
+
+	// Chart title
 	Title *string
 }
 
@@ -179,27 +262,117 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
-// SolutionMetadataProperties - Diagnostic solution metadata.
+// ReplacementMaps - Solution replacement maps.
+type ReplacementMaps struct {
+	// Solution diagnostics results.
+	Diagnostics []*SolutionsDiagnostic
+
+	// Solution metrics based charts
+	MetricsBasedCharts []*MetricsBasedChart
+
+	// Solutions Troubleshooters
+	Troubleshooters []*SolutionsTroubleshooters
+
+	// Group of Videos
+	VideoGroups []*VideoGroup
+
+	// Video solutions, which have the power to engage the customer by stimulating their senses
+	Videos []*Video
+
+	// Solution AzureKB results
+	WebResults []*WebResult
+}
+
+// ResponseOption - The status of the resource.
+type ResponseOption struct {
+	// Unique string.
+	Key *string
+
+	// Option description
+	Value *string
+}
+
+// ResponseValidationProperties - Troubleshooter step input response validation properties
+type ResponseValidationProperties struct {
+	// Default True
+	IsRequired *bool
+
+	// Max text input (open Ended Text).
+	MaxLength *int64
+
+	// Regex used for the input validation.
+	Regex *string
+
+	// Validation Error Message.
+	ValidationErrorMessage *string
+}
+
+// RestartTroubleshooterResponse - Troubleshooter restart response
+type RestartTroubleshooterResponse struct {
+	// READ-ONLY; Updated TroubleshooterResource Name .
+	TroubleshooterResourceName *string
+}
+
+// SearchResult - Details of an AzureKB search result.
+type SearchResult struct {
+	// Confidence of the search result.
+	Confidence *Confidence
+
+	// Content of the search result.
+	Content *string
+
+	// Link to the document.
+	Link *string
+
+	// rank of the search result
+	Rank *int32
+
+	// Result type of the search result.
+	ResultType *ResultType
+
+	// Unique id of the result.
+	SolutionID *string
+
+	// Source of the search result.
+	Source *string
+
+	// Title of the search result.
+	Title *string
+}
+
+// Section - Part of the solution and are dividers in the solution rendering.
+type Section struct {
+	// Solution sections content.
+	Content *string
+
+	// Solution replacement maps.
+	ReplacementMaps *ReplacementMaps
+
+	// Solution sections title.
+	Title *string
+}
+
+// SolutionMetadataProperties - Metadata Properties
 type SolutionMetadataProperties struct {
-	// A detailed description of solution.
-	Description *string
-
-	// Required parameters for invoking this particular solution.
-	RequiredParameterSets [][]*string
-
 	// Solution Id.
 	SolutionID *string
 
-	// Solution Type.
-	SolutionType *string
+	// READ-ONLY; A detailed description of solution.
+	Description *string
+
+	// READ-ONLY; Required parameters for invoking this particular solution.
+	RequiredInputs []*string
+
+	// READ-ONLY; Solution Type.
+	SolutionType *SolutionType
 }
 
-// SolutionMetadataResource - Solution Metadata resource
+// SolutionMetadataResource - Metadata resource
 type SolutionMetadataResource struct {
 	// Solution metadata Resource properties.
-	Properties *SolutionMetadataProperties
+	Properties *Solutions
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -210,6 +383,156 @@ type SolutionMetadataResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SolutionPatchRequestBody - Solution response.
+type SolutionPatchRequestBody struct {
+	// Solution result
+	Properties *SolutionResourceProperties
+}
+
+// SolutionResource - Solution response.
+type SolutionResource struct {
+	// Solution result
+	Properties *SolutionResourceProperties
+
+	// READ-ONLY; Full resource uri of the resource.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Type of resource.
+	Type *string
+}
+
+// SolutionResourceProperties - Solution result
+type SolutionResourceProperties struct {
+	// The HTML content that needs to be rendered and shown to customer.
+	Content *string
+
+	// Client input parameters to run Solution
+	Parameters map[string]*string
+
+	// Status of solution provisioning.
+	ProvisioningState *SolutionProvisioningState
+
+	// Solution replacement maps.
+	ReplacementMaps *ReplacementMaps
+
+	// List of section object.
+	Sections []*Section
+
+	// Solution Id to identify single solution.
+	SolutionID *string
+
+	// The title.
+	Title *string
+
+	// Solution request trigger criteria
+	TriggerCriteria []*TriggerCriterion
+}
+
+// Solutions - List of solutions
+type Solutions struct {
+	// List of metadata.
+	Solutions []*SolutionMetadataProperties
+}
+
+// SolutionsDiagnostic - Solutions Diagnostic
+type SolutionsDiagnostic struct {
+	// Diagnostic insights
+	Insights []*Insight
+
+	// Place holder used in HTML Content replace control with the content
+	ReplacementKey *string
+
+	// Required parameters of this item
+	RequiredParameters []*string
+
+	// Solution Id to identify single Solutions Diagnostic
+	SolutionID *string
+
+	// Denotes the status of the diagnostic resource.
+	Status *Status
+
+	// Details of the status
+	StatusDetails *string
+}
+
+// SolutionsTroubleshooters - Troubleshooters in Solutions
+type SolutionsTroubleshooters struct {
+	// Solution Id to identify single Solutions Troubleshooter
+	SolutionID *string
+
+	// Troubleshooter summary
+	Summary *string
+
+	// Troubleshooter title
+	Title *string
+}
+
+// Step - Troubleshooter step
+type Step struct {
+	// Only for AutomatedStep type
+	AutomatedCheckResults *AutomatedCheckResult
+
+	// Step description.
+	Description *string
+
+	// The error detail.
+	Error *ErrorDetail
+
+	// Status of Troubleshooter Step execution.
+	ExecutionStatus *ExecutionStatus
+
+	// This field has more detailed status description of the execution status.
+	ExecutionStatusDescription *string
+
+	// Get or sets the Step guidance.
+	Guidance *string
+
+	// Unique step id.
+	ID       *string
+	Inputs   []*StepInput
+	Insights []*Insight
+
+	// is this last step of the workflow.
+	IsLastStep *bool
+
+	// Step title.
+	Title *string
+
+	// Type of Troubleshooting step.
+	Type *Type
+}
+
+// StepInput - Details of step input.
+type StepInput struct {
+	// User question content.
+	QuestionContent *string
+
+	// Default is Text.
+	QuestionContentType *QuestionContentType
+
+	// Use Index as QuestionId.
+	QuestionID *string
+
+	// Text Input. Will be a single line input.
+	QuestionType *string
+
+	// Result of Automate step.
+	RecommendedOption *string
+
+	// Place holder text for response hints.
+	ResponseHint    *string
+	ResponseOptions []*ResponseOption
+
+	// Troubleshooter step input response validation properties
+	ResponseValidationProperties *ResponseValidationProperties
+
+	// Text of response that was selected.
+	SelectedOptionValue *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -231,4 +554,99 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TriggerCriterion - Solution request trigger criterion. SolutionId/ProblemClassificationId is the only supported trigger
+// type for Solution PUT request. ReplacementKey is the only supported trigger type for Solution PATCH
+// request.
+type TriggerCriterion struct {
+	// Trigger criterion name.
+	Name *Name
+
+	// Trigger criterion value.
+	Value *string
+}
+
+// TroubleshooterInstanceProperties - Troubleshooter Instance properties.
+type TroubleshooterInstanceProperties struct {
+	// Client input parameters to run Troubleshooter Resource
+	Parameters map[string]*string
+
+	// Solution Id to identify single troubleshooter.
+	SolutionID *string
+
+	// READ-ONLY; Status of troubleshooter provisioning.
+	ProvisioningState *TroubleshooterProvisioningState
+
+	// READ-ONLY; List of step object.
+	Steps []*Step
+}
+
+// TroubleshooterResource - Troubleshooter response.
+type TroubleshooterResource struct {
+	// Troubleshooter Instance properties.
+	Properties *TroubleshooterInstanceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TroubleshooterResponse - User Response for Troubleshooter continue request
+type TroubleshooterResponse struct {
+	// id of the question.
+	QuestionID *string
+
+	// Text Input. Will be a single line input.
+	QuestionType *QuestionType
+
+	// Response key for SingleInput. For Multi-line test/open ended question it is free form text
+	Response *string
+}
+
+// Video detail
+type Video struct {
+	// Place holder used in HTML Content replace control with the insight content
+	ReplacementKey *string
+
+	// Link to the video
+	Src *string
+
+	// Title of the video
+	Title *string
+}
+
+// VideoGroup - Video group detail
+type VideoGroup struct {
+	// Place holder used in HTML Content replace control with the insight content
+	ReplacementKey *string
+
+	// List of videos will be shown to customers
+	Videos []*VideoGroupVideo
+}
+
+// VideoGroupVideo - VideoGroup video detail
+type VideoGroupVideo struct {
+	// Link to the video
+	Src *string
+
+	// Title of the video
+	Title *string
+}
+
+// WebResult - AzureKB web result
+type WebResult struct {
+	// Place holder used in HTML Content replace control with the content
+	ReplacementKey *string
+
+	// AzureKB search results
+	SearchResults []*SearchResult
 }

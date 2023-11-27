@@ -8,8 +8,8 @@
 
 package armselfhelp
 
-// DiagnosticsClientCheckNameAvailabilityResponse contains the response from method DiagnosticsClient.CheckNameAvailability.
-type DiagnosticsClientCheckNameAvailabilityResponse struct {
+// CheckNameAvailabilityClientPostResponse contains the response from method CheckNameAvailabilityClient.Post.
+type CheckNameAvailabilityClientPostResponse struct {
 	// Response for whether the requested resource name is available or not.
 	CheckNameAvailabilityResponse
 }
@@ -36,4 +36,55 @@ type DiscoverySolutionClientListResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// SolutionClientCreateResponse contains the response from method SolutionClient.BeginCreate.
+type SolutionClientCreateResponse struct {
+	// Solution response.
+	SolutionResource
+}
+
+// SolutionClientGetResponse contains the response from method SolutionClient.Get.
+type SolutionClientGetResponse struct {
+	// Solution response.
+	SolutionResource
+}
+
+// SolutionClientUpdateResponse contains the response from method SolutionClient.BeginUpdate.
+type SolutionClientUpdateResponse struct {
+	// Solution response.
+	SolutionResource
+}
+
+// TroubleshootersClientContinueResponse contains the response from method TroubleshootersClient.Continue.
+type TroubleshootersClientContinueResponse struct {
+	// Location contains the information returned from the Location header response.
+	Location *string
+}
+
+// TroubleshootersClientCreateResponse contains the response from method TroubleshootersClient.Create.
+type TroubleshootersClientCreateResponse struct {
+	// Troubleshooter response.
+	TroubleshooterResource
+}
+
+// TroubleshootersClientEndResponse contains the response from method TroubleshootersClient.End.
+type TroubleshootersClientEndResponse struct {
+	// Location contains the information returned from the Location header response.
+	Location *string
+}
+
+// TroubleshootersClientGetResponse contains the response from method TroubleshootersClient.Get.
+type TroubleshootersClientGetResponse struct {
+	// Troubleshooter response.
+	TroubleshooterResource
+}
+
+// TroubleshootersClientRestartResponse contains the response from method TroubleshootersClient.Restart.
+type TroubleshootersClientRestartResponse struct {
+	// Troubleshooter restart response
+	RestartTroubleshooterResponse
+
+	// Location contains the information returned from the Location header response.
+	Location *string
 }

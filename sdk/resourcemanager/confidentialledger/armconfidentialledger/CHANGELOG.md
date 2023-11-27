@@ -1,5 +1,26 @@
 # Release History
 
+## 1.3.0-beta.1 (2023-11-30)
+### Features Added
+
+- New enum type `LanguageRuntime` with values `LanguageRuntimeCPP`, `LanguageRuntimeJS`
+- New enum type `RunningState` with values `RunningStateActive`, `RunningStatePaused`, `RunningStatePausing`, `RunningStateResuming`, `RunningStateUnknown`
+- New function `*ClientFactory.NewManagedCCFClient() *ManagedCCFClient`
+- New function `NewManagedCCFClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedCCFClient, error)`
+- New function `*ManagedCCFClient.BeginCreate(context.Context, string, string, ManagedCCF, *ManagedCCFClientBeginCreateOptions) (*runtime.Poller[ManagedCCFClientCreateResponse], error)`
+- New function `*ManagedCCFClient.BeginDelete(context.Context, string, string, *ManagedCCFClientBeginDeleteOptions) (*runtime.Poller[ManagedCCFClientDeleteResponse], error)`
+- New function `*ManagedCCFClient.Get(context.Context, string, string, *ManagedCCFClientGetOptions) (ManagedCCFClientGetResponse, error)`
+- New function `*ManagedCCFClient.NewListByResourceGroupPager(string, *ManagedCCFClientListByResourceGroupOptions) *runtime.Pager[ManagedCCFClientListByResourceGroupResponse]`
+- New function `*ManagedCCFClient.NewListBySubscriptionPager(*ManagedCCFClientListBySubscriptionOptions) *runtime.Pager[ManagedCCFClientListBySubscriptionResponse]`
+- New function `*ManagedCCFClient.BeginUpdate(context.Context, string, string, ManagedCCF, *ManagedCCFClientBeginUpdateOptions) (*runtime.Poller[ManagedCCFClientUpdateResponse], error)`
+- New struct `DeploymentType`
+- New struct `ManagedCCF`
+- New struct `ManagedCCFList`
+- New struct `ManagedCCFProperties`
+- New struct `MemberIdentityCertificate`
+- New field `RunningState` in struct `LedgerProperties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

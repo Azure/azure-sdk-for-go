@@ -48,7 +48,7 @@ func NewConfigurationServicesClient(subscriptionID string, credential azcore.Tok
 // Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -63,8 +63,7 @@ func (client *ConfigurationServicesClient) BeginCreateOrUpdate(ctx context.Conte
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationServicesClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -78,7 +77,7 @@ func (client *ConfigurationServicesClient) BeginCreateOrUpdate(ctx context.Conte
 // Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 func (client *ConfigurationServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, configurationServiceResource ConfigurationServiceResource, options *ConfigurationServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationServicesClient.BeginCreateOrUpdate"
@@ -124,7 +123,7 @@ func (client *ConfigurationServicesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationServiceResource); err != nil {
@@ -136,7 +135,7 @@ func (client *ConfigurationServicesClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Disable the default Application Configuration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -150,8 +149,7 @@ func (client *ConfigurationServicesClient) BeginDelete(ctx context.Context, reso
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigurationServicesClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -164,7 +162,7 @@ func (client *ConfigurationServicesClient) BeginDelete(ctx context.Context, reso
 // Delete - Disable the default Application Configuration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 func (client *ConfigurationServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, options *ConfigurationServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationServicesClient.BeginDelete"
@@ -210,7 +208,7 @@ func (client *ConfigurationServicesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,7 +217,7 @@ func (client *ConfigurationServicesClient) deleteCreateRequest(ctx context.Conte
 // Get - Get the Application Configuration Service and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -272,7 +270,7 @@ func (client *ConfigurationServicesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -289,7 +287,7 @@ func (client *ConfigurationServicesClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Handles requests to list all resources in a Service.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -338,7 +336,7 @@ func (client *ConfigurationServicesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -356,7 +354,7 @@ func (client *ConfigurationServicesClient) listHandleResponse(resp *http.Respons
 // BeginValidate - Check if the Application Configuration Service settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -385,7 +383,7 @@ func (client *ConfigurationServicesClient) BeginValidate(ctx context.Context, re
 // Validate - Check if the Application Configuration Service settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 func (client *ConfigurationServicesClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, settings ConfigurationServiceSettings, options *ConfigurationServicesClientBeginValidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationServicesClient.BeginValidate"
@@ -431,7 +429,7 @@ func (client *ConfigurationServicesClient) validateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, settings); err != nil {

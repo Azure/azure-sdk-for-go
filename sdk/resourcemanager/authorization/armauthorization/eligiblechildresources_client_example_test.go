@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetEligibleChildResourcesByScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetEligibleChildResourcesByScope.json
 func ExampleEligibleChildResourcesClient_NewGetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,12 +45,12 @@ func ExampleEligibleChildResourcesClient_NewGetPager() {
 		// 		{
 		// 			Name: to.Ptr("RG-1"),
 		// 			Type: to.Ptr("resourcegroup"),
-		// 			ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/resourceGroups/RG-1"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/resourceGroups/RG-1"),
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("RG-2"),
 		// 			Type: to.Ptr("resourcegroup"),
-		// 			ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/resourceGroups/RG-2"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/resourceGroups/RG-2"),
 		// 	}},
 		// }
 	}

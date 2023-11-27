@@ -21,6 +21,7 @@ import (
 type ServerFactory struct {
 	Server           Server
 	LedgerServer     LedgerServer
+	ManagedCCFServer ManagedCCFServer
 	OperationsServer OperationsServer
 }
 
@@ -40,6 +41,7 @@ type ServerFactoryTransport struct {
 	trMu               sync.Mutex
 	trServer           *ServerTransport
 	trLedgerServer     *LedgerServerTransport
+	trManagedCCFServer *ManagedCCFServerTransport
 	trOperationsServer *OperationsServerTransport
 }
 
@@ -62,6 +64,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LedgerClient":
 		initServer(s, &s.trLedgerServer, func() *LedgerServerTransport { return NewLedgerServerTransport(&s.srv.LedgerServer) })
 		resp, err = s.trLedgerServer.Do(req)
+	case "ManagedCCFClient":
+		initServer(s, &s.trManagedCCFServer, func() *ManagedCCFServerTransport { return NewManagedCCFServerTransport(&s.srv.ManagedCCFServer) })
+		resp, err = s.trManagedCCFServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -16,9 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -31,6 +32,14 @@ type DeploymentsServer struct {
 	// BeginDelete is the fake for method DeploymentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *armappplatform.DeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappplatform.DeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginDisableRemoteDebugging is the fake for method DeploymentsClient.BeginDisableRemoteDebugging
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDisableRemoteDebugging func(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *armappplatform.DeploymentsClientBeginDisableRemoteDebuggingOptions) (resp azfake.PollerResponder[armappplatform.DeploymentsClientDisableRemoteDebuggingResponse], errResp azfake.ErrorResponder)
+
+	// BeginEnableRemoteDebugging is the fake for method DeploymentsClient.BeginEnableRemoteDebugging
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginEnableRemoteDebugging func(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *armappplatform.DeploymentsClientBeginEnableRemoteDebuggingOptions) (resp azfake.PollerResponder[armappplatform.DeploymentsClientEnableRemoteDebuggingResponse], errResp azfake.ErrorResponder)
 
 	// BeginGenerateHeapDump is the fake for method DeploymentsClient.BeginGenerateHeapDump
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -47,6 +56,10 @@ type DeploymentsServer struct {
 	// GetLogFileURL is the fake for method DeploymentsClient.GetLogFileURL
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	GetLogFileURL func(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *armappplatform.DeploymentsClientGetLogFileURLOptions) (resp azfake.Responder[armappplatform.DeploymentsClientGetLogFileURLResponse], errResp azfake.ErrorResponder)
+
+	// GetRemoteDebuggingConfig is the fake for method DeploymentsClient.GetRemoteDebuggingConfig
+	// HTTP status codes to indicate success: http.StatusOK
+	GetRemoteDebuggingConfig func(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, options *armappplatform.DeploymentsClientGetRemoteDebuggingConfigOptions) (resp azfake.Responder[armappplatform.DeploymentsClientGetRemoteDebuggingConfigResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DeploymentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,36 +95,40 @@ type DeploymentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTransport {
 	return &DeploymentsServerTransport{
-		srv:                     srv,
-		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientCreateOrUpdateResponse]](),
-		beginDelete:             newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientDeleteResponse]](),
-		beginGenerateHeapDump:   newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateHeapDumpResponse]](),
-		beginGenerateThreadDump: newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateThreadDumpResponse]](),
-		newListPager:            newTracker[azfake.PagerResponder[armappplatform.DeploymentsClientListResponse]](),
-		newListForClusterPager:  newTracker[azfake.PagerResponder[armappplatform.DeploymentsClientListForClusterResponse]](),
-		beginRestart:            newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientRestartResponse]](),
-		beginStart:              newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartResponse]](),
-		beginStartJFR:           newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartJFRResponse]](),
-		beginStop:               newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStopResponse]](),
-		beginUpdate:             newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientUpdateResponse]](),
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientDeleteResponse]](),
+		beginDisableRemoteDebugging: newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientDisableRemoteDebuggingResponse]](),
+		beginEnableRemoteDebugging:  newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientEnableRemoteDebuggingResponse]](),
+		beginGenerateHeapDump:       newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateHeapDumpResponse]](),
+		beginGenerateThreadDump:     newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateThreadDumpResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armappplatform.DeploymentsClientListResponse]](),
+		newListForClusterPager:      newTracker[azfake.PagerResponder[armappplatform.DeploymentsClientListForClusterResponse]](),
+		beginRestart:                newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientRestartResponse]](),
+		beginStart:                  newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartResponse]](),
+		beginStartJFR:               newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartJFRResponse]](),
+		beginStop:                   newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientStopResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armappplatform.DeploymentsClientUpdateResponse]](),
 	}
 }
 
 // DeploymentsServerTransport connects instances of armappplatform.DeploymentsClient to instances of DeploymentsServer.
 // Don't use this type directly, use NewDeploymentsServerTransport instead.
 type DeploymentsServerTransport struct {
-	srv                     *DeploymentsServer
-	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientCreateOrUpdateResponse]]
-	beginDelete             *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientDeleteResponse]]
-	beginGenerateHeapDump   *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateHeapDumpResponse]]
-	beginGenerateThreadDump *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateThreadDumpResponse]]
-	newListPager            *tracker[azfake.PagerResponder[armappplatform.DeploymentsClientListResponse]]
-	newListForClusterPager  *tracker[azfake.PagerResponder[armappplatform.DeploymentsClientListForClusterResponse]]
-	beginRestart            *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientRestartResponse]]
-	beginStart              *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartResponse]]
-	beginStartJFR           *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartJFRResponse]]
-	beginStop               *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStopResponse]]
-	beginUpdate             *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientUpdateResponse]]
+	srv                         *DeploymentsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientDeleteResponse]]
+	beginDisableRemoteDebugging *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientDisableRemoteDebuggingResponse]]
+	beginEnableRemoteDebugging  *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientEnableRemoteDebuggingResponse]]
+	beginGenerateHeapDump       *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateHeapDumpResponse]]
+	beginGenerateThreadDump     *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientGenerateThreadDumpResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armappplatform.DeploymentsClientListResponse]]
+	newListForClusterPager      *tracker[azfake.PagerResponder[armappplatform.DeploymentsClientListForClusterResponse]]
+	beginRestart                *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientRestartResponse]]
+	beginStart                  *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartResponse]]
+	beginStartJFR               *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStartJFRResponse]]
+	beginStop                   *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientStopResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armappplatform.DeploymentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentsServerTransport.
@@ -130,6 +147,10 @@ func (d *DeploymentsServerTransport) Do(req *http.Request) (*http.Response, erro
 		resp, err = d.dispatchBeginCreateOrUpdate(req)
 	case "DeploymentsClient.BeginDelete":
 		resp, err = d.dispatchBeginDelete(req)
+	case "DeploymentsClient.BeginDisableRemoteDebugging":
+		resp, err = d.dispatchBeginDisableRemoteDebugging(req)
+	case "DeploymentsClient.BeginEnableRemoteDebugging":
+		resp, err = d.dispatchBeginEnableRemoteDebugging(req)
 	case "DeploymentsClient.BeginGenerateHeapDump":
 		resp, err = d.dispatchBeginGenerateHeapDump(req)
 	case "DeploymentsClient.BeginGenerateThreadDump":
@@ -138,6 +159,8 @@ func (d *DeploymentsServerTransport) Do(req *http.Request) (*http.Response, erro
 		resp, err = d.dispatchGet(req)
 	case "DeploymentsClient.GetLogFileURL":
 		resp, err = d.dispatchGetLogFileURL(req)
+	case "DeploymentsClient.GetRemoteDebuggingConfig":
+		resp, err = d.dispatchGetRemoteDebuggingConfig(req)
 	case "DeploymentsClient.NewListPager":
 		resp, err = d.dispatchNewListPager(req)
 	case "DeploymentsClient.NewListForClusterPager":
@@ -266,6 +289,120 @@ func (d *DeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		d.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchBeginDisableRemoteDebugging(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDisableRemoteDebugging == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDisableRemoteDebugging not implemented")}
+	}
+	beginDisableRemoteDebugging := d.beginDisableRemoteDebugging.get(req)
+	if beginDisableRemoteDebugging == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apps/(?P<appName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableRemoteDebugging`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginDisableRemoteDebugging(req.Context(), resourceGroupNameParam, serviceNameParam, appNameParam, deploymentNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDisableRemoteDebugging = &respr
+		d.beginDisableRemoteDebugging.add(req, beginDisableRemoteDebugging)
+	}
+
+	resp, err := server.PollerResponderNext(beginDisableRemoteDebugging, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginDisableRemoteDebugging.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDisableRemoteDebugging) {
+		d.beginDisableRemoteDebugging.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchBeginEnableRemoteDebugging(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginEnableRemoteDebugging == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginEnableRemoteDebugging not implemented")}
+	}
+	beginEnableRemoteDebugging := d.beginEnableRemoteDebugging.get(req)
+	if beginEnableRemoteDebugging == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apps/(?P<appName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enableRemoteDebugging`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappplatform.RemoteDebuggingPayload](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armappplatform.DeploymentsClientBeginEnableRemoteDebuggingOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armappplatform.DeploymentsClientBeginEnableRemoteDebuggingOptions{
+				RemoteDebuggingPayload: &body,
+			}
+		}
+		respr, errRespr := d.srv.BeginEnableRemoteDebugging(req.Context(), resourceGroupNameParam, serviceNameParam, appNameParam, deploymentNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginEnableRemoteDebugging = &respr
+		d.beginEnableRemoteDebugging.add(req, beginEnableRemoteDebugging)
+	}
+
+	resp, err := server.PollerResponderNext(beginEnableRemoteDebugging, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginEnableRemoteDebugging.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginEnableRemoteDebugging) {
+		d.beginEnableRemoteDebugging.remove(req)
 	}
 
 	return resp, nil
@@ -459,6 +596,47 @@ func (d *DeploymentsServerTransport) dispatchGetLogFileURL(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogFileURLResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGetRemoteDebuggingConfig(req *http.Request) (*http.Response, error) {
+	if d.srv.GetRemoteDebuggingConfig == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRemoteDebuggingConfig not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/apps/(?P<appName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getRemoteDebuggingConfig`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	appNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("appName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetRemoteDebuggingConfig(req.Context(), resourceGroupNameParam, serviceNameParam, appNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RemoteDebugging, req)
 	if err != nil {
 		return nil, err
 	}

@@ -47,7 +47,7 @@ func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -61,8 +61,7 @@ func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, 
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceRegistriesClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -75,7 +74,7 @@ func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, 
 // CreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 func (client *ServiceRegistriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceRegistriesClient.BeginCreateOrUpdate"
@@ -121,7 +120,7 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -130,7 +129,7 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 // BeginDelete - Disable the default Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -144,8 +143,7 @@ func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resource
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceRegistriesClientDeleteResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -158,7 +156,7 @@ func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resource
 // Delete - Disable the default Service Registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 func (client *ServiceRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceRegistriesClient.BeginDelete"
@@ -204,7 +202,7 @@ func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +211,7 @@ func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get the Service Registry and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -265,7 +263,7 @@ func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +280,7 @@ func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (S
 
 // NewListPager - Handles requests to list all resources in a Service.
 //
-// Generated from API version 2022-04-01
+// Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -331,7 +329,7 @@ func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

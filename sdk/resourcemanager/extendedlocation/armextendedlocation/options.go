@@ -21,6 +21,12 @@ type CustomLocationsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// CustomLocationsClientFindTargetResourceGroupOptions contains the optional parameters for the CustomLocationsClient.FindTargetResourceGroup
+// method.
+type CustomLocationsClientFindTargetResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
 type CustomLocationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -52,5 +58,35 @@ type CustomLocationsClientListOperationsOptions struct {
 
 // CustomLocationsClientUpdateOptions contains the optional parameters for the CustomLocationsClient.Update method.
 type CustomLocationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceSyncRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginCreateOrUpdate
+// method.
+type ResourceSyncRulesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ResourceSyncRulesClientBeginUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginUpdate
+// method.
+type ResourceSyncRulesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ResourceSyncRulesClientDeleteOptions contains the optional parameters for the ResourceSyncRulesClient.Delete method.
+type ResourceSyncRulesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceSyncRulesClientGetOptions contains the optional parameters for the ResourceSyncRulesClient.Get method.
+type ResourceSyncRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ResourceSyncRulesClientListByCustomLocationIDOptions contains the optional parameters for the ResourceSyncRulesClient.NewListByCustomLocationIDPager
+// method.
+type ResourceSyncRulesClientListByCustomLocationIDOptions struct {
 	// placeholder for future optional parameters
 }

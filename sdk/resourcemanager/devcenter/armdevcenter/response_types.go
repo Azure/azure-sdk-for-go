@@ -43,6 +43,30 @@ type AttachedNetworksClientListByProjectResponse struct {
 	AttachedNetworkListResult
 }
 
+// CatalogDevBoxDefinitionsClientGetErrorDetailsResponse contains the response from method CatalogDevBoxDefinitionsClient.GetErrorDetails.
+type CatalogDevBoxDefinitionsClientGetErrorDetailsResponse struct {
+	// List of validator error details. Populated when changes are made to the resource or its dependent resources that impact
+	// the validity of the Catalog resource.
+	CatalogResourceValidationErrorDetails
+}
+
+// CatalogDevBoxDefinitionsClientGetResponse contains the response from method CatalogDevBoxDefinitionsClient.Get.
+type CatalogDevBoxDefinitionsClientGetResponse struct {
+	// Represents a definition for a Developer Machine.
+	DevBoxDefinition
+}
+
+// CatalogDevBoxDefinitionsClientListByCatalogResponse contains the response from method CatalogDevBoxDefinitionsClient.NewListByCatalogPager.
+type CatalogDevBoxDefinitionsClientListByCatalogResponse struct {
+	// Results of the Dev Box definition list operation.
+	DevBoxDefinitionListResult
+}
+
+// CatalogsClientConnectResponse contains the response from method CatalogsClient.BeginConnect.
+type CatalogsClientConnectResponse struct {
+	// placeholder for future response values
+}
+
 // CatalogsClientCreateOrUpdateResponse contains the response from method CatalogsClient.BeginCreateOrUpdate.
 type CatalogsClientCreateOrUpdateResponse struct {
 	// Represents a catalog.
@@ -58,6 +82,12 @@ type CatalogsClientDeleteResponse struct {
 type CatalogsClientGetResponse struct {
 	// Represents a catalog.
 	Catalog
+}
+
+// CatalogsClientGetSyncErrorDetailsResponse contains the response from method CatalogsClient.GetSyncErrorDetails.
+type CatalogsClientGetSyncErrorDetailsResponse struct {
+	// Synchronization error details.
+	SyncErrorDetails
 }
 
 // CatalogsClientListByDevCenterResponse contains the response from method CatalogsClient.NewListByDevCenterPager.
@@ -81,6 +111,25 @@ type CatalogsClientUpdateResponse struct {
 type CheckNameAvailabilityClientExecuteResponse struct {
 	// The check availability result.
 	CheckNameAvailabilityResponse
+}
+
+// CustomizationTasksClientGetErrorDetailsResponse contains the response from method CustomizationTasksClient.GetErrorDetails.
+type CustomizationTasksClientGetErrorDetailsResponse struct {
+	// List of validator error details. Populated when changes are made to the resource or its dependent resources that impact
+	// the validity of the Catalog resource.
+	CatalogResourceValidationErrorDetails
+}
+
+// CustomizationTasksClientGetResponse contains the response from method CustomizationTasksClient.Get.
+type CustomizationTasksClientGetResponse struct {
+	// Represents a Task to be used in customizing a Dev Box.
+	CustomizationTask
+}
+
+// CustomizationTasksClientListByCatalogResponse contains the response from method CustomizationTasksClient.NewListByCatalogPager.
+type CustomizationTasksClientListByCatalogResponse struct {
+	// Results of the Task list operation.
+	CustomizationTaskListResult
 }
 
 // DevBoxDefinitionsClientCreateOrUpdateResponse contains the response from method DevBoxDefinitionsClient.BeginCreateOrUpdate.
@@ -157,6 +206,25 @@ type DevCentersClientListBySubscriptionResponse struct {
 type DevCentersClientUpdateResponse struct {
 	// Represents a devcenter resource.
 	DevCenter
+}
+
+// EnvironmentDefinitionsClientGetErrorDetailsResponse contains the response from method EnvironmentDefinitionsClient.GetErrorDetails.
+type EnvironmentDefinitionsClientGetErrorDetailsResponse struct {
+	// List of validator error details. Populated when changes are made to the resource or its dependent resources that impact
+	// the validity of the Catalog resource.
+	CatalogResourceValidationErrorDetails
+}
+
+// EnvironmentDefinitionsClientGetResponse contains the response from method EnvironmentDefinitionsClient.Get.
+type EnvironmentDefinitionsClientGetResponse struct {
+	// Represents an environment definition catalog item.
+	EnvironmentDefinition
+}
+
+// EnvironmentDefinitionsClientListByCatalogResponse contains the response from method EnvironmentDefinitionsClient.NewListByCatalogPager.
+type EnvironmentDefinitionsClientListByCatalogResponse struct {
+	// Results of the environment definition list operation.
+	EnvironmentDefinitionListResult
 }
 
 // EnvironmentTypesClientCreateOrUpdateResponse contains the response from method EnvironmentTypesClient.CreateOrUpdate.

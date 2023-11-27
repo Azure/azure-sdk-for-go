@@ -49,6 +49,40 @@ type LedgerClientUpdateResponse struct {
 	ConfidentialLedger
 }
 
+// ManagedCCFClientCreateResponse contains the response from method ManagedCCFClient.BeginCreate.
+type ManagedCCFClientCreateResponse struct {
+	// Managed CCF. Contains the properties of Managed CCF Resource.
+	ManagedCCF
+}
+
+// ManagedCCFClientDeleteResponse contains the response from method ManagedCCFClient.BeginDelete.
+type ManagedCCFClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedCCFClientGetResponse contains the response from method ManagedCCFClient.Get.
+type ManagedCCFClientGetResponse struct {
+	// Managed CCF. Contains the properties of Managed CCF Resource.
+	ManagedCCF
+}
+
+// ManagedCCFClientListByResourceGroupResponse contains the response from method ManagedCCFClient.NewListByResourceGroupPager.
+type ManagedCCFClientListByResourceGroupResponse struct {
+	// Object that includes an array of Managed CCF and a possible link for next set.
+	ManagedCCFList
+}
+
+// ManagedCCFClientListBySubscriptionResponse contains the response from method ManagedCCFClient.NewListBySubscriptionPager.
+type ManagedCCFClientListBySubscriptionResponse struct {
+	// Object that includes an array of Managed CCF and a possible link for next set.
+	ManagedCCFList
+}
+
+// ManagedCCFClientUpdateResponse contains the response from method ManagedCCFClient.BeginUpdate.
+type ManagedCCFClientUpdateResponse struct {
+	// placeholder for future response values
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// List containing this Resource Provider's available operations.

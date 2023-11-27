@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentScheduleByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleAssignmentScheduleByName.json
 func ExampleRoleAssignmentSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleRoleAssignmentSchedulesClient_Get() {
 	// res.RoleAssignmentSchedule = armauthorization.RoleAssignmentSchedule{
 	// 	Name: to.Ptr("c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 	// 	Type: to.Ptr("Microsoft.Authorization/RoleAssignmentSchedules"),
-	// 	ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
+	// 	ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 	// 	Properties: &armauthorization.RoleAssignmentScheduleProperties{
 	// 		AssignmentType: to.Ptr(armauthorization.AssignmentTypeAssigned),
 	// 		Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
@@ -68,9 +68,9 @@ func ExampleRoleAssignmentSchedulesClient_Get() {
 	// 		MemberType: to.Ptr(armauthorization.MemberTypeDirect),
 	// 		PrincipalID: to.Ptr("a3bb8764-cb92-4276-9d2a-ca1e895e55ea"),
 	// 		PrincipalType: to.Ptr(armauthorization.PrincipalTypeUser),
-	// 		RoleAssignmentScheduleRequestID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
+	// 		RoleAssignmentScheduleRequestID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
 	// 		RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/c8d4ff99-41c3-41a8-9f60-21dfdad59608"),
-	// 		Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+	// 		Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 	// 		Status: to.Ptr(armauthorization.StatusProvisioned),
 	// 		UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
@@ -78,7 +78,7 @@ func ExampleRoleAssignmentSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/53b1affe357b3bfbb53721d0a2002382a046d3b0/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetRoleAssignmentSchedulesByScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-10-01-preview/examples/GetRoleAssignmentSchedulesByScope.json
 func ExampleRoleAssignmentSchedulesClient_NewListForScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleRoleAssignmentSchedulesClient_NewListForScopePager() {
 		// 		{
 		// 			Name: to.Ptr("c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 		// 			Type: to.Ptr("Microsoft.Authorization/RoleAssignmentSchedules"),
-		// 			ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
+		// 			ID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 		// 			Properties: &armauthorization.RoleAssignmentScheduleProperties{
 		// 				AssignmentType: to.Ptr(armauthorization.AssignmentTypeAssigned),
 		// 				Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
@@ -134,9 +134,9 @@ func ExampleRoleAssignmentSchedulesClient_NewListForScopePager() {
 		// 				MemberType: to.Ptr(armauthorization.MemberTypeDirect),
 		// 				PrincipalID: to.Ptr("a3bb8764-cb92-4276-9d2a-ca1e895e55ea"),
 		// 				PrincipalType: to.Ptr(armauthorization.PrincipalTypeUser),
-		// 				RoleAssignmentScheduleRequestID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
+		// 				RoleAssignmentScheduleRequestID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentScheduleRequests/fea7a502-9a96-4806-a26f-eee560e52045"),
 		// 				RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/c8d4ff99-41c3-41a8-9f60-21dfdad59608"),
-		// 				Scope: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
+		// 				Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
 		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),
 		// 				Status: to.Ptr(armauthorization.StatusProvisioned),
 		// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-09T21:35:27.910Z"); return t}()),

@@ -43,7 +43,7 @@ func NewRoleEligibilitySchedulesClient(credential azcore.TokenCredential, option
 // Get - Get the specified role eligibility schedule for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role eligibility schedule.
 //   - roleEligibilityScheduleName - The name (guid) of the role eligibility schedule to get.
 //   - options - RoleEligibilitySchedulesClientGetOptions contains the optional parameters for the RoleEligibilitySchedulesClient.Get
@@ -83,7 +83,7 @@ func (client *RoleEligibilitySchedulesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *RoleEligibilitySchedulesClient) getHandleResponse(resp *http.Respo
 
 // NewListForScopePager - Gets role eligibility schedules for a resource scope.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role eligibility schedules.
 //   - options - RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.NewListForScopePager
 //     method.
@@ -139,7 +139,7 @@ func (client *RoleEligibilitySchedulesClient) listForScopeCreateRequest(ctx cont
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

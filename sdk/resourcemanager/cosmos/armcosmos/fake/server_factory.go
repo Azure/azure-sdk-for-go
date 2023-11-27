@@ -26,11 +26,14 @@ type ServerFactory struct {
 	CollectionPartitionServer          CollectionPartitionServer
 	CollectionPartitionRegionServer    CollectionPartitionRegionServer
 	CollectionRegionServer             CollectionRegionServer
+	DataTransferJobsServer             DataTransferJobsServer
 	DatabaseAccountRegionServer        DatabaseAccountRegionServer
 	DatabaseAccountsServer             DatabaseAccountsServer
 	DatabaseServer                     DatabaseServer
+	GraphResourcesServer               GraphResourcesServer
 	GremlinResourcesServer             GremlinResourcesServer
 	LocationsServer                    LocationsServer
+	MongoClustersServer                MongoClustersServer
 	MongoDBResourcesServer             MongoDBResourcesServer
 	NotebookWorkspacesServer           NotebookWorkspacesServer
 	OperationsServer                   OperationsServer
@@ -79,11 +82,14 @@ type ServerFactoryTransport struct {
 	trCollectionPartitionServer          *CollectionPartitionServerTransport
 	trCollectionPartitionRegionServer    *CollectionPartitionRegionServerTransport
 	trCollectionRegionServer             *CollectionRegionServerTransport
+	trDataTransferJobsServer             *DataTransferJobsServerTransport
 	trDatabaseAccountRegionServer        *DatabaseAccountRegionServerTransport
 	trDatabaseAccountsServer             *DatabaseAccountsServerTransport
 	trDatabaseServer                     *DatabaseServerTransport
+	trGraphResourcesServer               *GraphResourcesServerTransport
 	trGremlinResourcesServer             *GremlinResourcesServerTransport
 	trLocationsServer                    *LocationsServerTransport
+	trMongoClustersServer                *MongoClustersServerTransport
 	trMongoDBResourcesServer             *MongoDBResourcesServerTransport
 	trNotebookWorkspacesServer           *NotebookWorkspacesServerTransport
 	trOperationsServer                   *OperationsServerTransport
@@ -157,6 +163,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCollectionRegionServerTransport(&s.srv.CollectionRegionServer)
 		})
 		resp, err = s.trCollectionRegionServer.Do(req)
+	case "DataTransferJobsClient":
+		initServer(s, &s.trDataTransferJobsServer, func() *DataTransferJobsServerTransport {
+			return NewDataTransferJobsServerTransport(&s.srv.DataTransferJobsServer)
+		})
+		resp, err = s.trDataTransferJobsServer.Do(req)
 	case "DatabaseAccountRegionClient":
 		initServer(s, &s.trDatabaseAccountRegionServer, func() *DatabaseAccountRegionServerTransport {
 			return NewDatabaseAccountRegionServerTransport(&s.srv.DatabaseAccountRegionServer)
@@ -170,6 +181,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatabaseClient":
 		initServer(s, &s.trDatabaseServer, func() *DatabaseServerTransport { return NewDatabaseServerTransport(&s.srv.DatabaseServer) })
 		resp, err = s.trDatabaseServer.Do(req)
+	case "GraphResourcesClient":
+		initServer(s, &s.trGraphResourcesServer, func() *GraphResourcesServerTransport {
+			return NewGraphResourcesServerTransport(&s.srv.GraphResourcesServer)
+		})
+		resp, err = s.trGraphResourcesServer.Do(req)
 	case "GremlinResourcesClient":
 		initServer(s, &s.trGremlinResourcesServer, func() *GremlinResourcesServerTransport {
 			return NewGremlinResourcesServerTransport(&s.srv.GremlinResourcesServer)
@@ -178,6 +194,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationsClient":
 		initServer(s, &s.trLocationsServer, func() *LocationsServerTransport { return NewLocationsServerTransport(&s.srv.LocationsServer) })
 		resp, err = s.trLocationsServer.Do(req)
+	case "MongoClustersClient":
+		initServer(s, &s.trMongoClustersServer, func() *MongoClustersServerTransport {
+			return NewMongoClustersServerTransport(&s.srv.MongoClustersServer)
+		})
+		resp, err = s.trMongoClustersServer.Do(req)
 	case "MongoDBResourcesClient":
 		initServer(s, &s.trMongoDBResourcesServer, func() *MongoDBResourcesServerTransport {
 			return NewMongoDBResourcesServerTransport(&s.srv.MongoDBResourcesServer)

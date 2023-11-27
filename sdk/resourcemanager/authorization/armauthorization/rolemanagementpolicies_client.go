@@ -43,7 +43,7 @@ func NewRoleManagementPoliciesClient(credential azcore.TokenCredential, options 
 // Delete - Delete a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role management policy to upsert.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to upsert.
 //   - options - RoleManagementPoliciesClientDeleteOptions contains the optional parameters for the RoleManagementPoliciesClient.Delete
@@ -82,7 +82,7 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -91,7 +91,7 @@ func (client *RoleManagementPoliciesClient) deleteCreateRequest(ctx context.Cont
 // Get - Get the specified role management policy for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role management policy.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to get.
 //   - options - RoleManagementPoliciesClientGetOptions contains the optional parameters for the RoleManagementPoliciesClient.Get
@@ -131,7 +131,7 @@ func (client *RoleManagementPoliciesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -148,7 +148,7 @@ func (client *RoleManagementPoliciesClient) getHandleResponse(resp *http.Respons
 
 // NewListForScopePager - Gets role management policies for a resource scope.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role management policy.
 //   - options - RoleManagementPoliciesClientListForScopeOptions contains the optional parameters for the RoleManagementPoliciesClient.NewListForScopePager
 //     method.
@@ -184,7 +184,7 @@ func (client *RoleManagementPoliciesClient) listForScopeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *htt
 // Update - Update a role management policy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role management policy to upsert.
 //   - roleManagementPolicyName - The name (guid) of the role management policy to upsert.
 //   - parameters - Parameters for the role management policy.
@@ -243,7 +243,7 @@ func (client *RoleManagementPoliciesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

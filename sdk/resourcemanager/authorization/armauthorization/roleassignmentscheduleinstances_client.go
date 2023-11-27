@@ -43,7 +43,7 @@ func NewRoleAssignmentScheduleInstancesClient(credential azcore.TokenCredential,
 // Get - Gets the specified role assignment schedule instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role assignments schedules.
 //   - roleAssignmentScheduleInstanceName - The name (hash of schedule name + time) of the role assignment schedule to get.
 //   - options - RoleAssignmentScheduleInstancesClientGetOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.Get
@@ -83,7 +83,7 @@ func (client *RoleAssignmentScheduleInstancesClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *RoleAssignmentScheduleInstancesClient) getHandleResponse(resp *htt
 
 // NewListForScopePager - Gets role assignment schedule instances of a role assignment schedule.
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role assignment schedule.
 //   - options - RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.NewListForScopePager
 //     method.
@@ -139,7 +139,7 @@ func (client *RoleAssignmentScheduleInstancesClient) listForScopeCreateRequest(c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

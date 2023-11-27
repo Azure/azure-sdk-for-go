@@ -43,6 +43,25 @@ func PossibleExpiryOptionsValues() []ExpiryOptions {
 	}
 }
 
+type LeaseAction string
+
+const (
+	LeaseActionAcquire        LeaseAction = "acquire"
+	LeaseActionAcquireRelease LeaseAction = "acquire-release"
+	LeaseActionAutoRenew      LeaseAction = "auto-renew"
+	LeaseActionRelease        LeaseAction = "release"
+)
+
+// PossibleLeaseActionValues returns the possible values for the LeaseAction const type.
+func PossibleLeaseActionValues() []LeaseAction {
+	return []LeaseAction{
+		LeaseActionAcquire,
+		LeaseActionAcquireRelease,
+		LeaseActionAutoRenew,
+		LeaseActionRelease,
+	}
+}
+
 type ListBlobsIncludeItem string
 
 const (

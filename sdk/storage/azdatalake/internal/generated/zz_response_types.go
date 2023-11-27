@@ -154,6 +154,9 @@ type PathClientAppendDataResponse struct {
 	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
 	IsServerEncrypted *bool
 
+	// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
+	LeaseRenewed *bool
+
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -231,6 +234,9 @@ type PathClientFlushDataResponse struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
+
+	// LeaseRenewed contains the information returned from the x-ms-lease-renewed header response.
+	LeaseRenewed *bool
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string

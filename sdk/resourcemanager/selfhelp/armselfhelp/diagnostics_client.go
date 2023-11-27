@@ -30,7 +30,7 @@ type DiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DiagnosticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -40,14 +40,73 @@ func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
-// BeginCreate - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics tells you precisely the root cause of the issue and the steps to address it.
-// You can get diagnostics once you discover the relevant solution for your Azure issue.
-// Note: requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
-// API.
+// CheckNameAvailability - This API is used to check the uniqueness of a resource name used for a diagnostic check.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-06-01
+//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - options - DiagnosticsClientCheckNameAvailabilityOptions contains the optional parameters for the DiagnosticsClient.CheckNameAvailability
+//     method.
+func (client *DiagnosticsClient) CheckNameAvailability(ctx context.Context, scope string, options *DiagnosticsClientCheckNameAvailabilityOptions) (DiagnosticsClientCheckNameAvailabilityResponse, error) {
+	var err error
+	const operationName = "DiagnosticsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, scope, options)
+	if err != nil {
+		return DiagnosticsClientCheckNameAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DiagnosticsClientCheckNameAvailabilityResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return DiagnosticsClientCheckNameAvailabilityResponse{}, err
+	}
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
+func (client *DiagnosticsClient) checkNameAvailabilityCreateRequest(ctx context.Context, scope string, options *DiagnosticsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Help/checkNameAvailability"
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.CheckNameAvailabilityRequest != nil {
+		if err := runtime.MarshalAsJSON(req, *options.CheckNameAvailabilityRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
+func (client *DiagnosticsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DiagnosticsClientCheckNameAvailabilityResponse, error) {
+	result := DiagnosticsClientCheckNameAvailabilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
+		return DiagnosticsClientCheckNameAvailabilityResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginCreate - Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics
+// once you discover and identify the relevant solution for your Azure issue.
+// You can create diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
+// Note: ‘requiredParameterSets’ from Solutions Discovery API response must be passed via ‘additionalParameters’ as an input
+// to Diagnostics API
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - diagnosticResourceRequest - The required request body for this insightResource invocation.
@@ -60,23 +119,30 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiagnosticsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DiagnosticsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiagnosticsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
-// Create - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics tells you precisely the root cause of the issue and the steps to address it.
-// You can get diagnostics once you discover the relevant solution for your Azure issue.
-// Note: requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
-// API.
+// Create - Diagnostics tells you precisely the root cause of the issue and how to address it. You can get diagnostics once
+// you discover and identify the relevant solution for your Azure issue.
+// You can create diagnostics using the ‘solutionId’ from Solution Discovery API response and ‘additionalParameters’
+// Note: ‘requiredParameterSets’ from Solutions Discovery API response must be passed via ‘additionalParameters’ as an input
+// to Diagnostics API
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-06-01
 func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiagnosticsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, diagnosticsResourceName, diagnosticResourceRequest, options)
 	if err != nil {
 		return nil, err
@@ -105,7 +171,7 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, diagnosticResourceRequest); err != nil {
@@ -117,12 +183,16 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 // Get - Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2023-06-01
 //   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
 func (client *DiagnosticsClient) Get(ctx context.Context, scope string, diagnosticsResourceName string, options *DiagnosticsClientGetOptions) (DiagnosticsClientGetResponse, error) {
 	var err error
+	const operationName = "DiagnosticsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, diagnosticsResourceName, options)
 	if err != nil {
 		return DiagnosticsClientGetResponse{}, err
@@ -152,7 +222,7 @@ func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-01-preview")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -32,7 +32,7 @@ type RegisteredIdentitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegisteredIdentitiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".RegisteredIdentitiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *RegisteredIdentitiesClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, identityName string, options *RegisteredIdentitiesClientDeleteOptions) (RegisteredIdentitiesClientDeleteResponse, error) {
 	var err error
+	const operationName = "RegisteredIdentitiesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, identityName, options)
 	if err != nil {
 		return RegisteredIdentitiesClientDeleteResponse{}, err

@@ -32,7 +32,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //   - options - ClientCapabilitiesOptions contains the optional parameters for the Client.Capabilities method.
 func (client *Client) Capabilities(ctx context.Context, location string, input ResourceCapabilities, options *ClientCapabilitiesOptions) (ClientCapabilitiesResponse, error) {
 	var err error
+	const operationName = "Client.Capabilities"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.capabilitiesCreateRequest(ctx, location, input, options)
 	if err != nil {
 		return ClientCapabilitiesResponse{}, err
@@ -114,6 +118,10 @@ func (client *Client) capabilitiesHandleResponse(resp *http.Response) (ClientCap
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, resourceGroupName string, location string, input CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "Client.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, location, input, options)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err

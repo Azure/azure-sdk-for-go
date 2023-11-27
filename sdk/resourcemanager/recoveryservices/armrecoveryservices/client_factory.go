@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,46 +37,55 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
 	subClient, _ := NewClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewRegisteredIdentitiesClient creates a new instance of RegisteredIdentitiesClient.
 func (c *ClientFactory) NewRegisteredIdentitiesClient() *RegisteredIdentitiesClient {
 	subClient, _ := NewRegisteredIdentitiesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationUsagesClient creates a new instance of ReplicationUsagesClient.
 func (c *ClientFactory) NewReplicationUsagesClient() *ReplicationUsagesClient {
 	subClient, _ := NewReplicationUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVaultCertificatesClient creates a new instance of VaultCertificatesClient.
 func (c *ClientFactory) NewVaultCertificatesClient() *VaultCertificatesClient {
 	subClient, _ := NewVaultCertificatesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVaultExtendedInfoClient creates a new instance of VaultExtendedInfoClient.
 func (c *ClientFactory) NewVaultExtendedInfoClient() *VaultExtendedInfoClient {
 	subClient, _ := NewVaultExtendedInfoClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVaultsClient creates a new instance of VaultsClient.
 func (c *ClientFactory) NewVaultsClient() *VaultsClient {
 	subClient, _ := NewVaultsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

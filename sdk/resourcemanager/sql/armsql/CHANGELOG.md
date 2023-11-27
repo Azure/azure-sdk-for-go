@@ -1,5 +1,258 @@
 # Release History
 
+## 2.0.0-beta.3 (2023-11-30)
+### Breaking Changes
+
+- Function `*ServerDevOpsAuditSettingsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, DevOpsAuditingSettingsName, ServerDevOpsAuditingSettings, *ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ServerDevOpsAuditingSettings, *ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions)`
+- Function `*ServerDevOpsAuditSettingsClient.Get` parameter(s) have been changed from `(context.Context, string, string, DevOpsAuditingSettingsName, *ServerDevOpsAuditSettingsClientGetOptions)` to `(context.Context, string, string, string, *ServerDevOpsAuditSettingsClientGetOptions)`
+- Type of `ManagedDatabaseRestoreDetailsProperties.NumberOfFilesDetected` has been changed from `*int32` to `*int64`
+- Type of `ManagedDatabaseRestoreDetailsProperties.PercentCompleted` has been changed from `*int32` to `*float64`
+- Type of `ManagedDatabaseRestoreDetailsProperties.UnrestorableFiles` has been changed from `[]*ManagedDatabaseRestoreDetailsUnrestorableFileProperties` to `[]*string`
+- Type of `ServerProperties.PublicNetworkAccess` has been changed from `*ServerPublicNetworkAccessFlag` to `*ServerNetworkAccessFlag`
+- `ManagedDatabaseStatusDbCopying`, `ManagedDatabaseStatusDbMoving`, `ManagedDatabaseStatusStarting`, `ManagedDatabaseStatusStopped`, `ManagedDatabaseStatusStopping` from enum `ManagedDatabaseStatus` has been removed
+- `ReplicationLinkTypeSTANDBY` from enum `ReplicationLinkType` has been removed
+- `SecondaryTypeStandby` from enum `SecondaryType` has been removed
+- Enum `AlwaysEncryptedEnclaveType` has been removed
+- Enum `AvailabilityZoneType` has been removed
+- Enum `BaselineName` has been removed
+- Enum `DNSRefreshOperationStatus` has been removed
+- Enum `DatabaseKeyType` has been removed
+- Enum `DevOpsAuditingSettingsName` has been removed
+- Enum `DtcName` has been removed
+- Enum `ExternalGovernanceStatus` has been removed
+- Enum `FreeLimitExhaustionBehavior` has been removed
+- Enum `ManagedLedgerDigestUploadsName` has been removed
+- Enum `ManagedLedgerDigestUploadsState` has been removed
+- Enum `MoveOperationMode` has been removed
+- Enum `RuleSeverity` has been removed
+- Enum `RuleStatus` has been removed
+- Enum `RuleType` has been removed
+- Enum `SQLVulnerabilityAssessmentName` has been removed
+- Enum `SQLVulnerabilityAssessmentState` has been removed
+- Enum `SecondaryInstanceType` has been removed
+- Enum `ServerConfigurationOptionName` has been removed
+- Enum `ServerPublicNetworkAccessFlag` has been removed
+- Enum `StartStopScheduleName` has been removed
+- Function `*ClientFactory.NewDatabaseEncryptionProtectorsClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentBaselinesClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentScanResultClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentScansClient` has been removed
+- Function `*ClientFactory.NewDatabaseSQLVulnerabilityAssessmentsSettingsClient` has been removed
+- Function `*ClientFactory.NewManagedDatabaseAdvancedThreatProtectionSettingsClient` has been removed
+- Function `*ClientFactory.NewManagedDatabaseMoveOperationsClient` has been removed
+- Function `*ClientFactory.NewManagedInstanceAdvancedThreatProtectionSettingsClient` has been removed
+- Function `*ClientFactory.NewManagedInstanceDtcsClient` has been removed
+- Function `*ClientFactory.NewManagedLedgerDigestUploadsClient` has been removed
+- Function `*ClientFactory.NewManagedServerDNSAliasesClient` has been removed
+- Function `*ClientFactory.NewServerConfigurationOptionsClient` has been removed
+- Function `*ClientFactory.NewStartStopManagedInstanceSchedulesClient` has been removed
+- Function `*ClientFactory.NewSynapseLinkWorkspacesClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentBaselineClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentBaselinesClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentExecuteScanClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentRuleBaselineClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentRuleBaselinesClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentScanResultClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentScansClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentsClient` has been removed
+- Function `*ClientFactory.NewVulnerabilityAssessmentsSettingsClient` has been removed
+- Function `NewDatabaseEncryptionProtectorsClient` has been removed
+- Function `*DatabaseEncryptionProtectorsClient.BeginRevalidate` has been removed
+- Function `*DatabaseEncryptionProtectorsClient.BeginRevert` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentBaselinesClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentBaselinesClient.CreateOrUpdate` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentBaselinesClient.Get` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentBaselinesClient.NewListBySQLVulnerabilityAssessmentPager` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentExecuteScanClient.BeginExecute` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.CreateOrUpdate` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.Delete` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.Get` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.NewListByBaselinePager` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentScanResultClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentScanResultClient.Get` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentScanResultClient.NewListByScanPager` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentScansClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentScansClient.Get` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentScansClient.NewListBySQLVulnerabilityAssessmentsPager` has been removed
+- Function `NewDatabaseSQLVulnerabilityAssessmentsSettingsClient` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentsSettingsClient.Get` has been removed
+- Function `*DatabaseSQLVulnerabilityAssessmentsSettingsClient.NewListByDatabasePager` has been removed
+- Function `*FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover` has been removed
+- Function `NewManagedDatabaseAdvancedThreatProtectionSettingsClient` has been removed
+- Function `*ManagedDatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate` has been removed
+- Function `*ManagedDatabaseAdvancedThreatProtectionSettingsClient.Get` has been removed
+- Function `*ManagedDatabaseAdvancedThreatProtectionSettingsClient.NewListByDatabasePager` has been removed
+- Function `NewManagedDatabaseMoveOperationsClient` has been removed
+- Function `*ManagedDatabaseMoveOperationsClient.Get` has been removed
+- Function `*ManagedDatabaseMoveOperationsClient.NewListByLocationPager` has been removed
+- Function `*ManagedDatabasesClient.BeginCancelMove` has been removed
+- Function `*ManagedDatabasesClient.BeginCompleteMove` has been removed
+- Function `*ManagedDatabasesClient.BeginStartMove` has been removed
+- Function `NewManagedInstanceAdvancedThreatProtectionSettingsClient` has been removed
+- Function `*ManagedInstanceAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate` has been removed
+- Function `*ManagedInstanceAdvancedThreatProtectionSettingsClient.Get` has been removed
+- Function `*ManagedInstanceAdvancedThreatProtectionSettingsClient.NewListByInstancePager` has been removed
+- Function `NewManagedInstanceDtcsClient` has been removed
+- Function `*ManagedInstanceDtcsClient.BeginCreateOrUpdate` has been removed
+- Function `*ManagedInstanceDtcsClient.Get` has been removed
+- Function `*ManagedInstanceDtcsClient.NewListByManagedInstancePager` has been removed
+- Function `*ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager` has been removed
+- Function `*ManagedInstancesClient.BeginStart` has been removed
+- Function `*ManagedInstancesClient.BeginStop` has been removed
+- Function `NewManagedLedgerDigestUploadsClient` has been removed
+- Function `*ManagedLedgerDigestUploadsClient.BeginCreateOrUpdate` has been removed
+- Function `*ManagedLedgerDigestUploadsClient.BeginDisable` has been removed
+- Function `*ManagedLedgerDigestUploadsClient.Get` has been removed
+- Function `*ManagedLedgerDigestUploadsClient.NewListByDatabasePager` has been removed
+- Function `NewManagedServerDNSAliasesClient` has been removed
+- Function `*ManagedServerDNSAliasesClient.BeginAcquire` has been removed
+- Function `*ManagedServerDNSAliasesClient.BeginCreateOrUpdate` has been removed
+- Function `*ManagedServerDNSAliasesClient.BeginDelete` has been removed
+- Function `*ManagedServerDNSAliasesClient.Get` has been removed
+- Function `*ManagedServerDNSAliasesClient.NewListByManagedInstancePager` has been removed
+- Function `NewServerConfigurationOptionsClient` has been removed
+- Function `*ServerConfigurationOptionsClient.BeginCreateOrUpdate` has been removed
+- Function `*ServerConfigurationOptionsClient.Get` has been removed
+- Function `*ServerConfigurationOptionsClient.NewListByManagedInstancePager` has been removed
+- Function `*ServersClient.BeginRefreshStatus` has been removed
+- Function `NewStartStopManagedInstanceSchedulesClient` has been removed
+- Function `*StartStopManagedInstanceSchedulesClient.CreateOrUpdate` has been removed
+- Function `*StartStopManagedInstanceSchedulesClient.Delete` has been removed
+- Function `*StartStopManagedInstanceSchedulesClient.Get` has been removed
+- Function `*StartStopManagedInstanceSchedulesClient.NewListByInstancePager` has been removed
+- Function `NewSynapseLinkWorkspacesClient` has been removed
+- Function `*SynapseLinkWorkspacesClient.NewListByDatabasePager` has been removed
+- Function `NewVulnerabilityAssessmentBaselineClient` has been removed
+- Function `*VulnerabilityAssessmentBaselineClient.Get` has been removed
+- Function `*VulnerabilityAssessmentBaselineClient.NewListBySQLVulnerabilityAssessmentPager` has been removed
+- Function `NewVulnerabilityAssessmentBaselinesClient` has been removed
+- Function `*VulnerabilityAssessmentBaselinesClient.CreateOrUpdate` has been removed
+- Function `NewVulnerabilityAssessmentExecuteScanClient` has been removed
+- Function `*VulnerabilityAssessmentExecuteScanClient.BeginExecute` has been removed
+- Function `NewVulnerabilityAssessmentRuleBaselineClient` has been removed
+- Function `*VulnerabilityAssessmentRuleBaselineClient.CreateOrUpdate` has been removed
+- Function `*VulnerabilityAssessmentRuleBaselineClient.Get` has been removed
+- Function `*VulnerabilityAssessmentRuleBaselineClient.NewListByBaselinePager` has been removed
+- Function `NewVulnerabilityAssessmentRuleBaselinesClient` has been removed
+- Function `*VulnerabilityAssessmentRuleBaselinesClient.Delete` has been removed
+- Function `NewVulnerabilityAssessmentScanResultClient` has been removed
+- Function `*VulnerabilityAssessmentScanResultClient.Get` has been removed
+- Function `*VulnerabilityAssessmentScanResultClient.NewListByScanPager` has been removed
+- Function `NewVulnerabilityAssessmentScansClient` has been removed
+- Function `*VulnerabilityAssessmentScansClient.Get` has been removed
+- Function `*VulnerabilityAssessmentScansClient.NewListBySQLVulnerabilityAssessmentsPager` has been removed
+- Function `NewVulnerabilityAssessmentsClient` has been removed
+- Function `*VulnerabilityAssessmentsClient.Delete` has been removed
+- Function `NewVulnerabilityAssessmentsSettingsClient` has been removed
+- Function `*VulnerabilityAssessmentsSettingsClient.CreateOrUpdate` has been removed
+- Function `*VulnerabilityAssessmentsSettingsClient.Get` has been removed
+- Function `*VulnerabilityAssessmentsSettingsClient.NewListByServerPager` has been removed
+- Operation `*ReplicationLinksClient.BeginDelete` has been changed to non-LRO, use `*ReplicationLinksClient.Delete` instead.
+- Operation `*TransparentDataEncryptionsClient.BeginCreateOrUpdate` has been changed to non-LRO, use `*TransparentDataEncryptionsClient.CreateOrUpdate` instead.
+- Operation `*VirtualClustersClient.BeginUpdateDNSServers` has been changed to non-LRO, use `*VirtualClustersClient.UpdateDNSServers` instead.
+- Struct `Baseline` has been removed
+- Struct `BaselineAdjustedResult` has been removed
+- Struct `BenchmarkReference` has been removed
+- Struct `DatabaseKey` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentBaselineSet` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentBaselineSetListResult` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentBaselineSetProperties` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaseline` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineInput` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineInputProperties` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineListInput` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineListInputProperties` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineListResult` has been removed
+- Struct `DatabaseSQLVulnerabilityAssessmentRuleBaselineProperties` has been removed
+- Struct `EndpointDependency` has been removed
+- Struct `EndpointDetail` has been removed
+- Struct `ManagedDatabaseAdvancedThreatProtection` has been removed
+- Struct `ManagedDatabaseAdvancedThreatProtectionListResult` has been removed
+- Struct `ManagedDatabaseMoveDefinition` has been removed
+- Struct `ManagedDatabaseMoveOperationListResult` has been removed
+- Struct `ManagedDatabaseMoveOperationResult` has been removed
+- Struct `ManagedDatabaseMoveOperationResultProperties` has been removed
+- Struct `ManagedDatabaseRestoreDetailsBackupSetProperties` has been removed
+- Struct `ManagedDatabaseRestoreDetailsUnrestorableFileProperties` has been removed
+- Struct `ManagedDatabaseStartMoveDefinition` has been removed
+- Struct `ManagedInstanceAdvancedThreatProtection` has been removed
+- Struct `ManagedInstanceAdvancedThreatProtectionListResult` has been removed
+- Struct `ManagedInstanceDtc` has been removed
+- Struct `ManagedInstanceDtcListResult` has been removed
+- Struct `ManagedInstanceDtcProperties` has been removed
+- Struct `ManagedInstanceDtcSecuritySettings` has been removed
+- Struct `ManagedInstanceDtcTransactionManagerCommunicationSettings` has been removed
+- Struct `ManagedLedgerDigestUploads` has been removed
+- Struct `ManagedLedgerDigestUploadsListResult` has been removed
+- Struct `ManagedLedgerDigestUploadsProperties` has been removed
+- Struct `ManagedServerDNSAlias` has been removed
+- Struct `ManagedServerDNSAliasAcquisition` has been removed
+- Struct `ManagedServerDNSAliasCreation` has been removed
+- Struct `ManagedServerDNSAliasListResult` has been removed
+- Struct `ManagedServerDNSAliasProperties` has been removed
+- Struct `OutboundEnvironmentEndpoint` has been removed
+- Struct `OutboundEnvironmentEndpointCollection` has been removed
+- Struct `QueryCheck` has been removed
+- Struct `RefreshExternalGovernanceStatusOperationResult` has been removed
+- Struct `RefreshExternalGovernanceStatusOperationResultProperties` has been removed
+- Struct `Remediation` has been removed
+- Struct `ScheduleItem` has been removed
+- Struct `ServerConfigurationOption` has been removed
+- Struct `ServerConfigurationOptionListResult` has been removed
+- Struct `ServerConfigurationOptionProperties` has been removed
+- Struct `StartStopManagedInstanceSchedule` has been removed
+- Struct `StartStopManagedInstanceScheduleListResult` has been removed
+- Struct `StartStopManagedInstanceScheduleProperties` has been removed
+- Struct `SynapseLinkWorkspace` has been removed
+- Struct `SynapseLinkWorkspaceInfoProperties` has been removed
+- Struct `SynapseLinkWorkspaceListResult` has been removed
+- Struct `SynapseLinkWorkspaceProperties` has been removed
+- Struct `UpdateVirtualClusterDNSServersOperation` has been removed
+- Struct `VaRule` has been removed
+- Struct `VirtualClusterDNSServersProperties` has been removed
+- Struct `VulnerabilityAssessment` has been removed
+- Struct `VulnerabilityAssessmentListResult` has been removed
+- Struct `VulnerabilityAssessmentPolicyProperties` has been removed
+- Struct `VulnerabilityAssessmentScanForSQLError` has been removed
+- Struct `VulnerabilityAssessmentScanListResult` has been removed
+- Struct `VulnerabilityAssessmentScanRecordForSQL` has been removed
+- Struct `VulnerabilityAssessmentScanRecordForSQLListResult` has been removed
+- Struct `VulnerabilityAssessmentScanRecordForSQLProperties` has been removed
+- Struct `VulnerabilityAssessmentScanResultProperties` has been removed
+- Struct `VulnerabilityAssessmentScanResults` has been removed
+- Field `AvailabilityZone`, `EncryptionProtector`, `EncryptionProtectorAutoRotation`, `FreeLimitExhaustionBehavior`, `Keys`, `ManualCutover`, `PerformCutover`, `PreferredEnclaveType`, `UseFreeLimit` of struct `DatabaseProperties` has been removed
+- Field `EncryptionProtector`, `EncryptionProtectorAutoRotation`, `FreeLimitExhaustionBehavior`, `Keys`, `ManualCutover`, `PerformCutover`, `PreferredEnclaveType`, `UseFreeLimit` of struct `DatabaseUpdateProperties` has been removed
+- Field `Expand`, `Filter` of struct `DatabasesClientGetOptions` has been removed
+- Field `AvailabilityZone`, `MinCapacity`, `PreferredEnclaveType` of struct `ElasticPoolProperties` has been removed
+- Field `AvailabilityZone`, `MinCapacity`, `PreferredEnclaveType` of struct `ElasticPoolUpdateProperties` has been removed
+- Field `TargetServer` of struct `FailoverGroupReadOnlyEndpoint` has been removed
+- Field `PartnerServers` of struct `FailoverGroupUpdateProperties` has been removed
+- Field `SecondaryType` of struct `InstanceFailoverGroupProperties` has been removed
+- Field `CrossSubscriptionRestorableDroppedDatabaseID`, `CrossSubscriptionSourceDatabaseID`, `CrossSubscriptionTargetManagedInstanceID`, `IsLedgerOn`, `StorageContainerIdentity` of struct `ManagedDatabaseProperties` has been removed
+- Field `CurrentBackupType`, `CurrentRestorePlanSizeMB`, `CurrentRestoredSizeMB`, `DiffBackupSets`, `FullBackupSets`, `LogBackupSets`, `NumberOfFilesQueued`, `NumberOfFilesRestored`, `NumberOfFilesRestoring`, `NumberOfFilesSkipped`, `NumberOfFilesUnrestorable`, `Type` of struct `ManagedDatabaseRestoreDetailsProperties` has been removed
+- Field `GroupIDs` of struct `PrivateEndpointConnectionProperties` has been removed
+- Field `NextLink` of struct `RecoverableDatabaseListResult` has been removed
+- Field `Keys` of struct `RecoverableDatabaseProperties` has been removed
+- Field `Expand`, `Filter` of struct `RecoverableDatabasesClientGetOptions` has been removed
+- Field `Keys` of struct `RestorableDroppedDatabaseProperties` has been removed
+- Field `Expand`, `Filter` of struct `RestorableDroppedDatabasesClientGetOptions` has been removed
+- Field `IsManagedIdentityInUse` of struct `ServerDevOpsAuditSettingsProperties` has been removed
+- Field `ExternalGovernanceStatus`, `IsIPv6Enabled` of struct `ServerProperties` has been removed
+- Field `Version` of struct `VirtualClusterProperties` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New enum type `DNSRefreshConfigurationPropertiesStatus` with values `DNSRefreshConfigurationPropertiesStatusFailed`, `DNSRefreshConfigurationPropertiesStatusSucceeded`
+- New struct `DNSRefreshConfigurationProperties`
+- New struct `UpdateManagedInstanceDNSServersOperation`
+- New field `Family`, `MaintenanceConfigurationID` in struct `VirtualClusterProperties`
+
+
 ## 2.0.0-beta.2 (2023-09-22)
 ### Features Added
 

@@ -32,7 +32,7 @@ type EncryptionProtectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EncryptionProtectorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".EncryptionProtectorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *EncryptionProtectorsClient) BeginCreateOrUpdate(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EncryptionProtectorsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EncryptionProtectorsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EncryptionProtectorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EncryptionProtectorsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *EncryptionProtectorsClient) BeginCreateOrUpdate(ctx context.Contex
 // Generated from API version 2020-11-01-preview
 func (client *EncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, parameters EncryptionProtector, options *EncryptionProtectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EncryptionProtectorsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, encryptionProtectorName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -133,6 +141,10 @@ func (client *EncryptionProtectorsClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *EncryptionProtectorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsClientGetOptions) (EncryptionProtectorsClientGetResponse, error) {
 	var err error
+	const operationName = "EncryptionProtectorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, encryptionProtectorName, options)
 	if err != nil {
 		return EncryptionProtectorsClientGetResponse{}, err
@@ -202,25 +214,20 @@ func (client *EncryptionProtectorsClient) NewListByServerPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EncryptionProtectorsClientListByServerResponse) (EncryptionProtectorsClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EncryptionProtectorsClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return EncryptionProtectorsClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EncryptionProtectorsClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EncryptionProtectorsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -275,10 +282,14 @@ func (client *EncryptionProtectorsClient) BeginRevalidate(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EncryptionProtectorsClientRevalidateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EncryptionProtectorsClientRevalidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EncryptionProtectorsClientRevalidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EncryptionProtectorsClientRevalidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -288,6 +299,10 @@ func (client *EncryptionProtectorsClient) BeginRevalidate(ctx context.Context, r
 // Generated from API version 2020-11-01-preview
 func (client *EncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, encryptionProtectorName EncryptionProtectorName, options *EncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EncryptionProtectorsClient.BeginRevalidate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revalidateCreateRequest(ctx, resourceGroupName, serverName, encryptionProtectorName, options)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ type PrivateEndpointConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateEndpointConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -58,19 +58,27 @@ func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -110,7 +118,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,7 +130,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -134,19 +142,27 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateEndpointConnectionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -186,7 +202,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -194,7 +210,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Gets a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -203,6 +219,10 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
@@ -243,7 +263,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +280,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListByServerPager - Gets all private endpoint connections on a server.
 //
-// Generated from API version 2022-08-01-preview
+// Generated from API version 2020-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -272,25 +292,20 @@ func (client *PrivateEndpointConnectionsClient) NewListByServerPager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByServerResponse) (PrivateEndpointConnectionsClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateEndpointConnectionsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -314,7 +329,7 @@ func (client *PrivateEndpointConnectionsClient) listByServerCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
+	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

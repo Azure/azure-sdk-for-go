@@ -32,7 +32,7 @@ type GeoBackupPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GeoBackupPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".GeoBackupPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewGeoBackupPoliciesClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *GeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, parameters GeoBackupPolicy, options *GeoBackupPoliciesClientCreateOrUpdateOptions) (GeoBackupPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GeoBackupPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, geoBackupPolicyName, parameters, options)
 	if err != nil {
 		return GeoBackupPoliciesClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *GeoBackupPoliciesClient) createOrUpdateHandleResponse(resp *http.R
 //   - options - GeoBackupPoliciesClientGetOptions contains the optional parameters for the GeoBackupPoliciesClient.Get method.
 func (client *GeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName GeoBackupPolicyName, options *GeoBackupPoliciesClientGetOptions) (GeoBackupPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "GeoBackupPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, geoBackupPolicyName, options)
 	if err != nil {
 		return GeoBackupPoliciesClientGetResponse{}, err
@@ -205,6 +213,7 @@ func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName 
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *GeoBackupPoliciesClientListByDatabaseResponse) (GeoBackupPoliciesClientListByDatabaseResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GeoBackupPoliciesClient.NewListByDatabasePager")
 			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 			if err != nil {
 				return GeoBackupPoliciesClientListByDatabaseResponse{}, err
@@ -218,6 +227,7 @@ func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName 
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

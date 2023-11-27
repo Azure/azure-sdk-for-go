@@ -32,7 +32,7 @@ type IPv6FirewallRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPv6FirewallRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".IPv6FirewallRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCr
 // CreateOrUpdate - Creates or updates an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2021-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -56,6 +56,10 @@ func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *IPv6FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters IPv6FirewallRule, options *IPv6FirewallRulesClientCreateOrUpdateOptions) (IPv6FirewallRulesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, parameters, options)
 	if err != nil {
 		return IPv6FirewallRulesClientCreateOrUpdateResponse{}, err
@@ -96,7 +100,7 @@ func (client *IPv6FirewallRulesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +121,7 @@ func (client *IPv6FirewallRulesClient) createOrUpdateHandleResponse(resp *http.R
 // Delete - Deletes an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2021-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -126,6 +130,10 @@ func (client *IPv6FirewallRulesClient) createOrUpdateHandleResponse(resp *http.R
 //     method.
 func (client *IPv6FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *IPv6FirewallRulesClientDeleteOptions) (IPv6FirewallRulesClientDeleteResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
 	if err != nil {
 		return IPv6FirewallRulesClientDeleteResponse{}, err
@@ -165,7 +173,7 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -173,7 +181,7 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Gets an IPv6 firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2021-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -181,6 +189,10 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 //   - options - IPv6FirewallRulesClientGetOptions contains the optional parameters for the IPv6FirewallRulesClient.Get method.
 func (client *IPv6FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *IPv6FirewallRulesClientGetOptions) (IPv6FirewallRulesClientGetResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
 	if err != nil {
 		return IPv6FirewallRulesClientGetResponse{}, err
@@ -221,7 +233,7 @@ func (client *IPv6FirewallRulesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +250,7 @@ func (client *IPv6FirewallRulesClient) getHandleResponse(resp *http.Response) (I
 
 // NewListByServerPager - Gets a list of IPv6 firewall rules.
 //
-// Generated from API version 2022-11-01-preview
+// Generated from API version 2021-11-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -250,25 +262,20 @@ func (client *IPv6FirewallRulesClient) NewListByServerPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPv6FirewallRulesClientListByServerResponse) (IPv6FirewallRulesClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPv6FirewallRulesClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return IPv6FirewallRulesClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IPv6FirewallRulesClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return IPv6FirewallRulesClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -292,7 +299,7 @@ func (client *IPv6FirewallRulesClient) listByServerCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

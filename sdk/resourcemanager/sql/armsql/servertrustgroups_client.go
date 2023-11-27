@@ -32,7 +32,7 @@ type ServerTrustGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerTrustGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServerTrustGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ServerTrustGroupsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerTrustGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServerTrustGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServerTrustGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, 
 // Generated from API version 2020-11-01-preview
 func (client *ServerTrustGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServerTrustGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -137,10 +145,14 @@ func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ServerTrustGroupsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServerTrustGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServerTrustGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServerTrustGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +162,10 @@ func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resource
 // Generated from API version 2020-11-01-preview
 func (client *ServerTrustGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServerTrustGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
 		return nil, err
@@ -205,6 +221,10 @@ func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, 
 //   - options - ServerTrustGroupsClientGetOptions contains the optional parameters for the ServerTrustGroupsClient.Get method.
 func (client *ServerTrustGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientGetOptions) (ServerTrustGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "ServerTrustGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
 		return ServerTrustGroupsClientGetResponse{}, err
@@ -274,25 +294,20 @@ func (client *ServerTrustGroupsClient) NewListByInstancePager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServerTrustGroupsClientListByInstanceResponse) (ServerTrustGroupsClientListByInstanceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerTrustGroupsClient.NewListByInstancePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			}, nil)
 			if err != nil {
 				return ServerTrustGroupsClientListByInstanceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServerTrustGroupsClientListByInstanceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServerTrustGroupsClientListByInstanceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByInstanceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -345,25 +360,20 @@ func (client *ServerTrustGroupsClient) NewListByLocationPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServerTrustGroupsClientListByLocationResponse) (ServerTrustGroupsClientListByLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerTrustGroupsClient.NewListByLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			}, nil)
 			if err != nil {
 				return ServerTrustGroupsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServerTrustGroupsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServerTrustGroupsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

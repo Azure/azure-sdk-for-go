@@ -32,7 +32,7 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient stru
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,14 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +78,10 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 // Generated from API version 2020-11-01-preview
 func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, policyName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -138,6 +146,10 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 //     for the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.Get method.
 func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetOptions) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, policyName, options)
 	if err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse{}, err
@@ -212,25 +224,20 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse) (ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByRestorableDroppedDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.NewListByRestorableDroppedDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByRestorableDroppedDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, options)
+			}, nil)
 			if err != nil {
 				return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByRestorableDroppedDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -290,10 +297,14 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -303,6 +314,10 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 // Generated from API version 2020-11-01-preview
 func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, restorableDroppedDatabaseID string, policyName ManagedShortTermRetentionPolicyName, parameters ManagedBackupShortTermRetentionPolicy, options *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, restorableDroppedDatabaseID, policyName, parameters, options)
 	if err != nil {
 		return nil, err

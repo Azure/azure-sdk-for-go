@@ -32,7 +32,7 @@ type DatabaseAdvancedThreatProtectionSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAdvancedThreatProtectionSettingsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseAdvancedThreatProtectionSettingsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID string, cr
 //     DatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate method.
 func (client *DatabaseAdvancedThreatProtectionSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters DatabaseAdvancedThreatProtection, options *DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateOptions) (DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, advancedThreatProtectionName, parameters, options)
 	if err != nil {
 		return DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateHand
 //     method.
 func (client *DatabaseAdvancedThreatProtectionSettingsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, options *DatabaseAdvancedThreatProtectionSettingsClientGetOptions) (DatabaseAdvancedThreatProtectionSettingsClientGetResponse, error) {
 	var err error
+	const operationName = "DatabaseAdvancedThreatProtectionSettingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, advancedThreatProtectionName, options)
 	if err != nil {
 		return DatabaseAdvancedThreatProtectionSettingsClientGetResponse{}, err
@@ -206,25 +214,20 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) NewListByDatabaseP
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse) (DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabaseAdvancedThreatProtectionSettingsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

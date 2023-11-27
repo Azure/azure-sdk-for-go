@@ -32,7 +32,7 @@ type ElasticPoolDatabaseActivitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewElasticPoolDatabaseActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticPoolDatabaseActivitiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ElasticPoolDatabaseActivitiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,7 @@ func (client *ElasticPoolDatabaseActivitiesClient) NewListByElasticPoolPager(res
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse) (ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ElasticPoolDatabaseActivitiesClient.NewListByElasticPoolPager")
 			req, err := client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
 			if err != nil {
 				return ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse{}, err
@@ -71,6 +72,7 @@ func (client *ElasticPoolDatabaseActivitiesClient) NewListByElasticPoolPager(res
 			}
 			return client.listByElasticPoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

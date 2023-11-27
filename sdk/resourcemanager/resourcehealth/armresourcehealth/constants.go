@@ -10,7 +10,7 @@ package armresourcehealth
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.3.0"
 )
 
 // AvailabilityStateValues - Impacted resource status of the resource.

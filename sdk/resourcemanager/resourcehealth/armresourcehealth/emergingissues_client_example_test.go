@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/EmergingIssues_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/EmergingIssues_List.json
 func ExampleEmergingIssuesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,73 +45,75 @@ func ExampleEmergingIssuesClient_NewListPager() {
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("/providers/Microsoft.ResourceHealth/emergingissues"),
 		// 			ID: to.Ptr("/providers/Microsoft.ResourceHealth/emergingissues/default"),
-		// 			RefreshTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-17T09:12:00.000Z"); return t}()),
-		// 			StatusActiveEvents: []*armresourcehealth.StatusActiveEvent{
-		// 				{
-		// 					Description: to.Ptr("Virtual Machines case"),
-		// 					Cloud: to.Ptr("Public"),
-		// 					Impacts: []*armresourcehealth.EmergingIssueImpact{
-		// 						{
-		// 							Name: to.Ptr("Virtual Machines"),
-		// 							ID: to.Ptr("virtual-machines"),
-		// 							Regions: []*armresourcehealth.ImpactedRegion{
-		// 								{
-		// 									Name: to.Ptr("Central US"),
-		// 									ID: to.Ptr("us-central"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("East US"),
-		// 									ID: to.Ptr("us-east"),
-		// 							}},
-		// 					}},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:10:00.000Z"); return t}()),
-		// 					Published: to.Ptr(true),
-		// 					Severity: to.Ptr(armresourcehealth.SeverityValuesInformation),
-		// 					Stage: to.Ptr(armresourcehealth.StageValuesActive),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:06:00.000Z"); return t}()),
-		// 					Title: to.Ptr("Automatic updates to the dial tone page from ACM - SHD event"),
-		// 					TrackingID: to.Ptr("KTTK-TZ8"),
-		// 				},
-		// 				{
-		// 					Description: to.Ptr("All Azure SQL service management requests (create, update, delete, etc.) are serviced through the SQL Control Plane infrastructure. Engineers determined that during this issue, the control plane service became unhealthy after receiving a significant increase in internally generated operations and reaching an operational threshold. This led to service management requests becoming unable to complete, which in-turn resulted in timeouts and throttling. Subsequent investigation by engineers determined this issue was due service requests from an internal Azure group that triggered a bug which caused an excessive number of internally generated operations."),
-		// 					Cloud: to.Ptr("Public"),
-		// 					Impacts: []*armresourcehealth.EmergingIssueImpact{
-		// 						{
-		// 							Name: to.Ptr("SQL Database"),
-		// 							ID: to.Ptr("sql-database"),
-		// 							Regions: []*armresourcehealth.ImpactedRegion{
-		// 								{
-		// 									Name: to.Ptr("West Europe"),
-		// 									ID: to.Ptr("europe-west"),
-		// 							}},
-		// 					}},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
-		// 					Published: to.Ptr(true),
-		// 					Severity: to.Ptr(armresourcehealth.SeverityValuesError),
-		// 					Stage: to.Ptr(armresourcehealth.StageValuesActive),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
-		// 					Title: to.Ptr("Azure SQL Database - West Europe"),
-		// 					TrackingID: to.Ptr("4KHK-LS8"),
-		// 			}},
-		// 			StatusBanners: []*armresourcehealth.StatusBanner{
-		// 				{
-		// 					Cloud: to.Ptr("Public"),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:04:00.000Z"); return t}()),
-		// 					Message: to.Ptr("Testing backup site"),
-		// 					Title: to.Ptr("Automatic updates to the dial tone page from ACM - banner"),
-		// 				},
-		// 				{
-		// 					Cloud: to.Ptr("Public"),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T10:15:00.000Z"); return t}()),
-		// 					Message: to.Ptr("<span style=\"color: #323237; font-family: &quot;Segoe UI&quot;, SegoeUI, &quot;Segoe WP&quot;, Tahoma, Arial, sans-serif; font-size: 16px; background-color: #ffffff\">A subset of customers using Storage in West Europe experienced service availability issues. In addition, resources with dependencies on the impacted storage scale units may have experienced downstream impact in the form of availability issues, connection failures, or high latency. Engineers are investigating the root cause.</span>"),
-		// 					Title: to.Ptr("Storage - West Europe"),
-		// 			}},
+		// 			Properties: &armresourcehealth.EmergingIssue{
+		// 				RefreshTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-17T09:12:00.000Z"); return t}()),
+		// 				StatusActiveEvents: []*armresourcehealth.StatusActiveEvent{
+		// 					{
+		// 						Description: to.Ptr("Virtual Machines case"),
+		// 						Cloud: to.Ptr("Public"),
+		// 						Impacts: []*armresourcehealth.EmergingIssueImpact{
+		// 							{
+		// 								Name: to.Ptr("Virtual Machines"),
+		// 								ID: to.Ptr("virtual-machines"),
+		// 								Regions: []*armresourcehealth.ImpactedRegion{
+		// 									{
+		// 										Name: to.Ptr("Central US"),
+		// 										ID: to.Ptr("us-central"),
+		// 									},
+		// 									{
+		// 										Name: to.Ptr("East US"),
+		// 										ID: to.Ptr("us-east"),
+		// 								}},
+		// 						}},
+		// 						LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:10:00.000Z"); return t}()),
+		// 						Published: to.Ptr(true),
+		// 						Severity: to.Ptr(armresourcehealth.SeverityValuesInformation),
+		// 						Stage: to.Ptr(armresourcehealth.StageValuesActive),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:06:00.000Z"); return t}()),
+		// 						Title: to.Ptr("Automatic updates to the dial tone page from ACM - SHD event"),
+		// 						TrackingID: to.Ptr("KTTK-TZ8"),
+		// 					},
+		// 					{
+		// 						Description: to.Ptr("All Azure SQL service management requests (create, update, delete, etc.) are serviced through the SQL Control Plane infrastructure. Engineers determined that during this issue, the control plane service became unhealthy after receiving a significant increase in internally generated operations and reaching an operational threshold. This led to service management requests becoming unable to complete, which in-turn resulted in timeouts and throttling. Subsequent investigation by engineers determined this issue was due service requests from an internal Azure group that triggered a bug which caused an excessive number of internally generated operations."),
+		// 						Cloud: to.Ptr("Public"),
+		// 						Impacts: []*armresourcehealth.EmergingIssueImpact{
+		// 							{
+		// 								Name: to.Ptr("SQL Database"),
+		// 								ID: to.Ptr("sql-database"),
+		// 								Regions: []*armresourcehealth.ImpactedRegion{
+		// 									{
+		// 										Name: to.Ptr("West Europe"),
+		// 										ID: to.Ptr("europe-west"),
+		// 								}},
+		// 						}},
+		// 						LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
+		// 						Published: to.Ptr(true),
+		// 						Severity: to.Ptr(armresourcehealth.SeverityValuesError),
+		// 						Stage: to.Ptr(armresourcehealth.StageValuesActive),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
+		// 						Title: to.Ptr("Azure SQL Database - West Europe"),
+		// 						TrackingID: to.Ptr("4KHK-LS8"),
+		// 				}},
+		// 				StatusBanners: []*armresourcehealth.StatusBanner{
+		// 					{
+		// 						Cloud: to.Ptr("Public"),
+		// 						LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:04:00.000Z"); return t}()),
+		// 						Message: to.Ptr("Testing backup site"),
+		// 						Title: to.Ptr("Automatic updates to the dial tone page from ACM - banner"),
+		// 					},
+		// 					{
+		// 						Cloud: to.Ptr("Public"),
+		// 						LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T10:15:00.000Z"); return t}()),
+		// 						Message: to.Ptr("<span style=\"color: #323237; font-family: &quot;Segoe UI&quot;, SegoeUI, &quot;Segoe WP&quot;, Tahoma, Arial, sans-serif; font-size: 16px; background-color: #ffffff\">A subset of customers using Storage in West Europe experienced service availability issues. In addition, resources with dependencies on the impacted storage scale units may have experienced downstream impact in the form of availability issues, connection failures, or high latency. Engineers are investigating the root cause.</span>"),
+		// 						Title: to.Ptr("Storage - West Europe"),
+		// 				}},
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/EmergingIssues_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/EmergingIssues_Get.json
 func ExampleEmergingIssuesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,66 +135,68 @@ func ExampleEmergingIssuesClient_Get() {
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("/providers/Microsoft.ResourceHealth/emergingissues"),
 	// 	ID: to.Ptr("/providers/Microsoft.ResourceHealth/emergingissues/default"),
-	// 	RefreshTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-17T09:12:00.000Z"); return t}()),
-	// 	StatusActiveEvents: []*armresourcehealth.StatusActiveEvent{
-	// 		{
-	// 			Description: to.Ptr("Virtual Machines case"),
-	// 			Cloud: to.Ptr("Public"),
-	// 			Impacts: []*armresourcehealth.EmergingIssueImpact{
-	// 				{
-	// 					Name: to.Ptr("Virtual Machines"),
-	// 					ID: to.Ptr("virtual-machines"),
-	// 					Regions: []*armresourcehealth.ImpactedRegion{
-	// 						{
-	// 							Name: to.Ptr("Central US"),
-	// 							ID: to.Ptr("us-central"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("East US"),
-	// 							ID: to.Ptr("us-east"),
-	// 					}},
-	// 			}},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:10:00.000Z"); return t}()),
-	// 			Published: to.Ptr(true),
-	// 			Severity: to.Ptr(armresourcehealth.SeverityValuesInformation),
-	// 			Stage: to.Ptr(armresourcehealth.StageValuesActive),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:06:00.000Z"); return t}()),
-	// 			Title: to.Ptr("Automatic updates to the dial tone page from ACM - SHD event"),
-	// 			TrackingID: to.Ptr("KTTK-TZ8"),
-	// 		},
-	// 		{
-	// 			Description: to.Ptr("All Azure SQL service management requests (create, update, delete, etc.) are serviced through the SQL Control Plane infrastructure. Engineers determined that during this issue, the control plane service became unhealthy after receiving a significant increase in internally generated operations and reaching an operational threshold. This led to service management requests becoming unable to complete, which in-turn resulted in timeouts and throttling. Subsequent investigation by engineers determined this issue was due service requests from an internal Azure group that triggered a bug which caused an excessive number of internally generated operations."),
-	// 			Cloud: to.Ptr("Public"),
-	// 			Impacts: []*armresourcehealth.EmergingIssueImpact{
-	// 				{
-	// 					Name: to.Ptr("SQL Database"),
-	// 					ID: to.Ptr("sql-database"),
-	// 					Regions: []*armresourcehealth.ImpactedRegion{
-	// 						{
-	// 							Name: to.Ptr("West Europe"),
-	// 							ID: to.Ptr("europe-west"),
-	// 					}},
-	// 			}},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
-	// 			Published: to.Ptr(true),
-	// 			Severity: to.Ptr(armresourcehealth.SeverityValuesError),
-	// 			Stage: to.Ptr(armresourcehealth.StageValuesActive),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
-	// 			Title: to.Ptr("Azure SQL Database - West Europe"),
-	// 			TrackingID: to.Ptr("4KHK-LS8"),
-	// 	}},
-	// 	StatusBanners: []*armresourcehealth.StatusBanner{
-	// 		{
-	// 			Cloud: to.Ptr("Public"),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:04:00.000Z"); return t}()),
-	// 			Message: to.Ptr("Testing backup site"),
-	// 			Title: to.Ptr("Automatic updates to the dial tone page from ACM - banner"),
-	// 		},
-	// 		{
-	// 			Cloud: to.Ptr("Public"),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T10:15:00.000Z"); return t}()),
-	// 			Message: to.Ptr("<span style=\"color: #323237; font-family: &quot;Segoe UI&quot;, SegoeUI, &quot;Segoe WP&quot;, Tahoma, Arial, sans-serif; font-size: 16px; background-color: #ffffff\">A subset of customers using Storage in West Europe experienced service availability issues. In addition, resources with dependencies on the impacted storage scale units may have experienced downstream impact in the form of availability issues, connection failures, or high latency. Engineers are investigating the root cause.</span>"),
-	// 			Title: to.Ptr("Storage - West Europe"),
-	// 	}},
+	// 	Properties: &armresourcehealth.EmergingIssue{
+	// 		RefreshTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-17T09:12:00.000Z"); return t}()),
+	// 		StatusActiveEvents: []*armresourcehealth.StatusActiveEvent{
+	// 			{
+	// 				Description: to.Ptr("Virtual Machines case"),
+	// 				Cloud: to.Ptr("Public"),
+	// 				Impacts: []*armresourcehealth.EmergingIssueImpact{
+	// 					{
+	// 						Name: to.Ptr("Virtual Machines"),
+	// 						ID: to.Ptr("virtual-machines"),
+	// 						Regions: []*armresourcehealth.ImpactedRegion{
+	// 							{
+	// 								Name: to.Ptr("Central US"),
+	// 								ID: to.Ptr("us-central"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("East US"),
+	// 								ID: to.Ptr("us-east"),
+	// 						}},
+	// 				}},
+	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:10:00.000Z"); return t}()),
+	// 				Published: to.Ptr(true),
+	// 				Severity: to.Ptr(armresourcehealth.SeverityValuesInformation),
+	// 				Stage: to.Ptr(armresourcehealth.StageValuesActive),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:06:00.000Z"); return t}()),
+	// 				Title: to.Ptr("Automatic updates to the dial tone page from ACM - SHD event"),
+	// 				TrackingID: to.Ptr("KTTK-TZ8"),
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("All Azure SQL service management requests (create, update, delete, etc.) are serviced through the SQL Control Plane infrastructure. Engineers determined that during this issue, the control plane service became unhealthy after receiving a significant increase in internally generated operations and reaching an operational threshold. This led to service management requests becoming unable to complete, which in-turn resulted in timeouts and throttling. Subsequent investigation by engineers determined this issue was due service requests from an internal Azure group that triggered a bug which caused an excessive number of internally generated operations."),
+	// 				Cloud: to.Ptr("Public"),
+	// 				Impacts: []*armresourcehealth.EmergingIssueImpact{
+	// 					{
+	// 						Name: to.Ptr("SQL Database"),
+	// 						ID: to.Ptr("sql-database"),
+	// 						Regions: []*armresourcehealth.ImpactedRegion{
+	// 							{
+	// 								Name: to.Ptr("West Europe"),
+	// 								ID: to.Ptr("europe-west"),
+	// 						}},
+	// 				}},
+	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
+	// 				Published: to.Ptr(true),
+	// 				Severity: to.Ptr(armresourcehealth.SeverityValuesError),
+	// 				Stage: to.Ptr(armresourcehealth.StageValuesActive),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-16T05:11:00.000Z"); return t}()),
+	// 				Title: to.Ptr("Azure SQL Database - West Europe"),
+	// 				TrackingID: to.Ptr("4KHK-LS8"),
+	// 		}},
+	// 		StatusBanners: []*armresourcehealth.StatusBanner{
+	// 			{
+	// 				Cloud: to.Ptr("Public"),
+	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T08:04:00.000Z"); return t}()),
+	// 				Message: to.Ptr("Testing backup site"),
+	// 				Title: to.Ptr("Automatic updates to the dial tone page from ACM - banner"),
+	// 			},
+	// 			{
+	// 				Cloud: to.Ptr("Public"),
+	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-15T10:15:00.000Z"); return t}()),
+	// 				Message: to.Ptr("<span style=\"color: #323237; font-family: &quot;Segoe UI&quot;, SegoeUI, &quot;Segoe WP&quot;, Tahoma, Arial, sans-serif; font-size: 16px; background-color: #ffffff\">A subset of customers using Storage in West Europe experienced service availability issues. In addition, resources with dependencies on the impacted storage scale units may have experienced downstream impact in the form of availability issues, connection failures, or high latency. Engineers are investigating the root cause.</span>"),
+	// 				Title: to.Ptr("Storage - West Europe"),
+	// 		}},
+	// 	},
 	// }
 }

@@ -32,7 +32,7 @@ type JobCancellationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobCancellationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobCancellationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobCancellationsClientTriggerOptions) (JobCancellationsClientTriggerResponse, error) {
 	var err error
+	const operationName = "JobCancellationsClient.Trigger"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, jobName, options)
 	if err != nil {
 		return JobCancellationsClientTriggerResponse{}, err

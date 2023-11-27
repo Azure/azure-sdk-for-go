@@ -32,7 +32,7 @@ type BackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - BackupsClientTriggerOptions contains the optional parameters for the BackupsClient.Trigger method.
 func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters BackupRequestResource, options *BackupsClientTriggerOptions) (BackupsClientTriggerResponse, error) {
 	var err error
+	const operationName = "BackupsClient.Trigger"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.triggerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, options)
 	if err != nil {
 		return BackupsClientTriggerResponse{}, err

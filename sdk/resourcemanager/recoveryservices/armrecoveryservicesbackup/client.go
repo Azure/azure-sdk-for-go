@@ -32,7 +32,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientBMSPrepareDataMoveResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSPrepareDataMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientBMSPrepareDataMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSPrepareDataMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName str
 // Generated from API version 2023-04-01
 func (client *Client) bMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginBMSPrepareDataMove"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.bmsPrepareDataMoveCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -130,10 +138,14 @@ func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientBMSTriggerDataMoveResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSTriggerDataMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientBMSTriggerDataMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSTriggerDataMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +155,10 @@ func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName str
 // Generated from API version 2023-04-01
 func (client *Client) bMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginBMSTriggerDataMove"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.bmsTriggerDataMoveCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -196,6 +212,10 @@ func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vault
 //   - options - ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
 func (client *Client) GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ClientGetOperationStatusOptions) (ClientGetOperationStatusResponse, error) {
 	var err error
+	const operationName = "Client.GetOperationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getOperationStatusCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return ClientGetOperationStatusResponse{}, err
@@ -265,10 +285,14 @@ func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName stri
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ClientMoveRecoveryPointResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientMoveRecoveryPointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientMoveRecoveryPointResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientMoveRecoveryPointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -278,6 +302,10 @@ func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName stri
 // Generated from API version 2023-04-01
 func (client *Client) moveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *ClientBeginMoveRecoveryPointOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginMoveRecoveryPoint"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.moveRecoveryPointCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
 		return nil, err

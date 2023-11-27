@@ -32,7 +32,7 @@ type PrivateEndpointConnectionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateEndpointConnectionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateEndpointConnectionClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 // Generated from API version 2023-04-01
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -127,6 +135,10 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientGetOptions) (PrivateEndpointConnectionClientGetResponse, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, options)
 	if err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
@@ -198,10 +210,14 @@ func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vau
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[PrivateEndpointConnectionClientPutResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionClientPutResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -211,6 +227,10 @@ func (client *PrivateEndpointConnectionClient) BeginPut(ctx context.Context, vau
 // Generated from API version 2023-04-01
 func (client *PrivateEndpointConnectionClient) put(ctx context.Context, vaultName string, resourceGroupName string, privateEndpointConnectionName string, parameters PrivateEndpointConnectionResource, options *PrivateEndpointConnectionClientBeginPutOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PrivateEndpointConnectionClient.BeginPut"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.putCreateRequest(ctx, vaultName, resourceGroupName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return nil, err

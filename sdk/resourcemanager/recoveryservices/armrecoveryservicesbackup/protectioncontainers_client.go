@@ -32,7 +32,7 @@ type ProtectionContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProtectionContainersClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *ProtectionContainersClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientGetOptions) (ProtectionContainersClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientGetResponse{}, err
@@ -126,6 +130,10 @@ func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response)
 //     method.
 func (client *ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientInquireOptions) (ProtectionContainersClientInquireResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Inquire"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.inquireCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientInquireResponse{}, err
@@ -191,6 +199,10 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 //     method.
 func (client *ProtectionContainersClient) Refresh(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *ProtectionContainersClientRefreshOptions) (ProtectionContainersClientRefreshResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Refresh"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return ProtectionContainersClientRefreshResponse{}, err
@@ -253,6 +265,10 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 //     method.
 func (client *ProtectionContainersClient) Register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientRegisterOptions) (ProtectionContainersClientRegisterResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Register"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.registerCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, parameters, options)
 	if err != nil {
 		return ProtectionContainersClientRegisterResponse{}, err
@@ -329,6 +345,10 @@ func (client *ProtectionContainersClient) registerHandleResponse(resp *http.Resp
 //     method.
 func (client *ProtectionContainersClient) Unregister(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, options *ProtectionContainersClientUnregisterOptions) (ProtectionContainersClientUnregisterResponse, error) {
 	var err error
+	const operationName = "ProtectionContainersClient.Unregister"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.unregisterCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, options)
 	if err != nil {
 		return ProtectionContainersClientUnregisterResponse{}, err

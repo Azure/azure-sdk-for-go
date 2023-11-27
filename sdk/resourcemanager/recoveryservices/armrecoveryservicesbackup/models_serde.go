@@ -201,7 +201,7 @@ func (a *AzureBackupServerEngine) UnmarshalJSON(data []byte) error {
 func (a AzureFileShareBackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = "AzureFileShareBackupRequest"
-	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -218,7 +218,7 @@ func (a *AzureFileShareBackupRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &a.RecoveryPointExpiryTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &a.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -376,7 +376,7 @@ func (a AzureFileShareRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap["objectType"] = "AzureFileShareRecoveryPoint"
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointSizeInGB", a.RecoveryPointSizeInGB)
-	populateTimeRFC3339(objectMap, "recoveryPointTime", a.RecoveryPointTime)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTime", a.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", a.RecoveryPointType)
 	return json.Marshal(objectMap)
 }
@@ -403,7 +403,7 @@ func (a *AzureFileShareRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointSizeInGB", &a.RecoveryPointSizeInGB)
 			delete(rawMsg, key)
 		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTime", &a.RecoveryPointTime)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTime", &a.RecoveryPointTime)
 			delete(rawMsg, key)
 		case "recoveryPointType":
 			err = unpopulate(val, "RecoveryPointType", &a.RecoveryPointType)
@@ -474,7 +474,7 @@ func (a AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -484,8 +484,8 @@ func (a AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "policyName", a.PolicyName)
 	objectMap["protectedItemType"] = "AzureFileShareProtectedItem"
@@ -520,7 +520,7 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -550,10 +550,10 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -593,11 +593,11 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureFileshareProtectedItemExtendedInfo.
 func (a AzureFileshareProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
 	populate(objectMap, "policyState", a.PolicyState)
 	populate(objectMap, "recoveryPointCount", a.RecoveryPointCount)
 	populate(objectMap, "resourceState", a.ResourceState)
-	populateTimeRFC3339(objectMap, "resourceStateSyncTime", a.ResourceStateSyncTime)
+	populateDateTimeRFC3339(objectMap, "resourceStateSyncTime", a.ResourceStateSyncTime)
 	return json.Marshal(objectMap)
 }
 
@@ -611,7 +611,7 @@ func (a *AzureFileshareProtectedItemExtendedInfo) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyState":
 			err = unpopulate(val, "PolicyState", &a.PolicyState)
@@ -623,7 +623,7 @@ func (a *AzureFileshareProtectedItemExtendedInfo) UnmarshalJSON(data []byte) err
 			err = unpopulate(val, "ResourceState", &a.ResourceState)
 			delete(rawMsg, key)
 		case "resourceStateSyncTime":
-			err = unpopulateTimeRFC3339(val, "ResourceStateSyncTime", &a.ResourceStateSyncTime)
+			err = unpopulateDateTimeRFC3339(val, "ResourceStateSyncTime", &a.ResourceStateSyncTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -754,7 +754,7 @@ func (a AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "extendedProperties", a.ExtendedProperties)
@@ -767,8 +767,8 @@ func (a AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
@@ -805,7 +805,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -844,10 +844,10 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -1011,7 +1011,7 @@ func (a AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "extendedProperties", a.ExtendedProperties)
@@ -1024,8 +1024,8 @@ func (a AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
@@ -1062,7 +1062,7 @@ func (a *AzureIaaSComputeVMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -1101,10 +1101,10 @@ func (a *AzureIaaSComputeVMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -1233,14 +1233,14 @@ func (a AzureIaaSVMJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "duration", a.Duration)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "isUserTriggered", a.IsUserTriggered)
 	objectMap["jobType"] = "AzureIaaSVMJob"
 	populate(objectMap, "operation", a.Operation)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
 	return json.Marshal(objectMap)
@@ -1271,7 +1271,7 @@ func (a *AzureIaaSVMJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &a.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &a.EntityFriendlyName)
@@ -1292,7 +1292,7 @@ func (a *AzureIaaSVMJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &a.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1359,10 +1359,10 @@ func (a *AzureIaaSVMJobExtendedInfo) UnmarshalJSON(data []byte) error {
 func (a AzureIaaSVMJobTaskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "duration", a.Duration)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "instanceId", a.InstanceID)
 	populate(objectMap, "progressPercentage", a.ProgressPercentage)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "taskExecutionDetails", a.TaskExecutionDetails)
 	populate(objectMap, "taskId", a.TaskID)
@@ -1382,7 +1382,7 @@ func (a *AzureIaaSVMJobTaskDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &a.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "instanceId":
 			err = unpopulate(val, "InstanceID", &a.InstanceID)
@@ -1391,7 +1391,7 @@ func (a *AzureIaaSVMJobTaskDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProgressPercentage", &a.ProgressPercentage)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1418,13 +1418,13 @@ func (a AzureIaaSVMJobV2) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "duration", a.Duration)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	objectMap["jobType"] = "AzureIaaSVMJobV2"
 	populate(objectMap, "operation", a.Operation)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "virtualMachineVersion", a.VirtualMachineVersion)
 	return json.Marshal(objectMap)
@@ -1455,7 +1455,7 @@ func (a *AzureIaaSVMJobV2) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &a.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &a.EntityFriendlyName)
@@ -1473,7 +1473,7 @@ func (a *AzureIaaSVMJobV2) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &a.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1496,7 +1496,7 @@ func (a AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "extendedProperties", a.ExtendedProperties)
@@ -1509,8 +1509,8 @@ func (a AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
@@ -1547,7 +1547,7 @@ func (a *AzureIaaSVMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -1586,10 +1586,10 @@ func (a *AzureIaaSVMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -1635,10 +1635,10 @@ func (a *AzureIaaSVMProtectedItem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureIaaSVMProtectedItemExtendedInfo.
 func (a AzureIaaSVMProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "newestRecoveryPointInArchive", a.NewestRecoveryPointInArchive)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPointInArchive", a.OldestRecoveryPointInArchive)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPointInVault", a.OldestRecoveryPointInVault)
+	populateDateTimeRFC3339(objectMap, "newestRecoveryPointInArchive", a.NewestRecoveryPointInArchive)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPointInArchive", a.OldestRecoveryPointInArchive)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPointInVault", a.OldestRecoveryPointInVault)
 	populate(objectMap, "policyInconsistent", a.PolicyInconsistent)
 	populate(objectMap, "recoveryPointCount", a.RecoveryPointCount)
 	return json.Marshal(objectMap)
@@ -1654,16 +1654,16 @@ func (a *AzureIaaSVMProtectedItemExtendedInfo) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "newestRecoveryPointInArchive":
-			err = unpopulateTimeRFC3339(val, "NewestRecoveryPointInArchive", &a.NewestRecoveryPointInArchive)
+			err = unpopulateDateTimeRFC3339(val, "NewestRecoveryPointInArchive", &a.NewestRecoveryPointInArchive)
 			delete(rawMsg, key)
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "oldestRecoveryPointInArchive":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPointInArchive", &a.OldestRecoveryPointInArchive)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPointInArchive", &a.OldestRecoveryPointInArchive)
 			delete(rawMsg, key)
 		case "oldestRecoveryPointInVault":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPointInVault", &a.OldestRecoveryPointInVault)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPointInVault", &a.OldestRecoveryPointInVault)
 			delete(rawMsg, key)
 		case "policyInconsistent":
 			err = unpopulate(val, "PolicyInconsistent", &a.PolicyInconsistent)
@@ -1848,7 +1848,7 @@ func (a AzureSQLAGWorkloadContainerProtectionContainer) MarshalJSON() ([]byte, e
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populateDateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
 	populate(objectMap, "operationType", a.OperationType)
 	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
 	populate(objectMap, "registrationStatus", a.RegistrationStatus)
@@ -1882,7 +1882,7 @@ func (a *AzureSQLAGWorkloadContainerProtectionContainer) UnmarshalJSON(data []by
 			err = unpopulate(val, "HealthStatus", &a.HealthStatus)
 			delete(rawMsg, key)
 		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
+			err = unpopulateDateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
 			delete(rawMsg, key)
 		case "operationType":
 			err = unpopulate(val, "OperationType", &a.OperationType)
@@ -1961,14 +1961,14 @@ func (a AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "isArchiveEnabled", a.IsArchiveEnabled)
 	populate(objectMap, "isDeferredDeleteScheduleUpcoming", a.IsDeferredDeleteScheduleUpcoming)
 	populate(objectMap, "isRehydrate", a.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", a.IsScheduledForDeferredDelete)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "protectedItemDataId", a.ProtectedItemDataID)
@@ -2003,7 +2003,7 @@ func (a *AzureSQLProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -2024,7 +2024,7 @@ func (a *AzureSQLProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IsScheduledForDeferredDelete", &a.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &a.PolicyID)
@@ -2064,7 +2064,7 @@ func (a *AzureSQLProtectedItem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureSQLProtectedItemExtendedInfo.
 func (a AzureSQLProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
 	populate(objectMap, "policyState", a.PolicyState)
 	populate(objectMap, "recoveryPointCount", a.RecoveryPointCount)
 	return json.Marshal(objectMap)
@@ -2080,7 +2080,7 @@ func (a *AzureSQLProtectedItemExtendedInfo) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyState":
 			err = unpopulate(val, "PolicyState", &a.PolicyState)
@@ -2244,14 +2244,14 @@ func (a AzureStorageJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "activityId", a.ActivityID)
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "duration", a.Duration)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "isUserTriggered", a.IsUserTriggered)
 	objectMap["jobType"] = "AzureStorageJob"
 	populate(objectMap, "operation", a.Operation)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "storageAccountName", a.StorageAccountName)
 	populate(objectMap, "storageAccountVersion", a.StorageAccountVersion)
@@ -2280,7 +2280,7 @@ func (a *AzureStorageJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &a.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &a.EntityFriendlyName)
@@ -2301,7 +2301,7 @@ func (a *AzureStorageJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &a.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -2480,7 +2480,7 @@ func (a AzureVMAppContainerProtectionContainer) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populateDateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
 	populate(objectMap, "operationType", a.OperationType)
 	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
 	populate(objectMap, "registrationStatus", a.RegistrationStatus)
@@ -2514,7 +2514,7 @@ func (a *AzureVMAppContainerProtectionContainer) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "HealthStatus", &a.HealthStatus)
 			delete(rawMsg, key)
 		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
+			err = unpopulateDateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
 			delete(rawMsg, key)
 		case "operationType":
 			err = unpopulate(val, "OperationType", &a.OperationType)
@@ -2750,7 +2750,7 @@ func (a AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -2761,8 +2761,8 @@ func (a AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "nodesList", a.NodesList)
 	populate(objectMap, "parentName", a.ParentName)
 	populate(objectMap, "parentType", a.ParentType)
@@ -2803,7 +2803,7 @@ func (a *AzureVMWorkloadProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -2836,10 +2836,10 @@ func (a *AzureVMWorkloadProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "nodesList":
 			err = unpopulate(val, "NodesList", &a.NodesList)
@@ -2897,10 +2897,10 @@ func (a *AzureVMWorkloadProtectedItem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureVMWorkloadProtectedItemExtendedInfo.
 func (a AzureVMWorkloadProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "newestRecoveryPointInArchive", a.NewestRecoveryPointInArchive)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPointInArchive", a.OldestRecoveryPointInArchive)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPointInVault", a.OldestRecoveryPointInVault)
+	populateDateTimeRFC3339(objectMap, "newestRecoveryPointInArchive", a.NewestRecoveryPointInArchive)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", a.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPointInArchive", a.OldestRecoveryPointInArchive)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPointInVault", a.OldestRecoveryPointInVault)
 	populate(objectMap, "policyState", a.PolicyState)
 	populate(objectMap, "recoveryModel", a.RecoveryModel)
 	populate(objectMap, "recoveryPointCount", a.RecoveryPointCount)
@@ -2917,16 +2917,16 @@ func (a *AzureVMWorkloadProtectedItemExtendedInfo) UnmarshalJSON(data []byte) er
 		var err error
 		switch key {
 		case "newestRecoveryPointInArchive":
-			err = unpopulateTimeRFC3339(val, "NewestRecoveryPointInArchive", &a.NewestRecoveryPointInArchive)
+			err = unpopulateDateTimeRFC3339(val, "NewestRecoveryPointInArchive", &a.NewestRecoveryPointInArchive)
 			delete(rawMsg, key)
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &a.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "oldestRecoveryPointInArchive":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPointInArchive", &a.OldestRecoveryPointInArchive)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPointInArchive", &a.OldestRecoveryPointInArchive)
 			delete(rawMsg, key)
 		case "oldestRecoveryPointInVault":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPointInVault", &a.OldestRecoveryPointInVault)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPointInVault", &a.OldestRecoveryPointInVault)
 			delete(rawMsg, key)
 		case "policyState":
 			err = unpopulate(val, "PolicyState", &a.PolicyState)
@@ -3003,7 +3003,7 @@ func (a AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte, error
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -3014,8 +3014,8 @@ func (a AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte, error
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "nodesList", a.NodesList)
 	populate(objectMap, "parentName", a.ParentName)
 	populate(objectMap, "parentType", a.ParentType)
@@ -3056,7 +3056,7 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) UnmarshalJSON(data []byte) 
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -3089,10 +3089,10 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) UnmarshalJSON(data []byte) 
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "nodesList":
 			err = unpopulate(val, "NodesList", &a.NodesList)
@@ -3438,7 +3438,7 @@ func (a AzureVMWorkloadSAPHanaDBInstanceProtectedItem) MarshalJSON() ([]byte, er
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -3449,8 +3449,8 @@ func (a AzureVMWorkloadSAPHanaDBInstanceProtectedItem) MarshalJSON() ([]byte, er
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "nodesList", a.NodesList)
 	populate(objectMap, "parentName", a.ParentName)
 	populate(objectMap, "parentType", a.ParentType)
@@ -3491,7 +3491,7 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) UnmarshalJSON(data []byt
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -3524,10 +3524,10 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) UnmarshalJSON(data []byt
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "nodesList":
 			err = unpopulate(val, "NodesList", &a.NodesList)
@@ -3668,7 +3668,7 @@ func (a AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byte, erro
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -3679,8 +3679,8 @@ func (a AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byte, erro
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "nodesList", a.NodesList)
 	populate(objectMap, "parentName", a.ParentName)
 	populate(objectMap, "parentType", a.ParentType)
@@ -3721,7 +3721,7 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) UnmarshalJSON(data []byte)
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -3754,10 +3754,10 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) UnmarshalJSON(data []byte)
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "nodesList":
 			err = unpopulate(val, "NodesList", &a.NodesList)
@@ -4265,7 +4265,7 @@ func (a AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", a.BackupSetName)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", a.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
@@ -4276,8 +4276,8 @@ func (a AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "kpisHealths", a.KpisHealths)
 	populate(objectMap, "lastBackupErrorDetail", a.LastBackupErrorDetail)
 	populate(objectMap, "lastBackupStatus", a.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", a.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", a.LastRecoveryPoint)
 	populate(objectMap, "nodesList", a.NodesList)
 	populate(objectMap, "parentName", a.ParentName)
 	populate(objectMap, "parentType", a.ParentType)
@@ -4318,7 +4318,7 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) UnmarshalJSON(data []byte) err
 			err = unpopulate(val, "CreateMode", &a.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &a.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &a.DeferredDeleteTimeRemaining)
@@ -4351,10 +4351,10 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) UnmarshalJSON(data []byte) err
 			err = unpopulate(val, "LastBackupStatus", &a.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &a.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &a.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "nodesList":
 			err = unpopulate(val, "NodesList", &a.NodesList)
@@ -4671,7 +4671,7 @@ func (a AzureWorkloadBackupRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupType", a.BackupType)
 	populate(objectMap, "enableCompression", a.EnableCompression)
 	objectMap["objectType"] = "AzureWorkloadBackupRequest"
-	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", a.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -4694,7 +4694,7 @@ func (a *AzureWorkloadBackupRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &a.RecoveryPointExpiryTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &a.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4712,7 +4712,7 @@ func (a AzureWorkloadContainer) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "healthStatus", a.HealthStatus)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
+	populateDateTimeRFC3339(objectMap, "lastUpdatedTime", a.LastUpdatedTime)
 	populate(objectMap, "operationType", a.OperationType)
 	populate(objectMap, "protectableObjectType", a.ProtectableObjectType)
 	populate(objectMap, "registrationStatus", a.RegistrationStatus)
@@ -4746,7 +4746,7 @@ func (a *AzureWorkloadContainer) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "HealthStatus", &a.HealthStatus)
 			delete(rawMsg, key)
 		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
+			err = unpopulateDateTimeRFC3339(val, "LastUpdatedTime", &a.LastUpdatedTime)
 			delete(rawMsg, key)
 		case "operationType":
 			err = unpopulate(val, "OperationType", &a.OperationType)
@@ -4903,13 +4903,13 @@ func (a AzureWorkloadJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "activityId", a.ActivityID)
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "duration", a.Duration)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "entityFriendlyName", a.EntityFriendlyName)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
 	populate(objectMap, "extendedInfo", a.ExtendedInfo)
 	objectMap["jobType"] = "AzureWorkloadJob"
 	populate(objectMap, "operation", a.Operation)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
@@ -4937,7 +4937,7 @@ func (a *AzureWorkloadJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &a.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &a.EntityFriendlyName)
@@ -4955,7 +4955,7 @@ func (a *AzureWorkloadJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &a.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -5044,7 +5044,7 @@ func (a AzureWorkloadPointInTimeRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "timeRanges", a.TimeRanges)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
@@ -5072,7 +5072,7 @@ func (a *AzureWorkloadPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) error
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "timeRanges":
 			err = unpopulate(val, "TimeRanges", &a.TimeRanges)
@@ -5092,7 +5092,7 @@ func (a *AzureWorkloadPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) error
 func (a AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = "AzureWorkloadPointInTimeRestoreRequest"
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populateDateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
@@ -5115,7 +5115,7 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) UnmarshalJSON(data []byte) erro
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "pointInTime":
-			err = unpopulateTimeRFC3339(val, "PointInTime", &a.PointInTime)
+			err = unpopulateDateTimeRFC3339(val, "PointInTime", &a.PointInTime)
 			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &a.PropertyBag)
@@ -5150,7 +5150,7 @@ func (a AzureWorkloadRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
@@ -5177,7 +5177,7 @@ func (a *AzureWorkloadRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &a.Type)
@@ -5248,7 +5248,7 @@ func (a AzureWorkloadSAPHanaPointInTimeRecoveryPoint) MarshalJSON() ([]byte, err
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "timeRanges", a.TimeRanges)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
@@ -5276,7 +5276,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) UnmarshalJSON(data []byte
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "timeRanges":
 			err = unpopulate(val, "TimeRanges", &a.TimeRanges)
@@ -5296,7 +5296,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRecoveryPoint) UnmarshalJSON(data []byte
 func (a AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = "AzureWorkloadSAPHanaPointInTimeRestoreRequest"
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populateDateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
@@ -5319,7 +5319,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) UnmarshalJSON(data []byt
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "pointInTime":
-			err = unpopulateTimeRFC3339(val, "PointInTime", &a.PointInTime)
+			err = unpopulateDateTimeRFC3339(val, "PointInTime", &a.PointInTime)
 			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &a.PropertyBag)
@@ -5351,7 +5351,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) UnmarshalJSON(data []byt
 func (a AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = "AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest"
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populateDateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
@@ -5375,7 +5375,7 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) UnmarshalJS
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "pointInTime":
-			err = unpopulateTimeRFC3339(val, "PointInTime", &a.PointInTime)
+			err = unpopulateDateTimeRFC3339(val, "PointInTime", &a.PointInTime)
 			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &a.PropertyBag)
@@ -5413,7 +5413,7 @@ func (a AzureWorkloadSAPHanaRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
@@ -5440,7 +5440,7 @@ func (a *AzureWorkloadSAPHanaRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &a.Type)
@@ -5618,7 +5618,7 @@ func (a AzureWorkloadSQLPointInTimeRecoveryPoint) MarshalJSON() ([]byte, error) 
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "timeRanges", a.TimeRanges)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
@@ -5649,7 +5649,7 @@ func (a *AzureWorkloadSQLPointInTimeRecoveryPoint) UnmarshalJSON(data []byte) er
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "timeRanges":
 			err = unpopulate(val, "TimeRanges", &a.TimeRanges)
@@ -5671,7 +5671,7 @@ func (a AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte, error)
 	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
 	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
 	objectMap["objectType"] = "AzureWorkloadSQLPointInTimeRestoreRequest"
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populateDateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
@@ -5701,7 +5701,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) UnmarshalJSON(data []byte) e
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "pointInTime":
-			err = unpopulateTimeRFC3339(val, "PointInTime", &a.PointInTime)
+			err = unpopulateDateTimeRFC3339(val, "PointInTime", &a.PointInTime)
 			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &a.PropertyBag)
@@ -5738,7 +5738,7 @@ func (a AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([
 	populate(objectMap, "alternateDirectoryPaths", a.AlternateDirectoryPaths)
 	populate(objectMap, "isNonRecoverable", a.IsNonRecoverable)
 	objectMap["objectType"] = "AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest"
-	populateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
+	populateDateTimeRFC3339(objectMap, "pointInTime", a.PointInTime)
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
@@ -5769,7 +5769,7 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) UnmarshalJSON(d
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
 			delete(rawMsg, key)
 		case "pointInTime":
-			err = unpopulateTimeRFC3339(val, "PointInTime", &a.PointInTime)
+			err = unpopulateDateTimeRFC3339(val, "PointInTime", &a.PointInTime)
 			delete(rawMsg, key)
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &a.PropertyBag)
@@ -5811,7 +5811,7 @@ func (a AzureWorkloadSQLRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointMoveReadinessInfo", a.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", a.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", a.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTimeInUTC", a.RecoveryPointTimeInUTC)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
@@ -5841,7 +5841,7 @@ func (a *AzureWorkloadSQLRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointTierDetails", &a.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTimeInUTC", &a.RecoveryPointTimeInUTC)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &a.Type)
@@ -5858,7 +5858,7 @@ func (a *AzureWorkloadSQLRecoveryPoint) UnmarshalJSON(data []byte) error {
 func (a AzureWorkloadSQLRecoveryPointExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dataDirectoryPaths", a.DataDirectoryPaths)
-	populateTimeRFC3339(objectMap, "dataDirectoryTimeInUTC", a.DataDirectoryTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "dataDirectoryTimeInUTC", a.DataDirectoryTimeInUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -5875,7 +5875,7 @@ func (a *AzureWorkloadSQLRecoveryPointExtendedInfo) UnmarshalJSON(data []byte) e
 			err = unpopulate(val, "DataDirectoryPaths", &a.DataDirectoryPaths)
 			delete(rawMsg, key)
 		case "dataDirectoryTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DataDirectoryTimeInUTC", &a.DataDirectoryTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DataDirectoryTimeInUTC", &a.DataDirectoryTimeInUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -6263,12 +6263,12 @@ func (b *BMSPOQueryObject) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BMSRPQueryObject.
 func (b BMSRPQueryObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endDate", b.EndDate)
+	populateDateTimeRFC3339(objectMap, "endDate", b.EndDate)
 	populate(objectMap, "extendedInfo", b.ExtendedInfo)
 	populate(objectMap, "includeSoftDeletedRP", b.IncludeSoftDeletedRP)
 	populate(objectMap, "moveReadyRPOnly", b.MoveReadyRPOnly)
 	populate(objectMap, "restorePointQueryType", b.RestorePointQueryType)
-	populateTimeRFC3339(objectMap, "startDate", b.StartDate)
+	populateDateTimeRFC3339(objectMap, "startDate", b.StartDate)
 	return json.Marshal(objectMap)
 }
 
@@ -6282,7 +6282,7 @@ func (b *BMSRPQueryObject) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endDate":
-			err = unpopulateTimeRFC3339(val, "EndDate", &b.EndDate)
+			err = unpopulateDateTimeRFC3339(val, "EndDate", &b.EndDate)
 			delete(rawMsg, key)
 		case "extendedInfo":
 			err = unpopulate(val, "ExtendedInfo", &b.ExtendedInfo)
@@ -6297,7 +6297,7 @@ func (b *BMSRPQueryObject) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RestorePointQueryType", &b.RestorePointQueryType)
 			delete(rawMsg, key)
 		case "startDate":
-			err = unpopulateTimeRFC3339(val, "StartDate", &b.StartDate)
+			err = unpopulateDateTimeRFC3339(val, "StartDate", &b.StartDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -6539,7 +6539,7 @@ func (b BackupEngineExtendedInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskCount", b.DiskCount)
 	populate(objectMap, "protectedItemsCount", b.ProtectedItemsCount)
 	populate(objectMap, "protectedServersCount", b.ProtectedServersCount)
-	populateTimeRFC3339(objectMap, "refreshedAt", b.RefreshedAt)
+	populateDateTimeRFC3339(objectMap, "refreshedAt", b.RefreshedAt)
 	populate(objectMap, "usedDiskSpace", b.UsedDiskSpace)
 	return json.Marshal(objectMap)
 }
@@ -6572,7 +6572,7 @@ func (b *BackupEngineExtendedInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProtectedServersCount", &b.ProtectedServersCount)
 			delete(rawMsg, key)
 		case "refreshedAt":
-			err = unpopulateTimeRFC3339(val, "RefreshedAt", &b.RefreshedAt)
+			err = unpopulateDateTimeRFC3339(val, "RefreshedAt", &b.RefreshedAt)
 			delete(rawMsg, key)
 		case "usedDiskSpace":
 			err = unpopulate(val, "UsedDiskSpace", &b.UsedDiskSpace)
@@ -6591,7 +6591,7 @@ func (b BackupManagementUsage) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "currentValue", b.CurrentValue)
 	populate(objectMap, "limit", b.Limit)
 	populate(objectMap, "name", b.Name)
-	populateTimeRFC3339(objectMap, "nextResetTime", b.NextResetTime)
+	populateDateTimeRFC3339(objectMap, "nextResetTime", b.NextResetTime)
 	populate(objectMap, "quotaPeriod", b.QuotaPeriod)
 	populate(objectMap, "unit", b.Unit)
 	return json.Marshal(objectMap)
@@ -6616,7 +6616,7 @@ func (b *BackupManagementUsage) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &b.Name)
 			delete(rawMsg, key)
 		case "nextResetTime":
-			err = unpopulateTimeRFC3339(val, "NextResetTime", &b.NextResetTime)
+			err = unpopulateDateTimeRFC3339(val, "NextResetTime", &b.NextResetTime)
 			delete(rawMsg, key)
 		case "quotaPeriod":
 			err = unpopulate(val, "QuotaPeriod", &b.QuotaPeriod)
@@ -7522,7 +7522,7 @@ func (c *ContainerIdentityInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DPMContainerExtendedInfo.
 func (d DPMContainerExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "lastRefreshedAt", d.LastRefreshedAt)
+	populateDateTimeRFC3339(objectMap, "lastRefreshedAt", d.LastRefreshedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -7536,7 +7536,7 @@ func (d *DPMContainerExtendedInfo) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lastRefreshedAt":
-			err = unpopulateTimeRFC3339(val, "LastRefreshedAt", &d.LastRefreshedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastRefreshedAt", &d.LastRefreshedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7554,7 +7554,7 @@ func (d DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", d.BackupSetName)
 	populate(objectMap, "containerName", d.ContainerName)
 	populate(objectMap, "createMode", d.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", d.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", d.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", d.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", d.ExtendedInfo)
 	populate(objectMap, "friendlyName", d.FriendlyName)
@@ -7562,7 +7562,7 @@ func (d DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDeferredDeleteScheduleUpcoming", d.IsDeferredDeleteScheduleUpcoming)
 	populate(objectMap, "isRehydrate", d.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", d.IsScheduledForDeferredDelete)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", d.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", d.LastRecoveryPoint)
 	populate(objectMap, "policyId", d.PolicyID)
 	populate(objectMap, "policyName", d.PolicyName)
 	objectMap["protectedItemType"] = "DPMProtectedItem"
@@ -7599,7 +7599,7 @@ func (d *DPMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &d.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &d.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &d.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &d.DeferredDeleteTimeRemaining)
@@ -7623,7 +7623,7 @@ func (d *DPMProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IsScheduledForDeferredDelete", &d.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &d.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &d.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &d.PolicyID)
@@ -7664,10 +7664,10 @@ func (d DPMProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isCollocated", d.IsCollocated)
 	populate(objectMap, "isPresentOnCloud", d.IsPresentOnCloud)
 	populate(objectMap, "lastBackupStatus", d.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastRefreshedAt", d.LastRefreshedAt)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", d.OldestRecoveryPoint)
-	populateTimeRFC3339(objectMap, "onPremiseLatestRecoveryPoint", d.OnPremiseLatestRecoveryPoint)
-	populateTimeRFC3339(objectMap, "onPremiseOldestRecoveryPoint", d.OnPremiseOldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRefreshedAt", d.LastRefreshedAt)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", d.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "onPremiseLatestRecoveryPoint", d.OnPremiseLatestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "onPremiseOldestRecoveryPoint", d.OnPremiseOldestRecoveryPoint)
 	populate(objectMap, "onPremiseRecoveryPointCount", d.OnPremiseRecoveryPointCount)
 	populate(objectMap, "protectableObjectLoadPath", d.ProtectableObjectLoadPath)
 	populate(objectMap, "protected", d.Protected)
@@ -7699,16 +7699,16 @@ func (d *DPMProtectedItemExtendedInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &d.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastRefreshedAt":
-			err = unpopulateTimeRFC3339(val, "LastRefreshedAt", &d.LastRefreshedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastRefreshedAt", &d.LastRefreshedAt)
 			delete(rawMsg, key)
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &d.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &d.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "onPremiseLatestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OnPremiseLatestRecoveryPoint", &d.OnPremiseLatestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OnPremiseLatestRecoveryPoint", &d.OnPremiseLatestRecoveryPoint)
 			delete(rawMsg, key)
 		case "onPremiseOldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OnPremiseOldestRecoveryPoint", &d.OnPremiseOldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OnPremiseOldestRecoveryPoint", &d.OnPremiseOldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "onPremiseRecoveryPointCount":
 			err = unpopulate(val, "OnPremiseRecoveryPointCount", &d.OnPremiseRecoveryPointCount)
@@ -7767,9 +7767,9 @@ func (d *DailyRetentionFormat) UnmarshalJSON(data []byte) error {
 func (d DailyRetentionSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "retentionDuration", d.RetentionDuration)
-	aux := make([]*timeRFC3339, len(d.RetentionTimes), len(d.RetentionTimes))
+	aux := make([]*dateTimeRFC3339, len(d.RetentionTimes), len(d.RetentionTimes))
 	for i := 0; i < len(d.RetentionTimes); i++ {
-		aux[i] = (*timeRFC3339)(d.RetentionTimes[i])
+		aux[i] = (*dateTimeRFC3339)(d.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
 	return json.Marshal(objectMap)
@@ -7788,7 +7788,7 @@ func (d *DailyRetentionSchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RetentionDuration", &d.RetentionDuration)
 			delete(rawMsg, key)
 		case "retentionTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "RetentionTimes", &aux)
 			for _, au := range aux {
 				d.RetentionTimes = append(d.RetentionTimes, (*time.Time)(au))
@@ -7805,9 +7805,9 @@ func (d *DailyRetentionSchedule) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DailySchedule.
 func (d DailySchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	aux := make([]*timeRFC3339, len(d.ScheduleRunTimes), len(d.ScheduleRunTimes))
+	aux := make([]*dateTimeRFC3339, len(d.ScheduleRunTimes), len(d.ScheduleRunTimes))
 	for i := 0; i < len(d.ScheduleRunTimes); i++ {
-		aux[i] = (*timeRFC3339)(d.ScheduleRunTimes[i])
+		aux[i] = (*dateTimeRFC3339)(d.ScheduleRunTimes[i])
 	}
 	populate(objectMap, "scheduleRunTimes", aux)
 	return json.Marshal(objectMap)
@@ -7823,7 +7823,7 @@ func (d *DailySchedule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "scheduleRunTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "ScheduleRunTimes", &aux)
 			for _, au := range aux {
 				d.ScheduleRunTimes = append(d.ScheduleRunTimes, (*time.Time)(au))
@@ -8164,13 +8164,13 @@ func (d DpmJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "containerType", d.ContainerType)
 	populate(objectMap, "dpmServerName", d.DpmServerName)
 	populate(objectMap, "duration", d.Duration)
-	populateTimeRFC3339(objectMap, "endTime", d.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", d.EndTime)
 	populate(objectMap, "entityFriendlyName", d.EntityFriendlyName)
 	populate(objectMap, "errorDetails", d.ErrorDetails)
 	populate(objectMap, "extendedInfo", d.ExtendedInfo)
 	objectMap["jobType"] = "DpmJob"
 	populate(objectMap, "operation", d.Operation)
-	populateTimeRFC3339(objectMap, "startTime", d.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", d.StartTime)
 	populate(objectMap, "status", d.Status)
 	populate(objectMap, "workloadType", d.WorkloadType)
 	return json.Marshal(objectMap)
@@ -8207,7 +8207,7 @@ func (d *DpmJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &d.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &d.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &d.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &d.EntityFriendlyName)
@@ -8225,7 +8225,7 @@ func (d *DpmJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &d.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &d.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &d.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &d.Status)
@@ -8280,8 +8280,8 @@ func (d *DpmJobExtendedInfo) UnmarshalJSON(data []byte) error {
 func (d DpmJobTaskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "duration", d.Duration)
-	populateTimeRFC3339(objectMap, "endTime", d.EndTime)
-	populateTimeRFC3339(objectMap, "startTime", d.StartTime)
+	populateDateTimeRFC3339(objectMap, "endTime", d.EndTime)
+	populateDateTimeRFC3339(objectMap, "startTime", d.StartTime)
 	populate(objectMap, "status", d.Status)
 	populate(objectMap, "taskId", d.TaskID)
 	return json.Marshal(objectMap)
@@ -8300,10 +8300,10 @@ func (d *DpmJobTaskDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &d.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &d.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &d.EndTime)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &d.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &d.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &d.Status)
@@ -8657,7 +8657,7 @@ func (g GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", g.BackupSetName)
 	populate(objectMap, "containerName", g.ContainerName)
 	populate(objectMap, "createMode", g.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", g.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", g.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", g.DeferredDeleteTimeRemaining)
 	populate(objectMap, "fabricName", g.FabricName)
 	populate(objectMap, "friendlyName", g.FriendlyName)
@@ -8665,7 +8665,7 @@ func (g GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDeferredDeleteScheduleUpcoming", g.IsDeferredDeleteScheduleUpcoming)
 	populate(objectMap, "isRehydrate", g.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", g.IsScheduledForDeferredDelete)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", g.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", g.LastRecoveryPoint)
 	populate(objectMap, "policyId", g.PolicyID)
 	populate(objectMap, "policyName", g.PolicyName)
 	populate(objectMap, "policyState", g.PolicyState)
@@ -8702,7 +8702,7 @@ func (g *GenericProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &g.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &g.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &g.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &g.DeferredDeleteTimeRemaining)
@@ -8726,7 +8726,7 @@ func (g *GenericProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IsScheduledForDeferredDelete", &g.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &g.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &g.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &g.PolicyID)
@@ -8823,7 +8823,7 @@ func (g GenericRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap["objectType"] = "GenericRecoveryPoint"
 	populate(objectMap, "recoveryPointAdditionalInfo", g.RecoveryPointAdditionalInfo)
 	populate(objectMap, "recoveryPointProperties", g.RecoveryPointProperties)
-	populateTimeRFC3339(objectMap, "recoveryPointTime", g.RecoveryPointTime)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTime", g.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", g.RecoveryPointType)
 	return json.Marshal(objectMap)
 }
@@ -8850,7 +8850,7 @@ func (g *GenericRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointProperties", &g.RecoveryPointProperties)
 			delete(rawMsg, key)
 		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTime", &g.RecoveryPointTime)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTime", &g.RecoveryPointTime)
 			delete(rawMsg, key)
 		case "recoveryPointType":
 			err = unpopulate(val, "RecoveryPointType", &g.RecoveryPointType)
@@ -8895,7 +8895,7 @@ func (h HourlySchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "interval", h.Interval)
 	populate(objectMap, "scheduleWindowDuration", h.ScheduleWindowDuration)
-	populateTimeRFC3339(objectMap, "scheduleWindowStartTime", h.ScheduleWindowStartTime)
+	populateDateTimeRFC3339(objectMap, "scheduleWindowStartTime", h.ScheduleWindowStartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -8915,7 +8915,7 @@ func (h *HourlySchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScheduleWindowDuration", &h.ScheduleWindowDuration)
 			delete(rawMsg, key)
 		case "scheduleWindowStartTime":
-			err = unpopulateTimeRFC3339(val, "ScheduleWindowStartTime", &h.ScheduleWindowStartTime)
+			err = unpopulateDateTimeRFC3339(val, "ScheduleWindowStartTime", &h.ScheduleWindowStartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -9121,7 +9121,7 @@ func (i *IaaSVMProtectableItem) UnmarshalJSON(data []byte) error {
 func (i IaasVMBackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["objectType"] = "IaasVMBackupRequest"
-	populateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", i.RecoveryPointExpiryTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "recoveryPointExpiryTimeInUTC", i.RecoveryPointExpiryTimeInUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -9138,7 +9138,7 @@ func (i *IaasVMBackupRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ObjectType", &i.ObjectType)
 			delete(rawMsg, key)
 		case "recoveryPointExpiryTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &i.RecoveryPointExpiryTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointExpiryTimeInUTC", &i.RecoveryPointExpiryTimeInUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -9207,7 +9207,7 @@ func (i IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryPointMoveReadinessInfo", i.RecoveryPointMoveReadinessInfo)
 	populate(objectMap, "recoveryPointProperties", i.RecoveryPointProperties)
 	populate(objectMap, "recoveryPointTierDetails", i.RecoveryPointTierDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTime", i.RecoveryPointTime)
+	populateDateTimeRFC3339(objectMap, "recoveryPointTime", i.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
 	populate(objectMap, "securityType", i.SecurityType)
 	populate(objectMap, "sourceVMStorageType", i.SourceVMStorageType)
@@ -9265,7 +9265,7 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RecoveryPointTierDetails", &i.RecoveryPointTierDetails)
 			delete(rawMsg, key)
 		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, "RecoveryPointTime", &i.RecoveryPointTime)
+			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTime", &i.RecoveryPointTime)
 			delete(rawMsg, key)
 		case "recoveryPointType":
 			err = unpopulate(val, "RecoveryPointType", &i.RecoveryPointType)
@@ -9731,11 +9731,11 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "activityId", j.ActivityID)
 	populate(objectMap, "backupManagementType", j.BackupManagementType)
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", j.EndTime)
 	populate(objectMap, "entityFriendlyName", j.EntityFriendlyName)
 	objectMap["jobType"] = j.JobType
 	populate(objectMap, "operation", j.Operation)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", j.StartTime)
 	populate(objectMap, "status", j.Status)
 	return json.Marshal(objectMap)
 }
@@ -9756,7 +9756,7 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BackupManagementType", &j.BackupManagementType)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &j.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &j.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &j.EntityFriendlyName)
@@ -9768,7 +9768,7 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &j.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &j.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &j.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &j.Status)
@@ -9785,10 +9785,10 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 func (j JobQueryObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "backupManagementType", j.BackupManagementType)
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", j.EndTime)
 	populate(objectMap, "jobId", j.JobID)
 	populate(objectMap, "operation", j.Operation)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", j.StartTime)
 	populate(objectMap, "status", j.Status)
 	return json.Marshal(objectMap)
 }
@@ -9806,7 +9806,7 @@ func (j *JobQueryObject) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BackupManagementType", &j.BackupManagementType)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &j.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &j.EndTime)
 			delete(rawMsg, key)
 		case "jobId":
 			err = unpopulate(val, "JobID", &j.JobID)
@@ -9815,7 +9815,7 @@ func (j *JobQueryObject) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &j.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &j.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &j.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &j.Status)
@@ -10263,7 +10263,7 @@ func (m MabContainerExtendedInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupItemType", m.BackupItemType)
 	populate(objectMap, "backupItems", m.BackupItems)
 	populate(objectMap, "lastBackupStatus", m.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastRefreshedAt", m.LastRefreshedAt)
+	populateDateTimeRFC3339(objectMap, "lastRefreshedAt", m.LastRefreshedAt)
 	populate(objectMap, "policyName", m.PolicyName)
 	return json.Marshal(objectMap)
 }
@@ -10287,7 +10287,7 @@ func (m *MabContainerExtendedInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &m.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastRefreshedAt":
-			err = unpopulateTimeRFC3339(val, "LastRefreshedAt", &m.LastRefreshedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastRefreshedAt", &m.LastRefreshedAt)
 			delete(rawMsg, key)
 		case "policyName":
 			err = unpopulate(val, "PolicyName", &m.PolicyName)
@@ -10340,7 +10340,7 @@ func (m MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "containerName", m.ContainerName)
 	populate(objectMap, "createMode", m.CreateMode)
 	populate(objectMap, "deferredDeleteSyncTimeInUTC", m.DeferredDeleteSyncTimeInUTC)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", m.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", m.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", m.DeferredDeleteTimeRemaining)
 	populate(objectMap, "extendedInfo", m.ExtendedInfo)
 	populate(objectMap, "friendlyName", m.FriendlyName)
@@ -10349,8 +10349,8 @@ func (m MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isRehydrate", m.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", m.IsScheduledForDeferredDelete)
 	populate(objectMap, "lastBackupStatus", m.LastBackupStatus)
-	populateTimeRFC3339(objectMap, "lastBackupTime", m.LastBackupTime)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", m.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastBackupTime", m.LastBackupTime)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", m.LastRecoveryPoint)
 	populate(objectMap, "policyId", m.PolicyID)
 	populate(objectMap, "policyName", m.PolicyName)
 	objectMap["protectedItemType"] = "MabFileFolderProtectedItem"
@@ -10390,7 +10390,7 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DeferredDeleteSyncTimeInUTC", &m.DeferredDeleteSyncTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &m.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &m.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &m.DeferredDeleteTimeRemaining)
@@ -10417,10 +10417,10 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastBackupStatus", &m.LastBackupStatus)
 			delete(rawMsg, key)
 		case "lastBackupTime":
-			err = unpopulateTimeRFC3339(val, "LastBackupTime", &m.LastBackupTime)
+			err = unpopulateDateTimeRFC3339(val, "LastBackupTime", &m.LastBackupTime)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &m.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &m.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &m.PolicyID)
@@ -10457,8 +10457,8 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MabFileFolderProtectedItemExtendedInfo.
 func (m MabFileFolderProtectedItemExtendedInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "lastRefreshedAt", m.LastRefreshedAt)
-	populateTimeRFC3339(objectMap, "oldestRecoveryPoint", m.OldestRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRefreshedAt", m.LastRefreshedAt)
+	populateDateTimeRFC3339(objectMap, "oldestRecoveryPoint", m.OldestRecoveryPoint)
 	populate(objectMap, "recoveryPointCount", m.RecoveryPointCount)
 	return json.Marshal(objectMap)
 }
@@ -10473,10 +10473,10 @@ func (m *MabFileFolderProtectedItemExtendedInfo) UnmarshalJSON(data []byte) erro
 		var err error
 		switch key {
 		case "lastRefreshedAt":
-			err = unpopulateTimeRFC3339(val, "LastRefreshedAt", &m.LastRefreshedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastRefreshedAt", &m.LastRefreshedAt)
 			delete(rawMsg, key)
 		case "oldestRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "OldestRecoveryPoint", &m.OldestRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "OldestRecoveryPoint", &m.OldestRecoveryPoint)
 			delete(rawMsg, key)
 		case "recoveryPointCount":
 			err = unpopulate(val, "RecoveryPointCount", &m.RecoveryPointCount)
@@ -10496,7 +10496,7 @@ func (m MabJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "activityId", m.ActivityID)
 	populate(objectMap, "backupManagementType", m.BackupManagementType)
 	populate(objectMap, "duration", m.Duration)
-	populateTimeRFC3339(objectMap, "endTime", m.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", m.EndTime)
 	populate(objectMap, "entityFriendlyName", m.EntityFriendlyName)
 	populate(objectMap, "errorDetails", m.ErrorDetails)
 	populate(objectMap, "extendedInfo", m.ExtendedInfo)
@@ -10504,7 +10504,7 @@ func (m MabJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "mabServerName", m.MabServerName)
 	populate(objectMap, "mabServerType", m.MabServerType)
 	populate(objectMap, "operation", m.Operation)
-	populateTimeRFC3339(objectMap, "startTime", m.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", m.StartTime)
 	populate(objectMap, "status", m.Status)
 	populate(objectMap, "workloadType", m.WorkloadType)
 	return json.Marshal(objectMap)
@@ -10532,7 +10532,7 @@ func (m *MabJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &m.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &m.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &m.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &m.EntityFriendlyName)
@@ -10556,7 +10556,7 @@ func (m *MabJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &m.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &m.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &m.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &m.Status)
@@ -10611,8 +10611,8 @@ func (m *MabJobExtendedInfo) UnmarshalJSON(data []byte) error {
 func (m MabJobTaskDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "duration", m.Duration)
-	populateTimeRFC3339(objectMap, "endTime", m.EndTime)
-	populateTimeRFC3339(objectMap, "startTime", m.StartTime)
+	populateDateTimeRFC3339(objectMap, "endTime", m.EndTime)
+	populateDateTimeRFC3339(objectMap, "startTime", m.StartTime)
 	populate(objectMap, "status", m.Status)
 	populate(objectMap, "taskId", m.TaskID)
 	return json.Marshal(objectMap)
@@ -10631,10 +10631,10 @@ func (m *MabJobTaskDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &m.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &m.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &m.EndTime)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &m.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &m.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &m.Status)
@@ -10700,9 +10700,9 @@ func (m MonthlyRetentionSchedule) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "retentionScheduleDaily", m.RetentionScheduleDaily)
 	populate(objectMap, "retentionScheduleFormatType", m.RetentionScheduleFormatType)
 	populate(objectMap, "retentionScheduleWeekly", m.RetentionScheduleWeekly)
-	aux := make([]*timeRFC3339, len(m.RetentionTimes), len(m.RetentionTimes))
+	aux := make([]*dateTimeRFC3339, len(m.RetentionTimes), len(m.RetentionTimes))
 	for i := 0; i < len(m.RetentionTimes); i++ {
-		aux[i] = (*timeRFC3339)(m.RetentionTimes[i])
+		aux[i] = (*dateTimeRFC3339)(m.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
 	return json.Marshal(objectMap)
@@ -10730,7 +10730,7 @@ func (m *MonthlyRetentionSchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RetentionScheduleWeekly", &m.RetentionScheduleWeekly)
 			delete(rawMsg, key)
 		case "retentionTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "RetentionTimes", &aux)
 			for _, au := range aux {
 				m.RetentionTimes = append(m.RetentionTimes, (*time.Time)(au))
@@ -10976,12 +10976,12 @@ func (o *OperationResultInfoBaseResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OperationStatus.
 func (o OperationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", o.EndTime)
 	populate(objectMap, "error", o.Error)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "properties", o.Properties)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", o.StartTime)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
 }
@@ -10996,7 +10996,7 @@ func (o *OperationStatus) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &o.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &o.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &o.Error)
@@ -11011,7 +11011,7 @@ func (o *OperationStatus) UnmarshalJSON(data []byte) error {
 			o.Properties, err = unmarshalOperationStatusExtendedInfoClassification(val)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &o.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &o.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &o.Status)
@@ -11244,8 +11244,8 @@ func (o *OperationWorkerResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PointInTimeRange.
 func (p PointInTimeRange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endTime", p.EndTime)
-	populateTimeRFC3339(objectMap, "startTime", p.StartTime)
+	populateDateTimeRFC3339(objectMap, "endTime", p.EndTime)
+	populateDateTimeRFC3339(objectMap, "startTime", p.StartTime)
 	return json.Marshal(objectMap)
 }
 
@@ -11259,10 +11259,10 @@ func (p *PointInTimeRange) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &p.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &p.EndTime)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &p.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &p.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -11755,13 +11755,13 @@ func (p ProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupSetName", p.BackupSetName)
 	populate(objectMap, "containerName", p.ContainerName)
 	populate(objectMap, "createMode", p.CreateMode)
-	populateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", p.DeferredDeleteTimeInUTC)
+	populateDateTimeRFC3339(objectMap, "deferredDeleteTimeInUTC", p.DeferredDeleteTimeInUTC)
 	populate(objectMap, "deferredDeleteTimeRemaining", p.DeferredDeleteTimeRemaining)
 	populate(objectMap, "isArchiveEnabled", p.IsArchiveEnabled)
 	populate(objectMap, "isDeferredDeleteScheduleUpcoming", p.IsDeferredDeleteScheduleUpcoming)
 	populate(objectMap, "isRehydrate", p.IsRehydrate)
 	populate(objectMap, "isScheduledForDeferredDelete", p.IsScheduledForDeferredDelete)
-	populateTimeRFC3339(objectMap, "lastRecoveryPoint", p.LastRecoveryPoint)
+	populateDateTimeRFC3339(objectMap, "lastRecoveryPoint", p.LastRecoveryPoint)
 	populate(objectMap, "policyId", p.PolicyID)
 	populate(objectMap, "policyName", p.PolicyName)
 	objectMap["protectedItemType"] = p.ProtectedItemType
@@ -11794,7 +11794,7 @@ func (p *ProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreateMode", &p.CreateMode)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeInUTC":
-			err = unpopulateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &p.DeferredDeleteTimeInUTC)
+			err = unpopulateDateTimeRFC3339(val, "DeferredDeleteTimeInUTC", &p.DeferredDeleteTimeInUTC)
 			delete(rawMsg, key)
 		case "deferredDeleteTimeRemaining":
 			err = unpopulate(val, "DeferredDeleteTimeRemaining", &p.DeferredDeleteTimeRemaining)
@@ -11812,7 +11812,7 @@ func (p *ProtectedItem) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "IsScheduledForDeferredDelete", &p.IsScheduledForDeferredDelete)
 			delete(rawMsg, key)
 		case "lastRecoveryPoint":
-			err = unpopulateTimeRFC3339(val, "LastRecoveryPoint", &p.LastRecoveryPoint)
+			err = unpopulateDateTimeRFC3339(val, "LastRecoveryPoint", &p.LastRecoveryPoint)
 			delete(rawMsg, key)
 		case "policyId":
 			err = unpopulate(val, "PolicyID", &p.PolicyID)
@@ -13412,9 +13412,9 @@ func (s SimpleSchedulePolicy) MarshalJSON() ([]byte, error) {
 	objectMap["schedulePolicyType"] = "SimpleSchedulePolicy"
 	populate(objectMap, "scheduleRunDays", s.ScheduleRunDays)
 	populate(objectMap, "scheduleRunFrequency", s.ScheduleRunFrequency)
-	aux := make([]*timeRFC3339, len(s.ScheduleRunTimes), len(s.ScheduleRunTimes))
+	aux := make([]*dateTimeRFC3339, len(s.ScheduleRunTimes), len(s.ScheduleRunTimes))
 	for i := 0; i < len(s.ScheduleRunTimes); i++ {
-		aux[i] = (*timeRFC3339)(s.ScheduleRunTimes[i])
+		aux[i] = (*dateTimeRFC3339)(s.ScheduleRunTimes[i])
 	}
 	populate(objectMap, "scheduleRunTimes", aux)
 	populate(objectMap, "scheduleWeeklyFrequency", s.ScheduleWeeklyFrequency)
@@ -13443,7 +13443,7 @@ func (s *SimpleSchedulePolicy) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScheduleRunFrequency", &s.ScheduleRunFrequency)
 			delete(rawMsg, key)
 		case "scheduleRunTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "ScheduleRunTimes", &aux)
 			for _, au := range aux {
 				s.ScheduleRunTimes = append(s.ScheduleRunTimes, (*time.Time)(au))
@@ -13968,13 +13968,13 @@ func (v VaultJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "activityId", v.ActivityID)
 	populate(objectMap, "backupManagementType", v.BackupManagementType)
 	populate(objectMap, "duration", v.Duration)
-	populateTimeRFC3339(objectMap, "endTime", v.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", v.EndTime)
 	populate(objectMap, "entityFriendlyName", v.EntityFriendlyName)
 	populate(objectMap, "errorDetails", v.ErrorDetails)
 	populate(objectMap, "extendedInfo", v.ExtendedInfo)
 	objectMap["jobType"] = "VaultJob"
 	populate(objectMap, "operation", v.Operation)
-	populateTimeRFC3339(objectMap, "startTime", v.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", v.StartTime)
 	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
@@ -14001,7 +14001,7 @@ func (v *VaultJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Duration", &v.Duration)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &v.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &v.EndTime)
 			delete(rawMsg, key)
 		case "entityFriendlyName":
 			err = unpopulate(val, "EntityFriendlyName", &v.EntityFriendlyName)
@@ -14019,7 +14019,7 @@ func (v *VaultJob) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Operation", &v.Operation)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &v.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &v.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &v.Status)
@@ -14157,9 +14157,9 @@ func (w WeeklyRetentionSchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "daysOfTheWeek", w.DaysOfTheWeek)
 	populate(objectMap, "retentionDuration", w.RetentionDuration)
-	aux := make([]*timeRFC3339, len(w.RetentionTimes), len(w.RetentionTimes))
+	aux := make([]*dateTimeRFC3339, len(w.RetentionTimes), len(w.RetentionTimes))
 	for i := 0; i < len(w.RetentionTimes); i++ {
-		aux[i] = (*timeRFC3339)(w.RetentionTimes[i])
+		aux[i] = (*dateTimeRFC3339)(w.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
 	return json.Marshal(objectMap)
@@ -14181,7 +14181,7 @@ func (w *WeeklyRetentionSchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RetentionDuration", &w.RetentionDuration)
 			delete(rawMsg, key)
 		case "retentionTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "RetentionTimes", &aux)
 			for _, au := range aux {
 				w.RetentionTimes = append(w.RetentionTimes, (*time.Time)(au))
@@ -14199,9 +14199,9 @@ func (w *WeeklyRetentionSchedule) UnmarshalJSON(data []byte) error {
 func (w WeeklySchedule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "scheduleRunDays", w.ScheduleRunDays)
-	aux := make([]*timeRFC3339, len(w.ScheduleRunTimes), len(w.ScheduleRunTimes))
+	aux := make([]*dateTimeRFC3339, len(w.ScheduleRunTimes), len(w.ScheduleRunTimes))
 	for i := 0; i < len(w.ScheduleRunTimes); i++ {
-		aux[i] = (*timeRFC3339)(w.ScheduleRunTimes[i])
+		aux[i] = (*dateTimeRFC3339)(w.ScheduleRunTimes[i])
 	}
 	populate(objectMap, "scheduleRunTimes", aux)
 	return json.Marshal(objectMap)
@@ -14220,7 +14220,7 @@ func (w *WeeklySchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ScheduleRunDays", &w.ScheduleRunDays)
 			delete(rawMsg, key)
 		case "scheduleRunTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "ScheduleRunTimes", &aux)
 			for _, au := range aux {
 				w.ScheduleRunTimes = append(w.ScheduleRunTimes, (*time.Time)(au))
@@ -14527,9 +14527,9 @@ func (y YearlyRetentionSchedule) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "retentionScheduleDaily", y.RetentionScheduleDaily)
 	populate(objectMap, "retentionScheduleFormatType", y.RetentionScheduleFormatType)
 	populate(objectMap, "retentionScheduleWeekly", y.RetentionScheduleWeekly)
-	aux := make([]*timeRFC3339, len(y.RetentionTimes), len(y.RetentionTimes))
+	aux := make([]*dateTimeRFC3339, len(y.RetentionTimes), len(y.RetentionTimes))
 	for i := 0; i < len(y.RetentionTimes); i++ {
-		aux[i] = (*timeRFC3339)(y.RetentionTimes[i])
+		aux[i] = (*dateTimeRFC3339)(y.RetentionTimes[i])
 	}
 	populate(objectMap, "retentionTimes", aux)
 	return json.Marshal(objectMap)
@@ -14560,7 +14560,7 @@ func (y *YearlyRetentionSchedule) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "RetentionScheduleWeekly", &y.RetentionScheduleWeekly)
 			delete(rawMsg, key)
 		case "retentionTimes":
-			var aux []*timeRFC3339
+			var aux []*dateTimeRFC3339
 			err = unpopulate(val, "RetentionTimes", &aux)
 			for _, au := range aux {
 				y.RetentionTimes = append(y.RetentionTimes, (*time.Time)(au))

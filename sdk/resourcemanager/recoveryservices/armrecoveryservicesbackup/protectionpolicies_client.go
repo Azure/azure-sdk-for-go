@@ -32,7 +32,7 @@ type ProtectionPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewProtectionPoliciesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *ProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters ProtectionPolicyResource, options *ProtectionPoliciesClientCreateOrUpdateOptions) (ProtectionPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProtectionPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, vaultName, resourceGroupName, policyName, parameters, options)
 	if err != nil {
 		return ProtectionPoliciesClientCreateOrUpdateResponse{}, err
@@ -130,10 +134,14 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ProtectionPoliciesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectionPoliciesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectionPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectionPoliciesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -144,6 +152,10 @@ func (client *ProtectionPoliciesClient) BeginDelete(ctx context.Context, vaultNa
 // Generated from API version 2023-04-01
 func (client *ProtectionPoliciesClient) deleteOperation(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *ProtectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProtectionPoliciesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -200,6 +212,10 @@ func (client *ProtectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 //   - options - ProtectionPoliciesClientGetOptions contains the optional parameters for the ProtectionPoliciesClient.Get method.
 func (client *ProtectionPoliciesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, options *ProtectionPoliciesClientGetOptions) (ProtectionPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, policyName, options)
 	if err != nil {
 		return ProtectionPoliciesClientGetResponse{}, err

@@ -32,7 +32,7 @@ type JobDetailsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobDetailsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobDetailsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredentia
 //   - options - JobDetailsClientGetOptions contains the optional parameters for the JobDetailsClient.Get method.
 func (client *JobDetailsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobDetailsClientGetOptions) (JobDetailsClientGetResponse, error) {
 	var err error
+	const operationName = "JobDetailsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, jobName, options)
 	if err != nil {
 		return JobDetailsClientGetResponse{}, err

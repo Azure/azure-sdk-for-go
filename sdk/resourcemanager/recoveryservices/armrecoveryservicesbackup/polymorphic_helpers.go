@@ -285,14 +285,14 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 	}
 	var b ProtectionIntentClassification
 	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeAzureResourceItem):
-		b = &AzureResourceProtectionIntent{}
 	case "ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent":
 		b = &AzureWorkloadAutoProtectionIntent{}
-	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
-		b = &AzureWorkloadContainerAutoProtectionIntent{}
 	case "ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent":
 		b = &AzureWorkloadSQLAutoProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureResourceItem):
+		b = &AzureResourceProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
+		b = &AzureWorkloadContainerAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
 		b = &AzureRecoveryServiceVaultProtectionIntent{}
 	default:

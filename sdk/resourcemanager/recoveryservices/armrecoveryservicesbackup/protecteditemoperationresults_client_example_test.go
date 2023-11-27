@@ -49,7 +49,7 @@ func ExampleProtectedItemOperationResultsClient_Get() {
 	// 		FriendlyName: to.Ptr("netvmtestv2vm1"),
 	// 		HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 	// 		LastBackupStatus: to.Ptr("Completed"),
-	// 		LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+	// 		LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048Z"); return t}()),
 	// 		ProtectedItemDataID: to.Ptr("636482643132986882"),
 	// 		ProtectionState: to.Ptr(armrecoveryservicesbackup.ProtectionStateProtected),
 	// 		ProtectionStatus: to.Ptr("Healthy"),

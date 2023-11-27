@@ -32,7 +32,7 @@ type BackupResourceStorageConfigsNonCRRClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupResourceStorageConfigsNonCRRClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupResourceStorageConfigsNonCRRClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupResourceStorageConfigsNonCRRClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewBackupResourceStorageConfigsNonCRRClient(subscriptionID string, credenti
 //     method.
 func (client *BackupResourceStorageConfigsNonCRRClient) Get(ctx context.Context, vaultName string, resourceGroupName string, options *BackupResourceStorageConfigsNonCRRClientGetOptions) (BackupResourceStorageConfigsNonCRRClientGetResponse, error) {
 	var err error
+	const operationName = "BackupResourceStorageConfigsNonCRRClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
 	if err != nil {
 		return BackupResourceStorageConfigsNonCRRClientGetResponse{}, err
@@ -115,6 +119,10 @@ func (client *BackupResourceStorageConfigsNonCRRClient) getHandleResponse(resp *
 //     method.
 func (client *BackupResourceStorageConfigsNonCRRClient) Patch(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceConfigResource, options *BackupResourceStorageConfigsNonCRRClientPatchOptions) (BackupResourceStorageConfigsNonCRRClientPatchResponse, error) {
 	var err error
+	const operationName = "BackupResourceStorageConfigsNonCRRClient.Patch"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.patchCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return BackupResourceStorageConfigsNonCRRClientPatchResponse{}, err
@@ -170,6 +178,10 @@ func (client *BackupResourceStorageConfigsNonCRRClient) patchCreateRequest(ctx c
 //     method.
 func (client *BackupResourceStorageConfigsNonCRRClient) Update(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceConfigResource, options *BackupResourceStorageConfigsNonCRRClientUpdateOptions) (BackupResourceStorageConfigsNonCRRClientUpdateResponse, error) {
 	var err error
+	const operationName = "BackupResourceStorageConfigsNonCRRClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return BackupResourceStorageConfigsNonCRRClientUpdateResponse{}, err

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createCompilationJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createCompilationJob.json
 func ExampleDscCompilationJobClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleDscCompilationJobClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCompilationJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCompilationJob.json
 func ExampleDscCompilationJobClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,10 +71,10 @@ func ExampleDscCompilationJobClient_Get() {
 	// 		Configuration: &armautomation.DscConfigurationAssociationProperty{
 	// 			Name: to.Ptr("SetupServer"),
 	// 		},
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903Z"); return t}()),
 	// 		JobID: to.Ptr("ce6fe3e3-9db3-4096-a6b4-82bfb4c10a9a"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903+00:00"); return t}()),
-	// 		LastStatusModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903Z"); return t}()),
+	// 		LastStatusModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:26.903Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armautomation.JobProvisioningStateSucceeded),
 	// 		Status: to.Ptr(armautomation.JobStatusNew),
 	// 		StatusDetails: to.Ptr("None"),
@@ -82,7 +82,7 @@ func ExampleDscCompilationJobClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCompilationJobsByAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCompilationJobsByAutomationAccount.json
 func ExampleDscCompilationJobClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,10 +114,10 @@ func ExampleDscCompilationJobClient_NewListByAutomationAccountPager() {
 		// 				Configuration: &armautomation.DscConfigurationAssociationProperty{
 		// 					Name: to.Ptr("TestDscConfiguration"),
 		// 				},
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:24.59+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:24.590Z"); return t}()),
 		// 				JobID: to.Ptr("e6e7fbab-183c-405a-afe6-9eb5db97921a"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:58.5933333+00:00"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:52.9833333+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:58.593Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T19:45:52.983Z"); return t}()),
 		// 				Status: to.Ptr(armautomation.JobStatusSuspended),
 		// 			},
 		// 		},
@@ -129,11 +129,11 @@ func ExampleDscCompilationJobClient_NewListByAutomationAccountPager() {
 		// 				Configuration: &armautomation.DscConfigurationAssociationProperty{
 		// 					Name: to.Ptr("NewDscConfiguration"),
 		// 				},
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:29:07.74+00:00"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:29:07.740Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.600Z"); return t}()),
 		// 				JobID: to.Ptr("111d4e06-2d88-46b4-8500-7febd4906838"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.6+00:00"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:26.48+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.600Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:26.480Z"); return t}()),
 		// 				Status: to.Ptr(armautomation.JobStatusCompleted),
 		// 			},
 		// 	}},
@@ -141,7 +141,7 @@ func ExampleDscCompilationJobClient_NewListByAutomationAccountPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamByJobStreamId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamByJobStreamId.json
 func ExampleDscCompilationJobClient_GetStream() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleDscCompilationJobClient_GetStream() {
 	// 		StreamText: to.Ptr(""),
 	// 		StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 		Summary: to.Ptr(""),
-	// 		Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.1684835+00:00"); return t}()),
+	// 		Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.168Z"); return t}()),
 	// 		Value: map[string]any{
 	// 			"PSComputerName": "localhost",
 	// 			"PSShowComputerName": true,

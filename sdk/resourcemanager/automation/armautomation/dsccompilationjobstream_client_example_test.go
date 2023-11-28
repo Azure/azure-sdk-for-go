@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/compilationJobStreamList.json
 func ExampleDscCompilationJobStreamClient_ListByJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062355996678_00000000000000000001"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeWarning),
 	// 				Summary: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838:[localhost]:The 'Microsoft.PowerShell.Management' module was not imported because the 'Microsoft.PowerShell.Management' snap-in was already imported."),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:35.5996678+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:35.599Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -52,7 +52,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062380840740_00000000000000000002"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeWarning),
 	// 				Summary: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838:[localhost]:The configuration 'NewDscConfiguration' is loading one or more built-in resources without explicitly importing associated modules. Add Import-DscResource –ModuleName 'PSDesiredStateConfiguration' to your configuration to avoid this message."),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.084074+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.084Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -61,7 +61,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062384590127_00000000000000000003"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeWarning),
 	// 				Summary: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838:[localhost]:The 'Microsoft.PowerShell.Management' module was not imported because the 'Microsoft.PowerShell.Management' snap-in was already imported."),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.4590127+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.459Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -70,7 +70,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062387245395_00000000000000000004"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeWarning),
 	// 				Summary: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838:[localhost]:The configuration 'NewDscConfiguration' is loading one or more built-in resources without explicitly importing associated modules. Add Import-DscResource –ModuleName 'PSDesiredStateConfiguration' to your configuration to avoid this message."),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.7245395+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:38.724Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -79,7 +79,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062417091181_00000000000000000005"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 				Summary: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:41.7091181+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:41.709Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -88,7 +88,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062418809632_00000000000000000006"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 				Summary: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:41.8809632+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:41.880Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -97,7 +97,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062420371712_00000000000000000007"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 				Summary: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.0371712+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.037Z"); return t}()),
 	// 			},
 	// 		},
 	// 		{
@@ -106,7 +106,7 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	// 				JobStreamID: to.Ptr("836d4e06-2d88-46b4-8500-7febd4906838_00636481062421684835_00000000000000000008"),
 	// 				StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 				Summary: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.1684835+00:00"); return t}()),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:30:42.168Z"); return t}()),
 	// 			},
 	// 	}},
 	// }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/updateAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/updateAutomationAccount.json
 func ExampleAccountClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,9 +52,9 @@ func ExampleAccountClient_Update() {
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armautomation.AccountProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267Z"); return t}()),
 	// 		SKU: &armautomation.SKU{
 	// 			Name: to.Ptr(armautomation.SKUNameEnumFree),
 	// 		},
@@ -63,7 +63,7 @@ func ExampleAccountClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/createOrUpdateAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/createOrUpdateAutomationAccount.json
 func ExampleAccountClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,9 +97,9 @@ func ExampleAccountClient_CreateOrUpdate() {
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armautomation.AccountProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:21:15.187+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:21:15.187Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("myEmaild@microsoft.com"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:21:15.187+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:21:15.187Z"); return t}()),
 	// 		SKU: &armautomation.SKU{
 	// 			Name: to.Ptr(armautomation.SKUNameEnumFree),
 	// 		},
@@ -108,7 +108,7 @@ func ExampleAccountClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deleteAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/deleteAutomationAccount.json
 func ExampleAccountClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleAccountClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getAutomationAccount.json
 func ExampleAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,9 +151,9 @@ func ExampleAccountClient_Get() {
 	// 	Tags: map[string]*string{
 	// 	},
 	// 	Properties: &armautomation.AccountProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T01:13:43.267Z"); return t}()),
 	// 		SKU: &armautomation.SKU{
 	// 			Name: to.Ptr(armautomation.SKUNameEnumFree),
 	// 		},
@@ -162,7 +162,7 @@ func ExampleAccountClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsByResourceGroup.json
 func ExampleAccountClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,9 +192,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myaccount"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T00:47:04.227+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T00:47:04.227Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -204,9 +204,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccount123"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T00:32:32.52+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T00:32:32.520Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -216,9 +216,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccountasfads"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.270Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.27+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.270Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -228,9 +228,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount1"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.26+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.260Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.26+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.260Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -240,9 +240,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:10:24.523+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:10:24.523Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:12.027+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:12.027Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -252,9 +252,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount2"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.31+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.310Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.31+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.310Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -264,9 +264,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount3"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -276,9 +276,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount4"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.9+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.900Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.9+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.900Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -288,9 +288,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount6"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 		},
@@ -300,9 +300,9 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount7"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943Z"); return t}()),
 		// 				State: to.Ptr(armautomation.AutomationAccountStateOk),
 		// 			},
 		// 	}},
@@ -310,7 +310,7 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/listAutomationAccountsBySubscription.json
 func ExampleAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,8 +340,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/JPEDeploy1/providers/Microsoft.Automation/automationAccounts/JPEDDeployDSC1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:48:25.143+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.06+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:48:25.143Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.060Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -350,8 +350,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/jpeDemo1/providers/Microsoft.Automation/automationAccounts/jpeDemoAutomation1"),
 		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-25T02:04:10.223+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.06+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-25T02:04:10.223Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.060Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -360,8 +360,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/ASERG1/providers/Microsoft.Automation/automationAccounts/ASEAutomationAccount1"),
 		// 			Location: to.Ptr("australiasoutheast"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-04-12T05:19:19.48+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.64+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-04-12T05:19:19.480Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.640Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -370,8 +370,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/eus2Demo1/providers/Microsoft.Automation/automationAccounts/AAEU2DSCDemo"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-08-04T14:44:02.397+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-08-04T14:44:02.397Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -380,8 +380,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/eus2Demo1/providers/Microsoft.Automation/automationAccounts/AAEU2DSCDemo2"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-08-04T15:03:45.977+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-08-04T15:03:45.977Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -390,8 +390,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/aadscdemo1/providers/Microsoft.Automation/automationAccounts/AAsnoverDemo1"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-01-29T02:29:13.18+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-01-29T02:29:13.180Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -400,8 +400,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/oaastest/providers/Microsoft.Automation/automationAccounts/automationaccdelete"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T20:30:49.97+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T20:30:49.970Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -410,8 +410,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/aadscdemo2/providers/Microsoft.Automation/automationAccounts/mytest1212"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-12T20:25:36.34+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-12T20:25:36.340Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -420,8 +420,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/CIDRG/providers/Microsoft.Automation/automationAccounts/deleteacc"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T22:13:39.79+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T22:13:39.790Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -430,8 +430,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/test/providers/Microsoft.Automation/automationAccounts/deleteme"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T21:56:10.267+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T21:56:10.267Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -440,8 +440,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/tst/providers/Microsoft.Automation/automationAccounts/deleteme3"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T22:00:51.333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T22:00:51.333Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -450,8 +450,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/OaaSCSXASVNLMD6CUTP2UKUNHMCSLLJRVOSRAS2HOBKX4B3A3UBNLZWZEA-East-US/providers/Microsoft.Automation/automationAccounts/Eus2Account1"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-19T19:07:43.2+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-19T19:07:43.200Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -460,8 +460,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/EUS2Deploy1/providers/Microsoft.Automation/automationAccounts/EUS2DDeployDSC1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:50:56.16+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:50:56.160Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -470,8 +470,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/OaaSCSXASVNLMD6CUTP2UKUNHMCSLLJRVOSRAS2HOBKX4B3A3UBNLZWZEA-East-US/providers/Microsoft.Automation/automationAccounts/eusAccount2"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-19T19:12:19.853+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-19T19:12:19.853Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -480,8 +480,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/myProdAutomation1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T21:31:06.333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T21:31:06.333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T21:31:06.333Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T21:31:06.333Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -490,8 +490,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/myProdDevAutomation"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-27T21:11:16.71+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-27T21:11:16.710Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -500,8 +500,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/myProdPublicAutomation"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-18T19:49:08.893+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-18T19:49:08.893Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -510,8 +510,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myTestaccount"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T00:47:04.227+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T00:47:04.227Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -520,8 +520,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/kjohn-sandbox-eus"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T17:29:18.493+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T17:29:18.493+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T17:29:18.493Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T17:29:18.493Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -530,8 +530,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/kjohn-sandbox-eus-proddev"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-06T02:33:10.29+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-06T02:33:10.290Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -540,8 +540,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/kjohn-rg/providers/Microsoft.Automation/automationAccounts/kjohn-sandbox-eus-prodtest"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-10T23:40:13.103+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-10T23:40:13.103Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -550,8 +550,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/kjohn-rg/providers/Microsoft.Automation/automationAccounts/kjohn-sandbox-eus-prodtest2"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-11T00:20:50.463+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-11T00:20:50.463Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -560,8 +560,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/LinuxPatchingOpsEUS-AA2"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T03:17:00.043+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T03:17:00.043Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -570,8 +570,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/LinuxTestNewAA"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T18:50:54.887+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T18:50:54.887Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -580,8 +580,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/OaasCSsubid-east-us/providers/Microsoft.Automation/automationAccounts/psrdfeAccount2"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-05-05T00:26:49.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-05-05T00:26:49.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -590,8 +590,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/myrg/providers/Microsoft.Automation/automationAccounts/my-account-one"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-27T17:54:31.007+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-27T17:54:31.007Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -600,8 +600,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/myku-no-vms"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-30T01:12:00.853+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-30T01:12:00.853Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -610,8 +610,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/myku-win-vms"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-30T01:17:07.613+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-30T01:17:07.613Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -620,8 +620,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/aadscdemo2/providers/Microsoft.Automation/automationAccounts/SVCPrnAcctTest1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T20:12:48.163+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T20:12:48.163Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -630,8 +630,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/tesdbgfvfhgjghjgh/providers/Microsoft.Automation/automationAccounts/testfgbhfghfgh"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-12T20:48:59.3+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-12T20:48:59.300Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -640,8 +640,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-eus/providers/Microsoft.Automation/automationAccounts/test-linux-linuxopsworkspace"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T18:59:56.99+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T18:59:56.990Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -650,8 +650,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my-dev/providers/Microsoft.Automation/automationAccounts/my-dsc-test-1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-10T00:21:05.133+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-10T00:21:05.133Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -660,8 +660,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my-dev/providers/Microsoft.Automation/automationAccounts/my-test-automation-1"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-09T19:57:50.043+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-09T19:57:50.043Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -670,8 +670,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/myresourcegroupeus/providers/Microsoft.Automation/automationAccounts/myAccount"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T19:10:30.453+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T19:10:30.453+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T19:10:30.453Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T19:10:30.453Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -680,8 +680,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccount123"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T00:32:32.52+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T00:32:32.520Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -690,8 +690,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccountasfads"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:21:03.270Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -700,8 +700,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/myResourceGroupEUS/providers/Microsoft.Automation/automationAccounts/myAccountEUS"),
 		// 			Location: to.Ptr("eastus2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T23:13:38.873+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.4+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-29T23:13:38.873Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.400Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -710,8 +710,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount1"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.26+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.26+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.260Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:22:33.260Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -720,8 +720,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:10:24.523+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:12.027+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:10:24.523Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:12.027Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -730,8 +730,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount2"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.31+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.31+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.310Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:20.310Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -740,8 +740,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount3"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-24T23:24:43.967Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -750,8 +750,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount4"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.9+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.9+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.900Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:04:56.900Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -760,8 +760,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount6"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:10:44.567Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -770,8 +770,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount7"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-25T02:19:17.943Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -780,8 +780,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/WEURG1/providers/Microsoft.Automation/automationAccounts/CSSCase1"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-18T05:53:58.91+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-18T05:53:58.910Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -790,8 +790,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/deleteme"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T21:48:47.98+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T21:48:47.980Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -800,8 +800,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/mms-weu/providers/Microsoft.Automation/automationAccounts/LinuxPatchingOpsWEU-AA2"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T02:27:35.713+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-24T02:27:35.713Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -810,8 +810,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my-dev/providers/Microsoft.Automation/automationAccounts/LinuxPatchJobs"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-14T22:02:28.223+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-14T22:02:28.223Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -820,8 +820,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/IgnniteRG/providers/Microsoft.Automation/automationAccounts/MyCoolAAC1"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-22T05:59:22.443+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-22T05:59:22.443Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -830,8 +830,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/IgnniteRG/providers/Microsoft.Automation/automationAccounts/MyCoolACT1"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-22T06:05:18.5+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-22T06:05:18.500Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -840,8 +840,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/OaaSCSXASVNLMD6CUTP2UKUNHMCSLLJRVOSRAS2HOBKX4B3A3UBNLZWZEA-West-Europe/providers/Microsoft.Automation/automationAccounts/MyTestmyTest-WEU"),
 		// 			Location: to.Ptr("West Europe"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-11-12T02:48:51.473+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-11-12T02:48:51.473Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.373Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -850,8 +850,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/WEDeploy1/providers/Microsoft.Automation/automationAccounts/WEDDeployDSC1"),
 		// 			Location: to.Ptr("westeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:20:01.73+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-13T08:43:47.36+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T23:20:01.730Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-13T08:43:47.360Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -860,8 +860,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/SEADeploy1/providers/Microsoft.Automation/automationAccounts/SEADDeployDSC1"),
 		// 			Location: to.Ptr("southeamyia"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T19:06:39.1+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.683+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-28T19:06:39.100Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.683Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -870,8 +870,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/seaDemo1/providers/Microsoft.Automation/automationAccounts/seaDemoAutomation1"),
 		// 			Location: to.Ptr("southeamyia"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-25T01:31:32.15+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.683+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-04-25T01:31:32.150Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:16.683Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -880,8 +880,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/aadscdemo1/providers/Microsoft.Automation/automationAccounts/AAsnoverDemo2"),
 		// 			Location: to.Ptr("South Central US"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-01-29T02:30:05.84+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-01-29T02:30:05.840Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -890,8 +890,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/SCUSDeploy1/providers/Microsoft.Automation/automationAccounts/SCUSDDeployDSC1"),
 		// 			Location: to.Ptr("southcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-06-04T23:06:44.897+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-06-04T23:06:44.897Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -900,8 +900,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/eus2Demo1/providers/Microsoft.Automation/automationAccounts/scusposthydtest1"),
 		// 			Location: to.Ptr("South Central US"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-06-04T16:44:18.823+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-06-04T16:44:18.823Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -910,8 +910,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/OaaSCSXASVNLMD6CUTP2UKUNHMCSLLJRVOSRAS2HOBKX4B3A3UBNLZWZEA-South-Central-US/providers/Microsoft.Automation/automationAccounts/scustestaccount1"),
 		// 			Location: to.Ptr("South Central US"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-05-30T01:54:57.313+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-05-30T01:54:57.313Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:17.107Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -920,8 +920,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/UKSRG1/providers/Microsoft.Automation/automationAccounts/AAUKSmyTest1"),
 		// 			Location: to.Ptr("uksouth"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-15T02:31:03.19+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-15T02:31:03.19+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-15T02:31:03.190Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-15T02:31:03.190Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -930,8 +930,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/Gaurav_machines/providers/Microsoft.Automation/automationAccounts/Tip-WCUS-AutomationAccount"),
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-08T19:53:36.2933333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-08T19:53:36.2933333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-08T19:53:36.293Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-08T19:53:36.293Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -940,8 +940,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/myRG/providers/Microsoft.Automation/automationAccounts/aa-my"),
 		// 			Location: to.Ptr("northeurope"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-21T18:59:56.26+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.457+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-21T18:59:56.260Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:15.457Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -950,8 +950,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/CIDRG/providers/Microsoft.Automation/automationAccounts/CIDAccout1"),
 		// 			Location: to.Ptr("Central India"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-02-24T20:04:58.867+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.003+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-02-24T20:04:58.867Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.003Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -960,8 +960,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/aaspntest"),
 		// 			Location: to.Ptr("northcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-06T17:18:51.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.37+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-06T17:18:51.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.370Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -970,8 +970,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/dsccomposite"),
 		// 			Location: to.Ptr("northcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-13T17:37:55.163+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T17:19:15.09+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-13T17:37:55.163Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T17:19:15.090Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -980,8 +980,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/dsclinux"),
 		// 			Location: to.Ptr("northcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T21:50:05.493+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T21:50:05.493+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T21:50:05.493Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T21:50:05.493Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -990,8 +990,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/mydsc"),
 		// 			Location: to.Ptr("northcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-01T17:28:36.197+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.37+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-01T17:28:36.197Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-09T21:35:19.370Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -1000,8 +1000,8 @@ func ExampleAccountClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/my/providers/Microsoft.Automation/automationAccounts/mydsc2"),
 		// 			Location: to.Ptr("northcentralus"),
 		// 			Properties: &armautomation.AccountProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-01T18:50:06.063+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-11T01:33:13.113+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-11-01T18:50:06.063Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-11T01:33:13.113Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/publishRunbook.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/publishRunbook.json
 func ExampleRunbookClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleRunbookClient_BeginPublish() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookContent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbookContent.json
 func ExampleRunbookClient_GetContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleRunbookClient_GetContent() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbook.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/getRunbook.json
 func ExampleRunbookClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,10 +86,10 @@ func ExampleRunbookClient_Get() {
 	// 	Etag: to.Ptr("\"636263335437500000\""),
 	// 	Properties: &armautomation.RunbookProperties{
 	// 		Description: to.Ptr("Description of the Runbook"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.75+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.750Z"); return t}()),
 	// 		JobCount: to.Ptr[int32](0),
 	// 		LastModifiedBy: to.Ptr("myEmaild@microsoft.com"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.75+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.750Z"); return t}()),
 	// 		LogActivityTrace: to.Ptr[int32](1),
 	// 		LogProgress: to.Ptr(true),
 	// 		LogVerbose: to.Ptr(false),
@@ -104,7 +104,7 @@ func ExampleRunbookClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createOrUpdateRunbook.json
 func ExampleRunbookClient_CreateOrUpdate_createOrUpdateRunbookAndPublishIt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,10 +155,10 @@ func ExampleRunbookClient_CreateOrUpdate_createOrUpdateRunbookAndPublishIt() {
 	// 	Etag: to.Ptr("\"636263318866000000\""),
 	// 	Properties: &armautomation.RunbookProperties{
 	// 		Description: to.Ptr("Description of the Runbook"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:04:43.66+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:04:43.660Z"); return t}()),
 	// 		JobCount: to.Ptr[int32](0),
 	// 		LastModifiedBy: to.Ptr("myEmaild@microsoft.com"),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:04:46.6+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:04:46.600Z"); return t}()),
 	// 		LogActivityTrace: to.Ptr[int32](1),
 	// 		LogProgress: to.Ptr(true),
 	// 		LogVerbose: to.Ptr(true),
@@ -173,7 +173,7 @@ func ExampleRunbookClient_CreateOrUpdate_createOrUpdateRunbookAndPublishIt() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/createRunbookAsDraft.json
 func ExampleRunbookClient_CreateOrUpdate_createRunbookAsDraft() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,9 +217,9 @@ func ExampleRunbookClient_CreateOrUpdate_createRunbookAsDraft() {
 	// 	Etag: to.Ptr("\"636263318866000000\""),
 	// 	Properties: &armautomation.RunbookProperties{
 	// 		Description: to.Ptr("Description of the Runbook"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T03:25:59.097+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T03:25:59.097Z"); return t}()),
 	// 		JobCount: to.Ptr[int32](0),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T03:25:59.097+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-09T03:25:59.097Z"); return t}()),
 	// 		LogActivityTrace: to.Ptr[int32](0),
 	// 		LogProgress: to.Ptr(false),
 	// 		LogVerbose: to.Ptr(false),
@@ -232,7 +232,7 @@ func ExampleRunbookClient_CreateOrUpdate_createRunbookAsDraft() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/updateRunbook.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/updateRunbook.json
 func ExampleRunbookClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleRunbookClient_Update() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/deleteRunbook.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/deleteRunbook.json
 func ExampleRunbookClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleRunbookClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listRunbooksByAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2018-06-30/examples/listRunbooksByAutomationAccount.json
 func ExampleRunbookClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,8 +303,8 @@ func ExampleRunbookClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/ContoseAutomationAccount/runbooks/ASR-AddPublicIp"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.RunbookProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:25.78+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:25.81+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:25.780Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:25.810Z"); return t}()),
 		// 				LogActivityTrace: to.Ptr[int32](1),
 		// 				LogProgress: to.Ptr(true),
 		// 				LogVerbose: to.Ptr(true),
@@ -318,8 +318,8 @@ func ExampleRunbookClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/ContoseAutomationAccount/runbooks/AutoExport"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.RunbookProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:27.327+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:27.327+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:27.327Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:27.327Z"); return t}()),
 		// 				LogActivityTrace: to.Ptr[int32](1),
 		// 				LogProgress: to.Ptr(true),
 		// 				LogVerbose: to.Ptr(true),
@@ -333,8 +333,8 @@ func ExampleRunbookClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/ContoseAutomationAccount/runbooks/Get-AzureVMTutorial"),
 		// 			Location: to.Ptr("East US 2"),
 		// 			Properties: &armautomation.RunbookProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.75+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.75+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.750Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T21:32:23.750Z"); return t}()),
 		// 				LogActivityTrace: to.Ptr[int32](1),
 		// 				LogProgress: to.Ptr(true),
 		// 				LogVerbose: to.Ptr(false),

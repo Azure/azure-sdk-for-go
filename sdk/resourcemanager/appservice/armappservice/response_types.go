@@ -779,6 +779,12 @@ type EnvironmentsClientUpgradeResponse struct {
 	// placeholder for future response values
 }
 
+// GetUsagesInLocationClientListResponse contains the response from method GetUsagesInLocationClient.NewListPager.
+type GetUsagesInLocationClientListResponse struct {
+	// Collection of CSM usage quotas.
+	CsmUsageQuotaCollection
+}
+
 // GlobalClientGetDeletedWebAppResponse contains the response from method GlobalClient.GetDeletedWebApp.
 type GlobalClientGetDeletedWebAppResponse struct {
 	// A deleted app.
@@ -4000,6 +4006,12 @@ type WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse struct {
 	// List of available locations (regions or App Service Environments) for
 	// deployment of App Service resources.
 	DeploymentLocations
+}
+
+// WebSiteManagementClientListAseRegionsResponse contains the response from method WebSiteManagementClient.NewListAseRegionsPager.
+type WebSiteManagementClientListAseRegionsResponse struct {
+	// Collection of ASE regions.
+	AseRegionCollection
 }
 
 // WebSiteManagementClientListBillingMetersResponse contains the response from method WebSiteManagementClient.NewListBillingMetersPager.

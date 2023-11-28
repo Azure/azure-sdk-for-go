@@ -103,6 +103,12 @@ func (c *ClientFactory) NewEnvironmentsClient() *EnvironmentsClient {
 	return subClient
 }
 
+// NewGetUsagesInLocationClient creates a new instance of GetUsagesInLocationClient.
+func (c *ClientFactory) NewGetUsagesInLocationClient() *GetUsagesInLocationClient {
+	subClient, _ := NewGetUsagesInLocationClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewGlobalClient creates a new instance of GlobalClient.
 func (c *ClientFactory) NewGlobalClient() *GlobalClient {
 	subClient, _ := NewGlobalClient(c.subscriptionID, c.credential, c.options)

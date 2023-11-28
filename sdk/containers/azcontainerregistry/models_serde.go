@@ -187,6 +187,9 @@ func (m *ManifestAttributes) UnmarshalJSON(data []byte) error {
 		case "changeableAttributes":
 			err = unpopulate(val, "ChangeableAttributes", &m.ChangeableAttributes)
 			delete(rawMsg, key)
+		case "configMediaType":
+			err = unpopulate(val, "ConfigMediaType", &m.ConfigMediaType)
+			delete(rawMsg, key)
 		case "createdTime":
 			err = unpopulateTimeRFC3339(val, "CreatedOn", &m.CreatedOn)
 			delete(rawMsg, key)
@@ -195,6 +198,9 @@ func (m *ManifestAttributes) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "lastUpdateTime":
 			err = unpopulateTimeRFC3339(val, "LastUpdatedOn", &m.LastUpdatedOn)
+			delete(rawMsg, key)
+		case "mediaType":
+			err = unpopulate(val, "MediaType", &m.MediaType)
 			delete(rawMsg, key)
 		case "os":
 			err = unpopulate(val, "OperatingSystem", &m.OperatingSystem)

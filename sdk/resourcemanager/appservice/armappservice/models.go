@@ -510,6 +510,54 @@ type ArmPlan struct {
 	Version *string
 }
 
+// AseRegion - ASE region.
+type AseRegion struct {
+	// Kind of resource.
+	Kind *string
+
+	// ASE region resource specific properties
+	Properties *AseRegionProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource Name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// AseRegionCollection - Collection of ASE regions.
+type AseRegionCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*AseRegion
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// AseRegionProperties - ASE region resource specific properties
+type AseRegionProperties struct {
+	// Available OSs in region.
+	AvailableOS []*string
+
+	// Available Skus in region.
+	AvailableSKU []*string
+
+	// READ-ONLY; Dedicated host enabled.
+	DedicatedHost *bool
+
+	// READ-ONLY; Display name for region.
+	DisplayName *string
+
+	// READ-ONLY; Is region standard.
+	Standard *bool
+
+	// READ-ONLY; Zone redundant deployment enabled.
+	ZoneRedundant *bool
+}
+
 // AseV3NetworkingConfiguration - Full view of networking configuration for an ASE.
 type AseV3NetworkingConfiguration struct {
 	// Kind of resource.
@@ -2049,6 +2097,30 @@ type DaprComponent struct {
 
 	// Component version
 	Version *string
+}
+
+// DaprConfig - App Dapr configuration.
+type DaprConfig struct {
+	// Dapr application identifier
+	AppID *string
+
+	// Tells Dapr which port your application is listening on
+	AppPort *int32
+
+	// Enables API logging for the Dapr sidecar
+	EnableAPILogging *bool
+
+	// Boolean indicating if the Dapr side car is enabled
+	Enabled *bool
+
+	// Increasing max size of request body http servers parameter in MB to handle uploading of big files. Default is 4 MB.
+	HTTPMaxRequestSize *int32
+
+	// Dapr max size of http header read buffer in KB to handle when sending multi-KB headers. Default is 65KB.
+	HTTPReadBufferSize *int32
+
+	// Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
+	LogLevel *DaprLogLevel
 }
 
 // DaprMetadata - Container App Dapr component metadata.
@@ -6391,6 +6463,15 @@ type ResourceCollection struct {
 	NextLink *string
 }
 
+// ResourceConfig - Function app resource requirements.
+type ResourceConfig struct {
+	// Required CPU in cores, e.g. 0.5
+	CPU *float64
+
+	// Required memory, e.g. "1Gi"
+	Memory *string
+}
+
 // ResourceHealthMetadata - Used for getting ResourceHealthCheck settings.
 type ResourceHealthMetadata struct {
 	// Kind of resource.
@@ -6503,6 +6584,11 @@ type ResourceNameAvailabilityRequest struct {
 
 	// REQUIRED; Resource type used for verification.
 	Type *CheckNameResourceTypes
+
+	// Azure Resource Manager ID of the customer's selected Container Apps Environment on which to host the Function app. This
+	// must be of the form
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}
+	EnvironmentID *string
 
 	// Is fully qualified domain name.
 	IsFqdn *bool
@@ -7273,6 +7359,9 @@ type SiteConfig struct {
 	// Application metadata. This property cannot be retrieved, since it may contain secrets.
 	Metadata []*NameValuePair
 
+	// The minimum strength TLS cipher suite allowed for an application
+	MinTLSCipherSuite *TLSCipherSuites
+
 	// MinTlsVersion: configures the minimum version of TLS required for SSL requests
 	MinTLSVersion *SupportedTLSVersions
 
@@ -7821,6 +7910,9 @@ type SiteProperties struct {
 	// Maximum allowed daily memory-time quota (applicable on dynamic apps only).
 	DailyMemoryTimeQuota *int32
 
+	// Dapr configuration of the app.
+	DaprConfig *DaprConfig
+
 	// true if the app is enabled; otherwise, false. Setting this value to false disables the app (takes the app offline).
 	Enabled *bool
 
@@ -7860,6 +7952,9 @@ type SiteProperties struct {
 	// true if reserved; otherwise, false.
 	Reserved *bool
 
+	// Function app resource requirements.
+	ResourceConfig *ResourceConfig
+
 	// true to stop SCM (KUDU) site when the app is stopped; otherwise, false. The default is false.
 	ScmSiteAlsoStopped *bool
 
@@ -7886,6 +7981,9 @@ type SiteProperties struct {
 	// Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined
 	// Routes applied.
 	VnetRouteAllEnabled *bool
+
+	// Workload profile name for function app to execute on.
+	WorkloadProfileName *string
 
 	// READ-ONLY; Management information availability state for the app.
 	AvailabilityState *SiteAvailabilityState

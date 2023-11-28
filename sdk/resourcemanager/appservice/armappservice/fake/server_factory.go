@@ -30,6 +30,7 @@ type ServerFactory struct {
 	DomainRegistrationProviderServer                   DomainRegistrationProviderServer
 	DomainsServer                                      DomainsServer
 	EnvironmentsServer                                 EnvironmentsServer
+	GetUsagesInLocationServer                          GetUsagesInLocationServer
 	GlobalServer                                       GlobalServer
 	KubeEnvironmentsServer                             KubeEnvironmentsServer
 	PlansServer                                        PlansServer
@@ -76,6 +77,7 @@ type ServerFactoryTransport struct {
 	trDomainRegistrationProviderServer                   *DomainRegistrationProviderServerTransport
 	trDomainsServer                                      *DomainsServerTransport
 	trEnvironmentsServer                                 *EnvironmentsServerTransport
+	trGetUsagesInLocationServer                          *GetUsagesInLocationServerTransport
 	trGlobalServer                                       *GlobalServerTransport
 	trKubeEnvironmentsServer                             *KubeEnvironmentsServerTransport
 	trPlansServer                                        *PlansServerTransport
@@ -157,6 +159,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "EnvironmentsClient":
 		initServer(s, &s.trEnvironmentsServer, func() *EnvironmentsServerTransport { return NewEnvironmentsServerTransport(&s.srv.EnvironmentsServer) })
 		resp, err = s.trEnvironmentsServer.Do(req)
+	case "GetUsagesInLocationClient":
+		initServer(s, &s.trGetUsagesInLocationServer, func() *GetUsagesInLocationServerTransport {
+			return NewGetUsagesInLocationServerTransport(&s.srv.GetUsagesInLocationServer)
+		})
+		resp, err = s.trGetUsagesInLocationServer.Do(req)
 	case "GlobalClient":
 		initServer(s, &s.trGlobalServer, func() *GlobalServerTransport { return NewGlobalServerTransport(&s.srv.GlobalServer) })
 		resp, err = s.trGlobalServer.Do(req)

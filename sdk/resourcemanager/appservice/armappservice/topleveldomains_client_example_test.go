@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/ListTopLevelDomains.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/ListTopLevelDomains.json
 func ExampleTopLevelDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleTopLevelDomainsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/GetTopLevelDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/GetTopLevelDomain.json
 func ExampleTopLevelDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleTopLevelDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/ListTopLevelDomainAgreements.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/ListTopLevelDomainAgreements.json
 func ExampleTopLevelDomainsClient_NewListAgreementsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

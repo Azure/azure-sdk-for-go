@@ -122,18 +122,6 @@ type AvailabilityStatusPropertiesRecentlyResolved struct {
 	UnavailableOccurredTime *time.Time
 }
 
-// EmergingIssue - On-going emerging issue from azure status.
-type EmergingIssue struct {
-	// Timestamp for when last time refreshed for ongoing emerging issue.
-	RefreshTimestamp *time.Time
-
-	// The list of emerging issues of active event type.
-	StatusActiveEvents []*StatusActiveEvent
-
-	// The list of emerging issues of banner type.
-	StatusBanners []*StatusBanner
-}
-
 // EmergingIssueImpact - Object of the emerging issue impact on services and regions.
 type EmergingIssueImpact struct {
 	// The impacted service id.
@@ -157,8 +145,14 @@ type EmergingIssueListResult struct {
 
 // EmergingIssuesGetResult - The Get EmergingIssues operation response.
 type EmergingIssuesGetResult struct {
-	// The emerging issue entity properties.
-	Properties *EmergingIssue
+	// Timestamp for when last time refreshed for ongoing emerging issue.
+	RefreshTimestamp *time.Time
+
+	// The list of emerging issues of active event type.
+	StatusActiveEvents []*StatusActiveEvent
+
+	// The list of emerging issues of banner type.
+	StatusBanners []*StatusBanner
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -175,68 +169,11 @@ type EmergingIssuesGetResult struct {
 
 // Event - Service health event
 type Event struct {
-	// Properties of event.
-	Properties *EventProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EventImpactedResource - Impacted resource for an event.
-type EventImpactedResource struct {
-	// Properties of impacted resource.
-	Properties *EventImpactedResourceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// EventImpactedResourceListResult - The List of eventImpactedResources operation response.
-type EventImpactedResourceListResult struct {
-	// REQUIRED; The list of eventImpactedResources.
-	Value []*EventImpactedResource
-
-	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource.
-	NextLink *string
-}
-
-// EventImpactedResourceProperties - Properties of impacted resource.
-type EventImpactedResourceProperties struct {
-	// Additional information.
-	Info []*KeyValueItem
-
-	// READ-ONLY; Impacted resource region name.
-	TargetRegion *string
-
-	// READ-ONLY; Identity for resource within Microsoft cloud.
-	TargetResourceID *string
-
-	// READ-ONLY; Resource type within Microsoft cloud.
-	TargetResourceType *string
-}
-
-// EventProperties - Properties of event.
-type EventProperties struct {
 	// Additional information
 	AdditionalInformation *EventPropertiesAdditionalInformation
+
+	// Azure Resource Graph query to fetch the affected resources from their existing Azure Resource Graph locations.
+	ArgQuery *string
 
 	// Article of event.
 	Article *EventPropertiesArticle
@@ -258,6 +195,9 @@ type EventProperties struct {
 
 	// Source of event.
 	EventSource *EventSourceValues
+
+	// Sub type of the event. Currently used to determine retirement communications for health advisory events
+	EventSubType *EventSubTypeValues
 
 	// Type of event.
 	EventType *EventTypeValues
@@ -298,6 +238,12 @@ type EventProperties struct {
 	// Useful links of event.
 	Links []*Link
 
+	// Unique identifier for planned maintenance event.
+	MaintenanceID *string
+
+	// The type of planned maintenance event.
+	MaintenanceType *string
+
 	// Is true if the event is platform initiated.
 	PlatformInitiated *bool
 
@@ -320,6 +266,69 @@ type EventProperties struct {
 
 	// Title text of event.
 	Title *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EventImpactedResource - Impacted resource for an event.
+type EventImpactedResource struct {
+	// Additional information.
+	Info []*KeyValueItem
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; End time of maintenance for the impacted resource.
+	MaintenanceEndTime *string
+
+	// READ-ONLY; Start time of maintenance for the impacted resource.
+	MaintenanceStartTime *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Resource group name of the impacted resource.
+	ResourceGroup *string
+
+	// READ-ONLY; Resource name of the impacted resource.
+	ResourceName *string
+
+	// READ-ONLY; Status of the impacted resource.
+	Status *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; Impacted resource region name.
+	TargetRegion *string
+
+	// READ-ONLY; Identity for resource within Microsoft cloud.
+	TargetResourceID *string
+
+	// READ-ONLY; Resource type within Microsoft cloud.
+	TargetResourceType *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EventImpactedResourceListResult - The List of eventImpactedResources operation response.
+type EventImpactedResourceListResult struct {
+	// REQUIRED; The list of eventImpactedResources.
+	Value []*EventImpactedResource
+
+	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource.
+	NextLink *string
 }
 
 // EventPropertiesAdditionalInformation - Additional information
@@ -459,8 +468,17 @@ type LinkDisplayText struct {
 
 // MetadataEntity - The metadata entity contract.
 type MetadataEntity struct {
-	// The metadata entity properties.
-	Properties *MetadataEntityProperties
+	// The list of scenarios applicable to this metadata entity.
+	ApplicableScenarios []*Scenario
+
+	// The list of keys on which this entity depends on.
+	DependsOn []*string
+
+	// The display name.
+	DisplayName *string
+
+	// The list of supported values.
+	SupportedValues []*MetadataSupportedValueDetail
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -482,21 +500,6 @@ type MetadataEntityListResult struct {
 
 	// The list of metadata entities.
 	Value []*MetadataEntity
-}
-
-// MetadataEntityProperties - The metadata entity properties
-type MetadataEntityProperties struct {
-	// The list of scenarios applicable to this metadata entity.
-	ApplicableScenarios []*Scenario
-
-	// The list of keys on which this entity depends on.
-	DependsOn []*string
-
-	// The display name.
-	DisplayName *string
-
-	// The list of supported values.
-	SupportedValues []*MetadataSupportedValueDetail
 }
 
 // MetadataSupportedValueDetail - The metadata supported value detail.

@@ -1,5 +1,27 @@
 # Release History
 
+## 2.0.0-beta.1 (2023-11-30)
+### Breaking Changes
+
+- Struct `EmergingIssue` has been removed
+- Struct `EventImpactedResourceProperties` has been removed
+- Struct `EventProperties` has been removed
+- Struct `MetadataEntityProperties` has been removed
+- Field `Properties` of struct `EmergingIssuesGetResult` has been removed
+- Field `Properties` of struct `Event` has been removed
+- Field `Properties` of struct `EventImpactedResource` has been removed
+- Field `Properties` of struct `MetadataEntity` has been removed
+
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New enum type `EventSubTypeValues` with values `EventSubTypeValuesRetirement`
+- New field `RefreshTimestamp`, `StatusActiveEvents`, `StatusBanners` in struct `EmergingIssuesGetResult`
+- New field `AdditionalInformation`, `ArgQuery`, `Article`, `Description`, `Duration`, `EnableChatWithUs`, `EnableMicrosoftSupport`, `EventLevel`, `EventSource`, `EventSubType`, `EventType`, `ExternalIncidentID`, `Faqs`, `Header`, `HirStage`, `Impact`, `ImpactMitigationTime`, `ImpactStartTime`, `ImpactType`, `IsHIR`, `LastUpdateTime`, `Level`, `Links`, `MaintenanceID`, `MaintenanceType`, `PlatformInitiated`, `Priority`, `Reason`, `RecommendedActions`, `Status`, `Summary`, `Title` in struct `Event`
+- New field `Info`, `MaintenanceEndTime`, `MaintenanceStartTime`, `ResourceGroup`, `ResourceName`, `Status`, `TargetRegion`, `TargetResourceID`, `TargetResourceType` in struct `EventImpactedResource`
+- New field `ApplicableScenarios`, `DependsOn`, `DisplayName`, `SupportedValues` in struct `MetadataEntity`
+
+
 ## 1.3.0 (2023-11-30)
 ### Features Added
 

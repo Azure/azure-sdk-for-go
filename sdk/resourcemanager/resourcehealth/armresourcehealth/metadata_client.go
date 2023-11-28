@@ -43,7 +43,7 @@ func NewMetadataClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // GetEntity - Gets the list of metadata entities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - name - Name of metadata entity.
 //   - options - MetadataClientGetEntityOptions contains the optional parameters for the MetadataClient.GetEntity method.
 func (client *MetadataClient) GetEntity(ctx context.Context, name string, options *MetadataClientGetEntityOptions) (MetadataClientGetEntityResponse, error) {
@@ -80,7 +80,7 @@ func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -97,7 +97,7 @@ func (client *MetadataClient) getEntityHandleResponse(resp *http.Response) (Meta
 
 // NewListPager - Gets the list of metadata entities.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - options - MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
 func (client *MetadataClient) NewListPager(options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetadataClientListResponse]{
@@ -130,7 +130,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, options *Me
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

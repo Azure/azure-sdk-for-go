@@ -43,7 +43,7 @@ func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.Cli
 // Get - Gets Azure services' emerging issues.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - issueName - The name of the emerging issue.
 //   - options - EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
 func (client *EmergingIssuesClient) Get(ctx context.Context, issueName IssueNameParameter, options *EmergingIssuesClientGetOptions) (EmergingIssuesClientGetResponse, error) {
@@ -80,7 +80,7 @@ func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -97,7 +97,7 @@ func (client *EmergingIssuesClient) getHandleResponse(resp *http.Response) (Emer
 
 // NewListPager - Lists Azure services' emerging issues.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - options - EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.NewListPager method.
 func (client *EmergingIssuesClient) NewListPager(options *EmergingIssuesClientListOptions) *runtime.Pager[EmergingIssuesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EmergingIssuesClientListResponse]{
@@ -130,7 +130,7 @@ func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

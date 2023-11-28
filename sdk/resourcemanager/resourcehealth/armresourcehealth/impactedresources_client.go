@@ -46,7 +46,7 @@ func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets the specific impacted resource in the subscription by an event.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - impactedResourceName - Name of the Impacted Resource.
 //   - options - ImpactedResourcesClientGetOptions contains the optional parameters for the ImpactedResourcesClient.Get method.
@@ -92,7 +92,7 @@ func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eve
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +110,7 @@ func (client *ImpactedResourcesClient) getHandleResponse(resp *http.Response) (I
 // GetByTenantID - Gets the specific impacted resource in the tenant by an event.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - impactedResourceName - Name of the Impacted Resource.
 //   - options - ImpactedResourcesClientGetByTenantIDOptions contains the optional parameters for the ImpactedResourcesClient.GetByTenantID
@@ -153,7 +153,7 @@ func (client *ImpactedResourcesClient) getByTenantIDCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *ImpactedResourcesClient) getByTenantIDHandleResponse(resp *http.Re
 
 // NewListBySubscriptionIDAndEventIDPager - Lists impacted resources in the subscription by an event.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
 //     method.
@@ -213,7 +213,7 @@ func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -233,7 +233,7 @@ func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDHandleRespo
 
 // NewListByTenantIDAndEventIDPager - Lists impacted resources in the tenant by an event.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - ImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListByTenantIDAndEventIDPager
 //     method.
@@ -272,7 +272,7 @@ func (client *ImpactedResourcesClient) listByTenantIDAndEventIDCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

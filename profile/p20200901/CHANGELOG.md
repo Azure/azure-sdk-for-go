@@ -2,7 +2,7 @@
 
 ## 0.1.1 (2023-11-30)
 
-- Update dependency.
+- Upgrade `azcore` version.
 
 ## 0.1.0 (2023-03-24)
 

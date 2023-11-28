@@ -40,55 +40,122 @@ func ExampleExternalSecuritySolutionsClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.ExternalSecuritySolutionList = armsecurity.ExternalSecuritySolutionList{
-		// 	Value: []*armsecurity.ExternalSecuritySolution{
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 	Value: []armsecurity.ExternalSecuritySolutionClassification{
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("eastus"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-eus/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
+		// 		},
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("westeurope"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-weu/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-weu/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
 		// 		},
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_barracudanetworks_waf_barracuda"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_barracudanetworks_waf_barracuda"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("WAF"),
+		// 				DeviceVendor: to.Ptr("barracudanetworks"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("barracuda"),
+		// 				LastEventReceived: to.Ptr("2018-05-09T10:30:11.523Z"),
+		// 			},
+		// 		},
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_virtualhoneypot_Microsoft_demovm20"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_virtualhoneypot_Microsoft_demovm20"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("Microsoft"),
+		// 				DeviceVendor: to.Ptr("virtualHoneypot"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("demovm20"),
+		// 				LastEventReceived: to.Ptr("2018-05-08T15:42:22.57Z"),
+		// 			},
+		// 		},
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_virtualhoneypot_Microsoft_demovm10"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_virtualhoneypot_Microsoft_demovm10"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("Microsoft"),
+		// 				DeviceVendor: to.Ptr("virtualHoneypot"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("demovm10"),
+		// 				LastEventReceived: to.Ptr("2018-05-08T10:38:53.423Z"),
+		// 			},
 		// 		},
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("aad_omsprd"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_omsprd"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
+		// 		},
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("japaneast"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-ejp/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-ejp/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
 		// 	}},
 		// }
 	}
@@ -117,55 +184,122 @@ func ExampleExternalSecuritySolutionsClient_NewListByHomeRegionPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.ExternalSecuritySolutionList = armsecurity.ExternalSecuritySolutionList{
-		// 	Value: []*armsecurity.ExternalSecuritySolution{
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 	Value: []armsecurity.ExternalSecuritySolutionClassification{
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("eastus"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-eus/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
+		// 		},
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("westeurope"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-weu/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-weu/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-weu"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
 		// 		},
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_barracudanetworks_waf_barracuda"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_barracudanetworks_waf_barracuda"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("WAF"),
+		// 				DeviceVendor: to.Ptr("barracudanetworks"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("barracuda"),
+		// 				LastEventReceived: to.Ptr("2018-05-09T10:30:11.523Z"),
+		// 			},
+		// 		},
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_virtualhoneypot_Microsoft_demovm20"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_virtualhoneypot_Microsoft_demovm20"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("Microsoft"),
+		// 				DeviceVendor: to.Ptr("virtualHoneypot"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("demovm20"),
+		// 				LastEventReceived: to.Ptr("2018-05-08T15:42:22.57Z"),
+		// 			},
+		// 		},
+		// 		&armsecurity.CefExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("cef_omsprd_virtualhoneypot_Microsoft_demovm10"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/cef_omsprd_virtualhoneypot_Microsoft_demovm10"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindCEF),
+		// 			Properties: &armsecurity.CefSolutionProperties{
+		// 				DeviceType: to.Ptr("Microsoft"),
+		// 				DeviceVendor: to.Ptr("virtualHoneypot"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				Hostname: to.Ptr("demovm10"),
+		// 				LastEventReceived: to.Ptr("2018-05-08T10:38:53.423Z"),
+		// 			},
 		// 		},
-		// 		{
-		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Name: to.Ptr("aad_omsprd"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/unificationprod/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_omsprd"),
-		// 		},
-		// 		{
 		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/unificationprod/providers/Microsoft.OperationalInsights/workspaces/omsprd"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
+		// 		},
+		// 		&armsecurity.AADExternalSecuritySolution{
 		// 			Location: to.Ptr("japaneast"),
 		// 			Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
 		// 			Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
 		// 			ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-ejp/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
+		// 			Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+		// 			Properties: &armsecurity.AADSolutionProperties{
+		// 				DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+		// 				DeviceVendor: to.Ptr("Microsoft"),
+		// 				Workspace: &armsecurity.ConnectedWorkspace{
+		// 					ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-ejp/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-ejp"),
+		// 				},
+		// 				AdditionalProperties: map[string]any{
+		// 					"connectivityState": "Discovered",
+		// 				},
+		// 			},
 		// 	}},
 		// }
 	}
@@ -189,11 +323,23 @@ func ExampleExternalSecuritySolutionsClient_Get() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ExternalSecuritySolution = armsecurity.ExternalSecuritySolution{
-	// 	Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
-	// 	Location: to.Ptr("eastus"),
-	// 	Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
-	// 	Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
-	// 	ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
-	// }
+	// res = armsecurity.ExternalSecuritySolutionsClientGetResponse{
+	// 	                            ExternalSecuritySolutionClassification: &armsecurity.AADExternalSecuritySolution{
+	// 		Location: to.Ptr("eastus"),
+	// 		Name: to.Ptr("aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
+	// 		Type: to.Ptr("Microsoft.Security/locations/externalSecuritySolutions"),
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/defaultresourcegroup-eus/providers/Microsoft.Security/locations/centralus/externalSecuritySolutions/aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
+	// 		Kind: to.Ptr(armsecurity.ExternalSecuritySolutionKindAAD),
+	// 		Properties: &armsecurity.AADSolutionProperties{
+	// 			DeviceType: to.Ptr("Azure Active Directory Identity Protection"),
+	// 			DeviceVendor: to.Ptr("Microsoft"),
+	// 			Workspace: &armsecurity.ConnectedWorkspace{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/defaultresourcegroup-eus/providers/Microsoft.OperationalInsights/workspaces/defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus"),
+	// 			},
+	// 			AdditionalProperties: map[string]any{
+	// 				"connectivityState": "Discovered",
+	// 			},
+	// 		},
+	// 	},
+	// 	                        }
 }

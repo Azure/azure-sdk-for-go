@@ -243,6 +243,39 @@ type BaseLongTermRetentionPolicyProperties struct {
 	YearlyRetention *string
 }
 
+// Baseline - SQL Vulnerability Assessment baseline Details
+type Baseline struct {
+	// READ-ONLY; SQL Vulnerability Assessment baseline expected results
+	ExpectedResults [][]*string
+
+	// READ-ONLY; SQL Vulnerability Assessment baseline update time (UTC)
+	UpdatedTime *time.Time
+}
+
+// BaselineAdjustedResult - SQL Vulnerability Assessment baseline adjusted results
+type BaselineAdjustedResult struct {
+	// READ-ONLY; SQL Vulnerability Assessment baseline details
+	Baseline *Baseline
+
+	// READ-ONLY; SQL Vulnerability Assessment results that are not in baseline
+	ResultsNotInBaseline [][]*string
+
+	// READ-ONLY; SQL Vulnerability Assessment results that are in baseline.
+	ResultsOnlyInBaseline [][]*string
+
+	// READ-ONLY; SQL Vulnerability Assessment baseline status
+	Status *RuleStatus
+}
+
+// BenchmarkReference - SQL Vulnerability Assessment benchmark reference
+type BenchmarkReference struct {
+	// READ-ONLY; SQL Vulnerability Assessment benchmark name
+	Benchmark *string
+
+	// READ-ONLY; SQL Vulnerability Assessment benchmark reference.
+	Reference *string
+}
+
 // CheckNameAvailabilityRequest - A request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
 	// REQUIRED
@@ -304,12 +337,6 @@ type CopyLongTermRetentionBackupParametersProperties struct {
 type CreateDatabaseRestorePointDefinition struct {
 	// REQUIRED; The restore point label to apply
 	RestorePointLabel *string
-}
-
-// DNSRefreshConfigurationProperties - DNS refresh configuration properties.
-type DNSRefreshConfigurationProperties struct {
-	// READ-ONLY; The status of the DNS refresh operation.
-	Status *DNSRefreshConfigurationPropertiesStatus
 }
 
 // DataMaskingPolicy - Represents a database data masking policy.
@@ -732,6 +759,21 @@ type DatabaseIdentity struct {
 	TenantID *string
 }
 
+// DatabaseKey - Database level key used for encryption at rest.
+type DatabaseKey struct {
+	// READ-ONLY; The database key creation date.
+	CreationDate *time.Time
+
+	// READ-ONLY; Subregion of the server key.
+	Subregion *string
+
+	// READ-ONLY; Thumbprint of the database key.
+	Thumbprint *string
+
+	// READ-ONLY; The database key type. Only supported value is 'AzureKeyVault'.
+	Type *DatabaseKeyType
+}
+
 // DatabaseListResult - A list of databases.
 type DatabaseListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -815,6 +857,9 @@ type DatabaseProperties struct {
 	// Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
 	AutoPauseDelay *int32
 
+	// Specifies the availability zone the database is pinned to.
+	AvailabilityZone *AvailabilityZoneType
+
 	// Collation of the metadata catalog.
 	CatalogCollation *CatalogCollationType
 
@@ -845,8 +890,19 @@ type DatabaseProperties struct {
 	// The resource identifier of the elastic pool containing this database.
 	ElasticPoolID *string
 
+	// The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
+	EncryptionProtector *string
+
+	// The flag to enable or disable auto rotation of database encryption protector AKV key.
+	EncryptionProtectorAutoRotation *bool
+
 	// The Client id used for cross tenant per database CMK scenario
 	FederatedClientID *string
+
+	// Specifies the behavior when monthly free limits are exhausted for the free database.
+	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
 	// to a Hyperscale database within an elastic pool.
@@ -855,6 +911,9 @@ type DatabaseProperties struct {
 	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
 	// value of this property cannot be changed after the database has been created.
 	IsLedgerOn *bool
+
+	// The resource ids of the user assigned identities to use
+	Keys map[string]*DatabaseKey
 
 	// The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice if you have a license
 	// and are eligible for the Azure Hybrid Benefit.
@@ -867,11 +926,28 @@ type DatabaseProperties struct {
 	// will occur.
 	MaintenanceConfigurationID *string
 
+	// Whether or not customer controlled manual cutover needs to be done during Update Database operation to Hyperscale tier.
+	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+	// Hyperscale tier.
+	// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
+	// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+	ManualCutover *bool
+
 	// The max size of the database expressed in bytes.
 	MaxSizeBytes *int64
 
 	// Minimal capacity that database will always have allocated, if not paused
 	MinCapacity *float64
+
+	// To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
+	// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
+	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+	// Hyperscale tier is already in progress.
+	// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
+	PerformCutover *bool
+
+	// Type of enclave requested on the database i.e. Default or VBS enclaves.
+	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection
 	// string may be routed to a readonly secondary replica in the same region. Not
@@ -896,7 +972,7 @@ type DatabaseProperties struct {
 	// The name of the sample schema to apply when creating this database.
 	SampleName *SampleName
 
-	// The secondary type of the database if it is a secondary. Valid values are Geo and Named.
+	// The secondary type of the database if it is a secondary. Valid values are Geo, Named and Standby.
 	SecondaryType *SecondaryType
 
 	// Specifies the time that the database was deleted.
@@ -906,19 +982,22 @@ type DatabaseProperties struct {
 	SourceDatabaseID *string
 
 	// The resource identifier of the source associated with the create operation of this database.
+	// This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
 	// When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and sourceDatabaseDeletionDate
 	// must not be specified and CreateMode must be PointInTimeRestore,
 	// Restore or Recover.
-	// When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of an existing database or existing sql
+	// When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or existing sql
 	// pool, and restorePointInTime must be specified.
 	// When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or restorable dropped
 	// sql pool.
 	// When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable sql pool.
-	// This property allows to restore across subscriptions which is only supported for DataWarehouse edition.
 	// When source subscription belongs to a different tenant than target subscription, “x-ms-authorization-auxiliary” header
 	// must contain authentication token for the source tenant. For more details about
 	// “x-ms-authorization-auxiliary” header see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
 	SourceResourceID *string
+
+	// Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
+	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
 	// availability zones.
@@ -966,6 +1045,129 @@ type DatabaseProperties struct {
 
 	// READ-ONLY; The status of the database.
 	Status *DatabaseStatus
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselineSet - A database sql vulnerability assessment baseline set.
+type DatabaseSQLVulnerabilityAssessmentBaselineSet struct {
+	// Resource properties.
+	Properties *DatabaseSQLVulnerabilityAssessmentBaselineSetProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of DatabaseSqlVulnerabilityAssessmentBaselineSetResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselineSetListResult - A list of SQL Vulnerability Assessments baseline set.
+type DatabaseSQLVulnerabilityAssessmentBaselineSetListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*DatabaseSQLVulnerabilityAssessmentBaselineSet
+}
+
+// DatabaseSQLVulnerabilityAssessmentBaselineSetProperties - Properties of a database Sql Vulnerability Assessment baseline
+// set.
+type DatabaseSQLVulnerabilityAssessmentBaselineSetProperties struct {
+	// REQUIRED; The baseline set result
+	Results map[string][][]*string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaseline - A database sql vulnerability assessment rule baseline.
+type DatabaseSQLVulnerabilityAssessmentRuleBaseline struct {
+	// Resource properties.
+	Properties *DatabaseSQLVulnerabilityAssessmentRuleBaselineProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of DatabaseSqlVulnerabilityAssessmentRuleBaselineResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineInput - A database sql vulnerability assessment rule baseline input.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineInput struct {
+	// Resource properties.
+	Properties *DatabaseSQLVulnerabilityAssessmentRuleBaselineInputProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of DatabaseSqlVulnerabilityAssessmentRuleBaselineInputResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineInputProperties - Properties of a database Sql Vulnerability Assessment rule
+// baseline.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineInputProperties struct {
+	// REQUIRED; The latest scan flag
+	LatestScan *bool
+
+	// REQUIRED; The rule baseline result
+	Results [][]*string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineListInput - A database sql vulnerability assessment rule baseline list input.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineListInput struct {
+	// Resource properties.
+	Properties *DatabaseSQLVulnerabilityAssessmentRuleBaselineListInputProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of DatabaseSqlVulnerabilityAssessmentRuleBaselineListInputResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineListInputProperties - Properties of a database Sql Vulnerability Assessment
+// rule baseline.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineListInputProperties struct {
+	// REQUIRED; The latest scan flag
+	LatestScan *bool
+
+	// REQUIRED; The rule baseline result list
+	Results map[string][][]*string
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineListResult - A list of SQL Vulnerability Assessments rule baseline.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*DatabaseSQLVulnerabilityAssessmentRuleBaseline
+}
+
+// DatabaseSQLVulnerabilityAssessmentRuleBaselineProperties - Properties of a database Sql Vulnerability Assessment rule baseline.
+type DatabaseSQLVulnerabilityAssessmentRuleBaselineProperties struct {
+	// REQUIRED; The rule baseline result
+	Results [][]*string
 }
 
 // DatabaseSchema - A database schema resource.
@@ -1099,8 +1301,19 @@ type DatabaseUpdateProperties struct {
 	// The resource identifier of the elastic pool containing this database.
 	ElasticPoolID *string
 
+	// The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
+	EncryptionProtector *string
+
+	// The flag to enable or disable auto rotation of database encryption protector AKV key.
+	EncryptionProtectorAutoRotation *bool
+
 	// The Client id used for cross tenant per database CMK scenario
 	FederatedClientID *string
+
+	// Specifies the behavior when monthly free limits are exhausted for the free database.
+	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
 	// to a Hyperscale database within an elastic pool.
@@ -1109,6 +1322,9 @@ type DatabaseUpdateProperties struct {
 	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
 	// value of this property cannot be changed after the database has been created.
 	IsLedgerOn *bool
+
+	// The resource ids of the user assigned identities to use
+	Keys map[string]*DatabaseKey
 
 	// The license type to apply for this database. LicenseIncluded if you need a license, or BasePrice if you have a license
 	// and are eligible for the Azure Hybrid Benefit.
@@ -1121,11 +1337,28 @@ type DatabaseUpdateProperties struct {
 	// will occur.
 	MaintenanceConfigurationID *string
 
+	// Whether or not customer controlled manual cutover needs to be done during Update Database operation to Hyperscale tier.
+	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+	// Hyperscale tier.
+	// When manualCutover is specified, the scaling operation will wait for user input to trigger cutover to Hyperscale database.
+	// To trigger cutover, please provide 'performCutover' parameter when the Scaling operation is in Waiting state.
+	ManualCutover *bool
+
 	// The max size of the database expressed in bytes.
 	MaxSizeBytes *int64
 
 	// Minimal capacity that database will always have allocated, if not paused
 	MinCapacity *float64
+
+	// To trigger customer controlled manual cutover during the wait state while Scaling operation is in progress.
+	// This property parameter is only applicable for scaling operations that are initiated along with 'manualCutover' parameter.
+	// This property is only applicable when scaling database from Business Critical/General Purpose/Premium/Standard tier to
+	// Hyperscale tier is already in progress.
+	// When performCutover is specified, the scaling operation will trigger cutover and perform role-change to Hyperscale database.
+	PerformCutover *bool
+
+	// Type of enclave requested on the database i.e. Default or VBS enclaves.
+	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection
 	// string may be routed to a readonly secondary replica in the same region. Not
@@ -1150,7 +1383,7 @@ type DatabaseUpdateProperties struct {
 	// The name of the sample schema to apply when creating this database.
 	SampleName *SampleName
 
-	// The secondary type of the database if it is a secondary. Valid values are Geo and Named.
+	// The secondary type of the database if it is a secondary. Valid values are Geo, Named and Standby.
 	SecondaryType *SecondaryType
 
 	// Specifies the time that the database was deleted.
@@ -1158,6 +1391,9 @@ type DatabaseUpdateProperties struct {
 
 	// The resource identifier of the source database associated with create operation of this database.
 	SourceDatabaseID *string
+
+	// Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
+	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
 	// availability zones.
@@ -1837,7 +2073,11 @@ type ElasticPoolPerformanceLevelCapability struct {
 
 // ElasticPoolProperties - Properties of an elastic pool
 type ElasticPoolProperties struct {
-	// The number of secondary replicas associated with the elastic pool that are used to provide high availability.
+	// Specifies the availability zone the pool's primary replica is pinned to.
+	AvailabilityZone *AvailabilityZoneType
+
+	// The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable
+	// only to Hyperscale elastic pools.
 	HighAvailabilityReplicaCount *int32
 
 	// The license type to apply for this elastic pool.
@@ -1850,8 +2090,14 @@ type ElasticPoolProperties struct {
 	// The storage limit for the database elastic pool in bytes.
 	MaxSizeBytes *int64
 
+	// Minimal capacity that serverless pool will not shrink below, if not paused
+	MinCapacity *float64
+
 	// The per database settings for the elastic pool.
 	PerDatabaseSettings *ElasticPoolPerDatabaseSettings
+
+	// Type of enclave requested on the elastic pool.
+	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across
 	// multiple availability zones.
@@ -1878,6 +2124,9 @@ type ElasticPoolUpdate struct {
 
 // ElasticPoolUpdateProperties - Properties of an elastic pool
 type ElasticPoolUpdateProperties struct {
+	// Specifies the availability zone the pool's primary replica is pinned to.
+	AvailabilityZone *AvailabilityZoneType
+
 	// The number of secondary replicas associated with the elastic pool that are used to provide high availability. Applicable
 	// only to Hyperscale elastic pools.
 	HighAvailabilityReplicaCount *int32
@@ -1892,8 +2141,14 @@ type ElasticPoolUpdateProperties struct {
 	// The storage limit for the database elastic pool in bytes.
 	MaxSizeBytes *int64
 
+	// Minimal capacity that serverless pool will not shrink below, if not paused
+	MinCapacity *float64
+
 	// The per database settings for the elastic pool.
 	PerDatabaseSettings *ElasticPoolPerDatabaseSettings
+
+	// Type of enclave requested on the elastic pool.
+	PreferredEnclaveType *AlwaysEncryptedEnclaveType
 
 	// Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across
 	// multiple availability zones.
@@ -1979,6 +2234,21 @@ type EndpointCertificateListResult struct {
 type EndpointCertificateProperties struct {
 	// The certificate public blob
 	PublicBlob *string
+}
+
+// EndpointDependency - A domain name that the managed instance service needs to communicate with, along with additional details.
+type EndpointDependency struct {
+	// READ-ONLY; The domain name of the dependency.
+	DomainName *string
+
+	// READ-ONLY; The IP Addresses and Ports used when connecting to DomainName.
+	EndpointDetails []*EndpointDetail
+}
+
+// EndpointDetail - A domain name that the managed instance service needs to communicate with, along with additional details.
+type EndpointDetail struct {
+	// READ-ONLY; The port an endpoint is connected to.
+	Port *int32
 }
 
 // ExportDatabaseDefinition - Contains the information necessary to perform export database operation.
@@ -2277,6 +2547,9 @@ type FailoverGroupProperties struct {
 type FailoverGroupReadOnlyEndpoint struct {
 	// Failover policy of the read-only endpoint for the failover group.
 	FailoverPolicy *ReadOnlyEndpointFailoverPolicy
+
+	// The target partner server where the read-only endpoint points to.
+	TargetServer *string
 }
 
 // FailoverGroupReadWriteEndpoint - Read-write endpoint of the failover group instance.
@@ -2303,6 +2576,9 @@ type FailoverGroupUpdate struct {
 type FailoverGroupUpdateProperties struct {
 	// List of databases in the failover group.
 	Databases []*string
+
+	// List of partner server information for the failover group.
+	PartnerServers []*PartnerInfo
 
 	// Read-only endpoint of the failover group instance.
 	ReadOnlyEndpoint *FailoverGroupReadOnlyEndpoint
@@ -2402,7 +2678,7 @@ type IPv6FirewallRuleListResult struct {
 
 // IPv6ServerFirewallRuleProperties - The properties of an IPv6 server firewall rule.
 type IPv6ServerFirewallRuleProperties struct {
-	// The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpAddress.
+	// The end IP address of the firewall rule. Must be IPv6 format. Must be greater than or equal to startIpv6Address.
 	EndIPv6Address *string
 
 	// The start IP address of the firewall rule. Must be IPv6 format.
@@ -2602,6 +2878,9 @@ type InstanceFailoverGroupProperties struct {
 
 	// Read-only endpoint of the failover group instance.
 	ReadOnlyEndpoint *InstanceFailoverGroupReadOnlyEndpoint
+
+	// Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR option only.
+	SecondaryType *SecondaryInstanceType
 
 	// READ-ONLY; Local replication role of the failover group instance.
 	ReplicationRole *InstanceFailoverGroupReplicationRole
@@ -3487,6 +3766,33 @@ type ManagedDatabase struct {
 	Type *string
 }
 
+// ManagedDatabaseAdvancedThreatProtection - A managed database Advanced Threat Protection.
+type ManagedDatabaseAdvancedThreatProtection struct {
+	// Resource properties.
+	Properties *AdvancedThreatProtectionProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of AdvancedThreatProtectionResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedDatabaseAdvancedThreatProtectionListResult - A list of the managed database's Advanced Threat Protection settings.
+type ManagedDatabaseAdvancedThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedDatabaseAdvancedThreatProtection
+}
+
 // ManagedDatabaseListResult - A list of managed databases.
 type ManagedDatabaseListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -3494,6 +3800,87 @@ type ManagedDatabaseListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*ManagedDatabase
+}
+
+// ManagedDatabaseMoveDefinition - Contains the information necessary to perform a managed database move.
+type ManagedDatabaseMoveDefinition struct {
+	// REQUIRED; The destination managed database ID
+	DestinationManagedDatabaseID *string
+}
+
+// ManagedDatabaseMoveOperationListResult - List of managed database move operations.
+type ManagedDatabaseMoveOperationListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedDatabaseMoveOperationResult
+}
+
+// ManagedDatabaseMoveOperationResult - A managed database move operation.
+type ManagedDatabaseMoveOperationResult struct {
+	// Resource properties.
+	Properties *ManagedDatabaseMoveOperationResultProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedDatabaseMoveOperationResultProperties - Contains the operation result properties for managed database move operation.
+type ManagedDatabaseMoveOperationResultProperties struct {
+	// READ-ONLY; The operation error code.
+	ErrorCode *int32
+
+	// READ-ONLY; The operation error description.
+	ErrorDescription *string
+
+	// READ-ONLY; The operation error severity.
+	ErrorSeverity *int32
+
+	// READ-ONLY; Is move operation cancellable.
+	IsCancellable *bool
+
+	// READ-ONLY; Whether or not the error is a user error.
+	IsUserError *bool
+
+	// READ-ONLY; The name of operation.
+	Operation *string
+
+	// READ-ONLY; The friendly name of operation.
+	OperationFriendlyName *string
+
+	// READ-ONLY; Operation mode.
+	OperationMode *MoveOperationMode
+
+	// READ-ONLY; Source database name.
+	SourceDatabaseName *string
+
+	// READ-ONLY; Source Managed Instance resource id.
+	SourceManagedInstanceID *string
+
+	// READ-ONLY; Source Managed Instance name.
+	SourceManagedInstanceName *string
+
+	// READ-ONLY; The operation start time.
+	StartTime *time.Time
+
+	// READ-ONLY; The operation state.
+	State *ManagementOperationState
+
+	// READ-ONLY; Target database name.
+	TargetDatabaseName *string
+
+	// READ-ONLY; Target Managed instance resource id.
+	TargetManagedInstanceID *string
+
+	// READ-ONLY; Target Managed Instance name.
+	TargetManagedInstanceName *string
 }
 
 // ManagedDatabaseProperties - The managed database's properties.
@@ -3516,6 +3903,19 @@ type ManagedDatabaseProperties struct {
 	// long term retention backup (longTermRetentionBackupResourceId required).
 	CreateMode *ManagedDatabaseCreateMode
 
+	// The restorable cross-subscription dropped database resource id to restore when creating this database.
+	CrossSubscriptionRestorableDroppedDatabaseID *string
+
+	// The resource identifier of the cross-subscription source database associated with create operation of this database.
+	CrossSubscriptionSourceDatabaseID *string
+
+	// Target managed instance id used in cross-subscription restore.
+	CrossSubscriptionTargetManagedInstanceID *string
+
+	// Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the
+	// value of this property cannot be changed after the database has been created.
+	IsLedgerOn *bool
+
 	// Last backup file name for restore of this managed database.
 	LastBackupName *string
 
@@ -3535,7 +3935,13 @@ type ManagedDatabaseProperties struct {
 	// The resource identifier of the source database associated with create operation of this database.
 	SourceDatabaseID *string
 
-	// Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.
+	// Conditional. If createMode is RestoreExternalBackup, this value is used. Specifies the identity used for storage container
+	// authentication. Can be 'SharedAccessSignature' or 'ManagedIdentity'; if not
+	// specified 'SharedAccessSignature' is assumed.
+	StorageContainerIdentity *string
+
+	// Conditional. If createMode is RestoreExternalBackup and storageContainerIdentity is not ManagedIdentity, this value is
+	// required. Specifies the storage container sas token.
 	StorageContainerSasToken *string
 
 	// Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container
@@ -3558,13 +3964,49 @@ type ManagedDatabaseProperties struct {
 	Status *ManagedDatabaseStatus
 }
 
+// ManagedDatabaseRestoreDetailsBackupSetProperties - The managed database's restore details backup set properties.
+type ManagedDatabaseRestoreDetailsBackupSetProperties struct {
+	// READ-ONLY; Backup size.
+	BackupSizeMB *int32
+
+	// READ-ONLY; First stripe name.
+	FirstStripeName *string
+
+	// READ-ONLY; Number of stripes.
+	NumberOfStripes *int32
+
+	// READ-ONLY; Last restored file time.
+	RestoreFinishedTimestampUTC *time.Time
+
+	// READ-ONLY; Last restored file time.
+	RestoreStartedTimestampUTC *time.Time
+
+	// READ-ONLY; Backup set status.
+	Status *string
+}
+
 // ManagedDatabaseRestoreDetailsProperties - The managed database's restore details properties.
 type ManagedDatabaseRestoreDetailsProperties struct {
 	// READ-ONLY; The reason why restore is in Blocked state.
 	BlockReason *string
 
+	// READ-ONLY; Current backup type.
+	CurrentBackupType *string
+
+	// READ-ONLY; Current restore plan size MB.
+	CurrentRestorePlanSizeMB *int32
+
+	// READ-ONLY; Current restored size MB.
+	CurrentRestoredSizeMB *int32
+
 	// READ-ONLY; Current restoring file name.
 	CurrentRestoringFileName *string
+
+	// READ-ONLY; Diff backup sets.
+	DiffBackupSets []*ManagedDatabaseRestoreDetailsBackupSetProperties
+
+	// READ-ONLY; Full backup sets.
+	FullBackupSets []*ManagedDatabaseRestoreDetailsBackupSetProperties
 
 	// READ-ONLY; Last restored file name.
 	LastRestoredFileName *string
@@ -3578,17 +4020,38 @@ type ManagedDatabaseRestoreDetailsProperties struct {
 	// READ-ONLY; Last uploaded file time.
 	LastUploadedFileTime *time.Time
 
+	// READ-ONLY; Log backup sets.
+	LogBackupSets []*ManagedDatabaseRestoreDetailsBackupSetProperties
+
 	// READ-ONLY; Number of files detected.
-	NumberOfFilesDetected *int64
+	NumberOfFilesDetected *int32
+
+	// READ-ONLY; Number of files queued.
+	NumberOfFilesQueued *int32
+
+	// READ-ONLY; Number of files restored.
+	NumberOfFilesRestored *int32
+
+	// READ-ONLY; Number of files restoring.
+	NumberOfFilesRestoring *int32
+
+	// READ-ONLY; Number of files skipped.
+	NumberOfFilesSkipped *int32
+
+	// READ-ONLY; Number of files unrestorable.
+	NumberOfFilesUnrestorable *int32
 
 	// READ-ONLY; Percent completed.
-	PercentCompleted *float64
+	PercentCompleted *int32
 
 	// READ-ONLY; Restore status.
 	Status *string
 
-	// READ-ONLY; List of unrestorable files.
-	UnrestorableFiles []*string
+	// READ-ONLY; Restore type.
+	Type *string
+
+	// READ-ONLY; Unrestorable files.
+	UnrestorableFiles []*ManagedDatabaseRestoreDetailsUnrestorableFileProperties
 }
 
 // ManagedDatabaseRestoreDetailsResult - A managed database restore details.
@@ -3604,6 +4067,12 @@ type ManagedDatabaseRestoreDetailsResult struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// ManagedDatabaseRestoreDetailsUnrestorableFileProperties - The managed database's restore details unrestorable file properties.
+type ManagedDatabaseRestoreDetailsUnrestorableFileProperties struct {
+	// READ-ONLY; File name.
+	Name *string
 }
 
 // ManagedDatabaseSecurityAlertPolicy - A managed database security alert policy.
@@ -3630,6 +4099,15 @@ type ManagedDatabaseSecurityAlertPolicyListResult struct {
 	Value []*ManagedDatabaseSecurityAlertPolicy
 }
 
+// ManagedDatabaseStartMoveDefinition - Contains the information necessary to start a managed database move.
+type ManagedDatabaseStartMoveDefinition struct {
+	// REQUIRED; The destination managed database ID
+	DestinationManagedDatabaseID *string
+
+	// The move operation mode.
+	OperationMode *MoveOperationMode
+}
+
 // ManagedDatabaseUpdate - An managed database update.
 type ManagedDatabaseUpdate struct {
 	// Resource properties.
@@ -3650,7 +4128,7 @@ type ManagedInstance struct {
 	// Resource properties.
 	Properties *ManagedInstanceProperties
 
-	// Managed instance SKU. Allowed values for sku.name: GPGen4, GPGen5, BCGen4, BCGen5
+	// Managed instance SKU. Allowed values for sku.name: GPGen5, GPG8IM, GPG8IH, BCGen5, BCG8IM, BCG8IH
 	SKU *SKU
 
 	// Resource tags.
@@ -3705,6 +4183,33 @@ type ManagedInstanceAdministratorProperties struct {
 	TenantID *string
 }
 
+// ManagedInstanceAdvancedThreatProtection - A managed instance Advanced Threat Protection.
+type ManagedInstanceAdvancedThreatProtection struct {
+	// Resource properties.
+	Properties *AdvancedThreatProtectionProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of AdvancedThreatProtectionResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedInstanceAdvancedThreatProtectionListResult - A list of the managed instance's Advanced Threat Protection settings.
+type ManagedInstanceAdvancedThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedInstanceAdvancedThreatProtection
+}
+
 // ManagedInstanceAzureADOnlyAuthListResult - A list of active directory only authentications.
 type ManagedInstanceAzureADOnlyAuthListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -3733,6 +4238,79 @@ type ManagedInstanceAzureADOnlyAuthentication struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// ManagedInstanceDtc - SQL Managed Instance DTC
+type ManagedInstanceDtc struct {
+	// Resource properties.
+	Properties *ManagedInstanceDtcProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedInstanceDtcListResult - A list of managed instance's DTCs.
+type ManagedInstanceDtcListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedInstanceDtc
+}
+
+// ManagedInstanceDtcProperties - The properties of managed instance DTC.
+type ManagedInstanceDtcProperties struct {
+	// Active status of managed instance DTC.
+	DtcEnabled *bool
+
+	// External dns suffix search list of managed instance DTC.
+	ExternalDNSSuffixSearchList []*string
+
+	// Security settings of managed instance DTC.
+	SecuritySettings *ManagedInstanceDtcSecuritySettings
+
+	// READ-ONLY; Host name dns suffix of managed instance DTC.
+	DtcHostNameDNSSuffix *string
+
+	// READ-ONLY; Provisioning state of managed instance DTC.
+	ProvisioningState *ProvisioningState
+}
+
+// ManagedInstanceDtcSecuritySettings - The Security Settings of managed instance DTC.
+type ManagedInstanceDtcSecuritySettings struct {
+	// Allow SNA LU 6.2 Transactions to managed instance DTC.
+	SnaLu6Point2TransactionsEnabled *bool
+
+	// Transaction Manager communication settings of managed instance DTC.
+	TransactionManagerCommunicationSettings *ManagedInstanceDtcTransactionManagerCommunicationSettings
+
+	// Default timeout for XA Transactions (in seconds).
+	XaTransactionsDefaultTimeout *int32
+
+	// Allow XA Transactions to managed instance DTC.
+	XaTransactionsEnabled *bool
+
+	// Maximum timeout for XA Transactions (in seconds).
+	XaTransactionsMaximumTimeout *int32
+}
+
+// ManagedInstanceDtcTransactionManagerCommunicationSettings - The Transaction Manager Communication Settings of managed instance
+// DTC.
+type ManagedInstanceDtcTransactionManagerCommunicationSettings struct {
+	// Allow Inbound traffic to managed instance DTC.
+	AllowInboundEnabled *bool
+
+	// Allow Outbound traffic of managed instance DTC.
+	AllowOutboundEnabled *bool
+
+	// Authentication type of managed instance DTC.
+	Authentication *string
 }
 
 // ManagedInstanceEditionCapability - The managed server capability
@@ -4186,7 +4764,9 @@ type ManagedInstanceProperties struct {
 	// The administrator login password (required for managed instance creation).
 	AdministratorLoginPassword *string
 
-	// The Azure Active Directory administrator of the server.
+	// The Azure Active Directory administrator of the instance. This can only be used at instance create time. If used for instance
+	// update, it will be ignored or it will result in an error. For updates
+	// individual APIs will need to be used.
 	Administrators *ManagedInstanceExternalAdministrator
 
 	// Collation of the managed instance.
@@ -4240,7 +4820,8 @@ type ManagedInstanceProperties struct {
 	// The resource identifier of the source managed instance associated with create operation of this instance.
 	SourceManagedInstanceID *string
 
-	// Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only.
+	// Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32 GB allowed only. Maximum value depends on
+	// the selected hardware family and number of vCores.
 	StorageSizeInGB *int32
 
 	// Subnet resource ID for the managed instance.
@@ -4409,6 +4990,84 @@ type ManagedInstanceVulnerabilityAssessmentProperties struct {
 	// If 'storageAccountAccessKey' isn't specified, StorageContainerSasKey is
 	// required. Applies only if the storage account is not behind a Vnet or a firewall
 	StorageContainerSasKey *string
+}
+
+// ManagedLedgerDigestUploads - Azure SQL Database ledger digest upload settings.
+type ManagedLedgerDigestUploads struct {
+	// Resource properties.
+	Properties *ManagedLedgerDigestUploadsProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedLedgerDigestUploadsListResult - A list of ledger digest upload settings.
+type ManagedLedgerDigestUploadsListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedLedgerDigestUploads
+}
+
+// ManagedLedgerDigestUploadsProperties - The properties of a database ledger digest upload settings.
+type ManagedLedgerDigestUploadsProperties struct {
+	// The digest storage endpoint, which must be either an Azure blob storage endpoint or an URI for Azure Confidential Ledger.
+	DigestStorageEndpoint *string
+
+	// READ-ONLY; Specifies the state of ledger digest upload.
+	State *ManagedLedgerDigestUploadsState
+}
+
+// ManagedServerDNSAlias - A managed server DNS alias.
+type ManagedServerDNSAlias struct {
+	// Resource properties.
+	Properties *ManagedServerDNSAliasProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ManagedServerDNSAliasAcquisition - A managed server DNS alias acquisition request.
+type ManagedServerDNSAliasAcquisition struct {
+	// REQUIRED; The resource ID of the managed server DNS alias that will be acquired to point to this managed server instead.
+	OldManagedServerDNSAliasResourceID *string
+}
+
+// ManagedServerDNSAliasCreation - A managed server dns alias creation request.
+type ManagedServerDNSAliasCreation struct {
+	// Whether or not DNS record should be created for this alias.
+	CreateDNSRecord *bool
+}
+
+// ManagedServerDNSAliasListResult - A list of managed server DNS aliases.
+type ManagedServerDNSAliasListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ManagedServerDNSAlias
+}
+
+// ManagedServerDNSAliasProperties - Properties of a managed server DNS alias.
+type ManagedServerDNSAliasProperties struct {
+	// READ-ONLY; The fully qualified DNS record for managed server alias
+	AzureDNSRecord *string
+
+	// READ-ONLY; The fully qualified public DNS record for managed server alias
+	PublicAzureDNSRecord *string
 }
 
 // ManagedServerSecurityAlertPolicy - A managed server security alert policy.
@@ -4675,6 +5334,25 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// OutboundEnvironmentEndpoint - An endpoint that the managed instance service requires outbound network access to.
+type OutboundEnvironmentEndpoint struct {
+	// READ-ONLY; The type of service accessed by the managed instance service, e.g., Azure Storage, Azure Active Directory, etc.
+	Category *string
+
+	// READ-ONLY; The endpoints that the managed instance service communicates with in order to function correctly.
+	Endpoints []*EndpointDependency
+}
+
+// OutboundEnvironmentEndpointCollection - A collection of endpoints that the managed instance service requires outbound network
+// access to.
+type OutboundEnvironmentEndpointCollection struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*OutboundEnvironmentEndpoint
+}
+
 // OutboundFirewallRule - An Azure SQL DB Server Outbound Firewall Rule.
 type OutboundFirewallRule struct {
 	// Resource properties.
@@ -4767,6 +5445,9 @@ type PrivateEndpointConnectionProperties struct {
 	// Connection state of the private endpoint connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty
 
+	// READ-ONLY; Group IDs.
+	GroupIDs []*string
+
 	// READ-ONLY; State of the private endpoint connection.
 	ProvisioningState *PrivateEndpointProvisioningState
 }
@@ -4857,6 +5538,18 @@ type ProxyResourceWithWritableName struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// QueryCheck - SQL Vulnerability Assessment query check object.
+type QueryCheck struct {
+	// READ-ONLY; SQL Vulnerability Assessment column names of query expected result.
+	ColumnNames []*string
+
+	// READ-ONLY; SQL Vulnerability Assessment query expected result.
+	ExpectedResult [][]*string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule query.
+	Query *string
 }
 
 // QueryMetricInterval - Properties of a query metrics interval.
@@ -5167,9 +5860,9 @@ type RecommendedSensitivityLabelUpdateProperties struct {
 	Table *string
 }
 
-// RecoverableDatabase - A recoverable database
+// RecoverableDatabase - A recoverable database resource.
 type RecoverableDatabase struct {
-	// The properties of a recoverable database
+	// Resource properties.
 	Properties *RecoverableDatabaseProperties
 
 	// READ-ONLY; Resource ID.
@@ -5182,24 +5875,30 @@ type RecoverableDatabase struct {
 	Type *string
 }
 
-// RecoverableDatabaseListResult - The response to a list recoverable databases request
+// RecoverableDatabaseListResult - A list of recoverable databases.
 type RecoverableDatabaseListResult struct {
-	// REQUIRED; A list of recoverable databases
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
 	Value []*RecoverableDatabase
 }
 
-// RecoverableDatabaseProperties - The properties of a recoverable database
+// RecoverableDatabaseProperties - The recoverable database's properties.
 type RecoverableDatabaseProperties struct {
-	// READ-ONLY; The edition of the database
+	// The resource ids of the user assigned identities to use
+	Keys map[string]*DatabaseKey
+
+	// READ-ONLY; The edition of the database.
 	Edition *string
 
 	// READ-ONLY; The elastic pool name of the database
 	ElasticPoolName *string
 
-	// READ-ONLY; The last available backup date of the database (ISO8601 format)
+	// READ-ONLY; The last available backup date.
 	LastAvailableBackupDate *time.Time
 
-	// READ-ONLY; The service level objective name of the database
+	// READ-ONLY; The service level objective name of the database.
 	ServiceLevelObjective *string
 }
 
@@ -5233,6 +5932,58 @@ type RecoverableManagedDatabaseProperties struct {
 	LastAvailableBackupDate *string
 }
 
+// RefreshExternalGovernanceStatusOperationResult - An RefreshExternalGovernanceStatus operation result resource.
+type RefreshExternalGovernanceStatusOperationResult struct {
+	// Resource properties.
+	Properties *RefreshExternalGovernanceStatusOperationResultProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// RefreshExternalGovernanceStatusOperationResultProperties - Contains the operation result properties for refresh external
+// governance status operation.
+type RefreshExternalGovernanceStatusOperationResultProperties struct {
+	// READ-ONLY; Error message.
+	ErrorMessage *string
+
+	// READ-ONLY; Queued time.
+	QueuedTime *string
+
+	// READ-ONLY; Request Id.
+	RequestID *string
+
+	// READ-ONLY; Request type.
+	RequestType *string
+
+	// READ-ONLY; Server name.
+	ServerName *string
+
+	// READ-ONLY; Operation status.
+	Status *string
+}
+
+// Remediation - SQL Vulnerability Assessment remediation Details.
+type Remediation struct {
+	// READ-ONLY; SQL Vulnerability Assessment is remediation automated.
+	Automated *bool
+
+	// READ-ONLY; SQL Vulnerability Assessment remediation description.
+	Description *string
+
+	// READ-ONLY; SQL Vulnerability Assessment optional link to remediate in Azure Portal.
+	PortalLink *string
+
+	// READ-ONLY; SQL Vulnerability Assessment remediation script.
+	Scripts []*string
+}
+
 // ReplicationLink - A replication link.
 type ReplicationLink struct {
 	// Resource properties.
@@ -5262,7 +6013,7 @@ type ReplicationLinkProperties struct {
 	// READ-ONLY; Whether the user is currently allowed to terminate the link.
 	IsTerminationAllowed *bool
 
-	// READ-ONLY; Link type (GEO, NAMED).
+	// READ-ONLY; Link type (GEO, NAMED, STANDBY).
 	LinkType *ReplicationLinkType
 
 	// READ-ONLY; Resource partner database.
@@ -5374,6 +6125,9 @@ type RestorableDroppedDatabaseListResult struct {
 
 // RestorableDroppedDatabaseProperties - The restorable dropped database's properties.
 type RestorableDroppedDatabaseProperties struct {
+	// The resource ids of the user assigned identities to use
+	Keys map[string]*DatabaseKey
+
 	// READ-ONLY; The storage account type used to store backups for this database.
 	BackupStorageRedundancy *BackupStorageRedundancy
 
@@ -5496,6 +6250,21 @@ type SKU struct {
 
 	// The tier or edition of the particular SKU, e.g. Basic, Premium.
 	Tier *string
+}
+
+// ScheduleItem - Schedule info describing when the server should be started or stopped.
+type ScheduleItem struct {
+	// REQUIRED; Start day.
+	StartDay *DayOfWeek
+
+	// REQUIRED; Start time.
+	StartTime *string
+
+	// REQUIRED; Stop day.
+	StopDay *DayOfWeek
+
+	// REQUIRED; Stop time.
+	StopTime *string
 }
 
 // SecurityAlertPolicyProperties - Properties of a security alert policy.
@@ -5976,6 +6745,39 @@ type ServerCommunicationLinkProperties struct {
 	State *string
 }
 
+// ServerConfigurationOption - A server configuration option
+type ServerConfigurationOption struct {
+	// Resource properties.
+	Properties *ServerConfigurationOptionProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// ServerConfigurationOptionListResult - A list of server configuration options.
+type ServerConfigurationOptionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ServerConfigurationOption
+}
+
+// ServerConfigurationOptionProperties - The properties of server configuration option.
+type ServerConfigurationOptionProperties struct {
+	// REQUIRED; Value of the server configuration option.
+	ServerConfigurationOptionValue *int32
+
+	// READ-ONLY; Provisioning state of server configuration option.
+	ProvisioningState *ProvisioningState
+}
+
 // ServerConnectionPolicy - A server connection policy
 type ServerConnectionPolicy struct {
 	// Resource properties.
@@ -6071,6 +6873,9 @@ type ServerDevOpsAuditSettingsProperties struct {
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool
+
+	// Specifies whether Managed Identity is used to access blob storage
+	IsManagedIdentityInUse *bool
 
 	// Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, not
 	// specifying the storageAccountAccessKey will use SQL server system-assigned
@@ -6287,24 +7092,29 @@ type ServerProperties struct {
 	// The administrator login password (required for server creation).
 	AdministratorLoginPassword *string
 
-	// The Azure Active Directory identity of the server.
+	// The Azure Active Directory administrator of the server. This can only be used at server create time. If used for server
+	// update, it will be ignored or it will result in an error. For updates individual
+	// APIs will need to be used.
 	Administrators *ServerExternalAdministrator
 
 	// The Client id used for cross tenant CMK scenario
 	FederatedClientID *string
 
+	// Whether or not to enable IPv6 support for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+	IsIPv6Enabled *ServerNetworkAccessFlag
+
 	// A CMK URI of the key to use for encryption.
 	KeyID *string
 
-	// Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'
+	// Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string
 
 	// The resource id of a user assigned identity to be used by default.
 	PrimaryUserAssignedIdentityID *string
 
 	// Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be 'Enabled'
-	// or 'Disabled'
-	PublicNetworkAccess *ServerNetworkAccessFlag
+	// or 'Disabled' or 'SecuredByPerimeter'
+	PublicNetworkAccess *ServerPublicNetworkAccessFlag
 
 	// Whether or not to restrict outbound network access for this server. Value is optional but if passed in, must be 'Enabled'
 	// or 'Disabled'
@@ -6312,6 +7122,9 @@ type ServerProperties struct {
 
 	// The version of the server.
 	Version *string
+
+	// READ-ONLY; Status of external governance.
+	ExternalGovernanceStatus *ExternalGovernanceStatus
 
 	// READ-ONLY; The fully qualified domain name of the server.
 	FullyQualifiedDomainName *string
@@ -6627,6 +7440,51 @@ type SloUsageMetric struct {
 	ServiceLevelObjectiveID *string
 }
 
+// StartStopManagedInstanceSchedule - Managed instance's Start/Stop schedule.
+type StartStopManagedInstanceSchedule struct {
+	// Resource properties.
+	Properties *StartStopManagedInstanceScheduleProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; System data of the scheduled resource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// StartStopManagedInstanceScheduleListResult - Managed instance's Start/Stop schedule list result.
+type StartStopManagedInstanceScheduleListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*StartStopManagedInstanceSchedule
+}
+
+// StartStopManagedInstanceScheduleProperties - Properties of managed instance's Start/Stop schedule.
+type StartStopManagedInstanceScheduleProperties struct {
+	// REQUIRED; Schedule list.
+	ScheduleList []*ScheduleItem
+
+	// The description of the schedule.
+	Description *string
+
+	// The time zone of the schedule.
+	TimeZoneID *string
+
+	// READ-ONLY; Timestamp when the next action will be executed in the corresponding schedule time zone.
+	NextExecutionTime *string
+
+	// READ-ONLY; Next action to be executed (Start or Stop)
+	NextRunAction *string
+}
+
 // StorageCapability - The storage account type capability.
 type StorageCapability struct {
 	// The reason for the capability not being available.
@@ -6676,6 +7534,45 @@ type SubscriptionUsageProperties struct {
 
 	// READ-ONLY; Unit of the metric.
 	Unit *string
+}
+
+// SynapseLinkWorkspace - Synapse link workspace resource
+type SynapseLinkWorkspace struct {
+	// Resource properties.
+	Properties *SynapseLinkWorkspaceProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// SynapseLinkWorkspaceInfoProperties - Properties of a Synapse link workspaces
+type SynapseLinkWorkspaceInfoProperties struct {
+	// Link connection name.
+	LinkConnectionName *string
+
+	// Synapse link workspace id.
+	WorkspaceID *string
+}
+
+// SynapseLinkWorkspaceListResult - A list of synapselink workspaces
+type SynapseLinkWorkspaceListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*SynapseLinkWorkspace
+}
+
+// SynapseLinkWorkspaceProperties - Properties of a Synapse link workspaces
+type SynapseLinkWorkspaceProperties struct {
+	// List of all synapselink workspaces
+	Workspaces []*SynapseLinkWorkspaceInfoProperties
 }
 
 // SyncAgent - An Azure SQL Database sync agent.
@@ -7189,10 +8086,10 @@ type UpdateLongTermRetentionBackupParametersProperties struct {
 	RequestedBackupStorageRedundancy *BackupStorageRedundancy
 }
 
-// UpdateManagedInstanceDNSServersOperation - A recoverable managed database resource.
-type UpdateManagedInstanceDNSServersOperation struct {
+// UpdateVirtualClusterDNSServersOperation - A refresh DNS servers operation.
+type UpdateVirtualClusterDNSServersOperation struct {
 	// Resource properties.
-	Properties *DNSRefreshConfigurationProperties
+	Properties *VirtualClusterDNSServersProperties
 
 	// READ-ONLY; Resource ID.
 	ID *string
@@ -7259,6 +8156,36 @@ type UserIdentity struct {
 	PrincipalID *string
 }
 
+// VaRule - SQL Vulnerability Assessment rule metadata details.
+type VaRule struct {
+	// READ-ONLY; SQL Vulnerability Assessment benchmark references.
+	BenchmarkReferences []*BenchmarkReference
+
+	// READ-ONLY; SQL Vulnerability Assessment rule category.
+	Category *string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule description.
+	Description *string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule query details.
+	QueryCheck *QueryCheck
+
+	// READ-ONLY; SQL Vulnerability Assessment rule rationale.
+	Rationale *string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule Id.
+	RuleID *string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule type.
+	RuleType *RuleType
+
+	// READ-ONLY; SQL Vulnerability Assessment rule severity.
+	Severity *RuleSeverity
+
+	// READ-ONLY; SQL Vulnerability Assessment rule title.
+	Title *string
+}
+
 // VirtualCluster - An Azure SQL virtual cluster.
 type VirtualCluster struct {
 	// REQUIRED; Resource location.
@@ -7280,6 +8207,12 @@ type VirtualCluster struct {
 	Type *string
 }
 
+// VirtualClusterDNSServersProperties - The properties of dns servers on virtual cluster.
+type VirtualClusterDNSServersProperties struct {
+	// READ-ONLY; The status of the DNS refresh operation.
+	Status *DNSRefreshOperationStatus
+}
+
 // VirtualClusterListResult - A list of virtual clusters.
 type VirtualClusterListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -7291,11 +8224,8 @@ type VirtualClusterListResult struct {
 
 // VirtualClusterProperties - The properties of a virtual cluster.
 type VirtualClusterProperties struct {
-	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string
-
-	// Specifies maintenance configuration id to apply to this virtual cluster.
-	MaintenanceConfigurationID *string
+	// Virtual cluster version.
+	Version *string
 
 	// READ-ONLY; List of resources in this virtual cluster.
 	ChildResources []*string
@@ -7304,7 +8234,7 @@ type VirtualClusterProperties struct {
 	SubnetID *string
 }
 
-// VirtualClusterUpdate - An update request for an Azure SQL Database virtual cluster.
+// VirtualClusterUpdate - An update request for virtual cluster.
 type VirtualClusterUpdate struct {
 	// Resource properties.
 	Properties *VirtualClusterProperties
@@ -7349,6 +8279,39 @@ type VirtualNetworkRuleProperties struct {
 	State *VirtualNetworkRuleState
 }
 
+// VulnerabilityAssessment - A SQL Vulnerability Assessment.
+type VulnerabilityAssessment struct {
+	// Resource properties.
+	Properties *VulnerabilityAssessmentPolicyProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of SqlVulnerabilityAssessmentResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// VulnerabilityAssessmentListResult - A list of SQL Vulnerability Assessments.
+type VulnerabilityAssessmentListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*VulnerabilityAssessment
+}
+
+type VulnerabilityAssessmentPolicyProperties struct {
+	// Specifies the state of the SQL Vulnerability Assessment, whether it is enabled or disabled or a state has not been applied
+	// yet on the specific database or server.
+	State *SQLVulnerabilityAssessmentState
+}
+
 // VulnerabilityAssessmentRecurringScansProperties - Properties of a Vulnerability Assessment recurring scans.
 type VulnerabilityAssessmentRecurringScansProperties struct {
 	// Specifies that the schedule scan notification will be is sent to the subscription administrators.
@@ -7370,6 +8333,24 @@ type VulnerabilityAssessmentScanError struct {
 	Message *string
 }
 
+// VulnerabilityAssessmentScanForSQLError - Properties of a vulnerability assessment scan error.
+type VulnerabilityAssessmentScanForSQLError struct {
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error message.
+	Message *string
+}
+
+// VulnerabilityAssessmentScanListResult - A list of vulnerability assessment scan results.
+type VulnerabilityAssessmentScanListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*VulnerabilityAssessmentScanResults
+}
+
 // VulnerabilityAssessmentScanRecord - A vulnerability assessment scan record.
 type VulnerabilityAssessmentScanRecord struct {
 	// Resource properties.
@@ -7383,6 +8364,87 @@ type VulnerabilityAssessmentScanRecord struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
+}
+
+// VulnerabilityAssessmentScanRecordForSQL - A vulnerability assessment scan record.
+type VulnerabilityAssessmentScanRecordForSQL struct {
+	// Resource properties.
+	Properties *VulnerabilityAssessmentScanRecordForSQLProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of SqlVulnerabilityAssessmentScanRecordResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// VulnerabilityAssessmentScanRecordForSQLListResult - A list of vulnerability assessment scan records.
+type VulnerabilityAssessmentScanRecordForSQLListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*VulnerabilityAssessmentScanRecordForSQL
+}
+
+// VulnerabilityAssessmentScanRecordForSQLProperties - Properties of a vulnerability assessment scan record.
+type VulnerabilityAssessmentScanRecordForSQLProperties struct {
+	// READ-ONLY; The database name.
+	Database *string
+
+	// READ-ONLY; The scan end time (UTC).
+	EndTime *time.Time
+
+	// READ-ONLY; The scan errors.
+	Errors []*VulnerabilityAssessmentScanForSQLError
+
+	// READ-ONLY; The number of failed rules with high severity.
+	HighSeverityFailedRulesCount *int32
+
+	// READ-ONLY; Baseline created for this database, and has one or more rules.
+	IsBaselineApplied *bool
+
+	// READ-ONLY; The last scan time.
+	LastScanTime *time.Time
+
+	// READ-ONLY; The number of failed rules with low severity.
+	LowSeverityFailedRulesCount *int32
+
+	// READ-ONLY; The number of failed rules with medium severity.
+	MediumSeverityFailedRulesCount *int32
+
+	// READ-ONLY; The SQL version.
+	SQLVersion *string
+
+	// READ-ONLY; The scan ID.
+	ScanID *string
+
+	// READ-ONLY; The server name.
+	Server *string
+
+	// READ-ONLY; The scan start time (UTC).
+	StartTime *time.Time
+
+	// READ-ONLY; The scan status.
+	State *VulnerabilityAssessmentScanState
+
+	// READ-ONLY; The number of total failed rules.
+	TotalFailedRulesCount *int32
+
+	// READ-ONLY; The number of total passed rules.
+	TotalPassedRulesCount *int32
+
+	// READ-ONLY; The number of total rules assessed.
+	TotalRulesCount *int32
+
+	// READ-ONLY; The scan trigger type.
+	TriggerType *VulnerabilityAssessmentScanTriggerType
 }
 
 // VulnerabilityAssessmentScanRecordListResult - A list of vulnerability assessment scan records.
@@ -7419,6 +8481,50 @@ type VulnerabilityAssessmentScanRecordProperties struct {
 
 	// READ-ONLY; The scan trigger type.
 	TriggerType *VulnerabilityAssessmentScanTriggerType
+}
+
+// VulnerabilityAssessmentScanResultProperties - SQL Vulnerability Assessment scan result properties for a single rule.
+type VulnerabilityAssessmentScanResultProperties struct {
+	// READ-ONLY; SQL Vulnerability Assessment rule result adjusted with baseline.
+	BaselineAdjustedResult *BaselineAdjustedResult
+
+	// READ-ONLY; SQL Vulnerability Assessment error message.
+	ErrorMessage *string
+
+	// READ-ONLY; SQL Vulnerability Assessment is the query results trimmed.
+	IsTrimmed *bool
+
+	// READ-ONLY; SQL Vulnerability Assessment query results that was run.
+	QueryResults [][]*string
+
+	// READ-ONLY; SQL Vulnerability Assessment the remediation details.
+	Remediation *Remediation
+
+	// READ-ONLY; SQL Vulnerability Assessment rule Id.
+	RuleID *string
+
+	// READ-ONLY; SQL Vulnerability Assessment rule metadata.
+	RuleMetadata *VaRule
+
+	// READ-ONLY; SQL Vulnerability Assessment rule result status.
+	Status *RuleStatus
+}
+
+type VulnerabilityAssessmentScanResults struct {
+	// Resource properties.
+	Properties *VulnerabilityAssessmentScanResultProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; SystemData of AdvancedThreatProtectionResource.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource type.
+	Type *string
 }
 
 // WorkloadClassifier - Workload classifier operations for a data warehouse

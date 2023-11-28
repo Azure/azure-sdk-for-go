@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -26,11 +26,11 @@ import (
 type ServerDevOpsAuditSettingsServer struct {
 	// BeginCreateOrUpdate is the fake for method ServerDevOpsAuditSettingsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, devOpsAuditingSettingsName string, parameters armsql.ServerDevOpsAuditingSettings, options *armsql.ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.ServerDevOpsAuditSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, devOpsAuditingSettingsName armsql.DevOpsAuditingSettingsName, parameters armsql.ServerDevOpsAuditingSettings, options *armsql.ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.ServerDevOpsAuditSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServerDevOpsAuditSettingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, devOpsAuditingSettingsName string, options *armsql.ServerDevOpsAuditSettingsClientGetOptions) (resp azfake.Responder[armsql.ServerDevOpsAuditSettingsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, serverName string, devOpsAuditingSettingsName armsql.DevOpsAuditingSettingsName, options *armsql.ServerDevOpsAuditSettingsClientGetOptions) (resp azfake.Responder[armsql.ServerDevOpsAuditSettingsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByServerPager is the fake for method ServerDevOpsAuditSettingsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -109,7 +109,13 @@ func (s *ServerDevOpsAuditSettingsServerTransport) dispatchBeginCreateOrUpdate(r
 		if err != nil {
 			return nil, err
 		}
-		devOpsAuditingSettingsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devOpsAuditingSettingsName")])
+		devOpsAuditingSettingsNameParam, err := parseWithCast(matches[regex.SubexpIndex("devOpsAuditingSettingsName")], func(v string) (armsql.DevOpsAuditingSettingsName, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsql.DevOpsAuditingSettingsName(p), nil
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -155,7 +161,13 @@ func (s *ServerDevOpsAuditSettingsServerTransport) dispatchGet(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	devOpsAuditingSettingsNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devOpsAuditingSettingsName")])
+	devOpsAuditingSettingsNameParam, err := parseWithCast(matches[regex.SubexpIndex("devOpsAuditingSettingsName")], func(v string) (armsql.DevOpsAuditingSettingsName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armsql.DevOpsAuditingSettingsName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,9 +24,9 @@ import (
 
 // TransparentDataEncryptionsServer is a fake server for instances of the armsql.TransparentDataEncryptionsClient type.
 type TransparentDataEncryptionsServer struct {
-	// CreateOrUpdate is the fake for method TransparentDataEncryptionsClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method TransparentDataEncryptionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, parameters armsql.LogicalDatabaseTransparentDataEncryption, options *armsql.TransparentDataEncryptionsClientCreateOrUpdateOptions) (resp azfake.Responder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, parameters armsql.LogicalDatabaseTransparentDataEncryption, options *armsql.TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TransparentDataEncryptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,6 +43,7 @@ type TransparentDataEncryptionsServer struct {
 func NewTransparentDataEncryptionsServerTransport(srv *TransparentDataEncryptionsServer) *TransparentDataEncryptionsServerTransport {
 	return &TransparentDataEncryptionsServerTransport{
 		srv:                    srv,
+		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse]](),
 		newListByDatabasePager: newTracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]](),
 	}
 }
@@ -51,6 +52,7 @@ func NewTransparentDataEncryptionsServerTransport(srv *TransparentDataEncryption
 // Don't use this type directly, use NewTransparentDataEncryptionsServerTransport instead.
 type TransparentDataEncryptionsServerTransport struct {
 	srv                    *TransparentDataEncryptionsServer
+	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse]]
 	newListByDatabasePager *tracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]]
 }
 
@@ -66,8 +68,8 @@ func (t *TransparentDataEncryptionsServerTransport) Do(req *http.Request) (*http
 	var err error
 
 	switch method {
-	case "TransparentDataEncryptionsClient.CreateOrUpdate":
-		resp, err = t.dispatchCreateOrUpdate(req)
+	case "TransparentDataEncryptionsClient.BeginCreateOrUpdate":
+		resp, err = t.dispatchBeginCreateOrUpdate(req)
 	case "TransparentDataEncryptionsClient.Get":
 		resp, err = t.dispatchGet(req)
 	case "TransparentDataEncryptionsClient.NewListByDatabasePager":
@@ -83,54 +85,65 @@ func (t *TransparentDataEncryptionsServerTransport) Do(req *http.Request) (*http
 	return resp, nil
 }
 
-func (t *TransparentDataEncryptionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (t *TransparentDataEncryptionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transparentDataEncryption/(?P<tdeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsql.LogicalDatabaseTransparentDataEncryption](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	tdeNameParam, err := parseWithCast(matches[regex.SubexpIndex("tdeName")], func(v string) (armsql.TransparentDataEncryptionName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
+	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transparentDataEncryption/(?P<tdeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		return armsql.TransparentDataEncryptionName(p), nil
-	})
+		body, err := server.UnmarshalRequestAsJSON[armsql.LogicalDatabaseTransparentDataEncryption](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		tdeNameParam, err := parseWithCast(matches[regex.SubexpIndex("tdeName")], func(v string) (armsql.TransparentDataEncryptionName, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsql.TransparentDataEncryptionName(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, tdeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		t.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, tdeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
+
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		t.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", respContent.HTTPStatus)}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		t.beginCreateOrUpdate.remove(req)
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogicalDatabaseTransparentDataEncryption, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

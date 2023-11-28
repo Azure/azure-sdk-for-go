@@ -103,6 +103,12 @@ func (c *ClientFactory) NewDatabaseColumnsClient() *DatabaseColumnsClient {
 	return subClient
 }
 
+// NewDatabaseEncryptionProtectorsClient creates a new instance of DatabaseEncryptionProtectorsClient.
+func (c *ClientFactory) NewDatabaseEncryptionProtectorsClient() *DatabaseEncryptionProtectorsClient {
+	subClient, _ := NewDatabaseEncryptionProtectorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDatabaseExtensionsClient creates a new instance of DatabaseExtensionsClient.
 func (c *ClientFactory) NewDatabaseExtensionsClient() *DatabaseExtensionsClient {
 	subClient, _ := NewDatabaseExtensionsClient(c.subscriptionID, c.credential, c.options)
@@ -118,6 +124,42 @@ func (c *ClientFactory) NewDatabaseOperationsClient() *DatabaseOperationsClient 
 // NewDatabaseRecommendedActionsClient creates a new instance of DatabaseRecommendedActionsClient.
 func (c *ClientFactory) NewDatabaseRecommendedActionsClient() *DatabaseRecommendedActionsClient {
 	subClient, _ := NewDatabaseRecommendedActionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentBaselinesClient creates a new instance of DatabaseSQLVulnerabilityAssessmentBaselinesClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentBaselinesClient() *DatabaseSQLVulnerabilityAssessmentBaselinesClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient creates a new instance of DatabaseSQLVulnerabilityAssessmentExecuteScanClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient() *DatabaseSQLVulnerabilityAssessmentExecuteScanClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentExecuteScanClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient creates a new instance of DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient() *DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentScanResultClient creates a new instance of DatabaseSQLVulnerabilityAssessmentScanResultClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentScanResultClient() *DatabaseSQLVulnerabilityAssessmentScanResultClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentScanResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentScansClient creates a new instance of DatabaseSQLVulnerabilityAssessmentScansClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentScansClient() *DatabaseSQLVulnerabilityAssessmentScansClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentScansClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDatabaseSQLVulnerabilityAssessmentsSettingsClient creates a new instance of DatabaseSQLVulnerabilityAssessmentsSettingsClient.
+func (c *ClientFactory) NewDatabaseSQLVulnerabilityAssessmentsSettingsClient() *DatabaseSQLVulnerabilityAssessmentsSettingsClient {
+	subClient, _ := NewDatabaseSQLVulnerabilityAssessmentsSettingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -361,9 +403,21 @@ func (c *ClientFactory) NewManagedBackupShortTermRetentionPoliciesClient() *Mana
 	return subClient
 }
 
+// NewManagedDatabaseAdvancedThreatProtectionSettingsClient creates a new instance of ManagedDatabaseAdvancedThreatProtectionSettingsClient.
+func (c *ClientFactory) NewManagedDatabaseAdvancedThreatProtectionSettingsClient() *ManagedDatabaseAdvancedThreatProtectionSettingsClient {
+	subClient, _ := NewManagedDatabaseAdvancedThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewManagedDatabaseColumnsClient creates a new instance of ManagedDatabaseColumnsClient.
 func (c *ClientFactory) NewManagedDatabaseColumnsClient() *ManagedDatabaseColumnsClient {
 	subClient, _ := NewManagedDatabaseColumnsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewManagedDatabaseMoveOperationsClient creates a new instance of ManagedDatabaseMoveOperationsClient.
+func (c *ClientFactory) NewManagedDatabaseMoveOperationsClient() *ManagedDatabaseMoveOperationsClient {
+	subClient, _ := NewManagedDatabaseMoveOperationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -451,9 +505,21 @@ func (c *ClientFactory) NewManagedInstanceAdministratorsClient() *ManagedInstanc
 	return subClient
 }
 
+// NewManagedInstanceAdvancedThreatProtectionSettingsClient creates a new instance of ManagedInstanceAdvancedThreatProtectionSettingsClient.
+func (c *ClientFactory) NewManagedInstanceAdvancedThreatProtectionSettingsClient() *ManagedInstanceAdvancedThreatProtectionSettingsClient {
+	subClient, _ := NewManagedInstanceAdvancedThreatProtectionSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewManagedInstanceAzureADOnlyAuthenticationsClient creates a new instance of ManagedInstanceAzureADOnlyAuthenticationsClient.
 func (c *ClientFactory) NewManagedInstanceAzureADOnlyAuthenticationsClient() *ManagedInstanceAzureADOnlyAuthenticationsClient {
 	subClient, _ := NewManagedInstanceAzureADOnlyAuthenticationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewManagedInstanceDtcsClient creates a new instance of ManagedInstanceDtcsClient.
+func (c *ClientFactory) NewManagedInstanceDtcsClient() *ManagedInstanceDtcsClient {
+	subClient, _ := NewManagedInstanceDtcsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -511,9 +577,21 @@ func (c *ClientFactory) NewManagedInstancesClient() *ManagedInstancesClient {
 	return subClient
 }
 
+// NewManagedLedgerDigestUploadsClient creates a new instance of ManagedLedgerDigestUploadsClient.
+func (c *ClientFactory) NewManagedLedgerDigestUploadsClient() *ManagedLedgerDigestUploadsClient {
+	subClient, _ := NewManagedLedgerDigestUploadsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient creates a new instance of ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.
 func (c *ClientFactory) NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient() *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient {
 	subClient, _ := NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewManagedServerDNSAliasesClient creates a new instance of ManagedServerDNSAliasesClient.
+func (c *ClientFactory) NewManagedServerDNSAliasesClient() *ManagedServerDNSAliasesClient {
+	subClient, _ := NewManagedServerDNSAliasesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -637,6 +715,12 @@ func (c *ClientFactory) NewServerCommunicationLinksClient() *ServerCommunication
 	return subClient
 }
 
+// NewServerConfigurationOptionsClient creates a new instance of ServerConfigurationOptionsClient.
+func (c *ClientFactory) NewServerConfigurationOptionsClient() *ServerConfigurationOptionsClient {
+	subClient, _ := NewServerConfigurationOptionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewServerConnectionPoliciesClient creates a new instance of ServerConnectionPoliciesClient.
 func (c *ClientFactory) NewServerConnectionPoliciesClient() *ServerConnectionPoliciesClient {
 	subClient, _ := NewServerConnectionPoliciesClient(c.subscriptionID, c.credential, c.options)
@@ -709,9 +793,21 @@ func (c *ClientFactory) NewServiceObjectivesClient() *ServiceObjectivesClient {
 	return subClient
 }
 
+// NewStartStopManagedInstanceSchedulesClient creates a new instance of StartStopManagedInstanceSchedulesClient.
+func (c *ClientFactory) NewStartStopManagedInstanceSchedulesClient() *StartStopManagedInstanceSchedulesClient {
+	subClient, _ := NewStartStopManagedInstanceSchedulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewSubscriptionUsagesClient creates a new instance of SubscriptionUsagesClient.
 func (c *ClientFactory) NewSubscriptionUsagesClient() *SubscriptionUsagesClient {
 	subClient, _ := NewSubscriptionUsagesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewSynapseLinkWorkspacesClient creates a new instance of SynapseLinkWorkspacesClient.
+func (c *ClientFactory) NewSynapseLinkWorkspacesClient() *SynapseLinkWorkspacesClient {
+	subClient, _ := NewSynapseLinkWorkspacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -766,6 +862,60 @@ func (c *ClientFactory) NewVirtualClustersClient() *VirtualClustersClient {
 // NewVirtualNetworkRulesClient creates a new instance of VirtualNetworkRulesClient.
 func (c *ClientFactory) NewVirtualNetworkRulesClient() *VirtualNetworkRulesClient {
 	subClient, _ := NewVirtualNetworkRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentBaselineClient creates a new instance of VulnerabilityAssessmentBaselineClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentBaselineClient() *VulnerabilityAssessmentBaselineClient {
+	subClient, _ := NewVulnerabilityAssessmentBaselineClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentBaselinesClient creates a new instance of VulnerabilityAssessmentBaselinesClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentBaselinesClient() *VulnerabilityAssessmentBaselinesClient {
+	subClient, _ := NewVulnerabilityAssessmentBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentExecuteScanClient creates a new instance of VulnerabilityAssessmentExecuteScanClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentExecuteScanClient() *VulnerabilityAssessmentExecuteScanClient {
+	subClient, _ := NewVulnerabilityAssessmentExecuteScanClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentRuleBaselineClient creates a new instance of VulnerabilityAssessmentRuleBaselineClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentRuleBaselineClient() *VulnerabilityAssessmentRuleBaselineClient {
+	subClient, _ := NewVulnerabilityAssessmentRuleBaselineClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentRuleBaselinesClient creates a new instance of VulnerabilityAssessmentRuleBaselinesClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentRuleBaselinesClient() *VulnerabilityAssessmentRuleBaselinesClient {
+	subClient, _ := NewVulnerabilityAssessmentRuleBaselinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentScanResultClient creates a new instance of VulnerabilityAssessmentScanResultClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentScanResultClient() *VulnerabilityAssessmentScanResultClient {
+	subClient, _ := NewVulnerabilityAssessmentScanResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentScansClient creates a new instance of VulnerabilityAssessmentScansClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentScansClient() *VulnerabilityAssessmentScansClient {
+	subClient, _ := NewVulnerabilityAssessmentScansClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentsClient creates a new instance of VulnerabilityAssessmentsClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentsClient() *VulnerabilityAssessmentsClient {
+	subClient, _ := NewVulnerabilityAssessmentsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewVulnerabilityAssessmentsSettingsClient creates a new instance of VulnerabilityAssessmentsSettingsClient.
+func (c *ClientFactory) NewVulnerabilityAssessmentsSettingsClient() *VulnerabilityAssessmentsSettingsClient {
+	subClient, _ := NewVulnerabilityAssessmentsSettingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

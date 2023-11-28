@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 type AdministratorName string
@@ -111,6 +111,22 @@ func PossibleAggregationFunctionTypeValues() []AggregationFunctionType {
 		AggregationFunctionTypeMin,
 		AggregationFunctionTypeStdev,
 		AggregationFunctionTypeSum,
+	}
+}
+
+// AlwaysEncryptedEnclaveType - Type of enclave requested on the elastic pool.
+type AlwaysEncryptedEnclaveType string
+
+const (
+	AlwaysEncryptedEnclaveTypeDefault AlwaysEncryptedEnclaveType = "Default"
+	AlwaysEncryptedEnclaveTypeVBS     AlwaysEncryptedEnclaveType = "VBS"
+)
+
+// PossibleAlwaysEncryptedEnclaveTypeValues returns the possible values for the AlwaysEncryptedEnclaveType const type.
+func PossibleAlwaysEncryptedEnclaveTypeValues() []AlwaysEncryptedEnclaveType {
+	return []AlwaysEncryptedEnclaveType{
+		AlwaysEncryptedEnclaveTypeDefault,
+		AlwaysEncryptedEnclaveTypeVBS,
 	}
 }
 
@@ -286,7 +302,27 @@ func PossibleAutomaticTuningServerReasonValues() []AutomaticTuningServerReason {
 	}
 }
 
-// BackupStorageRedundancy - The storage account type used to store backups for this database.
+// AvailabilityZoneType - Specifies the availability zone the pool's primary replica is pinned to.
+type AvailabilityZoneType string
+
+const (
+	AvailabilityZoneTypeNoPreference AvailabilityZoneType = "NoPreference"
+	AvailabilityZoneTypeOne          AvailabilityZoneType = "1"
+	AvailabilityZoneTypeThree        AvailabilityZoneType = "3"
+	AvailabilityZoneTypeTwo          AvailabilityZoneType = "2"
+)
+
+// PossibleAvailabilityZoneTypeValues returns the possible values for the AvailabilityZoneType const type.
+func PossibleAvailabilityZoneTypeValues() []AvailabilityZoneType {
+	return []AvailabilityZoneType{
+		AvailabilityZoneTypeNoPreference,
+		AvailabilityZoneTypeOne,
+		AvailabilityZoneTypeThree,
+		AvailabilityZoneTypeTwo,
+	}
+}
+
+// BackupStorageRedundancy - The storage redundancy type of the copied backup
 type BackupStorageRedundancy string
 
 const (
@@ -303,6 +339,19 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 		BackupStorageRedundancyGeoZone,
 		BackupStorageRedundancyLocal,
 		BackupStorageRedundancyZone,
+	}
+}
+
+type BaselineName string
+
+const (
+	BaselineNameDefault BaselineName = "default"
+)
+
+// PossibleBaselineNameValues returns the possible values for the BaselineName const type.
+func PossibleBaselineNameValues() []BaselineName {
+	return []BaselineName{
+		BaselineNameDefault,
 	}
 }
 
@@ -560,19 +609,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DNSRefreshConfigurationPropertiesStatus - The status of the DNS refresh operation.
-type DNSRefreshConfigurationPropertiesStatus string
+// DNSRefreshOperationStatus - The status of the DNS refresh operation.
+type DNSRefreshOperationStatus string
 
 const (
-	DNSRefreshConfigurationPropertiesStatusFailed    DNSRefreshConfigurationPropertiesStatus = "Failed"
-	DNSRefreshConfigurationPropertiesStatusSucceeded DNSRefreshConfigurationPropertiesStatus = "Succeeded"
+	DNSRefreshOperationStatusFailed     DNSRefreshOperationStatus = "Failed"
+	DNSRefreshOperationStatusInProgress DNSRefreshOperationStatus = "InProgress"
+	DNSRefreshOperationStatusSucceeded  DNSRefreshOperationStatus = "Succeeded"
 )
 
-// PossibleDNSRefreshConfigurationPropertiesStatusValues returns the possible values for the DNSRefreshConfigurationPropertiesStatus const type.
-func PossibleDNSRefreshConfigurationPropertiesStatusValues() []DNSRefreshConfigurationPropertiesStatus {
-	return []DNSRefreshConfigurationPropertiesStatus{
-		DNSRefreshConfigurationPropertiesStatusFailed,
-		DNSRefreshConfigurationPropertiesStatusSucceeded,
+// PossibleDNSRefreshOperationStatusValues returns the possible values for the DNSRefreshOperationStatus const type.
+func PossibleDNSRefreshOperationStatusValues() []DNSRefreshOperationStatus {
+	return []DNSRefreshOperationStatus{
+		DNSRefreshOperationStatusFailed,
+		DNSRefreshOperationStatusInProgress,
+		DNSRefreshOperationStatusSucceeded,
 	}
 }
 
@@ -660,6 +711,20 @@ func PossibleDatabaseIdentityTypeValues() []DatabaseIdentityType {
 	return []DatabaseIdentityType{
 		DatabaseIdentityTypeNone,
 		DatabaseIdentityTypeUserAssigned,
+	}
+}
+
+// DatabaseKeyType - The database key type. Only supported value is 'AzureKeyVault'.
+type DatabaseKeyType string
+
+const (
+	DatabaseKeyTypeAzureKeyVault DatabaseKeyType = "AzureKeyVault"
+)
+
+// PossibleDatabaseKeyTypeValues returns the possible values for the DatabaseKeyType const type.
+func PossibleDatabaseKeyTypeValues() []DatabaseKeyType {
+	return []DatabaseKeyType{
+		DatabaseKeyTypeAzureKeyVault,
 	}
 }
 
@@ -801,6 +866,19 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 	}
 }
 
+type DevOpsAuditingSettingsName string
+
+const (
+	DevOpsAuditingSettingsNameDefault DevOpsAuditingSettingsName = "Default"
+)
+
+// PossibleDevOpsAuditingSettingsNameValues returns the possible values for the DevOpsAuditingSettingsName const type.
+func PossibleDevOpsAuditingSettingsNameValues() []DevOpsAuditingSettingsName {
+	return []DevOpsAuditingSettingsName{
+		DevOpsAuditingSettingsNameDefault,
+	}
+}
+
 // DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential
 // backup will be supported. This is only applicable to live databases but not dropped databases.
 type DiffBackupIntervalInHours int32
@@ -815,6 +893,19 @@ func PossibleDiffBackupIntervalInHoursValues() []DiffBackupIntervalInHours {
 	return []DiffBackupIntervalInHours{
 		DiffBackupIntervalInHoursTwelve,
 		DiffBackupIntervalInHoursTwentyFour,
+	}
+}
+
+type DtcName string
+
+const (
+	DtcNameCurrent DtcName = "current"
+)
+
+// PossibleDtcNameValues returns the possible values for the DtcName const type.
+func PossibleDtcNameValues() []DtcName {
+	return []DtcName{
+		DtcNameCurrent,
 	}
 }
 
@@ -865,6 +956,22 @@ func PossibleEncryptionProtectorNameValues() []EncryptionProtectorName {
 	}
 }
 
+// ExternalGovernanceStatus - Status of external governance.
+type ExternalGovernanceStatus string
+
+const (
+	ExternalGovernanceStatusDisabled ExternalGovernanceStatus = "Disabled"
+	ExternalGovernanceStatusEnabled  ExternalGovernanceStatus = "Enabled"
+)
+
+// PossibleExternalGovernanceStatusValues returns the possible values for the ExternalGovernanceStatus const type.
+func PossibleExternalGovernanceStatusValues() []ExternalGovernanceStatus {
+	return []ExternalGovernanceStatus{
+		ExternalGovernanceStatusDisabled,
+		ExternalGovernanceStatusEnabled,
+	}
+}
+
 // FailoverGroupReplicationRole - Local replication role of the failover group instance.
 type FailoverGroupReplicationRole string
 
@@ -878,6 +985,24 @@ func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole
 	return []FailoverGroupReplicationRole{
 		FailoverGroupReplicationRolePrimary,
 		FailoverGroupReplicationRoleSecondary,
+	}
+}
+
+// FreeLimitExhaustionBehavior - Specifies the behavior when monthly free limits are exhausted for the free database.
+// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+type FreeLimitExhaustionBehavior string
+
+const (
+	FreeLimitExhaustionBehaviorAutoPause     FreeLimitExhaustionBehavior = "AutoPause"
+	FreeLimitExhaustionBehaviorBillOverUsage FreeLimitExhaustionBehavior = "BillOverUsage"
+)
+
+// PossibleFreeLimitExhaustionBehaviorValues returns the possible values for the FreeLimitExhaustionBehavior const type.
+func PossibleFreeLimitExhaustionBehaviorValues() []FreeLimitExhaustionBehavior {
+	return []FreeLimitExhaustionBehavior{
+		FreeLimitExhaustionBehaviorAutoPause,
+		FreeLimitExhaustionBehaviorBillOverUsage,
 	}
 }
 
@@ -1243,11 +1368,16 @@ type ManagedDatabaseStatus string
 
 const (
 	ManagedDatabaseStatusCreating     ManagedDatabaseStatus = "Creating"
+	ManagedDatabaseStatusDbCopying    ManagedDatabaseStatus = "DbCopying"
+	ManagedDatabaseStatusDbMoving     ManagedDatabaseStatus = "DbMoving"
 	ManagedDatabaseStatusInaccessible ManagedDatabaseStatus = "Inaccessible"
 	ManagedDatabaseStatusOffline      ManagedDatabaseStatus = "Offline"
 	ManagedDatabaseStatusOnline       ManagedDatabaseStatus = "Online"
 	ManagedDatabaseStatusRestoring    ManagedDatabaseStatus = "Restoring"
 	ManagedDatabaseStatusShutdown     ManagedDatabaseStatus = "Shutdown"
+	ManagedDatabaseStatusStarting     ManagedDatabaseStatus = "Starting"
+	ManagedDatabaseStatusStopped      ManagedDatabaseStatus = "Stopped"
+	ManagedDatabaseStatusStopping     ManagedDatabaseStatus = "Stopping"
 	ManagedDatabaseStatusUpdating     ManagedDatabaseStatus = "Updating"
 )
 
@@ -1255,11 +1385,16 @@ const (
 func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
 	return []ManagedDatabaseStatus{
 		ManagedDatabaseStatusCreating,
+		ManagedDatabaseStatusDbCopying,
+		ManagedDatabaseStatusDbMoving,
 		ManagedDatabaseStatusInaccessible,
 		ManagedDatabaseStatusOffline,
 		ManagedDatabaseStatusOnline,
 		ManagedDatabaseStatusRestoring,
 		ManagedDatabaseStatusShutdown,
+		ManagedDatabaseStatusStarting,
+		ManagedDatabaseStatusStopped,
+		ManagedDatabaseStatusStopping,
 		ManagedDatabaseStatusUpdating,
 	}
 }
@@ -1367,6 +1502,35 @@ func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride
 	}
 }
 
+type ManagedLedgerDigestUploadsName string
+
+const (
+	ManagedLedgerDigestUploadsNameCurrent ManagedLedgerDigestUploadsName = "current"
+)
+
+// PossibleManagedLedgerDigestUploadsNameValues returns the possible values for the ManagedLedgerDigestUploadsName const type.
+func PossibleManagedLedgerDigestUploadsNameValues() []ManagedLedgerDigestUploadsName {
+	return []ManagedLedgerDigestUploadsName{
+		ManagedLedgerDigestUploadsNameCurrent,
+	}
+}
+
+// ManagedLedgerDigestUploadsState - Specifies the state of ledger digest upload.
+type ManagedLedgerDigestUploadsState string
+
+const (
+	ManagedLedgerDigestUploadsStateDisabled ManagedLedgerDigestUploadsState = "Disabled"
+	ManagedLedgerDigestUploadsStateEnabled  ManagedLedgerDigestUploadsState = "Enabled"
+)
+
+// PossibleManagedLedgerDigestUploadsStateValues returns the possible values for the ManagedLedgerDigestUploadsState const type.
+func PossibleManagedLedgerDigestUploadsStateValues() []ManagedLedgerDigestUploadsState {
+	return []ManagedLedgerDigestUploadsState{
+		ManagedLedgerDigestUploadsStateDisabled,
+		ManagedLedgerDigestUploadsStateEnabled,
+	}
+}
+
 // ManagedServerCreateMode - Specifies the mode of database creation.
 // Default: Regular instance creation.
 // Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId
@@ -1461,6 +1625,22 @@ func PossibleMetricTypeValues() []MetricType {
 		MetricTypeDuration,
 		MetricTypeIo,
 		MetricTypeLogIo,
+	}
+}
+
+// MoveOperationMode - Operation mode.
+type MoveOperationMode string
+
+const (
+	MoveOperationModeCopy MoveOperationMode = "Copy"
+	MoveOperationModeMove MoveOperationMode = "Move"
+)
+
+// PossibleMoveOperationModeValues returns the possible values for the MoveOperationMode const type.
+func PossibleMoveOperationModeValues() []MoveOperationMode {
+	return []MoveOperationMode{
+		MoveOperationModeCopy,
+		MoveOperationModeMove,
 	}
 }
 
@@ -1807,12 +1987,13 @@ func PossibleReplicaTypeValues() []ReplicaType {
 	}
 }
 
-// ReplicationLinkType - Link type (GEO, NAMED).
+// ReplicationLinkType - Link type (GEO, NAMED, STANDBY).
 type ReplicationLinkType string
 
 const (
-	ReplicationLinkTypeGEO   ReplicationLinkType = "GEO"
-	ReplicationLinkTypeNAMED ReplicationLinkType = "NAMED"
+	ReplicationLinkTypeGEO     ReplicationLinkType = "GEO"
+	ReplicationLinkTypeNAMED   ReplicationLinkType = "NAMED"
+	ReplicationLinkTypeSTANDBY ReplicationLinkType = "STANDBY"
 )
 
 // PossibleReplicationLinkTypeValues returns the possible values for the ReplicationLinkType const type.
@@ -1820,6 +2001,7 @@ func PossibleReplicationLinkTypeValues() []ReplicationLinkType {
 	return []ReplicationLinkType{
 		ReplicationLinkTypeGEO,
 		ReplicationLinkTypeNAMED,
+		ReplicationLinkTypeSTANDBY,
 	}
 }
 
@@ -1910,6 +2092,66 @@ func PossibleRestorePointTypeValues() []RestorePointType {
 	}
 }
 
+// RuleSeverity - SQL Vulnerability Assessment rule severity.
+type RuleSeverity string
+
+const (
+	RuleSeverityHigh          RuleSeverity = "High"
+	RuleSeverityInformational RuleSeverity = "Informational"
+	RuleSeverityLow           RuleSeverity = "Low"
+	RuleSeverityMedium        RuleSeverity = "Medium"
+	RuleSeverityObsolete      RuleSeverity = "Obsolete"
+)
+
+// PossibleRuleSeverityValues returns the possible values for the RuleSeverity const type.
+func PossibleRuleSeverityValues() []RuleSeverity {
+	return []RuleSeverity{
+		RuleSeverityHigh,
+		RuleSeverityInformational,
+		RuleSeverityLow,
+		RuleSeverityMedium,
+		RuleSeverityObsolete,
+	}
+}
+
+// RuleStatus - SQL Vulnerability Assessment baseline status
+type RuleStatus string
+
+const (
+	RuleStatusFinding       RuleStatus = "Finding"
+	RuleStatusInternalError RuleStatus = "InternalError"
+	RuleStatusNonFinding    RuleStatus = "NonFinding"
+)
+
+// PossibleRuleStatusValues returns the possible values for the RuleStatus const type.
+func PossibleRuleStatusValues() []RuleStatus {
+	return []RuleStatus{
+		RuleStatusFinding,
+		RuleStatusInternalError,
+		RuleStatusNonFinding,
+	}
+}
+
+// RuleType - SQL Vulnerability Assessment rule type.
+type RuleType string
+
+const (
+	RuleTypeBaselineExpected RuleType = "BaselineExpected"
+	RuleTypeBinary           RuleType = "Binary"
+	RuleTypeNegativeList     RuleType = "NegativeList"
+	RuleTypePositiveList     RuleType = "PositiveList"
+)
+
+// PossibleRuleTypeValues returns the possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{
+		RuleTypeBaselineExpected,
+		RuleTypeBinary,
+		RuleTypeNegativeList,
+		RuleTypePositiveList,
+	}
+}
+
 // SQLAgentConfigurationPropertiesState - The state of Sql Agent.
 type SQLAgentConfigurationPropertiesState string
 
@@ -1923,6 +2165,36 @@ func PossibleSQLAgentConfigurationPropertiesStateValues() []SQLAgentConfiguratio
 	return []SQLAgentConfigurationPropertiesState{
 		SQLAgentConfigurationPropertiesStateDisabled,
 		SQLAgentConfigurationPropertiesStateEnabled,
+	}
+}
+
+type SQLVulnerabilityAssessmentName string
+
+const (
+	SQLVulnerabilityAssessmentNameDefault SQLVulnerabilityAssessmentName = "default"
+)
+
+// PossibleSQLVulnerabilityAssessmentNameValues returns the possible values for the SQLVulnerabilityAssessmentName const type.
+func PossibleSQLVulnerabilityAssessmentNameValues() []SQLVulnerabilityAssessmentName {
+	return []SQLVulnerabilityAssessmentName{
+		SQLVulnerabilityAssessmentNameDefault,
+	}
+}
+
+// SQLVulnerabilityAssessmentState - Specifies the state of the SQL Vulnerability Assessment, whether it is enabled or disabled
+// or a state has not been applied yet on the specific database or server.
+type SQLVulnerabilityAssessmentState string
+
+const (
+	SQLVulnerabilityAssessmentStateDisabled SQLVulnerabilityAssessmentState = "Disabled"
+	SQLVulnerabilityAssessmentStateEnabled  SQLVulnerabilityAssessmentState = "Enabled"
+)
+
+// PossibleSQLVulnerabilityAssessmentStateValues returns the possible values for the SQLVulnerabilityAssessmentState const type.
+func PossibleSQLVulnerabilityAssessmentStateValues() []SQLVulnerabilityAssessmentState {
+	return []SQLVulnerabilityAssessmentState{
+		SQLVulnerabilityAssessmentStateDisabled,
+		SQLVulnerabilityAssessmentStateEnabled,
 	}
 }
 
@@ -1944,12 +2216,29 @@ func PossibleSampleNameValues() []SampleName {
 	}
 }
 
-// SecondaryType - The secondary type of the database if it is a secondary. Valid values are Geo and Named.
+// SecondaryInstanceType - Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR option only.
+type SecondaryInstanceType string
+
+const (
+	SecondaryInstanceTypeGeo     SecondaryInstanceType = "Geo"
+	SecondaryInstanceTypeStandby SecondaryInstanceType = "Standby"
+)
+
+// PossibleSecondaryInstanceTypeValues returns the possible values for the SecondaryInstanceType const type.
+func PossibleSecondaryInstanceTypeValues() []SecondaryInstanceType {
+	return []SecondaryInstanceType{
+		SecondaryInstanceTypeGeo,
+		SecondaryInstanceTypeStandby,
+	}
+}
+
+// SecondaryType - The secondary type of the database if it is a secondary. Valid values are Geo, Named and Standby.
 type SecondaryType string
 
 const (
-	SecondaryTypeGeo   SecondaryType = "Geo"
-	SecondaryTypeNamed SecondaryType = "Named"
+	SecondaryTypeGeo     SecondaryType = "Geo"
+	SecondaryTypeNamed   SecondaryType = "Named"
+	SecondaryTypeStandby SecondaryType = "Standby"
 )
 
 // PossibleSecondaryTypeValues returns the possible values for the SecondaryType const type.
@@ -1957,6 +2246,7 @@ func PossibleSecondaryTypeValues() []SecondaryType {
 	return []SecondaryType{
 		SecondaryTypeGeo,
 		SecondaryTypeNamed,
+		SecondaryTypeStandby,
 	}
 }
 
@@ -2078,6 +2368,19 @@ func PossibleSensitivityLabelUpdateKindValues() []SensitivityLabelUpdateKind {
 	}
 }
 
+type ServerConfigurationOptionName string
+
+const (
+	ServerConfigurationOptionNameAllowPolybaseExport ServerConfigurationOptionName = "allowPolybaseExport"
+)
+
+// PossibleServerConfigurationOptionNameValues returns the possible values for the ServerConfigurationOptionName const type.
+func PossibleServerConfigurationOptionNameValues() []ServerConfigurationOptionName {
+	return []ServerConfigurationOptionName{
+		ServerConfigurationOptionNameAllowPolybaseExport,
+	}
+}
+
 // ServerConnectionType - The server connection type.
 type ServerConnectionType string
 
@@ -2112,8 +2415,8 @@ func PossibleServerKeyTypeValues() []ServerKeyType {
 	}
 }
 
-// ServerNetworkAccessFlag - Whether or not public endpoint access is allowed for this server. Value is optional but if passed
-// in, must be 'Enabled' or 'Disabled'
+// ServerNetworkAccessFlag - Whether or not to restrict outbound network access for this server. Value is optional but if
+// passed in, must be 'Enabled' or 'Disabled'
 type ServerNetworkAccessFlag string
 
 const (
@@ -2126,6 +2429,25 @@ func PossibleServerNetworkAccessFlagValues() []ServerNetworkAccessFlag {
 	return []ServerNetworkAccessFlag{
 		ServerNetworkAccessFlagDisabled,
 		ServerNetworkAccessFlagEnabled,
+	}
+}
+
+// ServerPublicNetworkAccessFlag - Whether or not public endpoint access is allowed for this server. Value is optional but
+// if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'
+type ServerPublicNetworkAccessFlag string
+
+const (
+	ServerPublicNetworkAccessFlagDisabled           ServerPublicNetworkAccessFlag = "Disabled"
+	ServerPublicNetworkAccessFlagEnabled            ServerPublicNetworkAccessFlag = "Enabled"
+	ServerPublicNetworkAccessFlagSecuredByPerimeter ServerPublicNetworkAccessFlag = "SecuredByPerimeter"
+)
+
+// PossibleServerPublicNetworkAccessFlagValues returns the possible values for the ServerPublicNetworkAccessFlag const type.
+func PossibleServerPublicNetworkAccessFlagValues() []ServerPublicNetworkAccessFlag {
+	return []ServerPublicNetworkAccessFlag{
+		ServerPublicNetworkAccessFlagDisabled,
+		ServerPublicNetworkAccessFlagEnabled,
+		ServerPublicNetworkAccessFlagSecuredByPerimeter,
 	}
 }
 
@@ -2328,6 +2650,19 @@ const (
 func PossibleShortTermRetentionPolicyNameValues() []ShortTermRetentionPolicyName {
 	return []ShortTermRetentionPolicyName{
 		ShortTermRetentionPolicyNameDefault,
+	}
+}
+
+type StartStopScheduleName string
+
+const (
+	StartStopScheduleNameDefault StartStopScheduleName = "default"
+)
+
+// PossibleStartStopScheduleNameValues returns the possible values for the StartStopScheduleName const type.
+func PossibleStartStopScheduleNameValues() []StartStopScheduleName {
+	return []StartStopScheduleName{
+		StartStopScheduleNameDefault,
 	}
 }
 

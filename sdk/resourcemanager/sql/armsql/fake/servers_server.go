@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -52,6 +52,10 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsql.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse])
 
+	// BeginRefreshStatus is the fake for method ServersClient.BeginRefreshStatus
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRefreshStatus func(ctx context.Context, resourceGroupName string, serverName string, options *armsql.ServersClientBeginRefreshStatusOptions) (resp azfake.PollerResponder[armsql.ServersClientRefreshStatusResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method ServersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armsql.ServerUpdate, options *armsql.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -68,6 +72,7 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 		beginImportDatabase:         newTracker[azfake.PollerResponder[armsql.ServersClientImportDatabaseResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armsql.ServersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]](),
+		beginRefreshStatus:          newTracker[azfake.PollerResponder[armsql.ServersClientRefreshStatusResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.ServersClientUpdateResponse]](),
 	}
 }
@@ -81,6 +86,7 @@ type ServersServerTransport struct {
 	beginImportDatabase         *tracker[azfake.PollerResponder[armsql.ServersClientImportDatabaseResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armsql.ServersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.ServersClientListByResourceGroupResponse]]
+	beginRefreshStatus          *tracker[azfake.PollerResponder[armsql.ServersClientRefreshStatusResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsql.ServersClientUpdateResponse]]
 }
 
@@ -110,6 +116,8 @@ func (s *ServersServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchNewListPager(req)
 	case "ServersClient.NewListByResourceGroupPager":
 		resp, err = s.dispatchNewListByResourceGroupPager(req)
+	case "ServersClient.BeginRefreshStatus":
+		resp, err = s.dispatchBeginRefreshStatus(req)
 	case "ServersClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
 	default:
@@ -428,6 +436,50 @@ func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchBeginRefreshStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRefreshStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshStatus not implemented")}
+	}
+	beginRefreshStatus := s.beginRefreshStatus.get(req)
+	if beginRefreshStatus == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshExternalGovernanceStatus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginRefreshStatus(req.Context(), resourceGroupNameParam, serverNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshStatus = &respr
+		s.beginRefreshStatus.add(req, beginRefreshStatus)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshStatus, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRefreshStatus.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshStatus) {
+		s.beginRefreshStatus.remove(req)
+	}
+
 	return resp, nil
 }
 

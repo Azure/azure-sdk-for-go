@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -48,6 +48,10 @@ type FailoverGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.FailoverGroupsClientListByServerOptions) (resp azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse])
 
+	// BeginTryPlannedBeforeForcedFailover is the fake for method FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTryPlannedBeforeForcedFailover func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *armsql.FailoverGroupsClientBeginTryPlannedBeforeForcedFailoverOptions) (resp azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method FailoverGroupsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters armsql.FailoverGroupUpdate, options *armsql.FailoverGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -58,26 +62,28 @@ type FailoverGroupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFailoverGroupsServerTransport(srv *FailoverGroupsServer) *FailoverGroupsServerTransport {
 	return &FailoverGroupsServerTransport{
-		srv:                             srv,
-		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientCreateOrUpdateResponse]](),
-		beginDelete:                     newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]](),
-		beginFailover:                   newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]](),
-		beginForceFailoverAllowDataLoss: newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]](),
-		newListByServerPager:            newTracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]](),
-		beginUpdate:                     newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]](),
+		srv:                                 srv,
+		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientCreateOrUpdateResponse]](),
+		beginDelete:                         newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]](),
+		beginFailover:                       newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]](),
+		beginForceFailoverAllowDataLoss:     newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]](),
+		newListByServerPager:                newTracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]](),
+		beginTryPlannedBeforeForcedFailover: newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse]](),
+		beginUpdate:                         newTracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]](),
 	}
 }
 
 // FailoverGroupsServerTransport connects instances of armsql.FailoverGroupsClient to instances of FailoverGroupsServer.
 // Don't use this type directly, use NewFailoverGroupsServerTransport instead.
 type FailoverGroupsServerTransport struct {
-	srv                             *FailoverGroupsServer
-	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientCreateOrUpdateResponse]]
-	beginDelete                     *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]]
-	beginFailover                   *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]]
-	beginForceFailoverAllowDataLoss *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]]
-	newListByServerPager            *tracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]]
-	beginUpdate                     *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]]
+	srv                                 *FailoverGroupsServer
+	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientCreateOrUpdateResponse]]
+	beginDelete                         *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientDeleteResponse]]
+	beginFailover                       *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientFailoverResponse]]
+	beginForceFailoverAllowDataLoss     *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientForceFailoverAllowDataLossResponse]]
+	newListByServerPager                *tracker[azfake.PagerResponder[armsql.FailoverGroupsClientListByServerResponse]]
+	beginTryPlannedBeforeForcedFailover *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientTryPlannedBeforeForcedFailoverResponse]]
+	beginUpdate                         *tracker[azfake.PollerResponder[armsql.FailoverGroupsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for FailoverGroupsServerTransport.
@@ -104,6 +110,8 @@ func (f *FailoverGroupsServerTransport) Do(req *http.Request) (*http.Response, e
 		resp, err = f.dispatchGet(req)
 	case "FailoverGroupsClient.NewListByServerPager":
 		resp, err = f.dispatchNewListByServerPager(req)
+	case "FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover":
+		resp, err = f.dispatchBeginTryPlannedBeforeForcedFailover(req)
 	case "FailoverGroupsClient.BeginUpdate":
 		resp, err = f.dispatchBeginUpdate(req)
 	default:
@@ -388,6 +396,54 @@ func (f *FailoverGroupsServerTransport) dispatchNewListByServerPager(req *http.R
 	if !server.PagerResponderMore(newListByServerPager) {
 		f.newListByServerPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (f *FailoverGroupsServerTransport) dispatchBeginTryPlannedBeforeForcedFailover(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginTryPlannedBeforeForcedFailover == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTryPlannedBeforeForcedFailover not implemented")}
+	}
+	beginTryPlannedBeforeForcedFailover := f.beginTryPlannedBeforeForcedFailover.get(req)
+	if beginTryPlannedBeforeForcedFailover == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverGroups/(?P<failoverGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tryPlannedBeforeForcedFailover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		failoverGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("failoverGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginTryPlannedBeforeForcedFailover(req.Context(), resourceGroupNameParam, serverNameParam, failoverGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTryPlannedBeforeForcedFailover = &respr
+		f.beginTryPlannedBeforeForcedFailover.add(req, beginTryPlannedBeforeForcedFailover)
+	}
+
+	resp, err := server.PollerResponderNext(beginTryPlannedBeforeForcedFailover, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginTryPlannedBeforeForcedFailover.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTryPlannedBeforeForcedFailover) {
+		f.beginTryPlannedBeforeForcedFailover.remove(req)
+	}
+
 	return resp, nil
 }
 

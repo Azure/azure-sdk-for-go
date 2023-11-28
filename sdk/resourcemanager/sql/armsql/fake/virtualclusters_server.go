@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -44,9 +44,9 @@ type VirtualClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualClusterName string, parameters armsql.VirtualClusterUpdate, options *armsql.VirtualClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse], errResp azfake.ErrorResponder)
 
-	// UpdateDNSServers is the fake for method VirtualClustersClient.UpdateDNSServers
-	// HTTP status codes to indicate success: http.StatusOK
-	UpdateDNSServers func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientUpdateDNSServersOptions) (resp azfake.Responder[armsql.VirtualClustersClientUpdateDNSServersResponse], errResp azfake.ErrorResponder)
+	// BeginUpdateDNSServers is the fake for method VirtualClustersClient.BeginUpdateDNSServers
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateDNSServers func(ctx context.Context, resourceGroupName string, virtualClusterName string, options *armsql.VirtualClustersClientBeginUpdateDNSServersOptions) (resp azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualClustersServerTransport creates a new instance of VirtualClustersServerTransport with the provided implementation.
@@ -59,6 +59,7 @@ func NewVirtualClustersServerTransport(srv *VirtualClustersServer) *VirtualClust
 		newListPager:                newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse]](),
+		beginUpdateDNSServers:       newTracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse]](),
 	}
 }
 
@@ -70,6 +71,7 @@ type VirtualClustersServerTransport struct {
 	newListPager                *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsql.VirtualClustersClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateResponse]]
+	beginUpdateDNSServers       *tracker[azfake.PollerResponder[armsql.VirtualClustersClientUpdateDNSServersResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualClustersServerTransport.
@@ -94,8 +96,8 @@ func (v *VirtualClustersServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = v.dispatchNewListByResourceGroupPager(req)
 	case "VirtualClustersClient.BeginUpdate":
 		resp, err = v.dispatchBeginUpdate(req)
-	case "VirtualClustersClient.UpdateDNSServers":
-		resp, err = v.dispatchUpdateDNSServers(req)
+	case "VirtualClustersClient.BeginUpdateDNSServers":
+		resp, err = v.dispatchBeginUpdateDNSServers(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -302,35 +304,46 @@ func (v *VirtualClustersServerTransport) dispatchBeginUpdate(req *http.Request) 
 	return resp, nil
 }
 
-func (v *VirtualClustersServerTransport) dispatchUpdateDNSServers(req *http.Request) (*http.Response, error) {
-	if v.srv.UpdateDNSServers == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateDNSServers not implemented")}
+func (v *VirtualClustersServerTransport) dispatchBeginUpdateDNSServers(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginUpdateDNSServers == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateDNSServers not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/virtualClusters/(?P<virtualClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateManagedInstanceDnsServers`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginUpdateDNSServers := v.beginUpdateDNSServers.get(req)
+	if beginUpdateDNSServers == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/virtualClusters/(?P<virtualClusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateManagedInstanceDnsServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginUpdateDNSServers(req.Context(), resourceGroupNameParam, virtualClusterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateDNSServers = &respr
+		v.beginUpdateDNSServers.add(req, beginUpdateDNSServers)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginUpdateDNSServers, req)
 	if err != nil {
 		return nil, err
 	}
-	virtualClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualClusterName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdateDNSServers.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	respr, errRespr := v.srv.UpdateDNSServers(req.Context(), resourceGroupNameParam, virtualClusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
+	if !server.PollerResponderMore(beginUpdateDNSServers) {
+		v.beginUpdateDNSServers.remove(req)
 	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).UpdateManagedInstanceDNSServersOperation, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }

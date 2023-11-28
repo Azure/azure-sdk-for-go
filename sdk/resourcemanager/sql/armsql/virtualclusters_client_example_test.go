@@ -15,36 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/UpdateManagedInstanceDnsServers.json
-func ExampleVirtualClustersClient_UpdateDNSServers() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualClustersClient().UpdateDNSServers(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.UpdateManagedInstanceDNSServersOperation = armsql.UpdateManagedInstanceDNSServersOperation{
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.Sql/virtualClusters/test-virtualcluster/updateManagedInstanceDnsServers"),
-	// 	Properties: &armsql.DNSRefreshConfigurationProperties{
-	// 		Status: to.Ptr(armsql.DNSRefreshConfigurationPropertiesStatusSucceeded),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualClusterList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterList.json
 func ExampleVirtualClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,38 +43,47 @@ func ExampleVirtualClustersClient_NewListPager() {
 		// page.VirtualClusterListResult = armsql.VirtualClusterListResult{
 		// 	Value: []*armsql.VirtualCluster{
 		// 		{
-		// 			Name: to.Ptr("vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
+		// 			Name: to.Ptr("VirtualClustercltest"),
 		// 			Type: to.Ptr("Microsoft.Sql/virtualClusters"),
-		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
-		// 			Location: to.Ptr("onebox"),
+		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/VirtualClustercltest"),
+		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.VirtualClusterProperties{
 		// 				ChildResources: []*string{
-		// 					to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance1"),
-		// 					to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance2")},
-		// 					Family: to.Ptr("Gen4"),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-		// 					SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl")},
+		// 					SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest"),
+		// 					Version: to.Ptr("1.0"),
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("vc-subnet1-14b795bd-9c8f-46ec-adb8-2b8eff56ac16"),
+		// 				Name: to.Ptr("vc2"),
 		// 				Type: to.Ptr("Microsoft.Sql/virtualClusters"),
-		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet2-14b795bd-9c8f-46ec-adb8-2b8eff56ac16"),
-		// 				Location: to.Ptr("onebox"),
+		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc2"),
+		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.VirtualClusterProperties{
 		// 					ChildResources: []*string{
-		// 						to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance3"),
-		// 						to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance4")},
-		// 						Family: to.Ptr("Gen5"),
-		// 						MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-		// 						SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 					},
+		// 					SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest2"),
+		// 					Version: to.Ptr("2.0"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("vc1"),
+		// 				Type: to.Ptr("Microsoft.Sql/virtualClusters"),
+		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc1"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.VirtualClusterProperties{
+		// 					ChildResources: []*string{
+		// 						to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl"),
+		// 						to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/mi")},
+		// 						SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest"),
+		// 						Version: to.Ptr("2.0"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualClusterListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterListByResourceGroup.json
 func ExampleVirtualClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,38 +108,50 @@ func ExampleVirtualClustersClient_NewListByResourceGroupPager() {
 		// page.VirtualClusterListResult = armsql.VirtualClusterListResult{
 		// 	Value: []*armsql.VirtualCluster{
 		// 		{
-		// 			Name: to.Ptr("vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
+		// 			Name: to.Ptr("VirtualClustercltest"),
 		// 			Type: to.Ptr("Microsoft.Sql/virtualClusters"),
-		// 			ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
-		// 			Location: to.Ptr("onebox"),
+		// 			ID: to.Ptr("/subscriptions/65dc2520-d3b9-4d11-b638-f3c41f962550/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/VirtualClustercltest"),
+		// 			Location: to.Ptr("japaneast"),
 		// 			Properties: &armsql.VirtualClusterProperties{
 		// 				ChildResources: []*string{
-		// 					to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance1"),
-		// 					to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance2")},
-		// 					Family: to.Ptr("Gen4"),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-		// 					SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					to.Ptr("/subscriptions/65dc2520-d3b9-4d11-b638-f3c41f962550/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl")},
+		// 					SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest"),
+		// 					Version: to.Ptr("1.0"),
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("vc-subnet1-14b795bd-9c8f-46ec-adb8-2b8eff56ac16"),
+		// 				Name: to.Ptr("vc2"),
 		// 				Type: to.Ptr("Microsoft.Sql/virtualClusters"),
-		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet2-14b795bd-9c8f-46ec-adb8-2b8eff56ac16"),
-		// 				Location: to.Ptr("onebox"),
+		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc2"),
+		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.VirtualClusterProperties{
 		// 					ChildResources: []*string{
-		// 						to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance3"),
-		// 						to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance4")},
-		// 						Family: to.Ptr("Gen4"),
-		// 						MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-		// 						SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 					},
+		// 					SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest2"),
+		// 					Version: to.Ptr("2.0"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("vc1"),
+		// 				Type: to.Ptr("Microsoft.Sql/virtualClusters"),
+		// 				ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc1"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Tags: map[string]*string{
+		// 					"tkey": to.Ptr("tvalue3"),
+		// 				},
+		// 				Properties: &armsql.VirtualClusterProperties{
+		// 					ChildResources: []*string{
+		// 						to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl"),
+		// 						to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/mi")},
+		// 						SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest"),
+		// 						Version: to.Ptr("2.0"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualClusterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterGet.json
 func ExampleVirtualClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +162,7 @@ func ExampleVirtualClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualClustersClient().Get(ctx, "testrg", "vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2", nil)
+	res, err := clientFactory.NewVirtualClustersClient().Get(ctx, "testrg", "vc-f769ed71-b3ad-491a-a9d5-26eeceaa6be2", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -175,22 +170,24 @@ func ExampleVirtualClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.VirtualCluster = armsql.VirtualCluster{
-	// 	Name: to.Ptr("vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
+	// 	Name: to.Ptr("vc-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
 	// 	Type: to.Ptr("Microsoft.Sql/virtualClusters"),
-	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
-	// 	Location: to.Ptr("onebox"),
+	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Tags: map[string]*string{
+	// 		"key": to.Ptr("value"),
+	// 	},
 	// 	Properties: &armsql.VirtualClusterProperties{
 	// 		ChildResources: []*string{
-	// 			to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance1"),
-	// 			to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance2")},
-	// 			Family: to.Ptr("Gen4"),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-	// 			SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl"),
+	// 			to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/mi")},
+	// 			SubnetID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/cltest"),
+	// 			Version: to.Ptr("2.0"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualClusterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterDelete.json
 func ExampleVirtualClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +208,7 @@ func ExampleVirtualClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/VirtualClusterUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/VirtualClusterUpdate.json
 func ExampleVirtualClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,8 +220,8 @@ func ExampleVirtualClustersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewVirtualClustersClient().BeginUpdate(ctx, "testrg", "vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2", armsql.VirtualClusterUpdate{
-		Properties: &armsql.VirtualClusterProperties{
-			MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
+		Tags: map[string]*string{
+			"tkey": to.Ptr("tvalue1"),
 		},
 	}, nil)
 	if err != nil {
@@ -241,13 +238,41 @@ func ExampleVirtualClustersClient_BeginUpdate() {
 	// 	Name: to.Ptr("vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
 	// 	Type: to.Ptr("Microsoft.Sql/virtualClusters"),
 	// 	ID: to.Ptr("/subscriptions/20d7082a-0fc7-4468-82bd-542694d5042b/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-subnet1-f769ed71-b3ad-491a-a9d5-26eeceaa6be2"),
-	// 	Location: to.Ptr("onebox"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Tags: map[string]*string{
+	// 		"tkey": to.Ptr("tvalue3"),
+	// 	},
 	// 	Properties: &armsql.VirtualClusterProperties{
-	// 		ChildResources: []*string{
-	// 			to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance1"),
-	// 			to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance2")},
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/ab0e51c0-83c0-4380-8ae9-025516df392f/resourceGroups/Federation/providers/Microsoft.Maintenance/maintenanceConfigurations/MiPolicy1"),
-	// 			SubnetID: to.Ptr("/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 		},
-	// 	}
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/UpdateVirtualClusterDnsServers.json
+func ExampleVirtualClustersClient_BeginUpdateDNSServers() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualClustersClient().BeginUpdateDNSServers(ctx, "sqlcrudtest-7398", "VirtualCluster2b9a846b-2e37-43ef-a8e9-f2c6d645c1d7", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.UpdateVirtualClusterDNSServersOperation = armsql.UpdateVirtualClusterDNSServersOperation{
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/virtualClusters/VirtualCluster2b9a846b-2e37-43ef-a8e9-f2c6d645c1d7/updateManagedInstanceDnsServers"),
+	// 	Properties: &armsql.VirtualClusterDNSServersProperties{
+	// 		Status: to.Ptr(armsql.DNSRefreshOperationStatusSucceeded),
+	// 	},
+	// }
 }

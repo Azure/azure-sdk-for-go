@@ -30,9 +30,16 @@ type ServerFactory struct {
 	DatabaseAutomaticTuningServer                                          DatabaseAutomaticTuningServer
 	DatabaseBlobAuditingPoliciesServer                                     DatabaseBlobAuditingPoliciesServer
 	DatabaseColumnsServer                                                  DatabaseColumnsServer
+	DatabaseEncryptionProtectorsServer                                     DatabaseEncryptionProtectorsServer
 	DatabaseExtensionsServer                                               DatabaseExtensionsServer
 	DatabaseOperationsServer                                               DatabaseOperationsServer
 	DatabaseRecommendedActionsServer                                       DatabaseRecommendedActionsServer
+	DatabaseSQLVulnerabilityAssessmentBaselinesServer                      DatabaseSQLVulnerabilityAssessmentBaselinesServer
+	DatabaseSQLVulnerabilityAssessmentExecuteScanServer                    DatabaseSQLVulnerabilityAssessmentExecuteScanServer
+	DatabaseSQLVulnerabilityAssessmentRuleBaselinesServer                  DatabaseSQLVulnerabilityAssessmentRuleBaselinesServer
+	DatabaseSQLVulnerabilityAssessmentScanResultServer                     DatabaseSQLVulnerabilityAssessmentScanResultServer
+	DatabaseSQLVulnerabilityAssessmentScansServer                          DatabaseSQLVulnerabilityAssessmentScansServer
+	DatabaseSQLVulnerabilityAssessmentsSettingsServer                      DatabaseSQLVulnerabilityAssessmentsSettingsServer
 	DatabaseSchemasServer                                                  DatabaseSchemasServer
 	DatabaseSecurityAlertPoliciesServer                                    DatabaseSecurityAlertPoliciesServer
 	DatabaseTablesServer                                                   DatabaseTablesServer
@@ -73,7 +80,9 @@ type ServerFactory struct {
 	MaintenanceWindowOptionsServer                                         MaintenanceWindowOptionsServer
 	MaintenanceWindowsServer                                               MaintenanceWindowsServer
 	ManagedBackupShortTermRetentionPoliciesServer                          ManagedBackupShortTermRetentionPoliciesServer
+	ManagedDatabaseAdvancedThreatProtectionSettingsServer                  ManagedDatabaseAdvancedThreatProtectionSettingsServer
 	ManagedDatabaseColumnsServer                                           ManagedDatabaseColumnsServer
+	ManagedDatabaseMoveOperationsServer                                    ManagedDatabaseMoveOperationsServer
 	ManagedDatabaseQueriesServer                                           ManagedDatabaseQueriesServer
 	ManagedDatabaseRecommendedSensitivityLabelsServer                      ManagedDatabaseRecommendedSensitivityLabelsServer
 	ManagedDatabaseRestoreDetailsServer                                    ManagedDatabaseRestoreDetailsServer
@@ -88,7 +97,9 @@ type ServerFactory struct {
 	ManagedDatabaseVulnerabilityAssessmentsServer                          ManagedDatabaseVulnerabilityAssessmentsServer
 	ManagedDatabasesServer                                                 ManagedDatabasesServer
 	ManagedInstanceAdministratorsServer                                    ManagedInstanceAdministratorsServer
+	ManagedInstanceAdvancedThreatProtectionSettingsServer                  ManagedInstanceAdvancedThreatProtectionSettingsServer
 	ManagedInstanceAzureADOnlyAuthenticationsServer                        ManagedInstanceAzureADOnlyAuthenticationsServer
+	ManagedInstanceDtcsServer                                              ManagedInstanceDtcsServer
 	ManagedInstanceEncryptionProtectorsServer                              ManagedInstanceEncryptionProtectorsServer
 	ManagedInstanceKeysServer                                              ManagedInstanceKeysServer
 	ManagedInstanceLongTermRetentionPoliciesServer                         ManagedInstanceLongTermRetentionPoliciesServer
@@ -98,7 +109,9 @@ type ServerFactory struct {
 	ManagedInstanceTdeCertificatesServer                                   ManagedInstanceTdeCertificatesServer
 	ManagedInstanceVulnerabilityAssessmentsServer                          ManagedInstanceVulnerabilityAssessmentsServer
 	ManagedInstancesServer                                                 ManagedInstancesServer
+	ManagedLedgerDigestUploadsServer                                       ManagedLedgerDigestUploadsServer
 	ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer
+	ManagedServerDNSAliasesServer                                          ManagedServerDNSAliasesServer
 	ManagedServerSecurityAlertPoliciesServer                               ManagedServerSecurityAlertPoliciesServer
 	OperationsServer                                                       OperationsServer
 	OutboundFirewallRulesServer                                            OutboundFirewallRulesServer
@@ -119,6 +132,7 @@ type ServerFactory struct {
 	ServerAzureADOnlyAuthenticationsServer                                 ServerAzureADOnlyAuthenticationsServer
 	ServerBlobAuditingPoliciesServer                                       ServerBlobAuditingPoliciesServer
 	ServerCommunicationLinksServer                                         ServerCommunicationLinksServer
+	ServerConfigurationOptionsServer                                       ServerConfigurationOptionsServer
 	ServerConnectionPoliciesServer                                         ServerConnectionPoliciesServer
 	ServerDNSAliasesServer                                                 ServerDNSAliasesServer
 	ServerDevOpsAuditSettingsServer                                        ServerDevOpsAuditSettingsServer
@@ -131,7 +145,9 @@ type ServerFactory struct {
 	ServerVulnerabilityAssessmentsServer                                   ServerVulnerabilityAssessmentsServer
 	ServersServer                                                          ServersServer
 	ServiceObjectivesServer                                                ServiceObjectivesServer
+	StartStopManagedInstanceSchedulesServer                                StartStopManagedInstanceSchedulesServer
 	SubscriptionUsagesServer                                               SubscriptionUsagesServer
+	SynapseLinkWorkspacesServer                                            SynapseLinkWorkspacesServer
 	SyncAgentsServer                                                       SyncAgentsServer
 	SyncGroupsServer                                                       SyncGroupsServer
 	SyncMembersServer                                                      SyncMembersServer
@@ -141,6 +157,15 @@ type ServerFactory struct {
 	UsagesServer                                                           UsagesServer
 	VirtualClustersServer                                                  VirtualClustersServer
 	VirtualNetworkRulesServer                                              VirtualNetworkRulesServer
+	VulnerabilityAssessmentBaselineServer                                  VulnerabilityAssessmentBaselineServer
+	VulnerabilityAssessmentBaselinesServer                                 VulnerabilityAssessmentBaselinesServer
+	VulnerabilityAssessmentExecuteScanServer                               VulnerabilityAssessmentExecuteScanServer
+	VulnerabilityAssessmentRuleBaselineServer                              VulnerabilityAssessmentRuleBaselineServer
+	VulnerabilityAssessmentRuleBaselinesServer                             VulnerabilityAssessmentRuleBaselinesServer
+	VulnerabilityAssessmentScanResultServer                                VulnerabilityAssessmentScanResultServer
+	VulnerabilityAssessmentScansServer                                     VulnerabilityAssessmentScansServer
+	VulnerabilityAssessmentsServer                                         VulnerabilityAssessmentsServer
+	VulnerabilityAssessmentsSettingsServer                                 VulnerabilityAssessmentsSettingsServer
 	WorkloadClassifiersServer                                              WorkloadClassifiersServer
 	WorkloadGroupsServer                                                   WorkloadGroupsServer
 }
@@ -170,9 +195,16 @@ type ServerFactoryTransport struct {
 	trDatabaseAutomaticTuningServer                                          *DatabaseAutomaticTuningServerTransport
 	trDatabaseBlobAuditingPoliciesServer                                     *DatabaseBlobAuditingPoliciesServerTransport
 	trDatabaseColumnsServer                                                  *DatabaseColumnsServerTransport
+	trDatabaseEncryptionProtectorsServer                                     *DatabaseEncryptionProtectorsServerTransport
 	trDatabaseExtensionsServer                                               *DatabaseExtensionsServerTransport
 	trDatabaseOperationsServer                                               *DatabaseOperationsServerTransport
 	trDatabaseRecommendedActionsServer                                       *DatabaseRecommendedActionsServerTransport
+	trDatabaseSQLVulnerabilityAssessmentBaselinesServer                      *DatabaseSQLVulnerabilityAssessmentBaselinesServerTransport
+	trDatabaseSQLVulnerabilityAssessmentExecuteScanServer                    *DatabaseSQLVulnerabilityAssessmentExecuteScanServerTransport
+	trDatabaseSQLVulnerabilityAssessmentRuleBaselinesServer                  *DatabaseSQLVulnerabilityAssessmentRuleBaselinesServerTransport
+	trDatabaseSQLVulnerabilityAssessmentScanResultServer                     *DatabaseSQLVulnerabilityAssessmentScanResultServerTransport
+	trDatabaseSQLVulnerabilityAssessmentScansServer                          *DatabaseSQLVulnerabilityAssessmentScansServerTransport
+	trDatabaseSQLVulnerabilityAssessmentsSettingsServer                      *DatabaseSQLVulnerabilityAssessmentsSettingsServerTransport
 	trDatabaseSchemasServer                                                  *DatabaseSchemasServerTransport
 	trDatabaseSecurityAlertPoliciesServer                                    *DatabaseSecurityAlertPoliciesServerTransport
 	trDatabaseTablesServer                                                   *DatabaseTablesServerTransport
@@ -213,7 +245,9 @@ type ServerFactoryTransport struct {
 	trMaintenanceWindowOptionsServer                                         *MaintenanceWindowOptionsServerTransport
 	trMaintenanceWindowsServer                                               *MaintenanceWindowsServerTransport
 	trManagedBackupShortTermRetentionPoliciesServer                          *ManagedBackupShortTermRetentionPoliciesServerTransport
+	trManagedDatabaseAdvancedThreatProtectionSettingsServer                  *ManagedDatabaseAdvancedThreatProtectionSettingsServerTransport
 	trManagedDatabaseColumnsServer                                           *ManagedDatabaseColumnsServerTransport
+	trManagedDatabaseMoveOperationsServer                                    *ManagedDatabaseMoveOperationsServerTransport
 	trManagedDatabaseQueriesServer                                           *ManagedDatabaseQueriesServerTransport
 	trManagedDatabaseRecommendedSensitivityLabelsServer                      *ManagedDatabaseRecommendedSensitivityLabelsServerTransport
 	trManagedDatabaseRestoreDetailsServer                                    *ManagedDatabaseRestoreDetailsServerTransport
@@ -228,7 +262,9 @@ type ServerFactoryTransport struct {
 	trManagedDatabaseVulnerabilityAssessmentsServer                          *ManagedDatabaseVulnerabilityAssessmentsServerTransport
 	trManagedDatabasesServer                                                 *ManagedDatabasesServerTransport
 	trManagedInstanceAdministratorsServer                                    *ManagedInstanceAdministratorsServerTransport
+	trManagedInstanceAdvancedThreatProtectionSettingsServer                  *ManagedInstanceAdvancedThreatProtectionSettingsServerTransport
 	trManagedInstanceAzureADOnlyAuthenticationsServer                        *ManagedInstanceAzureADOnlyAuthenticationsServerTransport
+	trManagedInstanceDtcsServer                                              *ManagedInstanceDtcsServerTransport
 	trManagedInstanceEncryptionProtectorsServer                              *ManagedInstanceEncryptionProtectorsServerTransport
 	trManagedInstanceKeysServer                                              *ManagedInstanceKeysServerTransport
 	trManagedInstanceLongTermRetentionPoliciesServer                         *ManagedInstanceLongTermRetentionPoliciesServerTransport
@@ -238,7 +274,9 @@ type ServerFactoryTransport struct {
 	trManagedInstanceTdeCertificatesServer                                   *ManagedInstanceTdeCertificatesServerTransport
 	trManagedInstanceVulnerabilityAssessmentsServer                          *ManagedInstanceVulnerabilityAssessmentsServerTransport
 	trManagedInstancesServer                                                 *ManagedInstancesServerTransport
+	trManagedLedgerDigestUploadsServer                                       *ManagedLedgerDigestUploadsServerTransport
 	trManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerTransport
+	trManagedServerDNSAliasesServer                                          *ManagedServerDNSAliasesServerTransport
 	trManagedServerSecurityAlertPoliciesServer                               *ManagedServerSecurityAlertPoliciesServerTransport
 	trOperationsServer                                                       *OperationsServerTransport
 	trOutboundFirewallRulesServer                                            *OutboundFirewallRulesServerTransport
@@ -259,6 +297,7 @@ type ServerFactoryTransport struct {
 	trServerAzureADOnlyAuthenticationsServer                                 *ServerAzureADOnlyAuthenticationsServerTransport
 	trServerBlobAuditingPoliciesServer                                       *ServerBlobAuditingPoliciesServerTransport
 	trServerCommunicationLinksServer                                         *ServerCommunicationLinksServerTransport
+	trServerConfigurationOptionsServer                                       *ServerConfigurationOptionsServerTransport
 	trServerConnectionPoliciesServer                                         *ServerConnectionPoliciesServerTransport
 	trServerDNSAliasesServer                                                 *ServerDNSAliasesServerTransport
 	trServerDevOpsAuditSettingsServer                                        *ServerDevOpsAuditSettingsServerTransport
@@ -271,7 +310,9 @@ type ServerFactoryTransport struct {
 	trServerVulnerabilityAssessmentsServer                                   *ServerVulnerabilityAssessmentsServerTransport
 	trServersServer                                                          *ServersServerTransport
 	trServiceObjectivesServer                                                *ServiceObjectivesServerTransport
+	trStartStopManagedInstanceSchedulesServer                                *StartStopManagedInstanceSchedulesServerTransport
 	trSubscriptionUsagesServer                                               *SubscriptionUsagesServerTransport
+	trSynapseLinkWorkspacesServer                                            *SynapseLinkWorkspacesServerTransport
 	trSyncAgentsServer                                                       *SyncAgentsServerTransport
 	trSyncGroupsServer                                                       *SyncGroupsServerTransport
 	trSyncMembersServer                                                      *SyncMembersServerTransport
@@ -281,6 +322,15 @@ type ServerFactoryTransport struct {
 	trUsagesServer                                                           *UsagesServerTransport
 	trVirtualClustersServer                                                  *VirtualClustersServerTransport
 	trVirtualNetworkRulesServer                                              *VirtualNetworkRulesServerTransport
+	trVulnerabilityAssessmentBaselineServer                                  *VulnerabilityAssessmentBaselineServerTransport
+	trVulnerabilityAssessmentBaselinesServer                                 *VulnerabilityAssessmentBaselinesServerTransport
+	trVulnerabilityAssessmentExecuteScanServer                               *VulnerabilityAssessmentExecuteScanServerTransport
+	trVulnerabilityAssessmentRuleBaselineServer                              *VulnerabilityAssessmentRuleBaselineServerTransport
+	trVulnerabilityAssessmentRuleBaselinesServer                             *VulnerabilityAssessmentRuleBaselinesServerTransport
+	trVulnerabilityAssessmentScanResultServer                                *VulnerabilityAssessmentScanResultServerTransport
+	trVulnerabilityAssessmentScansServer                                     *VulnerabilityAssessmentScansServerTransport
+	trVulnerabilityAssessmentsServer                                         *VulnerabilityAssessmentsServerTransport
+	trVulnerabilityAssessmentsSettingsServer                                 *VulnerabilityAssessmentsSettingsServerTransport
 	trWorkloadClassifiersServer                                              *WorkloadClassifiersServerTransport
 	trWorkloadGroupsServer                                                   *WorkloadGroupsServerTransport
 }
@@ -349,6 +399,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDatabaseColumnsServerTransport(&s.srv.DatabaseColumnsServer)
 		})
 		resp, err = s.trDatabaseColumnsServer.Do(req)
+	case "DatabaseEncryptionProtectorsClient":
+		initServer(s, &s.trDatabaseEncryptionProtectorsServer, func() *DatabaseEncryptionProtectorsServerTransport {
+			return NewDatabaseEncryptionProtectorsServerTransport(&s.srv.DatabaseEncryptionProtectorsServer)
+		})
+		resp, err = s.trDatabaseEncryptionProtectorsServer.Do(req)
 	case "DatabaseExtensionsClient":
 		initServer(s, &s.trDatabaseExtensionsServer, func() *DatabaseExtensionsServerTransport {
 			return NewDatabaseExtensionsServerTransport(&s.srv.DatabaseExtensionsServer)
@@ -364,6 +419,36 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDatabaseRecommendedActionsServerTransport(&s.srv.DatabaseRecommendedActionsServer)
 		})
 		resp, err = s.trDatabaseRecommendedActionsServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentBaselinesClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentBaselinesServer, func() *DatabaseSQLVulnerabilityAssessmentBaselinesServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentBaselinesServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentBaselinesServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentBaselinesServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentExecuteScanClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentExecuteScanServer, func() *DatabaseSQLVulnerabilityAssessmentExecuteScanServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentExecuteScanServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentExecuteScanServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentExecuteScanServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentRuleBaselinesClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentRuleBaselinesServer, func() *DatabaseSQLVulnerabilityAssessmentRuleBaselinesServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentRuleBaselinesServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentRuleBaselinesServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentRuleBaselinesServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentScanResultClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentScanResultServer, func() *DatabaseSQLVulnerabilityAssessmentScanResultServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentScanResultServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentScanResultServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentScanResultServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentScansClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentScansServer, func() *DatabaseSQLVulnerabilityAssessmentScansServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentScansServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentScansServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentScansServer.Do(req)
+	case "DatabaseSQLVulnerabilityAssessmentsSettingsClient":
+		initServer(s, &s.trDatabaseSQLVulnerabilityAssessmentsSettingsServer, func() *DatabaseSQLVulnerabilityAssessmentsSettingsServerTransport {
+			return NewDatabaseSQLVulnerabilityAssessmentsSettingsServerTransport(&s.srv.DatabaseSQLVulnerabilityAssessmentsSettingsServer)
+		})
+		resp, err = s.trDatabaseSQLVulnerabilityAssessmentsSettingsServer.Do(req)
 	case "DatabaseSchemasClient":
 		initServer(s, &s.trDatabaseSchemasServer, func() *DatabaseSchemasServerTransport {
 			return NewDatabaseSchemasServerTransport(&s.srv.DatabaseSchemasServer)
@@ -552,11 +637,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedBackupShortTermRetentionPoliciesServerTransport(&s.srv.ManagedBackupShortTermRetentionPoliciesServer)
 		})
 		resp, err = s.trManagedBackupShortTermRetentionPoliciesServer.Do(req)
+	case "ManagedDatabaseAdvancedThreatProtectionSettingsClient":
+		initServer(s, &s.trManagedDatabaseAdvancedThreatProtectionSettingsServer, func() *ManagedDatabaseAdvancedThreatProtectionSettingsServerTransport {
+			return NewManagedDatabaseAdvancedThreatProtectionSettingsServerTransport(&s.srv.ManagedDatabaseAdvancedThreatProtectionSettingsServer)
+		})
+		resp, err = s.trManagedDatabaseAdvancedThreatProtectionSettingsServer.Do(req)
 	case "ManagedDatabaseColumnsClient":
 		initServer(s, &s.trManagedDatabaseColumnsServer, func() *ManagedDatabaseColumnsServerTransport {
 			return NewManagedDatabaseColumnsServerTransport(&s.srv.ManagedDatabaseColumnsServer)
 		})
 		resp, err = s.trManagedDatabaseColumnsServer.Do(req)
+	case "ManagedDatabaseMoveOperationsClient":
+		initServer(s, &s.trManagedDatabaseMoveOperationsServer, func() *ManagedDatabaseMoveOperationsServerTransport {
+			return NewManagedDatabaseMoveOperationsServerTransport(&s.srv.ManagedDatabaseMoveOperationsServer)
+		})
+		resp, err = s.trManagedDatabaseMoveOperationsServer.Do(req)
 	case "ManagedDatabaseQueriesClient":
 		initServer(s, &s.trManagedDatabaseQueriesServer, func() *ManagedDatabaseQueriesServerTransport {
 			return NewManagedDatabaseQueriesServerTransport(&s.srv.ManagedDatabaseQueriesServer)
@@ -627,11 +722,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedInstanceAdministratorsServerTransport(&s.srv.ManagedInstanceAdministratorsServer)
 		})
 		resp, err = s.trManagedInstanceAdministratorsServer.Do(req)
+	case "ManagedInstanceAdvancedThreatProtectionSettingsClient":
+		initServer(s, &s.trManagedInstanceAdvancedThreatProtectionSettingsServer, func() *ManagedInstanceAdvancedThreatProtectionSettingsServerTransport {
+			return NewManagedInstanceAdvancedThreatProtectionSettingsServerTransport(&s.srv.ManagedInstanceAdvancedThreatProtectionSettingsServer)
+		})
+		resp, err = s.trManagedInstanceAdvancedThreatProtectionSettingsServer.Do(req)
 	case "ManagedInstanceAzureADOnlyAuthenticationsClient":
 		initServer(s, &s.trManagedInstanceAzureADOnlyAuthenticationsServer, func() *ManagedInstanceAzureADOnlyAuthenticationsServerTransport {
 			return NewManagedInstanceAzureADOnlyAuthenticationsServerTransport(&s.srv.ManagedInstanceAzureADOnlyAuthenticationsServer)
 		})
 		resp, err = s.trManagedInstanceAzureADOnlyAuthenticationsServer.Do(req)
+	case "ManagedInstanceDtcsClient":
+		initServer(s, &s.trManagedInstanceDtcsServer, func() *ManagedInstanceDtcsServerTransport {
+			return NewManagedInstanceDtcsServerTransport(&s.srv.ManagedInstanceDtcsServer)
+		})
+		resp, err = s.trManagedInstanceDtcsServer.Do(req)
 	case "ManagedInstanceEncryptionProtectorsClient":
 		initServer(s, &s.trManagedInstanceEncryptionProtectorsServer, func() *ManagedInstanceEncryptionProtectorsServerTransport {
 			return NewManagedInstanceEncryptionProtectorsServerTransport(&s.srv.ManagedInstanceEncryptionProtectorsServer)
@@ -677,11 +782,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedInstancesServerTransport(&s.srv.ManagedInstancesServer)
 		})
 		resp, err = s.trManagedInstancesServer.Do(req)
+	case "ManagedLedgerDigestUploadsClient":
+		initServer(s, &s.trManagedLedgerDigestUploadsServer, func() *ManagedLedgerDigestUploadsServerTransport {
+			return NewManagedLedgerDigestUploadsServerTransport(&s.srv.ManagedLedgerDigestUploadsServer)
+		})
+		resp, err = s.trManagedLedgerDigestUploadsServer.Do(req)
 	case "ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient":
 		initServer(s, &s.trManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer, func() *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerTransport {
 			return NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerTransport(&s.srv.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer)
 		})
 		resp, err = s.trManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServer.Do(req)
+	case "ManagedServerDNSAliasesClient":
+		initServer(s, &s.trManagedServerDNSAliasesServer, func() *ManagedServerDNSAliasesServerTransport {
+			return NewManagedServerDNSAliasesServerTransport(&s.srv.ManagedServerDNSAliasesServer)
+		})
+		resp, err = s.trManagedServerDNSAliasesServer.Do(req)
 	case "ManagedServerSecurityAlertPoliciesClient":
 		initServer(s, &s.trManagedServerSecurityAlertPoliciesServer, func() *ManagedServerSecurityAlertPoliciesServerTransport {
 			return NewManagedServerSecurityAlertPoliciesServerTransport(&s.srv.ManagedServerSecurityAlertPoliciesServer)
@@ -780,6 +895,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServerCommunicationLinksServerTransport(&s.srv.ServerCommunicationLinksServer)
 		})
 		resp, err = s.trServerCommunicationLinksServer.Do(req)
+	case "ServerConfigurationOptionsClient":
+		initServer(s, &s.trServerConfigurationOptionsServer, func() *ServerConfigurationOptionsServerTransport {
+			return NewServerConfigurationOptionsServerTransport(&s.srv.ServerConfigurationOptionsServer)
+		})
+		resp, err = s.trServerConfigurationOptionsServer.Do(req)
 	case "ServerConnectionPoliciesClient":
 		initServer(s, &s.trServerConnectionPoliciesServer, func() *ServerConnectionPoliciesServerTransport {
 			return NewServerConnectionPoliciesServerTransport(&s.srv.ServerConnectionPoliciesServer)
@@ -834,11 +954,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServiceObjectivesServerTransport(&s.srv.ServiceObjectivesServer)
 		})
 		resp, err = s.trServiceObjectivesServer.Do(req)
+	case "StartStopManagedInstanceSchedulesClient":
+		initServer(s, &s.trStartStopManagedInstanceSchedulesServer, func() *StartStopManagedInstanceSchedulesServerTransport {
+			return NewStartStopManagedInstanceSchedulesServerTransport(&s.srv.StartStopManagedInstanceSchedulesServer)
+		})
+		resp, err = s.trStartStopManagedInstanceSchedulesServer.Do(req)
 	case "SubscriptionUsagesClient":
 		initServer(s, &s.trSubscriptionUsagesServer, func() *SubscriptionUsagesServerTransport {
 			return NewSubscriptionUsagesServerTransport(&s.srv.SubscriptionUsagesServer)
 		})
 		resp, err = s.trSubscriptionUsagesServer.Do(req)
+	case "SynapseLinkWorkspacesClient":
+		initServer(s, &s.trSynapseLinkWorkspacesServer, func() *SynapseLinkWorkspacesServerTransport {
+			return NewSynapseLinkWorkspacesServerTransport(&s.srv.SynapseLinkWorkspacesServer)
+		})
+		resp, err = s.trSynapseLinkWorkspacesServer.Do(req)
 	case "SyncAgentsClient":
 		initServer(s, &s.trSyncAgentsServer, func() *SyncAgentsServerTransport { return NewSyncAgentsServerTransport(&s.srv.SyncAgentsServer) })
 		resp, err = s.trSyncAgentsServer.Do(req)
@@ -874,6 +1004,51 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVirtualNetworkRulesServerTransport(&s.srv.VirtualNetworkRulesServer)
 		})
 		resp, err = s.trVirtualNetworkRulesServer.Do(req)
+	case "VulnerabilityAssessmentBaselineClient":
+		initServer(s, &s.trVulnerabilityAssessmentBaselineServer, func() *VulnerabilityAssessmentBaselineServerTransport {
+			return NewVulnerabilityAssessmentBaselineServerTransport(&s.srv.VulnerabilityAssessmentBaselineServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentBaselineServer.Do(req)
+	case "VulnerabilityAssessmentBaselinesClient":
+		initServer(s, &s.trVulnerabilityAssessmentBaselinesServer, func() *VulnerabilityAssessmentBaselinesServerTransport {
+			return NewVulnerabilityAssessmentBaselinesServerTransport(&s.srv.VulnerabilityAssessmentBaselinesServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentBaselinesServer.Do(req)
+	case "VulnerabilityAssessmentExecuteScanClient":
+		initServer(s, &s.trVulnerabilityAssessmentExecuteScanServer, func() *VulnerabilityAssessmentExecuteScanServerTransport {
+			return NewVulnerabilityAssessmentExecuteScanServerTransport(&s.srv.VulnerabilityAssessmentExecuteScanServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentExecuteScanServer.Do(req)
+	case "VulnerabilityAssessmentRuleBaselineClient":
+		initServer(s, &s.trVulnerabilityAssessmentRuleBaselineServer, func() *VulnerabilityAssessmentRuleBaselineServerTransport {
+			return NewVulnerabilityAssessmentRuleBaselineServerTransport(&s.srv.VulnerabilityAssessmentRuleBaselineServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentRuleBaselineServer.Do(req)
+	case "VulnerabilityAssessmentRuleBaselinesClient":
+		initServer(s, &s.trVulnerabilityAssessmentRuleBaselinesServer, func() *VulnerabilityAssessmentRuleBaselinesServerTransport {
+			return NewVulnerabilityAssessmentRuleBaselinesServerTransport(&s.srv.VulnerabilityAssessmentRuleBaselinesServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentRuleBaselinesServer.Do(req)
+	case "VulnerabilityAssessmentScanResultClient":
+		initServer(s, &s.trVulnerabilityAssessmentScanResultServer, func() *VulnerabilityAssessmentScanResultServerTransport {
+			return NewVulnerabilityAssessmentScanResultServerTransport(&s.srv.VulnerabilityAssessmentScanResultServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentScanResultServer.Do(req)
+	case "VulnerabilityAssessmentScansClient":
+		initServer(s, &s.trVulnerabilityAssessmentScansServer, func() *VulnerabilityAssessmentScansServerTransport {
+			return NewVulnerabilityAssessmentScansServerTransport(&s.srv.VulnerabilityAssessmentScansServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentScansServer.Do(req)
+	case "VulnerabilityAssessmentsClient":
+		initServer(s, &s.trVulnerabilityAssessmentsServer, func() *VulnerabilityAssessmentsServerTransport {
+			return NewVulnerabilityAssessmentsServerTransport(&s.srv.VulnerabilityAssessmentsServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentsServer.Do(req)
+	case "VulnerabilityAssessmentsSettingsClient":
+		initServer(s, &s.trVulnerabilityAssessmentsSettingsServer, func() *VulnerabilityAssessmentsSettingsServerTransport {
+			return NewVulnerabilityAssessmentsSettingsServerTransport(&s.srv.VulnerabilityAssessmentsSettingsServer)
+		})
+		resp, err = s.trVulnerabilityAssessmentsSettingsServer.Do(req)
 	case "WorkloadClassifiersClient":
 		initServer(s, &s.trWorkloadClassifiersServer, func() *WorkloadClassifiersServerTransport {
 			return NewWorkloadClassifiersServerTransport(&s.srv.WorkloadClassifiersServer)

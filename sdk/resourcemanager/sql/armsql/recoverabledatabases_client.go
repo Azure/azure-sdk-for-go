@@ -43,14 +43,14 @@ func NewRecoverableDatabasesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// Get - Gets a recoverable database, which is a resource representing a database's geo backup
+// Get - Gets a recoverable database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2014-04-01
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database
+//   - databaseName - The name of the database.
 //   - options - RecoverableDatabasesClientGetOptions contains the optional parameters for the RecoverableDatabasesClient.Get
 //     method.
 func (client *RecoverableDatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RecoverableDatabasesClientGetOptions) (RecoverableDatabasesClientGetResponse, error) {
@@ -78,10 +78,6 @@ func (client *RecoverableDatabasesClient) Get(ctx context.Context, resourceGroup
 // getCreateRequest creates the Get request.
 func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *RecoverableDatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -94,12 +90,22 @@ func (client *RecoverableDatabasesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2014-04-01")
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,9 +120,9 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListByServerPager - Gets a list of recoverable databases
+// NewListByServerPager - Gets a list of recoverable databases.
 //
-// Generated from API version 2014-04-01
+// Generated from API version 2022-08-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serverName - The name of the server.
@@ -125,20 +131,19 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoverableDatabasesClientListByServerResponse]{
 		More: func(page RecoverableDatabasesClientListByServerResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RecoverableDatabasesClientListByServerResponse) (RecoverableDatabasesClientListByServerResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecoverableDatabasesClient.NewListByServerPager")
-			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return RecoverableDatabasesClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RecoverableDatabasesClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return RecoverableDatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
@@ -149,10 +154,6 @@ func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName
 // listByServerCreateRequest creates the ListByServer request.
 func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -161,12 +162,16 @@ func (client *RecoverableDatabasesClient) listByServerCreateRequest(ctx context.
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2014-04-01")
+	reqQP.Set("api-version", "2022-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

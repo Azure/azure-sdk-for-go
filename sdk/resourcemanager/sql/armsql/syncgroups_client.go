@@ -32,7 +32,7 @@ type SyncGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SyncGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 //   - options - SyncGroupsClientCancelSyncOptions contains the optional parameters for the SyncGroupsClient.CancelSync method.
 func (client *SyncGroupsClient) CancelSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientCancelSyncOptions) (SyncGroupsClientCancelSyncResponse, error) {
 	var err error
+	const operationName = "SyncGroupsClient.CancelSync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelSyncCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return SyncGroupsClientCancelSyncResponse{}, err
@@ -121,10 +125,14 @@ func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SyncGroupsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SyncGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SyncGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SyncGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -134,6 +142,10 @@ func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SyncGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -202,10 +214,14 @@ func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SyncGroupsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SyncGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SyncGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SyncGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -215,6 +231,10 @@ func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SyncGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return nil, err
@@ -275,6 +295,10 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - SyncGroupsClientGetOptions contains the optional parameters for the SyncGroupsClient.Get method.
 func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientGetOptions) (SyncGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "SyncGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return SyncGroupsClientGetResponse{}, err
@@ -349,25 +373,20 @@ func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncGroupsClientListByDatabaseResponse) (SyncGroupsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncGroupsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return SyncGroupsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncGroupsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncGroupsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -426,25 +445,20 @@ func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncGroupsClientListHubSchemasResponse) (SyncGroupsClientListHubSchemasResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listHubSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncGroupsClient.NewListHubSchemasPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listHubSchemasCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
+			}, nil)
 			if err != nil {
 				return SyncGroupsClientListHubSchemasResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncGroupsClientListHubSchemasResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncGroupsClientListHubSchemasResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHubSchemasHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -509,25 +523,20 @@ func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serve
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncGroupsClientListLogsResponse) (SyncGroupsClientListLogsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listLogsCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, startTime, endTime, typeParam, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncGroupsClient.NewListLogsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listLogsCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, startTime, endTime, typeParam, options)
+			}, nil)
 			if err != nil {
 				return SyncGroupsClientListLogsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncGroupsClientListLogsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncGroupsClientListLogsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listLogsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -592,25 +601,20 @@ func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncGroupsClientListSyncDatabaseIDsResponse) (SyncGroupsClientListSyncDatabaseIDsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listSyncDatabaseIDsCreateRequest(ctx, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncGroupsClient.NewListSyncDatabaseIDsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSyncDatabaseIDsCreateRequest(ctx, locationName, options)
+			}, nil)
 			if err != nil {
 				return SyncGroupsClientListSyncDatabaseIDsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncGroupsClientListSyncDatabaseIDsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncGroupsClientListSyncDatabaseIDsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listSyncDatabaseIDsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -662,10 +666,14 @@ func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SyncGroupsClientRefreshHubSchemaResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SyncGroupsClientRefreshHubSchemaResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SyncGroupsClientRefreshHubSchemaResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SyncGroupsClientRefreshHubSchemaResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -675,6 +683,10 @@ func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resou
 // Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SyncGroupsClient.BeginRefreshHubSchema"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshHubSchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return nil, err
@@ -735,6 +747,10 @@ func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Contex
 //   - options - SyncGroupsClientTriggerSyncOptions contains the optional parameters for the SyncGroupsClient.TriggerSync method.
 func (client *SyncGroupsClient) TriggerSync(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientTriggerSyncOptions) (SyncGroupsClientTriggerSyncResponse, error) {
 	var err error
+	const operationName = "SyncGroupsClient.TriggerSync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.triggerSyncCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
 		return SyncGroupsClientTriggerSyncResponse{}, err
@@ -800,10 +816,14 @@ func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SyncGroupsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SyncGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SyncGroupsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SyncGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -813,6 +833,10 @@ func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SyncGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
 		return nil, err

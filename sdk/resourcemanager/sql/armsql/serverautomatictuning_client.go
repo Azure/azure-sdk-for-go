@@ -32,7 +32,7 @@ type ServerAutomaticTuningClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServerAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerAutomaticTuningClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServerAutomaticTuningClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewServerAutomaticTuningClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *ServerAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ServerAutomaticTuningClientGetOptions) (ServerAutomaticTuningClientGetResponse, error) {
 	var err error
+	const operationName = "ServerAutomaticTuningClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return ServerAutomaticTuningClientGetResponse{}, err
@@ -117,6 +121,10 @@ func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response
 //     method.
 func (client *ServerAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAutomaticTuning, options *ServerAutomaticTuningClientUpdateOptions) (ServerAutomaticTuningClientUpdateResponse, error) {
 	var err error
+	const operationName = "ServerAutomaticTuningClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return ServerAutomaticTuningClientUpdateResponse{}, err

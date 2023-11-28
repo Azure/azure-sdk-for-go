@@ -32,7 +32,7 @@ type CapabilitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapabilitiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CapabilitiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *CapabilitiesClient) ListByLocation(ctx context.Context, locationName string, options *CapabilitiesClientListByLocationOptions) (CapabilitiesClientListByLocationResponse, error) {
 	var err error
+	const operationName = "CapabilitiesClient.ListByLocation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByLocationCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err

@@ -32,7 +32,7 @@ type ManagedInstanceOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstanceOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedInstanceOperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore
 //     method.
 func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientCancelOptions) (ManagedInstanceOperationsClientCancelResponse, error) {
 	var err error
+	const operationName = "ManagedInstanceOperationsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, managedInstanceName, operationID, options)
 	if err != nil {
 		return ManagedInstanceOperationsClientCancelResponse{}, err
@@ -80,6 +84,9 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 		return nil, errors.New("parameter managedInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -106,6 +113,10 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 //     method.
 func (client *ManagedInstanceOperationsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, operationID string, options *ManagedInstanceOperationsClientGetOptions) (ManagedInstanceOperationsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedInstanceOperationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, operationID, options)
 	if err != nil {
 		return ManagedInstanceOperationsClientGetResponse{}, err
@@ -133,6 +144,9 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter managedInstanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -172,25 +186,20 @@ func (client *ManagedInstanceOperationsClient) NewListByManagedInstancePager(res
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstanceOperationsClientListByManagedInstanceResponse) (ManagedInstanceOperationsClientListByManagedInstanceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstanceOperationsClient.NewListByManagedInstancePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstanceOperationsClientListByManagedInstanceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByManagedInstanceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

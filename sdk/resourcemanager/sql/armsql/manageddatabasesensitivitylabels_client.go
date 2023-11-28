@@ -33,7 +33,7 @@ type ManagedDatabaseSensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseSensitivityLabelsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseSensitivityLabelsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +60,10 @@ func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string, credential
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *ManagedDatabaseSensitivityLabelsClientCreateOrUpdateOptions) (ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, parameters, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}, err
@@ -146,6 +150,10 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateHandleRespon
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientDeleteOptions) (ManagedDatabaseSensitivityLabelsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, err
@@ -218,6 +226,10 @@ func (client *ManagedDatabaseSensitivityLabelsClient) deleteCreateRequest(ctx co
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) DisableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientDisableRecommendationOptions) (ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.DisableRecommendation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.disableRecommendationCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, err
@@ -291,6 +303,10 @@ func (client *ManagedDatabaseSensitivityLabelsClient) disableRecommendationCreat
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) EnableRecommendation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, options *ManagedDatabaseSensitivityLabelsClientEnableRecommendationOptions) (ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.EnableRecommendation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.enableRecommendationCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, err
@@ -364,6 +380,10 @@ func (client *ManagedDatabaseSensitivityLabelsClient) enableRecommendationCreate
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *ManagedDatabaseSensitivityLabelsClientGetOptions) (ManagedDatabaseSensitivityLabelsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientGetResponse{}, err
@@ -450,25 +470,20 @@ func (client *ManagedDatabaseSensitivityLabelsClient) NewListCurrentByDatabasePa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse) (ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseSensitivityLabelsClient.NewListCurrentByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listCurrentByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -535,25 +550,20 @@ func (client *ManagedDatabaseSensitivityLabelsClient) NewListRecommendedByDataba
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse) (ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseSensitivityLabelsClient.NewListRecommendedByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listRecommendedByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -617,6 +627,10 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseH
 //     method.
 func (client *ManagedDatabaseSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters SensitivityLabelUpdateList, options *ManagedDatabaseSensitivityLabelsClientUpdateOptions) (ManagedDatabaseSensitivityLabelsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSensitivityLabelsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, err

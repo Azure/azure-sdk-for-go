@@ -32,7 +32,7 @@ type DataMaskingPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataMaskingPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataMaskingPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DataMaskingPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewDataMaskingPoliciesClient(subscriptionID string, credential azcore.Token
 //     method.
 func (client *DataMaskingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DataMaskingPolicy, options *DataMaskingPoliciesClientCreateOrUpdateOptions) (DataMaskingPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DataMaskingPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
@@ -126,6 +130,10 @@ func (client *DataMaskingPoliciesClient) createOrUpdateHandleResponse(resp *http
 //   - options - DataMaskingPoliciesClientGetOptions contains the optional parameters for the DataMaskingPoliciesClient.Get method.
 func (client *DataMaskingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DataMaskingPoliciesClientGetOptions) (DataMaskingPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "DataMaskingPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return DataMaskingPoliciesClientGetResponse{}, err

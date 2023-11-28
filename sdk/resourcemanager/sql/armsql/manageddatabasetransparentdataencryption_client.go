@@ -32,7 +32,7 @@ type ManagedDatabaseTransparentDataEncryptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseTransparentDataEncryptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseTransparentDataEncryptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, cr
 //     ManagedDatabaseTransparentDataEncryptionClient.CreateOrUpdate method.
 func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, parameters ManagedTransparentDataEncryption, options *ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateOptions) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseTransparentDataEncryptionClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, tdeName, parameters, options)
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHand
 //     method.
 func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, tdeName TransparentDataEncryptionName, options *ManagedDatabaseTransparentDataEncryptionClientGetOptions) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseTransparentDataEncryptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, tdeName, options)
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
@@ -206,25 +214,20 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) NewListByDatabaseP
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseTransparentDataEncryptionClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

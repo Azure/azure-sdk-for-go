@@ -33,7 +33,7 @@ type LongTermRetentionBackupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLongTermRetentionBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LongTermRetentionBackupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LongTermRetentionBackupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,14 @@ func (client *LongTermRetentionBackupsClient) BeginCopy(ctx context.Context, loc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientCopyResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientCopyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientCopyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientCopyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +78,10 @@ func (client *LongTermRetentionBackupsClient) BeginCopy(ctx context.Context, loc
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginCopy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.copyCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -145,10 +153,14 @@ func (client *LongTermRetentionBackupsClient) BeginCopyByResourceGroup(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientCopyByResourceGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientCopyByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientCopyByResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientCopyByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -158,6 +170,10 @@ func (client *LongTermRetentionBackupsClient) BeginCopyByResourceGroup(ctx conte
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginCopyByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.copyByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -230,10 +246,14 @@ func (client *LongTermRetentionBackupsClient) BeginDelete(ctx context.Context, l
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -243,6 +263,10 @@ func (client *LongTermRetentionBackupsClient) BeginDelete(ctx context.Context, l
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -309,10 +333,14 @@ func (client *LongTermRetentionBackupsClient) BeginDeleteByResourceGroup(ctx con
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientDeleteByResourceGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientDeleteByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientDeleteByResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientDeleteByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -322,6 +350,10 @@ func (client *LongTermRetentionBackupsClient) BeginDeleteByResourceGroup(ctx con
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginDeleteByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
 	if err != nil {
 		return nil, err
@@ -386,6 +418,10 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest
 //     method.
 func (client *LongTermRetentionBackupsClient) Get(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientGetOptions) (LongTermRetentionBackupsClientGetResponse, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
 	if err != nil {
 		return LongTermRetentionBackupsClientGetResponse{}, err
@@ -459,6 +495,10 @@ func (client *LongTermRetentionBackupsClient) getHandleResponse(resp *http.Respo
 //     method.
 func (client *LongTermRetentionBackupsClient) GetByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientGetByResourceGroupOptions) (LongTermRetentionBackupsClientGetByResourceGroupResponse, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.GetByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, options)
 	if err != nil {
 		return LongTermRetentionBackupsClientGetByResourceGroupResponse{}, err
@@ -536,25 +576,20 @@ func (client *LongTermRetentionBackupsClient) NewListByDatabasePager(locationNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByDatabaseResponse) (LongTermRetentionBackupsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -615,25 +650,20 @@ func (client *LongTermRetentionBackupsClient) NewListByLocationPager(locationNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByLocationResponse) (LongTermRetentionBackupsClientListByLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, locationName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -690,25 +720,20 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupDatabasePage
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse) (LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -775,25 +800,20 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupLocationPage
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByResourceGroupLocationResponse) (LongTermRetentionBackupsClientListByResourceGroupLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -853,25 +873,20 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupServerPager(
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByResourceGroupServerResponse) (LongTermRetentionBackupsClientListByResourceGroupServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupServerCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByResourceGroupServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupServerCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -933,25 +948,20 @@ func (client *LongTermRetentionBackupsClient) NewListByServerPager(locationName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LongTermRetentionBackupsClientListByServerResponse) (LongTermRetentionBackupsClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, locationName, longTermRetentionServerName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LongTermRetentionBackupsClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, locationName, longTermRetentionServerName, options)
+			}, nil)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LongTermRetentionBackupsClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LongTermRetentionBackupsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1013,10 +1023,14 @@ func (client *LongTermRetentionBackupsClient) BeginUpdate(ctx context.Context, l
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1026,6 +1040,10 @@ func (client *LongTermRetentionBackupsClient) BeginUpdate(ctx context.Context, l
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1097,10 +1115,14 @@ func (client *LongTermRetentionBackupsClient) BeginUpdateByResourceGroup(ctx con
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[LongTermRetentionBackupsClientUpdateByResourceGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LongTermRetentionBackupsClientUpdateByResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientUpdateByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1110,6 +1132,10 @@ func (client *LongTermRetentionBackupsClient) BeginUpdateByResourceGroup(ctx con
 // Generated from API version 2021-05-01-preview
 func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginUpdateByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ type MaintenanceWindowsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceWindowsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MaintenanceWindowsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *MaintenanceWindowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, parameters MaintenanceWindows, options *MaintenanceWindowsClientCreateOrUpdateOptions) (MaintenanceWindowsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "MaintenanceWindowsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, maintenanceWindowName, parameters, options)
 	if err != nil {
 		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
@@ -116,6 +120,10 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 //   - options - MaintenanceWindowsClientGetOptions contains the optional parameters for the MaintenanceWindowsClient.Get method.
 func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowName string, options *MaintenanceWindowsClientGetOptions) (MaintenanceWindowsClientGetResponse, error) {
 	var err error
+	const operationName = "MaintenanceWindowsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, maintenanceWindowName, options)
 	if err != nil {
 		return MaintenanceWindowsClientGetResponse{}, err

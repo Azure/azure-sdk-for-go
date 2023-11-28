@@ -11,6 +11,7 @@ package azeventgrid
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -29,20 +30,20 @@ type Client struct {
 	endpoint string
 }
 
-// AcknowledgeCloudEvents - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if at least
-// one event is successfully acknowledged. The response body will include the set of successfully
-// acknowledged lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged
-// events will no longer be available to any consumer.
+// AcknowledgeCloudEvents - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully acknowledged
+// lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged events
+// will no longer be available to any consumer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - AcknowledgeOptions.
+//   - acknowledgeOptions - acknowledgeOptions.
 //   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
-func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
+func (client *Client) internalAcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
 	var err error
-	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
+	req, err := client.acknowledgeCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, acknowledgeOptions, options)
 	if err != nil {
 		return AcknowledgeCloudEventsResponse{}, err
 	}
@@ -59,7 +60,7 @@ func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName stri
 }
 
 // acknowledgeCloudEventsCreateRequest creates the AcknowledgeCloudEvents request.
-func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens AcknowledgeOptions, options *AcknowledgeCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, acknowledgeOptions acknowledgeOptions, options *AcknowledgeCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -74,10 +75,10 @@ func (client *Client) acknowledgeCloudEventsCreateRequest(ctx context.Context, t
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+	if err := runtime.MarshalAsJSON(req, acknowledgeOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -92,6 +93,57 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
+// PublishCloudEvent - Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP
+// 200 status code with an empty JSON object in response. Otherwise, the server can return various
+// error codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is
+// too large, 410: which indicates that specific topic is not found, 400: for bad
+// request, and 500: for internal server error.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - event - Single Cloud Event being published.
+//   - options - PublishCloudEventOptions contains the optional parameters for the Client.PublishCloudEvent method.
+func (client *Client) PublishCloudEvent(ctx context.Context, topicName string, event messaging.CloudEvent, options *PublishCloudEventOptions) (PublishCloudEventResponse, error) {
+	var err error
+	req, err := client.publishCloudEventCreateRequest(ctx, topicName, event, options)
+	if err != nil {
+		return PublishCloudEventResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PublishCloudEventResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PublishCloudEventResponse{}, err
+	}
+	return PublishCloudEventResponse{}, nil
+}
+
+// publishCloudEventCreateRequest creates the PublishCloudEvent request.
+func (client *Client) publishCloudEventCreateRequest(ctx context.Context, topicName string, event messaging.CloudEvent, options *PublishCloudEventOptions) (*policy.Request, error) {
+	urlPath := "/topics/{topicName}:publish"
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, event); err != nil {
+		return nil, err
+	}
+
+	req.Raw().Header.Set("Content-type", "application/cloudevents+json; charset=utf-8")
+	return req, nil
+}
+
 // PublishCloudEvents - Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP
 // 200 status code with an empty JSON object in response. Otherwise, the server can return various error
 // codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large,
@@ -99,11 +151,11 @@ func (client *Client) acknowledgeCloudEventsHandleResponse(resp *http.Response) 
 // request, and 500: for internal server error.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - events - Array of Cloud Events being published.
 //   - options - PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) internalPublishCloudEvents(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
+func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
 	var err error
 	req, err := client.publishCloudEventsCreateRequest(ctx, topicName, events, options)
 	if err != nil {
@@ -132,19 +184,21 @@ func (client *Client) publishCloudEventsCreateRequest(ctx context.Context, topic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, events); err != nil {
 		return nil, err
 	}
+
+	req.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")
 	return req, nil
 }
 
 // ReceiveCloudEvents - Receive Batch of Cloud Events from the Event Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
 //   - options - ReceiveCloudEventsOptions contains the optional parameters for the Client.ReceiveCloudEvents method.
@@ -182,7 +236,7 @@ func (client *Client) receiveCloudEventsCreateRequest(ctx context.Context, topic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.MaxEvents != nil {
 		reqQP.Set("maxEvents", strconv.FormatInt(int64(*options.MaxEvents), 10))
 	}
@@ -203,17 +257,19 @@ func (client *Client) receiveCloudEventsHandleResponse(resp *http.Response) (Rec
 	return result, nil
 }
 
-// RejectCloudEvents - Reject batch of Cloud Events.
+// RejectCloudEvents - Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
+// accepted. The response body will include the set of successfully rejected lockTokens,
+// along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - RejectOptions
+//   - rejectOptions - rejectOptions
 //   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
-func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
+func (client *Client) internalRejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
 	var err error
-	req, err := client.rejectCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
+	req, err := client.rejectCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, rejectOptions, options)
 	if err != nil {
 		return RejectCloudEventsResponse{}, err
 	}
@@ -230,7 +286,7 @@ func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, e
 }
 
 // rejectCloudEventsCreateRequest creates the RejectCloudEvents request.
-func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens RejectOptions, options *RejectCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, rejectOptions rejectOptions, options *RejectCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -245,10 +301,10 @@ func (client *Client) rejectCloudEventsCreateRequest(ctx context.Context, topicN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+	if err := runtime.MarshalAsJSON(req, rejectOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -263,19 +319,19 @@ func (client *Client) rejectCloudEventsHandleResponse(resp *http.Response) (Reje
 	return result, nil
 }
 
-// ReleaseCloudEvents - Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event
-// is successfully released. The response body will include the set of successfully released
-// lockTokens, along with other failed lockTokens with their corresponding error information.
+// ReleaseCloudEvents - Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
+// successfully accepted. The response body will include the set of successfully released lockTokens,
+// along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
 //   - eventSubscriptionName - Event Subscription Name.
-//   - lockTokens - ReleaseOptions
+//   - releaseOptions - releaseOptions
 //   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
-func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
+func (client *Client) internalReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
 	var err error
-	req, err := client.releaseCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, lockTokens, options)
+	req, err := client.releaseCloudEventsCreateRequest(ctx, topicName, eventSubscriptionName, releaseOptions, options)
 	if err != nil {
 		return ReleaseCloudEventsResponse{}, err
 	}
@@ -292,7 +348,7 @@ func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, 
 }
 
 // releaseCloudEventsCreateRequest creates the ReleaseCloudEvents request.
-func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens ReleaseOptions, options *ReleaseCloudEventsOptions) (*policy.Request, error) {
+func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, releaseOptions releaseOptions, options *ReleaseCloudEventsOptions) (*policy.Request, error) {
 	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release"
 	if topicName == "" {
 		return nil, errors.New("parameter topicName cannot be empty")
@@ -307,10 +363,13 @@ func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01-preview")
+	reqQP.Set("api-version", "2023-10-01-preview")
+	if options != nil && options.ReleaseDelayInSeconds != nil {
+		reqQP.Set("releaseDelayInSeconds", fmt.Sprintf("%d", *options.ReleaseDelayInSeconds))
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, lockTokens); err != nil {
+	if err := runtime.MarshalAsJSON(req, releaseOptions); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -321,6 +380,68 @@ func (client *Client) releaseCloudEventsHandleResponse(resp *http.Response) (Rel
 	result := ReleaseCloudEventsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReleaseResult); err != nil {
 		return ReleaseCloudEventsResponse{}, err
+	}
+	return result, nil
+}
+
+// RenewCloudEventLocks - Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully renewed
+// lockTokens, along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - renewLockOptions - renewLockOptions
+//   - options - RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
+func (client *Client) internalRenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
+	var err error
+	req, err := client.renewCloudEventLocksCreateRequest(ctx, topicName, eventSubscriptionName, renewLockOptions, options)
+	if err != nil {
+		return RenewCloudEventLocksResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RenewCloudEventLocksResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return RenewCloudEventLocksResponse{}, err
+	}
+	resp, err := client.renewCloudEventLocksHandleResponse(httpResp)
+	return resp, err
+}
+
+// renewCloudEventLocksCreateRequest creates the RenewCloudEventLocks request.
+func (client *Client) renewCloudEventLocksCreateRequest(ctx context.Context, topicName string, eventSubscriptionName string, renewLockOptions renewLockOptions, options *RenewCloudEventLocksOptions) (*policy.Request, error) {
+	urlPath := "/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock"
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	if eventSubscriptionName == "" {
+		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, renewLockOptions); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// renewCloudEventLocksHandleResponse handles the RenewCloudEventLocks response.
+func (client *Client) renewCloudEventLocksHandleResponse(resp *http.Response) (RenewCloudEventLocksResponse, error) {
+	result := RenewCloudEventLocksResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RenewCloudEventLocksResult); err != nil {
+		return RenewCloudEventLocksResponse{}, err
 	}
 	return result, nil
 }

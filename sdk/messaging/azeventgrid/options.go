@@ -13,6 +13,11 @@ type AcknowledgeCloudEventsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PublishCloudEventOptions contains the optional parameters for the Client.PublishCloudEvent method.
+type PublishCloudEventOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
 type PublishCloudEventsOptions struct {
 	// placeholder for future optional parameters
@@ -38,5 +43,11 @@ type RejectCloudEventsOptions struct {
 
 // ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
 type ReleaseCloudEventsOptions struct {
+	// Release cloud events with the specified delay in seconds.
+	ReleaseDelayInSeconds *ReleaseDelay
+}
+
+// RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
+type RenewCloudEventLocksOptions struct {
 	// placeholder for future optional parameters
 }

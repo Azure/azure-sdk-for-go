@@ -14,6 +14,11 @@ type AcknowledgeCloudEventsResponse struct {
 	AcknowledgeResult
 }
 
+// PublishCloudEventResponse contains the response from method Client.PublishCloudEvent.
+type PublishCloudEventResponse struct {
+	// placeholder for future response values
+}
+
 // PublishCloudEventsResponse contains the response from method Client.PublishCloudEvents.
 type PublishCloudEventsResponse struct {
 	// placeholder for future response values
@@ -35,4 +40,10 @@ type RejectCloudEventsResponse struct {
 type ReleaseCloudEventsResponse struct {
 	// The result of the Release operation.
 	ReleaseResult
+}
+
+// RenewCloudEventLocksResponse contains the response from method Client.RenewCloudEventLocks.
+type RenewCloudEventLocksResponse struct {
+	// The result of the RenewLock operation.
+	RenewCloudEventLocksResult
 }

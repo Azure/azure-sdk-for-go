@@ -32,7 +32,7 @@ type ItemLevelRecoveryConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ItemLevelRecoveryConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ItemLevelRecoveryConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +61,10 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 //     method.
 func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters ILRRequestResource, options *ItemLevelRecoveryConnectionsClientProvisionOptions) (ItemLevelRecoveryConnectionsClientProvisionResponse, error) {
 	var err error
+	const operationName = "ItemLevelRecoveryConnectionsClient.Provision"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.provisionCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters, options)
 	if err != nil {
 		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
@@ -137,6 +141,10 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 //     method.
 func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *ItemLevelRecoveryConnectionsClientRevokeOptions) (ItemLevelRecoveryConnectionsClientRevokeResponse, error) {
 	var err error
+	const operationName = "ItemLevelRecoveryConnectionsClient.Revoke"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revokeCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, options)
 	if err != nil {
 		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err

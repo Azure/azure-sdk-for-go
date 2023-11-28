@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Event_GetBySubscriptionIdAndTrackingId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Event_GetBySubscriptionIdAndTrackingId.json
 func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,6 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 	Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 	// 	ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"),
 	// 	Properties: &armresourcehealth.EventProperties{
-	// 		ArgQuery: to.Ptr("{argQuery}"),
 	// 		Article: &armresourcehealth.EventPropertiesArticle{
 	// 			ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
 	// 		},
@@ -69,15 +68,15 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 							to.Ptr("{subscriptionId}")},
 	// 							ImpactedTenants: []*string{
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00.000Z"); return t}()),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 					}},
 	// 					ImpactedService: to.Ptr("Virtual Machines"),
 	// 			}},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
+	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00.000Z"); return t}()),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -105,8 +104,6 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 						"trackingId": "{eventTrackingId}",
 	// 					},
 	// 			}},
-	// 			MaintenanceID: to.Ptr("{maintenanceId}"),
-	// 			MaintenanceType: to.Ptr("{maintenanceType}"),
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
 	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
@@ -128,7 +125,7 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Event_fetchDetailsBySubscriptionIdAndTrackingId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Event_fetchDetailsBySubscriptionIdAndTrackingId.json
 func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +148,6 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 	Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 	// 	ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"),
 	// 	Properties: &armresourcehealth.EventProperties{
-	// 		ArgQuery: to.Ptr("{argQuery}"),
 	// 		Article: &armresourcehealth.EventPropertiesArticle{
 	// 			ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
 	// 		},
@@ -177,15 +173,15 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 							to.Ptr("{subscriptionId}")},
 	// 							ImpactedTenants: []*string{
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00.000Z"); return t}()),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 					}},
 	// 					ImpactedService: to.Ptr("Virtual Machines"),
 	// 			}},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
+	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00.000Z"); return t}()),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -213,8 +209,6 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 						"trackingId": "{eventTrackingId}",
 	// 					},
 	// 			}},
-	// 			MaintenanceID: to.Ptr("{maintenanceId}"),
-	// 			MaintenanceType: to.Ptr("{maintenanceType}"),
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
 	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
@@ -236,7 +230,7 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Event_GetByTenantIdAndTrackingId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Event_GetByTenantIdAndTrackingId.json
 func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,15 +280,15 @@ func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	// 						},
 	// 						ImpactedTenants: []*string{
 	// 							to.Ptr("00000000-0000-0000-0000-000000000000")},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00.000Z"); return t}()),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 					}},
 	// 					ImpactedService: to.Ptr("Virtual Machines"),
 	// 			}},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
+	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00.000Z"); return t}()),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -343,7 +337,7 @@ func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Event_fetchDetailsByTenantIdAndTrackingId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b74978708bb95475562412d4654c00fbcedd9f89/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Event_fetchDetailsByTenantIdAndTrackingId.json
 func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,15 +385,15 @@ func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	// 						},
 	// 						ImpactedTenants: []*string{
 	// 							to.Ptr("00000000-0000-0000-0000-000000000000")},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00.000Z"); return t}()),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 					}},
 	// 					ImpactedService: to.Ptr("Virtual Machines"),
 	// 			}},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
+	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00.000Z"); return t}()),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00.000Z"); return t}()),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{

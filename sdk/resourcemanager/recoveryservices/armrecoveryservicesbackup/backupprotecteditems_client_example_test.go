@@ -51,7 +51,7 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		// 			Properties: &armrecoveryservicesbackup.AzureIaaSClassicComputeVMProtectedItem{
 		// 				BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureIaasVM),
 		// 				ContainerName: to.Ptr("iaasvmcontainer;iaasvm-rg;iaasvm-1"),
-		// 				LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048723Z"); return t}()),
+		// 				LastRecoveryPoint: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T12:25:32.048Z"); return t}()),
 		// 				PolicyID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/testPolicy1"),
 		// 				ProtectedItemType: to.Ptr("Microsoft.ClassicCompute/virtualMachines"),
 		// 				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/providers/Microsoft.ClassicCompute/virtualMachines/iaasvm-1"),
@@ -59,7 +59,7 @@ func ExampleBackupProtectedItemsClient_NewListPager() {
 		// 				FriendlyName: to.Ptr("iaasvm-1"),
 		// 				HealthStatus: to.Ptr(armrecoveryservicesbackup.HealthStatusPassed),
 		// 				LastBackupStatus: to.Ptr("Completed"),
-		// 				LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048723Z"); return t}()),
+		// 				LastBackupTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-22T12:25:32.048Z"); return t}()),
 		// 				ProtectedItemDataID: to.Ptr("636482643132986882"),
 		// 				ProtectionState: to.Ptr(armrecoveryservicesbackup.ProtectionStateProtected),
 		// 				ProtectionStatus: to.Ptr("Healthy"),

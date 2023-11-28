@@ -32,7 +32,7 @@ type BackupStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
 func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, parameters BackupStatusRequest, options *BackupStatusClientGetOptions) (BackupStatusClientGetResponse, error) {
 	var err error
+	const operationName = "BackupStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
 		return BackupStatusClientGetResponse{}, err

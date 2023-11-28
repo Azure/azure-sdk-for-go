@@ -32,7 +32,7 @@ type ProtectionPolicyOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionPolicyOperationResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionPolicyOperationResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProtectionPolicyOperationResultsClient(subscriptionID string, credential
 //     method.
 func (client *ProtectionPolicyOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string, options *ProtectionPolicyOperationResultsClientGetOptions) (ProtectionPolicyOperationResultsClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionPolicyOperationResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, policyName, operationID, options)
 	if err != nil {
 		return ProtectionPolicyOperationResultsClientGetResponse{}, err

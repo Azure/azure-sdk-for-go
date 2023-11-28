@@ -32,7 +32,7 @@ type BackupResourceEncryptionConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupResourceEncryptionConfigsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupResourceEncryptionConfigsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential 
 //     method.
 func (client *BackupResourceEncryptionConfigsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, options *BackupResourceEncryptionConfigsClientGetOptions) (BackupResourceEncryptionConfigsClientGetResponse, error) {
 	var err error
+	const operationName = "BackupResourceEncryptionConfigsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
 	if err != nil {
 		return BackupResourceEncryptionConfigsClientGetResponse{}, err
@@ -115,6 +119,10 @@ func (client *BackupResourceEncryptionConfigsClient) getHandleResponse(resp *htt
 //     method.
 func (client *BackupResourceEncryptionConfigsClient) Update(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceEncryptionConfigResource, options *BackupResourceEncryptionConfigsClientUpdateOptions) (BackupResourceEncryptionConfigsClientUpdateResponse, error) {
 	var err error
+	const operationName = "BackupResourceEncryptionConfigsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return BackupResourceEncryptionConfigsClientUpdateResponse{}, err

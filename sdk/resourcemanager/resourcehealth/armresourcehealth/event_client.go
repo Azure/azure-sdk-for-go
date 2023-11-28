@@ -32,7 +32,7 @@ type EventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventClient, error) {
-	cl, err := arm.NewClient(moduleName+".EventClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,12 +47,16 @@ func NewEventClient(subscriptionID string, credential azcore.TokenCredential, op
 // can be used to fetch sensitive properties for Security Advisory events
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2022-10-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 //     method.
 func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.FetchDetailsBySubscriptionIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
@@ -85,7 +89,7 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2022-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -104,12 +108,16 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleRespon
 // to fetch sensitive properties for Security Advisory events
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2022-10-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsByTenantIDAndTrackingID
 //     method.
 func (client *EventClient) FetchDetailsByTenantIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsByTenantIDAndTrackingIDOptions) (EventClientFetchDetailsByTenantIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.FetchDetailsByTenantIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
@@ -138,7 +146,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2022-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -156,12 +164,16 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(res
 // GetBySubscriptionIDAndTrackingID - Service health event in the subscription by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2022-10-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetBySubscriptionIDAndTrackingID
 //     method.
 func (client *EventClient) GetBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientGetBySubscriptionIDAndTrackingIDOptions) (EventClientGetBySubscriptionIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.GetBySubscriptionIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
@@ -194,7 +206,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -218,12 +230,16 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *
 // GetByTenantIDAndTrackingID - Service health event in the tenant by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2022-10-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetByTenantIDAndTrackingID
 //     method.
 func (client *EventClient) GetByTenantIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientGetByTenantIDAndTrackingIDOptions) (EventClientGetByTenantIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.GetByTenantIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByTenantIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientGetByTenantIDAndTrackingIDResponse{}, err
@@ -252,7 +268,7 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2022-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

@@ -32,7 +32,7 @@ type ValidateOperationStatusesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewValidateOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidateOperationStatusesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ValidateOperationStatusesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewValidateOperationStatusesClient(subscriptionID string, credential azcore
 //     method.
 func (client *ValidateOperationStatusesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ValidateOperationStatusesClientGetOptions) (ValidateOperationStatusesClientGetResponse, error) {
 	var err error
+	const operationName = "ValidateOperationStatusesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return ValidateOperationStatusesClientGetResponse{}, err

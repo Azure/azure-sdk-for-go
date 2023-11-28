@@ -32,7 +32,7 @@ type ReplicationJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationJobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationJobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *ReplicationJobsClient) BeginCancel(ctx context.Context, resourceNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationJobsClientCancelResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationJobsClientCancelResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationJobsClientCancelResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationJobsClientCancelResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *ReplicationJobsClient) BeginCancel(ctx context.Context, resourceNa
 // Generated from API version 2023-06-01
 func (client *ReplicationJobsClient) cancel(ctx context.Context, resourceName string, resourceGroupName string, jobName string, options *ReplicationJobsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationJobsClient.BeginCancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceName, resourceGroupName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -131,10 +139,14 @@ func (client *ReplicationJobsClient) BeginExport(ctx context.Context, resourceNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationJobsClientExportResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationJobsClientExportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationJobsClientExportResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationJobsClientExportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -144,6 +156,10 @@ func (client *ReplicationJobsClient) BeginExport(ctx context.Context, resourceNa
 // Generated from API version 2023-06-01
 func (client *ReplicationJobsClient) export(ctx context.Context, resourceName string, resourceGroupName string, jobQueryParameter JobQueryParameter, options *ReplicationJobsClientBeginExportOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationJobsClient.BeginExport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportCreateRequest(ctx, resourceName, resourceGroupName, jobQueryParameter, options)
 	if err != nil {
 		return nil, err
@@ -198,6 +214,10 @@ func (client *ReplicationJobsClient) exportCreateRequest(ctx context.Context, re
 //   - options - ReplicationJobsClientGetOptions contains the optional parameters for the ReplicationJobsClient.Get method.
 func (client *ReplicationJobsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, jobName string, options *ReplicationJobsClientGetOptions) (ReplicationJobsClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationJobsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, jobName, options)
 	if err != nil {
 		return ReplicationJobsClientGetResponse{}, err
@@ -266,25 +286,20 @@ func (client *ReplicationJobsClient) NewListPager(resourceName string, resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationJobsClientListResponse) (ReplicationJobsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationJobsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationJobsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationJobsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationJobsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -341,10 +356,14 @@ func (client *ReplicationJobsClient) BeginRestart(ctx context.Context, resourceN
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationJobsClientRestartResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationJobsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationJobsClientRestartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationJobsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -354,6 +373,10 @@ func (client *ReplicationJobsClient) BeginRestart(ctx context.Context, resourceN
 // Generated from API version 2023-06-01
 func (client *ReplicationJobsClient) restart(ctx context.Context, resourceName string, resourceGroupName string, jobName string, options *ReplicationJobsClientBeginRestartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationJobsClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, resourceName, resourceGroupName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -415,10 +438,14 @@ func (client *ReplicationJobsClient) BeginResume(ctx context.Context, resourceNa
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationJobsClientResumeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationJobsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationJobsClientResumeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationJobsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -428,6 +455,10 @@ func (client *ReplicationJobsClient) BeginResume(ctx context.Context, resourceNa
 // Generated from API version 2023-06-01
 func (client *ReplicationJobsClient) resume(ctx context.Context, resourceName string, resourceGroupName string, jobName string, resumeJobParams ResumeJobParams, options *ReplicationJobsClientBeginResumeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationJobsClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resumeCreateRequest(ctx, resourceName, resourceGroupName, jobName, resumeJobParams, options)
 	if err != nil {
 		return nil, err

@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,51 +37,61 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAvailabilityStatusesClient creates a new instance of AvailabilityStatusesClient.
 func (c *ClientFactory) NewAvailabilityStatusesClient() *AvailabilityStatusesClient {
 	subClient, _ := NewAvailabilityStatusesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewChildAvailabilityStatusesClient creates a new instance of ChildAvailabilityStatusesClient.
 func (c *ClientFactory) NewChildAvailabilityStatusesClient() *ChildAvailabilityStatusesClient {
 	subClient, _ := NewChildAvailabilityStatusesClient(c.credential, c.options)
 	return subClient
 }
 
+// NewChildResourcesClient creates a new instance of ChildResourcesClient.
 func (c *ClientFactory) NewChildResourcesClient() *ChildResourcesClient {
 	subClient, _ := NewChildResourcesClient(c.credential, c.options)
 	return subClient
 }
 
+// NewEmergingIssuesClient creates a new instance of EmergingIssuesClient.
 func (c *ClientFactory) NewEmergingIssuesClient() *EmergingIssuesClient {
 	subClient, _ := NewEmergingIssuesClient(c.credential, c.options)
 	return subClient
 }
 
+// NewEventClient creates a new instance of EventClient.
 func (c *ClientFactory) NewEventClient() *EventClient {
 	subClient, _ := NewEventClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEventsClient creates a new instance of EventsClient.
 func (c *ClientFactory) NewEventsClient() *EventsClient {
 	subClient, _ := NewEventsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewImpactedResourcesClient creates a new instance of ImpactedResourcesClient.
 func (c *ClientFactory) NewImpactedResourcesClient() *ImpactedResourcesClient {
 	subClient, _ := NewImpactedResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewMetadataClient creates a new instance of MetadataClient.
 func (c *ClientFactory) NewMetadataClient() *MetadataClient {
 	subClient, _ := NewMetadataClient(c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewSecurityAdvisoryImpactedResourcesClient creates a new instance of SecurityAdvisoryImpactedResourcesClient.
 func (c *ClientFactory) NewSecurityAdvisoryImpactedResourcesClient() *SecurityAdvisoryImpactedResourcesClient {
 	subClient, _ := NewSecurityAdvisoryImpactedResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

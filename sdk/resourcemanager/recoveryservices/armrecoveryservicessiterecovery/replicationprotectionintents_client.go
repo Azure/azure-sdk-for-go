@@ -32,7 +32,7 @@ type ReplicationProtectionIntentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationProtectionIntentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionIntentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationProtectionIntentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewReplicationProtectionIntentsClient(subscriptionID string, credential azc
 //     method.
 func (client *ReplicationProtectionIntentsClient) Create(ctx context.Context, resourceName string, resourceGroupName string, intentObjectName string, input CreateProtectionIntentInput, options *ReplicationProtectionIntentsClientCreateOptions) (ReplicationProtectionIntentsClientCreateResponse, error) {
 	var err error
+	const operationName = "ReplicationProtectionIntentsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, intentObjectName, input, options)
 	if err != nil {
 		return ReplicationProtectionIntentsClientCreateResponse{}, err
@@ -124,6 +128,10 @@ func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *htt
 //     method.
 func (client *ReplicationProtectionIntentsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, intentObjectName string, options *ReplicationProtectionIntentsClientGetOptions) (ReplicationProtectionIntentsClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationProtectionIntentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, intentObjectName, options)
 	if err != nil {
 		return ReplicationProtectionIntentsClientGetResponse{}, err
@@ -192,25 +200,20 @@ func (client *ReplicationProtectionIntentsClient) NewListPager(resourceName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationProtectionIntentsClientListResponse) (ReplicationProtectionIntentsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationProtectionIntentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationProtectionIntentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationProtectionIntentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationProtectionIntentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

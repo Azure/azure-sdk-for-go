@@ -9,14 +9,18 @@ package azappconfig_test
 import (
 	"context"
 	"fmt"
-	"sort"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	"github.com/stretchr/testify/require"
 )
+
+var currTime = time.Now().Unix()
+var uniqueSuffix = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
 	const (
@@ -331,56 +335,98 @@ func TestSettingWithEscaping(t *testing.T) {
 	require.EqualValues(t, key, *resp.Key)
 }
 
-// _________________________________________________________________________________________
 func TestSnapshotListConfigurationSettings(t *testing.T) {
+
+	testKeySuffix := string(uniqueSuffix)
+	snapshotName := "listConfigurationsSnapshotTest" + string(uniqueSuffix)
+	client := NewClientFromConnectionString(t)
+
+	type LV struct {
+		Value string
+		Label string
+	}
 
 	Settings := []azappconfig.Setting{
 		{
-			Key:   to.Ptr("Key-TestClient"),
+			Key:   to.Ptr("Key-" + testKeySuffix),
 			Value: to.Ptr("value3"),
 			Label: to.Ptr("label"),
 		},
 		{
-			Key:   to.Ptr("Key1"),
+			Key:   to.Ptr("Key1-" + testKeySuffix),
 			Value: to.Ptr("Val1"),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr("Key2"),
+			Key:   to.Ptr("Key2-" + testKeySuffix),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr("KeyNoLabel"),
+			Key:   to.Ptr("KeyNoLabel-" + testKeySuffix),
 			Value: to.Ptr("Val1"),
 		},
 		{
-			Key:   to.Ptr("KeyNoVal"),
+			Key:   to.Ptr("KeyNoVal-" + testKeySuffix),
 			Label: to.Ptr("Label2"),
 		},
 		{
-			Key: to.Ptr("NoValNoLabelKey"),
+			Key: to.Ptr("NoValNoLabelKey-" + testKeySuffix),
 		},
 		{
-			Key: to.Ptr("TEST"),
+			Key: to.Ptr("TEST" + testKeySuffix),
 		},
 	}
 
-	fromSS := []azappconfig.Setting{}
+	settingMap := make(map[string][]LV)
 
-	const (
-		snapshotName = "allsnapshot"
-	)
+	for _, setting := range Settings {
 
-	client := NewClientFromConnectionString(t)
+		key := *setting.Key
+		value := setting.Value
+		label := setting.Label
 
-	_, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+		// Add setting to Map
+		mapV := LV{}
 
+		if value != nil {
+			mapV.Value = *value
+		}
+
+		if label != nil {
+			mapV.Label = *label
+		}
+
+		settingMap[key] = append(settingMap[key], mapV)
+
+		// Add setting to configuration store
+		options := &azappconfig.AddSettingOptions{
+			Label: setting.Label,
+		}
+
+		client.AddSetting(context.Background(), key, value, options)
+	}
+
+	r, err := CreateSnapshot(client, snapshotName, nil)
+
+	require.NotEmpty(t, r)
 	require.NoError(t, err)
 
-	// Run TestListConfigurationSettingsForSnapshot
-	respPgr := client.NewListConfigurationSettingsForSnapshotPager(snapshotName, nil)
+	keyFilter := "*" + testKeySuffix
+	all := "*"
+	sf := []azappconfig.SettingFilter{
+		{
+			KeyFilter:   &keyFilter,
+			LabelFilter: &all,
+		},
+	}
 
+	_, err = CreateSnapshot(client, snapshotName, sf)
+	require.NoError(t, err)
+
+	respPgr := client.NewListConfigurationSettingsForSnapshotPager(snapshotName, nil)
 	require.NotEmpty(t, respPgr)
+
+	settingsAdded := 0
 
 	for respPgr.More() {
 		page, err := respPgr.NextPage(context.Background())
@@ -389,75 +435,46 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 		require.NotEmpty(t, page)
 
 		for _, setting := range page.Settings {
-			newSetting := azappconfig.Setting{
-				Key:   setting.Key,
-				Value: setting.Value,
-				Label: setting.Label,
+			require.NotNil(t, setting.Key)
+			found := false
+
+			// Check if setting is in the map
+			for _, configuration := range settingMap[*setting.Key] {
+				if setting.Value != nil {
+					if *setting.Value != configuration.Value {
+						continue
+					}
+				}
+
+				if setting.Label != nil {
+					if *setting.Label != configuration.Label {
+						continue
+					}
+				}
+
+				found = true
+				settingsAdded++
+				break
 			}
 
-			fromSS = append(fromSS, newSetting)
+			// Check that the key follows the filtering pattern
+			if !found {
+				require.True(t, strings.HasPrefix(*setting.Key, keyFilter[1:]))
+			}
 		}
 	}
 
-	require.Equal(t, len(fromSS), len(Settings))
+	require.Equal(t, len(settingMap), settingsAdded)
 
-	// Sort the fromSS and Settings slices based on the Key field
-	sortSettings(fromSS)
-	sortSettings(Settings)
-
-	require.Equal(t, fromSS, Settings)
+	// Cleanup Snapshots
+	CleanupSnapshot(client, snapshotName)
 }
 
-func sortSettings(settings []azappconfig.Setting) {
-	sort.Slice(settings, func(i, j int) bool {
+func TestGetSnapshots(t *testing.T) {
 
-		//Key
-		snk := sortNullSettings(settings[i].Key, settings[j].Key)
-		if snk != 0 {
-			return snk > 0
-		}
+	snapshotName := "getSnapshotsTest" + string(uniqueSuffix)
 
-		if *settings[i].Key != *settings[j].Key {
-			return *settings[i].Key < *settings[j].Key
-		}
-
-		//Value
-		snv := sortNullSettings(settings[i].Value, settings[j].Value)
-		if snv != 0 {
-			return snv > 0
-		}
-
-		if *settings[i].Value != *settings[j].Value {
-			return *settings[i].Value < *settings[j].Value
-		}
-
-		//Label
-		snl := sortNullSettings(settings[i].Label, settings[j].Label)
-		if snl != 0 {
-			return snl > 0
-		}
-
-		if *settings[i].Label != *settings[j].Label {
-			return *settings[i].Label < *settings[j].Label
-		}
-
-		return true
-	})
-}
-
-func sortNullSettings(setting1 *string, setting2 *string) int {
-	if setting1 == nil {
-		return 1
-	}
-	if setting2 == nil {
-		return -1
-	}
-	return 0
-}
-
-func TestGetSnapshots(t *testing.T) { //GOOD TO GO
 	const (
-		snapshotName  = "getSnapshotsTest"
 		ssCreateCount = 5
 	)
 
@@ -504,11 +521,9 @@ func TestGetSnapshots(t *testing.T) { //GOOD TO GO
 	}
 }
 
-func TestSnapshotArchive(t *testing.T) { //GOOD TO GO
+func TestSnapshotArchive(t *testing.T) {
 
-	const (
-		snapshotName = "archiveSnapshotTest"
-	)
+	snapshotName := "archiveSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
@@ -537,11 +552,9 @@ func TestSnapshotArchive(t *testing.T) { //GOOD TO GO
 	CleanupSnapshot(client, snapshotName)
 }
 
-func TestSnapshotRecover(t *testing.T) { //GOOD TO GO
+func TestSnapshotRecover(t *testing.T) {
 
-	const (
-		snapshotName = "recoverSnapshotTest"
-	)
+	snapshotName := "recoverSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
@@ -571,11 +584,8 @@ func TestSnapshotRecover(t *testing.T) { //GOOD TO GO
 }
 
 func TestSnapshotCreate(t *testing.T) {
-	//TODO: need to look into Retention period below. Retention period seems to be breaking this test
 
-	const (
-		snapshotName = "createSnapshotTest2"
-	)
+	snapshotName := "createSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
@@ -600,7 +610,8 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		all := "*"
 		sf = []azappconfig.SettingFilter{
 			{
-				KeyFilter: &all,
+				KeyFilter:   &all,
+				LabelFilter: &all,
 			},
 		}
 	}
@@ -613,7 +624,10 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 
 	//Create a snapshot
 	resp := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
-	// resp := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, nil)
+
+	if resp == nil {
+		return azappconfig.ListSnapshotResponse{}, fmt.Errorf("resp is nil")
+	}
 	_, err := resp.PollUntilDone(context.Background(), nil)
 
 	if err != nil {

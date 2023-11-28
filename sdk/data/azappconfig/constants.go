@@ -39,31 +39,59 @@ const (
 	SettingFieldsTags SettingFields = generated.SettingFieldsTags
 )
 
+// Snapshot Fields are fields to retrieve from a snapshot.
 type SnapshotFields = generated.SnapshotFields
 
-// TODO: comments
 const (
+	//The composition type of a snapshot.
 	SnapshotFieldsCompositionType SnapshotFields = generated.SnapshotFieldsCompositionType
-	SnapshotFieldsCreated         SnapshotFields = generated.SnapshotFieldsCreated
-	SnapshotFieldsEtag            SnapshotFields = generated.SnapshotFieldsEtag
-	SnapshotFieldsExpires         SnapshotFields = generated.SnapshotFieldsExpires
-	SnapshotFieldsFilters         SnapshotFields = generated.SnapshotFieldsFilters
-	SnapshotFieldsItemsCount      SnapshotFields = generated.SnapshotFieldsItemsCount
-	SnapshotFieldsName            SnapshotFields = generated.SnapshotFieldsName
+
+	// The time when the snapshot was created.
+	SnapshotFieldsCreated SnapshotFields = generated.SnapshotFieldsCreated
+
+	// An ETag indicating the version of a snapshot.
+	SnapshotFieldsEtag SnapshotFields = generated.SnapshotFieldsEtag
+
+	// The time when the snapshot will expire once archived.
+	SnapshotFieldsExpires SnapshotFields = generated.SnapshotFieldsExpires
+
+	// A list of filters used to generate the snapshot.
+	SnapshotFieldsFilters SnapshotFields = generated.SnapshotFieldsFilters
+
+	// The number of items in the snapshot.
+	SnapshotFieldsItemsCount SnapshotFields = generated.SnapshotFieldsItemsCount
+
+	// The primary identifier of a snapshot.
+	SnapshotFieldsName SnapshotFields = generated.SnapshotFieldsName
+
+	// Retention period in seconds of the snapshot upon archiving.
 	SnapshotFieldsRetentionPeriod SnapshotFields = generated.SnapshotFieldsRetentionPeriod
-	SnapshotFieldsSize            SnapshotFields = generated.SnapshotFieldsSize
-	SnapshotFieldsStatus          SnapshotFields = generated.SnapshotFieldsStatus
-	SnapshotFieldsTags            SnapshotFields = generated.SnapshotFieldsTags
+
+	// Size of the snapshot.
+	SnapshotFieldsSize SnapshotFields = generated.SnapshotFieldsSize
+
+	// Status of the snapshot.
+	SnapshotFieldsStatus SnapshotFields = generated.SnapshotFieldsStatus
+
+	// A list of tags on the snapshot.
+	SnapshotFieldsTags SnapshotFields = generated.SnapshotFieldsTags
 )
 
+// The current status of the snapshot
 type SnapshotStatus = generated.SnapshotStatus
 
-// TODO: comments
 const (
-	SnapshotStatusArchived     SnapshotStatus = generated.SnapshotStatusArchived
-	SnapshotStatusFailed       SnapshotStatus = generated.SnapshotStatusFailed
+	// Snapshot is archived state.
+	SnapshotStatusArchived SnapshotStatus = generated.SnapshotStatusArchived
+
+	// Snapshot is in failing state.
+	SnapshotStatusFailed SnapshotStatus = generated.SnapshotStatusFailed
+
+	// Snapshot is in provisioning state.
 	SnapshotStatusProvisioning SnapshotStatus = generated.SnapshotStatusProvisioning
-	SnapshotStatusReady        SnapshotStatus = generated.SnapshotStatusReady
+
+	// Snapshot is in ready state.
+	SnapshotStatusReady SnapshotStatus = generated.SnapshotStatusReady
 )
 
 type CompositionType = generated.CompositionType

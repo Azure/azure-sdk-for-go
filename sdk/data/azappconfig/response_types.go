@@ -118,7 +118,6 @@ type ListConfigurationSettingsForSnapshotResponse struct {
 }
 
 type ListSnapshotResponse struct {
-	//TODO: Snapshot to constants?
 	generated.Snapshot
 
 	// Link contains the information returned from the Link header response.

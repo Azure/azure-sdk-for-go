@@ -291,10 +291,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runt
 				return ListSnapshotsPagerResponse{}, err
 			}
 
-			var ss []generated.Snapshot
-			for _, s := range page.Items {
-				ss = append(ss, s)
-			}
+			ss := page.Items
 
 			return ListSnapshotsPagerResponse{
 				Snapshots: ss,

@@ -305,7 +305,11 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runt
 	})
 }
 
-func (c *Client) ListConfigurationSettingsForSnapshot(ssName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
+func (c *Client) NewListConfigurationSettingsForSnapshotPager(ssName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
+
+	if options == nil {
+		options = &ListConfigurationSettingsForSnapshotOptions{}
+	}
 
 	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		AcceptDatetime: options.AcceptDatetime,
@@ -345,18 +349,21 @@ func (c *Client) ListConfigurationSettingsForSnapshot(ssName string, options *Li
 
 func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []SettingFilter, options *BeginCreateSnapshotOptions) *runtime.Poller[BeginCreateSnapshotResponse] {
 
-	var filter []generated.KeyValueFilter
+	filter := []generated.KeyValueFilter{}
 
 	if options == nil {
 		options = &BeginCreateSnapshotOptions{}
 	}
 
 	for _, f := range klf {
-		keyFilter := &f.KeyFilter
 		filter = append(filter, generated.KeyValueFilter{
-			Key:   keyFilter,
+			Key:   f.KeyFilter,
 			Label: f.LabelFilter,
 		})
+	}
+
+	if len(filter) == 0 {
+		filter = append(filter, generated.KeyValueFilter{})
 	}
 
 	entity := generated.Snapshot{

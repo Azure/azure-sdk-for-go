@@ -14,7 +14,7 @@ import (
 
 type SettingFilter struct {
 	// Key filter that will be used to select a set of configuration setting entities.
-	KeyFilter string
+	KeyFilter *string
 
 	// Label filter that will be used to select a set of configuration setting entities.
 	LabelFilter *string

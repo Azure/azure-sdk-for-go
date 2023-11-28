@@ -89,6 +89,16 @@ type ArchiveSnapshotResponse struct {
 	SyncToken *string
 }
 
+type RestoreSnapshotResponse struct {
+	generated.Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
+}
+
 type ListSnapshotsPagerResponse struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Snapshots []generated.Snapshot

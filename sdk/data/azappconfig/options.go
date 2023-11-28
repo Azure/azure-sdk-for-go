@@ -121,6 +121,14 @@ type ArchiveSnapshotOptions struct {
 	IfNoneMatch *string
 }
 
+type RestoreSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
 type ListSnapshotsPagerOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string

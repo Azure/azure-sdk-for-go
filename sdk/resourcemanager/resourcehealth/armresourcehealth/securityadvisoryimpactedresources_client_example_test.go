@@ -14,7 +14,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/SecurityAdvisoryImpactedResources_ListBySubscriptionId_ListByEventId.json
@@ -45,45 +45,49 @@ func ExampleSecurityAdvisoryImpactedResourcesClient_NewListBySubscriptionIDAndEv
 		// 			Name: to.Ptr("jkl-901-hgy-445"),
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/subscriptions/{subscripitionId}/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/jkl-901-hgy-445"),
-		// 			Info: []*armresourcehealth.KeyValueItem{
-		// 				{
-		// 					Key: to.Ptr("key-A"),
-		// 					Value: to.Ptr("sample-1"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-B"),
-		// 					Value: to.Ptr("sample-2"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-C"),
-		// 					Value: to.Ptr("sample-3"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-D"),
-		// 					Value: to.Ptr("sample-4"),
-		// 			}},
+		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				Info: []*armresourcehealth.KeyValueItem{
+		// 					{
+		// 						Key: to.Ptr("key-A"),
+		// 						Value: to.Ptr("sample-1"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-B"),
+		// 						Value: to.Ptr("sample-2"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-C"),
+		// 						Value: to.Ptr("sample-3"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-D"),
+		// 						Value: to.Ptr("sample-4"),
+		// 				}},
+		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("wer-345-tyu-789"),
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/subscriptions/{subscripitionId}/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/wer-345-tyu-789"),
-		// 			Info: []*armresourcehealth.KeyValueItem{
-		// 				{
-		// 					Key: to.Ptr("key-E"),
-		// 					Value: to.Ptr("sample-5"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-F"),
-		// 					Value: to.Ptr("sample-6"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-G"),
-		// 					Value: to.Ptr("sample-7"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-H"),
-		// 					Value: to.Ptr("sample-8"),
-		// 			}},
+		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				Info: []*armresourcehealth.KeyValueItem{
+		// 					{
+		// 						Key: to.Ptr("key-E"),
+		// 						Value: to.Ptr("sample-5"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-F"),
+		// 						Value: to.Ptr("sample-6"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-G"),
+		// 						Value: to.Ptr("sample-7"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-H"),
+		// 						Value: to.Ptr("sample-8"),
+		// 				}},
+		// 			},
 		// 	}},
 		// }
 	}
@@ -117,45 +121,49 @@ func ExampleSecurityAdvisoryImpactedResourcesClient_NewListByTenantIDAndEventIDP
 		// 			Name: to.Ptr("jkl-901-hgy-445"),
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/jkl-901-hgy-445"),
-		// 			Info: []*armresourcehealth.KeyValueItem{
-		// 				{
-		// 					Key: to.Ptr("key-A"),
-		// 					Value: to.Ptr("sample-1"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-B"),
-		// 					Value: to.Ptr("sample-2"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-C"),
-		// 					Value: to.Ptr("sample-3"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-D"),
-		// 					Value: to.Ptr("sample-4"),
-		// 			}},
+		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				Info: []*armresourcehealth.KeyValueItem{
+		// 					{
+		// 						Key: to.Ptr("key-A"),
+		// 						Value: to.Ptr("sample-1"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-B"),
+		// 						Value: to.Ptr("sample-2"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-C"),
+		// 						Value: to.Ptr("sample-3"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-D"),
+		// 						Value: to.Ptr("sample-4"),
+		// 				}},
+		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("wer-345-tyu-789"),
 		// 			Type: to.Ptr("Microsoft.ResourceHealth/events/impactedResources"),
 		// 			ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/BC_1-FXZ/impactedResources/wer-345-tyu-789"),
-		// 			Info: []*armresourcehealth.KeyValueItem{
-		// 				{
-		// 					Key: to.Ptr("key-E"),
-		// 					Value: to.Ptr("sample-5"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-F"),
-		// 					Value: to.Ptr("sample-6"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-G"),
-		// 					Value: to.Ptr("sample-7"),
-		// 				},
-		// 				{
-		// 					Key: to.Ptr("key-H"),
-		// 					Value: to.Ptr("sample-8"),
-		// 			}},
+		// 			Properties: &armresourcehealth.EventImpactedResourceProperties{
+		// 				Info: []*armresourcehealth.KeyValueItem{
+		// 					{
+		// 						Key: to.Ptr("key-E"),
+		// 						Value: to.Ptr("sample-5"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-F"),
+		// 						Value: to.Ptr("sample-6"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-G"),
+		// 						Value: to.Ptr("sample-7"),
+		// 					},
+		// 					{
+		// 						Key: to.Ptr("key-H"),
+		// 						Value: to.Ptr("sample-8"),
+		// 				}},
+		// 			},
 		// 	}},
 		// }
 	}

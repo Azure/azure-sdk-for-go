@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,9 +24,9 @@ import (
 
 // ReplicationLinksServer is a fake server for instances of the armsql.ReplicationLinksClient type.
 type ReplicationLinksServer struct {
-	// Delete is the fake for method ReplicationLinksClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *armsql.ReplicationLinksClientDeleteOptions) (resp azfake.Responder[armsql.ReplicationLinksClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method ReplicationLinksClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, linkID string, options *armsql.ReplicationLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.ReplicationLinksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginFailover is the fake for method ReplicationLinksClient.BeginFailover
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -55,6 +55,7 @@ type ReplicationLinksServer struct {
 func NewReplicationLinksServerTransport(srv *ReplicationLinksServer) *ReplicationLinksServerTransport {
 	return &ReplicationLinksServerTransport{
 		srv:                        srv,
+		beginDelete:                newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientDeleteResponse]](),
 		beginFailover:              newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverResponse]](),
 		beginFailoverAllowDataLoss: newTracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverAllowDataLossResponse]](),
 		newListByDatabasePager:     newTracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByDatabaseResponse]](),
@@ -66,6 +67,7 @@ func NewReplicationLinksServerTransport(srv *ReplicationLinksServer) *Replicatio
 // Don't use this type directly, use NewReplicationLinksServerTransport instead.
 type ReplicationLinksServerTransport struct {
 	srv                        *ReplicationLinksServer
+	beginDelete                *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientDeleteResponse]]
 	beginFailover              *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverResponse]]
 	beginFailoverAllowDataLoss *tracker[azfake.PollerResponder[armsql.ReplicationLinksClientFailoverAllowDataLossResponse]]
 	newListByDatabasePager     *tracker[azfake.PagerResponder[armsql.ReplicationLinksClientListByDatabaseResponse]]
@@ -84,8 +86,8 @@ func (r *ReplicationLinksServerTransport) Do(req *http.Request) (*http.Response,
 	var err error
 
 	switch method {
-	case "ReplicationLinksClient.Delete":
-		resp, err = r.dispatchDelete(req)
+	case "ReplicationLinksClient.BeginDelete":
+		resp, err = r.dispatchBeginDelete(req)
 	case "ReplicationLinksClient.BeginFailover":
 		resp, err = r.dispatchBeginFailover(req)
 	case "ReplicationLinksClient.BeginFailoverAllowDataLoss":
@@ -107,44 +109,55 @@ func (r *ReplicationLinksServerTransport) Do(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (r *ReplicationLinksServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if r.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (r *ReplicationLinksServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationLinks/(?P<linkId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := r.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationLinks/(?P<linkId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		linkIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, linkIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		r.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		r.beginDelete.remove(req)
 	}
-	linkIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Delete(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, linkIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

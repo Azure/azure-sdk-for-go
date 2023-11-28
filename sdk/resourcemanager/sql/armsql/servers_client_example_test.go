@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerListByResourceGroup.json
-func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
+func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,382 +29,26 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("sqlcrudtest-7398", &armsql.ServersClientListByResourceGroupOptions{Expand: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ServerListResult = armsql.ServerListResult{
-		// 	Value: []*armsql.Server{
-		// 		{
-		// 			Name: to.Ptr("sqlcrudtest-4645"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-		// 			Location: to.Ptr("japaneast"),
-		// 			Kind: to.Ptr("v12.0"),
-		// 			Properties: &armsql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				State: to.Ptr("Ready"),
-		// 				Version: to.Ptr("12.0"),
-		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("sqlcrudtest-6661"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661"),
-		// 			Location: to.Ptr("japaneast"),
-		// 			Kind: to.Ptr("v12.0"),
-		// 			Properties: &armsql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
-		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				State: to.Ptr("Ready"),
-		// 				Version: to.Ptr("12.0"),
-		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
-func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroupWithExpandAdministrators() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("sqlcrudtest-7398", &armsql.ServersClientListByResourceGroupOptions{Expand: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ServerListResult = armsql.ServerListResult{
-		// 	Value: []*armsql.Server{
-		// 		{
-		// 			Name: to.Ptr("sqlcrudtest-4645"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-		// 			Location: to.Ptr("japaneast"),
-		// 			Kind: to.Ptr("v12.0"),
-		// 			Properties: &armsql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				Administrators: &armsql.ServerExternalAdministrator{
-		// 					AzureADOnlyAuthentication: to.Ptr(true),
-		// 					Login: to.Ptr("bob@contoso.com"),
-		// 					PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 				},
-		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				State: to.Ptr("Ready"),
-		// 				Version: to.Ptr("12.0"),
-		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("sqlcrudtest-6661"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661"),
-		// 			Location: to.Ptr("japaneast"),
-		// 			Kind: to.Ptr("v12.0"),
-		// 			Properties: &armsql.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("dummylogin"),
-		// 				Administrators: &armsql.ServerExternalAdministrator{
-		// 					AzureADOnlyAuthentication: to.Ptr(true),
-		// 					Login: to.Ptr("bob@contoso.com"),
-		// 					PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 				},
-		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
-		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-		// 					{
-		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
-		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
-		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 							},
-		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-		// 								Description: to.Ptr("Auto-approved"),
-		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-		// 							},
-		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-		// 						},
-		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		// 				State: to.Ptr("Ready"),
-		// 				Version: to.Ptr("12.0"),
-		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerGet.json
-func ExampleServersClient_Get_getServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().Get(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", &armsql.ServersClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armsql.Server{
-	// 	Name: to.Ptr("sqlcrudtest-4645"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"tagKey1": to.Ptr("TagValue1"),
-	// 	},
-	// 	Kind: to.Ptr("v12.0"),
-	// 	Properties: &armsql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
-	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-	// 						Description: to.Ptr("Auto-approved"),
-	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-	// 				},
-	// 		}},
-	// 		PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		State: to.Ptr("Ready"),
-	// 		Version: to.Ptr("12.0"),
-	// 		WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerGetWithExpandEqualsAdministrators.json
-func ExampleServersClient_Get_getServerWithExpandAdministrators() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().Get(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", &armsql.ServersClientGetOptions{Expand: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armsql.Server{
-	// 	Name: to.Ptr("sqlcrudtest-4645"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"tagKey1": to.Ptr("TagValue1"),
-	// 	},
-	// 	Kind: to.Ptr("v12.0"),
-	// 	Properties: &armsql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		Administrators: &armsql.ServerExternalAdministrator{
-	// 			AzureADOnlyAuthentication: to.Ptr(true),
-	// 			Login: to.Ptr("bob@contoso.com"),
-	// 			PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-	// 			Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 		},
-	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
-	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-	// 						Description: to.Ptr("Auto-approved"),
-	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-	// 				},
-	// 		}},
-	// 		PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		State: to.Ptr("Ready"),
-	// 		Version: to.Ptr("12.0"),
-	// 		WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerCreate.json
-func ExampleServersClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", armsql.Server{
-		Location: to.Ptr("Japan East"),
-		Properties: &armsql.ServerProperties{
-			AdministratorLogin:         to.Ptr("dummylogin"),
-			AdministratorLoginPassword: to.Ptr("PLACEHOLDER"),
-			Administrators: &armsql.ServerExternalAdministrator{
-				AzureADOnlyAuthentication: to.Ptr(true),
-				Login:                     to.Ptr("bob@contoso.com"),
-				PrincipalType:             to.Ptr(armsql.PrincipalTypeUser),
-				Sid:                       to.Ptr("00000011-1111-2222-2222-123456789111"),
-				TenantID:                  to.Ptr("00000011-1111-2222-2222-123456789111"),
-			},
-			PublicNetworkAccess:           to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-			RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		},
+	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
+		Name: to.Ptr("server1"),
+		Type: to.Ptr("Microsoft.Sql/servers"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armsql.Server{
-	// 	Name: to.Ptr("sqlcrudtest-4645"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Kind: to.Ptr("v12.0"),
-	// 	Properties: &armsql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		Administrators: &armsql.ServerExternalAdministrator{
-	// 			AzureADOnlyAuthentication: to.Ptr(true),
-	// 			Login: to.Ptr("bob@contoso.com"),
-	// 			PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-	// 			Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 		},
-	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
-	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-	// 						Description: to.Ptr("Auto-approved"),
-	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-	// 				},
-	// 		}},
-	// 		PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		State: to.Ptr("Ready"),
-	// 		Version: to.Ptr("12.0"),
-	// 	},
+	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
+	// 	Name: to.Ptr("server1"),
+	// 	Available: to.Ptr(false),
+	// 	Message: to.Ptr("Specified server name is already used"),
+	// 	Reason: to.Ptr(armsql.CheckNameAvailabilityReasonAlreadyExists),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerDelete.json
-func ExampleServersClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CheckNameAvailabilityServerAvailable.json
+func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -414,81 +58,52 @@ func ExampleServersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServersClient().BeginDelete(ctx, "sqlcrudtest-7398", "sqlcrudtest-6661", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerUpdate.json
-func ExampleServersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", armsql.ServerUpdate{
-		Properties: &armsql.ServerProperties{
-			AdministratorLogin:            to.Ptr("dummylogin"),
-			AdministratorLoginPassword:    to.Ptr("placeholder"),
-			PublicNetworkAccess:           to.Ptr(armsql.ServerNetworkAccessFlagDisabled),
-			RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-		},
+	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
+		Name: to.Ptr("server1"),
+		Type: to.Ptr("Microsoft.Sql/servers"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
+	// 	Name: to.Ptr("server1"),
+	// 	Available: to.Ptr(true),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CheckNameAvailabilityServerInvalid.json
+func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
+		Name: to.Ptr("SERVER1"),
+		Type: to.Ptr("Microsoft.Sql/servers"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Server = armsql.Server{
-	// 	Name: to.Ptr("sqlcrudtest-4645"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
-	// 	Location: to.Ptr("japaneast"),
-	// 	Tags: map[string]*string{
-	// 		"tagKey1": to.Ptr("TagValue1"),
-	// 	},
-	// 	Kind: to.Ptr("v12.0"),
-	// 	Properties: &armsql.ServerProperties{
-	// 		AdministratorLogin: to.Ptr("dummylogin"),
-	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
-	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
-	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
-	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
-	// 						Description: to.Ptr("Auto-approved"),
-	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
-	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
-	// 				},
-	// 		}},
-	// 		PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagDisabled),
-	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
-	// 		State: to.Ptr("Ready"),
-	// 		Version: to.Ptr("12.0"),
-	// 	},
+	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
+	// 	Name: to.Ptr("SERVER1"),
+	// 	Available: to.Ptr(false),
+	// 	Message: to.Ptr("Specified server name contains unsupported characters or is too long. Server name must be no longer than 63 characters long, contain only lower-case characters or digits, cannot contain '.' or '_' characters and can't start or end with '-' character."),
+	// 	Reason: to.Ptr(armsql.CheckNameAvailabilityReasonInvalid),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerList.json
 func ExampleServersClient_NewListPager_listServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +135,9 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 			Kind: to.Ptr("v12.0"),
 		// 			Properties: &armsql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
@@ -536,7 +153,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
 		// 						},
 		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
 		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				State: to.Ptr("Ready"),
 		// 				Version: to.Ptr("12.0"),
@@ -551,7 +168,9 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 			Kind: to.Ptr("v12.0"),
 		// 			Properties: &armsql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
@@ -567,7 +186,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
 		// 						},
 		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
 		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				State: to.Ptr("Ready"),
 		// 				Version: to.Ptr("12.0"),
@@ -578,8 +197,8 @@ func ExampleServersClient_NewListPager_listServers() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ServerListWithExpandEqualsAdministrators.json
-func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerListWithExpandEqualsAdministrators.json
+func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -617,7 +236,9 @@ func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
@@ -633,7 +254,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators
 		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
 		// 						},
 		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
 		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				State: to.Ptr("Ready"),
 		// 				Version: to.Ptr("12.0"),
@@ -655,7 +276,9 @@ func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators
 		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
 		// 				},
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
 		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
@@ -671,7 +294,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators
 		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
 		// 						},
 		// 				}},
-		// 				PublicNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
 		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
 		// 				State: to.Ptr("Ready"),
 		// 				Version: to.Ptr("12.0"),
@@ -682,7 +305,492 @@ func ExampleServersClient_NewListPager_listServersWithExpandEqualsAdministrators
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerListByResourceGroup.json
+func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("sqlcrudtest-7398", &armsql.ServersClientListByResourceGroupOptions{Expand: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ServerListResult = armsql.ServerListResult{
+		// 	Value: []*armsql.Server{
+		// 		{
+		// 			Name: to.Ptr("sqlcrudtest-4645"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+		// 			Location: to.Ptr("japaneast"),
+		// 			Kind: to.Ptr("v12.0"),
+		// 			Properties: &armsql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
+		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
+		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 							},
+		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+		// 								Description: to.Ptr("Auto-approved"),
+		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+		// 							},
+		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+		// 						},
+		// 				}},
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				State: to.Ptr("Ready"),
+		// 				Version: to.Ptr("12.0"),
+		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sqlcrudtest-6661"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661"),
+		// 			Location: to.Ptr("japaneast"),
+		// 			Kind: to.Ptr("v12.0"),
+		// 			Properties: &armsql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
+		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
+		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 							},
+		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+		// 								Description: to.Ptr("Auto-approved"),
+		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+		// 							},
+		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+		// 						},
+		// 				}},
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				State: to.Ptr("Ready"),
+		// 				Version: to.Ptr("12.0"),
+		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroupWithExpandAdministratorsActivedirectory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("sqlcrudtest-7398", &armsql.ServersClientListByResourceGroupOptions{Expand: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ServerListResult = armsql.ServerListResult{
+		// 	Value: []*armsql.Server{
+		// 		{
+		// 			Name: to.Ptr("sqlcrudtest-4645"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+		// 			Location: to.Ptr("japaneast"),
+		// 			Kind: to.Ptr("v12.0"),
+		// 			Properties: &armsql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				Administrators: &armsql.ServerExternalAdministrator{
+		// 					AzureADOnlyAuthentication: to.Ptr(true),
+		// 					Login: to.Ptr("bob@contoso.com"),
+		// 					PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 				},
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
+		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
+		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 							},
+		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+		// 								Description: to.Ptr("Auto-approved"),
+		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+		// 							},
+		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+		// 						},
+		// 				}},
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				State: to.Ptr("Ready"),
+		// 				Version: to.Ptr("12.0"),
+		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("sqlcrudtest-6661"),
+		// 			Type: to.Ptr("Microsoft.Sql/servers"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-6661"),
+		// 			Location: to.Ptr("japaneast"),
+		// 			Kind: to.Ptr("v12.0"),
+		// 			Properties: &armsql.ServerProperties{
+		// 				AdministratorLogin: to.Ptr("dummylogin"),
+		// 				Administrators: &armsql.ServerExternalAdministrator{
+		// 					AzureADOnlyAuthentication: to.Ptr(true),
+		// 					Login: to.Ptr("bob@contoso.com"),
+		// 					PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+		// 					Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 					TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 				},
+		// 				ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 				FullyQualifiedDomainName: to.Ptr("sqlcrudtest-6661.database.windows.net"),
+		// 				IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+		// 					{
+		// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+		// 						Properties: &armsql.PrivateEndpointConnectionProperties{
+		// 							PrivateEndpoint: &armsql.PrivateEndpointProperty{
+		// 								ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+		// 							},
+		// 							PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+		// 								Description: to.Ptr("Auto-approved"),
+		// 								ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+		// 								Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+		// 							},
+		// 							ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+		// 						},
+		// 				}},
+		// 				PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+		// 				RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		// 				State: to.Ptr("Ready"),
+		// 				Version: to.Ptr("12.0"),
+		// 				WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerGet.json
+func ExampleServersClient_Get_getServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", &armsql.ServersClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armsql.Server{
+	// 	Name: to.Ptr("sqlcrudtest-4645"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Tags: map[string]*string{
+	// 		"tagKey1": to.Ptr("TagValue1"),
+	// 	},
+	// 	Kind: to.Ptr("v12.0"),
+	// 	Properties: &armsql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("dummylogin"),
+	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+	// 		IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+	// 						Description: to.Ptr("Auto-approved"),
+	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+	// 				},
+	// 		}},
+	// 		PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		State: to.Ptr("Ready"),
+	// 		Version: to.Ptr("12.0"),
+	// 		WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerGetWithExpandEqualsAdministrators.json
+func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", &armsql.ServersClientGetOptions{Expand: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armsql.Server{
+	// 	Name: to.Ptr("sqlcrudtest-4645"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Tags: map[string]*string{
+	// 		"tagKey1": to.Ptr("TagValue1"),
+	// 	},
+	// 	Kind: to.Ptr("v12.0"),
+	// 	Properties: &armsql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("dummylogin"),
+	// 		Administrators: &armsql.ServerExternalAdministrator{
+	// 			AzureADOnlyAuthentication: to.Ptr(true),
+	// 			Login: to.Ptr("bob@contoso.com"),
+	// 			PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+	// 			Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 		},
+	// 		ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+	// 		IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+	// 						Description: to.Ptr("Auto-approved"),
+	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+	// 				},
+	// 		}},
+	// 		PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		State: to.Ptr("Ready"),
+	// 		Version: to.Ptr("12.0"),
+	// 		WorkspaceFeature: to.Ptr(armsql.ServerWorkspaceFeatureConnected),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerCreate.json
+func ExampleServersClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginCreateOrUpdate(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", armsql.Server{
+		Location: to.Ptr("Japan East"),
+		Properties: &armsql.ServerProperties{
+			AdministratorLogin:         to.Ptr("dummylogin"),
+			AdministratorLoginPassword: to.Ptr("PLACEHOLDER"),
+			Administrators: &armsql.ServerExternalAdministrator{
+				AzureADOnlyAuthentication: to.Ptr(true),
+				Login:                     to.Ptr("bob@contoso.com"),
+				PrincipalType:             to.Ptr(armsql.PrincipalTypeUser),
+				Sid:                       to.Ptr("00000011-1111-2222-2222-123456789111"),
+				TenantID:                  to.Ptr("00000011-1111-2222-2222-123456789111"),
+			},
+			IsIPv6Enabled:                 to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+			PublicNetworkAccess:           to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+			RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armsql.Server{
+	// 	Name: to.Ptr("sqlcrudtest-4645"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Kind: to.Ptr("v12.0"),
+	// 	Properties: &armsql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("dummylogin"),
+	// 		Administrators: &armsql.ServerExternalAdministrator{
+	// 			AzureADOnlyAuthentication: to.Ptr(true),
+	// 			Login: to.Ptr("bob@contoso.com"),
+	// 			PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+	// 			Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 			TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+	// 		IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+	// 						Description: to.Ptr("Auto-approved"),
+	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+	// 				},
+	// 		}},
+	// 		PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagEnabled),
+	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		State: to.Ptr("Ready"),
+	// 		Version: to.Ptr("12.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerDelete.json
+func ExampleServersClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginDelete(ctx, "sqlcrudtest-7398", "sqlcrudtest-6661", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerUpdate.json
+func ExampleServersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", armsql.ServerUpdate{
+		Properties: &armsql.ServerProperties{
+			AdministratorLogin:            to.Ptr("dummylogin"),
+			AdministratorLoginPassword:    to.Ptr("placeholder"),
+			IsIPv6Enabled:                 to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+			PublicNetworkAccess:           to.Ptr(armsql.ServerPublicNetworkAccessFlagDisabled),
+			RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armsql.Server{
+	// 	Name: to.Ptr("sqlcrudtest-4645"),
+	// 	Type: to.Ptr("Microsoft.Sql/servers"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645"),
+	// 	Location: to.Ptr("japaneast"),
+	// 	Tags: map[string]*string{
+	// 		"tagKey1": to.Ptr("TagValue1"),
+	// 	},
+	// 	Kind: to.Ptr("v12.0"),
+	// 	Properties: &armsql.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("dummylogin"),
+	// 		FullyQualifiedDomainName: to.Ptr("sqlcrudtest-4645.database.windows.net"),
+	// 		IsIPv6Enabled: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		PrivateEndpointConnections: []*armsql.ServerPrivateEndpointConnection{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-7398/providers/Microsoft.Sql/servers/sqlcrudtest-4645/privateEndpointConnections/private-endpoint-name-00000000-1111-2222-3333-444444444444"),
+	// 				Properties: &armsql.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armsql.PrivateEndpointProperty{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armsql.PrivateLinkServiceConnectionStateProperty{
+	// 						Description: to.Ptr("Auto-approved"),
+	// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
+	// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Succeeded")),
+	// 				},
+	// 		}},
+	// 		PublicNetworkAccess: to.Ptr(armsql.ServerPublicNetworkAccessFlagDisabled),
+	// 		RestrictOutboundNetworkAccess: to.Ptr(armsql.ServerNetworkAccessFlagEnabled),
+	// 		State: to.Ptr("Ready"),
+	// 		Version: to.Ptr("12.0"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportNewDatabaseWithNetworkIsolation.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateLinkForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -733,7 +841,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateL
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ImportNewDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportNewDatabase.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -780,8 +888,8 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CheckNameAvailabilityServerAlreadyExists.json
-func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyExists() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/RefreshExternalGovernanceStatus.json
+func ExampleServersClient_BeginRefreshStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -791,76 +899,27 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyEx
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
-		Name: to.Ptr("server1"),
-		Type: to.Ptr("Microsoft.Sql/servers"),
-	}, nil)
+	poller, err := clientFactory.NewServersClient().BeginRefreshStatus(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
-	// 	Name: to.Ptr("server1"),
-	// 	Available: to.Ptr(false),
-	// 	Message: to.Ptr("Specified server name is already used"),
-	// 	Reason: to.Ptr(armsql.CheckNameAvailabilityReasonAlreadyExists),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CheckNameAvailabilityServerAvailable.json
-func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
-		Name: to.Ptr("server1"),
-		Type: to.Ptr("Microsoft.Sql/servers"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
-	// 	Name: to.Ptr("server1"),
-	// 	Available: to.Ptr(true),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CheckNameAvailabilityServerInvalid.json
-func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().CheckNameAvailability(ctx, armsql.CheckNameAvailabilityRequest{
-		Name: to.Ptr("SERVER1"),
-		Type: to.Ptr("Microsoft.Sql/servers"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResponse = armsql.CheckNameAvailabilityResponse{
-	// 	Name: to.Ptr("SERVER1"),
-	// 	Available: to.Ptr(false),
-	// 	Message: to.Ptr("Specified server name contains unsupported characters or is too long. Server name must be no longer than 63 characters long, contain only lower-case characters or digits, cannot contain '.' or '_' characters and can't start or end with '-' character."),
-	// 	Reason: to.Ptr(armsql.CheckNameAvailabilityReasonInvalid),
+	// res.RefreshExternalGovernanceStatusOperationResult = armsql.RefreshExternalGovernanceStatusOperationResult{
+	// 	Name: to.Ptr("9d9a794a-5cec-4f23-af70-d29511b522a4"),
+	// 	Type: to.Ptr("Microsoft.Sql/locations/refreshExternalGovernanceStatusOperationResults"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Sql/locations/japaneast/refreshExternalGovernanceStatusOperationResults/9d9a794a-5cec-4f23-af70-d29511b522a4"),
+	// 	Properties: &armsql.RefreshExternalGovernanceStatusOperationResultProperties{
+	// 		QueuedTime: to.Ptr("2/12/2022 8:33:27 PM"),
+	// 		RequestID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		RequestType: to.Ptr("UpdatePurviewMetadata"),
+	// 		ServerName: to.Ptr("testsvr.database.windows.net"),
+	// 		Status: to.Ptr("Completed"),
+	// 	},
 	// }
 }

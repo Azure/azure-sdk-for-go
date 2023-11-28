@@ -41,7 +41,7 @@ func NewChildAvailabilityStatusesClient(credential azcore.TokenCredential, optio
 // GetByResource - Gets current availability status for a single resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     only support one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
@@ -78,7 +78,7 @@ func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -102,7 +102,7 @@ func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp 
 // NewListPager - Lists the historical availability statuses for a single child resource. Use the nextLink property in the
 // response to get the next page of availability status
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     only support one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
@@ -140,7 +140,7 @@ func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

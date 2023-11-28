@@ -47,7 +47,7 @@ func NewEventClient(subscriptionID string, credential azcore.TokenCredential, op
 // can be used to fetch sensitive properties for Security Advisory events
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 //     method.
@@ -89,7 +89,7 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +108,7 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleRespon
 // to fetch sensitive properties for Security Advisory events
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientFetchDetailsByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.FetchDetailsByTenantIDAndTrackingID
 //     method.
@@ -146,7 +146,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -164,7 +164,7 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(res
 // GetBySubscriptionIDAndTrackingID - Service health event in the subscription by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetBySubscriptionIDAndTrackingID
 //     method.
@@ -206,7 +206,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -230,7 +230,7 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *
 // GetByTenantIDAndTrackingID - Service health event in the tenant by event tracking id
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
 //   - options - EventClientGetByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetByTenantIDAndTrackingID
 //     method.
@@ -268,7 +268,7 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

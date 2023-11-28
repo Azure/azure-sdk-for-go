@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,6 +24,14 @@ import (
 
 // ManagedDatabasesServer is a fake server for instances of the armsql.ManagedDatabasesClient type.
 type ManagedDatabasesServer struct {
+	// BeginCancelMove is the fake for method ManagedDatabasesClient.BeginCancelMove
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCancelMove func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.ManagedDatabaseMoveDefinition, options *armsql.ManagedDatabasesClientBeginCancelMoveOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientCancelMoveResponse], errResp azfake.ErrorResponder)
+
+	// BeginCompleteMove is the fake for method ManagedDatabasesClient.BeginCompleteMove
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCompleteMove func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.ManagedDatabaseMoveDefinition, options *armsql.ManagedDatabasesClientBeginCompleteMoveOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteMoveResponse], errResp azfake.ErrorResponder)
+
 	// BeginCompleteRestore is the fake for method ManagedDatabasesClient.BeginCompleteRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCompleteRestore func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.CompleteDatabaseRestoreDefinition, options *armsql.ManagedDatabasesClientBeginCompleteRestoreOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteRestoreResponse], errResp azfake.ErrorResponder)
@@ -48,6 +56,10 @@ type ManagedDatabasesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListInaccessibleByInstancePager func(resourceGroupName string, managedInstanceName string, options *armsql.ManagedDatabasesClientListInaccessibleByInstanceOptions) (resp azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse])
 
+	// BeginStartMove is the fake for method ManagedDatabasesClient.BeginStartMove
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartMove func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.ManagedDatabaseStartMoveDefinition, options *armsql.ManagedDatabasesClientBeginStartMoveOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientStartMoveResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method ManagedDatabasesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters armsql.ManagedDatabaseUpdate, options *armsql.ManagedDatabasesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -59,11 +71,14 @@ type ManagedDatabasesServer struct {
 func NewManagedDatabasesServerTransport(srv *ManagedDatabasesServer) *ManagedDatabasesServerTransport {
 	return &ManagedDatabasesServerTransport{
 		srv:                                srv,
+		beginCancelMove:                    newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCancelMoveResponse]](),
+		beginCompleteMove:                  newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteMoveResponse]](),
 		beginCompleteRestore:               newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteRestoreResponse]](),
 		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCreateOrUpdateResponse]](),
 		beginDelete:                        newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientDeleteResponse]](),
 		newListByInstancePager:             newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]](),
 		newListInaccessibleByInstancePager: newTracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]](),
+		beginStartMove:                     newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientStartMoveResponse]](),
 		beginUpdate:                        newTracker[azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse]](),
 	}
 }
@@ -72,11 +87,14 @@ func NewManagedDatabasesServerTransport(srv *ManagedDatabasesServer) *ManagedDat
 // Don't use this type directly, use NewManagedDatabasesServerTransport instead.
 type ManagedDatabasesServerTransport struct {
 	srv                                *ManagedDatabasesServer
+	beginCancelMove                    *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCancelMoveResponse]]
+	beginCompleteMove                  *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteMoveResponse]]
 	beginCompleteRestore               *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCompleteRestoreResponse]]
 	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientCreateOrUpdateResponse]]
 	beginDelete                        *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientDeleteResponse]]
 	newListByInstancePager             *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListByInstanceResponse]]
 	newListInaccessibleByInstancePager *tracker[azfake.PagerResponder[armsql.ManagedDatabasesClientListInaccessibleByInstanceResponse]]
+	beginStartMove                     *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientStartMoveResponse]]
 	beginUpdate                        *tracker[azfake.PollerResponder[armsql.ManagedDatabasesClientUpdateResponse]]
 }
 
@@ -92,6 +110,10 @@ func (m *ManagedDatabasesServerTransport) Do(req *http.Request) (*http.Response,
 	var err error
 
 	switch method {
+	case "ManagedDatabasesClient.BeginCancelMove":
+		resp, err = m.dispatchBeginCancelMove(req)
+	case "ManagedDatabasesClient.BeginCompleteMove":
+		resp, err = m.dispatchBeginCompleteMove(req)
 	case "ManagedDatabasesClient.BeginCompleteRestore":
 		resp, err = m.dispatchBeginCompleteRestore(req)
 	case "ManagedDatabasesClient.BeginCreateOrUpdate":
@@ -104,6 +126,8 @@ func (m *ManagedDatabasesServerTransport) Do(req *http.Request) (*http.Response,
 		resp, err = m.dispatchNewListByInstancePager(req)
 	case "ManagedDatabasesClient.NewListInaccessibleByInstancePager":
 		resp, err = m.dispatchNewListInaccessibleByInstancePager(req)
+	case "ManagedDatabasesClient.BeginStartMove":
+		resp, err = m.dispatchBeginStartMove(req)
 	case "ManagedDatabasesClient.BeginUpdate":
 		resp, err = m.dispatchBeginUpdate(req)
 	default:
@@ -112,6 +136,110 @@ func (m *ManagedDatabasesServerTransport) Do(req *http.Request) (*http.Response,
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchBeginCancelMove(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginCancelMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCancelMove not implemented")}
+	}
+	beginCancelMove := m.beginCancelMove.get(req)
+	if beginCancelMove == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelMove`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ManagedDatabaseMoveDefinition](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginCancelMove(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCancelMove = &respr
+		m.beginCancelMove.add(req, beginCancelMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginCancelMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginCancelMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCancelMove) {
+		m.beginCancelMove.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchBeginCompleteMove(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginCompleteMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCompleteMove not implemented")}
+	}
+	beginCompleteMove := m.beginCompleteMove.get(req)
+	if beginCompleteMove == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/completeMove`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ManagedDatabaseMoveDefinition](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginCompleteMove(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCompleteMove = &respr
+		m.beginCompleteMove.add(req, beginCompleteMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginCompleteMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginCompleteMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCompleteMove) {
+		m.beginCompleteMove.remove(req)
 	}
 
 	return resp, nil
@@ -385,6 +513,58 @@ func (m *ManagedDatabasesServerTransport) dispatchNewListInaccessibleByInstanceP
 	if !server.PagerResponderMore(newListInaccessibleByInstancePager) {
 		m.newListInaccessibleByInstancePager.remove(req)
 	}
+	return resp, nil
+}
+
+func (m *ManagedDatabasesServerTransport) dispatchBeginStartMove(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginStartMove == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartMove not implemented")}
+	}
+	beginStartMove := m.beginStartMove.get(req)
+	if beginStartMove == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startMove`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ManagedDatabaseStartMoveDefinition](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginStartMove(req.Context(), resourceGroupNameParam, managedInstanceNameParam, databaseNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartMove = &respr
+		m.beginStartMove.add(req, beginStartMove)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartMove, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginStartMove.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartMove) {
+		m.beginStartMove.remove(req)
+	}
+
 	return resp, nil
 }
 

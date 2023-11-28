@@ -41,7 +41,7 @@ func NewChildResourcesClient(credential azcore.TokenCredential, options *arm.Cli
 // NewListPager - Lists the all the children and its current health status for a parent resource. Use the nextLink property
 // in the response to get the next page of children current health
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     only support not nested parent resource type:
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -78,7 +78,7 @@ func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

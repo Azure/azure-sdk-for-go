@@ -45,7 +45,7 @@ func NewEventsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListBySingleResourcePager - Lists current service health events for given resource.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     support not nested and one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -85,7 +85,7 @@ func (client *EventsClient) listBySingleResourceCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -105,7 +105,7 @@ func (client *EventsClient) listBySingleResourceHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionIDPager - Lists service health events in the subscription.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - options - EventsClientListBySubscriptionIDOptions contains the optional parameters for the EventsClient.NewListBySubscriptionIDPager
 //     method.
 func (client *EventsClient) NewListBySubscriptionIDPager(options *EventsClientListBySubscriptionIDOptions) *runtime.Pager[EventsClientListBySubscriptionIDResponse] {
@@ -143,7 +143,7 @@ func (client *EventsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -166,7 +166,7 @@ func (client *EventsClient) listBySubscriptionIDHandleResponse(resp *http.Respon
 
 // NewListByTenantIDPager - Lists current service health events in the tenant.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-10-01-preview
 //   - options - EventsClientListByTenantIDOptions contains the optional parameters for the EventsClient.NewListByTenantIDPager
 //     method.
 func (client *EventsClient) NewListByTenantIDPager(options *EventsClientListByTenantIDOptions) *runtime.Pager[EventsClientListByTenantIDResponse] {
@@ -200,7 +200,7 @@ func (client *EventsClient) listByTenantIDCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

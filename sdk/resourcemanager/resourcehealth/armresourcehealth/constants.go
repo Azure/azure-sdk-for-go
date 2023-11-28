@@ -10,7 +10,7 @@ package armresourcehealth
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
-	moduleVersion = "v1.3.0"
+	moduleVersion = "v1.4.0-beta.1"
 )
 
 // AvailabilityStateValues - Impacted resource status of the resource.
@@ -102,6 +102,20 @@ func PossibleEventStatusValuesValues() []EventStatusValues {
 	return []EventStatusValues{
 		EventStatusValuesActive,
 		EventStatusValuesResolved,
+	}
+}
+
+// EventSubTypeValues - Sub type of the event. Currently used to determine retirement communications for health advisory events
+type EventSubTypeValues string
+
+const (
+	EventSubTypeValuesRetirement EventSubTypeValues = "Retirement"
+)
+
+// PossibleEventSubTypeValuesValues returns the possible values for the EventSubTypeValues const type.
+func PossibleEventSubTypeValuesValues() []EventSubTypeValues {
+	return []EventSubTypeValues{
+		EventSubTypeValuesRetirement,
 	}
 }
 

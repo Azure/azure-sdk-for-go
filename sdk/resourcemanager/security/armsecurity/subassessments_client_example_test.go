@@ -65,7 +65,7 @@ func ExampleSubAssessmentsClient_NewListAllPager() {
 		// 					},
 		// 					ImageDigest: to.Ptr("c186fc44-3154-4ce2-ba18-b719d895c3b0"),
 		// 					Patchable: to.Ptr(true),
-		// 					PublishedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00.0000000Z"); return t}()),
+		// 					PublishedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00.000Z"); return t}()),
 		// 					RepositoryName: to.Ptr("myRepo"),
 		// 					VendorReferences: []*armsecurity.VendorReference{
 		// 						{
@@ -88,7 +88,7 @@ func ExampleSubAssessmentsClient_NewListAllPager() {
 		// 					Code: to.Ptr(armsecurity.SubAssessmentStatusCodeUnhealthy),
 		// 					Severity: to.Ptr(armsecurity.SeverityHigh),
 		// 				},
-		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.7644808Z"); return t}()),
+		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.764Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -116,7 +116,7 @@ func ExampleSubAssessmentsClient_NewListAllPager() {
 		// 					Code: to.Ptr(armsecurity.SubAssessmentStatusCodeHealthy),
 		// 					Severity: to.Ptr(armsecurity.SeverityHigh),
 		// 				},
-		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.7644808Z"); return t}()),
+		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.764Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -172,7 +172,7 @@ func ExampleSubAssessmentsClient_NewListPager() {
 		// 					Code: to.Ptr(armsecurity.SubAssessmentStatusCodeHealthy),
 		// 					Severity: to.Ptr(armsecurity.SeverityHigh),
 		// 				},
-		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.7644808Z"); return t}()),
+		// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-23T12:20:08.764Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

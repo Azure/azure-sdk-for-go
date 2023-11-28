@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deletePython2Package.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deletePython2Package.json
 func ExamplePython2PackageClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExamplePython2PackageClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getPython2Package.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getPython2Package.json
 func ExamplePython2PackageClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,20 +62,20 @@ func ExamplePython2PackageClient_Get() {
 	// 	},
 	// 	Properties: &armautomation.ModuleProperties{
 	// 		ActivityCount: to.Ptr[int32](0),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003Z"); return t}()),
 	// 		Error: &armautomation.ModuleErrorInfo{
 	// 			Message: to.Ptr(""),
 	// 		},
 	// 		IsComposite: to.Ptr(true),
 	// 		IsGlobal: to.Ptr(false),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 	// 		SizeInBytes: to.Ptr[int64](0),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdatePython2Package.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdatePython2Package.json
 func ExamplePython2PackageClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,19 +114,19 @@ func ExamplePython2PackageClient_CreateOrUpdate() {
 	// 	},
 	// 	Properties: &armautomation.ModuleProperties{
 	// 		ActivityCount: to.Ptr[int32](0),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003Z"); return t}()),
 	// 		Error: &armautomation.ModuleErrorInfo{
 	// 		},
 	// 		IsComposite: to.Ptr(false),
 	// 		IsGlobal: to.Ptr(false),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 	// 		SizeInBytes: to.Ptr[int64](0),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updatePython2Package.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updatePython2Package.json
 func ExamplePython2PackageClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,19 +155,19 @@ func ExamplePython2PackageClient_Update() {
 	// 	},
 	// 	Properties: &armautomation.ModuleProperties{
 	// 		ActivityCount: to.Ptr[int32](0),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:41:47.003Z"); return t}()),
 	// 		Error: &armautomation.ModuleErrorInfo{
 	// 		},
 	// 		IsComposite: to.Ptr(false),
 	// 		IsGlobal: to.Ptr(false),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567+00:00"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T15:42:10.567Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 	// 		SizeInBytes: to.Ptr[int64](0),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPython2PackagesByAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPython2PackagesByAutomationAccount.json
 func ExamplePython2PackageClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,10 +196,10 @@ func ExamplePython2PackageClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/python2Packages/configparser"),
 		// 			Properties: &armautomation.ModuleProperties{
 		// 				ActivityCount: to.Ptr[int32](0),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-17T17:57:01.7866667+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-17T17:57:01.786Z"); return t}()),
 		// 				IsComposite: to.Ptr(false),
 		// 				IsGlobal: to.Ptr(false),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-24T20:30:16.4966667+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-24T20:30:16.496Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 		// 				SizeInBytes: to.Ptr[int64](39573),
 		// 				Version: to.Ptr("3.5.0"),
@@ -210,10 +210,10 @@ func ExamplePython2PackageClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/python2Packages/flask"),
 		// 			Properties: &armautomation.ModuleProperties{
 		// 				ActivityCount: to.Ptr[int32](0),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-09T18:07:44.6133333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-09T18:07:44.613Z"); return t}()),
 		// 				IsComposite: to.Ptr(false),
 		// 				IsGlobal: to.Ptr(false),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-09T18:09:20.7733333+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-09T18:09:20.773Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 		// 				SizeInBytes: to.Ptr[int64](91364),
 		// 				Version: to.Ptr("1.0.2"),
@@ -224,10 +224,10 @@ func ExamplePython2PackageClient_NewListByAutomationAccountPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/python2Packages/numpy"),
 		// 			Properties: &armautomation.ModuleProperties{
 		// 				ActivityCount: to.Ptr[int32](0),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-14T01:05:54.67+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-14T01:05:54.670Z"); return t}()),
 		// 				IsComposite: to.Ptr(false),
 		// 				IsGlobal: to.Ptr(false),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-17T17:58:09.8733333+00:00"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-17T17:58:09.873Z"); return t}()),
 		// 				ProvisioningState: to.Ptr(armautomation.ModuleProvisioningStateSucceeded),
 		// 				SizeInBytes: to.Ptr[int64](13345673),
 		// 				Version: to.Ptr("1.14.5"),

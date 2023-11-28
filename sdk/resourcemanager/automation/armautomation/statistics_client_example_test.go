@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getStatisticsOfAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2021-06-22/examples/getStatisticsOfAutomationAccount.json
 func ExampleStatisticsClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,93 +44,93 @@ func ExampleStatisticsClient_NewListByAutomationAccountPager() {
 		// 		{
 		// 			CounterProperty: to.Ptr("New"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/New"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Activating"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Activating"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Running"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Running"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Completed"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Completed"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Failed"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Failed"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Stopped"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Stopped"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Blocked"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Blocked"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Suspended"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Suspended"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Disconnected"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Disconnected"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Suspending"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Suspending"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Stopping"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Stopping"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Resuming"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Resuming"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 		},
 		// 		{
 		// 			CounterProperty: to.Ptr("Removing"),
 		// 			CounterValue: to.Ptr[int64](0),
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.9879197+00:00"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T02:11:49.987Z"); return t}()),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11/statistics/Removing"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.9879197+00:00"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-19T02:11:49.987Z"); return t}()),
 		// 	}},
 		// }
 	}

@@ -32,7 +32,7 @@ type ManagedDatabaseSecurityAlertPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseSecurityAlertPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseSecurityAlertPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewManagedDatabaseSecurityAlertPoliciesClient(subscriptionID string, creden
 //     method.
 func (client *ManagedDatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedDatabaseSecurityAlertPolicy, options *ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateOptions) (ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSecurityAlertPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters, options)
 	if err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) createOrUpdateHandleRe
 //     method.
 func (client *ManagedDatabaseSecurityAlertPoliciesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, securityAlertPolicyName SecurityAlertPolicyName, options *ManagedDatabaseSecurityAlertPoliciesClientGetOptions) (ManagedDatabaseSecurityAlertPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseSecurityAlertPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, options)
 	if err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
@@ -206,25 +214,20 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) NewListByDatabasePager
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) (ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseSecurityAlertPoliciesClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

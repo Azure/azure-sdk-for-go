@@ -32,7 +32,7 @@ type DatabaseAutomaticTuningClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAutomaticTuningClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseAutomaticTuningClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAutomaticTuningClientGetOptions) (DatabaseAutomaticTuningClientGetResponse, error) {
 	var err error
+	const operationName = "DatabaseAutomaticTuningClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
@@ -123,6 +127,10 @@ func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Respon
 //     method.
 func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseAutomaticTuning, options *DatabaseAutomaticTuningClientUpdateOptions) (DatabaseAutomaticTuningClientUpdateResponse, error) {
 	var err error
+	const operationName = "DatabaseAutomaticTuningClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err

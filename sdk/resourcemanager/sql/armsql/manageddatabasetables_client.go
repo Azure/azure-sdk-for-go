@@ -32,7 +32,7 @@ type ManagedDatabaseTablesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseTablesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseTablesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewManagedDatabaseTablesClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *ManagedDatabaseTablesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseTablesClientGetOptions) (ManagedDatabaseTablesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseTablesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, options)
 	if err != nil {
 		return ManagedDatabaseTablesClientGetResponse{}, err
@@ -136,25 +140,20 @@ func (client *ManagedDatabaseTablesClient) NewListBySchemaPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseTablesClientListBySchemaResponse) (ManagedDatabaseTablesClientListBySchemaResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySchemaCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseTablesClient.NewListBySchemaPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySchemaCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseTablesClientListBySchemaResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseTablesClientListBySchemaResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseTablesClientListBySchemaResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySchemaHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

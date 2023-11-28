@@ -33,7 +33,7 @@ type SensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SensitivityLabelsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SensitivityLabelsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +60,10 @@ func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, options *SensitivityLabelsClientCreateOrUpdateOptions) (SensitivityLabelsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, parameters, options)
 	if err != nil {
 		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
@@ -146,6 +150,10 @@ func (client *SensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.R
 //     method.
 func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDeleteOptions) (SensitivityLabelsClientDeleteResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return SensitivityLabelsClientDeleteResponse{}, err
@@ -218,6 +226,10 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 //     method.
 func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientDisableRecommendationOptions) (SensitivityLabelsClientDisableRecommendationResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.DisableRecommendation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.disableRecommendationCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return SensitivityLabelsClientDisableRecommendationResponse{}, err
@@ -291,6 +303,10 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 //     method.
 func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, options *SensitivityLabelsClientEnableRecommendationOptions) (SensitivityLabelsClientEnableRecommendationResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.EnableRecommendation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.enableRecommendationCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, options)
 	if err != nil {
 		return SensitivityLabelsClientEnableRecommendationResponse{}, err
@@ -363,6 +379,10 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 //   - options - SensitivityLabelsClientGetOptions contains the optional parameters for the SensitivityLabelsClient.Get method.
 func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, options *SensitivityLabelsClientGetOptions) (SensitivityLabelsClientGetResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource, options)
 	if err != nil {
 		return SensitivityLabelsClientGetResponse{}, err
@@ -449,25 +469,20 @@ func (client *SensitivityLabelsClient) NewListCurrentByDatabasePager(resourceGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SensitivityLabelsClientListCurrentByDatabaseResponse) (SensitivityLabelsClientListCurrentByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SensitivityLabelsClient.NewListCurrentByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SensitivityLabelsClientListCurrentByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listCurrentByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -534,25 +549,20 @@ func (client *SensitivityLabelsClient) NewListRecommendedByDatabasePager(resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SensitivityLabelsClientListRecommendedByDatabaseResponse) (SensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SensitivityLabelsClient.NewListRecommendedByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SensitivityLabelsClientListRecommendedByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listRecommendedByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -616,6 +626,10 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(r
 //     method.
 func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, options *SensitivityLabelsClientUpdateOptions) (SensitivityLabelsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SensitivityLabelsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return SensitivityLabelsClientUpdateResponse{}, err

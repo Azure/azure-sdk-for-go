@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsListWithFilter.json
 func ExampleDatabasesClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,14 +49,14 @@ func ExampleDatabasesClient_NewListMetricsPager() {
 		// 				LocalizedValue: to.Ptr("CPU percentage"),
 		// 				Value: to.Ptr("cpu_percent"),
 		// 			},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:55:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:55:00.000Z"); return t}()),
 		// 			MetricValues: []*armsql.MetricValue{
 		// 				{
 		// 					Average: to.Ptr[float64](0),
 		// 					Count: to.Ptr[int32](1),
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
-		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:30:01Z"); return t}()),
+		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:30:01.000Z"); return t}()),
 		// 					Total: to.Ptr[float64](0),
 		// 				},
 		// 				{
@@ -64,7 +64,7 @@ func ExampleDatabasesClient_NewListMetricsPager() {
 		// 					Count: to.Ptr[int32](1),
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
-		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:40:01Z"); return t}()),
+		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:40:01.000Z"); return t}()),
 		// 					Total: to.Ptr[float64](0),
 		// 				},
 		// 				{
@@ -72,10 +72,10 @@ func ExampleDatabasesClient_NewListMetricsPager() {
 		// 					Count: to.Ptr[int32](1),
 		// 					Maximum: to.Ptr[float64](0),
 		// 					Minimum: to.Ptr[float64](0),
-		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:50:01Z"); return t}()),
+		// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:50:01.000Z"); return t}()),
 		// 					Total: to.Ptr[float64](0),
 		// 			}},
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:35:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-02T18:35:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("00:10:00"),
 		// 			Unit: to.Ptr(armsql.UnitTypePercent),
 		// 	}},
@@ -83,7 +83,7 @@ func ExampleDatabasesClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsDefinitionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseMetricsDefinitionsList.json
 func ExampleDatabasesClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,109 +481,8 @@ func ExampleDatabasesClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ListVCoreDatabasesEnclaveTypeByServer.json
-func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredWithEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", &armsql.DatabasesClientListByServerOptions{SkipToken: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.DatabaseListResult = armsql.DatabaseListResult{
-		// 	Value: []*armsql.Database{
-		// 		{
-		// 			Name: to.Ptr("testdb"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-		// 			Location: to.Ptr("southeastasia"),
-		// 			Kind: to.Ptr("v12.0,user,vcore"),
-		// 			Properties: &armsql.DatabaseProperties{
-		// 				CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 				CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 				CurrentSKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen4"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 				DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-		// 				IsInfraEncryptionEnabled: to.Ptr(false),
-		// 				IsLedgerOn: to.Ptr(false),
-		// 				LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 				MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 				MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 				PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-		// 				ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 				RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 				Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 				ZoneRedundant: to.Ptr(false),
-		// 			},
-		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("BC_Gen4"),
-		// 				Capacity: to.Ptr[int32](2),
-		// 				Tier: to.Ptr("BusinessCritical"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("master"),
-		// 			Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/master"),
-		// 			Location: to.Ptr("southeastasia"),
-		// 			Kind: to.Ptr("v12.0,system"),
-		// 			Properties: &armsql.DatabaseProperties{
-		// 				CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:23:42.537Z"); return t}()),
-		// 				CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 				CurrentServiceObjectiveName: to.Ptr("System0"),
-		// 				CurrentSKU: &armsql.SKU{
-		// 					Name: to.Ptr("System0"),
-		// 					Capacity: to.Ptr[int32](0),
-		// 					Tier: to.Ptr("System"),
-		// 				},
-		// 				DatabaseID: to.Ptr("e6be351f-2cc9-4604-9e52-b0b28b2710b0"),
-		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 				IsInfraEncryptionEnabled: to.Ptr(false),
-		// 				IsLedgerOn: to.Ptr(false),
-		// 				MaxSizeBytes: to.Ptr[int64](32212254720),
-		// 				PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-		// 				ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-		// 				RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 				RequestedServiceObjectiveName: to.Ptr("System0"),
-		// 				Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 				ZoneRedundant: to.Ptr(false),
-		// 			},
-		// 			SKU: &armsql.SKU{
-		// 				Name: to.Ptr("System0"),
-		// 				Capacity: to.Ptr[int32](0),
-		// 				Tier: to.Ptr("System"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ListVCoreDatabasesByServer.json
-func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListVCoreDatabasesByServer.json
+func ExampleDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -681,8 +580,8 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GetVCoreDatabaseDefaultEnclave.json
-func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/GetVCoreDatabase.json
+func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -692,256 +591,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{Expand: nil,
-		Filter: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 		MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("BC_Gen5"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Tier: to.Ptr("BusinessCritical"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GetVCoreDatabaseVBSEnclave.json
-func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{Expand: nil,
-		Filter: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 		MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("BC_Gen5"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Tier: to.Ptr("BusinessCritical"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GetDatabaseWithAvailabilityZone.json
-func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{Expand: nil,
-		Filter: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		MaxSizeBytes: to.Ptr[int64](1073741824),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("S0"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GetVCoreDatabaseWithExpandEqualsKeys.json
-func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{Expand: to.Ptr("keys"),
-		Filter: nil,
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		Keys: map[string]*armsql.DatabaseKey{
-	// 			"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion": &armsql.DatabaseKey{
-	// 			},
-	// 			"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": &armsql.DatabaseKey{
-	// 			},
-	// 		},
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 		MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("BC_Gen5"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Tier: to.Ptr("BusinessCritical"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GetVCoreDatabase.json
-func ExampleDatabasesClient_Get_getsADatabase() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{Expand: nil,
-		Filter: nil,
-	})
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -988,7 +638,7 @@ func ExampleDatabasesClient_Get_getsADatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateVCoreDatabaseByServiceObjective.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateVCoreDatabaseByServiceObjective.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingServiceObjectiveName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1056,7 +706,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateVCoreDatabaseBySkuNameCapacity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateVCoreDatabaseBySkuNameCapacity.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingSkuNameAndCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1123,7 +773,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDwDatabaseCrossSubscriptionRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDwDatabaseCrossSubscriptionRestore.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromABackupOfADroppedDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,7 +810,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 	Properties: &armsql.DatabaseProperties{
 	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.990Z"); return t}()),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 		CurrentSKU: &armsql.SKU{
@@ -1183,7 +833,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDwDatabaseCrossSubscriptionRecovery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDwDatabaseCrossSubscriptionRecovery.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromAGeoBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1220,7 +870,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 	Properties: &armsql.DatabaseProperties{
 	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.990Z"); return t}()),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 		CurrentSKU: &armsql.SKU{
@@ -1243,7 +893,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDwDatabaseCrossSubscriptionPITR.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDwDatabaseCrossSubscriptionPITR.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromARestorePointOfAnExistingDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1281,7 +931,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// 	Properties: &armsql.DatabaseProperties{
 	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.99Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-24T06:46:14.990Z"); return t}()),
 	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		CurrentServiceObjectiveName: to.Ptr("DW1000c"),
 	// 		CurrentSKU: &armsql.SKU{
@@ -1304,7 +954,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseCopyMode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseCopyMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1373,78 +1023,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseStandbyMode.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecondary() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Properties: &armsql.DatabaseProperties{
-			CreateMode:       to.Ptr(armsql.CreateModeSecondary),
-			SecondaryType:    to.Ptr(armsql.SecondaryTypeStandby),
-			SourceDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-NorthEurope/providers/Microsoft.Sql/servers/testsvr1/databases/testdb"),
-		},
-		SKU: &armsql.SKU{
-			Name: to.Ptr("S0"),
-			Tier: to.Ptr("Standard"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		SecondaryType: to.Ptr(armsql.SecondaryTypeStandby),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("Standard"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseSecondaryMode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseSecondaryMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1515,7 +1094,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecond
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseNamedReplica.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseNamedReplica.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1591,7 +1170,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabasePITRMode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabasePITRMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1639,7 +1218,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// 		},
 	// 		DatabaseID: to.Ptr("2463ef48-53e2-4c26-9781-2d7138080bfd"),
 	// 		DefaultSecondaryLocation: to.Ptr("SoutheastAsia"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T20:47:37Z"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T20:47:37.000Z"); return t}()),
 	// 		IsInfraEncryptionEnabled: to.Ptr(false),
 	// 		IsLedgerOn: to.Ptr(false),
 	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
@@ -1657,286 +1236,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseDefaultEnclave.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Properties: &armsql.DatabaseProperties{
-			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("Standard"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseVBSEnclave.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Properties: &armsql.DatabaseProperties{
-			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("Standard"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseWithAvailabilityZone.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailabilityZoneSpecified() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Properties: &armsql.DatabaseProperties{
-			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-			Collation:        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			CreateMode:       to.Ptr(armsql.CreateModeDefault),
-			MaxSizeBytes:     to.Ptr[int64](1073741824),
-		},
-		SKU: &armsql.SKU{
-			Name: to.Ptr("S0"),
-			Tier: to.Ptr("Standard"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		MaxSizeBytes: to.Ptr[int64](1073741824),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("S0"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLevelCustomerManagedKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Identity: &armsql.DatabaseIdentity{
-			Type: to.Ptr(armsql.DatabaseIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armsql.DatabaseUserIdentity{
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi": {},
-			},
-		},
-		Properties: &armsql.DatabaseProperties{
-			Collation:           to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			CreateMode:          to.Ptr(armsql.CreateModeDefault),
-			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
-			Keys: map[string]*armsql.DatabaseKey{
-				"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion":   {},
-				"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": {},
-			},
-			MaxSizeBytes: to.Ptr[int64](1073741824),
-		},
-		SKU: &armsql.SKU{
-			Name: to.Ptr("S0"),
-			Tier: to.Ptr("Standard"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		MaxSizeBytes: to.Ptr[int64](1073741824),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("S0"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseDefaultMode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseDefaultMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2006,7 +1306,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseLedger.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseLedger.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2069,7 +1369,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseMin.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumberOfParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2130,7 +1430,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumbe
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2200,7 +1500,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMai
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateDatabaseConfiguredBackupStorageRedundancy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/CreateDatabaseConfiguredBackupStorageRedundancy.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBackupStorageRedundancy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2264,163 +1564,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBac
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloWithManualCutover() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Identity: &armsql.DatabaseIdentity{
-			Type: to.Ptr(armsql.DatabaseIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armsql.DatabaseUserIdentity{
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/userAssignedIdentities/umi":         {},
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/userAssignedIdentities/umiToDelete": nil,
-			},
-		},
-		Properties: &armsql.DatabaseProperties{
-			ManualCutover: to.Ptr(true),
-		},
-		SKU: &armsql.SKU{
-			Name: to.Ptr("HS_Gen5_2"),
-			Tier: to.Ptr("Hyperscale"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:41:23.953Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("GP_Gen5_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		DatabaseID: to.Ptr("dad50ee1-9fbb-4fb9-bd2b-5786d175ce3c"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:42:00Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 		MaxLogSizeBytes: to.Ptr[int64](193273528320),
-	// 		MaxSizeBytes: to.Ptr[int64](34359738368),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("HS_Gen5_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("HS_Gen5"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr("Hyperscale"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/UpdateDatabaseHyperscaleMigrationPerformCutover.json
-func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTierByTriggeringManualCutoverDuringMigrationWorkflow() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.Database{
-		Location: to.Ptr("southeastasia"),
-		Identity: &armsql.DatabaseIdentity{
-			Type: to.Ptr(armsql.DatabaseIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armsql.DatabaseUserIdentity{
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/userAssignedIdentities/umi":         {},
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/userAssignedIdentities/umiToDelete": nil,
-			},
-		},
-		Properties: &armsql.DatabaseProperties{
-			PerformCutover: to.Ptr(true),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:41:23.953Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("GP_Gen5_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		DatabaseID: to.Ptr("dad50ee1-9fbb-4fb9-bd2b-5786d175ce3c"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-08T12:42:00Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 		MaxLogSizeBytes: to.Ptr[int64](193273528320),
-	// 		MaxSizeBytes: to.Ptr[int64](34359738368),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("HS_Gen5_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("HS_Gen5"),
-	// 		Capacity: to.Ptr[int32](2),
-	// 		Family: to.Ptr("Gen5"),
-	// 		Tier: to.Ptr("Hyperscale"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DeleteDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/DeleteDatabase.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2441,7 +1585,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2510,149 +1654,7 @@ func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchDatabaseVBSEnclave.json
-func ExampleDatabasesClient_BeginUpdate_createsADatabaseWithVbsEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.DatabaseUpdate{
-		Properties: &armsql.DatabaseUpdateProperties{
-			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("Standard"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
-func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerManagedKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.DatabaseUpdate{
-		Identity: &armsql.DatabaseIdentity{
-			Type: to.Ptr(armsql.DatabaseIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armsql.DatabaseUserIdentity{
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umi":         {},
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/Default-SQL-SouthEastAsia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/umiToDelete": nil,
-			},
-		},
-		Properties: &armsql.DatabaseUpdateProperties{
-			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
-			Keys: map[string]*armsql.DatabaseKey{
-				"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion":           {},
-				"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2VersionToDelete": nil,
-			},
-		},
-		SKU: &armsql.SKU{
-			Name: to.Ptr("S0"),
-			Tier: to.Ptr("Standard"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user,vcore"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen4"),
-	// 			Capacity: to.Ptr[int32](4),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		IsInfraEncryptionEnabled: to.Ptr(false),
-	// 		IsLedgerOn: to.Ptr(false),
-	// 		LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 		MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 		MaxSizeBytes: to.Ptr[int64](1073741824),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-	// 		RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("BC_Gen4"),
-	// 		Capacity: to.Ptr[int32](4),
-	// 		Tier: to.Ptr("BusinessCritical"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchVCoreDatabaseResetMaintenanceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/PatchVCoreDatabaseResetMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2720,69 +1722,7 @@ func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchDatabaseDefaultEnclave.json
-func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.DatabaseUpdate{
-		Properties: &armsql.DatabaseUpdateProperties{
-			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Database = armsql.Database{
-	// 	Name: to.Ptr("testdb"),
-	// 	Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 	Location: to.Ptr("southeastasia"),
-	// 	Kind: to.Ptr("v12.0,user"),
-	// 	Properties: &armsql.DatabaseProperties{
-	// 		CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
-	// 		CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 		CurrentSKU: &armsql.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:51:33.937Z"); return t}()),
-	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 		PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-	// 		ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 		RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 		Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 		ZoneRedundant: to.Ptr(false),
-	// 	},
-	// 	SKU: &armsql.SKU{
-	// 		Name: to.Ptr("Standard"),
-	// 		Capacity: to.Ptr[int32](10),
-	// 		Tier: to.Ptr("Standard"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PatchVCoreDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/PatchVCoreDatabase.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2851,7 +1791,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ExportDatabaseWithNetworkIsolation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ExportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2901,7 +1841,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommun
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ExportDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ExportDatabase.json
 func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2947,7 +1887,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/FailoverDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/FailoverDatabase.json
 func ExampleDatabasesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2968,7 +1908,7 @@ func ExampleDatabasesClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportDatabaseWithNetworkIsolation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ImportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3018,7 +1958,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPri
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ImportDatabase.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3064,7 +2004,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/RenameDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/RenameDatabase.json
 func ExampleDatabasesClient_Rename() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3083,7 +2023,7 @@ func ExampleDatabasesClient_Rename() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/PauseDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/PauseDatabase.json
 func ExampleDatabasesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3127,7 +2067,7 @@ func ExampleDatabasesClient_BeginPause() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ResumeDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResumeDatabase.json
 func ExampleDatabasesClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3171,7 +2111,7 @@ func ExampleDatabasesClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/UpgradeDataWarehouse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/UpgradeDataWarehouse.json
 func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3192,7 +2132,7 @@ func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ListDatabasesByElasticPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListDatabasesByElasticPool.json
 func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3264,7 +2204,7 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ListVCoreInaccessibleDatabasesByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/08894fa8d66cb44dc62a73f7a09530f905985fa3/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ListVCoreInaccessibleDatabasesByServer.json
 func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

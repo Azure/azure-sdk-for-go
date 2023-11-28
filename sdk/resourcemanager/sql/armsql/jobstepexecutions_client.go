@@ -34,7 +34,7 @@ type JobStepExecutionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobStepExecutionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobStepExecutionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 //   - options - JobStepExecutionsClientGetOptions contains the optional parameters for the JobStepExecutionsClient.Get method.
 func (client *JobStepExecutionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobStepExecutionsClientGetOptions) (JobStepExecutionsClientGetResponse, error) {
 	var err error
+	const operationName = "JobStepExecutionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, options)
 	if err != nil {
 		return JobStepExecutionsClientGetResponse{}, err
@@ -94,6 +98,9 @@ func (client *JobStepExecutionsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
 	if stepName == "" {
 		return nil, errors.New("parameter stepName cannot be empty")
@@ -140,25 +147,20 @@ func (client *JobStepExecutionsClient) NewListByJobExecutionPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobStepExecutionsClientListByJobExecutionResponse) (JobStepExecutionsClientListByJobExecutionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobStepExecutionsClient.NewListByJobExecutionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+			}, nil)
 			if err != nil {
 				return JobStepExecutionsClientListByJobExecutionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobStepExecutionsClientListByJobExecutionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobStepExecutionsClientListByJobExecutionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByJobExecutionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -181,6 +183,9 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

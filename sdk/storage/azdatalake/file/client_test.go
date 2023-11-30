@@ -11,6 +11,7 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"fmt"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -1335,6 +1336,116 @@ func (s *UnrecordedTestSuite) TestFileDeleteWithSAS() {
 
 	_, err = fClient2.Delete(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *UnrecordedTestSuite) TestFileEncryptionScopeSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Create: true, Write: true, Move: true, Delete: true, List: true}
+	sasQueryParams, err := sas.DatalakeSignatureValues{
+		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		FileSystemName:  filesystemName,
+		Permissions:     perms.String(),
+		EncryptionScope: encryptionScope,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+
+	srcFileClient, err := file.NewClientWithNoCredential(fsClient.DFSURL()+"/file?"+sasToken, nil)
+	_require.NoError(err)
+	_require.NotNil(srcFileClient)
+
+	_, err = srcFileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	response, err := srcFileClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
+	_require.NoError(err)
+	_require.Equal(encryptionScope, *response.EncryptionScope)
+
+}
+
+func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.Nil(err)
+
+	sasQueryParams, err := sas.AccountSignatureValues{
+		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, Create: true, Write: true, Delete: true}).String(),
+		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Service: true}).String(),
+		EncryptionScope: encryptionScope,
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	sasToken := sasQueryParams.Encode()
+	fmt.Println(fsClient.DFSURL() + "?" + sasToken)
+
+	srcFileClient, err := file.NewClientWithNoCredential(fsClient.DFSURL()+"?"+sasToken, nil)
+	_require.NoError(err)
+	_require.NotNil(srcFileClient)
+
+	fmt.Println(encryptionScope)
+
+	// create local file
+	_, content := generateData(10 * 1024)
+	err = os.WriteFile("testFile", content, 0644)
+	handleError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		handleError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	handleError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		handleError(err)
+	}(fh)
+
+	// upload the file
+	err = srcFileClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+	})
+	handleError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	response, err := srcFileClient.DownloadStream(context.Background(), nil)
+	handleError(err)
+	testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_require.Equal(encryptionScope, *response.EncryptionScope)
 }
 
 func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {

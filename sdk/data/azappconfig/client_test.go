@@ -336,8 +336,7 @@ func TestSettingWithEscaping(t *testing.T) {
 }
 
 func TestSnapshotListConfigurationSettings(t *testing.T) {
-
-	testKeySuffix := string(uniqueSuffix)
+	testKeyPrefix := string(uniqueSuffix)
 	snapshotName := "listConfigurationsSnapshotTest" + string(uniqueSuffix)
 	client := NewClientFromConnectionString(t)
 
@@ -348,32 +347,32 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 	Settings := []azappconfig.Setting{
 		{
-			Key:   to.Ptr("Key-" + testKeySuffix),
+			Key:   to.Ptr(testKeyPrefix + "Key"),
 			Value: to.Ptr("value3"),
 			Label: to.Ptr("label"),
 		},
 		{
-			Key:   to.Ptr("Key1-" + testKeySuffix),
+			Key:   to.Ptr(testKeyPrefix + "Key1"),
 			Value: to.Ptr("Val1"),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr("Key2-" + testKeySuffix),
+			Key:   to.Ptr(testKeyPrefix + "Key2"),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr("KeyNoLabel-" + testKeySuffix),
+			Key:   to.Ptr(testKeyPrefix + "KeyNoLabel"),
 			Value: to.Ptr("Val1"),
 		},
 		{
-			Key:   to.Ptr("KeyNoVal-" + testKeySuffix),
+			Key:   to.Ptr(testKeyPrefix + "KeyNoVal"),
 			Label: to.Ptr("Label2"),
 		},
 		{
-			Key: to.Ptr("NoValNoLabelKey-" + testKeySuffix),
+			Key: to.Ptr(testKeyPrefix + "NoValNoLabelKey"),
 		},
 		{
-			Key: to.Ptr("TEST" + testKeySuffix),
+			Key: to.Ptr(testKeyPrefix + "TEST"),
 		},
 	}
 
@@ -398,29 +397,19 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 		settingMap[key] = append(settingMap[key], mapV)
 
-		// Add setting to configuration store
-		options := &azappconfig.AddSettingOptions{
-			Label: setting.Label,
-		}
+		_, err := client.AddSetting(context.Background(), key, value, nil)
 
-		client.AddSetting(context.Background(), key, value, options)
+		require.NoError(t, err)
 	}
 
-	r, err := CreateSnapshot(client, snapshotName, nil)
-
-	require.NotEmpty(t, r)
-	require.NoError(t, err)
-
-	keyFilter := "*" + testKeySuffix
-	all := "*"
+	keyFilter := fmt.Sprintf(testKeyPrefix + "*")
 	sf := []azappconfig.SettingFilter{
 		{
-			KeyFilter:   &keyFilter,
-			LabelFilter: &all,
+			KeyFilter: &keyFilter,
 		},
 	}
 
-	_, err = CreateSnapshot(client, snapshotName, sf)
+	_, err := CreateSnapshot(client, snapshotName, sf)
 	require.NoError(t, err)
 
 	respPgr := client.NewListConfigurationSettingsForSnapshotPager(snapshotName, nil)
@@ -459,7 +448,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 			// Check that the key follows the filtering pattern
 			if !found {
-				require.True(t, strings.HasPrefix(*setting.Key, keyFilter[1:]))
+				require.True(t, strings.HasPrefix(*setting.Key, keyFilter[:len(keyFilter)-1]))
 			}
 		}
 	}
@@ -471,7 +460,6 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 }
 
 func TestGetSnapshots(t *testing.T) {
-
 	snapshotName := "getSnapshotsTest" + string(uniqueSuffix)
 
 	const (
@@ -483,7 +471,7 @@ func TestGetSnapshots(t *testing.T) {
 	for i := 0; i < ssCreateCount; i++ {
 		createSSName := snapshotName + fmt.Sprintf("%d", i)
 
-		_, err := client.ListSnapshot(context.Background(), createSSName, nil)
+		_, err := client.GetSnapshot(context.Background(), createSSName, nil)
 
 		if err != nil {
 			_, err = CreateSnapshot(client, createSSName, nil)
@@ -492,7 +480,7 @@ func TestGetSnapshots(t *testing.T) {
 	}
 
 	// Get Snapshots
-	ssPgr := client.NewListSnapshotsPager(nil)
+	ssPgr := client.NewGetSnapshotsPager(nil)
 
 	require.NotEmpty(t, ssPgr)
 
@@ -504,8 +492,8 @@ func TestGetSnapshots(t *testing.T) {
 		require.NoError(t, err)
 		require.NotEmpty(t, page)
 
-		for _, ss := range page.Snapshots {
-			if strings.HasPrefix(*ss.Name, snapshotName) {
+		for _, snapshot := range page.Snapshots {
+			if strings.HasPrefix(*snapshot.Name, snapshotName) {
 				snapshotCount++
 			}
 		}
@@ -522,13 +510,12 @@ func TestGetSnapshots(t *testing.T) {
 }
 
 func TestSnapshotArchive(t *testing.T) {
-
 	snapshotName := "archiveSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
 	// make sure snapshot exists and is ready
-	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
 		_, err = CreateSnapshot(client, snapshotName, nil)
@@ -539,9 +526,9 @@ func TestSnapshotArchive(t *testing.T) {
 	require.NoError(t, err)
 
 	// Check that snapshot is in a "ready" state
-	ss, err = client.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusReady, *ss.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Snapshot.Status)
 
 	// Archive the snapshot
 	update, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
@@ -553,13 +540,12 @@ func TestSnapshotArchive(t *testing.T) {
 }
 
 func TestSnapshotRecover(t *testing.T) {
-
 	snapshotName := "recoverSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
 	// make sure snapshot exists and is archived
-	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
 		_, err = CreateSnapshot(client, snapshotName, nil)
@@ -570,9 +556,9 @@ func TestSnapshotRecover(t *testing.T) {
 	require.NoError(t, err)
 
 	// Check that snapshot is archived
-	ss, err = client.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusArchived, *ss.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *snapshot.Snapshot.Status)
 
 	// Recover the snapshot
 	update, err := client.RecoverSnapshot(context.Background(), snapshotName, nil)
@@ -584,34 +570,31 @@ func TestSnapshotRecover(t *testing.T) {
 }
 
 func TestSnapshotCreate(t *testing.T) {
-
 	snapshotName := "createSnapshotsTest" + string(uniqueSuffix)
 
 	client := NewClientFromConnectionString(t)
 
 	//Check if snapshot exists. If it does fail the test since we can't test creation
-	_, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+	_, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
 	require.Error(t, err)
 
 	//Create a snapshot
-	ss, err := CreateSnapshot(client, snapshotName, nil)
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 
 	require.NoError(t, err)
-	require.Equal(t, snapshotName, *ss.Snapshot.Name)
+	require.Equal(t, snapshotName, *snapshot.Snapshot.Name)
 
 	// Best effort cleanup snapshot
 	CleanupSnapshot(client, snapshotName)
 }
 
-func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.ListSnapshotResponse, error) {
-
+func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.GetSnapshotResponse, error) {
 	if sf == nil {
 		all := "*"
 		sf = []azappconfig.SettingFilter{
 			{
-				KeyFilter:   &all,
-				LabelFilter: &all,
+				KeyFilter: &all,
 			},
 		}
 	}
@@ -626,30 +609,29 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 	resp := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
 
 	if resp == nil {
-		return azappconfig.ListSnapshotResponse{}, fmt.Errorf("resp is nil")
+		return azappconfig.GetSnapshotResponse{}, fmt.Errorf("resp is nil")
 	}
 	_, err := resp.PollUntilDone(context.Background(), nil)
 
 	if err != nil {
-		return azappconfig.ListSnapshotResponse{}, err
+		return azappconfig.GetSnapshotResponse{}, err
 	}
 
 	//Check if snapshot exists. If not fail the test
-	ss, err := c.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err := c.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
-		return azappconfig.ListSnapshotResponse{}, err
+		return azappconfig.GetSnapshotResponse{}, err
 	}
 
-	if snapshotName != *ss.Snapshot.Name {
-		return azappconfig.ListSnapshotResponse{}, fmt.Errorf("Snapshot name does not match")
+	if snapshotName != *snapshot.Snapshot.Name {
+		return azappconfig.GetSnapshotResponse{}, fmt.Errorf("Snapshot name does not match")
 	}
 
-	return ss, nil
+	return snapshot, nil
 }
 
 func CleanupSnapshot(client *azappconfig.Client, snapshotName string) error {
-
 	_, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
@@ -657,9 +639,9 @@ func CleanupSnapshot(client *azappconfig.Client, snapshotName string) error {
 	}
 
 	//Check if snapshot exists
-	ss, err := client.ListSnapshot(context.Background(), snapshotName, nil)
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 
-	if err != nil || *ss.Status != azappconfig.SnapshotStatusArchived {
+	if err != nil || *snapshot.Status != azappconfig.SnapshotStatusArchived {
 		return fmt.Errorf("Snapshot still exists")
 	}
 

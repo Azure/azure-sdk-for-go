@@ -129,7 +129,7 @@ type RestoreSnapshotOptions struct {
 	IfNoneMatch *string
 }
 
-type ListSnapshotsPagerOptions struct {
+type GetSnapshotsPagerOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
 
@@ -158,9 +158,15 @@ type ListConfigurationSettingsForSnapshotOptions struct {
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SettingFields
+
+	// A filter used to match Keys
+	Key string
+
+	// A filter used to match Labels
+	Label string
 }
 
-type ListSnapshotOptions struct {
+type GetSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag matches the value provided.
 	IfMatch *string
 

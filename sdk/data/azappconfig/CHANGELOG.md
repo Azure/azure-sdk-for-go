@@ -3,7 +3,7 @@
 ## 1.1.0 (Unreleased)
 
 ### Features Added
-* Added support for `Snapshots`.
+* Added support for [`Snapshots`](https://learn.microsoft.com/en-us/azure/azure-app-configuration/concept-snapshots).
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -276,25 +276,22 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 	})
 }
 
-func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runtime.Pager[ListSnapshotsPagerResponse] {
-
+func (c *Client) NewGetSnapshotsPager(options *GetSnapshotsPagerOptions) *runtime.Pager[GetSnapshotsPagerResponse] {
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
 
-	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsPagerResponse]{
-		More: func(ListSnapshotsPagerResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[GetSnapshotsPagerResponse]{
+		More: func(GetSnapshotsPagerResponse) bool {
 			return ssRespPager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListSnapshotsPagerResponse) (ListSnapshotsPagerResponse, error) {
+		Fetcher: func(ctx context.Context, cur *GetSnapshotsPagerResponse) (GetSnapshotsPagerResponse, error) {
 			page, err := ssRespPager.NextPage(ctx)
 			if err != nil {
-				return ListSnapshotsPagerResponse{}, err
+				return GetSnapshotsPagerResponse{}, err
 			}
 
-			ss := page.Items
-
-			return ListSnapshotsPagerResponse{
-				Snapshots: ss,
+			return GetSnapshotsPagerResponse{
+				Snapshots: page.Items,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
@@ -302,8 +299,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runt
 	})
 }
 
-func (c *Client) NewListConfigurationSettingsForSnapshotPager(ssName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
-
+func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
 	if options == nil {
 		options = &ListConfigurationSettingsForSnapshotOptions{}
 	}
@@ -314,9 +310,9 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(ssName string, opt
 		IfMatch:        options.IfMatch,
 		IfNoneMatch:    options.IfNoneMatch,
 		Select:         options.Select,
-		Snapshot:       &ssName,
-		Key:            nil,
-		Label:          nil,
+		Snapshot:       &snapshotName,
+		Key:            &options.Key,
+		Label:          &options.Label,
 	}
 	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
 
@@ -330,13 +326,14 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(ssName string, opt
 				return ListConfigurationSettingsForSnapshotResponse{}, err
 			}
 
-			var ss []Setting
+			var settings []Setting
+
 			for _, s := range page.Items {
-				ss = append(ss, settingFromGenerated(s))
+				settings = append(settings, settingFromGenerated(s))
 			}
 
 			return ListConfigurationSettingsForSnapshotResponse{
-				Settings:  ss,
+				Settings:  settings,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
@@ -344,15 +341,14 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(ssName string, opt
 	})
 }
 
-func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []SettingFilter, options *BeginCreateSnapshotOptions) *runtime.Poller[BeginCreateSnapshotResponse] {
-
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) *runtime.Poller[BeginCreateSnapshotResponse] {
 	filter := []generated.KeyValueFilter{}
 
 	if options == nil {
 		options = &BeginCreateSnapshotOptions{}
 	}
 
-	for _, f := range klf {
+	for _, f := range keyLabelFilter {
 		filter = append(filter, generated.KeyValueFilter{
 			Key:   f.KeyFilter,
 			Label: f.LabelFilter,
@@ -372,7 +368,7 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []S
 		Etag:            options.Etag,
 		Expires:         options.Expires,
 		ItemsCount:      options.ItemsCount,
-		Name:            &ssName,
+		Name:            &snapshotName,
 		Size:            options.Size,
 		Status:          options.Status,
 	}
@@ -381,7 +377,7 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []S
 		ResumeToken: options.ResumeToken,
 	}
 
-	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, ssName, entity, &opts)
+	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
 
 	if err != nil {
 		return nil
@@ -390,42 +386,20 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, ssName string, klf []S
 	return pollerSS
 }
 
-func (c *Client) ArchiveSnapshot(ctx context.Context, ssName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
-
-	status := generated.SnapshotStatusArchived
-
+func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {
 	if options == nil {
-		options = &ArchiveSnapshotOptions{}
-	}
-
-	opts := updateSnapshotStatusOptions{
-		IfMatch:     options.IfMatch,
-		IfNoneMatch: options.IfNoneMatch,
-	}
-	resp, err := c.updateSnapshotStatus(ctx, ssName, status, &opts)
-
-	if err != nil {
-		return ArchiveSnapshotResponse{}, err
-	}
-
-	return (ArchiveSnapshotResponse)(resp), nil
-}
-
-func (c *Client) ListSnapshot(ctx context.Context, ssName string, options *ListSnapshotOptions) (ListSnapshotResponse, error) {
-
-	if options == nil {
-		options = &ListSnapshotOptions{}
+		options = &GetSnapshotOptions{}
 	}
 
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotOptions)(options)
 
-	getResp, err := c.appConfigClient.GetSnapshot(ctx, ssName, opts)
+	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, opts)
 
 	if err != nil {
-		return ListSnapshotResponse{}, err
+		return GetSnapshotResponse{}, err
 	}
 
-	resp := ListSnapshotResponse{
+	resp := GetSnapshotResponse{
 		Snapshot:  getResp.Snapshot,
 		SyncToken: getResp.SyncToken,
 		Link:      getResp.Link,
@@ -434,9 +408,25 @@ func (c *Client) ListSnapshot(ctx context.Context, ssName string, options *ListS
 	return resp, nil
 }
 
-func (c *Client) RecoverSnapshot(ctx context.Context, ssName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
-	status := generated.SnapshotStatusReady
+func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
+	if options == nil {
+		options = &ArchiveSnapshotOptions{}
+	}
 
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusArchived, &opts)
+
+	if err != nil {
+		return ArchiveSnapshotResponse{}, err
+	}
+
+	return (ArchiveSnapshotResponse)(resp), nil
+}
+
+func (c *Client) RecoverSnapshot(ctx context.Context, snapshotName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
 	if options == nil {
 		options = &RecoverSnapshotOptions{}
 	}
@@ -445,7 +435,7 @@ func (c *Client) RecoverSnapshot(ctx context.Context, ssName string, options *Re
 		IfMatch:     options.IfMatch,
 		IfNoneMatch: options.IfNoneMatch,
 	}
-	resp, err := c.updateSnapshotStatus(ctx, ssName, status, &opts)
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusReady, &opts)
 
 	if err != nil {
 		return RecoverSnapshotResponse{}, err
@@ -454,15 +444,14 @@ func (c *Client) RecoverSnapshot(ctx context.Context, ssName string, options *Re
 	return (RecoverSnapshotResponse)(resp), nil
 }
 
-func (c *Client) updateSnapshotStatus(ctx context.Context, ssName string, status generated.SnapshotStatus, options *updateSnapshotStatusOptions) (updateSnapshotStatusResponse, error) {
-
+func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, status generated.SnapshotStatus, options *updateSnapshotStatusOptions) (updateSnapshotStatusResponse, error) {
 	entity := generated.SnapshotUpdateParameters{
 		Status: &status,
 	}
 
 	opts := (*generated.AzureAppConfigurationClientUpdateSnapshotOptions)(options)
 
-	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, ssName, entity, opts)
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, opts)
 
 	if err != nil {
 		return updateSnapshotStatusResponse{}, err

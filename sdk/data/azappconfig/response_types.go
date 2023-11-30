@@ -99,7 +99,7 @@ type RestoreSnapshotResponse struct {
 	SyncToken *string
 }
 
-type ListSnapshotsPagerResponse struct {
+type GetSnapshotsPagerResponse struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Snapshots []generated.Snapshot
 
@@ -117,7 +117,7 @@ type ListConfigurationSettingsForSnapshotResponse struct {
 	SyncToken SyncToken
 }
 
-type ListSnapshotResponse struct {
+type GetSnapshotResponse struct {
 	generated.Snapshot
 
 	// Link contains the information returned from the Link header response.

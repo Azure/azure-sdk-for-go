@@ -210,6 +210,7 @@ func (p Path) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "contentLength", p.ContentLength)
 	populate(objectMap, "creationTime", p.CreationTime)
 	populate(objectMap, "eTag", p.ETag)
+	populate(objectMap, "EncryptionContext", p.EncryptionContext)
 	populate(objectMap, "EncryptionScope", p.EncryptionScope)
 	populate(objectMap, "expiryTime", p.ExpiryTime)
 	populate(objectMap, "group", p.Group)
@@ -241,6 +242,9 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "eTag":
 			err = unpopulate(val, "ETag", &p.ETag)
+			delete(rawMsg, key)
+		case "EncryptionContext":
+			err = unpopulate(val, "EncryptionContext", &p.EncryptionContext)
 			delete(rawMsg, key)
 		case "EncryptionScope":
 			err = unpopulate(val, "EncryptionScope", &p.EncryptionScope)

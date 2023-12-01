@@ -19,6 +19,24 @@ type CheckNameAvailabilityParameters struct {
 	Type *string
 }
 
+// CorsConfiguration - The settings for the CORS configuration of the service instance.
+type CorsConfiguration struct {
+	// If credentials are allowed via CORS.
+	AllowCredentials *bool
+
+	// The headers to be allowed via CORS.
+	Headers []*string
+
+	// The max age to be allowed via CORS.
+	MaxAge *int32
+
+	// The methods to be allowed via CORS.
+	Methods []*string
+
+	// The origins to be allowed via CORS.
+	Origins []*string
+}
+
 // DicomService - The description of Dicom Service
 type DicomService struct {
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
@@ -81,8 +99,17 @@ type DicomServiceProperties struct {
 	// Dicom Service authentication configuration.
 	AuthenticationConfiguration *DicomServiceAuthenticationConfiguration
 
+	// Dicom Service Cors configuration.
+	CorsConfiguration *CorsConfiguration
+
+	// The encryption settings of the DICOM service
+	Encryption *Encryption
+
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// READ-ONLY; DICOM Service event support status.
+	EventState *ServiceEventState
 
 	// READ-ONLY; The list of private endpoint connections that are set up for this resource.
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -92,6 +119,18 @@ type DicomServiceProperties struct {
 
 	// READ-ONLY; The url of the Dicom Services.
 	ServiceURL *string
+}
+
+// Encryption - Settings to encrypt a service
+type Encryption struct {
+	// The encryption settings for the customer-managed key
+	CustomerManagedKeyEncryption *EncryptionCustomerManagedKeyEncryption
+}
+
+// EncryptionCustomerManagedKeyEncryption - The encryption settings for the customer-managed key
+type EncryptionCustomerManagedKeyEncryption struct {
+	// The URL of the key to use for encryption
+	KeyEncryptionKeyURL *string
 }
 
 // Error details.
@@ -151,12 +190,6 @@ type FhirService struct {
 	Type *string
 }
 
-// FhirServiceAccessPolicyEntry - An access policy entry.
-type FhirServiceAccessPolicyEntry struct {
-	// REQUIRED; An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
-	ObjectID *string
-}
-
 // FhirServiceAcrConfiguration - Azure container registry configuration information
 type FhirServiceAcrConfiguration struct {
 	// The list of the Azure container registry login servers.
@@ -211,6 +244,18 @@ type FhirServiceExportConfiguration struct {
 	StorageAccountName *string
 }
 
+// FhirServiceImportConfiguration - Import operation configuration information
+type FhirServiceImportConfiguration struct {
+	// If the import operation is enabled.
+	Enabled *bool
+
+	// If the FHIR service is in InitialImportMode.
+	InitialImportMode *bool
+
+	// The name of the default integration storage account.
+	IntegrationDataStore *string
+}
+
 // FhirServicePatchResource - FhirService patch properties
 type FhirServicePatchResource struct {
 	// Setting indicating whether the service has a managed identity associated with it.
@@ -222,9 +267,6 @@ type FhirServicePatchResource struct {
 
 // FhirServiceProperties - Fhir Service properties.
 type FhirServiceProperties struct {
-	// Fhir Service access policies.
-	AccessPolicies []*FhirServiceAccessPolicyEntry
-
 	// Fhir Service Azure container registry configuration.
 	AcrConfiguration *FhirServiceAcrConfiguration
 
@@ -234,8 +276,17 @@ type FhirServiceProperties struct {
 	// Fhir Service Cors configuration.
 	CorsConfiguration *FhirServiceCorsConfiguration
 
+	// The encryption settings of the FHIR service
+	Encryption *Encryption
+
 	// Fhir Service export configuration.
 	ExportConfiguration *FhirServiceExportConfiguration
+
+	// Implementation Guides configuration.
+	ImplementationGuidesConfiguration *ImplementationGuidesConfiguration
+
+	// Fhir Service import configuration.
+	ImportConfiguration *FhirServiceImportConfiguration
 
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess
@@ -251,6 +302,13 @@ type FhirServiceProperties struct {
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *ProvisioningState
+}
+
+// ImplementationGuidesConfiguration - The settings for Implementation Guides - defining capabilities for national standards,
+// vendor consortiums, clinical societies, etc.
+type ImplementationGuidesConfiguration struct {
+	// If US Core Missing Data requirement is enabled.
+	UsCoreMissingData *bool
 }
 
 // IotConnector - IoT Connector definition.
@@ -453,13 +511,28 @@ type MetricSpecification struct {
 	// Localized friendly display name of the metric
 	DisplayName *string
 
+	// Whether regional MDM account enabled.
+	EnableRegionalMdmAccount *bool
+
 	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
 	FillGapWithZero *bool
+
+	// Whether the metric is internal.
+	IsInternal *bool
+
+	// Pattern for the filter of the metric.
+	MetricFilterPattern *string
 
 	// Name of the metric
 	Name *string
 
-	// Name of the MDM namespace. Optional.
+	// The resource Id dimension name override.
+	ResourceIDDimensionNameOverride *string
+
+	// The source MDM account.
+	SourceMdmAccount *string
+
+	// The source MDM namespace.
 	SourceMdmNamespace *string
 
 	// Supported aggregation types
@@ -753,6 +826,9 @@ type ServiceCorsConfigurationInfo struct {
 
 // ServiceCosmosDbConfigurationInfo - The settings for the Cosmos DB database backing the service.
 type ServiceCosmosDbConfigurationInfo struct {
+	// The multi-tenant application id used to enable CMK access for services in a data sovereign region.
+	CrossTenantCmkApplicationID *string
+
 	// The URI of the customer-managed key for the backing database.
 	KeyVaultKeyURI *string
 
@@ -764,6 +840,18 @@ type ServiceCosmosDbConfigurationInfo struct {
 type ServiceExportConfigurationInfo struct {
 	// The name of the default export storage account.
 	StorageAccountName *string
+}
+
+// ServiceImportConfigurationInfo - Import operation configuration information
+type ServiceImportConfigurationInfo struct {
+	// If the import operation is enabled.
+	Enabled *bool
+
+	// If the FHIR service is in InitialImportMode.
+	InitialImportMode *bool
+
+	// The name of the default integration storage account.
+	IntegrationDataStore *string
 }
 
 // ServiceManagedIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -895,6 +983,9 @@ type ServicesProperties struct {
 
 	// The settings for the export operation of the service instance.
 	ExportConfiguration *ServiceExportConfigurationInfo
+
+	// The settings for the import operation of the service instance.
+	ImportConfiguration *ServiceImportConfigurationInfo
 
 	// The list of private endpoint connections that are set up for this resource.
 	PrivateEndpointConnections []*PrivateEndpointConnection

@@ -1,5 +1,26 @@
 # Release History
 
+## 2.0.0 (2023-12-22)
+### Breaking Changes
+
+- Struct `FhirServiceAccessPolicyEntry` has been removed
+- Field `AccessPolicies` of struct `FhirServiceProperties` has been removed
+
+### Features Added
+
+- New struct `CorsConfiguration`
+- New struct `Encryption`
+- New struct `EncryptionCustomerManagedKeyEncryption`
+- New struct `FhirServiceImportConfiguration`
+- New struct `ImplementationGuidesConfiguration`
+- New struct `ServiceImportConfigurationInfo`
+- New field `CorsConfiguration`, `Encryption`, `EventState` in struct `DicomServiceProperties`
+- New field `Encryption`, `ImplementationGuidesConfiguration`, `ImportConfiguration` in struct `FhirServiceProperties`
+- New field `EnableRegionalMdmAccount`, `IsInternal`, `MetricFilterPattern`, `ResourceIDDimensionNameOverride`, `SourceMdmAccount` in struct `MetricSpecification`
+- New field `CrossTenantCmkApplicationID` in struct `ServiceCosmosDbConfigurationInfo`
+- New field `ImportConfiguration` in struct `ServicesProperties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

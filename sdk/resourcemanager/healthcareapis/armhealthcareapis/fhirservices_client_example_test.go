@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/FhirServices_List.json
 func ExampleFhirServicesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleFhirServicesClient_NewListByWorkspacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/FhirServices_Get.json
 func ExampleFhirServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,16 +81,57 @@ func ExampleFhirServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FhirService = armhealthcareapis.FhirService{
+	// 	Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+	// 		Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("2f1f372f-edcf-43f5-aedb-173da3cc5c1e"),
+	// 		TenantID: to.Ptr("abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+	// 	},
 	// 	Name: to.Ptr("fhirservices1"),
 	// 	Type: to.Ptr("Microsoft.HealthcareApis/workspaces/fhirservices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/fhirservices/fhirservices1"),
 	// 	Properties: &armhealthcareapis.FhirServiceProperties{
-	// 		ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 	},
-	// }
+	// 		AuthenticationConfiguration: &armhealthcareapis.FhirServiceAuthenticationConfiguration{
+	// 			Audience: to.Ptr("https://azurehealthcareapis.com"),
+	// 			Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+	// 			SmartProxyEnabled: to.Ptr(true),
+	// 		},
+	// 		CorsConfiguration: &armhealthcareapis.FhirServiceCorsConfiguration{
+	// 			AllowCredentials: to.Ptr(false),
+	// 			Headers: []*string{
+	// 				to.Ptr("*")},
+	// 				MaxAge: to.Ptr[int32](1440),
+	// 				Methods: []*string{
+	// 					to.Ptr("DELETE"),
+	// 					to.Ptr("GET"),
+	// 					to.Ptr("OPTIONS"),
+	// 					to.Ptr("PATCH"),
+	// 					to.Ptr("POST"),
+	// 					to.Ptr("PUT")},
+	// 					Origins: []*string{
+	// 						to.Ptr("*")},
+	// 					},
+	// 					Encryption: &armhealthcareapis.Encryption{
+	// 						CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+	// 							KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+	// 						},
+	// 					},
+	// 					ExportConfiguration: &armhealthcareapis.FhirServiceExportConfiguration{
+	// 						StorageAccountName: to.Ptr("existingStorageAccount"),
+	// 					},
+	// 					ImplementationGuidesConfiguration: &armhealthcareapis.ImplementationGuidesConfiguration{
+	// 						UsCoreMissingData: to.Ptr(false),
+	// 					},
+	// 					ImportConfiguration: &armhealthcareapis.FhirServiceImportConfiguration{
+	// 						Enabled: to.Ptr(false),
+	// 						InitialImportMode: to.Ptr(false),
+	// 						IntegrationDataStore: to.Ptr("existingStorageAccount"),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/FhirServices_Create.json
 func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +144,10 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewFhirServicesClient().BeginCreateOrUpdate(ctx, "testRG", "workspace1", "fhirservice1", armhealthcareapis.FhirService{
 		Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
-			Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+			Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armhealthcareapis.UserAssignedIdentity{
+				"/subscriptions/subid/resourcegroups/testRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-mi": {},
+			},
 		},
 		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
@@ -113,13 +157,6 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 		},
 		Kind: to.Ptr(armhealthcareapis.FhirServiceKindFhirR4),
 		Properties: &armhealthcareapis.FhirServiceProperties{
-			AccessPolicies: []*armhealthcareapis.FhirServiceAccessPolicyEntry{
-				{
-					ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
-				},
-				{
-					ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
-				}},
 			AcrConfiguration: &armhealthcareapis.FhirServiceAcrConfiguration{
 				LoginServers: []*string{
 					to.Ptr("test1.azurecr.io")},
@@ -144,8 +181,21 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 				Origins: []*string{
 					to.Ptr("*")},
 			},
+			Encryption: &armhealthcareapis.Encryption{
+				CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+				},
+			},
 			ExportConfiguration: &armhealthcareapis.FhirServiceExportConfiguration{
 				StorageAccountName: to.Ptr("existingStorageAccount"),
+			},
+			ImplementationGuidesConfiguration: &armhealthcareapis.ImplementationGuidesConfiguration{
+				UsCoreMissingData: to.Ptr(false),
+			},
+			ImportConfiguration: &armhealthcareapis.FhirServiceImportConfiguration{
+				Enabled:              to.Ptr(false),
+				InitialImportMode:    to.Ptr(false),
+				IntegrationDataStore: to.Ptr("existingStorageAccount"),
 			},
 		},
 	}, nil)
@@ -160,6 +210,13 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.FhirService = armhealthcareapis.FhirService{
+	// 	Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+	// 		Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armhealthcareapis.UserAssignedIdentity{
+	// 			"/subscriptions/subid/resourcegroups/testRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-mi": &armhealthcareapis.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
 	// 	Name: to.Ptr("fhirservice1"),
 	// 	Type: to.Ptr("Microsoft.HealthcareApis/workspaces/fhirservices"),
 	// 	Etag: to.Ptr("etagvalue"),
@@ -172,13 +229,6 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Kind: to.Ptr(armhealthcareapis.FhirServiceKindFhirR4),
 	// 	Properties: &armhealthcareapis.FhirServiceProperties{
-	// 		AccessPolicies: []*armhealthcareapis.FhirServiceAccessPolicyEntry{
-	// 			{
-	// 				ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
-	// 			},
-	// 			{
-	// 				ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
-	// 		}},
 	// 		AuthenticationConfiguration: &armhealthcareapis.FhirServiceAuthenticationConfiguration{
 	// 			Audience: to.Ptr("https://azurehealthcareapis.com"),
 	// 			Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
@@ -199,16 +249,29 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 	// 					Origins: []*string{
 	// 						to.Ptr("*")},
 	// 					},
+	// 					Encryption: &armhealthcareapis.Encryption{
+	// 						CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+	// 							KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+	// 						},
+	// 					},
 	// 					EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
 	// 					ExportConfiguration: &armhealthcareapis.FhirServiceExportConfiguration{
 	// 						StorageAccountName: to.Ptr("existingStorageAccount"),
+	// 					},
+	// 					ImplementationGuidesConfiguration: &armhealthcareapis.ImplementationGuidesConfiguration{
+	// 						UsCoreMissingData: to.Ptr(false),
+	// 					},
+	// 					ImportConfiguration: &armhealthcareapis.FhirServiceImportConfiguration{
+	// 						Enabled: to.Ptr(false),
+	// 						InitialImportMode: to.Ptr(false),
+	// 						IntegrationDataStore: to.Ptr("existingStorageAccount"),
 	// 					},
 	// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 	// 				},
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/FhirServices_Patch.json
 func ExampleFhirServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +310,7 @@ func ExampleFhirServicesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/fhirservices/FhirServices_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/FhirServices_Delete.json
 func ExampleFhirServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

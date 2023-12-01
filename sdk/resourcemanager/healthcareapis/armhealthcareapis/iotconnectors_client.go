@@ -28,7 +28,7 @@ type IotConnectorsClient struct {
 }
 
 // NewIotConnectorsClient creates a new instance of IotConnectorsClient with the specified values.
-//   - subscriptionID - The subscription identifier.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotConnectorsClient, error) {
@@ -46,7 +46,7 @@ func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -73,7 +73,7 @@ func (client *IotConnectorsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 func (client *IotConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotConnector); err != nil {
@@ -131,7 +131,7 @@ func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - iotConnectorName - The name of IoT Connector resource.
 //   - workspaceName - The name of workspace resource.
@@ -157,7 +157,7 @@ func (client *IotConnectorsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 func (client *IotConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the properties of the specified IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - iotConnectorName - The name of IoT Connector resource.
@@ -263,7 +263,7 @@ func (client *IotConnectorsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *IotConnectorsClient) getHandleResponse(resp *http.Response) (IotCo
 
 // NewListByWorkspacePager - Lists all IoT Connectors for the given workspace
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - workspaceName - The name of workspace resource.
 //   - options - IotConnectorsClientListByWorkspaceOptions contains the optional parameters for the IotConnectorsClient.NewListByWorkspacePager
@@ -328,7 +328,7 @@ func (client *IotConnectorsClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -346,7 +346,7 @@ func (client *IotConnectorsClient) listByWorkspaceHandleResponse(resp *http.Resp
 // BeginUpdate - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group that contains the service instance.
 //   - iotConnectorName - The name of IoT Connector resource.
 //   - workspaceName - The name of workspace resource.
@@ -373,7 +373,7 @@ func (client *IotConnectorsClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-11-01
+// Generated from API version 2023-11-01
 func (client *IotConnectorsClient) update(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotConnectorsClient.BeginUpdate"
@@ -419,7 +419,7 @@ func (client *IotConnectorsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotConnectorPatchResource); err != nil {

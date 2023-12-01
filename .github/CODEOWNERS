@@ -3,14 +3,14 @@
 
 #############
 # SDK (track2)
-############# 
+#############
 
 # Catch all for non-code project files and unowned files | folders
 /**                           @rickwinter @jhendrixMSFT
 /sdk/                         @rickwinter @chlowell @richardpark-msft
 
 # Samples
-/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
+/sdk/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Core
 /sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
@@ -19,7 +19,7 @@
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
 
 # PRLable: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT 
+/sdk/ai                       @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter

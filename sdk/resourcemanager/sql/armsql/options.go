@@ -1048,6 +1048,31 @@ type JobExecutionsClientListByJobOptions struct {
 	Top *int32
 }
 
+// JobPrivateEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobPrivateEndpointsClient.BeginCreateOrUpdate
+// method.
+type JobPrivateEndpointsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobPrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the JobPrivateEndpointsClient.BeginDelete
+// method.
+type JobPrivateEndpointsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobPrivateEndpointsClientGetOptions contains the optional parameters for the JobPrivateEndpointsClient.Get method.
+type JobPrivateEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobPrivateEndpointsClientListByAgentOptions contains the optional parameters for the JobPrivateEndpointsClient.NewListByAgentPager
+// method.
+type JobPrivateEndpointsClientListByAgentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // JobStepExecutionsClientGetOptions contains the optional parameters for the JobStepExecutionsClient.Get method.
 type JobStepExecutionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1238,6 +1263,20 @@ type LedgerDigestUploadsClientGetOptions struct {
 // method.
 type LedgerDigestUploadsClientListByDatabaseOptions struct {
 	// placeholder for future optional parameters
+}
+
+// LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup
+// method.
+type LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LongTermRetentionBackupsClientBeginChangeAccessTierOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginChangeAccessTier
+// method.
+type LongTermRetentionBackupsClientBeginChangeAccessTierOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginCopyByResourceGroup

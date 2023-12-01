@@ -46,7 +46,7 @@ func NewInstancePoolsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - instancePoolName - The name of the instance pool to be created or updated.
@@ -73,7 +73,7 @@ func (client *InstancePoolsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // CreateOrUpdate - Creates or updates an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *InstancePoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, instancePoolName string, parameters InstancePool, options *InstancePoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancePoolsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *InstancePoolsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,7 +127,7 @@ func (client *InstancePoolsClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes an instance pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - instancePoolName - The name of the instance pool to be deleted
@@ -153,7 +153,7 @@ func (client *InstancePoolsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes an instance pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *InstancePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, instancePoolName string, options *InstancePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancePoolsClient.BeginDelete"
@@ -195,7 +195,7 @@ func (client *InstancePoolsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -203,7 +203,7 @@ func (client *InstancePoolsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - instancePoolName - The name of the instance pool to be retrieved.
@@ -250,7 +250,7 @@ func (client *InstancePoolsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +267,7 @@ func (client *InstancePoolsClient) getHandleResponse(resp *http.Response) (Insta
 
 // NewListPager - Gets a list of all instance pools in the subscription.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - options - InstancePoolsClientListOptions contains the optional parameters for the InstancePoolsClient.NewListPager method.
 func (client *InstancePoolsClient) NewListPager(options *InstancePoolsClientListOptions) *runtime.Pager[InstancePoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InstancePoolsClientListResponse]{
@@ -304,7 +304,7 @@ func (client *InstancePoolsClient) listCreateRequest(ctx context.Context, option
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *InstancePoolsClient) listHandleResponse(resp *http.Response) (Inst
 
 // NewListByResourceGroupPager - Gets a list of instance pools in the resource group
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - options - InstancePoolsClientListByResourceGroupOptions contains the optional parameters for the InstancePoolsClient.NewListByResourceGroupPager
@@ -365,7 +365,7 @@ func (client *InstancePoolsClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,7 +383,7 @@ func (client *InstancePoolsClient) listByResourceGroupHandleResponse(resp *http.
 // BeginUpdate - Updates an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - instancePoolName - The name of the instance pool to be updated.
@@ -410,7 +410,7 @@ func (client *InstancePoolsClient) BeginUpdate(ctx context.Context, resourceGrou
 // Update - Updates an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-11-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *InstancePoolsClient) update(ctx context.Context, resourceGroupName string, instancePoolName string, parameters InstancePoolUpdate, options *InstancePoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancePoolsClient.BeginUpdate"
@@ -452,7 +452,7 @@ func (client *InstancePoolsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-11-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

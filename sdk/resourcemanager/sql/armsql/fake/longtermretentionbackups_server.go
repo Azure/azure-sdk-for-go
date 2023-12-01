@@ -25,6 +25,14 @@ import (
 
 // LongTermRetentionBackupsServer is a fake server for instances of the armsql.LongTermRetentionBackupsClient type.
 type LongTermRetentionBackupsServer struct {
+	// BeginChangeAccessTier is the fake for method LongTermRetentionBackupsClient.BeginChangeAccessTier
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginChangeAccessTier func(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters armsql.ChangeLongTermRetentionBackupAccessTierParameters, options *armsql.LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierResponse], errResp azfake.ErrorResponder)
+
+	// BeginChangeAccessTierByResourceGroup is the fake for method LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginChangeAccessTierByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters armsql.ChangeLongTermRetentionBackupAccessTierParameters, options *armsql.LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse], errResp azfake.ErrorResponder)
+
 	// BeginCopy is the fake for method LongTermRetentionBackupsClient.BeginCopy
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCopy func(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters armsql.CopyLongTermRetentionBackupParameters, options *armsql.LongTermRetentionBackupsClientBeginCopyOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse], errResp azfake.ErrorResponder)
@@ -87,38 +95,42 @@ type LongTermRetentionBackupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLongTermRetentionBackupsServerTransport(srv *LongTermRetentionBackupsServer) *LongTermRetentionBackupsServerTransport {
 	return &LongTermRetentionBackupsServerTransport{
-		srv:                                 srv,
-		beginCopy:                           newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]](),
-		beginCopyByResourceGroup:            newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]](),
-		beginDelete:                         newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]](),
-		beginDeleteByResourceGroup:          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]](),
-		newListByDatabasePager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]](),
-		newListByLocationPager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]](),
-		newListByResourceGroupDatabasePager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]](),
-		newListByResourceGroupLocationPager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]](),
-		newListByResourceGroupServerPager:   newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]](),
-		newListByServerPager:                newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]](),
-		beginUpdate:                         newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]](),
-		beginUpdateByResourceGroup:          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]](),
+		srv:                                  srv,
+		beginChangeAccessTier:                newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierResponse]](),
+		beginChangeAccessTierByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]](),
+		beginCopy:                            newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]](),
+		beginCopyByResourceGroup:             newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]](),
+		beginDeleteByResourceGroup:           newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]](),
+		newListByDatabasePager:               newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]](),
+		newListByLocationPager:               newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]](),
+		newListByResourceGroupDatabasePager:  newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]](),
+		newListByResourceGroupLocationPager:  newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]](),
+		newListByResourceGroupServerPager:    newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]](),
+		newListByServerPager:                 newTracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]](),
+		beginUpdate:                          newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]](),
+		beginUpdateByResourceGroup:           newTracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]](),
 	}
 }
 
 // LongTermRetentionBackupsServerTransport connects instances of armsql.LongTermRetentionBackupsClient to instances of LongTermRetentionBackupsServer.
 // Don't use this type directly, use NewLongTermRetentionBackupsServerTransport instead.
 type LongTermRetentionBackupsServerTransport struct {
-	srv                                 *LongTermRetentionBackupsServer
-	beginCopy                           *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]]
-	beginCopyByResourceGroup            *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]]
-	beginDelete                         *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]]
-	beginDeleteByResourceGroup          *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]]
-	newListByDatabasePager              *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]]
-	newListByLocationPager              *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]]
-	newListByResourceGroupDatabasePager *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]]
-	newListByResourceGroupLocationPager *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]]
-	newListByResourceGroupServerPager   *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]]
-	newListByServerPager                *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]]
-	beginUpdate                         *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]]
-	beginUpdateByResourceGroup          *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]]
+	srv                                  *LongTermRetentionBackupsServer
+	beginChangeAccessTier                *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierResponse]]
+	beginChangeAccessTierByResourceGroup *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]]
+	beginCopy                            *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyResponse]]
+	beginCopyByResourceGroup             *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientCopyByResourceGroupResponse]]
+	beginDelete                          *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteResponse]]
+	beginDeleteByResourceGroup           *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientDeleteByResourceGroupResponse]]
+	newListByDatabasePager               *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByDatabaseResponse]]
+	newListByLocationPager               *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByLocationResponse]]
+	newListByResourceGroupDatabasePager  *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]]
+	newListByResourceGroupLocationPager  *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse]]
+	newListByResourceGroupServerPager    *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse]]
+	newListByServerPager                 *tracker[azfake.PagerResponder[armsql.LongTermRetentionBackupsClientListByServerResponse]]
+	beginUpdate                          *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateResponse]]
+	beginUpdateByResourceGroup           *tracker[azfake.PollerResponder[armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for LongTermRetentionBackupsServerTransport.
@@ -133,6 +145,10 @@ func (l *LongTermRetentionBackupsServerTransport) Do(req *http.Request) (*http.R
 	var err error
 
 	switch method {
+	case "LongTermRetentionBackupsClient.BeginChangeAccessTier":
+		resp, err = l.dispatchBeginChangeAccessTier(req)
+	case "LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup":
+		resp, err = l.dispatchBeginChangeAccessTierByResourceGroup(req)
 	case "LongTermRetentionBackupsClient.BeginCopy":
 		resp, err = l.dispatchBeginCopy(req)
 	case "LongTermRetentionBackupsClient.BeginCopyByResourceGroup":
@@ -167,6 +183,122 @@ func (l *LongTermRetentionBackupsServerTransport) Do(req *http.Request) (*http.R
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchBeginChangeAccessTier(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginChangeAccessTier == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginChangeAccessTier not implemented")}
+	}
+	beginChangeAccessTier := l.beginChangeAccessTier.get(req)
+	if beginChangeAccessTier == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeAccessTier`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ChangeLongTermRetentionBackupAccessTierParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginChangeAccessTier(req.Context(), locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginChangeAccessTier = &respr
+		l.beginChangeAccessTier.add(req, beginChangeAccessTier)
+	}
+
+	resp, err := server.PollerResponderNext(beginChangeAccessTier, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginChangeAccessTier.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginChangeAccessTier) {
+		l.beginChangeAccessTier.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionBackupsServerTransport) dispatchBeginChangeAccessTierByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginChangeAccessTierByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginChangeAccessTierByResourceGroup not implemented")}
+	}
+	beginChangeAccessTierByResourceGroup := l.beginChangeAccessTierByResourceGroup.get(req)
+	if beginChangeAccessTierByResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionServers/(?P<longTermRetentionServerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionDatabases/(?P<longTermRetentionDatabaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/longTermRetentionBackups/(?P<backupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeAccessTier`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.ChangeLongTermRetentionBackupAccessTierParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionServerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionServerName")])
+		if err != nil {
+			return nil, err
+		}
+		longTermRetentionDatabaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("longTermRetentionDatabaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginChangeAccessTierByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, longTermRetentionServerNameParam, longTermRetentionDatabaseNameParam, backupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginChangeAccessTierByResourceGroup = &respr
+		l.beginChangeAccessTierByResourceGroup.add(req, beginChangeAccessTierByResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginChangeAccessTierByResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginChangeAccessTierByResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginChangeAccessTierByResourceGroup) {
+		l.beginChangeAccessTierByResourceGroup.remove(req)
 	}
 
 	return resp, nil

@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	moduleVersion = "v2.0.0-beta.3"
+	moduleVersion = "v2.0.0-beta.4"
 )
 
 type AdministratorName string
@@ -322,7 +322,23 @@ func PossibleAvailabilityZoneTypeValues() []AvailabilityZoneType {
 	}
 }
 
-// BackupStorageRedundancy - The storage redundancy type of the copied backup
+// BackupStorageAccessTier - The BackupStorageAccessTier for the LTR backup
+type BackupStorageAccessTier string
+
+const (
+	BackupStorageAccessTierArchive BackupStorageAccessTier = "Archive"
+	BackupStorageAccessTierHot     BackupStorageAccessTier = "Hot"
+)
+
+// PossibleBackupStorageAccessTierValues returns the possible values for the BackupStorageAccessTier const type.
+func PossibleBackupStorageAccessTierValues() []BackupStorageAccessTier {
+	return []BackupStorageAccessTier{
+		BackupStorageAccessTierArchive,
+		BackupStorageAccessTierHot,
+	}
+}
+
+// BackupStorageRedundancy - The storage redundancy type of the backup
 type BackupStorageRedundancy string
 
 const (

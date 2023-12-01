@@ -979,6 +979,29 @@ type JobExecutionsClientListByJobResponse struct {
 	JobExecutionListResult
 }
 
+// JobPrivateEndpointsClientCreateOrUpdateResponse contains the response from method JobPrivateEndpointsClient.BeginCreateOrUpdate.
+type JobPrivateEndpointsClientCreateOrUpdateResponse struct {
+	// A job agent private endpoint.
+	JobPrivateEndpoint
+}
+
+// JobPrivateEndpointsClientDeleteResponse contains the response from method JobPrivateEndpointsClient.BeginDelete.
+type JobPrivateEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JobPrivateEndpointsClientGetResponse contains the response from method JobPrivateEndpointsClient.Get.
+type JobPrivateEndpointsClientGetResponse struct {
+	// A job agent private endpoint.
+	JobPrivateEndpoint
+}
+
+// JobPrivateEndpointsClientListByAgentResponse contains the response from method JobPrivateEndpointsClient.NewListByAgentPager.
+type JobPrivateEndpointsClientListByAgentResponse struct {
+	// A list of job agent private endpoints.
+	JobPrivateEndpointListResult
+}
+
 // JobStepExecutionsClientGetResponse contains the response from method JobStepExecutionsClient.Get.
 type JobStepExecutionsClientGetResponse struct {
 	// An execution of a job
@@ -1124,6 +1147,18 @@ type LedgerDigestUploadsClientGetResponse struct {
 type LedgerDigestUploadsClientListByDatabaseResponse struct {
 	// A list of ledger digest upload settings.
 	LedgerDigestUploadsListResult
+}
+
+// LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse contains the response from method LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup.
+type LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse struct {
+	// A long term retention backup.
+	LongTermRetentionBackup
+}
+
+// LongTermRetentionBackupsClientChangeAccessTierResponse contains the response from method LongTermRetentionBackupsClient.BeginChangeAccessTier.
+type LongTermRetentionBackupsClientChangeAccessTierResponse struct {
+	// A long term retention backup.
+	LongTermRetentionBackup
 }
 
 // LongTermRetentionBackupsClientCopyByResourceGroupResponse contains the response from method LongTermRetentionBackupsClient.BeginCopyByResourceGroup.

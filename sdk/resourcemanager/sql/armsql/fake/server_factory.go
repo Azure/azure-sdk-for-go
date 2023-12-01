@@ -67,6 +67,7 @@ type ServerFactory struct {
 	JobAgentsServer                                                        JobAgentsServer
 	JobCredentialsServer                                                   JobCredentialsServer
 	JobExecutionsServer                                                    JobExecutionsServer
+	JobPrivateEndpointsServer                                              JobPrivateEndpointsServer
 	JobStepExecutionsServer                                                JobStepExecutionsServer
 	JobStepsServer                                                         JobStepsServer
 	JobTargetExecutionsServer                                              JobTargetExecutionsServer
@@ -232,6 +233,7 @@ type ServerFactoryTransport struct {
 	trJobAgentsServer                                                        *JobAgentsServerTransport
 	trJobCredentialsServer                                                   *JobCredentialsServerTransport
 	trJobExecutionsServer                                                    *JobExecutionsServerTransport
+	trJobPrivateEndpointsServer                                              *JobPrivateEndpointsServerTransport
 	trJobStepExecutionsServer                                                *JobStepExecutionsServerTransport
 	trJobStepsServer                                                         *JobStepsServerTransport
 	trJobTargetExecutionsServer                                              *JobTargetExecutionsServerTransport
@@ -578,6 +580,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewJobExecutionsServerTransport(&s.srv.JobExecutionsServer)
 		})
 		resp, err = s.trJobExecutionsServer.Do(req)
+	case "JobPrivateEndpointsClient":
+		initServer(s, &s.trJobPrivateEndpointsServer, func() *JobPrivateEndpointsServerTransport {
+			return NewJobPrivateEndpointsServerTransport(&s.srv.JobPrivateEndpointsServer)
+		})
+		resp, err = s.trJobPrivateEndpointsServer.Do(req)
 	case "JobStepExecutionsClient":
 		initServer(s, &s.trJobStepExecutionsServer, func() *JobStepExecutionsServerTransport {
 			return NewJobStepExecutionsServerTransport(&s.srv.JobStepExecutionsServer)

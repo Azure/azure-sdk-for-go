@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Create.json
 func ExampleSolutionClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,9 +31,6 @@ func ExampleSolutionClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewSolutionClient().BeginCreate(ctx, "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "SolutionResourceName1", armselfhelp.SolutionResource{
 		Properties: &armselfhelp.SolutionResourceProperties{
-			Parameters: map[string]*string{
-				"resourceUri": to.Ptr("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"),
-			},
 			TriggerCriteria: []*armselfhelp.TriggerCriterion{
 				{
 					Name:  to.Ptr(armselfhelp.NameSolutionID),
@@ -83,103 +80,67 @@ func ExampleSolutionClient_BeginCreate() {
 	// 						SolutionID: to.Ptr("sampleSolutionId2"),
 	// 						Status: to.Ptr(armselfhelp.StatusFailed),
 	// 						StatusDetails: to.Ptr(""),
+	// 				}},
+	// 				MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
+	// 					{
+	// 						Name: to.Ptr("CPU_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("CPU Usage in the last one day"),
 	// 					},
 	// 					{
-	// 						Insights: []*armselfhelp.Insight{
-	// 						},
+	// 						Name: to.Ptr("memory_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
 	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 						RequiredParameters: []*string{
-	// 							to.Ptr("parameter1"),
-	// 							to.Ptr("parameter2")},
-	// 							SolutionID: to.Ptr("sampleSolutionId3"),
-	// 							Status: to.Ptr(armselfhelp.StatusFailed),
-	// 							StatusDetails: to.Ptr("Timeout text authored in Solution article "),
-	// 						},
-	// 						{
-	// 							Insights: []*armselfhelp.Insight{
-	// 							},
-	// 							ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 							RequiredParameters: []*string{
-	// 								to.Ptr("parameter1"),
-	// 								to.Ptr("parameter2")},
-	// 								SolutionID: to.Ptr("sampleSolutionId4"),
-	// 								Status: to.Ptr(armselfhelp.StatusFailed),
-	// 								StatusDetails: to.Ptr("Sample status details"),
-	// 						}},
-	// 						MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
-	// 							{
-	// 								Name: to.Ptr("CPU_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("CPU Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("memory_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Memory Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("io_consumption_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("IOPS Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("active_connections"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Active Connections in the last one day"),
-	// 						}},
-	// 						VideoGroups: []*armselfhelp.VideoGroup{
-	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								Videos: []*armselfhelp.VideoGroupVideo{
-	// 									{
-	// 										Src: to.Ptr("sampleLink"),
-	// 										Title: to.Ptr("widthtest"),
-	// 								}},
-	// 						}},
-	// 						Videos: []*armselfhelp.Video{
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("Memory Usage in the last one day"),
+	// 				}},
+	// 				VideoGroups: []*armselfhelp.VideoGroup{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						Videos: []*armselfhelp.VideoGroupVideo{
 	// 							{
 	// 								Src: to.Ptr("sampleLink"),
-	// 								Title: to.Ptr("CI - CD with Azure DevOps"),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 								Title: to.Ptr("widthtest"),
 	// 						}},
-	// 						WebResults: []*armselfhelp.WebResult{
+	// 				}},
+	// 				Videos: []*armselfhelp.Video{
+	// 					{
+	// 						Src: to.Ptr("sampleLink"),
+	// 						Title: to.Ptr("CI - CD with Azure DevOps"),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 				}},
+	// 				WebResults: []*armselfhelp.WebResult{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						SearchResults: []*armselfhelp.SearchResult{
 	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								SearchResults: []*armselfhelp.SearchResult{
-	// 									{
-	// 										Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
-	// 										Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
-	// 										Link: to.Ptr("sampleLink"),
-	// 										Rank: to.Ptr[int32](1),
-	// 										ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
-	// 										SolutionID: to.Ptr("sampleSolutionId"),
-	// 										Source: to.Ptr("sampleSource"),
-	// 										Title: to.Ptr("Cannot RDP VM after SysPrep"),
-	// 								}},
+	// 								Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
+	// 								Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
+	// 								Link: to.Ptr("sampleLink"),
+	// 								Rank: to.Ptr[int32](1),
+	// 								ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
+	// 								SolutionID: to.Ptr("sampleSolutionId"),
+	// 								Source: to.Ptr("sampleSource"),
+	// 								Title: to.Ptr("Cannot RDP VM after SysPrep"),
 	// 						}},
+	// 				}},
+	// 			},
+	// 			Sections: []*armselfhelp.Section{
+	// 				{
+	// 					Content: to.Ptr("<p>sample content</p>"),
+	// 					ReplacementMaps: &armselfhelp.ReplacementMaps{
 	// 					},
-	// 					Sections: []*armselfhelp.Section{
-	// 						{
-	// 							Content: to.Ptr("<p>sample content</p>"),
-	// 							ReplacementMaps: &armselfhelp.ReplacementMaps{
-	// 							},
-	// 							Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 					}},
-	// 					SolutionID: to.Ptr("sampleSolutionId"),
 	// 					Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 				},
-	// 			}
+	// 			}},
+	// 			SolutionID: to.Ptr("sampleSolutionId"),
+	// 			Title: to.Ptr("RBAC Authentication Common Solutions"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Get.json
 func ExampleSolutionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,103 +190,67 @@ func ExampleSolutionClient_Get() {
 	// 						SolutionID: to.Ptr("sampleSolutionId4"),
 	// 						Status: to.Ptr(armselfhelp.StatusSucceeded),
 	// 						StatusDetails: to.Ptr(""),
+	// 				}},
+	// 				MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
+	// 					{
+	// 						Name: to.Ptr("CPU_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("CPU Usage in the last one day"),
 	// 					},
 	// 					{
-	// 						Insights: []*armselfhelp.Insight{
-	// 						},
+	// 						Name: to.Ptr("memory_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
 	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 						RequiredParameters: []*string{
-	// 							to.Ptr("parameter1"),
-	// 							to.Ptr("parameter2")},
-	// 							SolutionID: to.Ptr("sampleSolutionId5"),
-	// 							Status: to.Ptr(armselfhelp.StatusFailed),
-	// 							StatusDetails: to.Ptr("Timeout text authored in Solution article "),
-	// 						},
-	// 						{
-	// 							Insights: []*armselfhelp.Insight{
-	// 							},
-	// 							ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 							RequiredParameters: []*string{
-	// 								to.Ptr("parameter1"),
-	// 								to.Ptr("parameter2")},
-	// 								SolutionID: to.Ptr("sampleSolutionId6"),
-	// 								Status: to.Ptr(armselfhelp.StatusFailed),
-	// 								StatusDetails: to.Ptr("Some text "),
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("Memory Usage in the last one day"),
+	// 				}},
+	// 				VideoGroups: []*armselfhelp.VideoGroup{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						Videos: []*armselfhelp.VideoGroupVideo{
+	// 							{
+	// 								Src: to.Ptr("sampleVideoSource2"),
+	// 								Title: to.Ptr("widthtest"),
 	// 						}},
-	// 						MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
+	// 				}},
+	// 				Videos: []*armselfhelp.Video{
+	// 					{
+	// 						Src: to.Ptr("sampleVideoSource"),
+	// 						Title: to.Ptr("CI - CD with Azure DevOps"),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 				}},
+	// 				WebResults: []*armselfhelp.WebResult{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						SearchResults: []*armselfhelp.SearchResult{
 	// 							{
-	// 								Name: to.Ptr("CPU_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("CPU Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("memory_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Memory Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("io_consumption_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("IOPS Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("active_connections"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Active Connections in the last one day"),
+	// 								Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
+	// 								Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
+	// 								Link: to.Ptr("sampleLink"),
+	// 								Rank: to.Ptr[int32](1),
+	// 								ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
+	// 								SolutionID: to.Ptr("sampleSolutionId2"),
+	// 								Source: to.Ptr("sampleSource"),
+	// 								Title: to.Ptr("Cannot RDP VM after SysPrep"),
 	// 						}},
-	// 						VideoGroups: []*armselfhelp.VideoGroup{
-	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								Videos: []*armselfhelp.VideoGroupVideo{
-	// 									{
-	// 										Src: to.Ptr("sampleVideoSource2"),
-	// 										Title: to.Ptr("widthtest"),
-	// 								}},
-	// 						}},
-	// 						Videos: []*armselfhelp.Video{
-	// 							{
-	// 								Src: to.Ptr("sampleVideoSource"),
-	// 								Title: to.Ptr("CI - CD with Azure DevOps"),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 						}},
-	// 						WebResults: []*armselfhelp.WebResult{
-	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								SearchResults: []*armselfhelp.SearchResult{
-	// 									{
-	// 										Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
-	// 										Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
-	// 										Link: to.Ptr("sampleLink"),
-	// 										Rank: to.Ptr[int32](1),
-	// 										ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
-	// 										SolutionID: to.Ptr("sampleSolutionId2"),
-	// 										Source: to.Ptr("sampleSource"),
-	// 										Title: to.Ptr("Cannot RDP VM after SysPrep"),
-	// 								}},
-	// 						}},
+	// 				}},
+	// 			},
+	// 			Sections: []*armselfhelp.Section{
+	// 				{
+	// 					Content: to.Ptr("<p>sample content</p>"),
+	// 					ReplacementMaps: &armselfhelp.ReplacementMaps{
 	// 					},
-	// 					Sections: []*armselfhelp.Section{
-	// 						{
-	// 							Content: to.Ptr("<p>sample content</p>"),
-	// 							ReplacementMaps: &armselfhelp.ReplacementMaps{
-	// 							},
-	// 							Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 					}},
-	// 					SolutionID: to.Ptr("sampleSolutionId1"),
 	// 					Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 				},
-	// 			}
+	// 			}},
+	// 			SolutionID: to.Ptr("sampleSolutionId1"),
+	// 			Title: to.Ptr("RBAC Authentication Common Solutions"),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Update.json
 func ExampleSolutionClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +261,15 @@ func ExampleSolutionClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSolutionClient().BeginUpdate(ctx, "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "SolutionResourceName1", armselfhelp.SolutionPatchRequestBody{}, nil)
+	poller, err := clientFactory.NewSolutionClient().BeginUpdate(ctx, "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "SolutionResourceName1", armselfhelp.SolutionPatchRequestBody{
+		Properties: &armselfhelp.SolutionResourceProperties{
+			TriggerCriteria: []*armselfhelp.TriggerCriterion{
+				{
+					Name:  to.Ptr(armselfhelp.NameReplacementKey),
+					Value: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+				}},
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -379,98 +312,62 @@ func ExampleSolutionClient_BeginUpdate() {
 	// 						SolutionID: to.Ptr("sampleSolutionId2"),
 	// 						Status: to.Ptr(armselfhelp.StatusFailed),
 	// 						StatusDetails: to.Ptr(""),
+	// 				}},
+	// 				MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
+	// 					{
+	// 						Name: to.Ptr("CPU_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("CPU Usage in the last one day"),
 	// 					},
 	// 					{
-	// 						Insights: []*armselfhelp.Insight{
-	// 						},
+	// 						Name: to.Ptr("memory_percent"),
+	// 						AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
 	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 						RequiredParameters: []*string{
-	// 							to.Ptr("parameter1"),
-	// 							to.Ptr("parameter2")},
-	// 							SolutionID: to.Ptr("sampleSolutionId3"),
-	// 							Status: to.Ptr(armselfhelp.StatusFailed),
-	// 							StatusDetails: to.Ptr("Timeout text authored in Solution article "),
-	// 						},
-	// 						{
-	// 							Insights: []*armselfhelp.Insight{
-	// 							},
-	// 							ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 							RequiredParameters: []*string{
-	// 								to.Ptr("parameter1"),
-	// 								to.Ptr("parameter2")},
-	// 								SolutionID: to.Ptr("sampleSolutionId4"),
-	// 								Status: to.Ptr(armselfhelp.StatusFailed),
-	// 								StatusDetails: to.Ptr("Sample status details"),
-	// 						}},
-	// 						MetricsBasedCharts: []*armselfhelp.MetricsBasedChart{
-	// 							{
-	// 								Name: to.Ptr("CPU_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("CPU Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("memory_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Memory Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("io_consumption_percent"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("IOPS Usage in the last one day"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("active_connections"),
-	// 								AggregationType: to.Ptr(armselfhelp.AggregationTypeMax),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								TimeSpanDuration: to.Ptr("1d"),
-	// 								Title: to.Ptr("Active Connections in the last one day"),
-	// 						}},
-	// 						VideoGroups: []*armselfhelp.VideoGroup{
-	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								Videos: []*armselfhelp.VideoGroupVideo{
-	// 									{
-	// 										Src: to.Ptr("sampleLink"),
-	// 										Title: to.Ptr("widthtest"),
-	// 								}},
-	// 						}},
-	// 						Videos: []*armselfhelp.Video{
+	// 						TimeSpanDuration: to.Ptr("1d"),
+	// 						Title: to.Ptr("Memory Usage in the last one day"),
+	// 				}},
+	// 				VideoGroups: []*armselfhelp.VideoGroup{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						Videos: []*armselfhelp.VideoGroupVideo{
 	// 							{
 	// 								Src: to.Ptr("sampleLink"),
-	// 								Title: to.Ptr("CI - CD with Azure DevOps"),
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 								Title: to.Ptr("widthtest"),
 	// 						}},
-	// 						WebResults: []*armselfhelp.WebResult{
+	// 				}},
+	// 				Videos: []*armselfhelp.Video{
+	// 					{
+	// 						Src: to.Ptr("sampleLink"),
+	// 						Title: to.Ptr("CI - CD with Azure DevOps"),
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 				}},
+	// 				WebResults: []*armselfhelp.WebResult{
+	// 					{
+	// 						ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
+	// 						SearchResults: []*armselfhelp.SearchResult{
 	// 							{
-	// 								ReplacementKey: to.Ptr("<!--12345678-BBBb-cCCCC-0000-123456789012-->"),
-	// 								SearchResults: []*armselfhelp.SearchResult{
-	// 									{
-	// 										Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
-	// 										Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
-	// 										Link: to.Ptr("sampleLink"),
-	// 										Rank: to.Ptr[int32](1),
-	// 										ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
-	// 										SolutionID: to.Ptr("sampleSolutionId"),
-	// 										Source: to.Ptr("sampleSource"),
-	// 										Title: to.Ptr("Cannot RDP VM after SysPrep"),
-	// 								}},
+	// 								Confidence: to.Ptr(armselfhelp.ConfidenceHigh),
+	// 								Content: to.Ptr("I sysprep a VM and now I cannot connect to it via <b>RDP</b>"),
+	// 								Link: to.Ptr("sampleLink"),
+	// 								Rank: to.Ptr[int32](1),
+	// 								ResultType: to.Ptr(armselfhelp.ResultTypeCommunity),
+	// 								SolutionID: to.Ptr("sampleSolutionId"),
+	// 								Source: to.Ptr("sampleSource"),
+	// 								Title: to.Ptr("Cannot RDP VM after SysPrep"),
 	// 						}},
+	// 				}},
+	// 			},
+	// 			Sections: []*armselfhelp.Section{
+	// 				{
+	// 					Content: to.Ptr("<p>sample content</p>"),
+	// 					ReplacementMaps: &armselfhelp.ReplacementMaps{
 	// 					},
-	// 					Sections: []*armselfhelp.Section{
-	// 						{
-	// 							Content: to.Ptr("<p>sample content</p>"),
-	// 							ReplacementMaps: &armselfhelp.ReplacementMaps{
-	// 							},
-	// 							Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 					}},
-	// 					SolutionID: to.Ptr("sampleSolutionId"),
 	// 					Title: to.Ptr("RBAC Authentication Common Solutions"),
-	// 				},
-	// 			}
+	// 			}},
+	// 			SolutionID: to.Ptr("sampleSolutionId"),
+	// 			Title: to.Ptr("RBAC Authentication Common Solutions"),
+	// 		},
+	// 	}
 }

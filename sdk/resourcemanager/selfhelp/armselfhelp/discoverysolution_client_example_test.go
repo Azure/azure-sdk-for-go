@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtResourceScope.json
 func ExampleDiscoverySolutionClient_NewListPager_listDiscoverySolutionsAtResourceScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleDiscoverySolutionClient_NewListPager_listDiscoverySolutionsAtResourc
 		// 		{
 		// 			Name: to.Ptr("SampleProblemClassificationId1"),
 		// 			Type: to.Ptr("Microsoft.Help/discoverySolutions"),
-		// 			ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/discoverySolutions/SampleProblemClassificationId1"),
+		// 			ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/providers/Microsoft.Help/discoverySolutions/SampleProblemClassificationId1"),
 		// 			Properties: &armselfhelp.Solutions{
 		// 				Solutions: []*armselfhelp.SolutionMetadataProperties{
 		// 					{
@@ -56,14 +56,36 @@ func ExampleDiscoverySolutionClient_NewListPager_listDiscoverySolutionsAtResourc
 		// 							to.Ptr("SubscriptionId")},
 		// 							SolutionID: to.Ptr("SampleSolutionId1"),
 		// 							SolutionType: to.Ptr(armselfhelp.SolutionTypeDiagnostics),
-		// 					}},
+		// 						},
+		// 						{
+		// 							Description: to.Ptr("This is an azure solution to troubleshoot subscription issues."),
+		// 							RequiredInputs: []*string{
+		// 								to.Ptr("SubscriptionId")},
+		// 								SolutionID: to.Ptr("SampleSolutionId2"),
+		// 								SolutionType: to.Ptr(armselfhelp.SolutionTypeSolutions),
+		// 						}},
+		// 					},
 		// 				},
-		// 		}},
-		// 	}
+		// 				{
+		// 					Name: to.Ptr("SampleProblemClassificationId2"),
+		// 					Type: to.Ptr("Microsoft.Help/discoverySolutions"),
+		// 					ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/providers/Microsoft.Help/discoverySolutions/SampleProblemClassificationId2"),
+		// 					Properties: &armselfhelp.Solutions{
+		// 						Solutions: []*armselfhelp.SolutionMetadataProperties{
+		// 							{
+		// 								Description: to.Ptr("This is an azure solution to troubleshoot subscription issues."),
+		// 								RequiredInputs: []*string{
+		// 									to.Ptr("SubscriptionId")},
+		// 									SolutionID: to.Ptr("SampleSolutionId3"),
+		// 									SolutionType: to.Ptr(armselfhelp.SolutionTypeDiagnostics),
+		// 							}},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtSubscriptionScope.json
 func ExampleDiscoverySolutionClient_NewListPager_listDiscoverySolutionsAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,9 +123,31 @@ func ExampleDiscoverySolutionClient_NewListPager_listDiscoverySolutionsAtSubscri
 		// 							to.Ptr("SubscriptionId")},
 		// 							SolutionID: to.Ptr("SampleSolutionId1"),
 		// 							SolutionType: to.Ptr(armselfhelp.SolutionTypeDiagnostics),
-		// 					}},
+		// 						},
+		// 						{
+		// 							Description: to.Ptr("This is an azure solution to troubleshoot subscription issues."),
+		// 							RequiredInputs: []*string{
+		// 								to.Ptr("SubscriptionId")},
+		// 								SolutionID: to.Ptr("SampleSolutionId2"),
+		// 								SolutionType: to.Ptr(armselfhelp.SolutionTypeSolutions),
+		// 						}},
+		// 					},
 		// 				},
-		// 		}},
-		// 	}
+		// 				{
+		// 					Name: to.Ptr("SampleProblemClassificationId2"),
+		// 					Type: to.Ptr("Microsoft.Help/discoverySolutions"),
+		// 					ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/providers/Microsoft.Help/discoverySolutions/SampleProblemClassificationId2"),
+		// 					Properties: &armselfhelp.Solutions{
+		// 						Solutions: []*armselfhelp.SolutionMetadataProperties{
+		// 							{
+		// 								Description: to.Ptr("This is an azure solution to troubleshoot subscription issues."),
+		// 								RequiredInputs: []*string{
+		// 									to.Ptr("SubscriptionId")},
+		// 									SolutionID: to.Ptr("SampleSolutionId3"),
+		// 									SolutionType: to.Ptr(armselfhelp.SolutionTypeDiagnostics),
+		// 							}},
+		// 						},
+		// 				}},
+		// 			}
 	}
 }

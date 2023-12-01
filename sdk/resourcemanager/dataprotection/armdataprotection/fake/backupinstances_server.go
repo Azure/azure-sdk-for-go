@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -68,6 +68,10 @@ type BackupInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSyncBackupInstance func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters armdataprotection.SyncBackupInstanceRequest, options *armdataprotection.BackupInstancesClientBeginSyncBackupInstanceOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientSyncBackupInstanceResponse], errResp azfake.ErrorResponder)
 
+	// BeginTriggerCrossRegionRestore is the fake for method BackupInstancesClient.BeginTriggerCrossRegionRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTriggerCrossRegionRestore func(ctx context.Context, resourceGroupName string, location string, parameters armdataprotection.CrossRegionRestoreRequestObject, options *armdataprotection.BackupInstancesClientBeginTriggerCrossRegionRestoreOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse], errResp azfake.ErrorResponder)
+
 	// BeginTriggerRehydrate is the fake for method BackupInstancesClient.BeginTriggerRehydrate
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginTriggerRehydrate func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters armdataprotection.AzureBackupRehydrationRequest, options *armdataprotection.BackupInstancesClientBeginTriggerRehydrateOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRehydrateResponse], errResp azfake.ErrorResponder)
@@ -75,6 +79,10 @@ type BackupInstancesServer struct {
 	// BeginTriggerRestore is the fake for method BackupInstancesClient.BeginTriggerRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginTriggerRestore func(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, parameters armdataprotection.AzureBackupRestoreRequestClassification, options *armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRestoreResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateCrossRegionRestore is the fake for method BackupInstancesClient.BeginValidateCrossRegionRestore
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidateCrossRegionRestore func(ctx context.Context, resourceGroupName string, location string, parameters armdataprotection.ValidateCrossRegionRestoreRequestObject, options *armdataprotection.BackupInstancesClientBeginValidateCrossRegionRestoreOptions) (resp azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse], errResp azfake.ErrorResponder)
 
 	// BeginValidateForBackup is the fake for method BackupInstancesClient.BeginValidateForBackup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -90,40 +98,44 @@ type BackupInstancesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBackupInstancesServerTransport(srv *BackupInstancesServer) *BackupInstancesServerTransport {
 	return &BackupInstancesServerTransport{
-		srv:                     srv,
-		beginAdhocBackup:        newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]](),
-		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]](),
-		beginDelete:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]](),
-		newListPager:            newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]](),
-		beginResumeBackups:      newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]](),
-		beginResumeProtection:   newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]](),
-		beginStopProtection:     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]](),
-		beginSuspendBackups:     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSuspendBackupsResponse]](),
-		beginSyncBackupInstance: newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSyncBackupInstanceResponse]](),
-		beginTriggerRehydrate:   newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRehydrateResponse]](),
-		beginTriggerRestore:     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRestoreResponse]](),
-		beginValidateForBackup:  newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]](),
-		beginValidateForRestore: newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]](),
+		srv:                             srv,
+		beginAdhocBackup:                newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]](),
+		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]](),
+		beginDelete:                     newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]](),
+		beginResumeBackups:              newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]](),
+		beginResumeProtection:           newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]](),
+		beginStopProtection:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]](),
+		beginSuspendBackups:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSuspendBackupsResponse]](),
+		beginSyncBackupInstance:         newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSyncBackupInstanceResponse]](),
+		beginTriggerCrossRegionRestore:  newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse]](),
+		beginTriggerRehydrate:           newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRehydrateResponse]](),
+		beginTriggerRestore:             newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRestoreResponse]](),
+		beginValidateCrossRegionRestore: newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse]](),
+		beginValidateForBackup:          newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]](),
+		beginValidateForRestore:         newTracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]](),
 	}
 }
 
 // BackupInstancesServerTransport connects instances of armdataprotection.BackupInstancesClient to instances of BackupInstancesServer.
 // Don't use this type directly, use NewBackupInstancesServerTransport instead.
 type BackupInstancesServerTransport struct {
-	srv                     *BackupInstancesServer
-	beginAdhocBackup        *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]]
-	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]]
-	beginDelete             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]]
-	newListPager            *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]]
-	beginResumeBackups      *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]]
-	beginResumeProtection   *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]]
-	beginStopProtection     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]]
-	beginSuspendBackups     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSuspendBackupsResponse]]
-	beginSyncBackupInstance *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSyncBackupInstanceResponse]]
-	beginTriggerRehydrate   *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRehydrateResponse]]
-	beginTriggerRestore     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRestoreResponse]]
-	beginValidateForBackup  *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]]
-	beginValidateForRestore *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]]
+	srv                             *BackupInstancesServer
+	beginAdhocBackup                *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientAdhocBackupResponse]]
+	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientCreateOrUpdateResponse]]
+	beginDelete                     *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientDeleteResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesClientListResponse]]
+	beginResumeBackups              *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeBackupsResponse]]
+	beginResumeProtection           *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientResumeProtectionResponse]]
+	beginStopProtection             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientStopProtectionResponse]]
+	beginSuspendBackups             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSuspendBackupsResponse]]
+	beginSyncBackupInstance         *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientSyncBackupInstanceResponse]]
+	beginTriggerCrossRegionRestore  *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse]]
+	beginTriggerRehydrate           *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRehydrateResponse]]
+	beginTriggerRestore             *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientTriggerRestoreResponse]]
+	beginValidateCrossRegionRestore *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse]]
+	beginValidateForBackup          *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForBackupResponse]]
+	beginValidateForRestore         *tracker[azfake.PollerResponder[armdataprotection.BackupInstancesClientValidateForRestoreResponse]]
 }
 
 // Do implements the policy.Transporter interface for BackupInstancesServerTransport.
@@ -160,10 +172,14 @@ func (b *BackupInstancesServerTransport) Do(req *http.Request) (*http.Response, 
 		resp, err = b.dispatchBeginSuspendBackups(req)
 	case "BackupInstancesClient.BeginSyncBackupInstance":
 		resp, err = b.dispatchBeginSyncBackupInstance(req)
+	case "BackupInstancesClient.BeginTriggerCrossRegionRestore":
+		resp, err = b.dispatchBeginTriggerCrossRegionRestore(req)
 	case "BackupInstancesClient.BeginTriggerRehydrate":
 		resp, err = b.dispatchBeginTriggerRehydrate(req)
 	case "BackupInstancesClient.BeginTriggerRestore":
 		resp, err = b.dispatchBeginTriggerRestore(req)
+	case "BackupInstancesClient.BeginValidateCrossRegionRestore":
+		resp, err = b.dispatchBeginValidateCrossRegionRestore(req)
 	case "BackupInstancesClient.BeginValidateForBackup":
 		resp, err = b.dispatchBeginValidateForBackup(req)
 	case "BackupInstancesClient.BeginValidateForRestore":
@@ -694,6 +710,54 @@ func (b *BackupInstancesServerTransport) dispatchBeginSyncBackupInstance(req *ht
 	return resp, nil
 }
 
+func (b *BackupInstancesServerTransport) dispatchBeginTriggerCrossRegionRestore(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginTriggerCrossRegionRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerCrossRegionRestore not implemented")}
+	}
+	beginTriggerCrossRegionRestore := b.beginTriggerCrossRegionRestore.get(req)
+	if beginTriggerCrossRegionRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataProtection/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/crossRegionRestore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdataprotection.CrossRegionRestoreRequestObject](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginTriggerCrossRegionRestore(req.Context(), resourceGroupNameParam, locationParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTriggerCrossRegionRestore = &respr
+		b.beginTriggerCrossRegionRestore.add(req, beginTriggerCrossRegionRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginTriggerCrossRegionRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginTriggerCrossRegionRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTriggerCrossRegionRestore) {
+		b.beginTriggerCrossRegionRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (b *BackupInstancesServerTransport) dispatchBeginTriggerRehydrate(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginTriggerRehydrate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerRehydrate not implemented")}
@@ -797,6 +861,54 @@ func (b *BackupInstancesServerTransport) dispatchBeginTriggerRestore(req *http.R
 	}
 	if !server.PollerResponderMore(beginTriggerRestore) {
 		b.beginTriggerRestore.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (b *BackupInstancesServerTransport) dispatchBeginValidateCrossRegionRestore(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginValidateCrossRegionRestore == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCrossRegionRestore not implemented")}
+	}
+	beginValidateCrossRegionRestore := b.beginValidateCrossRegionRestore.get(req)
+	if beginValidateCrossRegionRestore == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataProtection/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateCrossRegionRestore`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdataprotection.ValidateCrossRegionRestoreRequestObject](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginValidateCrossRegionRestore(req.Context(), resourceGroupNameParam, locationParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateCrossRegionRestore = &respr
+		b.beginValidateCrossRegionRestore.add(req, beginValidateCrossRegionRestore)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateCrossRegionRestore, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		b.beginValidateCrossRegionRestore.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateCrossRegionRestore) {
+		b.beginValidateCrossRegionRestore.remove(req)
 	}
 
 	return resp, nil

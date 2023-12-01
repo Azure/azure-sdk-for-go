@@ -10,7 +10,7 @@ package armdataprotection
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
-	moduleVersion = "v2.4.0"
+	moduleVersion = "v3.0.0"
 )
 
 type AbsoluteMarker string
@@ -345,6 +345,23 @@ func PossibleRecoveryOptionValues() []RecoveryOption {
 	}
 }
 
+// RecoveryPointCompletionState - Specifies recovery point completeness. Partial (i.e., only some of the intended items were
+// backed up), or Completed (i.e., ALL intended items were backed up).
+type RecoveryPointCompletionState string
+
+const (
+	RecoveryPointCompletionStateCompleted RecoveryPointCompletionState = "Completed"
+	RecoveryPointCompletionStatePartial   RecoveryPointCompletionState = "Partial"
+)
+
+// PossibleRecoveryPointCompletionStateValues returns the possible values for the RecoveryPointCompletionState const type.
+func PossibleRecoveryPointCompletionStateValues() []RecoveryPointCompletionState {
+	return []RecoveryPointCompletionState{
+		RecoveryPointCompletionStateCompleted,
+		RecoveryPointCompletionStatePartial,
+	}
+}
+
 // RehydrationPriority - Priority to be used for rehydration. Values High or Standard
 type RehydrationPriority string
 
@@ -413,6 +430,20 @@ func PossibleResourceMoveStateValues() []ResourceMoveState {
 		ResourceMoveStatePrepareFailed,
 		ResourceMoveStatePrepareTimedout,
 		ResourceMoveStateUnknown,
+	}
+}
+
+// ResourcePropertiesObjectType - Type of the specific object - used for deserializing
+type ResourcePropertiesObjectType string
+
+const (
+	ResourcePropertiesObjectTypeDefaultResourceProperties ResourcePropertiesObjectType = "DefaultResourceProperties"
+)
+
+// PossibleResourcePropertiesObjectTypeValues returns the possible values for the ResourcePropertiesObjectType const type.
+func PossibleResourcePropertiesObjectTypeValues() []ResourcePropertiesObjectType {
+	return []ResourcePropertiesObjectType{
+		ResourcePropertiesObjectTypeDefaultResourceProperties,
 	}
 }
 

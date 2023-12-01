@@ -253,6 +253,8 @@ func unmarshalBaseResourcePropertiesClassification(rawMsg json.RawMessage) (Base
 	}
 	var b BaseResourcePropertiesClassification
 	switch m["objectType"] {
+	case string(ResourcePropertiesObjectTypeDefaultResourceProperties):
+		b = &DefaultResourceProperties{}
 	default:
 		b = &BaseResourceProperties{}
 	}
@@ -383,6 +385,8 @@ func unmarshalItemLevelRestoreCriteriaClassification(rawMsg json.RawMessage) (It
 		b = &ItemPathBasedRestoreCriteria{}
 	case "KubernetesClusterRestoreCriteria":
 		b = &KubernetesClusterRestoreCriteria{}
+	case "KubernetesClusterVaultTierRestoreCriteria":
+		b = &KubernetesClusterVaultTierRestoreCriteria{}
 	case "KubernetesPVRestoreCriteria":
 		b = &KubernetesPVRestoreCriteria{}
 	case "KubernetesStorageClassRestoreCriteria":

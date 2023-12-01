@@ -91,6 +91,24 @@ func (c *ClientFactory) NewExportJobsOperationResultClient() *ExportJobsOperatio
 	return subClient
 }
 
+// NewFetchCrossRegionRestoreJobClient creates a new instance of FetchCrossRegionRestoreJobClient.
+func (c *ClientFactory) NewFetchCrossRegionRestoreJobClient() *FetchCrossRegionRestoreJobClient {
+	subClient, _ := NewFetchCrossRegionRestoreJobClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewFetchCrossRegionRestoreJobsClient creates a new instance of FetchCrossRegionRestoreJobsClient.
+func (c *ClientFactory) NewFetchCrossRegionRestoreJobsClient() *FetchCrossRegionRestoreJobsClient {
+	subClient, _ := NewFetchCrossRegionRestoreJobsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewFetchSecondaryRecoveryPointsClient creates a new instance of FetchSecondaryRecoveryPointsClient.
+func (c *ClientFactory) NewFetchSecondaryRecoveryPointsClient() *FetchSecondaryRecoveryPointsClient {
+	subClient, _ := NewFetchSecondaryRecoveryPointsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewJobsClient creates a new instance of JobsClient.
 func (c *ClientFactory) NewJobsClient() *JobsClient {
 	subClient, _ := NewJobsClient(c.subscriptionID, c.credential, c.options)

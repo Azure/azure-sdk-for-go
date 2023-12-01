@@ -63,6 +63,13 @@ type BackupInstancesClientBeginSyncBackupInstanceOptions struct {
 	ResumeToken string
 }
 
+// BackupInstancesClientBeginTriggerCrossRegionRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerCrossRegionRestore
+// method.
+type BackupInstancesClientBeginTriggerCrossRegionRestoreOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // BackupInstancesClientBeginTriggerRehydrateOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRehydrate
 // method.
 type BackupInstancesClientBeginTriggerRehydrateOptions struct {
@@ -73,6 +80,13 @@ type BackupInstancesClientBeginTriggerRehydrateOptions struct {
 // BackupInstancesClientBeginTriggerRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginTriggerRestore
 // method.
 type BackupInstancesClientBeginTriggerRestoreOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BackupInstancesClientBeginValidateCrossRegionRestoreOptions contains the optional parameters for the BackupInstancesClient.BeginValidateCrossRegionRestore
+// method.
+type BackupInstancesClientBeginValidateCrossRegionRestoreOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -237,6 +251,29 @@ type ExportJobsClientBeginTriggerOptions struct {
 // method.
 type ExportJobsOperationResultClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// FetchCrossRegionRestoreJobClientGetOptions contains the optional parameters for the FetchCrossRegionRestoreJobClient.Get
+// method.
+type FetchCrossRegionRestoreJobClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FetchCrossRegionRestoreJobsClientListOptions contains the optional parameters for the FetchCrossRegionRestoreJobsClient.NewListPager
+// method.
+type FetchCrossRegionRestoreJobsClientListOptions struct {
+	// OData filter options.
+	Filter *string
+}
+
+// FetchSecondaryRecoveryPointsClientListOptions contains the optional parameters for the FetchSecondaryRecoveryPointsClient.NewListPager
+// method.
+type FetchSecondaryRecoveryPointsClientListOptions struct {
+	// OData filter options.
+	Filter *string
+
+	// skipToken Filter.
+	SkipToken *string
 }
 
 // JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.

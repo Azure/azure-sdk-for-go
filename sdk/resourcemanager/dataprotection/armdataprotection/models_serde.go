@@ -200,6 +200,7 @@ func (a AzureBackupDiscreteRecoveryPoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "policyVersion", a.PolicyVersion)
 	populate(objectMap, "recoveryPointDataStoresDetails", a.RecoveryPointDataStoresDetails)
 	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
+	populate(objectMap, "recoveryPointState", a.RecoveryPointState)
 	populateDateTimeRFC3339(objectMap, "recoveryPointTime", a.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", a.RecoveryPointType)
 	populate(objectMap, "retentionTagName", a.RetentionTagName)
@@ -236,6 +237,9 @@ func (a *AzureBackupDiscreteRecoveryPoint) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryPointId":
 			err = unpopulate(val, "RecoveryPointID", &a.RecoveryPointID)
+			delete(rawMsg, key)
+		case "recoveryPointState":
+			err = unpopulate(val, "RecoveryPointState", &a.RecoveryPointState)
 			delete(rawMsg, key)
 		case "recoveryPointTime":
 			err = unpopulateDateTimeRFC3339(val, "RecoveryPointTime", &a.RecoveryPointTime)
@@ -1448,6 +1452,7 @@ func (b BackupVault) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isVaultProtectedByResourceGuard", b.IsVaultProtectedByResourceGuard)
 	populate(objectMap, "monitoringSettings", b.MonitoringSettings)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
+	populate(objectMap, "replicatedRegions", b.ReplicatedRegions)
 	populate(objectMap, "resourceMoveDetails", b.ResourceMoveDetails)
 	populate(objectMap, "resourceMoveState", b.ResourceMoveState)
 	populate(objectMap, "secureScore", b.SecureScore)
@@ -1476,6 +1481,9 @@ func (b *BackupVault) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &b.ProvisioningState)
+			delete(rawMsg, key)
+		case "replicatedRegions":
+			err = unpopulate(val, "ReplicatedRegions", &b.ReplicatedRegions)
 			delete(rawMsg, key)
 		case "resourceMoveDetails":
 			err = unpopulate(val, "ResourceMoveDetails", &b.ResourceMoveDetails)
@@ -2106,6 +2114,134 @@ func (c *CopyOption) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreDetails.
+func (c CrossRegionRestoreDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sourceBackupInstanceId", c.SourceBackupInstanceID)
+	populate(objectMap, "sourceRegion", c.SourceRegion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CrossRegionRestoreDetails.
+func (c *CrossRegionRestoreDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sourceBackupInstanceId":
+			err = unpopulate(val, "SourceBackupInstanceID", &c.SourceBackupInstanceID)
+			delete(rawMsg, key)
+		case "sourceRegion":
+			err = unpopulate(val, "SourceRegion", &c.SourceRegion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreJobRequest.
+func (c CrossRegionRestoreJobRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "jobId", c.JobID)
+	populate(objectMap, "sourceBackupVaultId", c.SourceBackupVaultID)
+	populate(objectMap, "sourceRegion", c.SourceRegion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CrossRegionRestoreJobRequest.
+func (c *CrossRegionRestoreJobRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "jobId":
+			err = unpopulate(val, "JobID", &c.JobID)
+			delete(rawMsg, key)
+		case "sourceBackupVaultId":
+			err = unpopulate(val, "SourceBackupVaultID", &c.SourceBackupVaultID)
+			delete(rawMsg, key)
+		case "sourceRegion":
+			err = unpopulate(val, "SourceRegion", &c.SourceRegion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreJobsRequest.
+func (c CrossRegionRestoreJobsRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sourceBackupVaultId", c.SourceBackupVaultID)
+	populate(objectMap, "sourceRegion", c.SourceRegion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CrossRegionRestoreJobsRequest.
+func (c *CrossRegionRestoreJobsRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sourceBackupVaultId":
+			err = unpopulate(val, "SourceBackupVaultID", &c.SourceBackupVaultID)
+			delete(rawMsg, key)
+		case "sourceRegion":
+			err = unpopulate(val, "SourceRegion", &c.SourceRegion)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreRequestObject.
+func (c CrossRegionRestoreRequestObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "crossRegionRestoreDetails", c.CrossRegionRestoreDetails)
+	populate(objectMap, "restoreRequestObject", c.RestoreRequestObject)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CrossRegionRestoreRequestObject.
+func (c *CrossRegionRestoreRequestObject) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "crossRegionRestoreDetails":
+			err = unpopulate(val, "CrossRegionRestoreDetails", &c.CrossRegionRestoreDetails)
+			delete(rawMsg, key)
+		case "restoreRequestObject":
+			c.RestoreRequestObject, err = unmarshalAzureBackupRestoreRequestClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CrossRegionRestoreSettings.
 func (c CrossRegionRestoreSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2385,6 +2521,33 @@ func (d *Day) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "isLast":
 			err = unpopulate(val, "IsLast", &d.IsLast)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefaultResourceProperties.
+func (d DefaultResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = ResourcePropertiesObjectTypeDefaultResourceProperties
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DefaultResourceProperties.
+func (d *DefaultResourceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &d.ObjectType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3085,6 +3248,76 @@ func (e *ErrorAdditionalInfo) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
+func (e ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "additionalInfo", e.AdditionalInfo)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	populate(objectMap, "target", e.Target)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorDetail.
+func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalInfo":
+			err = unpopulate(val, "AdditionalInfo", &e.AdditionalInfo)
+			delete(rawMsg, key)
+		case "code":
+			err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
+		case "details":
+			err = unpopulate(val, "Details", &e.Details)
+			delete(rawMsg, key)
+		case "message":
+			err = unpopulate(val, "Message", &e.Message)
+			delete(rawMsg, key)
+		case "target":
+			err = unpopulate(val, "Target", &e.Target)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
+func (e ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "error", e.Error)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
+func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "error":
+			err = unpopulate(val, "Error", &e.Error)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ExportJobsResult.
 func (e ExportJobsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3270,6 +3503,37 @@ func (f *FeatureValidationResponseBase) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "objectType":
 			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchSecondaryRPsRequestParameters.
+func (f FetchSecondaryRPsRequestParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "sourceBackupInstanceId", f.SourceBackupInstanceID)
+	populate(objectMap, "sourceRegion", f.SourceRegion)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchSecondaryRPsRequestParameters.
+func (f *FetchSecondaryRPsRequestParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "sourceBackupInstanceId":
+			err = unpopulate(val, "SourceBackupInstanceID", &f.SourceBackupInstanceID)
+			delete(rawMsg, key)
+		case "sourceRegion":
+			err = unpopulate(val, "SourceRegion", &f.SourceRegion)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3526,6 +3790,7 @@ func (j JobExtendedInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceRecoverPoint", j.SourceRecoverPoint)
 	populate(objectMap, "subTasks", j.SubTasks)
 	populate(objectMap, "targetRecoverPoint", j.TargetRecoverPoint)
+	populate(objectMap, "warningDetails", j.WarningDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -3558,6 +3823,9 @@ func (j *JobExtendedInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetRecoverPoint":
 			err = unpopulate(val, "TargetRecoverPoint", &j.TargetRecoverPoint)
+			delete(rawMsg, key)
+		case "warningDetails":
+			err = unpopulate(val, "WarningDetails", &j.WarningDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3727,6 +3995,81 @@ func (k *KubernetesClusterRestoreCriteria) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "restoreHookReferences":
 			err = unpopulate(val, "RestoreHookReferences", &k.RestoreHookReferences)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KubernetesClusterVaultTierRestoreCriteria.
+func (k KubernetesClusterVaultTierRestoreCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "conflictPolicy", k.ConflictPolicy)
+	populate(objectMap, "excludedNamespaces", k.ExcludedNamespaces)
+	populate(objectMap, "excludedResourceTypes", k.ExcludedResourceTypes)
+	populate(objectMap, "includeClusterScopeResources", k.IncludeClusterScopeResources)
+	populate(objectMap, "includedNamespaces", k.IncludedNamespaces)
+	populate(objectMap, "includedResourceTypes", k.IncludedResourceTypes)
+	populate(objectMap, "labelSelectors", k.LabelSelectors)
+	populate(objectMap, "namespaceMappings", k.NamespaceMappings)
+	objectMap["objectType"] = "KubernetesClusterVaultTierRestoreCriteria"
+	populate(objectMap, "persistentVolumeRestoreMode", k.PersistentVolumeRestoreMode)
+	populate(objectMap, "restoreHookReferences", k.RestoreHookReferences)
+	populate(objectMap, "stagingResourceGroupId", k.StagingResourceGroupID)
+	populate(objectMap, "stagingStorageAccountId", k.StagingStorageAccountID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KubernetesClusterVaultTierRestoreCriteria.
+func (k *KubernetesClusterVaultTierRestoreCriteria) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "conflictPolicy":
+			err = unpopulate(val, "ConflictPolicy", &k.ConflictPolicy)
+			delete(rawMsg, key)
+		case "excludedNamespaces":
+			err = unpopulate(val, "ExcludedNamespaces", &k.ExcludedNamespaces)
+			delete(rawMsg, key)
+		case "excludedResourceTypes":
+			err = unpopulate(val, "ExcludedResourceTypes", &k.ExcludedResourceTypes)
+			delete(rawMsg, key)
+		case "includeClusterScopeResources":
+			err = unpopulate(val, "IncludeClusterScopeResources", &k.IncludeClusterScopeResources)
+			delete(rawMsg, key)
+		case "includedNamespaces":
+			err = unpopulate(val, "IncludedNamespaces", &k.IncludedNamespaces)
+			delete(rawMsg, key)
+		case "includedResourceTypes":
+			err = unpopulate(val, "IncludedResourceTypes", &k.IncludedResourceTypes)
+			delete(rawMsg, key)
+		case "labelSelectors":
+			err = unpopulate(val, "LabelSelectors", &k.LabelSelectors)
+			delete(rawMsg, key)
+		case "namespaceMappings":
+			err = unpopulate(val, "NamespaceMappings", &k.NamespaceMappings)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &k.ObjectType)
+			delete(rawMsg, key)
+		case "persistentVolumeRestoreMode":
+			err = unpopulate(val, "PersistentVolumeRestoreMode", &k.PersistentVolumeRestoreMode)
+			delete(rawMsg, key)
+		case "restoreHookReferences":
+			err = unpopulate(val, "RestoreHookReferences", &k.RestoreHookReferences)
+			delete(rawMsg, key)
+		case "stagingResourceGroupId":
+			err = unpopulate(val, "StagingResourceGroupID", &k.StagingResourceGroupID)
+			delete(rawMsg, key)
+		case "stagingStorageAccountId":
+			err = unpopulate(val, "StagingStorageAccountID", &k.StagingStorageAccountID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5580,6 +5923,68 @@ func (u *UserFacingError) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UserFacingWarningDetail.
+func (u UserFacingWarningDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "resourceName", u.ResourceName)
+	populate(objectMap, "warning", u.Warning)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UserFacingWarningDetail.
+func (u *UserFacingWarningDetail) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "resourceName":
+			err = unpopulate(val, "ResourceName", &u.ResourceName)
+			delete(rawMsg, key)
+		case "warning":
+			err = unpopulate(val, "Warning", &u.Warning)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ValidateCrossRegionRestoreRequestObject.
+func (v ValidateCrossRegionRestoreRequestObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "crossRegionRestoreDetails", v.CrossRegionRestoreDetails)
+	populate(objectMap, "restoreRequestObject", v.RestoreRequestObject)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ValidateCrossRegionRestoreRequestObject.
+func (v *ValidateCrossRegionRestoreRequestObject) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "crossRegionRestoreDetails":
+			err = unpopulate(val, "CrossRegionRestoreDetails", &v.CrossRegionRestoreDetails)
+			delete(rawMsg, key)
+		case "restoreRequestObject":
+			v.RestoreRequestObject, err = unmarshalAzureBackupRestoreRequestClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil

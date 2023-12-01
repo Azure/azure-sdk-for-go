@@ -1,5 +1,43 @@
 # Release History
 
+## 3.0.0 (2023-12-22)
+### Breaking Changes
+
+- Type of `BaseResourceProperties.ObjectType` has been changed from `*string` to `*ResourcePropertiesObjectType`
+
+### Features Added
+
+- New enum type `RecoveryPointCompletionState` with values `RecoveryPointCompletionStateCompleted`, `RecoveryPointCompletionStatePartial`
+- New enum type `ResourcePropertiesObjectType` with values `ResourcePropertiesObjectTypeDefaultResourceProperties`
+- New function `*BackupInstancesClient.BeginTriggerCrossRegionRestore(context.Context, string, string, CrossRegionRestoreRequestObject, *BackupInstancesClientBeginTriggerCrossRegionRestoreOptions) (*runtime.Poller[BackupInstancesClientTriggerCrossRegionRestoreResponse], error)`
+- New function `*BackupInstancesClient.BeginValidateCrossRegionRestore(context.Context, string, string, ValidateCrossRegionRestoreRequestObject, *BackupInstancesClientBeginValidateCrossRegionRestoreOptions) (*runtime.Poller[BackupInstancesClientValidateCrossRegionRestoreResponse], error)`
+- New function `*ClientFactory.NewFetchCrossRegionRestoreJobClient() *FetchCrossRegionRestoreJobClient`
+- New function `*ClientFactory.NewFetchCrossRegionRestoreJobsClient() *FetchCrossRegionRestoreJobsClient`
+- New function `*ClientFactory.NewFetchSecondaryRecoveryPointsClient() *FetchSecondaryRecoveryPointsClient`
+- New function `*DefaultResourceProperties.GetBaseResourceProperties() *BaseResourceProperties`
+- New function `NewFetchCrossRegionRestoreJobClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FetchCrossRegionRestoreJobClient, error)`
+- New function `*FetchCrossRegionRestoreJobClient.Get(context.Context, string, string, CrossRegionRestoreJobRequest, *FetchCrossRegionRestoreJobClientGetOptions) (FetchCrossRegionRestoreJobClientGetResponse, error)`
+- New function `NewFetchCrossRegionRestoreJobsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FetchCrossRegionRestoreJobsClient, error)`
+- New function `*FetchCrossRegionRestoreJobsClient.NewListPager(string, string, CrossRegionRestoreJobsRequest, *FetchCrossRegionRestoreJobsClientListOptions) *runtime.Pager[FetchCrossRegionRestoreJobsClientListResponse]`
+- New function `NewFetchSecondaryRecoveryPointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FetchSecondaryRecoveryPointsClient, error)`
+- New function `*FetchSecondaryRecoveryPointsClient.NewListPager(string, string, FetchSecondaryRPsRequestParameters, *FetchSecondaryRecoveryPointsClientListOptions) *runtime.Pager[FetchSecondaryRecoveryPointsClientListResponse]`
+- New function `*KubernetesClusterVaultTierRestoreCriteria.GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria`
+- New struct `CrossRegionRestoreDetails`
+- New struct `CrossRegionRestoreJobRequest`
+- New struct `CrossRegionRestoreJobsRequest`
+- New struct `CrossRegionRestoreRequestObject`
+- New struct `DefaultResourceProperties`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `FetchSecondaryRPsRequestParameters`
+- New struct `KubernetesClusterVaultTierRestoreCriteria`
+- New struct `UserFacingWarningDetail`
+- New struct `ValidateCrossRegionRestoreRequestObject`
+- New field `RecoveryPointState` in struct `AzureBackupDiscreteRecoveryPoint`
+- New field `ReplicatedRegions` in struct `BackupVault`
+- New field `WarningDetails` in struct `JobExtendedInfo`
+
+
 ## 2.4.0 (2023-11-24)
 ### Features Added
 

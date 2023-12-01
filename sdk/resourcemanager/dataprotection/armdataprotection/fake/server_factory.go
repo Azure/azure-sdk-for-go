@@ -28,6 +28,9 @@ type ServerFactory struct {
 	DppResourceGuardProxyServer               DppResourceGuardProxyServer
 	ExportJobsServer                          ExportJobsServer
 	ExportJobsOperationResultServer           ExportJobsOperationResultServer
+	FetchCrossRegionRestoreJobServer          FetchCrossRegionRestoreJobServer
+	FetchCrossRegionRestoreJobsServer         FetchCrossRegionRestoreJobsServer
+	FetchSecondaryRecoveryPointsServer        FetchSecondaryRecoveryPointsServer
 	JobsServer                                JobsServer
 	OperationResultServer                     OperationResultServer
 	OperationStatusBackupVaultContextServer   OperationStatusBackupVaultContextServer
@@ -62,6 +65,9 @@ type ServerFactoryTransport struct {
 	trDppResourceGuardProxyServer               *DppResourceGuardProxyServerTransport
 	trExportJobsServer                          *ExportJobsServerTransport
 	trExportJobsOperationResultServer           *ExportJobsOperationResultServerTransport
+	trFetchCrossRegionRestoreJobServer          *FetchCrossRegionRestoreJobServerTransport
+	trFetchCrossRegionRestoreJobsServer         *FetchCrossRegionRestoreJobsServerTransport
+	trFetchSecondaryRecoveryPointsServer        *FetchSecondaryRecoveryPointsServerTransport
 	trJobsServer                                *JobsServerTransport
 	trOperationResultServer                     *OperationResultServerTransport
 	trOperationStatusBackupVaultContextServer   *OperationStatusBackupVaultContextServerTransport
@@ -125,6 +131,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExportJobsOperationResultServerTransport(&s.srv.ExportJobsOperationResultServer)
 		})
 		resp, err = s.trExportJobsOperationResultServer.Do(req)
+	case "FetchCrossRegionRestoreJobClient":
+		initServer(s, &s.trFetchCrossRegionRestoreJobServer, func() *FetchCrossRegionRestoreJobServerTransport {
+			return NewFetchCrossRegionRestoreJobServerTransport(&s.srv.FetchCrossRegionRestoreJobServer)
+		})
+		resp, err = s.trFetchCrossRegionRestoreJobServer.Do(req)
+	case "FetchCrossRegionRestoreJobsClient":
+		initServer(s, &s.trFetchCrossRegionRestoreJobsServer, func() *FetchCrossRegionRestoreJobsServerTransport {
+			return NewFetchCrossRegionRestoreJobsServerTransport(&s.srv.FetchCrossRegionRestoreJobsServer)
+		})
+		resp, err = s.trFetchCrossRegionRestoreJobsServer.Do(req)
+	case "FetchSecondaryRecoveryPointsClient":
+		initServer(s, &s.trFetchSecondaryRecoveryPointsServer, func() *FetchSecondaryRecoveryPointsServerTransport {
+			return NewFetchSecondaryRecoveryPointsServerTransport(&s.srv.FetchSecondaryRecoveryPointsServer)
+		})
+		resp, err = s.trFetchSecondaryRecoveryPointsServer.Do(req)
 	case "JobsClient":
 		initServer(s, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
 		resp, err = s.trJobsServer.Do(req)

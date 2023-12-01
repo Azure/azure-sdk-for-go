@@ -25,7 +25,7 @@ type ApplicationTypeVersionsClientGetResponse struct {
 	ApplicationTypeVersionResource
 }
 
-// ApplicationTypeVersionsClientListResponse contains the response from method ApplicationTypeVersionsClient.List.
+// ApplicationTypeVersionsClientListResponse contains the response from method ApplicationTypeVersionsClient.NewListPager.
 type ApplicationTypeVersionsClientListResponse struct {
 	// The list of application type version resources for the specified application type name resource.
 	ApplicationTypeVersionResourceList
@@ -48,7 +48,7 @@ type ApplicationTypesClientGetResponse struct {
 	ApplicationTypeResource
 }
 
-// ApplicationTypesClientListResponse contains the response from method ApplicationTypesClient.List.
+// ApplicationTypesClientListResponse contains the response from method ApplicationTypesClient.NewListPager.
 type ApplicationTypesClientListResponse struct {
 	// The list of application type names.
 	ApplicationTypeResourceList
@@ -71,7 +71,7 @@ type ApplicationsClientGetResponse struct {
 	ApplicationResource
 }
 
-// ApplicationsClientListResponse contains the response from method ApplicationsClient.List.
+// ApplicationsClientListResponse contains the response from method ApplicationsClient.NewListPager.
 type ApplicationsClientListResponse struct {
 	// The list of application resources.
 	ApplicationResourceList
@@ -124,13 +124,13 @@ type ClustersClientGetResponse struct {
 	Cluster
 }
 
-// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	// Cluster list results
 	ClusterListResult
 }
 
-// ClustersClientListResponse contains the response from method ClustersClient.List.
+// ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
 	// Cluster list results
 	ClusterListResult
@@ -172,7 +172,7 @@ type ServicesClientGetResponse struct {
 	ServiceResource
 }
 
-// ServicesClientListResponse contains the response from method ServicesClient.List.
+// ServicesClientListResponse contains the response from method ServicesClient.NewListPager.
 type ServicesClientListResponse struct {
 	// The list of service resources.
 	ServiceResourceList

@@ -241,31 +241,31 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// List - Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
 //
 // Generated from API version 2021-06-01
-//   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(ctx context.Context, options *ClustersClientListOptions) (ClustersClientListResponse, error) {
-	var err error
-	const operationName = "ClustersClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, options)
-	if err != nil {
-		return ClustersClientListResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClustersClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClustersClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+//   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
+func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListResponse]{
+		More: func(page ClustersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListResponse) (ClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return ClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -295,34 +295,34 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all Service Fabric cluster resources created or in the process of being created in the resource
-// group.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListByResourceGroupPager - Gets all Service Fabric cluster resources created or in the process of being created in the
+// resource group.
 //
 // Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group.
-//   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
+//   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 //     method.
-func (client *ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ClustersClientListByResourceGroupOptions) (ClustersClientListByResourceGroupResponse, error) {
-	var err error
-	const operationName = "ClustersClient.ListByResourceGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-	if err != nil {
-		return ClustersClientListByResourceGroupResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClustersClientListByResourceGroupResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClustersClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.listByResourceGroupHandleResponse(httpResp)
-	return resp, err
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByResourceGroupResponse]{
+		More: func(page ClustersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ClustersClientListByResourceGroupResponse) (ClustersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClustersClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
+			if err != nil {
+				return ClustersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.

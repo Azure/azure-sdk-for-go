@@ -268,34 +268,35 @@ func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (Ap
 	return result, nil
 }
 
-// List - Gets all application type name resources created or in the process of being created in the Service Fabric cluster
-// resource.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Gets all application type name resources created or in the process of being created in the Service Fabric
+// cluster resource.
 //
 // Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster resource.
-//   - options - ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.List method.
-func (client *ApplicationTypesClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ApplicationTypesClientListOptions) (ApplicationTypesClientListResponse, error) {
-	var err error
-	const operationName = "ApplicationTypesClient.List"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ApplicationTypesClientListResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ApplicationTypesClientListResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationTypesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+//   - options - ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.NewListPager
+//     method.
+func (client *ApplicationTypesClient) NewListPager(resourceGroupName string, clusterName string, options *ApplicationTypesClientListOptions) *runtime.Pager[ApplicationTypesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApplicationTypesClientListResponse]{
+		More: func(page ApplicationTypesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ApplicationTypesClientListResponse) (ApplicationTypesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationTypesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
+			}, nil)
+			if err != nil {
+				return ApplicationTypesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listCreateRequest creates the List request.

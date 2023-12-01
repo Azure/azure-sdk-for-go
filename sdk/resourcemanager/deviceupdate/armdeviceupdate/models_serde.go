@@ -104,6 +104,7 @@ func (a *AccountList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AccountProperties.
 func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "encryption", a.Encryption)
 	populate(objectMap, "hostName", a.HostName)
 	populate(objectMap, "locations", a.Locations)
 	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
@@ -122,6 +123,9 @@ func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "encryption":
+			err = unpopulate(val, "Encryption", &a.Encryption)
+			delete(rawMsg, key)
 		case "hostName":
 			err = unpopulate(val, "HostName", &a.HostName)
 			delete(rawMsg, key)
@@ -322,6 +326,37 @@ func (d *DiagnosticStorageProperties) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Encryption.
+func (e Encryption) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "keyVaultKeyUri", e.KeyVaultKeyURI)
+	populate(objectMap, "userAssignedIdentity", e.UserAssignedIdentity)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Encryption.
+func (e *Encryption) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "keyVaultKeyUri":
+			err = unpopulate(val, "KeyVaultKeyURI", &e.KeyVaultKeyURI)
+			delete(rawMsg, key)
+		case "userAssignedIdentity":
+			err = unpopulate(val, "UserAssignedIdentity", &e.UserAssignedIdentity)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil

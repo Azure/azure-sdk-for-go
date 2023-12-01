@@ -46,7 +46,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreate - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - account - Account details.
@@ -72,7 +72,7 @@ func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName
 // Create - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginCreate"
@@ -114,7 +114,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, account); err != nil {
@@ -126,7 +126,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 // BeginDelete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
@@ -151,7 +151,7 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginDelete"
@@ -193,7 +193,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +202,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Returns account details for the given account name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -248,7 +248,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 
 // Head - Checks whether account exists.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - options - AccountsClientHeadOptions contains the optional parameters for the AccountsClient.Head method.
@@ -310,7 +310,7 @@ func (client *AccountsClient) headCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -318,7 +318,7 @@ func (client *AccountsClient) headCreateRequest(ctx context.Context, resourceGro
 
 // NewListByResourceGroupPager - Returns list of Accounts.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
 //     method.
@@ -361,7 +361,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Returns list of Accounts.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
@@ -416,7 +416,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -434,7 +434,7 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 // BeginUpdate - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - accountUpdatePayload - Updated Account.
@@ -460,7 +460,7 @@ func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginUpdate"
@@ -502,7 +502,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, accountUpdatePayload); err != nil {

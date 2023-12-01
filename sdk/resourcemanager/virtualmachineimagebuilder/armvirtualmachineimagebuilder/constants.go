@@ -10,7 +10,7 @@ package armvirtualmachineimagebuilder
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/virtualmachineimagebuilder/armvirtualmachineimagebuilder"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -30,6 +30,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// OnBuildError - Error handling behavior upon build failure
+type OnBuildError string
+
+const (
+	OnBuildErrorAbort   OnBuildError = "abort"
+	OnBuildErrorCleanup OnBuildError = "cleanup"
+)
+
+// PossibleOnBuildErrorValues returns the possible values for the OnBuildError const type.
+func PossibleOnBuildErrorValues() []OnBuildError {
+	return []OnBuildError{
+		OnBuildErrorAbort,
+		OnBuildErrorCleanup,
 	}
 }
 

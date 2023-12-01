@@ -33,7 +33,7 @@ type VirtualMachineImageTemplatesServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters armvirtualmachineimagebuilder.ImageTemplate, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualMachineImageTemplatesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, imageTemplateName string, options *armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineImageTemplatesClient.Get
@@ -264,9 +264,9 @@ func (v *VirtualMachineImageTemplatesServerTransport) dispatchBeginDelete(req *h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		v.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)

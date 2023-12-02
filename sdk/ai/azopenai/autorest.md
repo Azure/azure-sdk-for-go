@@ -135,6 +135,7 @@ directive:
 # TODO: rename and move.
 ```
 
+
 We've moved these 'extension' data types into their own field. 
 
 ```yaml
@@ -190,10 +191,10 @@ directive:
 
   # Remove stream property from CompletionsOptions and ChatCompletionsOptions
   - from: swagger-document
-    where: $.components.schemas["CompletionsOptions"]
+    where: $.definitions["CompletionsOptions"]
     transform: delete $.properties.stream;
   - from: swagger-document
-    where: $.components.schemas["ChatCompletionsOptions"]
+    where: $.definitions["ChatCompletionsOptions"]
     transform: delete $.properties.stream; 
 
   # Replace anyOf schemas with an empty schema (no type) to get an "any" type generated

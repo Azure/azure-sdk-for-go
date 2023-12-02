@@ -624,9 +624,6 @@ type ChatCompletionsOptions struct {
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
 
-	// A value indicating whether chat completions should be streamed for this request.
-	Stream *bool
-
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and
 	// deterministic. It is not recommended to modify temperature and top_p for the same completions request as the interaction
@@ -920,9 +917,6 @@ type CompletionsOptions struct {
 
 	// A collection of textual sequences that will end completions generation.
 	Stop []string
-
-	// A value indicating whether chat completions should be streamed for this request.
-	Stream *bool
 
 	// The sampling temperature to use that controls the apparent creativity of generated completions. Higher values will make
 	// output more random while lower values will make results more focused and

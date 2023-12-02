@@ -1166,7 +1166,6 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "response_format", c.ResponseFormat)
 	populate(objectMap, "seed", c.Seed)
 	populate(objectMap, "stop", c.Stop)
-	populate(objectMap, "stream", c.Stream)
 	populate(objectMap, "temperature", c.Temperature)
 	populateAny(objectMap, "tool_choice", c.ToolChoice)
 	populate(objectMap, "tools", c.Tools)
@@ -1219,9 +1218,6 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "stop":
 			err = unpopulate(val, "Stop", &c.Stop)
-			delete(rawMsg, key)
-		case "stream":
-			err = unpopulate(val, "Stream", &c.Stream)
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &c.Temperature)
@@ -1725,7 +1721,6 @@ func (c CompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "presence_penalty", c.PresencePenalty)
 	populate(objectMap, "prompt", c.Prompt)
 	populate(objectMap, "stop", c.Stop)
-	populate(objectMap, "stream", c.Stream)
 	populate(objectMap, "temperature", c.Temperature)
 	populate(objectMap, "top_p", c.TopP)
 	populate(objectMap, "user", c.User)
@@ -1773,9 +1768,6 @@ func (c *CompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "stop":
 			err = unpopulate(val, "Stop", &c.Stop)
-			delete(rawMsg, key)
-		case "stream":
-			err = unpopulate(val, "Stream", &c.Stream)
 			delete(rawMsg, key)
 		case "temperature":
 			err = unpopulate(val, "Temperature", &c.Temperature)

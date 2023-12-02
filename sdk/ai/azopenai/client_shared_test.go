@@ -107,10 +107,11 @@ func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azop
 //   - OPENAI_API_KEY
 //   - OPENAI_DALLE_MODEL
 func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
+	var ep endpointWithModel
 	if isAzure {
 		// during development resources are often shifted between different
 		// internal Azure OpenAI resources.
-		return endpointWithModel{
+		ep = endpointWithModel{
 			Endpoint: endpoint{
 				URL:    getRequired("AOAI_" + res + "_ENDPOINT"),
 				APIKey: getRequired("AOAI_" + res + "_API_KEY"),
@@ -119,7 +120,7 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 			Model: getRequired("AOAI_" + res + "_MODEL"),
 		}
 	} else {
-		return endpointWithModel{
+		ep = endpointWithModel{
 			Endpoint: endpoint{
 				URL:    getRequired("OPENAI_ENDPOINT"),
 				APIKey: getRequired("OPENAI_API_KEY"),
@@ -128,6 +129,13 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 			Model: getRequired("OPENAI_" + res + "_MODEL"),
 		}
 	}
+
+	if !strings.HasSuffix(ep.Endpoint.URL, "/") {
+		// (this just makes recording replacement easier)
+		ep.Endpoint.URL += "/"
+	}
+
+	return ep
 }
 
 func newTestVars(prefix string, isCanary bool) testVars {

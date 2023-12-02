@@ -16,6 +16,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// RAI == "responsible AI". This part of the API provides content filtering and
+// classification of the failures into categories like Hate, Violence, etc...
+
 func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) {
 	// Scenario: Your API call asks for multiple responses (N>1) and at least 1 of the responses is filtered
 	// https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/cognitive-services/openai/concepts/content-filter.md#scenario-your-api-call-asks-for-multiple-responses-n1-and-at-least-1-of-the-responses-is-filtered

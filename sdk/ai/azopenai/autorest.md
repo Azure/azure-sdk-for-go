@@ -310,13 +310,6 @@ directive:
         /(\s+)urlPath\s*:=\s*"\/deployments\/\{deploymentId\}\/([^"]+)".+?url\.PathEscape.+?\n/gs, 
         "$1urlPath := \"$2\"\n")
 
-  # Unexport the the poller state enum.
-  - from: 
-      - constants.go
-      - models.go
-    where: $
-    transform: return $.replace(/AzureOpenAIOperationState/g, "azureOpenAIOperationState");
-
   # splice out the auto-generated `deploymentID` field from the client
   - from: client.go
     where: $

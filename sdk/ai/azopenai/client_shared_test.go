@@ -200,6 +200,16 @@ func initEnvVars() {
 			Model:    "gpt-4",
 		}
 
+		azureOpenAI.ChatCompletionsOYD = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "gpt-4",
+		}
+
+		azureOpenAI.DallE = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "dall-e-3",
+		}
+
 		openAI.Endpoint = endpoint{
 			APIKey: fakeAPIKey,
 			URL:    fakeEndpoint,
@@ -213,10 +223,15 @@ func initEnvVars() {
 			Model: "whisper-1",
 		}
 
+		openAI.DallE = endpointWithModel{
+			Endpoint: openAI.Endpoint,
+			Model:    "dall-e-3",
+		}
+
 		azureOpenAI.Completions = "text-davinci-003"
 		openAI.Completions = "text-davinci-003"
 
-		azureOpenAI.ChatCompletions = "gpt-4-0613"
+		azureOpenAI.ChatCompletions = "gpt-35-turbo-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-embedding-ada-002"
@@ -238,20 +253,6 @@ func initEnvVars() {
 
 		azureOpenAI = newTestVars("AOAI", false)
 		openAI = newTestVars("OPENAI", false)
-
-		// azureWhisper = endpoint{
-		// 	URL:    getRequired("AOAI_ENDPOINT_WHISPER"),
-		// 	APIKey: getRequired("AOAI_API_KEY_WHISPER"),
-		// 	Azure:  true,
-		// }
-		// azureWhisperModel = getRequired("AOAI_MODEL_WHISPER")
-
-		// openAIWhisper = endpoint{
-		// 	URL:    getRequired("OPENAI_ENDPOINT"),
-		// 	APIKey: getRequired("OPENAI_API_KEY"),
-		// 	Azure:  true,
-		// }
-		// openAIWhisperModel = "whisper-1"
 	}
 }
 
@@ -276,6 +277,8 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
 			azureOpenAI.Whisper.Endpoint.URL,
 			azureOpenAI.DallE.Endpoint.URL,
+			azureOpenAI.ChatCompletionsOYD.Endpoint.URL,
+			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
 		}
 
 		for _, ep := range endpoints {

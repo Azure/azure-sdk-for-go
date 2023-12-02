@@ -10,7 +10,7 @@ package armeventgrid
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	moduleVersion = "v2.3.0-beta.1"
+	moduleVersion = "v2.3.0-beta.2"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.

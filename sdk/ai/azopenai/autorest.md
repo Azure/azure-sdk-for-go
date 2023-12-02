@@ -173,6 +173,23 @@ directive:
     transform: return $.replace(/InternalErrorMessageRename/g, "message");
 ```
 
+## Splice in some hooks for custom code
+
+```yaml
+directive:
+  # Allow interception of formatting the URL path
+  - from: client.go
+    where: $
+    transform: |
+      return $
+        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
+
+  # Allow custom parsing of the returned error, mostly for handling the content filtering errors.
+  - from: client.go
+    where: $
+    transform: return $.replace(/runtime\.NewResponseError/sg, "client.newError");
+```
+
 Other misc fixes
 
 ```yaml
@@ -196,63 +213,6 @@ directive:
   - from: swagger-document
     where: $.definitions["ChatCompletionsOptions"]
     transform: delete $.properties.stream; 
-
-  # Replace anyOf schemas with an empty schema (no type) to get an "any" type generated
-  - from: swagger-document
-    where: '$.components.schemas["EmbeddingsOptions"].properties["input"]'
-    transform: delete $.anyOf;
-
-  - from: swagger-document
-    where: $.paths["/images/generations:submit"].post
-    transform: $["x-ms-long-running-operation"] = true;
-
-  # Fix autorest bug
-  - from: swagger-document
-    where: $.components.schemas["BatchImageGenerationOperationResponse"].properties
-    transform: |
-      $.result["$ref"] = "#/components/schemas/ImageGenerations"; delete $.allOf;
-      $.status["$ref"] = "#/components/schemas/AzureOpenAIOperationState"; delete $.allOf;
-      $.error["$ref"] = "#/components/schemas/Azure.Core.Foundations.Error"; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ChatMessage"].properties.role
-    transform: $["$ref"] = "#/components/schemas/ChatRole"; delete $.oneOf;
-  - from: swagger-document
-    where: $.components.schemas["Choice"].properties.finish_reason
-    transform: $["$ref"] = "#/components/schemas/CompletionsFinishReason"; delete $.oneOf;
-  - from: swagger-document
-    where: $.components.schemas["ImageOperation"].properties.status
-    transform: $["$ref"] = $.anyOf[0]["$ref"];delete $.anyOf;
-  - from: swagger-document
-    where: $.components.schemas.ImageGenerationOptions.properties
-    transform: |
-      $.size["$ref"] = "#/components/schemas/ImageSize"; delete $.allOf;
-      $.response_format["$ref"] = "#/components/schemas/ImageGenerationResponseFormat"; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ImageOperationResponse"].properties
-    transform: |
-      $.status["$ref"] = "#/components/schemas/State"; delete $.status.allOf;
-      $.result["$ref"] = "#/components/schemas/ImageResponse"; delete $.status.allOf;      
-  - from: swagger-document
-    where: $.components.schemas["ImageOperationStatus"].properties.status
-    transform: $["$ref"] = "#/components/schemas/State"; delete $.allOf; 
-  - from: swagger-document
-    where: $.components.schemas["ContentFilterResult"].properties.severity
-    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ChatChoice"].properties.finish_reason
-    transform: $["$ref"] = "#/components/schemas/CompletionsFinishReason"; delete $.oneOf;
-  - from: swagger-document
-    where: $.components.schemas["ContentFilterResults"].properties.sexual
-    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ContentFilterResults"].properties.hate
-    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ContentFilterResults"].properties.self_harm
-    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
-  - from: swagger-document
-    where: $.components.schemas["ContentFilterResults"].properties.violence
-    transform: $.$ref = $.allOf[0].$ref; delete $.allOf;
 ```
 
 Changes for audio/whisper APIs.
@@ -310,19 +270,10 @@ directive:
     transform: return $.replace(/^(func \(client \*Client\) getAudioTrans.+?)file string,(.+)$/mg, "$1file []byte,$2")
 ```
 
+## Logprob casing fixes
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.components.schemas
-    transform: |
-      let fix = (v) => { if (v.allOf != null) { v.$ref = v.allOf[0].$ref; delete v.allOf; } };
-      
-      fix($.AudioTranscriptionOptions.properties.response_format);
-      fix($.AudioTranscription.properties.task);
-
-      fix($.AudioTranslationOptions.properties.response_format);
-      fix($.AudioTranslation.properties.task);
-
   - from:
     - options.go
     - models_serde.go
@@ -332,22 +283,18 @@ directive:
       return $
         .replace(/AvgLogprob \*float32/g, "AvgLogProb *float32")
         .replace(/(a|c)\.AvgLogprob/g, "$1.AvgLogProb")
+  - from: 
+    - client.go
+    - models.go
+    - models_serde.go
+    - options.go
+    - response_types.go
+    where: $
+    transform: return $.replace(/Logprobs/g, "LogProbs")
 ```
 
 ```yaml
 directive:
-  # Fix "AutoGenerated" models
-  - from: swagger-document
-    where: $.components.schemas["ChatCompletions"].properties.usage
-    transform: >
-      delete $.allOf;
-      $["$ref"] = "#/components/schemas/CompletionsUsage";
-  - from: swagger-document
-    where: $.components.schemas["Completions"].properties.usage
-    transform: >
-      delete $.allOf;
-      $["$ref"] = "#/components/schemas/CompletionsUsage";
-
   #
   # strip out the deploymentID validation code - we absorbed this into the endpoint.
   #
@@ -424,78 +371,6 @@ directive:
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
-  # allow interception of formatting the URL path
-  - from: client.go
-    where: $
-    transform: |
-      return $
-        .replace(/runtime\.JoinPaths\(client.endpoint, urlPath\)/g, "client.formatURL(urlPath, getDeployment(body))");
-
-  - from: models.go
-    where: $
-    transform: |
-      return $.replace(/(type ImageGenerations struct.+?)Data any/sg, "$1Data []ImageGenerationsDataItem")
-
-  # delete the auto-generated ImageGenerationsDataItem, we handle that custom
-  - from: models.go
-    where: $
-    transform: return $.replace(/\/\/ ImageGenerationsDataItem represents[^}]+}/s, "");
-
-  # rename the image constants
-  - from: constants.go
-    where: $
-    transform: |
-      return $.replace(/ImageSizeFiveHundredTwelveX512/g, "ImageSize512x512")
-        .replace(/ImageSizeOneThousandTwentyFourX1024/g, "ImageSize1024x1024")
-        .replace(/ImageSizeTwoHundredFiftySixX256/g, "ImageSize256x256");
-
-  # scrub the Image(Payload|Location) deserializers.
-  - from: models_serde.go
-    where: $
-    transform: |
-      return $.replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type ImagePayload.+?\n}/s, "")
-        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type ImagePayload.+?\n}/s, "")
-        .replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type ImageLocation.+?\n}/s, "")
-        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type ImageLocation.+?\n}/s, "");
-
-  # BUG: ChatCompletionsOptionsFunctionCall is another one of those "here's mutually exclusive values" options...
-  - from: 
-    - models.go
-    - models_serde.go
-    where: $
-    transform: |
-      return $
-        .replace(/populateAny\(objectMap, "function_call", c.FunctionCall\)/, 'populate(objectMap, "function_call", c.FunctionCall)')
-        .replace(/\/\/ ChatCompletionsOptionsFunctionCall.+?\n}/, "")
-        .replace(/FunctionCall any/, "FunctionCall *ChatCompletionsOptionsFunctionCall");
-  
-  # fix some casing
-  - from: 
-    - client.go
-    - models.go
-    - models_serde.go
-    - options.go
-    - response_types.go
-    where: $
-    transform: return $.replace(/Logprobs/g, "LogProbs")
-
-  - from: constants.go
-    where: $
-    transform: return $.replace(/\/\/ PossibleazureOpenAIOperationStateValues returns.+?\n}/s, "");
-
-  # fix incorrect property name for content filtering
-  # TODO: I imagine we should able to fix this in the tsp?
-  - from: models_serde.go
-    where: $
-    transform: |
-      return $
-        .replace(/		case "selfHarm":/g, '		case "self_harm":')
-        .replace(/populate\(objectMap, "selfHarm", c.SelfHarm\)/g, 'populate(objectMap, "self_harm", c.SelfHarm)');
-
-  - from: client.go
-    where: $
-    transform: return $.replace(/runtime\.NewResponseError/sg, "client.newError");
-
   # Make the Azure extensions internal - we expose these through the GetChatCompletions*() functions
   # and just treat which endpoint we use as an implementation detail.
   - from: client.go
@@ -504,17 +379,15 @@ directive:
       return $
         .replace(/GetChatCompletionsWithAzureExtensions([ (])/g, "getChatCompletionsWithAzureExtensions$1")
         .replace(/GetChatCompletions([ (])/g, "getChatCompletions$1");
+```
 
-  # try to fix some of the generated types.
+## Workarounds
 
-  - from: constants.go
-    where: $
-    transform: |
-      return $.replace(
-        /(AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType)/, 
-        "// AzureChatExtensionTypeAzureCognitiveSearch enables the use of an Azure Cognitive Search index with chat completions.\n// [AzureChatExtensionConfiguration.Parameter] should be of type [AzureCognitiveSearchChatExtensionConfiguration].\n$1");
-  
-  # HACK: prompt_filter_results <-> prompt_annotations change
+This handles a case where (depending on mixture of older and newer resources) we can potentially see
+_either_ of these fields that represents the same data (prompt filter results).
+
+```yaml
+directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/case "prompt_filter_results":/g, 'case "prompt_annotations":\nfallthrough\ncase "prompt_filter_results":')

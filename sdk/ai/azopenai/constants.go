@@ -93,8 +93,6 @@ type AzureChatExtensionType string
 
 const (
 	// AzureChatExtensionTypeAzureCognitiveSearch - Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension.
-	// AzureChatExtensionTypeAzureCognitiveSearch enables the use of an Azure Cognitive Search index with chat completions.
-	// [AzureChatExtensionConfiguration.Parameter] should be of type [AzureCognitiveSearchChatExtensionConfiguration].
 	AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType = "AzureCognitiveSearch"
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
 	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "AzureCosmosDB"

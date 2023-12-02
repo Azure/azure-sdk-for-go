@@ -158,6 +158,15 @@ type ResourceIdentifierClassification interface {
 	GetResourceIdentifier() *ResourceIdentifier
 }
 
+// ServerVulnerabilityAssessmentsSettingClassification provides polymorphic access to related types.
+// Call the interface's GetServerVulnerabilityAssessmentsSetting() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureServersSetting, *ServerVulnerabilityAssessmentsSetting
+type ServerVulnerabilityAssessmentsSettingClassification interface {
+	// GetServerVulnerabilityAssessmentsSetting returns the ServerVulnerabilityAssessmentsSetting content of the underlying type.
+	GetServerVulnerabilityAssessmentsSetting() *ServerVulnerabilityAssessmentsSetting
+}
+
 // SettingClassification provides polymorphic access to related types.
 // Call the interface's GetSetting() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

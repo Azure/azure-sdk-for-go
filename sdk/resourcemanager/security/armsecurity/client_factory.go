@@ -37,21 +37,9 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAPICollectionClient creates a new instance of APICollectionClient.
-func (c *ClientFactory) NewAPICollectionClient() *APICollectionClient {
-	subClient, _ := NewAPICollectionClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewAPICollectionOffboardingClient creates a new instance of APICollectionOffboardingClient.
-func (c *ClientFactory) NewAPICollectionOffboardingClient() *APICollectionOffboardingClient {
-	subClient, _ := NewAPICollectionOffboardingClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewAPICollectionOnboardingClient creates a new instance of APICollectionOnboardingClient.
-func (c *ClientFactory) NewAPICollectionOnboardingClient() *APICollectionOnboardingClient {
-	subClient, _ := NewAPICollectionOnboardingClient(c.subscriptionID, c.credential, c.options)
+// NewAPICollectionsClient creates a new instance of APICollectionsClient.
+func (c *ClientFactory) NewAPICollectionsClient() *APICollectionsClient {
+	subClient, _ := NewAPICollectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -133,6 +121,24 @@ func (c *ClientFactory) NewAutomationsClient() *AutomationsClient {
 	return subClient
 }
 
+// NewAzureDevOpsOrgsClient creates a new instance of AzureDevOpsOrgsClient.
+func (c *ClientFactory) NewAzureDevOpsOrgsClient() *AzureDevOpsOrgsClient {
+	subClient, _ := NewAzureDevOpsOrgsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAzureDevOpsProjectsClient creates a new instance of AzureDevOpsProjectsClient.
+func (c *ClientFactory) NewAzureDevOpsProjectsClient() *AzureDevOpsProjectsClient {
+	subClient, _ := NewAzureDevOpsProjectsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAzureDevOpsReposClient creates a new instance of AzureDevOpsReposClient.
+func (c *ClientFactory) NewAzureDevOpsReposClient() *AzureDevOpsReposClient {
+	subClient, _ := NewAzureDevOpsReposClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewCenterClient creates a new instance of CenterClient.
 func (c *ClientFactory) NewCenterClient() *CenterClient {
 	subClient, _ := NewCenterClient(c.credential, c.options)
@@ -187,6 +193,24 @@ func (c *ClientFactory) NewCustomEntityStoreAssignmentsClient() *CustomEntitySto
 	return subClient
 }
 
+// NewDefenderForStorageClient creates a new instance of DefenderForStorageClient.
+func (c *ClientFactory) NewDefenderForStorageClient() *DefenderForStorageClient {
+	subClient, _ := NewDefenderForStorageClient(c.credential, c.options)
+	return subClient
+}
+
+// NewDevOpsConfigurationsClient creates a new instance of DevOpsConfigurationsClient.
+func (c *ClientFactory) NewDevOpsConfigurationsClient() *DevOpsConfigurationsClient {
+	subClient, _ := NewDevOpsConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewDevOpsOperationResultsClient creates a new instance of DevOpsOperationResultsClient.
+func (c *ClientFactory) NewDevOpsOperationResultsClient() *DevOpsOperationResultsClient {
+	subClient, _ := NewDevOpsOperationResultsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient.
 func (c *ClientFactory) NewDeviceSecurityGroupsClient() *DeviceSecurityGroupsClient {
 	subClient, _ := NewDeviceSecurityGroupsClient(c.credential, c.options)
@@ -205,6 +229,36 @@ func (c *ClientFactory) NewExternalSecuritySolutionsClient() *ExternalSecuritySo
 	return subClient
 }
 
+// NewGitHubOwnersClient creates a new instance of GitHubOwnersClient.
+func (c *ClientFactory) NewGitHubOwnersClient() *GitHubOwnersClient {
+	subClient, _ := NewGitHubOwnersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGitHubReposClient creates a new instance of GitHubReposClient.
+func (c *ClientFactory) NewGitHubReposClient() *GitHubReposClient {
+	subClient, _ := NewGitHubReposClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGitLabGroupsClient creates a new instance of GitLabGroupsClient.
+func (c *ClientFactory) NewGitLabGroupsClient() *GitLabGroupsClient {
+	subClient, _ := NewGitLabGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGitLabProjectsClient creates a new instance of GitLabProjectsClient.
+func (c *ClientFactory) NewGitLabProjectsClient() *GitLabProjectsClient {
+	subClient, _ := NewGitLabProjectsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGitLabSubgroupsClient creates a new instance of GitLabSubgroupsClient.
+func (c *ClientFactory) NewGitLabSubgroupsClient() *GitLabSubgroupsClient {
+	subClient, _ := NewGitLabSubgroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewGovernanceAssignmentsClient creates a new instance of GovernanceAssignmentsClient.
 func (c *ClientFactory) NewGovernanceAssignmentsClient() *GovernanceAssignmentsClient {
 	subClient, _ := NewGovernanceAssignmentsClient(c.credential, c.options)
@@ -217,12 +271,6 @@ func (c *ClientFactory) NewGovernanceRulesClient() *GovernanceRulesClient {
 	return subClient
 }
 
-// NewHealthReportClient creates a new instance of HealthReportClient.
-func (c *ClientFactory) NewHealthReportClient() *HealthReportClient {
-	subClient, _ := NewHealthReportClient(c.credential, c.options)
-	return subClient
-}
-
 // NewHealthReportsClient creates a new instance of HealthReportsClient.
 func (c *ClientFactory) NewHealthReportsClient() *HealthReportsClient {
 	subClient, _ := NewHealthReportsClient(c.credential, c.options)
@@ -232,12 +280,6 @@ func (c *ClientFactory) NewHealthReportsClient() *HealthReportsClient {
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient.
 func (c *ClientFactory) NewInformationProtectionPoliciesClient() *InformationProtectionPoliciesClient {
 	subClient, _ := NewInformationProtectionPoliciesClient(c.credential, c.options)
-	return subClient
-}
-
-// NewIngestionSettingsClient creates a new instance of IngestionSettingsClient.
-func (c *ClientFactory) NewIngestionSettingsClient() *IngestionSettingsClient {
-	subClient, _ := NewIngestionSettingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -364,6 +406,12 @@ func (c *ClientFactory) NewSensitivitySettingsClient() *SensitivitySettingsClien
 // NewServerVulnerabilityAssessmentClient creates a new instance of ServerVulnerabilityAssessmentClient.
 func (c *ClientFactory) NewServerVulnerabilityAssessmentClient() *ServerVulnerabilityAssessmentClient {
 	subClient, _ := NewServerVulnerabilityAssessmentClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewServerVulnerabilityAssessmentsSettingsClient creates a new instance of ServerVulnerabilityAssessmentsSettingsClient.
+func (c *ClientFactory) NewServerVulnerabilityAssessmentsSettingsClient() *ServerVulnerabilityAssessmentsSettingsClient {
+	subClient, _ := NewServerVulnerabilityAssessmentsSettingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

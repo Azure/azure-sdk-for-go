@@ -9,6 +9,7 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
@@ -23,6 +24,10 @@ import (
 
 // HealthReportsServer is a fake server for instances of the armsecurity.HealthReportsClient type.
 type HealthReportsServer struct {
+	// Get is the fake for method HealthReportsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceID string, healthReportName string, options *armsecurity.HealthReportsClientGetOptions) (resp azfake.Responder[armsecurity.HealthReportsClientGetResponse], errResp azfake.ErrorResponder)
+
 	// NewListPager is the fake for method HealthReportsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(scope string, options *armsecurity.HealthReportsClientListOptions) (resp azfake.PagerResponder[armsecurity.HealthReportsClientListResponse])
@@ -57,6 +62,8 @@ func (h *HealthReportsServerTransport) Do(req *http.Request) (*http.Response, er
 	var err error
 
 	switch method {
+	case "HealthReportsClient.Get":
+		resp, err = h.dispatchGet(req)
 	case "HealthReportsClient.NewListPager":
 		resp, err = h.dispatchNewListPager(req)
 	default:
@@ -67,6 +74,39 @@ func (h *HealthReportsServerTransport) Do(req *http.Request) (*http.Response, er
 		return nil, err
 	}
 
+	return resp, nil
+}
+
+func (h *HealthReportsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if h.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/healthReports/(?P<healthReportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+	if err != nil {
+		return nil, err
+	}
+	healthReportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthReportName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.Get(req.Context(), resourceIDParam, healthReportNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HealthReport, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

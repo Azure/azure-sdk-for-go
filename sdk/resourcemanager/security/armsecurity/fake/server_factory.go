@@ -19,9 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armsecurity.ClientFactory type.
 type ServerFactory struct {
-	APICollectionServer                                APICollectionServer
-	APICollectionOffboardingServer                     APICollectionOffboardingServer
-	APICollectionOnboardingServer                      APICollectionOnboardingServer
+	APICollectionsServer                               APICollectionsServer
 	AccountConnectorsServer                            AccountConnectorsServer
 	AdaptiveApplicationControlsServer                  AdaptiveApplicationControlsServer
 	AdaptiveNetworkHardeningsServer                    AdaptiveNetworkHardeningsServer
@@ -35,6 +33,9 @@ type ServerFactory struct {
 	AssessmentsMetadataServer                          AssessmentsMetadataServer
 	AutoProvisioningSettingsServer                     AutoProvisioningSettingsServer
 	AutomationsServer                                  AutomationsServer
+	AzureDevOpsOrgsServer                              AzureDevOpsOrgsServer
+	AzureDevOpsProjectsServer                          AzureDevOpsProjectsServer
+	AzureDevOpsReposServer                             AzureDevOpsReposServer
 	CenterServer                                       CenterServer
 	ComplianceResultsServer                            ComplianceResultsServer
 	CompliancesServer                                  CompliancesServer
@@ -44,15 +45,21 @@ type ServerFactory struct {
 	ContactsServer                                     ContactsServer
 	CustomAssessmentAutomationsServer                  CustomAssessmentAutomationsServer
 	CustomEntityStoreAssignmentsServer                 CustomEntityStoreAssignmentsServer
+	DefenderForStorageServer                           DefenderForStorageServer
+	DevOpsConfigurationsServer                         DevOpsConfigurationsServer
+	DevOpsOperationResultsServer                       DevOpsOperationResultsServer
 	DeviceSecurityGroupsServer                         DeviceSecurityGroupsServer
 	DiscoveredSecuritySolutionsServer                  DiscoveredSecuritySolutionsServer
 	ExternalSecuritySolutionsServer                    ExternalSecuritySolutionsServer
+	GitHubOwnersServer                                 GitHubOwnersServer
+	GitHubReposServer                                  GitHubReposServer
+	GitLabGroupsServer                                 GitLabGroupsServer
+	GitLabProjectsServer                               GitLabProjectsServer
+	GitLabSubgroupsServer                              GitLabSubgroupsServer
 	GovernanceAssignmentsServer                        GovernanceAssignmentsServer
 	GovernanceRulesServer                              GovernanceRulesServer
-	HealthReportServer                                 HealthReportServer
 	HealthReportsServer                                HealthReportsServer
 	InformationProtectionPoliciesServer                InformationProtectionPoliciesServer
-	IngestionSettingsServer                            IngestionSettingsServer
 	IotSecuritySolutionAnalyticsServer                 IotSecuritySolutionAnalyticsServer
 	IotSecuritySolutionServer                          IotSecuritySolutionServer
 	IotSecuritySolutionsAnalyticsAggregatedAlertServer IotSecuritySolutionsAnalyticsAggregatedAlertServer
@@ -74,6 +81,7 @@ type ServerFactory struct {
 	SecureScoresServer                                 SecureScoresServer
 	SensitivitySettingsServer                          SensitivitySettingsServer
 	ServerVulnerabilityAssessmentServer                ServerVulnerabilityAssessmentServer
+	ServerVulnerabilityAssessmentsSettingsServer       ServerVulnerabilityAssessmentsSettingsServer
 	SettingsServer                                     SettingsServer
 	SoftwareInventoriesServer                          SoftwareInventoriesServer
 	SolutionsServer                                    SolutionsServer
@@ -98,9 +106,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
-	trAPICollectionServer                                *APICollectionServerTransport
-	trAPICollectionOffboardingServer                     *APICollectionOffboardingServerTransport
-	trAPICollectionOnboardingServer                      *APICollectionOnboardingServerTransport
+	trAPICollectionsServer                               *APICollectionsServerTransport
 	trAccountConnectorsServer                            *AccountConnectorsServerTransport
 	trAdaptiveApplicationControlsServer                  *AdaptiveApplicationControlsServerTransport
 	trAdaptiveNetworkHardeningsServer                    *AdaptiveNetworkHardeningsServerTransport
@@ -114,6 +120,9 @@ type ServerFactoryTransport struct {
 	trAssessmentsMetadataServer                          *AssessmentsMetadataServerTransport
 	trAutoProvisioningSettingsServer                     *AutoProvisioningSettingsServerTransport
 	trAutomationsServer                                  *AutomationsServerTransport
+	trAzureDevOpsOrgsServer                              *AzureDevOpsOrgsServerTransport
+	trAzureDevOpsProjectsServer                          *AzureDevOpsProjectsServerTransport
+	trAzureDevOpsReposServer                             *AzureDevOpsReposServerTransport
 	trCenterServer                                       *CenterServerTransport
 	trComplianceResultsServer                            *ComplianceResultsServerTransport
 	trCompliancesServer                                  *CompliancesServerTransport
@@ -123,15 +132,21 @@ type ServerFactoryTransport struct {
 	trContactsServer                                     *ContactsServerTransport
 	trCustomAssessmentAutomationsServer                  *CustomAssessmentAutomationsServerTransport
 	trCustomEntityStoreAssignmentsServer                 *CustomEntityStoreAssignmentsServerTransport
+	trDefenderForStorageServer                           *DefenderForStorageServerTransport
+	trDevOpsConfigurationsServer                         *DevOpsConfigurationsServerTransport
+	trDevOpsOperationResultsServer                       *DevOpsOperationResultsServerTransport
 	trDeviceSecurityGroupsServer                         *DeviceSecurityGroupsServerTransport
 	trDiscoveredSecuritySolutionsServer                  *DiscoveredSecuritySolutionsServerTransport
 	trExternalSecuritySolutionsServer                    *ExternalSecuritySolutionsServerTransport
+	trGitHubOwnersServer                                 *GitHubOwnersServerTransport
+	trGitHubReposServer                                  *GitHubReposServerTransport
+	trGitLabGroupsServer                                 *GitLabGroupsServerTransport
+	trGitLabProjectsServer                               *GitLabProjectsServerTransport
+	trGitLabSubgroupsServer                              *GitLabSubgroupsServerTransport
 	trGovernanceAssignmentsServer                        *GovernanceAssignmentsServerTransport
 	trGovernanceRulesServer                              *GovernanceRulesServerTransport
-	trHealthReportServer                                 *HealthReportServerTransport
 	trHealthReportsServer                                *HealthReportsServerTransport
 	trInformationProtectionPoliciesServer                *InformationProtectionPoliciesServerTransport
-	trIngestionSettingsServer                            *IngestionSettingsServerTransport
 	trIotSecuritySolutionAnalyticsServer                 *IotSecuritySolutionAnalyticsServerTransport
 	trIotSecuritySolutionServer                          *IotSecuritySolutionServerTransport
 	trIotSecuritySolutionsAnalyticsAggregatedAlertServer *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport
@@ -153,6 +168,7 @@ type ServerFactoryTransport struct {
 	trSecureScoresServer                                 *SecureScoresServerTransport
 	trSensitivitySettingsServer                          *SensitivitySettingsServerTransport
 	trServerVulnerabilityAssessmentServer                *ServerVulnerabilityAssessmentServerTransport
+	trServerVulnerabilityAssessmentsSettingsServer       *ServerVulnerabilityAssessmentsSettingsServerTransport
 	trSettingsServer                                     *SettingsServerTransport
 	trSoftwareInventoriesServer                          *SoftwareInventoriesServerTransport
 	trSolutionsServer                                    *SolutionsServerTransport
@@ -176,21 +192,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "APICollectionClient":
-		initServer(s, &s.trAPICollectionServer, func() *APICollectionServerTransport {
-			return NewAPICollectionServerTransport(&s.srv.APICollectionServer)
+	case "APICollectionsClient":
+		initServer(s, &s.trAPICollectionsServer, func() *APICollectionsServerTransport {
+			return NewAPICollectionsServerTransport(&s.srv.APICollectionsServer)
 		})
-		resp, err = s.trAPICollectionServer.Do(req)
-	case "APICollectionOffboardingClient":
-		initServer(s, &s.trAPICollectionOffboardingServer, func() *APICollectionOffboardingServerTransport {
-			return NewAPICollectionOffboardingServerTransport(&s.srv.APICollectionOffboardingServer)
-		})
-		resp, err = s.trAPICollectionOffboardingServer.Do(req)
-	case "APICollectionOnboardingClient":
-		initServer(s, &s.trAPICollectionOnboardingServer, func() *APICollectionOnboardingServerTransport {
-			return NewAPICollectionOnboardingServerTransport(&s.srv.APICollectionOnboardingServer)
-		})
-		resp, err = s.trAPICollectionOnboardingServer.Do(req)
+		resp, err = s.trAPICollectionsServer.Do(req)
 	case "AccountConnectorsClient":
 		initServer(s, &s.trAccountConnectorsServer, func() *AccountConnectorsServerTransport {
 			return NewAccountConnectorsServerTransport(&s.srv.AccountConnectorsServer)
@@ -246,6 +252,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AutomationsClient":
 		initServer(s, &s.trAutomationsServer, func() *AutomationsServerTransport { return NewAutomationsServerTransport(&s.srv.AutomationsServer) })
 		resp, err = s.trAutomationsServer.Do(req)
+	case "AzureDevOpsOrgsClient":
+		initServer(s, &s.trAzureDevOpsOrgsServer, func() *AzureDevOpsOrgsServerTransport {
+			return NewAzureDevOpsOrgsServerTransport(&s.srv.AzureDevOpsOrgsServer)
+		})
+		resp, err = s.trAzureDevOpsOrgsServer.Do(req)
+	case "AzureDevOpsProjectsClient":
+		initServer(s, &s.trAzureDevOpsProjectsServer, func() *AzureDevOpsProjectsServerTransport {
+			return NewAzureDevOpsProjectsServerTransport(&s.srv.AzureDevOpsProjectsServer)
+		})
+		resp, err = s.trAzureDevOpsProjectsServer.Do(req)
+	case "AzureDevOpsReposClient":
+		initServer(s, &s.trAzureDevOpsReposServer, func() *AzureDevOpsReposServerTransport {
+			return NewAzureDevOpsReposServerTransport(&s.srv.AzureDevOpsReposServer)
+		})
+		resp, err = s.trAzureDevOpsReposServer.Do(req)
 	case "CenterClient":
 		initServer(s, &s.trCenterServer, func() *CenterServerTransport { return NewCenterServerTransport(&s.srv.CenterServer) })
 		resp, err = s.trCenterServer.Do(req)
@@ -283,6 +304,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCustomEntityStoreAssignmentsServerTransport(&s.srv.CustomEntityStoreAssignmentsServer)
 		})
 		resp, err = s.trCustomEntityStoreAssignmentsServer.Do(req)
+	case "DefenderForStorageClient":
+		initServer(s, &s.trDefenderForStorageServer, func() *DefenderForStorageServerTransport {
+			return NewDefenderForStorageServerTransport(&s.srv.DefenderForStorageServer)
+		})
+		resp, err = s.trDefenderForStorageServer.Do(req)
+	case "DevOpsConfigurationsClient":
+		initServer(s, &s.trDevOpsConfigurationsServer, func() *DevOpsConfigurationsServerTransport {
+			return NewDevOpsConfigurationsServerTransport(&s.srv.DevOpsConfigurationsServer)
+		})
+		resp, err = s.trDevOpsConfigurationsServer.Do(req)
+	case "DevOpsOperationResultsClient":
+		initServer(s, &s.trDevOpsOperationResultsServer, func() *DevOpsOperationResultsServerTransport {
+			return NewDevOpsOperationResultsServerTransport(&s.srv.DevOpsOperationResultsServer)
+		})
+		resp, err = s.trDevOpsOperationResultsServer.Do(req)
 	case "DeviceSecurityGroupsClient":
 		initServer(s, &s.trDeviceSecurityGroupsServer, func() *DeviceSecurityGroupsServerTransport {
 			return NewDeviceSecurityGroupsServerTransport(&s.srv.DeviceSecurityGroupsServer)
@@ -298,6 +334,25 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewExternalSecuritySolutionsServerTransport(&s.srv.ExternalSecuritySolutionsServer)
 		})
 		resp, err = s.trExternalSecuritySolutionsServer.Do(req)
+	case "GitHubOwnersClient":
+		initServer(s, &s.trGitHubOwnersServer, func() *GitHubOwnersServerTransport { return NewGitHubOwnersServerTransport(&s.srv.GitHubOwnersServer) })
+		resp, err = s.trGitHubOwnersServer.Do(req)
+	case "GitHubReposClient":
+		initServer(s, &s.trGitHubReposServer, func() *GitHubReposServerTransport { return NewGitHubReposServerTransport(&s.srv.GitHubReposServer) })
+		resp, err = s.trGitHubReposServer.Do(req)
+	case "GitLabGroupsClient":
+		initServer(s, &s.trGitLabGroupsServer, func() *GitLabGroupsServerTransport { return NewGitLabGroupsServerTransport(&s.srv.GitLabGroupsServer) })
+		resp, err = s.trGitLabGroupsServer.Do(req)
+	case "GitLabProjectsClient":
+		initServer(s, &s.trGitLabProjectsServer, func() *GitLabProjectsServerTransport {
+			return NewGitLabProjectsServerTransport(&s.srv.GitLabProjectsServer)
+		})
+		resp, err = s.trGitLabProjectsServer.Do(req)
+	case "GitLabSubgroupsClient":
+		initServer(s, &s.trGitLabSubgroupsServer, func() *GitLabSubgroupsServerTransport {
+			return NewGitLabSubgroupsServerTransport(&s.srv.GitLabSubgroupsServer)
+		})
+		resp, err = s.trGitLabSubgroupsServer.Do(req)
 	case "GovernanceAssignmentsClient":
 		initServer(s, &s.trGovernanceAssignmentsServer, func() *GovernanceAssignmentsServerTransport {
 			return NewGovernanceAssignmentsServerTransport(&s.srv.GovernanceAssignmentsServer)
@@ -308,9 +363,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGovernanceRulesServerTransport(&s.srv.GovernanceRulesServer)
 		})
 		resp, err = s.trGovernanceRulesServer.Do(req)
-	case "HealthReportClient":
-		initServer(s, &s.trHealthReportServer, func() *HealthReportServerTransport { return NewHealthReportServerTransport(&s.srv.HealthReportServer) })
-		resp, err = s.trHealthReportServer.Do(req)
 	case "HealthReportsClient":
 		initServer(s, &s.trHealthReportsServer, func() *HealthReportsServerTransport {
 			return NewHealthReportsServerTransport(&s.srv.HealthReportsServer)
@@ -321,11 +373,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewInformationProtectionPoliciesServerTransport(&s.srv.InformationProtectionPoliciesServer)
 		})
 		resp, err = s.trInformationProtectionPoliciesServer.Do(req)
-	case "IngestionSettingsClient":
-		initServer(s, &s.trIngestionSettingsServer, func() *IngestionSettingsServerTransport {
-			return NewIngestionSettingsServerTransport(&s.srv.IngestionSettingsServer)
-		})
-		resp, err = s.trIngestionSettingsServer.Do(req)
 	case "IotSecuritySolutionAnalyticsClient":
 		initServer(s, &s.trIotSecuritySolutionAnalyticsServer, func() *IotSecuritySolutionAnalyticsServerTransport {
 			return NewIotSecuritySolutionAnalyticsServerTransport(&s.srv.IotSecuritySolutionAnalyticsServer)
@@ -421,6 +468,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewServerVulnerabilityAssessmentServerTransport(&s.srv.ServerVulnerabilityAssessmentServer)
 		})
 		resp, err = s.trServerVulnerabilityAssessmentServer.Do(req)
+	case "ServerVulnerabilityAssessmentsSettingsClient":
+		initServer(s, &s.trServerVulnerabilityAssessmentsSettingsServer, func() *ServerVulnerabilityAssessmentsSettingsServerTransport {
+			return NewServerVulnerabilityAssessmentsSettingsServerTransport(&s.srv.ServerVulnerabilityAssessmentsSettingsServer)
+		})
+		resp, err = s.trServerVulnerabilityAssessmentsSettingsServer.Do(req)
 	case "SettingsClient":
 		initServer(s, &s.trSettingsServer, func() *SettingsServerTransport { return NewSettingsServerTransport(&s.srv.SettingsServer) })
 		resp, err = s.trSettingsServer.Do(req)

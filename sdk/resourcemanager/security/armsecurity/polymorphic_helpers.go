@@ -429,6 +429,46 @@ func unmarshalResourceIdentifierClassificationArray(rawMsg json.RawMessage) ([]R
 	return fArray, nil
 }
 
+func unmarshalServerVulnerabilityAssessmentsSettingClassification(rawMsg json.RawMessage) (ServerVulnerabilityAssessmentsSettingClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ServerVulnerabilityAssessmentsSettingClassification
+	switch m["kind"] {
+	case string(ServerVulnerabilityAssessmentsSettingKindAzureServersSetting):
+		b = &AzureServersSetting{}
+	default:
+		b = &ServerVulnerabilityAssessmentsSetting{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalServerVulnerabilityAssessmentsSettingClassificationArray(rawMsg json.RawMessage) ([]ServerVulnerabilityAssessmentsSettingClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ServerVulnerabilityAssessmentsSettingClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalServerVulnerabilityAssessmentsSettingClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalSettingClassification(rawMsg json.RawMessage) (SettingClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

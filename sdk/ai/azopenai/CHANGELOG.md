@@ -7,6 +7,9 @@
 ### Breaking Changes
 
 - `azopenai.KeyCredential` has been replaced by [azcore.KeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#KeyCredential).
+- `Deployment` has been renamed to `DeploymentName` throughout all APIs.
+- `CreateImage` has been replaced with `GetImageGenerations`.
+- Chat completions with functions have changed. See the example `ExampleClient_GetChatCompletions_functions` in `example_client_getchatcompletions_extensions_test.go`.
 
 ### Bugs Fixed
 

@@ -26,13 +26,12 @@ func TestClient_OpenAI_InvalidModel(t *testing.T) {
 	chatClient := newOpenAIClientForTest(t)
 
 	_, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{
-				Role:    to.Ptr(azopenai.ChatRoleSystem),
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestSystemMessage{
 				Content: to.Ptr("hello"),
 			},
 		},
-		Deployment: "non-existent-model",
+		DeploymentName: to.Ptr("non-existent-model"),
 	}, nil)
 
 	var respErr *azcore.ResponseError

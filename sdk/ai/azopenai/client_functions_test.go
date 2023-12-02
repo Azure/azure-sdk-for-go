@@ -41,31 +41,29 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv testVars) {
 	body := azopenai.ChatCompletionsOptions{
-		Deployment: tv.ChatCompletions,
-		Messages: []azopenai.ChatMessage{
-			{
-				Role:    to.Ptr(azopenai.ChatRoleUser),
+		DeploymentName: &tv.ChatCompletions,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestAssistantMessage{
 				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
 			},
 		},
-		FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
-			Value: to.Ptr("auto"),
-		},
-		Functions: []azopenai.FunctionDefinition{
-			{
-				Name:        to.Ptr("get_current_weather"),
-				Description: to.Ptr("Get the current weather in a given location"),
-				Parameters: Params{
-					Required: []string{"location"},
-					Type:     "object",
-					Properties: map[string]ParamProperty{
-						"location": {
-							Type:        "string",
-							Description: "The city and state, e.g. San Francisco, CA",
-						},
-						"unit": {
-							Type: "string",
-							Enum: []string{"celsius", "fahrenheit"},
+		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
+			&azopenai.ChatCompletionsFunctionToolDefinition{
+				Function: &azopenai.FunctionDefinition{
+					Name:        to.Ptr("get_current_weather"),
+					Description: to.Ptr("Get the current weather in a given location"),
+					Parameters: Params{
+						Required: []string{"location"},
+						Type:     "object",
+						Properties: map[string]ParamProperty{
+							"location": {
+								Type:        "string",
+								Description: "The city and state, e.g. San Francisco, CA",
+							},
+							"unit": {
+								Type: "string",
+								Enum: []string{"celsius", "fahrenheit"},
+							},
 						},
 					},
 				},
@@ -77,7 +75,7 @@ func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv 
 	resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
 	require.NoError(t, err)
 
-	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
+	funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
 
 	require.Equal(t, "get_current_weather", *funcCall.Name)
 

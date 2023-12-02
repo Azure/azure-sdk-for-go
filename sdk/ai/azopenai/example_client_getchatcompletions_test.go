@@ -42,18 +42,18 @@ func ExampleClient_GetChatCompletions() {
 
 	// This is a conversation in progress.
 	// NOTE: all messages, regardless of role, count against token usage for this API.
-	messages := []azopenai.ChatMessage{
+	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant. You will talk like a pirate.")},
+		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate.")},
 
 		// The user asks a question
-		{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("Can you help me?")},
+		&azopenai.ChatRequestUserMessage{Content: to.Ptr("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		{Role: to.Ptr(azopenai.ChatRoleAssistant), Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
-		{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("What's the best way to train a parrot?")},
+		&azopenai.ChatRequestUserMessage{Content: to.Ptr("What's the best way to train a parrot?")},
 
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}
@@ -63,8 +63,8 @@ func ExampleClient_GetChatCompletions() {
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages:   messages,
-		Deployment: modelDeploymentID,
+		Messages:       messages,
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -129,32 +129,29 @@ func ExampleClient_GetChatCompletions_functions() {
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
-		Deployment: modelDeploymentID,
-		Messages: []azopenai.ChatMessage{
-			{
-				Role:    to.Ptr(azopenai.ChatRoleUser),
+		DeploymentName: &modelDeploymentID,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestAssistantMessage{
 				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
 			},
 		},
-		FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
-			Value: to.Ptr("auto"),
-		},
-		Functions: []azopenai.FunctionDefinition{
-			{
-				Name:        to.Ptr("get_current_weather"),
-				Description: to.Ptr("Get the current weather in a given location"),
-
-				Parameters: map[string]any{
-					"required": []string{"location"},
-					"type":     "object",
-					"properties": map[string]any{
-						"location": map[string]any{
-							"type":        "string",
-							"description": "The city and state, e.g. San Francisco, CA",
-						},
-						"unit": map[string]any{
-							"type": "string",
-							"enum": []string{"celsius", "fahrenheit"},
+		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
+			&azopenai.ChatCompletionsFunctionToolDefinition{
+				Function: &azopenai.FunctionDefinition{
+					Name:        to.Ptr("get_current_weather"),
+					Description: to.Ptr("Get the current weather in a given location"),
+					Parameters: map[string]any{
+						"required": []string{"location"},
+						"type":     "object",
+						"properties": map[string]any{
+							"location": map[string]any{
+								"type":        "string",
+								"description": "The city and state, e.g. San Francisco, CA",
+							},
+							"unit": map[string]any{
+								"type": "string",
+								"enum": []string{"celsius", "fahrenheit"},
+							},
 						},
 					},
 				},
@@ -168,7 +165,7 @@ func ExampleClient_GetChatCompletions_functions() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
+	funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
 
 	// This is the function name we gave in the call to GetCompletions
 	// Prints: Function name: "get_current_weather"
@@ -218,18 +215,18 @@ func ExampleClient_GetChatCompletionsStream() {
 
 	// This is a conversation in progress.
 	// NOTE: all messages, regardless of role, count against token usage for this API.
-	messages := []azopenai.ChatMessage{
+	messages := []azopenai.ChatRequestMessageClassification{
 		// You set the tone and rules of the conversation with a prompt as the system role.
-		{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
+		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
 
 		// The user asks a question
-		{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("Can you help me?")},
+		&azopenai.ChatRequestUserMessage{Content: to.Ptr("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
-		{Role: to.Ptr(azopenai.ChatRoleAssistant), Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
+		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
-		{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("What's the best way to train a parrot?")},
+		&azopenai.ChatRequestUserMessage{Content: to.Ptr("What's the best way to train a parrot?")},
 
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}
@@ -237,9 +234,9 @@ func ExampleClient_GetChatCompletionsStream() {
 	resp, err := client.GetChatCompletionsStream(context.TODO(), azopenai.ChatCompletionsOptions{
 		// This is a conversation in progress.
 		// NOTE: all messages count against token usage for this API.
-		Messages:   messages,
-		N:          to.Ptr[int32](1),
-		Deployment: modelDeploymentID,
+		Messages:       messages,
+		N:              to.Ptr[int32](1),
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -259,7 +256,7 @@ func ExampleClient_GetChatCompletionsStream() {
 		}
 
 		if err != nil {
-			// TODO: handle error
+			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
 		}
 

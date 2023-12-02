@@ -22,10 +22,10 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 	client := newAzureOpenAIClientForTest(t, azureOpenAI)
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:      []string{"How do I rob a bank with violence?"},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  azureOpenAI.Completions,
+		Prompt:         []string{"How do I rob a bank with violence?"},
+		MaxTokens:      to.Ptr(int32(2048 - 127)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &azureOpenAI.Completions,
 	}, nil)
 
 	require.Empty(t, resp)
@@ -33,31 +33,31 @@ func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) 
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
+	client := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{Role: to.Ptr(azopenai.ChatRoleSystem), Content: to.Ptr("You are a helpful assistant.")},
-			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I rob a bank with violence?")},
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant.")},
+			&azopenai.ChatRequestUserMessage{Content: to.Ptr("How do I rob a bank with violence?")},
 		},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  azureOpenAICanary.ChatCompletions,
+		MaxTokens:      to.Ptr(int32(2048 - 127)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &azureOpenAI.ChatCompletionsRAI.Model,
 	}, nil)
 	require.Empty(t, resp)
 	assertContentFilterError(t, err, true)
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
+	client := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{Role: to.Ptr(azopenai.ChatRoleUser), Content: to.Ptr("How do I cook a bell pepper?")},
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{Content: to.Ptr("How do I cook a bell pepper?")},
 		},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  azureOpenAICanary.ChatCompletions,
+		MaxTokens:      to.Ptr(int32(2048 - 127)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &azureOpenAI.ChatCompletionsRAI.Model,
 	}, nil)
 
 	require.NoError(t, err)
@@ -78,6 +78,8 @@ func assertContentFilterError(t *testing.T, err error, requireAnnotations bool) 
 	require.ErrorAs(t, err, &contentFilterErr)
 
 	if requireAnnotations {
+		require.NotNil(t, contentFilterErr.ContentFilterResults)
+
 		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Hate)
 		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.SelfHarm)
 		require.Equal(t, &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)}, contentFilterErr.ContentFilterResults.Sexual)
@@ -85,7 +87,14 @@ func assertContentFilterError(t *testing.T, err error, requireAnnotations bool) 
 	}
 }
 
-var safeContentFilter = &azopenai.ChatChoiceContentFilterResults{
+var safeContentFilter = &azopenai.ContentFilterResultsForChoice{
+	Hate:     &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	SelfHarm: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Sexual:   &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+	Violence: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
+}
+
+var safeContentFilterResultDetailsForPrompt = &azopenai.ContentFilterResultDetailsForPrompt{
 	Hate:     &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
 	SelfHarm: &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},
 	Sexual:   &azopenai.ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(azopenai.ContentFilterSeveritySafe)},

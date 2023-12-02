@@ -60,6 +60,27 @@ type ContentFilterResponseError struct {
 	ContentFilterResults *ContentFilterResults
 }
 
+// ContentFilterResults are the content filtering results for a [ContentFilterResponseError].
+type ContentFilterResults struct {
+	// Describes language attacks or uses that include pejorative or discriminatory language with reference to a person or identity
+	// group on the basis of certain differentiating attributes of these groups
+	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
+	// immigration status, ability status, personal appearance, and body size.
+	Hate *ContentFilterResult `json:"hate"`
+
+	// Describes language related to physical actions intended to purposely hurt, injure, or damage one’s body, or kill oneself.
+	SelfHarm *ContentFilterResult `json:"self_harm"`
+
+	// Describes language related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate
+	// terms, physical sexual acts, including those portrayed as an assault or a
+	// forced sexual violent act against one’s will, prostitution, pornography, and abuse.
+	Sexual *ContentFilterResult `json:"sexual"`
+
+	// Describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes
+	// weapons, etc.
+	Violence *ContentFilterResult `json:"violence"`
+}
+
 // Unwrap returns the inner error for this error.
 func (e *ContentFilterResponseError) Unwrap() error {
 	return &e.ResponseError
@@ -81,7 +102,7 @@ func newContentFilterResponseError(resp *http.Response) error {
 	var envelope *struct {
 		Error struct {
 			InnerError struct {
-				FilterResult *ContentFilterResults `json:"content_filter_result"`
+				ContentFilterResults *ContentFilterResults `json:"content_filter_result"`
 			} `json:"innererror"`
 		}
 	}
@@ -92,7 +113,7 @@ func newContentFilterResponseError(resp *http.Response) error {
 
 	return &ContentFilterResponseError{
 		ResponseError:        *respErr,
-		ContentFilterResults: envelope.Error.InnerError.FilterResult,
+		ContentFilterResults: envelope.Error.InnerError.ContentFilterResults,
 	}
 }
 
@@ -100,4 +121,14 @@ func newContentFilterResponseError(resp *http.Response) error {
 type AzureChatExtensionOptions struct {
 	// Extensions is a slice of extensions to the chat completions endpoint, like Azure Cognitive Search.
 	Extensions []AzureChatExtensionConfiguration
+}
+
+// Error implements the error interface for type Error.
+// Note that the message contents are not contractual and can change over time.
+func (e *Error) Error() string {
+	if e.message == nil {
+		return ""
+	}
+
+	return *e.message
 }

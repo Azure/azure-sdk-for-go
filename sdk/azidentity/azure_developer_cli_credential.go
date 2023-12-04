@@ -26,6 +26,8 @@ import (
 
 const credNameAzureDeveloperCLI = "AzureDeveloperCLICredential"
 
+type azdTokenProvider func(ctx context.Context, scopes []string, tenant string) ([]byte, error)
+
 // AzureDeveloperCLICredentialOptions contains optional parameters for AzureDeveloperCLICredential.
 type AzureDeveloperCLICredentialOptions struct {
 	// AdditionallyAllowedTenants specifies tenants for which the credential may acquire tokens, in addition
@@ -40,7 +42,7 @@ type AzureDeveloperCLICredentialOptions struct {
 	// inDefaultChain is true when the credential is part of DefaultAzureCredential
 	inDefaultChain bool
 	// tokenProvider is used by tests to fake invoking azd
-	tokenProvider cliTokenProvider
+	tokenProvider azdTokenProvider
 }
 
 // AzureDeveloperCLICredential authenticates as the identity logged in to the [Azure Developer CLI].
@@ -73,6 +75,11 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	if len(opts.Scopes) == 0 {
 		return at, errors.New(credNameAzureDeveloperCLI + ": GetToken() requires at least one scope")
 	}
+	for _, scope := range opts.Scopes {
+		if !validScope(scope) {
+			return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureDeveloperCLI, scope)
+		}
+	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureDeveloperCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
 		return at, err
@@ -92,7 +99,9 @@ func (c *AzureDeveloperCLICredential) GetToken(ctx context.Context, opts policy.
 	return at, nil
 }
 
-var defaultAzdTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+// defaultAzTokenProvider invokes the Azure Developer CLI to acquire a token. It assumes
+// callers have verified that all string arguments are safe to pass to the CLI.
+var defaultAzdTokenProvider azdTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
 	// set a default timeout for this authentication iff the application hasn't done so already
 	var cancel context.CancelFunc
 	if _, hasDeadline := ctx.Deadline(); !hasDeadline {
@@ -104,9 +113,6 @@ var defaultAzdTokenProvider cliTokenProvider = func(ctx context.Context, scopes 
 		commandLine += " --tenant-id " + tenant
 	}
 	for _, scope := range scopes {
-		if !validScope(scope) {
-			return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureDeveloperCLI, scope)
-		}
 		commandLine += " --scope " + scope
 	}
 	var cliCmd *exec.Cmd

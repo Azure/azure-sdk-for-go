@@ -116,9 +116,13 @@ func resolveTenant(defaultTenant, specified, credName string, additionalTenants 
 	return "", fmt.Errorf(`%s isn't configured to acquire tokens for tenant %q. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to allow acquiring tokens for any tenant`, credName, specified)
 }
 
+func alphanumeric(r rune) bool {
+	return ('0' <= r && r <= '9') || ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z')
+}
+
 func validTenantID(tenantID string) bool {
 	for _, r := range tenantID {
-		if !(('0' <= r && r <= '9') || ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') || r == '.' || r == '-') {
+		if !(alphanumeric(r) || r == '.' || r == '-') {
 			return false
 		}
 	}

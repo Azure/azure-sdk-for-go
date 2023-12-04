@@ -26,12 +26,18 @@ import (
 
 const credNameAzureCLI = "AzureCLICredential"
 
+type azTokenProvider func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error)
+
 // AzureCLICredentialOptions contains optional parameters for AzureCLICredential.
 type AzureCLICredentialOptions struct {
 	// AdditionallyAllowedTenants specifies tenants for which the credential may acquire tokens, in addition
 	// to TenantID. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the
 	// logged in account can access.
 	AdditionallyAllowedTenants []string
+
+	// Subscription is the name or ID of a subscription. Set this to acquire tokens for an account other
+	// than the Azure CLI's current account.
+	Subscription string
 
 	// TenantID identifies the tenant the credential should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
@@ -40,7 +46,7 @@ type AzureCLICredentialOptions struct {
 	// inDefaultChain is true when the credential is part of DefaultAzureCredential
 	inDefaultChain bool
 	// tokenProvider is used by tests to fake invoking az
-	tokenProvider cliTokenProvider
+	tokenProvider azTokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
@@ -62,6 +68,14 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	if options != nil {
 		cp = *options
 	}
+	for _, r := range cp.Subscription {
+		if !(alphanumeric(r) || r == '-' || r == '_' || r == ' ' || r == '.') {
+			return nil, fmt.Errorf("%s: invalid Subscription %q", credNameAzureCLI, cp.Subscription)
+		}
+	}
+	if cp.TenantID != "" && !validTenantID(cp.TenantID) {
+		return nil, errInvalidTenantID
+	}
 	cp.init()
 	cp.AdditionallyAllowedTenants = resolveAdditionalTenants(cp.AdditionallyAllowedTenants)
 	return &AzureCLICredential{mu: &sync.Mutex{}, opts: cp}, nil
@@ -74,13 +88,16 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	if len(opts.Scopes) != 1 {
 		return at, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
+	if !validScope(opts.Scopes[0]) {
+		return at, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, opts.Scopes[0])
+	}
 	tenant, err := resolveTenant(c.opts.TenantID, opts.TenantID, credNameAzureCLI, c.opts.AdditionallyAllowedTenants)
 	if err != nil {
 		return at, err
 	}
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant)
+	b, err := c.opts.tokenProvider(ctx, opts.Scopes, tenant, c.opts.Subscription)
 	if err == nil {
 		at, err = c.createAccessToken(b)
 	}
@@ -93,10 +110,9 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	return at, nil
 }
 
-var defaultAzTokenProvider cliTokenProvider = func(ctx context.Context, scopes []string, tenantID string) ([]byte, error) {
-	if !validScope(scopes[0]) {
-		return nil, fmt.Errorf("%s.GetToken(): invalid scope %q", credNameAzureCLI, scopes[0])
-	}
+// defaultAzTokenProvider invokes the Azure CLI to acquire a token. It assumes
+// callers have verified that all string arguments are safe to pass to the CLI.
+var defaultAzTokenProvider azTokenProvider = func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
 	// pass the CLI a Microsoft Entra ID v1 resource because we don't know which CLI version is installed and older ones don't support v2 scopes
 	resource := strings.TrimSuffix(scopes[0], defaultSuffix)
 	// set a default timeout for this authentication iff the application hasn't done so already
@@ -108,6 +124,10 @@ var defaultAzTokenProvider cliTokenProvider = func(ctx context.Context, scopes [
 	commandLine := "az account get-access-token -o json --resource " + resource
 	if tenantID != "" {
 		commandLine += " --tenant " + tenantID
+	}
+	if subscription != "" {
+		// subscription needs quotes because it may contain spaces
+		commandLine += ` --subscription "` + subscription + `"`
 	}
 	var cliCmd *exec.Cmd
 	if runtime.GOOS == "windows" {

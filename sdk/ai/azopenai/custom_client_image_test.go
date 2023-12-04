@@ -69,7 +69,9 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, model string, re
 	defer cancel()
 
 	resp, err := client.GetImageGenerations(ctx, azopenai.ImageGenerationOptions{
-		Prompt:         to.Ptr("a cat"),
+		// saw this prompt in a thread about trying to _prevent_ Dall-E3 from rewriting your
+		// propmt. When this is revised you'll see the text in the
+		Prompt:         to.Ptr("acrylic painting of a sunflower with bees"),
 		Size:           to.Ptr(azopenai.ImageSizeSize1024X1792),
 		ResponseFormat: &responseFormat,
 		DeploymentName: &model,
@@ -82,10 +84,12 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, model string, re
 			headResp, err := http.DefaultClient.Head(*resp.Data[0].URL)
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
+			require.NotEmpty(t, resp.Data[0].RevisedPrompt)
 		case azopenai.ImageGenerationResponseFormatBase64:
 			imgBytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
 			require.NoError(t, err)
 			require.NotEmpty(t, imgBytes)
+			require.NotEmpty(t, resp.Data[0].RevisedPrompt)
 		}
 	}
 }

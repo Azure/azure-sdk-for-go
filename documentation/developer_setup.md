@@ -5,6 +5,7 @@
 * [Module Skeleton](#create-module-skeleton)
 * [Create SDK](#create-your-sdk)
 * [Write Tests](#write-tests)
+* [Write Examples](#write-examples)
 
 ## Installing Go
 
@@ -366,6 +367,20 @@ test-proxy push -a <path-to-assets.json>
 
 On completion of the push, a newly created tag will be stamped into the `assets.json` file. This new tag must be committed and pushed to your package directory along with any other changes.
 
+## Write Examples
+
+Examples are built into the Go toolchain by way of [testable examples][testable_examples]. By convention, examples are placed in a file named `example_test.go` and
+may be spread across multiple files, grouped by feature (e.g. `example_<feature>_test.go`). Since testable examples are by definition tests, the file(s) must have the `_test.go` suffix.
+
+Examples **should** be succinct allowing for copy/paste usage and **must** be clearly commented so they're easy to understand.
+
+Examples **must** be provided as testable examples, not as markdown blocks in README files (code snippets are ok but should be used sparingly as they tend to rot over time).
+This ensures that examples actually compile (and work!) and remain current as a SDK evolves. It also allows the doc tooling to automatically link API docs to their examples.
+
+Please consult the canonical documentation on [testable examples][testable_examples] for instructions on how to create/name testable examples and enabling testable example execution.
+
+All SDKs **must** include, at minimum, examples for their champion scenarios.
+
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -398,3 +413,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
 [test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources
 [recording_package]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/internal/recording
+[testable_examples]: https://go.dev/blog/examples

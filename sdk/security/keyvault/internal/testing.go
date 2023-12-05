@@ -20,6 +20,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// GetEnvVar retrieves the environment variable, then if recording, santitizes its value.
 func GetEnvVar(envVar string, fakeValue string) string {
 	// get value
 	value := fakeValue
@@ -73,15 +74,18 @@ func StartRecording(t *testing.T, recordingDirectory string) {
 	})
 }
 
-func GetCredential(module string) azcore.TokenCredential {
+// GetCredential returns a fake credential if the tests are in playback mode.
+// If not, it returns a ClientSecretCredential.
+// moduleName should be in all caps (ex AZKEYS).
+func GetCredential(moduleName string) azcore.TokenCredential {
 	var credential azcore.TokenCredential
 
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
-		tenantID := GetEnvVar(module+"_TENANT_ID", "")
-		clientID := GetEnvVar(module+"_CLIENT_ID", "")
-		secret := GetEnvVar(module+"_CLIENT_SECRET", "")
+		tenantID := GetEnvVar(moduleName+"_TENANT_ID", "")
+		clientID := GetEnvVar(moduleName+"_CLIENT_ID", "")
+		secret := GetEnvVar(moduleName+"_CLIENT_SECRET", "")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
@@ -92,7 +96,7 @@ func GetCredential(module string) azcore.TokenCredential {
 	return credential
 }
 
-// pollStatus calls a function until it stops returning a response error with the given status code.
+// PollStatus calls a function until it stops returning a response error with the given status code.
 // If this takes more than 2 minutes, it fails the test.
 func PollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	var err error

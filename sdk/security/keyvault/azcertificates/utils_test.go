@@ -8,19 +8,18 @@ package azcertificates_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"hash/fnv"
 	"os"
-	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,8 +44,7 @@ func TestMain(m *testing.M) {
 func run(m *testing.M) int {
 	var proxy *recording.TestProxyInstance
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		var err error
-		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -59,46 +57,22 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
-	if vaultURL == "" {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
-		vaultURL = fakeVaultURL
-	}
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-	} else {
-		tenantId := lookupEnvVar("AZCERTIFICATES_TENANT_ID")
-		clientId := lookupEnvVar("AZCERTIFICATES_CLIENT_ID")
-		secret := lookupEnvVar("AZCERTIFICATES_CLIENT_SECRET")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
+	vaultURL = internal.GetEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	credential = internal.GetCredential("AZADMIN")
+
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
 		opts := proxy.Options
 		opts.GroupForReplace = "1"
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
+		err := recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddHeaderRegexSanitizer("Location", fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
+
 	}
+
 	code := m.Run()
+
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// Purge test certs using a client whose requests aren't recorded. This
 		// will be fast because the tests which created these certs requested their
@@ -129,12 +103,7 @@ func run(m *testing.M) int {
 }
 
 func startTest(t *testing.T) *azcertificates.Client {
-	err := recording.Start(t, recordingDirectory, nil)
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
-	})
+	internal.StartRecording(t, recordingDirectory)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azcertificates.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
@@ -150,20 +119,6 @@ func getName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return ret
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
-}
-
 func cleanUpCert(t *testing.T, client *azcertificates.Client, name string) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
@@ -174,5 +129,49 @@ func cleanUpCert(t *testing.T, client *azcertificates.Client, name string) {
 		certsToPurge.names = append(certsToPurge.names, name)
 	} else {
 		t.Logf(`cleanUpCert failed for "%s": %v`, name, err)
+	}
+}
+
+// pollStatus calls a function until it stops returning a response error with the given status code.
+// If this takes more than 2 minutes, it fails the test.
+func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
+	var err error
+	for i := 0; i < 12; i++ {
+		err = fn()
+		var respErr *azcore.ResponseError
+		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+			break
+		}
+		if i < 11 {
+			recording.Sleep(10 * time.Second)
+		}
+	}
+	require.NoError(t, err)
+}
+
+// pollCertOperation polls a certificate operation for up to 2 minutes, stopping when it completes.
+// It fails the test if a poll fails or the operation doesn't complete successfully in the allotted time.
+func pollCertOperation(t *testing.T, client *azcertificates.Client, name string) {
+	var err error
+	var op azcertificates.GetCertificateOperationResponse
+	for i := 0; i < 24; i++ {
+		op, err = client.GetCertificateOperation(ctx, name, nil)
+		require.NoError(t, err)
+		require.NotNil(t, op.Status)
+		switch s := *op.Status; s {
+		case "completed":
+			return
+		case "cancelled":
+			t.Fatal("cert creation cancelled")
+		case "inProgress":
+			// sleep and continue
+		default:
+			t.Fatalf(`unexpected status "%s"`, s)
+		}
+		if i < 23 {
+			recording.Sleep(5 * time.Second)
+		} else {
+			t.Fatal("cert creation didn't complete in time")
+		}
 	}
 }

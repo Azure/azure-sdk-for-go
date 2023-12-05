@@ -10,53 +10,20 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
-
-// pollStatus calls a function until it stops returning a response error with the given status code.
-// If this takes more than 2 minutes, it fails the test.
-func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
-	var err error
-	for i := 0; i < 12; i++ {
-		err = fn()
-		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
-			break
-		}
-		if i < 11 {
-			recording.Sleep(10 * time.Second)
-		}
-	}
-	require.NoError(t, err)
-}
-
-func requireEqualAttributes(t *testing.T, a, b *azkeys.KeyAttributes) {
-	if a == nil || b == nil {
-		require.Equal(t, a, b)
-		return
-	}
-	require.Equal(t, a.Created, b.Created)
-	require.Equal(t, a.Enabled, b.Enabled)
-	require.Equal(t, a.Expires, b.Expires)
-	require.Equal(t, a.Exportable, b.Exportable)
-	require.Equal(t, a.NotBefore, b.NotBefore)
-	require.Equal(t, a.RecoverableDays, b.RecoverableDays)
-	require.Equal(t, a.RecoveryLevel, b.RecoveryLevel)
-	require.Equal(t, a.Updated, b.Updated)
-}
 
 func TestBackupRestore(t *testing.T) {
 	name := "KV"
@@ -104,7 +71,7 @@ func TestBackupRestore(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, restoreResp.Key.KID)
 			require.NotNil(t, restoreResp.Key)
-			testSerde(t, &restoreParams)
+			internal.TestSerde(t, &restoreParams)
 
 			getResp, err := client.GetKey(context.Background(), keyName, "", nil)
 			require.NoError(t, err)
@@ -137,7 +104,7 @@ func TestCRUD(t *testing.T) {
 				Tags:           tags,
 			},
 		} {
-			testSerde(t, &params)
+			internal.TestSerde(t, &params)
 			name := string(*params.Kty)
 			if mhsm {
 				name += "_MHSM"
@@ -159,14 +126,14 @@ func TestCRUD(t *testing.T) {
 				requireEqualAttributes(t, createResp.Attributes, getResp.Attributes)
 				require.Equal(t, createResp.Key.KID.Name(), getResp.Key.KID.Name())
 				require.Equal(t, createResp.Key.KID.Version(), getResp.Key.KID.Version())
-				testSerde(t, &getResp.KeyBundle)
+				internal.TestSerde(t, &getResp.KeyBundle)
 
 				updateParams := azkeys.UpdateKeyParameters{
 					KeyAttributes: &azkeys.KeyAttributes{
 						Enabled: to.Ptr(false),
 					},
 				}
-				testSerde(t, &updateParams)
+				internal.TestSerde(t, &updateParams)
 				updateResp, err := client.UpdateKey(context.Background(), keyName, createResp.Key.KID.Version(), updateParams, nil)
 				require.NoError(t, err)
 				require.Equal(t, createResp.Key.KID.Name(), updateResp.Key.KID.Name())
@@ -178,7 +145,7 @@ func TestCRUD(t *testing.T) {
 				require.Equal(t, createResp.Key.KID.Name(), deleteResp.Key.KID.Name())
 				require.Equal(t, createResp.Key.KID.Version(), deleteResp.Key.KID.Version())
 				requireEqualAttributes(t, updateResp.Attributes, deleteResp.Attributes)
-				testSerde(t, &deleteResp.DeletedKey)
+				internal.TestSerde(t, &deleteResp.DeletedKey)
 				pollStatus(t, 404, func() error {
 					_, err := client.GetDeletedKey(context.Background(), keyName, nil)
 					return err
@@ -228,7 +195,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azkeys.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azkeys.NewClient(vaultURL, &internal.FakeCredential{}, options)
 			require.NoError(t, err)
 			pager := client.NewListKeyPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
@@ -263,21 +230,21 @@ func TestEncryptDecrypt(t *testing.T) {
 				Algorithm: to.Ptr(azkeys.EncryptionAlgorithmRSAOAEP256),
 				Value:     []byte("plaintext"),
 			}
-			testSerde(t, &encryptParams)
+			internal.TestSerde(t, &encryptParams)
 			encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.KID.Version(), encryptParams, nil)
 			require.NoError(t, err)
 			require.NotEmpty(t, encryptResponse.Result)
-			testSerde(t, &encryptResponse.KeyOperationResult)
+			internal.TestSerde(t, &encryptResponse.KeyOperationResult)
 
 			decryptParams := azkeys.KeyOperationParameters{
 				Algorithm: encryptParams.Algorithm,
 				Value:     encryptResponse.Result,
 			}
-			testSerde(t, &decryptParams)
+			internal.TestSerde(t, &decryptParams)
 			decryptResponse, err := client.Decrypt(context.Background(), keyName, "", decryptParams, nil)
 			require.NoError(t, err)
 			require.Equal(t, decryptResponse.Result, encryptParams.Value)
-			testSerde(t, &encryptResponse.KeyOperationResult)
+			internal.TestSerde(t, &encryptResponse.KeyOperationResult)
 		})
 	}
 }
@@ -300,7 +267,7 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 		IV:    []byte("0123456789ABCDEF"),
 		Value: []byte("plaintext"),
 	}
-	testSerde(t, &encryptParams)
+	internal.TestSerde(t, &encryptParams)
 	encryptResponse, err := client.Encrypt(context.Background(), keyName, createResp.Key.KID.Version(), encryptParams, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, encryptResponse.Result)
@@ -310,7 +277,7 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 		IV:        encryptResponse.IV,
 		Value:     encryptResponse.Result,
 	}
-	testSerde(t, &decryptParams)
+	internal.TestSerde(t, &decryptParams)
 	decryptResponse, err := client.Decrypt(context.Background(), keyName, "", decryptParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, decryptResponse.Result, encryptParams.Value)
@@ -319,11 +286,11 @@ func TestEncryptDecryptSymmetric(t *testing.T) {
 func TestGetRandomBytes(t *testing.T) {
 	client := startTest(t, true)
 	req := azkeys.GetRandomBytesParameters{Count: to.Ptr(int32(100))}
-	testSerde(t, &req)
+	internal.TestSerde(t, &req)
 	resp, err := client.GetRandomBytes(context.Background(), req, nil)
 	require.NoError(t, err)
 	require.Equal(t, 100, len(resp.Value))
-	testSerde(t, &resp)
+	internal.TestSerde(t, &resp)
 }
 
 func TestID(t *testing.T) {
@@ -360,7 +327,7 @@ func TestImportKey(t *testing.T) {
 				QI:     toBytes("009fe7ae42e92bc04fcd5780464bd21d0c8ac0c599f9af020fde6ab0a7e7d1d39902f5d8fb6c614184c4c1b103fb46e94cd10a6c8a40f9991a1f28269f326435b6c50276fda6493353c650a833f724d80c7d522ba16c79f0eb61f672736b68fb8be3243d10943c4ab7028d09e76cfb5892222e38bc4d35585bf35a88cd68c73b07", t),
 			}
 			params := azkeys.ImportKeyParameters{HSM: to.Ptr(true), Key: jwk}
-			testSerde(t, &params)
+			internal.TestSerde(t, &params)
 			resp, err := client.ImportKey(context.Background(), createRandomName(t, "testimport"), params, nil)
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, resp.Key.KID)
@@ -402,7 +369,7 @@ func TestListDeletedKeys(t *testing.T) {
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.DeletedKeyPropertiesListResult)
+				internal.TestSerde(t, &resp.DeletedKeyPropertiesListResult)
 				for _, key := range resp.Value {
 					require.NotEmpty(t, key.Attributes)
 					require.NotNil(t, key.DeletedDate)
@@ -414,7 +381,7 @@ func TestListDeletedKeys(t *testing.T) {
 						if *key.Tags["count-this-key"] == "yes" {
 							count--
 						}
-						testSerde(t, key)
+						internal.TestSerde(t, key)
 					}
 				}
 			}
@@ -445,7 +412,7 @@ func TestListKeys(t *testing.T) {
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.KeyPropertiesListResult)
+				internal.TestSerde(t, &resp.KeyPropertiesListResult)
 				for _, key := range resp.Value {
 					require.NotNil(t, key)
 					require.NotNil(t, key.Attributes)
@@ -453,7 +420,7 @@ func TestListKeys(t *testing.T) {
 					if strings.HasPrefix(key.KID.Name(), keyNamePrefix) {
 						count--
 					}
-					testSerde(t, key)
+					internal.TestSerde(t, key)
 				}
 			}
 			require.Equal(t, count, 0)
@@ -485,9 +452,9 @@ func TestListKeyVersions(t *testing.T) {
 			for pager.More() {
 				resp, err := pager.NextPage(context.Background())
 				require.NoError(t, err)
-				testSerde(t, &resp.KeyPropertiesListResult)
+				internal.TestSerde(t, &resp.KeyPropertiesListResult)
 				for _, key := range resp.Value {
-					testSerde(t, key)
+					internal.TestSerde(t, key)
 					require.NotNil(t, key)
 					require.NotNil(t, key.Attributes)
 					require.NotNil(t, key.KID)
@@ -591,14 +558,14 @@ func TestReleaseKey(t *testing.T) {
 		require.NoError(t, err)
 
 		params := azkeys.ReleaseParameters{TargetAttestationToken: tR.Token}
-		testSerde(t, &params)
+		internal.TestSerde(t, &params)
 		releaseResp, err := client.Release(context.Background(), key, "", params, nil)
 		if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
 			t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
 		}
 		require.NoError(t, err)
 		require.NotEmpty(t, releaseResp.KeyReleaseResult.Value)
-		testSerde(t, &releaseResp.KeyReleaseResult)
+		internal.TestSerde(t, &releaseResp.KeyReleaseResult)
 	})
 }
 
@@ -686,17 +653,17 @@ func TestSignVerify(t *testing.T) {
 			digest := hasher.Sum(nil)
 
 			signParams := azkeys.SignParameters{Algorithm: to.Ptr(azkeys.SignatureAlgorithmES256K), Value: digest}
-			testSerde(t, &signParams)
+			internal.TestSerde(t, &signParams)
 			signResponse, err := client.Sign(context.Background(), keyName, "", signParams, nil)
 			require.NoError(t, err)
-			testSerde(t, &signResponse.KeyOperationResult)
+			internal.TestSerde(t, &signResponse.KeyOperationResult)
 
 			verifyParams := azkeys.VerifyParameters{Algorithm: signParams.Algorithm, Digest: digest, Signature: signResponse.Result}
-			testSerde(t, &verifyParams)
+			internal.TestSerde(t, &verifyParams)
 			verifyResponse, err := client.Verify(context.Background(), keyName, "", verifyParams, nil)
 			require.NoError(t, err)
 			require.True(t, *verifyResponse.Value)
-			testSerde(t, &verifyResponse.KeyVerifyResult)
+			internal.TestSerde(t, &verifyResponse.KeyVerifyResult)
 		})
 	}
 }

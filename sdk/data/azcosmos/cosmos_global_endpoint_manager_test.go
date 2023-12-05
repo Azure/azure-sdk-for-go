@@ -395,7 +395,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
 	//update and assert available locations are now populated in location cache
-	err := gem.Update()
+	err = gem.Update()
 	assert.NoError(t, err)
 	locationInfo = gem.locationCache.locationInfo
 

@@ -128,4 +128,3 @@ type ClientUserExistsResponse struct {
 type HealthClientGetServiceStatusResponse struct {
 	// placeholder for future response values
 }
-

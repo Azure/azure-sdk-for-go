@@ -10,10 +10,11 @@ package azwebpubsub
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
 )
 
 // HealthClient contains the methods for the Health group.
@@ -57,4 +58,3 @@ func (client *HealthClient) getServiceStatusCreateRequest(ctx context.Context, o
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
-

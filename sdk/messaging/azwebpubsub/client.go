@@ -11,14 +11,15 @@ package azwebpubsub
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // Client contains the methods for the WebPubSub group.
@@ -26,7 +27,7 @@ import (
 type Client struct {
 	internal *azcore.Client
 	endpoint string
-	key *string
+	key      *string
 }
 
 // AddConnectionToGroup - Add a connection to the target group.
@@ -120,8 +121,8 @@ func (client *Client) addConnectionsToGroupsCreateRequest(ctx context.Context, h
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupsToAdd); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -265,9 +266,9 @@ func (client *Client) closeAllConnectionsCreateRequest(ctx context.Context, hub 
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-			for _, qv := range options.Excluded {
-		reqQP.Add("excluded", qv)
-	}
+		for _, qv := range options.Excluded {
+			reqQP.Add("excluded", qv)
+		}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -368,9 +369,9 @@ func (client *Client) closeGroupConnectionsCreateRequest(ctx context.Context, hu
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-			for _, qv := range options.Excluded {
-		reqQP.Add("excluded", qv)
-	}
+		for _, qv := range options.Excluded {
+			reqQP.Add("excluded", qv)
+		}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -422,9 +423,9 @@ func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-			for _, qv := range options.Excluded {
-		reqQP.Add("excluded", qv)
-	}
+		for _, qv := range options.Excluded {
+			reqQP.Add("excluded", qv)
+		}
 	}
 	if options != nil && options.Reason != nil {
 		reqQP.Set("reason", *options.Reason)
@@ -520,18 +521,18 @@ func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub 
 		reqQP.Set("userId", *options.UserID)
 	}
 	if options != nil && options.Role != nil {
-			for _, qv := range options.Role {
-		reqQP.Add("role", qv)
-	}
+		for _, qv := range options.Role {
+			reqQP.Add("role", qv)
+		}
 	}
 	if options != nil && options.MinutesToExpire != nil {
 		reqQP.Set("minutesToExpire", strconv.FormatInt(int64(*options.MinutesToExpire), 10))
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Group != nil {
-			for _, qv := range options.Group {
-		reqQP.Add("group", qv)
-	}
+		for _, qv := range options.Group {
+			reqQP.Add("group", qv)
+		}
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
@@ -786,8 +787,8 @@ func (client *Client) removeConnectionsFromGroupsCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupsToRemove); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -981,9 +982,9 @@ func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, co
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-			for _, qv := range options.Excluded {
-		reqQP.Add("excluded", qv)
-	}
+		for _, qv := range options.Excluded {
+			reqQP.Add("excluded", qv)
+		}
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Filter != nil {
@@ -996,8 +997,8 @@ func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, co
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1051,8 +1052,8 @@ func (client *Client) sendToConnectionCreateRequest(ctx context.Context, hub str
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1099,9 +1100,9 @@ func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, 
 	}
 	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Excluded != nil {
-			for _, qv := range options.Excluded {
-		reqQP.Add("excluded", qv)
-	}
+		for _, qv := range options.Excluded {
+			reqQP.Add("excluded", qv)
+		}
 	}
 	reqQP.Set("api-version", "2023-07-01")
 	if options != nil && options.Filter != nil {
@@ -1114,8 +1115,8 @@ func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, 
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1172,8 +1173,8 @@ func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, u
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := req.SetBody(message, string(contentType)); err != nil {
-	return nil, err
-}
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -1221,4 +1222,3 @@ func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, u
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
-

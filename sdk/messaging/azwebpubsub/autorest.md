@@ -40,6 +40,6 @@ directive:
       transform: >-
         return $.replace(
             /(type Client struct[^}]+})/s, 
-            "type Client struct {\n	internal *azcore.Client\n	endpoint string\n	key *string\n}")
+            "type Client struct {\n	internal *azcore.Client\n	endpoint string\n	key      *string\n}")
 
 ```

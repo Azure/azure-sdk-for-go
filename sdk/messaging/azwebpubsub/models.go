@@ -30,7 +30,7 @@ type ErrorDetail struct {
 
 	// An array of details about specific errors that led to this reported error.
 	Details []*ErrorDetail
-	Inner *InnerError
+	Inner   *InnerError
 
 	// A human-readable representation of the error.
 	Message *string
@@ -41,7 +41,7 @@ type ErrorDetail struct {
 
 type InnerError struct {
 	// A more specific error code than was provided by the containing error.
-	Code *string
+	Code  *string
 	Inner *InnerError
 }
 
@@ -53,4 +53,3 @@ type RemoveFromGroupsRequest struct {
 	// A list of groups which target connections will be removed from
 	Groups []*string
 }
-

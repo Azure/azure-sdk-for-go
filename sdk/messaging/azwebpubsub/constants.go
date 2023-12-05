@@ -22,7 +22,7 @@ const (
 
 // PossibleContentTypeValues returns the possible values for the ContentType const type.
 func PossibleContentTypeValues() []ContentType {
-	return []ContentType{	
+	return []ContentType{
 		ContentTypeApplicationJSON,
 		ContentTypeApplicationOctetStream,
 		ContentTypeTextPlain,
@@ -33,14 +33,13 @@ type Permission string
 
 const (
 	PermissionJoinLeaveGroup Permission = "joinLeaveGroup"
-	PermissionSendToGroup Permission = "sendToGroup"
+	PermissionSendToGroup    Permission = "sendToGroup"
 )
 
 // PossiblePermissionValues returns the possible values for the Permission const type.
 func PossiblePermissionValues() []Permission {
-	return []Permission{	
+	return []Permission{
 		PermissionJoinLeaveGroup,
 		PermissionSendToGroup,
 	}
 }
-

@@ -11,8 +11,9 @@ package azwebpubsub
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AddToGroupsRequest.
@@ -33,10 +34,10 @@ func (a *AddToGroupsRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filter":
-				err = unpopulate(val, "Filter", &a.Filter)
+			err = unpopulate(val, "Filter", &a.Filter)
 			delete(rawMsg, key)
 		case "groups":
-				err = unpopulate(val, "Groups", &a.Groups)
+			err = unpopulate(val, "Groups", &a.Groups)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -63,7 +64,7 @@ func (c *ClientTokenResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "token":
-				err = unpopulate(val, "Token", &c.Token)
+			err = unpopulate(val, "Token", &c.Token)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -94,19 +95,19 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-				err = unpopulate(val, "Code", &e.Code)
+			err = unpopulate(val, "Code", &e.Code)
 			delete(rawMsg, key)
 		case "details":
-				err = unpopulate(val, "Details", &e.Details)
+			err = unpopulate(val, "Details", &e.Details)
 			delete(rawMsg, key)
 		case "inner":
-				err = unpopulate(val, "Inner", &e.Inner)
+			err = unpopulate(val, "Inner", &e.Inner)
 			delete(rawMsg, key)
 		case "message":
-				err = unpopulate(val, "Message", &e.Message)
+			err = unpopulate(val, "Message", &e.Message)
 			delete(rawMsg, key)
 		case "target":
-				err = unpopulate(val, "Target", &e.Target)
+			err = unpopulate(val, "Target", &e.Target)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -134,10 +135,10 @@ func (i *InnerError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-				err = unpopulate(val, "Code", &i.Code)
+			err = unpopulate(val, "Code", &i.Code)
 			delete(rawMsg, key)
 		case "inner":
-				err = unpopulate(val, "Inner", &i.Inner)
+			err = unpopulate(val, "Inner", &i.Inner)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -165,10 +166,10 @@ func (r *RemoveFromGroupsRequest) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filter":
-				err = unpopulate(val, "Filter", &r.Filter)
+			err = unpopulate(val, "Filter", &r.Filter)
 			delete(rawMsg, key)
 		case "groups":
-				err = unpopulate(val, "Groups", &r.Groups)
+			err = unpopulate(val, "Groups", &r.Groups)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -197,4 +198,3 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
-

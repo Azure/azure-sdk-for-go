@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -1401,19 +1402,20 @@ func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
 		Protocol:        sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
 		ExpiryTime:      time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 		Permissions:     to.Ptr(sas.AccountPermissions{Read: true, Create: true, Write: true, Delete: true}).String(),
-		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Service: true}).String(),
+		ResourceTypes:   to.Ptr(sas.AccountResourceTypes{Service: true, Container: true, Object: true}).String(),
 		EncryptionScope: encryptionScope,
 	}.SignWithSharedKey(credential)
 	_require.NoError(err)
 
 	sasToken := sasQueryParams.Encode()
-	fmt.Println(fsClient.DFSURL() + "?" + sasToken)
 
-	srcFileClient, err := file.NewClientWithNoCredential(fsClient.DFSURL()+"?"+sasToken, nil)
+	srcFileClient, err := file.NewClientWithNoCredential(fsClient.DFSURL()+"/file?"+sasToken, nil)
 	_require.NoError(err)
 	_require.NotNil(srcFileClient)
 
-	fmt.Println(encryptionScope)
+	resp, err := srcFileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
 
 	// create local file
 	_, content := generateData(10 * 1024)
@@ -1446,6 +1448,52 @@ func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
 	testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	_require.Equal(encryptionScope, *response.EncryptionScope)
+}
+
+func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
+
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
+	// Set current and past time and create key
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(currentTime.UTC().Format(sas.TimeFormat)),
+		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
+	}
+
+	udc, _ := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+
+	// get permissions and details for sas
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_require.Nil(err)
+
+	// Create Blob Signature Values with desired permissions and sign with user delegation credential
+	perms := sas.FilePermissions{Read: true, Create: true, Write: true, Move: true, Delete: true, List: true}
+	sasQueryParams, _ := sas.DatalakeSignatureValues{
+		Protocol:        sas.ProtocolHTTPS, // Users MUST use HTTPS (not HTTP)
+		StartTime:       time.Now().UTC().Add(time.Second * -10),
+		ExpiryTime:      time.Now().UTC().Add(15 * time.Minute), // 15 minutes before expiration
+		FileSystemName:  filesystemName,
+		Permissions:     perms.String(),
+		EncryptionScope: encryptionScope,
+	}.SignWithUserDelegation(udc)
+
+	sasURL := fmt.Sprintf(fsClient.DFSURL() + sasQueryParams.Encode())
+	// This URL can be used to authenticate requests now
+	_, err = file.NewClientWithNoCredential(sasURL, nil)
+	handleError(err)
 }
 
 func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {

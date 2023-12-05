@@ -22,7 +22,7 @@ const (
 	pathSegmentDocument            string = "docs"
 	pathSegmentClientEncryptionKey string = "clientencryptionkeys"
 	pathSegmentOffer               string = "offers"
-	pathSegmentDatabaseAccount     string = "databaseaccount"
+	pathSegmentDatabaseAccount     string = ""
 	pathSegmentPartitionKeyRange   string = "pkranges"
 )
 

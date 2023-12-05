@@ -29,16 +29,16 @@ func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 	tokenType := "master"
 	version := "1.0"
 
-	emptyAuthHeader := cred.buildCanonicalizedAuthHeader("", resourceType, resourceId, xmsDate, tokenType, version)
+	emptyAuthHeader := cred.buildCanonicalizedAuthHeader(false, "", resourceType, resourceId, xmsDate, tokenType, version)
 	assert.Equal(t, emptyAuthHeader, "")
-	emptyAuthHeader = cred.buildCanonicalizedAuthHeader(method, "", resourceId, xmsDate, tokenType, version)
+	emptyAuthHeader = cred.buildCanonicalizedAuthHeader(false, method, "", resourceId, xmsDate, tokenType, version)
 	assert.Equal(t, emptyAuthHeader, "")
 
 	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceId, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
 	signature := cred.computeHMACSHA256(stringToSign)
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
-	authHeader := cred.buildCanonicalizedAuthHeader(method, resourceType, resourceId, xmsDate, tokenType, version)
+	authHeader := cred.buildCanonicalizedAuthHeader(false, method, resourceType, resourceId, xmsDate, tokenType, version)
 
 	assert.GreaterOrEqual(t, len(authHeader), 1)
 	assert.Equal(t, expected, authHeader)

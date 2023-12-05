@@ -20,68 +20,68 @@ import (
 	"strings"
 )
 
-// PoolsClient contains the methods for the Pools group.
-// Don't use this type directly, use NewPoolsClient() instead.
-type PoolsClient struct {
+// BackupVaultsClient contains the methods for the BackupVaults group.
+// Don't use this type directly, use NewBackupVaultsClient() instead.
+type BackupVaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPoolsClient creates a new instance of PoolsClient with the specified values.
+// NewBackupVaultsClient creates a new instance of BackupVaultsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoolsClient, error) {
+func NewBackupVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupVaultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PoolsClient{
+	client := &BackupVaultsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or Update a capacity pool
+// BeginCreateOrUpdate - Create or update the specified Backup Vault in the NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - body - Capacity pool object supplied in the body of the operation.
-//   - options - PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate
+//   - backupVaultName - The name of the Backup Vault
+//   - body - BackupVault object supplied in the body of the operation.
+//   - options - BackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginCreateOrUpdate
 //     method.
-func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoolsClientCreateOrUpdateResponse], error) {
+func (client *BackupVaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVault, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, body, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, backupVaultName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or Update a capacity pool
+// CreateOrUpdate - Create or update the specified Backup Vault in the NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
-func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *BackupVaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVault, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoolsClient.BeginCreateOrUpdate"
+	const operationName = "BackupVaultsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +97,8 @@ func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"
+func (client *BackupVaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVault, options *BackupVaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -111,10 +111,10 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -129,43 +129,44 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// BeginDelete - Delete the specified capacity pool
+// BeginDelete - Delete the specified Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - options - PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
-func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*runtime.Poller[PoolsClientDeleteResponse], error) {
+//   - backupVaultName - The name of the Backup Vault
+//   - options - BackupVaultsClientBeginDeleteOptions contains the optional parameters for the BackupVaultsClient.BeginDelete
+//     method.
+func (client *BackupVaultsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, backupVaultName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete the specified capacity pool
+// Delete - Delete the specified Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
-func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BackupVaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *BackupVaultsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoolsClient.BeginDelete"
+	const operationName = "BackupVaultsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -181,8 +182,8 @@ func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"
+func (client *BackupVaultsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *BackupVaultsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -195,10 +196,10 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -206,42 +207,43 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get details of the specified capacity pool
+// Get - Get the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
-func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientGetOptions) (PoolsClientGetResponse, error) {
+//   - backupVaultName - The name of the Backup Vault
+//   - options - BackupVaultsClientGetOptions contains the optional parameters for the BackupVaultsClient.Get method.
+func (client *BackupVaultsClient) Get(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *BackupVaultsClientGetOptions) (BackupVaultsClientGetResponse, error) {
 	var err error
-	const operationName = "PoolsClient.Get"
+	const operationName = "BackupVaultsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, options)
 	if err != nil {
-		return PoolsClientGetResponse{}, err
+		return BackupVaultsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PoolsClientGetResponse{}, err
+		return BackupVaultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PoolsClientGetResponse{}, err
+		return BackupVaultsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"
+func (client *BackupVaultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, options *BackupVaultsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -254,10 +256,10 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -270,46 +272,47 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGetResponse, error) {
-	result := PoolsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityPool); err != nil {
-		return PoolsClientGetResponse{}, err
+func (client *BackupVaultsClient) getHandleResponse(resp *http.Response) (BackupVaultsClientGetResponse, error) {
+	result := BackupVaultsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BackupVault); err != nil {
+		return BackupVaultsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List all capacity pools in the NetApp Account
+// NewListByNetAppAccountPager - List and describe all Backup Vaults in the NetApp account.
 //
 // Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
-//   - options - PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
-func (client *PoolsClient) NewListPager(resourceGroupName string, accountName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PoolsClientListResponse]{
-		More: func(page PoolsClientListResponse) bool {
+//   - options - BackupVaultsClientListByNetAppAccountOptions contains the optional parameters for the BackupVaultsClient.NewListByNetAppAccountPager
+//     method.
+func (client *BackupVaultsClient) NewListByNetAppAccountPager(resourceGroupName string, accountName string, options *BackupVaultsClientListByNetAppAccountOptions) *runtime.Pager[BackupVaultsClientListByNetAppAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BackupVaultsClientListByNetAppAccountResponse]{
+		More: func(page BackupVaultsClientListByNetAppAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PoolsClientListResponse) (PoolsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PoolsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *BackupVaultsClientListByNetAppAccountResponse) (BackupVaultsClientListByNetAppAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupVaultsClient.NewListByNetAppAccountPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+				return client.listByNetAppAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 			}, nil)
 			if err != nil {
-				return PoolsClientListResponse{}, err
+				return BackupVaultsClientListByNetAppAccountResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			return client.listByNetAppAccountHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PoolsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools"
+// listByNetAppAccountCreateRequest creates the ListByNetAppAccount request.
+func (client *BackupVaultsClient) listByNetAppAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BackupVaultsClientListByNetAppAccountOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -333,53 +336,54 @@ func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *PoolsClient) listHandleResponse(resp *http.Response) (PoolsClientListResponse, error) {
-	result := PoolsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityPoolList); err != nil {
-		return PoolsClientListResponse{}, err
+// listByNetAppAccountHandleResponse handles the ListByNetAppAccount response.
+func (client *BackupVaultsClient) listByNetAppAccountHandleResponse(resp *http.Response) (BackupVaultsClientListByNetAppAccountResponse, error) {
+	result := BackupVaultsClientListByNetAppAccountResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BackupVaultsList); err != nil {
+		return BackupVaultsClientListByNetAppAccountResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Patch the specified capacity pool
+// BeginUpdate - Patch the specified NetApp Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
-//   - poolName - The name of the capacity pool
-//   - body - Capacity pool object supplied in the body of the operation.
-//   - options - PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
-func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*runtime.Poller[PoolsClientUpdateResponse], error) {
+//   - backupVaultName - The name of the Backup Vault
+//   - body - Backup Vault object supplied in the body of the operation.
+//   - options - BackupVaultsClientBeginUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginUpdate
+//     method.
+func (client *BackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVaultPatch, options *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, body, options)
+		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupVaultsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupVaultsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Patch the specified capacity pool
+// Update - Patch the specified NetApp Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-05-01-preview
-func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *BackupVaultsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVaultPatch, options *BackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoolsClient.BeginUpdate"
+	const operationName = "BackupVaultsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupVaultName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -395,8 +399,8 @@ func (client *PoolsClient) update(ctx context.Context, resourceGroupName string,
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"
+func (client *BackupVaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body BackupVaultPatch, options *BackupVaultsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -409,10 +413,10 @@ func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if backupVaultName == "" {
+		return nil, errors.New("parameter backupVaultName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	urlPath = strings.ReplaceAll(urlPath, "{backupVaultName}", url.PathEscape(backupVaultName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

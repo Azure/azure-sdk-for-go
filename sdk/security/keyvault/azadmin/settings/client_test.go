@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -29,7 +30,7 @@ func TestGetSetting(t *testing.T) {
 	require.Equal(t, *res.Name, settingName)
 	require.Equal(t, *res.Type, settings.SettingTypeBoolean)
 	require.NotNil(t, res.Value)
-	testSerde(t, &res)
+	internal.TestSerde(t, &res)
 }
 
 func TestGetSetting_InvalidSettingName(t *testing.T) {
@@ -63,7 +64,7 @@ func TestGetSettings(t *testing.T) {
 		require.NotNil(t, setting.Value)
 	}
 
-	testSerde(t, &res)
+	internal.TestSerde(t, &res)
 
 }
 
@@ -83,7 +84,7 @@ func TestUpdateSetting(t *testing.T) {
 	}
 
 	updateSettingRequest := settings.UpdateSettingRequest{Value: to.Ptr(updatedBool)}
-	testSerde(t, &updateSettingRequest)
+	internal.TestSerde(t, &updateSettingRequest)
 
 	update, err := client.UpdateSetting(context.Background(), settingName, updateSettingRequest, nil)
 	require.NoError(t, err)

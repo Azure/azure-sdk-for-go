@@ -16,13 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
 func TestBackupRestore(t *testing.T) {
 	client, sasToken := startBackupTest(t)
 
-	testSerde(t, &sasToken)
+	internal.TestSerde(t, &sasToken)
 
 	// backup the vault
 	backupPoller, err := client.BeginFullBackup(context.Background(), sasToken, nil)
@@ -32,7 +33,7 @@ func TestBackupRestore(t *testing.T) {
 	require.Nil(t, backupResults.Error)
 	require.Equal(t, "Succeeded", *backupResults.Status)
 	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, blobURL)
-	testSerde(t, &backupResults)
+	internal.TestSerde(t, &backupResults)
 
 	// restore the backup
 	s := *backupResults.AzureStorageBlobContainerURI
@@ -41,7 +42,7 @@ func TestBackupRestore(t *testing.T) {
 		FolderToRestore:    &folderURI,
 		SASTokenParameters: &sasToken,
 	}
-	testSerde(t, &restoreOperationParameters)
+	internal.TestSerde(t, &restoreOperationParameters)
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
 	require.NoError(t, err)
 	restoreResults, err := restorePoller.PollUntilDone(context.Background(), nil)
@@ -51,7 +52,7 @@ func TestBackupRestore(t *testing.T) {
 	require.NotNil(t, restoreResults.StartTime)
 	require.NotNil(t, restoreResults.EndTime)
 	require.NotNil(t, restoreResults.JobID)
-	testSerde(t, &restoreResults)
+	internal.TestSerde(t, &restoreResults)
 
 	// additional waiting to avoid conflicts with resources in other tests
 	if recording.GetRecordMode() != recording.PlaybackMode {
@@ -76,7 +77,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	require.Nil(t, backupResults.Error)
 	require.Equal(t, "Succeeded", *backupResults.Status)
 	require.Contains(t, *backupResults.AzureStorageBlobContainerURI, blobURL)
-	testSerde(t, &backupResults)
+	internal.TestSerde(t, &backupResults)
 
 	// restore the backup
 	s := *backupResults.AzureStorageBlobContainerURI
@@ -85,7 +86,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 		FolderToRestore:    &folderURI,
 		SASTokenParameters: &sasToken,
 	}
-	testSerde(t, &restoreOperationParameters)
+	internal.TestSerde(t, &restoreOperationParameters)
 	restorePoller, err := client.BeginFullRestore(context.Background(), restoreOperationParameters, nil)
 	require.NoError(t, err)
 
@@ -101,7 +102,7 @@ func TestBackupRestoreWithResumeToken(t *testing.T) {
 	require.NotNil(t, restoreResults.StartTime)
 	require.NotNil(t, restoreResults.EndTime)
 	require.NotNil(t, restoreResults.JobID)
-	testSerde(t, &restoreResults)
+	internal.TestSerde(t, &restoreResults)
 
 	// additional waiting to avoid conflicts with resources in other tests
 	if recording.GetRecordMode() != recording.PlaybackMode {
@@ -138,12 +139,12 @@ func TestBeginSelectiveKeyRestoreOperation(t *testing.T) {
 		Folder:             &folderURI,
 		SASTokenParameters: &sasToken,
 	}
-	testSerde(t, &restoreOperationParameters)
+	internal.TestSerde(t, &restoreOperationParameters)
 	selectivePoller, err := backupClient.BeginSelectiveKeyRestore(context.Background(), "selective-restore-test-key", restoreOperationParameters, nil)
 	require.NoError(t, err)
 	selectiveResults, err := selectivePoller.PollUntilDone(context.Background(), nil)
 	require.NoError(t, err)
-	testSerde(t, &selectiveResults)
+	internal.TestSerde(t, &selectiveResults)
 
 	// additional waiting to avoid conflicts with resources in other tests
 	if recording.GetRecordMode() != recording.PlaybackMode {

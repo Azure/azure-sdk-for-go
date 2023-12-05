@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
@@ -40,7 +41,7 @@ func TestRoleDefinition(t *testing.T) {
 			RoleType:         to.Ptr(roleType),
 		},
 	}
-	testSerde(t, &parameters)
+	internal.TestSerde(t, &parameters)
 
 	// test create definition
 	createdDefinition, err := client.CreateOrUpdateRoleDefinition(context.Background(), scope, name, parameters, nil)
@@ -53,7 +54,7 @@ func TestRoleDefinition(t *testing.T) {
 	require.Equal(t, roleName, *createdDefinition.Properties.RoleName)
 	require.Len(t, createdDefinition.Properties.Permissions, 1)
 	require.Equal(t, permission, *createdDefinition.Properties.Permissions[0].DataActions[0])
-	testSerde(t, &createdDefinition)
+	internal.TestSerde(t, &createdDefinition)
 
 	// update
 	updatedPermission := rbac.DataActionCreateHsmKey
@@ -90,7 +91,7 @@ func TestRoleDefinition(t *testing.T) {
 			}
 		}
 
-		testSerde(t, &res)
+		internal.TestSerde(t, &res)
 	}
 	require.Equal(t, 1, updatedDefinitionCount)
 
@@ -132,7 +133,7 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 	require.Nil(t, res.Name)
 	require.Nil(t, res.Type)
 
-	testSerde(t, &res)
+	internal.TestSerde(t, &res)
 }
 
 func TestRoleAssignment(t *testing.T) {
@@ -154,7 +155,7 @@ func TestRoleAssignment(t *testing.T) {
 	}
 
 	roleAssignment := rbac.RoleAssignmentCreateParameters{Properties: &rbac.RoleAssignmentProperties{PrincipalID: to.Ptr(principalID), RoleDefinitionID: to.Ptr(roleDefinitionID)}}
-	testSerde(t, &roleAssignment)
+	internal.TestSerde(t, &roleAssignment)
 
 	// create role assignment
 	createdAssignment, err := client.CreateRoleAssignment(context.Background(), scope, name, roleAssignment, nil)
@@ -191,7 +192,7 @@ func TestRoleAssignment(t *testing.T) {
 			}
 		}
 
-		testSerde(t, &res)
+		internal.TestSerde(t, &res)
 	}
 	require.True(t, assignmentCheck)
 
@@ -218,7 +219,7 @@ func TestRoleAssignment(t *testing.T) {
 			require.NotEqual(t, *roleAssignment.ID, *createdAssignment.ID)
 		}
 
-		testSerde(t, &res)
+		internal.TestSerde(t, &res)
 	}
 }
 
@@ -236,5 +237,5 @@ func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	require.Nil(t, res.Name)
 	require.Nil(t, res.Type)
 
-	testSerde(t, &res)
+	internal.TestSerde(t, &res)
 }

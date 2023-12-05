@@ -10,7 +10,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 )
 
 func unmarshalAzureBackupRestoreRequestClassification(rawMsg json.RawMessage) (armdataprotection.AzureBackupRestoreRequestClassification, error) {

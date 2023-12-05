@@ -10,7 +10,7 @@ package armnetwork
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
-	moduleVersion = "v4.3.0"
+	moduleVersion = "v5.0.0"
 )
 
 // Access - Access to be allowed or denied.
@@ -36,6 +36,7 @@ const (
 	ActionTypeAllow          ActionType = "Allow"
 	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
 	ActionTypeBlock          ActionType = "Block"
+	ActionTypeJSChallenge    ActionType = "JSChallenge"
 	ActionTypeLog            ActionType = "Log"
 )
 
@@ -45,6 +46,7 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeAllow,
 		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
+		ActionTypeJSChallenge,
 		ActionTypeLog,
 	}
 }
@@ -275,10 +277,14 @@ func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOper
 type ApplicationGatewayProtocol string
 
 const (
-	ApplicationGatewayProtocolHTTP  ApplicationGatewayProtocol = "Http"
+	// ApplicationGatewayProtocolHTTP - Supported for httpListeners and backendHttpSettingsCollection properties.
+	ApplicationGatewayProtocolHTTP ApplicationGatewayProtocol = "Http"
+	// ApplicationGatewayProtocolHTTPS - Supported for httpListeners and backendHttpSettingsCollection properties.
 	ApplicationGatewayProtocolHTTPS ApplicationGatewayProtocol = "Https"
-	ApplicationGatewayProtocolTCP   ApplicationGatewayProtocol = "Tcp"
-	ApplicationGatewayProtocolTLS   ApplicationGatewayProtocol = "Tls"
+	// ApplicationGatewayProtocolTCP - Supported for listeners and backendSettingsCollection properties.
+	ApplicationGatewayProtocolTCP ApplicationGatewayProtocol = "Tcp"
+	// ApplicationGatewayProtocolTLS - Supported for listeners and backendSettingsCollection properties.
+	ApplicationGatewayProtocolTLS ApplicationGatewayProtocol = "Tls"
 )
 
 // PossibleApplicationGatewayProtocolValues returns the possible values for the ApplicationGatewayProtocol const type.
@@ -812,14 +818,16 @@ func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
 type BastionHostSKUName string
 
 const (
-	BastionHostSKUNameBasic    BastionHostSKUName = "Basic"
-	BastionHostSKUNameStandard BastionHostSKUName = "Standard"
+	BastionHostSKUNameBasic     BastionHostSKUName = "Basic"
+	BastionHostSKUNameDeveloper BastionHostSKUName = "Developer"
+	BastionHostSKUNameStandard  BastionHostSKUName = "Standard"
 )
 
 // PossibleBastionHostSKUNameValues returns the possible values for the BastionHostSKUName const type.
 func PossibleBastionHostSKUNameValues() []BastionHostSKUName {
 	return []BastionHostSKUName{
 		BastionHostSKUNameBasic,
+		BastionHostSKUNameDeveloper,
 		BastionHostSKUNameStandard,
 	}
 }
@@ -1619,20 +1627,24 @@ func PossibleFirewallPolicyIDPSQuerySortOrderValues() []FirewallPolicyIDPSQueryS
 	}
 }
 
-// FirewallPolicyIDPSSignatureDirection - Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound,
-// 2 - Bidirectional
+// FirewallPolicyIDPSSignatureDirection - Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
+// 2 - Any, 3 - Internal, 4 - InternalOutbound
 type FirewallPolicyIDPSSignatureDirection int32
 
 const (
-	FirewallPolicyIDPSSignatureDirectionOne  FirewallPolicyIDPSSignatureDirection = 1
-	FirewallPolicyIDPSSignatureDirectionTwo  FirewallPolicyIDPSSignatureDirection = 2
-	FirewallPolicyIDPSSignatureDirectionZero FirewallPolicyIDPSSignatureDirection = 0
+	FirewallPolicyIDPSSignatureDirectionFour  FirewallPolicyIDPSSignatureDirection = 4
+	FirewallPolicyIDPSSignatureDirectionOne   FirewallPolicyIDPSSignatureDirection = 1
+	FirewallPolicyIDPSSignatureDirectionThree FirewallPolicyIDPSSignatureDirection = 3
+	FirewallPolicyIDPSSignatureDirectionTwo   FirewallPolicyIDPSSignatureDirection = 2
+	FirewallPolicyIDPSSignatureDirectionZero  FirewallPolicyIDPSSignatureDirection = 0
 )
 
 // PossibleFirewallPolicyIDPSSignatureDirectionValues returns the possible values for the FirewallPolicyIDPSSignatureDirection const type.
 func PossibleFirewallPolicyIDPSSignatureDirectionValues() []FirewallPolicyIDPSSignatureDirection {
 	return []FirewallPolicyIDPSSignatureDirection{
+		FirewallPolicyIDPSSignatureDirectionFour,
 		FirewallPolicyIDPSSignatureDirectionOne,
+		FirewallPolicyIDPSSignatureDirectionThree,
 		FirewallPolicyIDPSSignatureDirectionTwo,
 		FirewallPolicyIDPSSignatureDirectionZero,
 	}
@@ -1656,7 +1668,7 @@ func PossibleFirewallPolicyIDPSSignatureModeValues() []FirewallPolicyIDPSSignatu
 	}
 }
 
-// FirewallPolicyIDPSSignatureSeverity - Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
+// FirewallPolicyIDPSSignatureSeverity - Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low
 type FirewallPolicyIDPSSignatureSeverity int32
 
 const (
@@ -1671,6 +1683,26 @@ func PossibleFirewallPolicyIDPSSignatureSeverityValues() []FirewallPolicyIDPSSig
 		FirewallPolicyIDPSSignatureSeverityOne,
 		FirewallPolicyIDPSSignatureSeverityThree,
 		FirewallPolicyIDPSSignatureSeverityTwo,
+	}
+}
+
+// FirewallPolicyIntrusionDetectionProfileType - Possible Intrusion Detection profile values.
+type FirewallPolicyIntrusionDetectionProfileType string
+
+const (
+	FirewallPolicyIntrusionDetectionProfileTypeAdvanced FirewallPolicyIntrusionDetectionProfileType = "Advanced"
+	FirewallPolicyIntrusionDetectionProfileTypeBasic    FirewallPolicyIntrusionDetectionProfileType = "Basic"
+	FirewallPolicyIntrusionDetectionProfileTypeExtended FirewallPolicyIntrusionDetectionProfileType = "Extended"
+	FirewallPolicyIntrusionDetectionProfileTypeStandard FirewallPolicyIntrusionDetectionProfileType = "Standard"
+)
+
+// PossibleFirewallPolicyIntrusionDetectionProfileTypeValues returns the possible values for the FirewallPolicyIntrusionDetectionProfileType const type.
+func PossibleFirewallPolicyIntrusionDetectionProfileTypeValues() []FirewallPolicyIntrusionDetectionProfileType {
+	return []FirewallPolicyIntrusionDetectionProfileType{
+		FirewallPolicyIntrusionDetectionProfileTypeAdvanced,
+		FirewallPolicyIntrusionDetectionProfileTypeBasic,
+		FirewallPolicyIntrusionDetectionProfileTypeExtended,
+		FirewallPolicyIntrusionDetectionProfileTypeStandard,
 	}
 }
 
@@ -3776,6 +3808,7 @@ const (
 	VirtualNetworkGatewaySKUNameErGw1AZ          VirtualNetworkGatewaySKUName = "ErGw1AZ"
 	VirtualNetworkGatewaySKUNameErGw2AZ          VirtualNetworkGatewaySKUName = "ErGw2AZ"
 	VirtualNetworkGatewaySKUNameErGw3AZ          VirtualNetworkGatewaySKUName = "ErGw3AZ"
+	VirtualNetworkGatewaySKUNameErGwScale        VirtualNetworkGatewaySKUName = "ErGwScale"
 	VirtualNetworkGatewaySKUNameHighPerformance  VirtualNetworkGatewaySKUName = "HighPerformance"
 	VirtualNetworkGatewaySKUNameStandard         VirtualNetworkGatewaySKUName = "Standard"
 	VirtualNetworkGatewaySKUNameUltraPerformance VirtualNetworkGatewaySKUName = "UltraPerformance"
@@ -3798,6 +3831,7 @@ func PossibleVirtualNetworkGatewaySKUNameValues() []VirtualNetworkGatewaySKUName
 		VirtualNetworkGatewaySKUNameErGw1AZ,
 		VirtualNetworkGatewaySKUNameErGw2AZ,
 		VirtualNetworkGatewaySKUNameErGw3AZ,
+		VirtualNetworkGatewaySKUNameErGwScale,
 		VirtualNetworkGatewaySKUNameHighPerformance,
 		VirtualNetworkGatewaySKUNameStandard,
 		VirtualNetworkGatewaySKUNameUltraPerformance,
@@ -3822,6 +3856,7 @@ const (
 	VirtualNetworkGatewaySKUTierErGw1AZ          VirtualNetworkGatewaySKUTier = "ErGw1AZ"
 	VirtualNetworkGatewaySKUTierErGw2AZ          VirtualNetworkGatewaySKUTier = "ErGw2AZ"
 	VirtualNetworkGatewaySKUTierErGw3AZ          VirtualNetworkGatewaySKUTier = "ErGw3AZ"
+	VirtualNetworkGatewaySKUTierErGwScale        VirtualNetworkGatewaySKUTier = "ErGwScale"
 	VirtualNetworkGatewaySKUTierHighPerformance  VirtualNetworkGatewaySKUTier = "HighPerformance"
 	VirtualNetworkGatewaySKUTierStandard         VirtualNetworkGatewaySKUTier = "Standard"
 	VirtualNetworkGatewaySKUTierUltraPerformance VirtualNetworkGatewaySKUTier = "UltraPerformance"
@@ -3844,6 +3879,7 @@ func PossibleVirtualNetworkGatewaySKUTierValues() []VirtualNetworkGatewaySKUTier
 		VirtualNetworkGatewaySKUTierErGw1AZ,
 		VirtualNetworkGatewaySKUTierErGw2AZ,
 		VirtualNetworkGatewaySKUTierErGw3AZ,
+		VirtualNetworkGatewaySKUTierErGwScale,
 		VirtualNetworkGatewaySKUTierHighPerformance,
 		VirtualNetworkGatewaySKUTierStandard,
 		VirtualNetworkGatewaySKUTierUltraPerformance,
@@ -3986,9 +4022,10 @@ func PossibleVnetLocalRouteOverrideCriteriaValues() []VnetLocalRouteOverrideCrit
 type WebApplicationFirewallAction string
 
 const (
-	WebApplicationFirewallActionAllow WebApplicationFirewallAction = "Allow"
-	WebApplicationFirewallActionBlock WebApplicationFirewallAction = "Block"
-	WebApplicationFirewallActionLog   WebApplicationFirewallAction = "Log"
+	WebApplicationFirewallActionAllow       WebApplicationFirewallAction = "Allow"
+	WebApplicationFirewallActionBlock       WebApplicationFirewallAction = "Block"
+	WebApplicationFirewallActionJSChallenge WebApplicationFirewallAction = "JSChallenge"
+	WebApplicationFirewallActionLog         WebApplicationFirewallAction = "Log"
 )
 
 // PossibleWebApplicationFirewallActionValues returns the possible values for the WebApplicationFirewallAction const type.
@@ -3996,6 +4033,7 @@ func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction
 	return []WebApplicationFirewallAction{
 		WebApplicationFirewallActionAllow,
 		WebApplicationFirewallActionBlock,
+		WebApplicationFirewallActionJSChallenge,
 		WebApplicationFirewallActionLog,
 	}
 }

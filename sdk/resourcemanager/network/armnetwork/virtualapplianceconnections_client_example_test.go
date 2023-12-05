@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/NetworkVirtualApplianceConnectionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualApplianceConnectionPut.json
 func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,20 +37,20 @@ func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 				to.Ptr("169.254.16.13"),
 				to.Ptr("169.254.16.14")},
 			EnableInternetSecurity: to.Ptr(false),
-			RoutingConfiguration: &armnetwork.RoutingConfigurationNfv{
-				AssociatedRouteTable: &armnetwork.RoutingConfigurationNfvSubResource{
-					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+			RoutingConfiguration: &armnetwork.RoutingConfiguration{
+				AssociatedRouteTable: &armnetwork.SubResource{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 				},
-				InboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
+				InboundRouteMap: &armnetwork.SubResource{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
 				},
-				OutboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
+				OutboundRouteMap: &armnetwork.SubResource{
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
 				},
-				PropagatedRouteTables: &armnetwork.PropagatedRouteTableNfv{
-					IDs: []*armnetwork.RoutingConfigurationNfvSubResource{
+				PropagatedRouteTables: &armnetwork.PropagatedRouteTable{
+					IDs: []*armnetwork.SubResource{
 						{
-							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 						}},
 					Labels: []*string{
 						to.Ptr("label1")},
@@ -79,20 +79,20 @@ func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 	// 			to.Ptr("169.254.16.13"),
 	// 			to.Ptr("169.254.16.14")},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			RoutingConfiguration: &armnetwork.RoutingConfigurationNfv{
-	// 				AssociatedRouteTable: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+	// 			RoutingConfiguration: &armnetwork.RoutingConfiguration{
+	// 				AssociatedRouteTable: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 	// 				},
-	// 				InboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
+	// 				InboundRouteMap: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
 	// 				},
-	// 				OutboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
+	// 				OutboundRouteMap: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
 	// 				},
-	// 				PropagatedRouteTables: &armnetwork.PropagatedRouteTableNfv{
-	// 					IDs: []*armnetwork.RoutingConfigurationNfvSubResource{
+	// 				PropagatedRouteTables: &armnetwork.PropagatedRouteTable{
+	// 					IDs: []*armnetwork.SubResource{
 	// 						{
-	// 							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 	// 					}},
 	// 					Labels: []*string{
 	// 						to.Ptr("label1")},
@@ -103,7 +103,7 @@ func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/NetworkVirtualApplianceConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualApplianceConnectionGet.json
 func ExampleVirtualApplianceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,20 +131,20 @@ func ExampleVirtualApplianceConnectionsClient_Get() {
 	// 			to.Ptr("169.254.16.13"),
 	// 			to.Ptr("169.254.16.14")},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			RoutingConfiguration: &armnetwork.RoutingConfigurationNfv{
-	// 				AssociatedRouteTable: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+	// 			RoutingConfiguration: &armnetwork.RoutingConfiguration{
+	// 				AssociatedRouteTable: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 	// 				},
-	// 				InboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
+	// 				InboundRouteMap: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
 	// 				},
-	// 				OutboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-	// 					ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
+	// 				OutboundRouteMap: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
 	// 				},
-	// 				PropagatedRouteTables: &armnetwork.PropagatedRouteTableNfv{
-	// 					IDs: []*armnetwork.RoutingConfigurationNfvSubResource{
+	// 				PropagatedRouteTables: &armnetwork.PropagatedRouteTable{
+	// 					IDs: []*armnetwork.SubResource{
 	// 						{
-	// 							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+	// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 	// 					}},
 	// 					Labels: []*string{
 	// 						to.Ptr("label1")},
@@ -155,7 +155,7 @@ func ExampleVirtualApplianceConnectionsClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/NetworkVirtualApplianceConnectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualApplianceConnectionDelete.json
 func ExampleVirtualApplianceConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleVirtualApplianceConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/NetworkVirtualApplianceConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualApplianceConnectionList.json
 func ExampleVirtualApplianceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,20 +210,20 @@ func ExampleVirtualApplianceConnectionsClient_NewListPager() {
 		// 					to.Ptr("169.254.16.13"),
 		// 					to.Ptr("169.254.16.14")},
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					RoutingConfiguration: &armnetwork.RoutingConfigurationNfv{
-		// 						AssociatedRouteTable: &armnetwork.RoutingConfigurationNfvSubResource{
-		// 							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+		// 					RoutingConfiguration: &armnetwork.RoutingConfiguration{
+		// 						AssociatedRouteTable: &armnetwork.SubResource{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 		// 						},
-		// 						InboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-		// 							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
+		// 						InboundRouteMap: &armnetwork.SubResource{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"),
 		// 						},
-		// 						OutboundRouteMap: &armnetwork.RoutingConfigurationNfvSubResource{
-		// 							ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
+		// 						OutboundRouteMap: &armnetwork.SubResource{
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"),
 		// 						},
-		// 						PropagatedRouteTables: &armnetwork.PropagatedRouteTableNfv{
-		// 							IDs: []*armnetwork.RoutingConfigurationNfvSubResource{
+		// 						PropagatedRouteTables: &armnetwork.PropagatedRouteTable{
+		// 							IDs: []*armnetwork.SubResource{
 		// 								{
-		// 									ResourceURI: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
+		// 									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"),
 		// 							}},
 		// 							Labels: []*string{
 		// 								to.Ptr("label1")},

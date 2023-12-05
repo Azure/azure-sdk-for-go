@@ -1658,6 +1658,13 @@ type LocalNetworkGatewaysClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagementClientBeginDeleteBastionShareableLinkByTokenOptions contains the optional parameters for the ManagementClient.BeginDeleteBastionShareableLinkByToken
+// method.
+type ManagementClientBeginDeleteBastionShareableLinkByTokenOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ManagementClientBeginDeleteBastionShareableLinkOptions contains the optional parameters for the ManagementClient.BeginDeleteBastionShareableLink
 // method.
 type ManagementClientBeginDeleteBastionShareableLinkOptions struct {

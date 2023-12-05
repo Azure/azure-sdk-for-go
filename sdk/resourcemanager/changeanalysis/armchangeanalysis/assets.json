@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/changeanalysis/armchangeanalysis",
+  "Tag": "go/resourcemanager/changeanalysis/armchangeanalysis_fa56bf877d"
+}

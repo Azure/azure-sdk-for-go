@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,11 +34,11 @@ func TestBackupRestore(t *testing.T) {
 	backupResp, err := client.BackupSecret(context.Background(), name, nil)
 	require.NoError(t, err)
 	require.Greater(t, len(backupResp.Value), 0)
-	testSerde(t, &backupResp.BackupSecretResult)
+	internal.TestSerde(t, &backupResp.BackupSecretResult)
 
 	_, err = client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
-	pollStatus(t, 404, func() error {
+	internal.PollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
 	})
@@ -47,8 +48,8 @@ func TestBackupRestore(t *testing.T) {
 
 	var restoreResp azsecrets.RestoreSecretResponse
 	restoreParams := azsecrets.RestoreSecretParameters{backupResp.Value}
-	testSerde(t, &restoreParams)
-	pollStatus(t, 409, func() error {
+	internal.TestSerde(t, &restoreParams)
+	internal.PollStatus(t, 409, func() error {
 		restoreResp, err = client.RestoreSecret(context.Background(), restoreParams, nil)
 		return err
 	})
@@ -71,7 +72,7 @@ func TestCRUD(t *testing.T) {
 		Tags:  map[string]*string{"tag": to.Ptr("value")},
 		Value: &value,
 	}
-	testSerde(t, &setParams)
+	internal.TestSerde(t, &setParams)
 	setResp, err := client.SetSecret(context.Background(), name, setParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, setResp.ContentType)
@@ -81,7 +82,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Value, setResp.Value)
 	require.Equal(t, name, setResp.ID.Name())
 	require.NotEmpty(t, setResp.ID.Version())
-	testSerde(t, &setResp.Secret)
+	internal.TestSerde(t, &setResp.Secret)
 
 	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
@@ -100,7 +101,7 @@ func TestCRUD(t *testing.T) {
 			Expires: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
 		},
 	}
-	testSerde(t, &updateParams)
+	internal.TestSerde(t, &updateParams)
 	updateResp, err := client.UpdateSecretProperties(context.Background(), name, setResp.ID.Version(), updateParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, updateResp.ContentType)
@@ -120,8 +121,8 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Tags, deleteResp.Tags)
 	require.Equal(t, name, deleteResp.ID.Name())
 	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
-	testSerde(t, &deleteResp.DeletedSecret)
-	pollStatus(t, 404, func() error {
+	internal.TestSerde(t, &deleteResp.DeletedSecret)
+	internal.PollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
 	})
@@ -177,7 +178,7 @@ func TestDisableChallengeResourceVerification(t *testing.T) {
 				},
 				DisableChallengeResourceVerification: test.disableVerify,
 			}
-			client, err := azsecrets.NewClient(vaultURL, &FakeCredential{}, options)
+			client, err := azsecrets.NewClient(vaultURL, &internal.FakeCredential{}, options)
 			require.NoError(t, err)
 			pager := client.NewListSecretPropertiesPager(nil)
 			_, err = pager.NextPage(context.Background())
@@ -227,11 +228,11 @@ func TestListDeletedSecrets(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	pollStatus(t, 404, func() error {
+	internal.PollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), secret1, nil)
 		return err
 	})
-	pollStatus(t, 404, func() error {
+	internal.PollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), secret2, nil)
 		return err
 	})
@@ -241,9 +242,9 @@ func TestListDeletedSecrets(t *testing.T) {
 	for pager.More() && len(expected) > 0 {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.DeletedSecretPropertiesListResult)
+		internal.TestSerde(t, &page.DeletedSecretPropertiesListResult)
 		for _, secret := range page.Value {
-			testSerde(t, secret)
+			internal.TestSerde(t, secret)
 			delete(expected, secret.ID.Name())
 			if len(expected) == 0 {
 				break
@@ -269,9 +270,9 @@ func TestListSecrets(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.SecretPropertiesListResult)
+		internal.TestSerde(t, &page.SecretPropertiesListResult)
 		for _, secret := range page.Value {
-			testSerde(t, secret)
+			internal.TestSerde(t, secret)
 			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
 				count--
 			}
@@ -306,9 +307,9 @@ func TestListSecretVersions(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		testSerde(t, &page.SecretPropertiesListResult)
+		internal.TestSerde(t, &page.SecretPropertiesListResult)
 		for i, secret := range page.Value {
-			testSerde(t, secret)
+			internal.TestSerde(t, secret)
 			if i > 0 {
 				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
 			}
@@ -327,7 +328,7 @@ func TestListSecretVersions(t *testing.T) {
 }
 
 func TestNameRequired(t *testing.T) {
-	client, err := azsecrets.NewClient(fakeVaultURL, &FakeCredential{}, nil)
+	client, err := azsecrets.NewClient(fakeVaultURL, &internal.FakeCredential{}, nil)
 	require.NoError(t, err)
 	expected := "parameter name cannot be empty"
 	_, err = client.BackupSecret(context.Background(), "", nil)
@@ -362,7 +363,7 @@ func TestRecover(t *testing.T) {
 	_, err = client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
 
-	pollStatus(t, 404, func() error {
+	internal.PollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
 	})
@@ -372,7 +373,7 @@ func TestRecover(t *testing.T) {
 	require.Equal(t, setResp.ID, recoverResp.ID)
 
 	var getResp azsecrets.GetSecretResponse
-	pollStatus(t, 404, func() error {
+	internal.PollStatus(t, 404, func() error {
 		getResp, err = client.GetSecret(context.Background(), name, "", nil)
 		return err
 	})

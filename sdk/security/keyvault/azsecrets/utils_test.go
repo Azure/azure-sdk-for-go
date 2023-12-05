@@ -8,22 +8,17 @@ package azsecrets_test
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"hash/fnv"
 	"os"
-	"regexp"
-	"strings"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
+	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -62,43 +57,21 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	vaultURL = fakeVaultURL
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
-			vaultURL = strings.TrimSuffix(u, "/")
-		} else {
-			panic("no value for AZURE_KEYVAULT_URL")
-		}
-	}
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		credential = &FakeCredential{}
-	} else {
-		tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
-		clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
-		secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
-		var err error
-		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
+	vaultURL = internal.GetEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
+
+	credential = internal.GetCredential("AZSECRETS")
+
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
-		if err != nil {
-			panic(err)
-		}
 		opts := proxy.Options
 		opts.GroupForReplace = "1"
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
-		if err != nil {
-			panic(err)
-		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
+		err := recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
 		if err != nil {
 			panic(err)
 		}
 	}
+
 	code := m.Run()
+
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// Purge test secrets using a client whose requests aren't recorded. This
 		// will be fast because the tests which created these secrets requested their
@@ -129,12 +102,7 @@ func run(m *testing.M) int {
 }
 
 func startTest(t *testing.T) *azsecrets.Client {
-	err := recording.Start(t, recordingDirectory, nil)
-	require.NoError(t, err)
-	t.Cleanup(func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
-	})
+	internal.StartRecording(t, recordingDirectory)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	opts := &azsecrets.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
@@ -150,14 +118,6 @@ func createRandomName(t *testing.T, prefix string) string {
 	return prefix + fmt.Sprint(h.Sum32())
 }
 
-func lookupEnvVar(s string) string {
-	ret, ok := os.LookupEnv(s)
-	if !ok {
-		panic(fmt.Sprintf("Could not find env var: '%s'", s))
-	}
-	return ret
-}
-
 func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		return
@@ -168,53 +128,5 @@ func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {
 		secretsToPurge.names = append(secretsToPurge.names, name)
 	} else {
 		t.Logf(`cleanUpSecret failed for "%s": %v`, name, err)
-	}
-}
-
-type FakeCredential struct{}
-
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
-}
-
-// pollStatus calls a function until it stops returning a response error with the given status code.
-// If this takes more than 2 minutes, it fails the test.
-func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
-	var err error
-	for i := 0; i < 12; i++ {
-		err = fn()
-		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
-			break
-		}
-		if i < 11 {
-			recording.Sleep(10 * time.Second)
-		}
-	}
-	require.NoError(t, err)
-}
-
-type serdeModel interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func testSerde[T serdeModel](t *testing.T, model T) {
-	data, err := model.MarshalJSON()
-	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
-	require.NoError(t, err)
-
-	// testing unmarshal error scenarios
-	var data2 []byte
-	err = model.UnmarshalJSON(data2)
-	require.Error(t, err)
-
-	m := regexp.MustCompile(":.*$")
-	modifiedData := m.ReplaceAllString(string(data), ":false}")
-	if modifiedData != "{}" {
-		data3 := []byte(modifiedData)
-		err = model.UnmarshalJSON(data3)
-		require.Error(t, err)
 	}
 }

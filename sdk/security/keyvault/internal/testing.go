@@ -8,6 +8,7 @@ package internal
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"testing"
 	"time"
@@ -89,4 +90,21 @@ func GetCredential(module string) azcore.TokenCredential {
 	}
 
 	return credential
+}
+
+// pollStatus calls a function until it stops returning a response error with the given status code.
+// If this takes more than 2 minutes, it fails the test.
+func PollStatus(t *testing.T, expectedStatus int, fn func() error) {
+	var err error
+	for i := 0; i < 12; i++ {
+		err = fn()
+		var respErr *azcore.ResponseError
+		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+			break
+		}
+		if i < 11 {
+			recording.Sleep(10 * time.Second)
+		}
+	}
+	require.NoError(t, err)
 }

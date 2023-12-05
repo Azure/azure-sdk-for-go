@@ -11,7 +11,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"hash/fnv"
 	"os"
@@ -27,7 +26,7 @@ import (
 )
 
 const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
-const fakeAttestationUrl = "https://fakeattestation"
+const fakeAttestationURL = "https://fakeattestation"
 const fakeMHSMURL = "https://fakemhsm.local"
 const fakeVaultURL = "https://fakevault.local"
 
@@ -66,7 +65,7 @@ func run(m *testing.M) int {
 		}()
 	}
 
-	attestationURL = internal.GetEnvVar("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl)
+	attestationURL = internal.GetEnvVar("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationURL)
 	mhsmURL = internal.GetEnvVar("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
 	vaultURL = internal.GetEnvVar("AZURE_KEYVAULT_URL", fakeVaultURL)
 	enableHSM = mhsmURL != fakeMHSMURL
@@ -91,7 +90,7 @@ func run(m *testing.M) int {
 		}
 		// we need to replace release policy data because it has the attestation service URL encoded
 		// into it and therefore won't match in playback, when we don't have the URL used while recording
-		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
+		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationURL))
 		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, "", nil)
 		if err != nil {
 			panic(err)
@@ -197,23 +196,6 @@ func getMarshalledReleasePolicy(attestationURL string) []byte {
 		"version": "1.0.0",
 	})
 	return data
-}
-
-// pollStatus calls a function until it stops returning a response error with the given status code.
-// If this takes more than 2 minutes, it fails the test.
-func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
-	var err error
-	for i := 0; i < 12; i++ {
-		err = fn()
-		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
-			break
-		}
-		if i < 11 {
-			recording.Sleep(10 * time.Second)
-		}
-	}
-	require.NoError(t, err)
 }
 
 func requireEqualAttributes(t *testing.T, a, b *azkeys.KeyAttributes) {

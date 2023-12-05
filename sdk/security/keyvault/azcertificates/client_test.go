@@ -52,7 +52,7 @@ func TestBackupRestore(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, http.StatusNotFound, func() error {
+	internal.PollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -62,7 +62,7 @@ func TestBackupRestore(t *testing.T) {
 
 	var restoreResp azcertificates.RestoreCertificateResponse
 	restoreParams := azcertificates.RestoreCertificateParameters{CertificateBackup: backup.Value}
-	pollStatus(t, http.StatusConflict, func() error {
+	internal.PollStatus(t, http.StatusConflict, func() error {
 		restoreResp, err = client.RestoreCertificate(ctx, restoreParams, nil)
 		return err
 	})
@@ -145,7 +145,7 @@ func TestCRUD(t *testing.T) {
 	internal.TestSerde(t, &deleteResp.DeletedCertificate)
 
 	var getDeletedResp azcertificates.GetDeletedCertificateResponse
-	pollStatus(t, http.StatusNotFound, func() error {
+	internal.PollStatus(t, http.StatusNotFound, func() error {
 		getDeletedResp, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
@@ -169,14 +169,14 @@ func TestDeleteRecover(t *testing.T) {
 
 	deleteResp, err := client.DeleteCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, http.StatusNotFound, func() error {
+	internal.PollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetDeletedCertificate(ctx, certName, nil)
 		return err
 	})
 
 	recoverResp, err := client.RecoverDeletedCertificate(ctx, certName, nil)
 	require.NoError(t, err)
-	pollStatus(t, http.StatusNotFound, func() error {
+	internal.PollStatus(t, http.StatusNotFound, func() error {
 		_, err = client.GetCertificate(ctx, certName, "", nil)
 		return err
 	})
@@ -378,7 +378,7 @@ func TestListCertificates(t *testing.T) {
 	require.Equal(t, 0, count)
 
 	for _, name := range certNames {
-		pollStatus(t, http.StatusNotFound, func() error {
+		internal.PollStatus(t, http.StatusNotFound, func() error {
 			_, err := client.GetDeletedCertificate(ctx, name, nil)
 			return err
 		})
@@ -530,7 +530,7 @@ func TestOperationCRUD(t *testing.T) {
 	require.Equal(t, params.CancellationRequested, getResp.CancellationRequested)
 	internal.TestSerde(t, &getResp.CertificateOperation)
 
-	pollStatus(t, http.StatusConflict, func() error {
+	internal.PollStatus(t, http.StatusConflict, func() error {
 		// Key Vault returns an error when the update is slow or this delete
 		// is fast such that the delete executes before the update completes
 		_, err = client.DeleteCertificateOperation(ctx, certName, nil)

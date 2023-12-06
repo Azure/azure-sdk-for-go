@@ -1,16 +1,10 @@
 # Release History
 
-## 1.5.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.5.1 (2023-12-06)
 
 ### Bugs Fixed
 
 * Recording will restore the original scheme/host after making a successful HTTP(s) call.
-
-### Other Changes
 
 ## 1.5.0 (2023-11-02)
 

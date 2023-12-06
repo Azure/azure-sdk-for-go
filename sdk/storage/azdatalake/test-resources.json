@@ -27,8 +27,6 @@
       "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
       "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
       "immutableAccountName": "[concat(parameters('baseName'), 'imm')]",
-      "primaryEncryptionScopeName": "encryptionScope",
-      "primaryEncryptionScope": "[concat(parameters('baseName'), 'prim', concat('/', variables('primaryEncryptionScopeName')))]",
       "secondaryAccountName": "[concat(parameters('baseName'), 'sec')]",
       "premiumAccountName": "[concat(parameters('baseName'), 'prem')]",
       "dataLakeAccountName": "[concat(parameters('baseName'), 'dtlk')]",
@@ -159,18 +157,6 @@
         },
         "dependsOn": [
           "[variables('immutableAccountName')]"
-        ]
-      },
-      {
-        "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
-        "apiVersion": "[variables('mgmtApiVersion')]",
-        "name": "[variables('primaryEncryptionScope')]",
-        "properties": {
-          "source": "Microsoft.Storage",
-          "state": "Enabled"
-        },
-        "dependsOn": [
-          "[variables('primaryAccountName')]"
         ]
       },
       {
@@ -587,10 +573,6 @@
       "LOCATION": {
         "type": "string",
         "value": "[variables('location')]"
-      },
-      "AZURE_STORAGE_ENCRYPTION_SCOPE": {
-        "type": "string",
-        "value": "[variables('primaryEncryptionScopeName')]"
       },
       "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE": {
         "type": "string",

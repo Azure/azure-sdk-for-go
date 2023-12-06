@@ -1473,7 +1473,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	udc, _ := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 
 	// get permissions and details for sas
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
@@ -1481,7 +1481,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 
 	// Create Blob Signature Values with desired permissions and sign with user delegation credential
 	perms := sas.FilePermissions{Read: true, Create: true, Write: true, Move: true, Delete: true, List: true}
-	sasQueryParams, err := sas.DatalakeSignatureValues{
+	sasQueryParams, _ := sas.DatalakeSignatureValues{
 		Protocol:        sas.ProtocolHTTPS, // Users MUST use HTTPS (not HTTP)
 		StartTime:       time.Now().UTC().Add(time.Second * -10),
 		ExpiryTime:      time.Now().UTC().Add(15 * time.Minute), // 15 minutes before expiration

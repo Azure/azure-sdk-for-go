@@ -381,6 +381,7 @@ directive:
         }
       };
       $["ChatCompletionRequestMessageContentPart"] = {
+        "title": "represents either an image URL or text content for a prompt",
         "type": "object",
         "discriminator": "type",
         "properties": {
@@ -390,11 +391,11 @@ directive:
         },
         "required": [
           "type"
-        ]
+        ],
       };
       $["ChatCompletionRequestMessageContentPartImage"] = {
         "type": "object",
-        "title": "Image content part",
+        "title": "represents an image URL, to be used as part of a prompt",
         "properties": {
           "type": {
             "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
@@ -436,7 +437,7 @@ directive:
       };
       $["ChatCompletionRequestMessageContentPartText"] = {
         "type": "object",
-        "title": "Text content part",
+        "title": "represents text content, to be used as part of a prompt",
         "properties": {
           "type": {
             "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"

@@ -504,6 +504,7 @@ type ChatChoice struct {
 	Message *ChatResponseMessage
 }
 
+// ChatCompletionRequestMessageContentPart - represents either an image URL or text content for a prompt
 type ChatCompletionRequestMessageContentPart struct {
 	// REQUIRED; The type of the content part.
 	Type *ChatCompletionRequestMessageContentPartType
@@ -515,7 +516,7 @@ func (c *ChatCompletionRequestMessageContentPart) GetChatCompletionRequestMessag
 	return c
 }
 
-// ChatCompletionRequestMessageContentPartImage - Image content part
+// ChatCompletionRequestMessageContentPartImage - represents an image URL, to be used as part of a prompt
 type ChatCompletionRequestMessageContentPartImage struct {
 	// REQUIRED
 	ImageURL *ChatCompletionRequestMessageContentPartImageURL
@@ -540,7 +541,7 @@ type ChatCompletionRequestMessageContentPartImageURL struct {
 	Detail *ChatCompletionRequestMessageContentPartImageURLDetail
 }
 
-// ChatCompletionRequestMessageContentPartText - Text content part
+// ChatCompletionRequestMessageContentPartText - represents text content, to be used as part of a prompt
 type ChatCompletionRequestMessageContentPartText struct {
 	// REQUIRED; The text content.
 	Text *string

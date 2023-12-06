@@ -276,6 +276,10 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 	})
 }
 
+// NewGetSnapshotsPager - Gets a list of key-value snapshots.
+//
+//   - options - GetSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
+//     method.
 func (c *Client) NewGetSnapshotsPager(options *GetSnapshotsPagerOptions) *runtime.Pager[GetSnapshotsPagerResponse] {
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
@@ -299,6 +303,10 @@ func (c *Client) NewGetSnapshotsPager(options *GetSnapshotsPagerOptions) *runtim
 	})
 }
 
+// NewListConfigurationSettingsForSnapshotPager
+//
+// - snapshotName - The name of the snapshot to list configuration settings for
+// - options - ListConfigurationSettingsForSnapshotOptions contains the optional parameters to retrieve Snapshot configuration settings
 func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
 	if options == nil {
 		options = &ListConfigurationSettingsForSnapshotOptions{}
@@ -341,6 +349,11 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName strin
 	})
 }
 
+// BeginCreateSnapshot creates a snapshot of the configuration store.
+//
+// - snapshotName - The name of the snapshot to create.
+// - keyLabelFilter - The filters to apply on the key-values.
+// - options - BeginCreateSnapshotOptions contains the optional parameters to create a Snapshot
 func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[BeginCreateSnapshotResponse], error) {
 	filter := []generated.KeyValueFilter{}
 
@@ -386,6 +399,10 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, k
 	return pollerSS, nil
 }
 
+// GetSnapshot gets a snapshot
+//
+// - snapshotName - The name of the snapshot to get.
+// - options - GetSnapshotOptions contains the optional parameters to get a snapshot
 func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {
 	if options == nil {
 		options = &GetSnapshotOptions{}
@@ -408,6 +425,10 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 	return resp, nil
 }
 
+// ArchiveSnapshot archives a snapshot
+//
+// - snapshotName - The name of the snapshot to archive.
+// - options - ArchiveSnapshotOptions contains the optional parameters to archive a snapshot
 func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
 	if options == nil {
 		options = &ArchiveSnapshotOptions{}
@@ -426,6 +447,10 @@ func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, optio
 	return (ArchiveSnapshotResponse)(resp), nil
 }
 
+// RecoverSnapshot recovers a snapshot
+//
+// - snapshotName - The name of the snapshot to recover.
+// - options - RecoverSnapshotOptions contains the optional parameters to recover a snapshot
 func (c *Client) RecoverSnapshot(ctx context.Context, snapshotName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
 	if options == nil {
 		options = &RecoverSnapshotOptions{}

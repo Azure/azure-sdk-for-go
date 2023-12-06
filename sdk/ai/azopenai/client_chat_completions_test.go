@@ -229,6 +229,12 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 }
 
 func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		// we're having an issue right now with this preview feature. I luckily got
+		// a recording of it but it won't run in live mode at this moment.
+		t.Skipf("Skipping %s because of a temp live outage with vision preview", t.Name())
+	}
+
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
 	chatClient := newOpenAIClientForTest(t)

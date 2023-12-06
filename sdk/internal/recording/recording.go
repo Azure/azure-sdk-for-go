@@ -537,10 +537,10 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) (*http.Request, string, string) {
-	originalURLScheme := rawReq.URL.Scheme
-	originalURLHost := rawReq.URL.Host
+func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *http.Request {
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
+		originalURLHost := rawReq.URL.Host
+
 		// don't modify the original request
 		cp := *rawReq
 		cpURL := *cp.URL
@@ -556,7 +556,7 @@ func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) (
 		cp.Header.Set(IDHeader, GetRecordingId(t))
 		rawReq = &cp
 	}
-	return rawReq, originalURLScheme, originalURLHost
+	return rawReq
 }
 
 func (r RecordingOptions) host() string {
@@ -941,7 +941,9 @@ type RecordingHTTPClient struct {
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	req, origScheme, origHost := c.options.ReplaceAuthority(c.t, req)
+	origScheme := req.URL.Scheme
+	origHost := req.URL.Host
+	req = c.options.ReplaceAuthority(c.t, req)
 	resp, err := c.defaultClient.Do(req)
 	if err != nil {
 		return nil, err

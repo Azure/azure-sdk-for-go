@@ -16,9 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure/v2"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -36,6 +37,18 @@ type AzureBareMetalInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armbaremetalinfrastructure.AzureBareMetalInstancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientListBySubscriptionResponse])
 
+	// BeginRestart is the fake for method AzureBareMetalInstancesClient.BeginRestart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestart func(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, options *armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginRestartOptions) (resp azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// BeginShutdown is the fake for method AzureBareMetalInstancesClient.BeginShutdown
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginShutdown func(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, options *armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginShutdownOptions) (resp azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientShutdownResponse], errResp azfake.ErrorResponder)
+
+	// BeginStart is the fake for method AzureBareMetalInstancesClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStart func(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, options *armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginStartOptions) (resp azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientStartResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method AzureBareMetalInstancesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, tagsParameter armbaremetalinfrastructure.Tags, options *armbaremetalinfrastructure.AzureBareMetalInstancesClientUpdateOptions) (resp azfake.Responder[armbaremetalinfrastructure.AzureBareMetalInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -49,6 +62,9 @@ func NewAzureBareMetalInstancesServerTransport(srv *AzureBareMetalInstancesServe
 		srv:                         srv,
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientListBySubscriptionResponse]](),
+		beginRestart:                newTracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientRestartResponse]](),
+		beginShutdown:               newTracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientShutdownResponse]](),
+		beginStart:                  newTracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientStartResponse]](),
 	}
 }
 
@@ -58,6 +74,9 @@ type AzureBareMetalInstancesServerTransport struct {
 	srv                         *AzureBareMetalInstancesServer
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientListBySubscriptionResponse]]
+	beginRestart                *tracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientRestartResponse]]
+	beginShutdown               *tracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientShutdownResponse]]
+	beginStart                  *tracker[azfake.PollerResponder[armbaremetalinfrastructure.AzureBareMetalInstancesClientStartResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureBareMetalInstancesServerTransport.
@@ -78,6 +97,12 @@ func (a *AzureBareMetalInstancesServerTransport) Do(req *http.Request) (*http.Re
 		resp, err = a.dispatchNewListByResourceGroupPager(req)
 	case "AzureBareMetalInstancesClient.NewListBySubscriptionPager":
 		resp, err = a.dispatchNewListBySubscriptionPager(req)
+	case "AzureBareMetalInstancesClient.BeginRestart":
+		resp, err = a.dispatchBeginRestart(req)
+	case "AzureBareMetalInstancesClient.BeginShutdown":
+		resp, err = a.dispatchBeginShutdown(req)
+	case "AzureBareMetalInstancesClient.BeginStart":
+		resp, err = a.dispatchBeginStart(req)
 	case "AzureBareMetalInstancesClient.Update":
 		resp, err = a.dispatchUpdate(req)
 	default:
@@ -191,6 +216,148 @@ func (a *AzureBareMetalInstancesServerTransport) dispatchNewListBySubscriptionPa
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (a *AzureBareMetalInstancesServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginRestart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
+	}
+	beginRestart := a.beginRestart.get(req)
+	if beginRestart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BareMetalInfrastructure/bareMetalInstances/(?P<azureBareMetalInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbaremetalinfrastructure.ForceState](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureBareMetalInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureBareMetalInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginRestartOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginRestartOptions{
+				ForceParameter: &body,
+			}
+		}
+		respr, errRespr := a.srv.BeginRestart(req.Context(), resourceGroupNameParam, azureBareMetalInstanceNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestart = &respr
+		a.beginRestart.add(req, beginRestart)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginRestart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestart) {
+		a.beginRestart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AzureBareMetalInstancesServerTransport) dispatchBeginShutdown(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginShutdown == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginShutdown not implemented")}
+	}
+	beginShutdown := a.beginShutdown.get(req)
+	if beginShutdown == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BareMetalInfrastructure/bareMetalInstances/(?P<azureBareMetalInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/shutdown`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureBareMetalInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureBareMetalInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginShutdown(req.Context(), resourceGroupNameParam, azureBareMetalInstanceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginShutdown = &respr
+		a.beginShutdown.add(req, beginShutdown)
+	}
+
+	resp, err := server.PollerResponderNext(beginShutdown, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginShutdown.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginShutdown) {
+		a.beginShutdown.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AzureBareMetalInstancesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := a.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BareMetalInfrastructure/bareMetalInstances/(?P<azureBareMetalInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureBareMetalInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureBareMetalInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginStart(req.Context(), resourceGroupNameParam, azureBareMetalInstanceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		a.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		a.beginStart.remove(req)
+	}
+
 	return resp, nil
 }
 

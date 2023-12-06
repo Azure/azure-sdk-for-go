@@ -8,6 +8,31 @@
 
 package armbaremetalinfrastructure
 
+// AzureBareMetalInstancesClientBeginRestartOptions contains the optional parameters for the AzureBareMetalInstancesClient.BeginRestart
+// method.
+type AzureBareMetalInstancesClientBeginRestartOptions struct {
+	// When set to 'active', this parameter empowers the server with the ability to forcefully terminate and halt any existing
+	// processes that may be running on the server
+	ForceParameter *ForceState
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureBareMetalInstancesClientBeginShutdownOptions contains the optional parameters for the AzureBareMetalInstancesClient.BeginShutdown
+// method.
+type AzureBareMetalInstancesClientBeginShutdownOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AzureBareMetalInstancesClientBeginStartOptions contains the optional parameters for the AzureBareMetalInstancesClient.BeginStart
+// method.
+type AzureBareMetalInstancesClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AzureBareMetalInstancesClientGetOptions contains the optional parameters for the AzureBareMetalInstancesClient.Get method.
 type AzureBareMetalInstancesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -28,6 +53,42 @@ type AzureBareMetalInstancesClientListBySubscriptionOptions struct {
 // AzureBareMetalInstancesClientUpdateOptions contains the optional parameters for the AzureBareMetalInstancesClient.Update
 // method.
 type AzureBareMetalInstancesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientCreateOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.Create
+// method.
+type AzureBareMetalStorageInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientDeleteOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.Delete
+// method.
+type AzureBareMetalStorageInstancesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientGetOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.Get
+// method.
+type AzureBareMetalStorageInstancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientListByResourceGroupOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.NewListByResourceGroupPager
+// method.
+type AzureBareMetalStorageInstancesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientListBySubscriptionOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.NewListBySubscriptionPager
+// method.
+type AzureBareMetalStorageInstancesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalStorageInstancesClientUpdateOptions contains the optional parameters for the AzureBareMetalStorageInstancesClient.Update
+// method.
+type AzureBareMetalStorageInstancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

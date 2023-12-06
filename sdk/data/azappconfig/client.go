@@ -341,7 +341,7 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName strin
 	})
 }
 
-func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) *runtime.Poller[BeginCreateSnapshotResponse] {
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[BeginCreateSnapshotResponse], error) {
 	filter := []generated.KeyValueFilter{}
 
 	if options == nil {
@@ -380,10 +380,10 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, k
 	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
 
 	if err != nil {
-		return nil
+		return &runtime.Poller[BeginCreateSnapshotResponse]{}, err
 	}
 
-	return pollerSS
+	return pollerSS, nil
 }
 
 func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {

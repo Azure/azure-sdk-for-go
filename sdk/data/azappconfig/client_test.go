@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	"github.com/stretchr/testify/require"
@@ -340,7 +341,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 	snapshotName := "listConfigurationsSnapshotTest" + string(uniqueSuffix)
 	client := NewClientFromConnectionString(t)
 
-	type LV struct {
+	type VL struct {
 		Value string
 		Label string
 	}
@@ -376,7 +377,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 		},
 	}
 
-	settingMap := make(map[string][]LV)
+	settingMap := make(map[string][]VL)
 
 	for _, setting := range Settings {
 
@@ -385,7 +386,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 		label := setting.Label
 
 		// Add setting to Map
-		mapV := LV{}
+		mapV := VL{}
 
 		if value != nil {
 			mapV.Value = *value
@@ -455,6 +456,11 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 	require.Equal(t, len(settingMap), settingsAdded)
 
+	// Cleanup Settings
+	for _, setting := range Settings {
+		client.DeleteSetting(context.Background(), *setting.Key, nil)
+	}
+
 	// Cleanup Snapshots
 	CleanupSnapshot(client, snapshotName)
 }
@@ -514,19 +520,16 @@ func TestSnapshotArchive(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	// make sure snapshot exists and is ready
-	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+	_, err := CreateSnapshot(client, snapshotName, nil)
 
-	if err != nil {
-		_, err = CreateSnapshot(client, snapshotName, nil)
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
 
 	_, err = client.RecoverSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+
 	// Check that snapshot is in a "ready" state
-	snapshot, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Snapshot.Status)
 
@@ -544,13 +547,11 @@ func TestSnapshotRecover(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	// make sure snapshot exists and is archived
-	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+	_, err := CreateSnapshot(client, snapshotName, nil)
+	require.NoError(t, err)
 
-	if err != nil {
-		_, err = CreateSnapshot(client, snapshotName, nil)
-		require.NoError(t, err)
-	}
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
 
 	_, err = client.ArchiveSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
@@ -606,12 +607,18 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 	}
 
 	//Create a snapshot
-	resp := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
+	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
+
+	if err != nil {
+		return azappconfig.GetSnapshotResponse{}, err
+	}
 
 	if resp == nil {
 		return azappconfig.GetSnapshotResponse{}, fmt.Errorf("resp is nil")
 	}
-	_, err := resp.PollUntilDone(context.Background(), nil)
+	_, err = resp.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: 1 * time.Second,
+	})
 
 	if err != nil {
 		return azappconfig.GetSnapshotResponse{}, err

@@ -1,5 +1,18 @@
 # Release History
 
+## 2.2.0 (2023-12-22)
+### Features Added
+
+- New value `StorageAccountTypeStandardSSDLRS` added to enum type `StorageAccountType`
+- New struct `ManagedDisk`
+- New struct `SecurityProfile`
+- New struct `ServiceArtifactReference`
+- New struct `UefiSettings`
+- New field `Caching`, `DiskSizeGB`, `ManagedDisk`, `WriteAcceleratorEnabled` in struct `OSDisk`
+- New field `ResourceTags` in struct `PoolProperties`
+- New field `SecurityProfile`, `ServiceArtifactReference` in struct `VirtualMachineConfiguration`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

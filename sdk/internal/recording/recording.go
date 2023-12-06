@@ -537,10 +537,10 @@ func defaultOptions() *RecordingOptions {
 	}
 }
 
-func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *http.Request {
+func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) (*http.Request, string, string) {
+	originalURLScheme := rawReq.URL.Scheme
+	originalURLHost := rawReq.URL.Host
 	if GetRecordMode() != LiveMode && !IsLiveOnly(t) {
-		originalURLHost := rawReq.URL.Host
-
 		// don't modify the original request
 		cp := *rawReq
 		cpURL := *cp.URL
@@ -556,7 +556,7 @@ func (r RecordingOptions) ReplaceAuthority(t *testing.T, rawReq *http.Request) *
 		cp.Header.Set(IDHeader, GetRecordingId(t))
 		rawReq = &cp
 	}
-	return rawReq
+	return rawReq, originalURLScheme, originalURLHost
 }
 
 func (r RecordingOptions) host() string {
@@ -941,8 +941,17 @@ type RecordingHTTPClient struct {
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	req = c.options.ReplaceAuthority(c.t, req)
-	return c.defaultClient.Do(req)
+	req, origScheme, origHost := c.options.ReplaceAuthority(c.t, req)
+	resp, err := c.defaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	// if the request succeeds, restore the scheme/host with their original values.
+	// this is imporant for things like LROs that might use the originating URL to
+	// poll for status and/or fetch the final result.
+	resp.Request.URL.Scheme = origScheme
+	resp.Request.URL.Host = origHost
+	return resp, nil
 }
 
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.

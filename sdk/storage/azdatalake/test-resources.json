@@ -32,6 +32,7 @@
       "secondaryAccountName": "[concat(parameters('baseName'), 'sec')]",
       "premiumAccountName": "[concat(parameters('baseName'), 'prem')]",
       "dataLakeAccountName": "[concat(parameters('baseName'), 'dtlk')]",
+      "dataLakeEncryptionScopeName": "[concat(parameters('baseName'), 'dtlk', '/encryptionScope')]",
       "softDeleteAccountName": "[concat(parameters('baseName'), 'sftdl')]",
       "premiumFileAccountName": "[concat(parameters('baseName'), 'pfile')]",
       "webjobsPrimaryAccountName": "[concat(parameters('baseName'), 'wjprim')]",
@@ -205,6 +206,18 @@
           "encryption": "[variables('encryption')]",
           "accessTier": "Hot"
         }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+        "apiVersion": "[variables('mgmtApiVersion')]",
+        "name": "[variables('dataLakeEncryptionScopeName')]",
+        "properties": {
+          "source": "Microsoft.Storage",
+          "state": "Enabled"
+        },
+        "dependsOn": [
+          "[variables('dataLakeAccountName')]"
+        ]
       },
       {
         "type": "Microsoft.Storage/storageAccounts",
@@ -578,7 +591,10 @@
       "AZURE_STORAGE_ENCRYPTION_SCOPE": {
         "type": "string",
         "value": "[variables('primaryEncryptionScopeName')]"
+      },
+      "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE": {
+        "type": "string",
+        "value": "[variables('dataLakeEncryptionScopeName')]"
       }
     }
   }
-  

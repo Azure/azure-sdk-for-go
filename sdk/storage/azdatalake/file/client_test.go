@@ -1350,7 +1350,7 @@ func (s *UnrecordedTestSuite) TestFileEncryptionScopeSAS() {
 	_require.NoError(err)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
-	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
 	_require.Nil(err)
 
 	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
@@ -1392,7 +1392,7 @@ func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
 	_require.NoError(err)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
-	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
 	_require.Nil(err)
 
 	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
@@ -1462,7 +1462,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
-	_, err = testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	_, err = testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
 	_require.Nil(err)
 
 	// Set current and past time and create key
@@ -1476,7 +1476,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 	udc, _ := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
 
 	// get permissions and details for sas
-	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.EncryptionScopeEnvVar)
+	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
 	_require.Nil(err)
 
 	// Create Blob Signature Values with desired permissions and sign with user delegation credential

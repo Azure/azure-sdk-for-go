@@ -47,13 +47,13 @@ func NewValidateOperationClient(subscriptionID string, credential azcore.TokenCr
 // headers which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - parameters - resource validate operation request
 //   - options - ValidateOperationClientBeginTriggerOptions contains the optional parameters for the ValidateOperationClient.BeginTrigger
 //     method.
-func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*runtime.Poller[ValidateOperationClientTriggerResponse], error) {
+func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *ValidateOperationClientBeginTriggerOptions) (*runtime.Poller[ValidateOperationClientTriggerResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.trigger(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
@@ -74,8 +74,8 @@ func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultNa
 // which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
-func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*http.Response, error) {
+// Generated from API version 2023-06-01
+func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *ValidateOperationClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ValidateOperationClient.BeginTrigger"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -97,7 +97,7 @@ func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName st
 }
 
 // triggerCreateRequest creates the Trigger request.
-func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestClassification, options *ValidateOperationClientBeginTriggerOptions) (*policy.Request, error) {
+func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *ValidateOperationClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation"
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -116,7 +116,7 @@ func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

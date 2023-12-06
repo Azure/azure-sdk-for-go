@@ -467,6 +467,52 @@ func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePoli
 	return b, nil
 }
 
+func unmarshalTieringCostInfoClassification(rawMsg json.RawMessage) (TieringCostInfoClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b TieringCostInfoClassification
+	switch m["objectType"] {
+	case "TieringCostRehydrationInfo":
+		b = &TieringCostRehydrationInfo{}
+	case "TieringCostSavingInfo":
+		b = &TieringCostSavingInfo{}
+	default:
+		b = &TieringCostInfo{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (ValidateOperationRequestClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ValidateOperationRequestClassification
+	switch m["objectType"] {
+	case "ValidateIaasVMRestoreOperationRequest":
+		b = &ValidateIaasVMRestoreOperationRequest{}
+	case "ValidateRestoreOperationRequest":
+		b = &ValidateRestoreOperationRequest{}
+	default:
+		b = &ValidateOperationRequest{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalVaultStorageConfigOperationResultResponseClassification(rawMsg json.RawMessage) (VaultStorageConfigOperationResultResponseClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

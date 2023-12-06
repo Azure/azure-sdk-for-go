@@ -205,6 +205,16 @@ type FeatureSupportRequestClassification interface {
 	GetFeatureSupportRequest() *FeatureSupportRequest
 }
 
+// FetchTieringCostInfoRequestClassification provides polymorphic access to related types.
+// Call the interface's GetFetchTieringCostInfoRequest() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *FetchTieringCostInfoForRehydrationRequest, *FetchTieringCostInfoRequest, *FetchTieringCostSavingsInfoForPolicyRequest,
+// - *FetchTieringCostSavingsInfoForProtectedItemRequest, *FetchTieringCostSavingsInfoForVaultRequest
+type FetchTieringCostInfoRequestClassification interface {
+	// GetFetchTieringCostInfoRequest returns the FetchTieringCostInfoRequest content of the underlying type.
+	GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest
+}
+
 // ILRRequestClassification provides polymorphic access to related types.
 // Call the interface's GetILRRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -363,6 +373,15 @@ type RetentionPolicyClassification interface {
 type SchedulePolicyClassification interface {
 	// GetSchedulePolicy returns the SchedulePolicy content of the underlying type.
 	GetSchedulePolicy() *SchedulePolicy
+}
+
+// TieringCostInfoClassification provides polymorphic access to related types.
+// Call the interface's GetTieringCostInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *TieringCostInfo, *TieringCostRehydrationInfo, *TieringCostSavingInfo
+type TieringCostInfoClassification interface {
+	// GetTieringCostInfo returns the TieringCostInfo content of the underlying type.
+	GetTieringCostInfo() *TieringCostInfo
 }
 
 // ValidateOperationRequestClassification provides polymorphic access to related types.

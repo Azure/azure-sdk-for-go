@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -35,9 +35,9 @@ type ProtectionContainersServer struct {
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Refresh func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, options *armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionContainersClientRefreshResponse], errResp azfake.ErrorResponder)
 
-	// Register is the fake for method ProtectionContainersClient.Register
+	// BeginRegister is the fake for method ProtectionContainersClient.BeginRegister
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Register func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters armrecoveryservicesbackup.ProtectionContainerResource, options *armrecoveryservicesbackup.ProtectionContainersClientRegisterOptions) (resp azfake.Responder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse], errResp azfake.ErrorResponder)
+	BeginRegister func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters armrecoveryservicesbackup.ProtectionContainerResource, options *armrecoveryservicesbackup.ProtectionContainersClientBeginRegisterOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse], errResp azfake.ErrorResponder)
 
 	// Unregister is the fake for method ProtectionContainersClient.Unregister
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -48,13 +48,17 @@ type ProtectionContainersServer struct {
 // The returned ProtectionContainersServerTransport instance is connected to an instance of armrecoveryservicesbackup.ProtectionContainersClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProtectionContainersServerTransport(srv *ProtectionContainersServer) *ProtectionContainersServerTransport {
-	return &ProtectionContainersServerTransport{srv: srv}
+	return &ProtectionContainersServerTransport{
+		srv:           srv,
+		beginRegister: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse]](),
+	}
 }
 
 // ProtectionContainersServerTransport connects instances of armrecoveryservicesbackup.ProtectionContainersClient to instances of ProtectionContainersServer.
 // Don't use this type directly, use NewProtectionContainersServerTransport instead.
 type ProtectionContainersServerTransport struct {
-	srv *ProtectionContainersServer
+	srv           *ProtectionContainersServer
+	beginRegister *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ProtectionContainersClientRegisterResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProtectionContainersServerTransport.
@@ -75,8 +79,8 @@ func (p *ProtectionContainersServerTransport) Do(req *http.Request) (*http.Respo
 		resp, err = p.dispatchInquire(req)
 	case "ProtectionContainersClient.Refresh":
 		resp, err = p.dispatchRefresh(req)
-	case "ProtectionContainersClient.Register":
-		resp, err = p.dispatchRegister(req)
+	case "ProtectionContainersClient.BeginRegister":
+		resp, err = p.dispatchBeginRegister(req)
 	case "ProtectionContainersClient.Unregister":
 		resp, err = p.dispatchUnregister(req)
 	default:
@@ -233,48 +237,59 @@ func (p *ProtectionContainersServerTransport) dispatchRefresh(req *http.Request)
 	return resp, nil
 }
 
-func (p *ProtectionContainersServerTransport) dispatchRegister(req *http.Request) (*http.Response, error) {
-	if p.srv.Register == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Register not implemented")}
+func (p *ProtectionContainersServerTransport) dispatchBeginRegister(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginRegister == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRegister not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginRegister := p.beginRegister.get(req)
+	if beginRegister == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionContainerResource](req)
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+		if err != nil {
+			return nil, err
+		}
+		containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginRegister(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRegister = &respr
+		p.beginRegister.add(req, beginRegister)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ProtectionContainerResource](req)
+
+	resp, err := server.PollerResponderNext(beginRegister, req)
 	if err != nil {
 		return nil, err
 	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginRegister.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginRegister) {
+		p.beginRegister.remove(req)
 	}
-	fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
-	if err != nil {
-		return nil, err
-	}
-	containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Register(req.Context(), vaultNameParam, resourceGroupNameParam, fabricNameParam, containerNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectionContainerResource, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

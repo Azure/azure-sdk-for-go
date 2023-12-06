@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/RecoveryPoints_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/RecoveryPoints_List.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,12 +113,51 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 				Zones: []*string{
 		// 					to.Ptr("1")},
 		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("70477518625276"),
+		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/FijiValidation-asr-microsoftrrdclab3-408/providers/Microsoft.RecoveryServices/vaults/testVault408/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;fijivalidation-asr-microsoftrrdclab3-408;vm408/protectedItems/VM;iaasvmcontainerv2;fijivalidation-asr-microsoftrrdclab3-408;vm408/recoveryPoints/70477518625276"),
+		// 				Properties: &armrecoveryservicesbackup.IaasVMRecoveryPoint{
+		// 					ObjectType: to.Ptr("IaasVMRecoveryPoint"),
+		// 					ExtendedLocation: &armrecoveryservicesbackup.ExtendedLocation{
+		// 						Name: to.Ptr("microsoftrrdclab3"),
+		// 						Type: to.Ptr("EdgeZone"),
+		// 					},
+		// 					IsInstantIlrSessionActive: to.Ptr(false),
+		// 					IsManagedVirtualMachine: to.Ptr(true),
+		// 					IsPrivateAccessEnabledOnAnyDisk: to.Ptr(false),
+		// 					IsSourceVMEncrypted: to.Ptr(true),
+		// 					OriginalStorageAccountOption: to.Ptr(false),
+		// 					OSType: to.Ptr("Windows"),
+		// 					RecoveryPointAdditionalInfo: to.Ptr(""),
+		// 					RecoveryPointMoveReadinessInfo: map[string]*armrecoveryservicesbackup.RecoveryPointMoveReadinessInfo{
+		// 						"ArchivedRP": &armrecoveryservicesbackup.RecoveryPointMoveReadinessInfo{
+		// 							AdditionalInfo: to.Ptr("We're still determining if this Recovery Point can be moved.. Please check again after some time."),
+		// 							IsReadyForMove: to.Ptr(false),
+		// 						},
+		// 					},
+		// 					RecoveryPointTierDetails: []*armrecoveryservicesbackup.RecoveryPointTierInformationV2{
+		// 						{
+		// 							Type: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeInstantRP),
+		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
+		// 						},
+		// 						{
+		// 							Type: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeHardenedRP),
+		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
+		// 					}},
+		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-22T20:02:00.122Z"); return t}()),
+		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
+		// 					SecurityType: to.Ptr("None"),
+		// 					SourceVMStorageType: to.Ptr("PremiumVMOnPartialPremiumStorage"),
+		// 					VirtualMachineSize: to.Ptr("Standard_D2s_v3"),
+		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a4ddec441435d1ef766c4f160eda658a69cc5dc2/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/AzureIaasVm/RecoveryPoints_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/AzureIaasVm/RecoveryPoints_Get.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

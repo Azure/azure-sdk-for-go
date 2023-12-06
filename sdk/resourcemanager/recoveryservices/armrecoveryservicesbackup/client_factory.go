@@ -163,6 +163,18 @@ func (c *ClientFactory) NewFeatureSupportClient() *FeatureSupportClient {
 	return subClient
 }
 
+// NewFetchTieringCostClient creates a new instance of FetchTieringCostClient.
+func (c *ClientFactory) NewFetchTieringCostClient() *FetchTieringCostClient {
+	subClient, _ := NewFetchTieringCostClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewGetTieringCostOperationResultClient creates a new instance of GetTieringCostOperationResultClient.
+func (c *ClientFactory) NewGetTieringCostOperationResultClient() *GetTieringCostOperationResultClient {
+	subClient, _ := NewGetTieringCostOperationResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewItemLevelRecoveryConnectionsClient creates a new instance of ItemLevelRecoveryConnectionsClient.
 func (c *ClientFactory) NewItemLevelRecoveryConnectionsClient() *ItemLevelRecoveryConnectionsClient {
 	subClient, _ := NewItemLevelRecoveryConnectionsClient(c.subscriptionID, c.credential, c.options)
@@ -316,6 +328,12 @@ func (c *ClientFactory) NewRestoresClient() *RestoresClient {
 // NewSecurityPINsClient creates a new instance of SecurityPINsClient.
 func (c *ClientFactory) NewSecurityPINsClient() *SecurityPINsClient {
 	subClient, _ := NewSecurityPINsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewTieringCostOperationStatusClient creates a new instance of TieringCostOperationStatusClient.
+func (c *ClientFactory) NewTieringCostOperationStatusClient() *TieringCostOperationStatusClient {
+	subClient, _ := NewTieringCostOperationStatusClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

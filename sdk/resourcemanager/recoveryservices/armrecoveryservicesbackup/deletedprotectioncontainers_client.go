@@ -45,7 +45,7 @@ func NewDeletedProtectionContainersClient(subscriptionID string, credential azco
 
 // NewListPager - Lists the soft deleted containers registered to Recovery Services Vault.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - vaultName - The name of the recovery services vault.
 //   - options - DeletedProtectionContainersClientListOptions contains the optional parameters for the DeletedProtectionContainersClient.NewListPager
@@ -93,7 +93,7 @@ func (client *DeletedProtectionContainersClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

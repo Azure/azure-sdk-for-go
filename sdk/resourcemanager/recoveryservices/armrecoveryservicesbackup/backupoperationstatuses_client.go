@@ -48,7 +48,7 @@ func NewBackupOperationStatusesClient(subscriptionID string, credential azcore.T
 // operation. Some operations create jobs. This method returns the list of jobs when the operation is complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - operationID - OperationID which represents the operation.
@@ -100,7 +100,7 @@ func (client *BackupOperationStatusesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

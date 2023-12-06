@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,7 +25,7 @@ import (
 type ValidateOperationServer struct {
 	// BeginTrigger is the fake for method ValidateOperationClient.BeginTrigger
 	// HTTP status codes to indicate success: http.StatusAccepted
-	BeginTrigger func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.ValidateOperationRequestClassification, options *armrecoveryservicesbackup.ValidateOperationClientBeginTriggerOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ValidateOperationClientTriggerResponse], errResp azfake.ErrorResponder)
+	BeginTrigger func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.ValidateOperationRequestResource, options *armrecoveryservicesbackup.ValidateOperationClientBeginTriggerOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ValidateOperationClientTriggerResponse], errResp azfake.ErrorResponder)
 }
 
 // NewValidateOperationServerTransport creates a new instance of ValidateOperationServerTransport with the provided implementation.
@@ -82,11 +82,7 @@ func (v *ValidateOperationServerTransport) dispatchBeginTrigger(req *http.Reques
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		raw, err := readRequestBody(req)
-		if err != nil {
-			return nil, err
-		}
-		body, err := unmarshalValidateOperationRequestClassification(raw)
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ValidateOperationRequestResource](req)
 		if err != nil {
 			return nil, err
 		}

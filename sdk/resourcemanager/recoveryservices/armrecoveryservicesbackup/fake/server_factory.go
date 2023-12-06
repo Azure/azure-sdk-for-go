@@ -40,6 +40,8 @@ type ServerFactory struct {
 	DeletedProtectionContainersServer                DeletedProtectionContainersServer
 	ExportJobsOperationResultsServer                 ExportJobsOperationResultsServer
 	FeatureSupportServer                             FeatureSupportServer
+	FetchTieringCostServer                           FetchTieringCostServer
+	GetTieringCostOperationResultServer              GetTieringCostOperationResultServer
 	ItemLevelRecoveryConnectionsServer               ItemLevelRecoveryConnectionsServer
 	JobCancellationsServer                           JobCancellationsServer
 	JobDetailsServer                                 JobDetailsServer
@@ -66,6 +68,7 @@ type ServerFactory struct {
 	ResourceGuardProxyServer                         ResourceGuardProxyServer
 	RestoresServer                                   RestoresServer
 	SecurityPINsServer                               SecurityPINsServer
+	TieringCostOperationStatusServer                 TieringCostOperationStatusServer
 	ValidateOperationServer                          ValidateOperationServer
 	ValidateOperationResultsServer                   ValidateOperationResultsServer
 	ValidateOperationStatusesServer                  ValidateOperationStatusesServer
@@ -106,6 +109,8 @@ type ServerFactoryTransport struct {
 	trDeletedProtectionContainersServer                *DeletedProtectionContainersServerTransport
 	trExportJobsOperationResultsServer                 *ExportJobsOperationResultsServerTransport
 	trFeatureSupportServer                             *FeatureSupportServerTransport
+	trFetchTieringCostServer                           *FetchTieringCostServerTransport
+	trGetTieringCostOperationResultServer              *GetTieringCostOperationResultServerTransport
 	trItemLevelRecoveryConnectionsServer               *ItemLevelRecoveryConnectionsServerTransport
 	trJobCancellationsServer                           *JobCancellationsServerTransport
 	trJobDetailsServer                                 *JobDetailsServerTransport
@@ -132,6 +137,7 @@ type ServerFactoryTransport struct {
 	trResourceGuardProxyServer                         *ResourceGuardProxyServerTransport
 	trRestoresServer                                   *RestoresServerTransport
 	trSecurityPINsServer                               *SecurityPINsServerTransport
+	trTieringCostOperationStatusServer                 *TieringCostOperationStatusServerTransport
 	trValidateOperationServer                          *ValidateOperationServerTransport
 	trValidateOperationResultsServer                   *ValidateOperationResultsServerTransport
 	trValidateOperationStatusesServer                  *ValidateOperationStatusesServerTransport
@@ -247,6 +253,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFeatureSupportServerTransport(&s.srv.FeatureSupportServer)
 		})
 		resp, err = s.trFeatureSupportServer.Do(req)
+	case "FetchTieringCostClient":
+		initServer(s, &s.trFetchTieringCostServer, func() *FetchTieringCostServerTransport {
+			return NewFetchTieringCostServerTransport(&s.srv.FetchTieringCostServer)
+		})
+		resp, err = s.trFetchTieringCostServer.Do(req)
+	case "GetTieringCostOperationResultClient":
+		initServer(s, &s.trGetTieringCostOperationResultServer, func() *GetTieringCostOperationResultServerTransport {
+			return NewGetTieringCostOperationResultServerTransport(&s.srv.GetTieringCostOperationResultServer)
+		})
+		resp, err = s.trGetTieringCostOperationResultServer.Do(req)
 	case "ItemLevelRecoveryConnectionsClient":
 		initServer(s, &s.trItemLevelRecoveryConnectionsServer, func() *ItemLevelRecoveryConnectionsServerTransport {
 			return NewItemLevelRecoveryConnectionsServerTransport(&s.srv.ItemLevelRecoveryConnectionsServer)
@@ -365,6 +381,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SecurityPINsClient":
 		initServer(s, &s.trSecurityPINsServer, func() *SecurityPINsServerTransport { return NewSecurityPINsServerTransport(&s.srv.SecurityPINsServer) })
 		resp, err = s.trSecurityPINsServer.Do(req)
+	case "TieringCostOperationStatusClient":
+		initServer(s, &s.trTieringCostOperationStatusServer, func() *TieringCostOperationStatusServerTransport {
+			return NewTieringCostOperationStatusServerTransport(&s.srv.TieringCostOperationStatusServer)
+		})
+		resp, err = s.trTieringCostOperationStatusServer.Do(req)
 	case "ValidateOperationClient":
 		initServer(s, &s.trValidateOperationServer, func() *ValidateOperationServerTransport {
 			return NewValidateOperationServerTransport(&s.srv.ValidateOperationServer)

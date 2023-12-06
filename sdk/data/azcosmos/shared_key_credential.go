@@ -69,7 +69,7 @@ func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Requ
 			resourceAddress = strings.ToLower(resourceAddress)
 		}
 
-		var isDatabaseAccount bool = opValues.resourceType == resourceTypeDatabaseAccount
+		isDatabaseAccount := opValues.resourceType == resourceTypeDatabaseAccount
 
 		value = c.buildCanonicalizedAuthHeader(isDatabaseAccount, req.Raw().Method, resourceTypePath, resourceAddress, req.Raw().Header.Get(headerXmsDate), "master", "1.0")
 	}

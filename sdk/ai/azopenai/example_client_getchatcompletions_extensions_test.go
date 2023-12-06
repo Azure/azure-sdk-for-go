@@ -48,7 +48,7 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: to.Ptr("What are the differences between Azure Machine Learning and Azure AI services?")},
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What are the differences between Azure Machine Learning and Azure AI services?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
 		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{

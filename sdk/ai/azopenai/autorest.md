@@ -385,3 +385,123 @@ directive:
     where: $
     transform: return $.replace(/case "prompt_filter_results":/g, 'case "prompt_annotations":\nfallthrough\ncase "prompt_filter_results":')
 ```
+
+Update the ChatRequestUserMessage to allow for []ChatCompletionRequestMessageContentPartText _or_
+a string.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: return $.replace(/Content any/g, 'Content ChatRequestUserMessageContent')
+```
+
+Add in some types that are incorrectly not being exported in the generation
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["ChatCompletionRequestMessageContentPartType"] = {
+        "type": "string",
+        "enum": [
+          "image_url",
+          "text"
+        ],
+        "description": "The type of the content part.",
+        "x-ms-enum": {
+          "name": "ChatCompletionRequestMessageContentPartType",
+          "modelAsString": true,
+          "values": [
+            {
+              "name": "image_url",
+              "value": "image_url",
+              "description": "Chat content contains an image URL"
+            },
+            {
+              "name": "text",
+              "value": "text",
+              "description": "Chat content contains text"
+            },
+          ]
+        }
+      };
+      $["ChatCompletionRequestMessageContentPart"] = {
+        "type": "object",
+        "discriminator": "type",
+        "properties": {
+          "type": {
+            "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      };
+      $["ChatCompletionRequestMessageContentPartImage"] = {
+        "type": "object",
+        "title": "Image content part",
+        "properties": {
+          "type": {
+            "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
+          },
+          "image_url": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "Either a URL of the image or the base64 encoded image data.",
+                "format": "uri"
+              },
+              "detail": {
+                "type": "string",
+                "description": "Specifies the detail level of the image. Learn more in the [Vision guide](/docs/guides/vision/low-or-high-fidelity-image-understanding).",
+                "enum": [
+                  "auto",
+                  "low",
+                  "high"
+                ],
+                "default": "auto"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/definitions/ChatCompletionRequestMessageContentPart"
+          }
+        ],
+        "required": [
+          "type",
+          "image_url"
+        ],
+        "x-ms-discriminator-value": "image_url"
+      };
+      $["ChatCompletionRequestMessageContentPartText"] = {
+        "type": "object",
+        "title": "Text content part",
+        "properties": {
+          "type": {
+            "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
+          },
+          "text": {
+            "type": "string",
+            "description": "The text content."
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/definitions/ChatCompletionRequestMessageContentPart"
+          }
+        ],
+        "required": [
+          "type",
+          "text"
+        ],
+        "x-ms-discriminator-value": "text"
+      };
+```

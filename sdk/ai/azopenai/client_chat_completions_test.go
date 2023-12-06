@@ -27,7 +27,7 @@ func newTestChatCompletionOptions(deployment string) azopenai.ChatCompletionsOpt
 	return azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestUserMessage{
-				Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+				Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
 			},
 		},
 		MaxTokens:      to.Ptr(int32(1024)),
@@ -195,7 +195,7 @@ func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 	_, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestUserMessage{
-				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
+				Content: azopenai.NewChatRequestUserMessageContent("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
 			},
 		},
 		MaxTokens:      to.Ptr(int32(1024)),
@@ -226,4 +226,33 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})
+}
+
+func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
+	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+
+	chatClient := newOpenAIClientForTest(t)
+	content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
+		&azopenai.ChatCompletionRequestMessageContentPartText{
+			Text: to.Ptr("Describe this image"),
+		},
+		&azopenai.ChatCompletionRequestMessageContentPartImage{
+			ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
+				URL: &imageURL,
+			},
+		},
+	})
+
+	resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{
+				Content: content,
+			},
+		},
+		DeploymentName: to.Ptr("gpt-4-vision-preview"),
+	}, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, resp.Choices[0].Message.Content)
+
+	t.Logf(*resp.Choices[0].Message.Content)
 }

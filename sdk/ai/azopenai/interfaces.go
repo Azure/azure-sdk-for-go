@@ -18,6 +18,15 @@ type AzureChatExtensionConfigurationClassification interface {
 	GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration
 }
 
+// ChatCompletionRequestMessageContentPartClassification provides polymorphic access to related types.
+// Call the interface's GetChatCompletionRequestMessageContentPart() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ChatCompletionRequestMessageContentPart, *ChatCompletionRequestMessageContentPartImage, *ChatCompletionRequestMessageContentPartText
+type ChatCompletionRequestMessageContentPartClassification interface {
+	// GetChatCompletionRequestMessageContentPart returns the ChatCompletionRequestMessageContentPart content of the underlying type.
+	GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart
+}
+
 // ChatCompletionsToolCallClassification provides polymorphic access to related types.
 // Call the interface's GetChatCompletionsToolCall() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

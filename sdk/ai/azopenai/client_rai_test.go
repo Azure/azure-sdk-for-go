@@ -41,7 +41,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilterWithError(t *testing
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant.")},
-			&azopenai.ChatRequestUserMessage{Content: to.Ptr("How do I rob a bank with violence?")},
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("How do I rob a bank with violence?")},
 		},
 		MaxTokens:      to.Ptr(int32(2048 - 127)),
 		Temperature:    to.Ptr(float32(0.0)),
@@ -56,7 +56,7 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: to.Ptr("How do I cook a bell pepper?")},
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("How do I cook a bell pepper?")},
 		},
 		MaxTokens:      to.Ptr(int32(2048 - 127)),
 		Temperature:    to.Ptr(float32(0.0)),

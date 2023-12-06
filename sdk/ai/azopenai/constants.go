@@ -144,6 +144,43 @@ func PossibleAzureCognitiveSearchQueryTypeValues() []AzureCognitiveSearchQueryTy
 	}
 }
 
+// ChatCompletionRequestMessageContentPartImageURLDetail - Specifies the detail level of the image. Learn more in the Vision
+// guide [/docs/guides/vision/low-or-high-fidelity-image-understanding].
+type ChatCompletionRequestMessageContentPartImageURLDetail string
+
+const (
+	ChatCompletionRequestMessageContentPartImageURLDetailAuto ChatCompletionRequestMessageContentPartImageURLDetail = "auto"
+	ChatCompletionRequestMessageContentPartImageURLDetailHigh ChatCompletionRequestMessageContentPartImageURLDetail = "high"
+	ChatCompletionRequestMessageContentPartImageURLDetailLow  ChatCompletionRequestMessageContentPartImageURLDetail = "low"
+)
+
+// PossibleChatCompletionRequestMessageContentPartImageURLDetailValues returns the possible values for the ChatCompletionRequestMessageContentPartImageURLDetail const type.
+func PossibleChatCompletionRequestMessageContentPartImageURLDetailValues() []ChatCompletionRequestMessageContentPartImageURLDetail {
+	return []ChatCompletionRequestMessageContentPartImageURLDetail{
+		ChatCompletionRequestMessageContentPartImageURLDetailAuto,
+		ChatCompletionRequestMessageContentPartImageURLDetailHigh,
+		ChatCompletionRequestMessageContentPartImageURLDetailLow,
+	}
+}
+
+// ChatCompletionRequestMessageContentPartType - The type of the content part.
+type ChatCompletionRequestMessageContentPartType string
+
+const (
+	// ChatCompletionRequestMessageContentPartTypeImageURL - Chat content contains an image URL
+	ChatCompletionRequestMessageContentPartTypeImageURL ChatCompletionRequestMessageContentPartType = "image_url"
+	// ChatCompletionRequestMessageContentPartTypeText - Chat content contains text
+	ChatCompletionRequestMessageContentPartTypeText ChatCompletionRequestMessageContentPartType = "text"
+)
+
+// PossibleChatCompletionRequestMessageContentPartTypeValues returns the possible values for the ChatCompletionRequestMessageContentPartType const type.
+func PossibleChatCompletionRequestMessageContentPartTypeValues() []ChatCompletionRequestMessageContentPartType {
+	return []ChatCompletionRequestMessageContentPartType{
+		ChatCompletionRequestMessageContentPartTypeImageURL,
+		ChatCompletionRequestMessageContentPartTypeText,
+	}
+}
+
 // ChatCompletionsResponseFormat - The valid response formats Chat Completions can provide. Used to enable JSON mode.
 type ChatCompletionsResponseFormat string
 

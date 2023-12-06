@@ -47,13 +47,13 @@ func ExampleClient_GetChatCompletions() {
 		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate.")},
 
 		// The user asks a question
-		&azopenai.ChatRequestUserMessage{Content: to.Ptr("Can you help me?")},
+		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
 		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
-		&azopenai.ChatRequestUserMessage{Content: to.Ptr("What's the best way to train a parrot?")},
+		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},
 
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}
@@ -220,13 +220,13 @@ func ExampleClient_GetChatCompletionsStream() {
 		&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant. You will talk like a pirate and limit your responses to 20 words or less.")},
 
 		// The user asks a question
-		&azopenai.ChatRequestUserMessage{Content: to.Ptr("Can you help me?")},
+		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("Can you help me?")},
 
 		// The reply would come back from the ChatGPT. You'd add it to the conversation so we can maintain context.
 		&azopenai.ChatRequestAssistantMessage{Content: to.Ptr("Arrrr! Of course, me hearty! What can I do for ye?")},
 
 		// The user answers the question based on the latest reply.
-		&azopenai.ChatRequestUserMessage{Content: to.Ptr("What's the best way to train a parrot?")},
+		&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What's the best way to train a parrot?")},
 
 		// from here you'd keep iterating, sending responses back from ChatGPT
 	}

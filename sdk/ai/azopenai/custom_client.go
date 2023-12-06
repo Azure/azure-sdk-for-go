@@ -303,3 +303,34 @@ func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatC
 func hasAzureExtensions(body ChatCompletionsOptions) bool {
 	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions) > 0
 }
+
+// ChatRequestUserMessageContent contains the user prompt - either as a single string
+// or as a []ChatCompletionRequestMessageContentPart, enabling images and text as input.
+//
+// NOTE: This should be created using [azopenai.NewChatRequestUserMessageContent]
+type ChatRequestUserMessageContent struct {
+	str   *string
+	parts []ChatCompletionRequestMessageContentPartClassification
+}
+
+// NewChatRequestUserMessageContent creates a [azopenai.ChatRequestUserMessageContent].
+func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) ChatRequestUserMessageContent {
+	switch actualV := any(v).(type) {
+	case string:
+		return ChatRequestUserMessageContent{str: &actualV}
+	case []ChatCompletionRequestMessageContentPartClassification:
+		return ChatRequestUserMessageContent{parts: actualV}
+	}
+	return ChatRequestUserMessageContent{}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
+	if c.str != nil {
+		return json.Marshal(c.str)
+	} else if c.parts != nil {
+		return json.Marshal(c.parts)
+	} else {
+		return nil, nil
+	}
+}

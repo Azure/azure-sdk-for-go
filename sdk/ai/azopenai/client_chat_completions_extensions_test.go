@@ -22,7 +22,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: to.Ptr("What does PR complete mean?")},
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
 		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
@@ -47,7 +47,7 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{
 		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{Content: to.Ptr("What does PR complete mean?")},
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
 		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{

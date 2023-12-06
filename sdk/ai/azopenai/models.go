@@ -504,6 +504,59 @@ type ChatChoice struct {
 	Message *ChatResponseMessage
 }
 
+type ChatCompletionRequestMessageContentPart struct {
+	// REQUIRED; The type of the content part.
+	Type *ChatCompletionRequestMessageContentPartType
+}
+
+// GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
+// for type ChatCompletionRequestMessageContentPart.
+func (c *ChatCompletionRequestMessageContentPart) GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart {
+	return c
+}
+
+// ChatCompletionRequestMessageContentPartImage - Image content part
+type ChatCompletionRequestMessageContentPartImage struct {
+	// REQUIRED
+	ImageURL *ChatCompletionRequestMessageContentPartImageURL
+
+	// REQUIRED; The type of the content part.
+	Type *ChatCompletionRequestMessageContentPartType
+}
+
+// GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
+// for type ChatCompletionRequestMessageContentPartImage.
+func (c *ChatCompletionRequestMessageContentPartImage) GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart {
+	return &ChatCompletionRequestMessageContentPart{
+		Type: c.Type,
+	}
+}
+
+type ChatCompletionRequestMessageContentPartImageURL struct {
+	// REQUIRED; Either a URL of the image or the base64 encoded image data.
+	URL *string
+
+	// Specifies the detail level of the image. Learn more in the Vision guide [/docs/guides/vision/low-or-high-fidelity-image-understanding].
+	Detail *ChatCompletionRequestMessageContentPartImageURLDetail
+}
+
+// ChatCompletionRequestMessageContentPartText - Text content part
+type ChatCompletionRequestMessageContentPartText struct {
+	// REQUIRED; The text content.
+	Text *string
+
+	// REQUIRED; The type of the content part.
+	Type *ChatCompletionRequestMessageContentPartType
+}
+
+// GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
+// for type ChatCompletionRequestMessageContentPartText.
+func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart {
+	return &ChatCompletionRequestMessageContentPart{
+		Type: c.Type,
+	}
+}
+
 // ChatCompletions - Representation of the response data from a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletions struct {
@@ -755,7 +808,7 @@ func (c *ChatRequestToolMessage) GetChatRequestMessage() *ChatRequestMessage {
 // ChatRequestUserMessage - A request chat message representing user input to the assistant.
 type ChatRequestUserMessage struct {
 	// REQUIRED; The contents of the user message, with available input types varying by selected model.
-	Content any
+	Content ChatRequestUserMessageContent
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole

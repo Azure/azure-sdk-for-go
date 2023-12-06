@@ -89,7 +89,7 @@ func (client *ServerThreatProtectionSettingsClient) createOrUpdate(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

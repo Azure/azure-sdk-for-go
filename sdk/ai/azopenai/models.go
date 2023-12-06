@@ -203,7 +203,7 @@ type AzureChatEnhancements struct {
 type AzureChatExtensionConfiguration struct {
 	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
 	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureChatExtensionConfiguration.
@@ -238,18 +238,18 @@ type AzureChatOCREnhancementConfiguration struct {
 // AzureCognitiveSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Cognitive
 // Search when using it as an Azure OpenAI chat extension.
 type AzureCognitiveSearchChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
 	// REQUIRED; The parameters to use when configuring Azure Cognitive Search.
 	Parameters *AzureCognitiveSearchChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureCognitiveSearchChatExtensionConfiguration.
 func (a *AzureCognitiveSearchChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
 	return &AzureChatExtensionConfiguration{
-		configType: a.configType,
+		Type: a.Type,
 	}
 }
 
@@ -323,18 +323,18 @@ type AzureCognitiveSearchIndexFieldMappingOptions struct {
 // AzureCosmosDBChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
 // it as an Azure OpenAI chat extension.
 type AzureCosmosDBChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
 	// REQUIRED; The parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
 	Parameters *AzureCosmosDBChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureCosmosDBChatExtensionConfiguration.
 func (a *AzureCosmosDBChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
 	return &AzureChatExtensionConfiguration{
-		configType: a.configType,
+		Type: a.Type,
 	}
 }
 
@@ -425,18 +425,18 @@ type AzureGroundingEnhancementLineSpan struct {
 // AzureMachineLearningIndexChatExtensionConfiguration - A specific representation of configurable options for Azure Machine
 // Learning index when using it as an Azure OpenAI chat extension.
 type AzureMachineLearningIndexChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
 	// REQUIRED; The parameters for the Azure Machine Learning index chat extension.
 	Parameters *AzureMachineLearningIndexChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureMachineLearningIndexChatExtensionConfiguration.
 func (a *AzureMachineLearningIndexChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
 	return &AzureChatExtensionConfiguration{
-		configType: a.configType,
+		Type: a.Type,
 	}
 }
 
@@ -740,7 +740,7 @@ type ChatRequestAssistantMessage struct {
 	Content *string
 
 	// REQUIRED; The chat role associated with this message.
-	role *ChatRole
+	Role *ChatRole
 
 	// An optional name for the participant.
 	Name *string
@@ -753,14 +753,14 @@ type ChatRequestAssistantMessage struct {
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestAssistantMessage.
 func (c *ChatRequestAssistantMessage) GetChatRequestMessage() *ChatRequestMessage {
 	return &ChatRequestMessage{
-		role: c.role,
+		Role: c.Role,
 	}
 }
 
 // ChatRequestMessage - An abstract representation of a chat message as provided in a request.
 type ChatRequestMessage struct {
 	// REQUIRED; The chat role associated with this message.
-	role *ChatRole
+	Role *ChatRole
 }
 
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestMessage.
@@ -773,7 +773,7 @@ type ChatRequestSystemMessage struct {
 	Content *string
 
 	// REQUIRED; The chat role associated with this message.
-	role *ChatRole
+	Role *ChatRole
 
 	// An optional name for the participant.
 	Name *string
@@ -782,7 +782,7 @@ type ChatRequestSystemMessage struct {
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestSystemMessage.
 func (c *ChatRequestSystemMessage) GetChatRequestMessage() *ChatRequestMessage {
 	return &ChatRequestMessage{
-		role: c.role,
+		Role: c.Role,
 	}
 }
 
@@ -792,7 +792,7 @@ type ChatRequestToolMessage struct {
 	Content *string
 
 	// REQUIRED; The chat role associated with this message.
-	role *ChatRole
+	Role *ChatRole
 
 	// REQUIRED; The ID of the tool call resolved by the provided content.
 	ToolCallID *string
@@ -801,7 +801,7 @@ type ChatRequestToolMessage struct {
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestToolMessage.
 func (c *ChatRequestToolMessage) GetChatRequestMessage() *ChatRequestMessage {
 	return &ChatRequestMessage{
-		role: c.role,
+		Role: c.Role,
 	}
 }
 
@@ -811,7 +811,7 @@ type ChatRequestUserMessage struct {
 	Content ChatRequestUserMessageContent
 
 	// REQUIRED; The chat role associated with this message.
-	role *ChatRole
+	Role *ChatRole
 
 	// An optional name for the participant.
 	Name *string
@@ -820,7 +820,7 @@ type ChatRequestUserMessage struct {
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestUserMessage.
 func (c *ChatRequestUserMessage) GetChatRequestMessage() *ChatRequestMessage {
 	return &ChatRequestMessage{
-		role: c.role,
+		Role: c.Role,
 	}
 }
 
@@ -1126,18 +1126,18 @@ type ContentFilterResultsForPrompt struct {
 // ElasticsearchChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
 // it as an Azure OpenAI chat extension.
 type ElasticsearchChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
 	// REQUIRED; The parameters to use when configuring Elasticsearch.
 	Parameters *ElasticsearchChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type ElasticsearchChatExtensionConfiguration.
 func (e *ElasticsearchChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
 	return &AzureChatExtensionConfiguration{
-		configType: e.configType,
+		Type: e.Type,
 	}
 }
 
@@ -1348,24 +1348,24 @@ func (m *MaxTokensFinishDetails) GetChatFinishDetails() *ChatFinishDetails {
 
 // OnYourDataAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an API key.
 type OnYourDataAPIKeyAuthenticationOptions struct {
-	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
-
 	// REQUIRED; The API key to use for authentication.
 	Key *string
+
+	// REQUIRED; The authentication type.
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataAPIKeyAuthenticationOptions.
 func (o *OnYourDataAPIKeyAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
-		configType: o.configType,
+		Type: o.Type,
 	}
 }
 
 // OnYourDataAuthenticationOptions - The authentication options for Azure OpenAI On Your Data.
 type OnYourDataAuthenticationOptions struct {
 	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataAuthenticationOptions.
@@ -1380,13 +1380,13 @@ type OnYourDataConnectionStringAuthenticationOptions struct {
 	ConnectionString *string
 
 	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataConnectionStringAuthenticationOptions.
 func (o *OnYourDataConnectionStringAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
-		configType: o.configType,
+		Type: o.Type,
 	}
 }
 
@@ -1458,20 +1458,20 @@ func (o *OnYourDataEmbeddingModelIDDependency) GetOnYourDataEmbeddingDependency(
 // OnYourDataKeyAndKeyIDAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an Elasticsearch
 // key and key ID pair.
 type OnYourDataKeyAndKeyIDAuthenticationOptions struct {
-	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
-
 	// REQUIRED; The key to use for authentication.
 	Key *string
 
 	// REQUIRED; The key ID to use for authentication.
 	KeyID *string
+
+	// REQUIRED; The authentication type.
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataKeyAndKeyIDAuthenticationOptions.
 func (o *OnYourDataKeyAndKeyIDAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
-		configType: o.configType,
+		Type: o.Type,
 	}
 }
 
@@ -1479,48 +1479,48 @@ func (o *OnYourDataKeyAndKeyIDAuthenticationOptions) GetOnYourDataAuthentication
 // when using a system-assigned managed identity.
 type OnYourDataSystemAssignedManagedIdentityAuthenticationOptions struct {
 	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.
 func (o *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
-		configType: o.configType,
+		Type: o.Type,
 	}
 }
 
 // OnYourDataUserAssignedManagedIdentityAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when
 // using a user-assigned managed identity.
 type OnYourDataUserAssignedManagedIdentityAuthenticationOptions struct {
-	// REQUIRED; The authentication type.
-	configType *OnYourDataAuthenticationType
-
 	// REQUIRED; The resource ID of the user-assigned managed identity to use for authentication.
 	ManagedIdentityResourceID *string
+
+	// REQUIRED; The authentication type.
+	Type *OnYourDataAuthenticationType
 }
 
 // GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataUserAssignedManagedIdentityAuthenticationOptions.
 func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
-		configType: o.configType,
+		Type: o.Type,
 	}
 }
 
 // PineconeChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using it
 // as an Azure OpenAI chat extension.
 type PineconeChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
 	// REQUIRED; The parameters to use when configuring Azure OpenAI chat extensions.
 	Parameters *PineconeChatExtensionParameters
+
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	Type *AzureChatExtensionType
 }
 
 // GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type PineconeChatExtensionConfiguration.
 func (p *PineconeChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
 	return &AzureChatExtensionConfiguration{
-		configType: p.configType,
+		Type: p.Type,
 	}
 }
 

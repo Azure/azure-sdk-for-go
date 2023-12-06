@@ -67,6 +67,11 @@ func unmarshalChatCompletionsToolCallClassification(rawMsg json.RawMessage) (Cha
 		return nil, err
 	}
 	var b ChatCompletionsToolCallClassification
+
+	if m["type"] == nil && m["function"] != nil {
+		// WORKAROUND: the streaming results don't contain the proper role for functions, so we need to add these in.
+		m["type"] = string(ChatRoleFunction)
+	}
 	switch m["type"] {
 	case "function":
 		b = &ChatCompletionsFunctionToolCall{}

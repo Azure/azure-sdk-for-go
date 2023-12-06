@@ -37,53 +37,6 @@ directive:
     transform: $["x-ms-parameter-location"] = "client";
 ```
 
-## Polymorphic adjustments
-
-The polymorphic _input_ models all expose the discriminator but it's ignored when serializing 
-(ie, each type already knows the value and fills it in). So we'll just hide it.
-
-`ChatRequestMessageClassification.Role`
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.ChatRequestMessage
-    transform: $.properties.role["x-ms-client-name"] = "InternalRoleRename"
-  - from:
-    - models.go
-    - models_serde.go
-    where: $
-    transform: return $.replace(/InternalRoleRename/g, "role")
-```
-
-`AzureChatExtensionConfigurationClassification.Type`
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.AzureChatExtensionConfiguration
-    transform: $.properties.type["x-ms-client-name"] = "InternalChatExtensionTypeRename"
-  - from:
-    - models.go
-    - models_serde.go
-    where: $
-    transform: return $.replace(/InternalChatExtensionTypeRename/g, "configType")
-```
-
-`OnYourDataAuthenticationOptionsClassification.Type`
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.OnYourDataAuthenticationOptions
-    transform: $.properties.type["x-ms-client-name"] = "InternalOYDAuthTypeRename"
-  - from:
-    - models.go
-    - models_serde.go
-    where: $
-    transform: return $.replace(/InternalOYDAuthTypeRename/g, "configType")
-```
-
 ## Model -> DeploymentName
 
 ```yaml
@@ -504,4 +457,20 @@ directive:
         ],
         "x-ms-discriminator-value": "text"
       };
+```
+
+Another workaround - streaming results don't contain the discriminator field so we'll
+inject it when we can infer it properly ('function' property exists).
+
+```yaml
+directive:
+  - from: polymorphic_helpers.go
+    where: $
+    transform: |
+      return $.replace(/(func unmarshalChatCompletionsToolCallClassification.+?var b ChatCompletionsToolCallClassification\n)/s, 
+        `$1\n` + 
+        `if m["type"] == nil && m["function"] != nil {\n` +
+        `  // WORKAROUND: the streaming results don't contain the proper role for functions, so we need to add these in.\n` +
+        `  m["type"] = string(ChatRoleFunction)\n` + 
+        `}\n`);
 ```

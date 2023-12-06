@@ -314,7 +314,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && changelog.HasBreakingChanges() {
 			log.Printf("Replace fake module v2+...")
 			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
-				"fake", "_server.go"); err != nil {
+				"fake", ".go"); err != nil {
 				return nil, err
 			}
 		}

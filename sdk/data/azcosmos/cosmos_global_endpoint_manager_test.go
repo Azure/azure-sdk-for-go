@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/url"
@@ -152,7 +153,7 @@ func TestGlobalEndpointManagerGetEndpointLocation(t *testing.T) {
 	serverEndpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
-	err = gem.Update()
+	err = gem.Update(context.Background())
 	assert.NoError(t, err)
 
 	location := gem.GetEndpointLocation(*serverEndpoint)
@@ -175,7 +176,7 @@ func TestGlobalEndpointManagerGetAccountProperties(t *testing.T) {
 	gem, err := newGlobalEndpointManager(client, preferredRegions, 5*time.Minute)
 	assert.NoError(t, err)
 
-	accountProps, err := gem.GetAccountProperties()
+	accountProps, err := gem.GetAccountProperties(context.Background())
 	assert.NoError(t, err)
 
 	expectedAccountProps := accountProperties{
@@ -253,7 +254,7 @@ func TestGlobalEndpointManagerUpdate(t *testing.T) { //This test should be testi
 	assert.NoError(t, err)
 
 	// Update the location cache and client's default endpoint
-	err = gem.Update()
+	err = gem.Update(context.Background())
 	assert.NoError(t, err)
 
 	// Get the write endpoints after the update
@@ -290,7 +291,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	gem, err := newGlobalEndpointManager(client, preferredRegions, 5*time.Minute)
 	assert.NoError(t, err)
 
-	accountProps, err := gem.GetAccountProperties()
+	accountProps, err := gem.GetAccountProperties(context.Background())
 	assert.NoError(t, err)
 
 	// Verify the expected account properties
@@ -330,7 +331,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
 	//update and assert available locations are now populated in location cache
-	err = gem.Update()
+	err = gem.Update(context.Background())
 	assert.NoError(t, err)
 	locationInfo = gem.locationCache.locationInfo
 

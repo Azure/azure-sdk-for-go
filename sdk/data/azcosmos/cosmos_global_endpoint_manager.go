@@ -73,8 +73,8 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 	gem.locationCache.refreshStaleEndpoints()
 }
 
-func (gem *globalEndpointManager) Update() error {
-	accountProperties, err := gem.GetAccountProperties()
+func (gem *globalEndpointManager) Update(ctx context.Context) error {
+	accountProperties, err := gem.GetAccountProperties(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve account properties: %v", err)
 	}
@@ -91,7 +91,7 @@ func (gem *globalEndpointManager) Update() error {
 	return nil
 }
 
-func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, error) {
+func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (accountProperties, error) {
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabaseAccount,
 		resourceAddress: "",
@@ -102,7 +102,7 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 60 * time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
 	azResponse, err := gem.client.sendGetRequest(path, ctx, operationContext, nil, nil)
 	cancel()
 	if err != nil {

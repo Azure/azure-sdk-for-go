@@ -3,11 +3,9 @@
 ## 2.0.0-beta.1 (2023-12-08)
 ### Breaking Changes
 
-- Type of `ErrorResponse.Error` has been changed from `*ErrorDefinition` to `*ErrorDetail`
 - Type of `NetworkProfile.NetworkInterfaces` has been changed from `[]*IPAddress` to `[]*NetworkInterface`
 - Type of `Operation.Display` has been changed from `*Display` to `*OperationDisplay`
 - Struct `Display` has been removed
-- Struct `ErrorDefinition` has been removed
 - Struct `IPAddress` has been removed
 - Struct `OperationList` has been removed
 - Struct `Result` has been removed
@@ -36,8 +34,6 @@
 - New struct `AzureBareMetalStorageInstance`
 - New struct `AzureBareMetalStorageInstanceProperties`
 - New struct `AzureBareMetalStorageInstancesListResult`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
 - New struct `ForceState`
 - New struct `NetworkInterface`
 - New struct `OperationDisplay`
@@ -48,8 +44,6 @@
 - New struct `StorageProperties`
 - New field `ActionType`, `Origin` in struct `Operation`
 - New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
-- New field `SystemData` in struct `Resource`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 1.2.0 (2023-11-24)

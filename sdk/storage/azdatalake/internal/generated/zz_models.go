@@ -260,9 +260,10 @@ type ModifiedAccessConditions struct {
 }
 
 type Path struct {
-	ContentLength *int64
-	CreationTime  *string
-	ETag          *string
+	ContentLength     *int64
+	CreationTime      *string
+	ETag              *string
+	EncryptionContext *string
 
 	// The name of the encryption scope under which the blob is encrypted.
 	EncryptionScope *string
@@ -280,6 +281,15 @@ type PathClientAppendDataOptions struct {
 	// Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length of the request content in bytes
 	// for "Append Data".
 	ContentLength *int64
+	// If file should be flushed after the append
+	Flush *bool
+	// Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If "release" it will release
+	// the lease only on flush. If "acquire-release" it will acquire & complete the
+	// operation & release the lease once operation is done.
+	LeaseAction *LeaseAction
+	// The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The lease duration
+	// must be between 15 and 60 seconds or -1 for infinite lease.
+	LeaseDuration *int64
 	// This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.
 	// It is required when uploading data to be appended to the file and when flushing
 	// previously uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is
@@ -288,6 +298,10 @@ type PathClientAppendDataOptions struct {
 	// data has been written, and there must not be a request entity body included
 	// with the request.
 	Position *int64
+	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
+	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+	// string formats.
+	ProposedLeaseID *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string
@@ -309,6 +323,8 @@ type PathClientCreateOptions struct {
 	// this response header. When a continuation token is returned in the response, it must be specified in a subsequent invocation
 	// of the delete operation to continue deleting the directory.
 	Continuation *string
+	// Specifies the encryption context to set on the file.
+	EncryptionContext *string
 	// The time to set the blob to expiry
 	ExpiresOn *string
 	// Required. Indicates mode of the expiry time
@@ -395,6 +411,13 @@ type PathClientFlushDataOptions struct {
 	// Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length of the request content in bytes
 	// for "Append Data".
 	ContentLength *int64
+	// Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If "release" it will release
+	// the lease only on flush. If "acquire-release" it will acquire & complete the
+	// operation & release the lease once operation is done.
+	LeaseAction *LeaseAction
+	// The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The lease duration
+	// must be between 15 and 60 seconds or -1 for infinite lease.
+	LeaseDuration *int64
 	// This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.
 	// It is required when uploading data to be appended to the file and when flushing
 	// previously uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is
@@ -403,6 +426,10 @@ type PathClientFlushDataOptions struct {
 	// data has been written, and there must not be a request entity body included
 	// with the request.
 	Position *int64
+	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
+	// not in the correct format. See Guid Constructor (String) for a list of valid GUID
+	// string formats.
+	ProposedLeaseID *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string

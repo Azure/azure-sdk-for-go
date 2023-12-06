@@ -7,6 +7,6 @@
 package azquery
 
 const (
-	moduleName = "azquery"
-	version    = "v1.1.1"
+	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery"
+	version    = "v1.2.0-beta.2"
 )

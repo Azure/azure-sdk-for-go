@@ -697,7 +697,6 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 
 func (s *ServiceRecordedTestsSuite) TestListFilesystemsIncludeSystemFileSystems() {
 	_require := require.New(s.T())
-	//testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
 
@@ -708,7 +707,7 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsIncludeSystemFileSystems(
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		for _, ctnr := range resp.FileSystemItems {
-			_require.NotNil((ctnr.Name))
+			_require.NotNil(ctnr.Name)
 			_require.Equal("$logs", *ctnr.Name)
 			count += 1
 		}

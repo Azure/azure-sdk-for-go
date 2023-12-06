@@ -102,7 +102,7 @@ func (gem *globalEndpointManager) GetAccountProperties() (accountProperties, err
 		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60 * time.Second)
 	azResponse, err := gem.client.sendGetRequest(path, ctx, operationContext, nil, nil)
 	cancel()
 	if err != nil {

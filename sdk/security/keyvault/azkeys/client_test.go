@@ -54,7 +54,7 @@ func TestBackupRestore(t *testing.T) {
 			require.NotNil(t, deleteResp.Key)
 			require.NotEmpty(t, deleteResp.RecoveryID)
 			require.NotEmpty(t, deleteResp.ScheduledPurgeDate)
-			pollStatus(t, 404, func() error {
+			internal.PollStatus(t, 404, func() error {
 				_, err := client.GetDeletedKey(context.Background(), keyName, nil)
 				return err
 			})
@@ -64,7 +64,7 @@ func TestBackupRestore(t *testing.T) {
 
 			var restoreResp azkeys.RestoreKeyResponse
 			restoreParams := azkeys.RestoreKeyParameters{KeyBackup: backupResp.Value}
-			pollStatus(t, 409, func() error {
+			internal.PollStatus(t, 409, func() error {
 				restoreResp, err = client.RestoreKey(context.Background(), restoreParams, nil)
 				return err
 			})
@@ -146,7 +146,7 @@ func TestCRUD(t *testing.T) {
 				require.Equal(t, createResp.Key.KID.Version(), deleteResp.Key.KID.Version())
 				requireEqualAttributes(t, updateResp.Attributes, deleteResp.Attributes)
 				internal.TestSerde(t, &deleteResp.DeletedKey)
-				pollStatus(t, 404, func() error {
+				internal.PollStatus(t, 404, func() error {
 					_, err := client.GetDeletedKey(context.Background(), keyName, nil)
 					return err
 				})
@@ -360,7 +360,7 @@ func TestListDeletedKeys(t *testing.T) {
 				cleanUpKey(t, client, createResp.Key.KID)
 			}
 			for i := 0; i < len(keyNames); i++ {
-				pollStatus(t, 404, func() error {
+				internal.PollStatus(t, 404, func() error {
 					_, err := client.GetDeletedKey(context.Background(), keyNames[i], nil)
 					return err
 				})
@@ -485,14 +485,14 @@ func TestRecoverDeletedKey(t *testing.T) {
 
 			_, err = client.DeleteKey(context.Background(), key, nil)
 			require.NoError(t, err)
-			pollStatus(t, 404, func() error {
+			internal.PollStatus(t, 404, func() error {
 				_, err := client.GetDeletedKey(context.Background(), key, nil)
 				return err
 			})
 
 			recoverResp, err := client.RecoverDeletedKey(context.Background(), key, nil)
 			require.NoError(t, err)
-			pollStatus(t, 404, func() error {
+			internal.PollStatus(t, 404, func() error {
 				_, err := client.GetKey(context.Background(), key, createResp.Key.KID.Version(), nil)
 				return err
 			})

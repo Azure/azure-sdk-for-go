@@ -40,10 +40,10 @@ func ExampleClient_GetCompletions() {
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  modelDeployment,
+		Prompt:         []string{"What is Azure OpenAI, in 20 words or less"},
+		MaxTokens:      to.Ptr(int32(2048)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &modelDeployment,
 	}, nil)
 
 	if err != nil {
@@ -82,10 +82,10 @@ func ExampleClient_GetCompletionsStream() {
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less?"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  modelDeploymentID,
+		Prompt:         []string{"What is Azure OpenAI, in 20 words or less?"},
+		MaxTokens:      to.Ptr(int32(2048)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleClient_GetCompletionsStream() {
 		}
 
 		if err != nil {
-			// TODO: handle error
+			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
 		}
 

@@ -262,8 +262,8 @@ func IsIPEndpointStyle(host string) bool {
 // If min is greater than the length of buf, ReadAtLeast returns ErrShortBuffer.
 // On return, n >= min if and only if err == nil.
 // If r returns an error having read at least min bytes, the error is dropped.
-// This method is same as io.ReadAtLeast except that
-// it does not return io.ErrUnexpectedEOF.
+// This method is same as io.ReadAtLeast except that it does not
+// return io.ErrUnexpectedEOF when fewer than min bytes are read.
 func ReadAtLeast(r io.Reader, buf []byte, min int) (n int, err error) {
 	if len(buf) < min {
 		return 0, io.ErrShortBuffer

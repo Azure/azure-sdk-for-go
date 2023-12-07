@@ -241,7 +241,7 @@ func unmarshalOnYourDataAuthenticationOptionsClassification(rawMsg json.RawMessa
 	return b, nil
 }
 
-func unmarshalOnYourDataEmbeddingDependencyClassification(rawMsg json.RawMessage) (OnYourDataEmbeddingDependencyClassification, error) {
+func unmarshalOnYourDataVectorizationSourceClassification(rawMsg json.RawMessage) (OnYourDataVectorizationSourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -249,16 +249,16 @@ func unmarshalOnYourDataEmbeddingDependencyClassification(rawMsg json.RawMessage
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b OnYourDataEmbeddingDependencyClassification
+	var b OnYourDataVectorizationSourceClassification
 	switch m["type"] {
-	case string(OnYourDataEmbeddingDependencyTypeDeploymentName):
-		b = &OnYourDataEmbeddingDeploymentNameDependency{}
-	case string(OnYourDataEmbeddingDependencyTypeEndpoint):
-		b = &OnYourDataEmbeddingEndpointDependency{}
-	case string(OnYourDataEmbeddingDependencyTypeModelID):
-		b = &OnYourDataEmbeddingModelIDDependency{}
+	case string(OnYourDataVectorizationSourceTypeDeploymentName):
+		b = &OnYourDataDeploymentNameVectorizationSource{}
+	case string(OnYourDataVectorizationSourceTypeEndpoint):
+		b = &OnYourDataEndpointVectorizationSource{}
+	case string(OnYourDataVectorizationSourceTypeModelID):
+		b = &OnYourDataModelIDVectorizationSource{}
 	default:
-		b = &OnYourDataEmbeddingDependency{}
+		b = &OnYourDataVectorizationSource{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

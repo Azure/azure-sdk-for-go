@@ -73,12 +73,12 @@ type OnYourDataAuthenticationOptionsClassification interface {
 	GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions
 }
 
-// OnYourDataEmbeddingDependencyClassification provides polymorphic access to related types.
-// Call the interface's GetOnYourDataEmbeddingDependency() method to access the common type.
+// OnYourDataVectorizationSourceClassification provides polymorphic access to related types.
+// Call the interface's GetOnYourDataVectorizationSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *OnYourDataEmbeddingDependency, *OnYourDataEmbeddingDeploymentNameDependency, *OnYourDataEmbeddingEndpointDependency,
-// - *OnYourDataEmbeddingModelIDDependency
-type OnYourDataEmbeddingDependencyClassification interface {
-	// GetOnYourDataEmbeddingDependency returns the OnYourDataEmbeddingDependency content of the underlying type.
-	GetOnYourDataEmbeddingDependency() *OnYourDataEmbeddingDependency
+// - *OnYourDataDeploymentNameVectorizationSource, *OnYourDataEndpointVectorizationSource, *OnYourDataModelIDVectorizationSource,
+// - *OnYourDataVectorizationSource
+type OnYourDataVectorizationSourceClassification interface {
+	// GetOnYourDataVectorizationSource returns the OnYourDataVectorizationSource content of the underlying type.
+	GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource
 }

@@ -290,7 +290,7 @@ func PossibleContentFilterSeverityValues() []ContentFilterSeverity {
 	}
 }
 
-// ElasticsearchQueryType - The type of Elasticsearch retrieval query that should be executed when using it as an Azure OpenAI
+// ElasticsearchQueryType - The type of Elasticsearch® retrieval query that should be executed when using it as an Azure OpenAI
 // chat extension.
 type ElasticsearchQueryType string
 
@@ -427,24 +427,29 @@ func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType
 	}
 }
 
-// OnYourDataEmbeddingDependencyType - Embedding dependency types for vector search.
-type OnYourDataEmbeddingDependencyType string
+// OnYourDataVectorizationSourceType - Represents the available sources Azure OpenAI On Your Data can use to configure vectorization
+// of data for use with vector search.
+type OnYourDataVectorizationSourceType string
 
 const (
-	// OnYourDataEmbeddingDependencyTypeDeploymentName - Azure OpenAI Embedding deployment name.
-	OnYourDataEmbeddingDependencyTypeDeploymentName OnYourDataEmbeddingDependencyType = "DeploymentName"
-	// OnYourDataEmbeddingDependencyTypeEndpoint - Azure OpenAI Embedding endpoint URL.
-	OnYourDataEmbeddingDependencyTypeEndpoint OnYourDataEmbeddingDependencyType = "Endpoint"
-	// OnYourDataEmbeddingDependencyTypeModelID - The embedding model ID defined in the search service. Currently only supported
-	// by Elasticsearch.
-	OnYourDataEmbeddingDependencyTypeModelID OnYourDataEmbeddingDependencyType = "ModelId"
+	// OnYourDataVectorizationSourceTypeDeploymentName - Represents an Ada model deployment name to use. This model deployment
+	// must be in the same Azure OpenAI resource, but
+	// On Your Data will use this model deployment via an internal call rather than a public one, which enables vector
+	// search even in private networks.
+	OnYourDataVectorizationSourceTypeDeploymentName OnYourDataVectorizationSourceType = "DeploymentName"
+	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
+	// embedding model.
+	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "Endpoint"
+	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
+	// Currently only supported by Elasticsearch®.
+	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "ModelId"
 )
 
-// PossibleOnYourDataEmbeddingDependencyTypeValues returns the possible values for the OnYourDataEmbeddingDependencyType const type.
-func PossibleOnYourDataEmbeddingDependencyTypeValues() []OnYourDataEmbeddingDependencyType {
-	return []OnYourDataEmbeddingDependencyType{
-		OnYourDataEmbeddingDependencyTypeDeploymentName,
-		OnYourDataEmbeddingDependencyTypeEndpoint,
-		OnYourDataEmbeddingDependencyTypeModelID,
+// PossibleOnYourDataVectorizationSourceTypeValues returns the possible values for the OnYourDataVectorizationSourceType const type.
+func PossibleOnYourDataVectorizationSourceTypeValues() []OnYourDataVectorizationSourceType {
+	return []OnYourDataVectorizationSourceType{
+		OnYourDataVectorizationSourceTypeDeploymentName,
+		OnYourDataVectorizationSourceTypeEndpoint,
+		OnYourDataVectorizationSourceTypeModelID,
 	}
 }

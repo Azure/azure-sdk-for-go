@@ -261,11 +261,14 @@ type AzureCognitiveSearchChatExtensionParameters struct {
 	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
 	IndexName *string
 
-	// The authentication option to access the data.
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
 	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataEmbeddingDependencyClassification
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// Customized field mapping behavior to use when interacting with the search index.
 	FieldsMapping *AzureCognitiveSearchIndexFieldMappingOptions
@@ -338,25 +341,29 @@ func (a *AzureCosmosDBChatExtensionConfiguration) GetAzureChatExtensionConfigura
 	}
 }
 
-// AzureCosmosDBChatExtensionParameters - Parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
+// AzureCosmosDBChatExtensionParameters - Parameters to use when configuring Azure OpenAI On Your Data chat extensions when
+// using Azure Cosmos DB for MongoDB vCore.
 type AzureCosmosDBChatExtensionParameters struct {
-	// REQUIRED; The container name name of Azure Cosmos DB.
+	// REQUIRED; The name of the Azure Cosmos DB resource container.
 	ContainerName *string
 
-	// REQUIRED; The database name of Azure Cosmos DB.
+	// REQUIRED; The MongoDB vCore database name to use with Azure Cosmos DB.
 	DatabaseName *string
 
 	// REQUIRED; Customized field mapping behavior to use when interacting with the search index.
 	FieldsMapping *AzureCosmosDBFieldMappingOptions
 
-	// REQUIRED; The index name of Azure Cosmos DB.
+	// REQUIRED; The MongoDB vCore index name to use with Azure Cosmos DB.
 	IndexName *string
 
-	// The authentication option to access the data.
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
 	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataEmbeddingDependencyClassification
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
@@ -423,13 +430,13 @@ type AzureGroundingEnhancementLineSpan struct {
 }
 
 // AzureMachineLearningIndexChatExtensionConfiguration - A specific representation of configurable options for Azure Machine
-// Learning index when using it as an Azure OpenAI chat extension.
+// Learning vector index when using it as an Azure OpenAI chat extension.
 type AzureMachineLearningIndexChatExtensionConfiguration struct {
 	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
 	// chat extensions are only compatible with Azure OpenAI.
 	configType *AzureChatExtensionType
 
-	// REQUIRED; The parameters for the Azure Machine Learning index chat extension.
+	// REQUIRED; The parameters for the Azure Machine Learning vector index chat extension.
 	Parameters *AzureMachineLearningIndexChatExtensionParameters
 }
 
@@ -440,21 +447,24 @@ func (a *AzureMachineLearningIndexChatExtensionConfiguration) GetAzureChatExtens
 	}
 }
 
-// AzureMachineLearningIndexChatExtensionParameters - Parameters for the Azure Machine Learning index chat extension.
+// AzureMachineLearningIndexChatExtensionParameters - Parameters for the Azure Machine Learning vector index chat extension.
 type AzureMachineLearningIndexChatExtensionParameters struct {
-	// REQUIRED; The Azure Machine Learning index name.
+	// REQUIRED; The Azure Machine Learning vector index name.
 	Name *string
 
 	// REQUIRED; The resource ID of the Azure Machine Learning project.
 	ProjectResourceID *string
 
-	// REQUIRED; The version of the Azure Machine Learning index.
+	// REQUIRED; The version of the Azure Machine Learning vector index.
 	Version *string
 
-	// The authentication option to access the data.
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
-	// Search filter. Only supported if the MLIndex is of type AzureSearch.
+	// Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
 	Filter *string
 
 	// Whether queries should be restricted to use of indexed data.
@@ -477,11 +487,6 @@ type AzureMachineLearningIndexChatExtensionParameters struct {
 // n choices are generated per provided prompt with a default value of 1. Token limits and
 // other settings may limit the number of choices generated.
 type ChatChoice struct {
-	// REQUIRED; Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
-	// input provided in the request. This supplementary information is only available when
-	// using Azure OpenAI and only when the request is configured to use enhancements.
-	Enhancements *AzureChatEnhancements
-
 	// REQUIRED; The reason that this chat completions choice completed its generated.
 	FinishReason *CompletionsFinishReason
 
@@ -495,6 +500,11 @@ type ChatChoice struct {
 
 	// The delta message content for a streaming response.
 	Delta *ChatResponseMessage
+
+	// Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching input provided
+	// in the request. This supplementary information is only available when
+	// using Azure OpenAI and only when the request is configured to use enhancements.
+	Enhancements *AzureChatEnhancements
 
 	// The reason the model stopped generating tokens, together with any applicable details. This structured representation replaces
 	// 'finish_reason' for some models.
@@ -1048,9 +1058,6 @@ type ContentFilterResult struct {
 
 // ContentFilterResultDetailsForPrompt - Information about content filtering evaluated against input data to Azure OpenAI.
 type ContentFilterResultDetailsForPrompt struct {
-	// REQUIRED; Whether a jailbreak attempt was detected in the prompt.
-	Jailbreak *ContentFilterDetectionResult
-
 	// Describes detection results against configured custom blocklists.
 	CustomBlocklists []ContentFilterBlocklistIDResult
 
@@ -1062,6 +1069,9 @@ type ContentFilterResultDetailsForPrompt struct {
 	// including but not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion,
 	// immigration status, ability status, personal appearance, and body size.
 	Hate *ContentFilterResult
+
+	// Whether a jailbreak attempt was detected in the prompt.
+	Jailbreak *ContentFilterDetectionResult
 
 	// Describes whether profanity was detected.
 	Profanity *ContentFilterDetectionResult
@@ -1117,11 +1127,11 @@ type ContentFilterResultsForChoice struct {
 
 // ContentFilterResultsForPrompt - Content filtering results for a single prompt in the request.
 type ContentFilterResultsForPrompt struct {
+	// REQUIRED; Content filtering results for this prompt
+	ContentFilterResults *ContentFilterResultDetailsForPrompt
+
 	// REQUIRED; The index of this prompt in the set of prompt results
 	PromptIndex *int32
-
-	// Content filtering results for this prompt
-	ContentFilterResults *ContentFilterResultDetailsForPrompt
 }
 
 // ElasticsearchChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
@@ -1131,7 +1141,7 @@ type ElasticsearchChatExtensionConfiguration struct {
 	// chat extensions are only compatible with Azure OpenAI.
 	configType *AzureChatExtensionType
 
-	// REQUIRED; The parameters to use when configuring Elasticsearch.
+	// REQUIRED; The parameters to use when configuring Elasticsearch®.
 	Parameters *ElasticsearchChatExtensionParameters
 }
 
@@ -1142,27 +1152,30 @@ func (e *ElasticsearchChatExtensionConfiguration) GetAzureChatExtensionConfigura
 	}
 }
 
-// ElasticsearchChatExtensionParameters - Parameters to use when configuring Elasticsearch as an Azure OpenAI chat extension.
+// ElasticsearchChatExtensionParameters - Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
 type ElasticsearchChatExtensionParameters struct {
-	// REQUIRED; The endpoint of Elasticsearch.
+	// REQUIRED; The endpoint of Elasticsearch®.
 	Endpoint *string
 
-	// REQUIRED; The index name of Elasticsearch.
+	// REQUIRED; The index name of Elasticsearch®.
 	IndexName *string
 
-	// The authentication option to access the data.
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
 	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataEmbeddingDependencyClassification
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
-	// The index field mapping options of Elasticsearch.
+	// The index field mapping options of Elasticsearch®.
 	FieldsMapping *ElasticsearchIndexFieldMappingOptions
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
 
-	// The query type of Elasticsearch.
+	// The query type of Elasticsearch®.
 	QueryType *ElasticsearchQueryType
 
 	// Give the model instructions about how it should behave and any context it should reference when generating a response.
@@ -1178,7 +1191,7 @@ type ElasticsearchChatExtensionParameters struct {
 	TopNDocuments *int32
 }
 
-// ElasticsearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured Elasticsearch
+// ElasticsearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured Elasticsearch®
 // resource.
 type ElasticsearchIndexFieldMappingOptions struct {
 	// The names of index fields that should be treated as content.
@@ -1277,7 +1290,7 @@ type FunctionDefinition struct {
 	// its parameters.
 	Description *string
 
-	// The parameters the functions accepts, described as a JSON Schema object.
+	// The parameters the function accepts, described as a JSON Schema object.
 	Parameters any
 }
 
@@ -1300,7 +1313,8 @@ type ImageGenerationOptions struct {
 	// REQUIRED; A description of the desired images.
 	Prompt *string
 
-	// The model to use for image generation.
+	// The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be inferred
+	// as a default.
 	DeploymentName *string
 
 	// The number of images to generate. Dall-e-2 models support values between 1 and 10. Dall-e-3 models only support a value
@@ -1391,36 +1405,27 @@ func (o *OnYourDataConnectionStringAuthenticationOptions) GetOnYourDataAuthentic
 	}
 }
 
-// OnYourDataEmbeddingDependency - Embedding dependency for vector search.
-type OnYourDataEmbeddingDependency struct {
-	// REQUIRED; Embedding dependency types for vector search.
-	Type *OnYourDataEmbeddingDependencyType
-}
-
-// GetOnYourDataEmbeddingDependency implements the OnYourDataEmbeddingDependencyClassification interface for type OnYourDataEmbeddingDependency.
-func (o *OnYourDataEmbeddingDependency) GetOnYourDataEmbeddingDependency() *OnYourDataEmbeddingDependency {
-	return o
-}
-
-// OnYourDataEmbeddingDeploymentNameDependency - The embedding dependency based on deployment name
-type OnYourDataEmbeddingDeploymentNameDependency struct {
+// OnYourDataDeploymentNameVectorizationSource - The details of a a vectorization source, used by Azure OpenAI On Your Data
+// when applying vector search, that is based on an internal embeddings model deployment name in the same Azure OpenAI resource.
+type OnYourDataDeploymentNameVectorizationSource struct {
 	// REQUIRED; The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search
 	// without Azure OpenAI api-key and without Azure OpenAI public network access.
 	DeploymentName *string
 
-	// REQUIRED; Embedding dependency types for vector search.
-	Type *OnYourDataEmbeddingDependencyType
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
 }
 
-// GetOnYourDataEmbeddingDependency implements the OnYourDataEmbeddingDependencyClassification interface for type OnYourDataEmbeddingDeploymentNameDependency.
-func (o *OnYourDataEmbeddingDeploymentNameDependency) GetOnYourDataEmbeddingDependency() *OnYourDataEmbeddingDependency {
-	return &OnYourDataEmbeddingDependency{
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataDeploymentNameVectorizationSource.
+func (o *OnYourDataDeploymentNameVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return &OnYourDataVectorizationSource{
 		Type: o.Type,
 	}
 }
 
-// OnYourDataEmbeddingEndpointDependency - The embedding dependency based on endpoint URL
-type OnYourDataEmbeddingEndpointDependency struct {
+// OnYourDataEndpointVectorizationSource - The details of a a vectorization source, used by Azure OpenAI On Your Data when
+// applying vector search, that is based on a public Azure OpenAI endpoint call for embeddings.
+type OnYourDataEndpointVectorizationSource struct {
 	// REQUIRED; Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
@@ -1429,29 +1434,13 @@ type OnYourDataEmbeddingEndpointDependency struct {
 	// The api-version query parameter is not allowed.
 	Endpoint *string
 
-	// REQUIRED; Embedding dependency types for vector search.
-	Type *OnYourDataEmbeddingDependencyType
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
 }
 
-// GetOnYourDataEmbeddingDependency implements the OnYourDataEmbeddingDependencyClassification interface for type OnYourDataEmbeddingEndpointDependency.
-func (o *OnYourDataEmbeddingEndpointDependency) GetOnYourDataEmbeddingDependency() *OnYourDataEmbeddingDependency {
-	return &OnYourDataEmbeddingDependency{
-		Type: o.Type,
-	}
-}
-
-// OnYourDataEmbeddingModelIDDependency - The embedding dependency based on model id
-type OnYourDataEmbeddingModelIDDependency struct {
-	// REQUIRED; The embedding model ID build inside the search service. Currently only supported by Elasticsearch.
-	ModelID *string
-
-	// REQUIRED; Embedding dependency types for vector search.
-	Type *OnYourDataEmbeddingDependencyType
-}
-
-// GetOnYourDataEmbeddingDependency implements the OnYourDataEmbeddingDependencyClassification interface for type OnYourDataEmbeddingModelIDDependency.
-func (o *OnYourDataEmbeddingModelIDDependency) GetOnYourDataEmbeddingDependency() *OnYourDataEmbeddingDependency {
-	return &OnYourDataEmbeddingDependency{
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataEndpointVectorizationSource.
+func (o *OnYourDataEndpointVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return &OnYourDataVectorizationSource{
 		Type: o.Type,
 	}
 }
@@ -1473,6 +1462,23 @@ type OnYourDataKeyAndKeyIDAuthenticationOptions struct {
 func (o *OnYourDataKeyAndKeyIDAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
 	return &OnYourDataAuthenticationOptions{
 		configType: o.configType,
+	}
+}
+
+// OnYourDataModelIDVectorizationSource - The details of a a vectorization source, used by Azure OpenAI On Your Data when
+// applying vector search, that is based on a search service model ID. Currently only supported by Elasticsearch®.
+type OnYourDataModelIDVectorizationSource struct {
+	// REQUIRED; The embedding model ID build inside the search service. Currently only supported by Elasticsearch®.
+	ModelID *string
+
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
+}
+
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataModelIDVectorizationSource.
+func (o *OnYourDataModelIDVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return &OnYourDataVectorizationSource{
+		Type: o.Type,
 	}
 }
 
@@ -1507,6 +1513,18 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) GetOnYourDa
 	}
 }
 
+// OnYourDataVectorizationSource - An abstract representation of a vectorization source for Azure OpenAI On Your Data with
+// vector search.
+type OnYourDataVectorizationSource struct {
+	// REQUIRED; The type of vectorization source to use.
+	Type *OnYourDataVectorizationSourceType
+}
+
+// GetOnYourDataVectorizationSource implements the OnYourDataVectorizationSourceClassification interface for type OnYourDataVectorizationSource.
+func (o *OnYourDataVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
+	return o
+}
+
 // PineconeChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using it
 // as an Azure OpenAI chat extension.
 type PineconeChatExtensionConfiguration struct {
@@ -1533,14 +1551,17 @@ type PineconeChatExtensionParameters struct {
 	// REQUIRED; Customized field mapping behavior to use when interacting with the search index.
 	FieldsMapping *PineconeFieldMappingOptions
 
-	// REQUIRED; The index name name of Pinecone.
+	// REQUIRED; The name of the Pinecone database index.
 	IndexName *string
 
-	// The authentication option to access the data.
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
 
 	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataEmbeddingDependencyClassification
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool

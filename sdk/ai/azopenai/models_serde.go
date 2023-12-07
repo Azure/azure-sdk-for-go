@@ -555,7 +555,7 @@ func (a *AzureCognitiveSearchChatExtensionParameters) UnmarshalJSON(data []byte)
 			a.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
 		case "embeddingDependency":
-			a.EmbeddingDependency, err = unmarshalOnYourDataEmbeddingDependencyClassification(val)
+			a.EmbeddingDependency, err = unmarshalOnYourDataVectorizationSourceClassification(val)
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &a.Endpoint)
@@ -712,7 +712,7 @@ func (a *AzureCosmosDBChatExtensionParameters) UnmarshalJSON(data []byte) error 
 			err = unpopulate(val, "DatabaseName", &a.DatabaseName)
 			delete(rawMsg, key)
 		case "embeddingDependency":
-			a.EmbeddingDependency, err = unmarshalOnYourDataEmbeddingDependencyClassification(val)
+			a.EmbeddingDependency, err = unmarshalOnYourDataVectorizationSourceClassification(val)
 			delete(rawMsg, key)
 		case "fieldsMapping":
 			err = unpopulate(val, "FieldsMapping", &a.FieldsMapping)
@@ -2278,7 +2278,7 @@ func (e *ElasticsearchChatExtensionParameters) UnmarshalJSON(data []byte) error 
 			e.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
 		case "embeddingDependency":
-			e.EmbeddingDependency, err = unmarshalOnYourDataEmbeddingDependencyClassification(val)
+			e.EmbeddingDependency, err = unmarshalOnYourDataVectorizationSourceClassification(val)
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &e.Endpoint)
@@ -2821,43 +2821,16 @@ func (o *OnYourDataConnectionStringAuthenticationOptions) UnmarshalJSON(data []b
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OnYourDataEmbeddingDependency.
-func (o OnYourDataEmbeddingDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	objectMap["type"] = o.Type
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataEmbeddingDependency.
-func (o *OnYourDataEmbeddingDependency) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", o, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "type":
-			err = unpopulate(val, "Type", &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", o, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OnYourDataEmbeddingDeploymentNameDependency.
-func (o OnYourDataEmbeddingDeploymentNameDependency) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataDeploymentNameVectorizationSource.
+func (o OnYourDataDeploymentNameVectorizationSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deploymentName", o.DeploymentName)
-	objectMap["type"] = OnYourDataEmbeddingDependencyTypeDeploymentName
+	objectMap["type"] = OnYourDataVectorizationSourceTypeDeploymentName
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataEmbeddingDeploymentNameDependency.
-func (o *OnYourDataEmbeddingDeploymentNameDependency) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataDeploymentNameVectorizationSource.
+func (o *OnYourDataDeploymentNameVectorizationSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", o, err)
@@ -2879,17 +2852,17 @@ func (o *OnYourDataEmbeddingDeploymentNameDependency) UnmarshalJSON(data []byte)
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OnYourDataEmbeddingEndpointDependency.
-func (o OnYourDataEmbeddingEndpointDependency) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataEndpointVectorizationSource.
+func (o OnYourDataEndpointVectorizationSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authentication", o.Authentication)
 	populate(objectMap, "endpoint", o.Endpoint)
-	objectMap["type"] = OnYourDataEmbeddingDependencyTypeEndpoint
+	objectMap["type"] = OnYourDataVectorizationSourceTypeEndpoint
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataEmbeddingEndpointDependency.
-func (o *OnYourDataEmbeddingEndpointDependency) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataEndpointVectorizationSource.
+func (o *OnYourDataEndpointVectorizationSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", o, err)
@@ -2902,37 +2875,6 @@ func (o *OnYourDataEmbeddingEndpointDependency) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &o.Endpoint)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &o.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", o, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OnYourDataEmbeddingModelIDDependency.
-func (o OnYourDataEmbeddingModelIDDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "modelId", o.ModelID)
-	objectMap["type"] = OnYourDataEmbeddingDependencyTypeModelID
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataEmbeddingModelIDDependency.
-func (o *OnYourDataEmbeddingModelIDDependency) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", o, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "modelId":
-			err = unpopulate(val, "ModelID", &o.ModelID)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &o.Type)
@@ -2971,6 +2913,37 @@ func (o *OnYourDataKeyAndKeyIDAuthenticationOptions) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "keyId":
 			err = unpopulate(val, "KeyID", &o.KeyID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataModelIDVectorizationSource.
+func (o OnYourDataModelIDVectorizationSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "modelId", o.ModelID)
+	objectMap["type"] = OnYourDataVectorizationSourceTypeModelID
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataModelIDVectorizationSource.
+func (o *OnYourDataModelIDVectorizationSource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "modelId":
+			err = unpopulate(val, "ModelID", &o.ModelID)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &o.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3029,6 +3002,33 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) UnmarshalJS
 			delete(rawMsg, key)
 		case "managedIdentityResourceId":
 			err = unpopulate(val, "ManagedIdentityResourceID", &o.ManagedIdentityResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OnYourDataVectorizationSource.
+func (o OnYourDataVectorizationSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = o.Type
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type OnYourDataVectorizationSource.
+func (o *OnYourDataVectorizationSource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "Type", &o.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3097,7 +3097,7 @@ func (p *PineconeChatExtensionParameters) UnmarshalJSON(data []byte) error {
 			p.Authentication, err = unmarshalOnYourDataAuthenticationOptionsClassification(val)
 			delete(rawMsg, key)
 		case "embeddingDependency":
-			p.EmbeddingDependency, err = unmarshalOnYourDataEmbeddingDependencyClassification(val)
+			p.EmbeddingDependency, err = unmarshalOnYourDataVectorizationSourceClassification(val)
 			delete(rawMsg, key)
 		case "environment":
 			err = unpopulate(val, "Environment", &p.Environment)

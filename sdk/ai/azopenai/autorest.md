@@ -4,7 +4,7 @@ These settings apply only when `--go` is specified on the command line.
 
 ``` yaml
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/faa4cce91d8bed10465eed26a25672f71f15c0d1/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2023-12-01-preview/generated.json
+- https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2023-12-01-preview/generated.json
 
 output-folder: ../azopenai
 clear-output-folder: false
@@ -97,20 +97,6 @@ directive:
     - models_serde.go
     where: $
     transform: return $.replace(/InternalOYDAuthTypeRename/g, "configType")
-```
-
-`ChatCompletionRequestMessageContentPartClassification.Type` is adjusted below since we're also injecting the swagger.
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.ChatCompletionRequestMessageContentPart
-    transform: $.properties.type["x-ms-client-name"] = "ChatCompletionRequestMessageContentPartTypeRename"
-  - from:
-    - models.go
-    - models_serde.go
-    where: $
-    transform: return $.replace(/ChatCompletionRequestMessageContentPartTypeRename/g, "partType")
 ```
 
 ## Model -> DeploymentName

@@ -1039,7 +1039,7 @@ func (c *ChatChoice) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ChatCompletionRequestMessageContentPart.
 func (c ChatCompletionRequestMessageContentPart) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	objectMap["type"] = c.Type
+	objectMap["type"] = c.partType
 	return json.Marshal(objectMap)
 }
 
@@ -1053,7 +1053,7 @@ func (c *ChatCompletionRequestMessageContentPart) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "type":
-			err = unpopulate(val, "Type", &c.Type)
+			err = unpopulate(val, "partType", &c.partType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1066,8 +1066,8 @@ func (c *ChatCompletionRequestMessageContentPart) UnmarshalJSON(data []byte) err
 // MarshalJSON implements the json.Marshaller interface for type ChatCompletionRequestMessageContentPartImage.
 func (c ChatCompletionRequestMessageContentPartImage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "image_url", c.ImageURL)
 	objectMap["type"] = ChatCompletionRequestMessageContentPartTypeImageURL
+	populate(objectMap, "image_url", c.ImageURL)
 	return json.Marshal(objectMap)
 }
 
@@ -1080,11 +1080,11 @@ func (c *ChatCompletionRequestMessageContentPartImage) UnmarshalJSON(data []byte
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "partType", &c.partType)
+			delete(rawMsg, key)
 		case "image_url":
 			err = unpopulate(val, "ImageURL", &c.ImageURL)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1128,8 +1128,8 @@ func (c *ChatCompletionRequestMessageContentPartImageURL) UnmarshalJSON(data []b
 // MarshalJSON implements the json.Marshaller interface for type ChatCompletionRequestMessageContentPartText.
 func (c ChatCompletionRequestMessageContentPartText) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "text", c.Text)
 	objectMap["type"] = ChatCompletionRequestMessageContentPartTypeText
+	populate(objectMap, "text", c.Text)
 	return json.Marshal(objectMap)
 }
 
@@ -1142,11 +1142,11 @@ func (c *ChatCompletionRequestMessageContentPartText) UnmarshalJSON(data []byte)
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "partType", &c.partType)
+			delete(rawMsg, key)
 		case "text":
 			err = unpopulate(val, "Text", &c.Text)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &c.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

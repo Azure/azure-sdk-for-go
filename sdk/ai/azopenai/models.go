@@ -517,7 +517,7 @@ type ChatChoice struct {
 // ChatCompletionRequestMessageContentPart - represents either an image URL or text content for a prompt
 type ChatCompletionRequestMessageContentPart struct {
 	// REQUIRED; The type of the content part.
-	Type *ChatCompletionRequestMessageContentPartType
+	partType *ChatCompletionRequestMessageContentPartType
 }
 
 // GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
@@ -528,18 +528,18 @@ func (c *ChatCompletionRequestMessageContentPart) GetChatCompletionRequestMessag
 
 // ChatCompletionRequestMessageContentPartImage - represents an image URL, to be used as part of a prompt
 type ChatCompletionRequestMessageContentPartImage struct {
+	// REQUIRED; The type of the content part.
+	partType *ChatCompletionRequestMessageContentPartType
+
 	// REQUIRED
 	ImageURL *ChatCompletionRequestMessageContentPartImageURL
-
-	// REQUIRED; The type of the content part.
-	Type *ChatCompletionRequestMessageContentPartType
 }
 
 // GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
 // for type ChatCompletionRequestMessageContentPartImage.
 func (c *ChatCompletionRequestMessageContentPartImage) GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart {
 	return &ChatCompletionRequestMessageContentPart{
-		Type: c.Type,
+		partType: c.partType,
 	}
 }
 
@@ -553,18 +553,18 @@ type ChatCompletionRequestMessageContentPartImageURL struct {
 
 // ChatCompletionRequestMessageContentPartText - represents text content, to be used as part of a prompt
 type ChatCompletionRequestMessageContentPartText struct {
+	// REQUIRED; The type of the content part.
+	partType *ChatCompletionRequestMessageContentPartType
+
 	// REQUIRED; The text content.
 	Text *string
-
-	// REQUIRED; The type of the content part.
-	Type *ChatCompletionRequestMessageContentPartType
 }
 
 // GetChatCompletionRequestMessageContentPart implements the ChatCompletionRequestMessageContentPartClassification interface
 // for type ChatCompletionRequestMessageContentPartText.
 func (c *ChatCompletionRequestMessageContentPartText) GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart {
 	return &ChatCompletionRequestMessageContentPart{
-		Type: c.Type,
+		partType: c.partType,
 	}
 }
 

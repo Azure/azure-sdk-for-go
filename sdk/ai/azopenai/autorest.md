@@ -459,9 +459,6 @@ directive:
         "type": "object",
         "title": "represents an image URL, to be used as part of a prompt",
         "properties": {
-          "type": {
-            "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
-          },
           "image_url": {
             "type": "object",
             "properties": {
@@ -492,7 +489,6 @@ directive:
           }
         ],
         "required": [
-          "type",
           "image_url"
         ],
         "x-ms-discriminator-value": "image_url"
@@ -501,9 +497,6 @@ directive:
         "type": "object",
         "title": "represents text content, to be used as part of a prompt",
         "properties": {
-          "type": {
-            "$ref": "#/definitions/ChatCompletionRequestMessageContentPartType"
-          },
           "text": {
             "type": "string",
             "description": "The text content."
@@ -515,11 +508,24 @@ directive:
           }
         ],
         "required": [
-          "type",
           "text"
         ],
         "x-ms-discriminator-value": "text"
       };
+```
+
+Polymorphic removal of the Type field: `ChatCompletionRequestMessageContentPartClassification.Type`
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionRequestMessageContentPart
+    transform: $.properties.type["x-ms-client-name"] = "ChatCompletionRequestMessageContentPartTypeRename"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/ChatCompletionRequestMessageContentPartTypeRename/g, "partType")
 ```
 
 Another workaround - streaming results don't contain the discriminator field so we'll

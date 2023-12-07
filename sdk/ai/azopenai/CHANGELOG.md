@@ -4,18 +4,16 @@
 
 ### Features Added
 
+- Chat completions with functions have been updated to allow for the newer tools-style. See the example function `ExampleClient_GetChatCompletions_functions` 
+  in `example_client_getchatcompletions_extensions_test.go`. The legacy style using `ChatCompletionsOptions.Functions` continues to be supported for older models.
+- ChatCompletions can now be used with both text and images, with supported models.
+- GetImageGenerations now works with DallE-3.
+
 ### Breaking Changes
 
 - `azopenai.KeyCredential` has been replaced by [azcore.KeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#KeyCredential).
 - `Deployment` has been renamed to `DeploymentName` throughout all APIs.
 - `CreateImage` has been replaced with `GetImageGenerations`.
-
-### Bugs Fixed
-
-### Other Changes
-
-- Chat completions with functions have been updated to allow for the newer tools-style. See the example function `ExampleClient_GetChatCompletions_functions` 
-  in `example_client_getchatcompletions_extensions_test.go`. The legacy style using `ChatCompletionsOptions.Functions` continues to be supported for older models.
 
 ## 0.3.0 (2023-09-26)
 

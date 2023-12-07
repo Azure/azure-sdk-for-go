@@ -10,8 +10,42 @@ package armbaremetalinfrastructure
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
+
+// AsyncOperationStatus - Status of the operation.
+type AsyncOperationStatus string
+
+const (
+	AsyncOperationStatusExecuting  AsyncOperationStatus = "Executing"
+	AsyncOperationStatusFailed     AsyncOperationStatus = "Failed"
+	AsyncOperationStatusRequesting AsyncOperationStatus = "Requesting"
+	AsyncOperationStatusSucceeded  AsyncOperationStatus = "Succeeded"
+)
+
+// PossibleAsyncOperationStatusValues returns the possible values for the AsyncOperationStatus const type.
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
+	return []AsyncOperationStatus{
+		AsyncOperationStatusExecuting,
+		AsyncOperationStatusFailed,
+		AsyncOperationStatusRequesting,
+		AsyncOperationStatusSucceeded,
+	}
+}
 
 // AzureBareMetalHardwareTypeNamesEnum - Name of the hardware type (vendor and/or their product name)
 type AzureBareMetalHardwareTypeNamesEnum string
@@ -19,6 +53,7 @@ type AzureBareMetalHardwareTypeNamesEnum string
 const (
 	AzureBareMetalHardwareTypeNamesEnumCiscoUCS AzureBareMetalHardwareTypeNamesEnum = "Cisco_UCS"
 	AzureBareMetalHardwareTypeNamesEnumHPE      AzureBareMetalHardwareTypeNamesEnum = "HPE"
+	AzureBareMetalHardwareTypeNamesEnumSDFLEX   AzureBareMetalHardwareTypeNamesEnum = "SDFLEX"
 )
 
 // PossibleAzureBareMetalHardwareTypeNamesEnumValues returns the possible values for the AzureBareMetalHardwareTypeNamesEnum const type.
@@ -26,6 +61,23 @@ func PossibleAzureBareMetalHardwareTypeNamesEnumValues() []AzureBareMetalHardwar
 	return []AzureBareMetalHardwareTypeNamesEnum{
 		AzureBareMetalHardwareTypeNamesEnumCiscoUCS,
 		AzureBareMetalHardwareTypeNamesEnumHPE,
+		AzureBareMetalHardwareTypeNamesEnumSDFLEX,
+	}
+}
+
+// AzureBareMetalInstanceForcePowerState - Whether to force restart by shutting all processes.
+type AzureBareMetalInstanceForcePowerState string
+
+const (
+	AzureBareMetalInstanceForcePowerStateActive   AzureBareMetalInstanceForcePowerState = "active"
+	AzureBareMetalInstanceForcePowerStateInactive AzureBareMetalInstanceForcePowerState = "inactive"
+)
+
+// PossibleAzureBareMetalInstanceForcePowerStateValues returns the possible values for the AzureBareMetalInstanceForcePowerState const type.
+func PossibleAzureBareMetalInstanceForcePowerStateValues() []AzureBareMetalInstanceForcePowerState {
+	return []AzureBareMetalInstanceForcePowerState{
+		AzureBareMetalInstanceForcePowerStateActive,
+		AzureBareMetalInstanceForcePowerStateInactive,
 	}
 }
 
@@ -53,7 +105,7 @@ func PossibleAzureBareMetalInstancePowerStateEnumValues() []AzureBareMetalInstan
 	}
 }
 
-// AzureBareMetalInstanceSizeNamesEnum - Specifies the AzureBareMetal instance SKU.
+// AzureBareMetalInstanceSizeNamesEnum - Specifies the Azure Bare Metal Instance SKU.
 type AzureBareMetalInstanceSizeNamesEnum string
 
 const (
@@ -79,6 +131,7 @@ const (
 	AzureBareMetalInstanceSizeNamesEnumS448Oo  AzureBareMetalInstanceSizeNamesEnum = "S448oo"
 	AzureBareMetalInstanceSizeNamesEnumS448Oom AzureBareMetalInstanceSizeNamesEnum = "S448oom"
 	AzureBareMetalInstanceSizeNamesEnumS448Ooo AzureBareMetalInstanceSizeNamesEnum = "S448ooo"
+	AzureBareMetalInstanceSizeNamesEnumS448Se  AzureBareMetalInstanceSizeNamesEnum = "S448se"
 	AzureBareMetalInstanceSizeNamesEnumS576M   AzureBareMetalInstanceSizeNamesEnum = "S576m"
 	AzureBareMetalInstanceSizeNamesEnumS576Xm  AzureBareMetalInstanceSizeNamesEnum = "S576xm"
 	AzureBareMetalInstanceSizeNamesEnumS672    AzureBareMetalInstanceSizeNamesEnum = "S672"
@@ -127,6 +180,7 @@ func PossibleAzureBareMetalInstanceSizeNamesEnumValues() []AzureBareMetalInstanc
 		AzureBareMetalInstanceSizeNamesEnumS448Oo,
 		AzureBareMetalInstanceSizeNamesEnumS448Oom,
 		AzureBareMetalInstanceSizeNamesEnumS448Ooo,
+		AzureBareMetalInstanceSizeNamesEnumS448Se,
 		AzureBareMetalInstanceSizeNamesEnumS576M,
 		AzureBareMetalInstanceSizeNamesEnumS576Xm,
 		AzureBareMetalInstanceSizeNamesEnumS672,
@@ -194,5 +248,52 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
+	}
+}
+
+// ProvisioningState - State of provisioning of the AzureBareMetalStorageInstance
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateMigrating ProvisioningState = "Migrating"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating  ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateMigrating,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }

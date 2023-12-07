@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalOperations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalOperations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,11 +39,11 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.OperationList = armbaremetalinfrastructure.OperationList{
+		// page.OperationListResult = armbaremetalinfrastructure.OperationListResult{
 		// 	Value: []*armbaremetalinfrastructure.Operation{
 		// 		{
 		// 			Name: to.Ptr("AzureBareMetalOp1"),
-		// 			Display: &armbaremetalinfrastructure.Display{
+		// 			Display: &armbaremetalinfrastructure.OperationDisplay{
 		// 				Description: to.Ptr("AzureBareMetalOp1Description"),
 		// 				Operation: to.Ptr("AzureBareMetalOp1OperationName"),
 		// 				Provider: to.Ptr("AzureBareMetalOp1ProviderName"),
@@ -53,7 +53,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("AzureBareMetalOp2"),
-		// 			Display: &armbaremetalinfrastructure.Display{
+		// 			Display: &armbaremetalinfrastructure.OperationDisplay{
 		// 				Description: to.Ptr("AzureBareMetalOp2Description"),
 		// 				Operation: to.Ptr("AzureBareMetalOp2OperationName"),
 		// 				Provider: to.Ptr("AzureBareMetalOp2ProviderName"),

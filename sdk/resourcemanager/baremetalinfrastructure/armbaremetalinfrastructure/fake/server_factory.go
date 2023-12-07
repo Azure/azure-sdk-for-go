@@ -19,8 +19,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armbaremetalinfrastructure.ClientFactory type.
 type ServerFactory struct {
-	AzureBareMetalInstancesServer AzureBareMetalInstancesServer
-	OperationsServer              OperationsServer
+	AzureBareMetalInstancesServer        AzureBareMetalInstancesServer
+	AzureBareMetalStorageInstancesServer AzureBareMetalStorageInstancesServer
+	OperationsServer                     OperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -35,10 +36,11 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armbaremetalinfrastructure.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                             *ServerFactory
-	trMu                            sync.Mutex
-	trAzureBareMetalInstancesServer *AzureBareMetalInstancesServerTransport
-	trOperationsServer              *OperationsServerTransport
+	srv                                    *ServerFactory
+	trMu                                   sync.Mutex
+	trAzureBareMetalInstancesServer        *AzureBareMetalInstancesServerTransport
+	trAzureBareMetalStorageInstancesServer *AzureBareMetalStorageInstancesServerTransport
+	trOperationsServer                     *OperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -59,6 +61,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAzureBareMetalInstancesServerTransport(&s.srv.AzureBareMetalInstancesServer)
 		})
 		resp, err = s.trAzureBareMetalInstancesServer.Do(req)
+	case "AzureBareMetalStorageInstancesClient":
+		initServer(s, &s.trAzureBareMetalStorageInstancesServer, func() *AzureBareMetalStorageInstancesServerTransport {
+			return NewAzureBareMetalStorageInstancesServerTransport(&s.srv.AzureBareMetalStorageInstancesServer)
+		})
+		resp, err = s.trAzureBareMetalStorageInstancesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

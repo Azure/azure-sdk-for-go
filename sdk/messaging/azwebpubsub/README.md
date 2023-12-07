@@ -109,7 +109,7 @@ When the client is connected, it can send messages to the upstream application, 
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub#pkg-examples) or in the example*_test.go files in our GitHub repo for [azwebpubsub](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azwebpubsub).
+Examples for various scenarios can be found on [pkg.go.dev][godoc_examples] or in the example*_test.go files in our GitHub repo for [azwebpubsub][source].
 
 # Troubleshooting
 
@@ -186,7 +186,7 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azwebpubsub
-[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
-[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub#pkg-examples
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
+[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk
+[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go#pkg-examples
 [product]: https://aka.ms/awps/doc

@@ -8,6 +8,7 @@ package azopenai_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -261,4 +262,41 @@ func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
 	require.NotEmpty(t, resp.Choices[0].Message.Content)
 
 	t.Logf(*resp.Choices[0].Message.Content)
+}
+
+func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
+	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+		body := azopenai.ChatCompletionsOptions{
+			DeploymentName: &deploymentName,
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant designed to output JSON.")},
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("List capital cities and their states"),
+				},
+			},
+			// Without this format directive you end up getting JSON, but with a non-JSON preamble, like this:
+			// "I'm happy to help! Here are some examples of capital cities and their corresponding states:\n\n```json\n{\n" (etc)
+			ResponseFormat: &azopenai.ChatCompletionsJSONResponseFormat{},
+			Temperature:    to.Ptr[float32](0.0),
+		}
+
+		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
+		require.NoError(t, err)
+
+		// validate that it came back as JSON data
+		var v any
+		err = json.Unmarshal([]byte(*resp.Choices[0].Message.Content), &v)
+		require.NoError(t, err)
+		require.NotEmpty(t, v)
+	}
+
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testFn(t, chatClient, "gpt-3.5-turbo-1106")
+	})
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.DallE.Endpoint)
+		testFn(t, chatClient, "gpt-4-1106-preview")
+	})
 }

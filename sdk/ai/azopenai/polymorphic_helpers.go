@@ -58,6 +58,29 @@ func unmarshalAzureChatExtensionConfigurationClassificationArray(rawMsg json.Raw
 	return fArray, nil
 }
 
+func unmarshalChatCompletionsResponseFormatClassification(rawMsg json.RawMessage) (ChatCompletionsResponseFormatClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ChatCompletionsResponseFormatClassification
+	switch m["type"] {
+	case "json_object":
+		b = &ChatCompletionsJSONResponseFormat{}
+	case "text":
+		b = &ChatCompletionsTextResponseFormat{}
+	default:
+		b = &ChatCompletionsResponseFormat{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalChatCompletionsToolCallClassification(rawMsg json.RawMessage) (ChatCompletionsToolCallClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

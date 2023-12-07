@@ -26,6 +26,10 @@ import (
 
 // VirtualMachineScaleSetsServer is a fake server for instances of the armcompute.VirtualMachineScaleSetsClient type.
 type VirtualMachineScaleSetsServer struct {
+	// BeginApproveRollingUpgrade is the fake for method VirtualMachineScaleSetsClient.BeginApproveRollingUpgrade
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginApproveRollingUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientApproveRollingUpgradeResponse], errResp azfake.ErrorResponder)
+
 	// ConvertToSinglePlacementGroup is the fake for method VirtualMachineScaleSetsClient.ConvertToSinglePlacementGroup
 	// HTTP status codes to indicate success: http.StatusOK
 	ConvertToSinglePlacementGroup func(ctx context.Context, resourceGroupName string, vmScaleSetName string, parameters armcompute.VMScaleSetConvertToSinglePlacementGroupInput, options *armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetsClientConvertToSinglePlacementGroupResponse], errResp azfake.ErrorResponder)
@@ -129,6 +133,7 @@ type VirtualMachineScaleSetsServer struct {
 func NewVirtualMachineScaleSetsServerTransport(srv *VirtualMachineScaleSetsServer) *VirtualMachineScaleSetsServerTransport {
 	return &VirtualMachineScaleSetsServerTransport{
 		srv:                               srv,
+		beginApproveRollingUpgrade:        newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientApproveRollingUpgradeResponse]](),
 		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse]](),
 		beginDeallocate:                   newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientDeallocateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientDeleteResponse]](),
@@ -156,6 +161,7 @@ func NewVirtualMachineScaleSetsServerTransport(srv *VirtualMachineScaleSetsServe
 // Don't use this type directly, use NewVirtualMachineScaleSetsServerTransport instead.
 type VirtualMachineScaleSetsServerTransport struct {
 	srv                               *VirtualMachineScaleSetsServer
+	beginApproveRollingUpgrade        *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientApproveRollingUpgradeResponse]]
 	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse]]
 	beginDeallocate                   *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientDeallocateResponse]]
 	beginDelete                       *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientDeleteResponse]]
@@ -190,6 +196,8 @@ func (v *VirtualMachineScaleSetsServerTransport) Do(req *http.Request) (*http.Re
 	var err error
 
 	switch method {
+	case "VirtualMachineScaleSetsClient.BeginApproveRollingUpgrade":
+		resp, err = v.dispatchBeginApproveRollingUpgrade(req)
 	case "VirtualMachineScaleSetsClient.ConvertToSinglePlacementGroup":
 		resp, err = v.dispatchConvertToSinglePlacementGroup(req)
 	case "VirtualMachineScaleSetsClient.BeginCreateOrUpdate":
@@ -244,6 +252,60 @@ func (v *VirtualMachineScaleSetsServerTransport) Do(req *http.Request) (*http.Re
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetsServerTransport) dispatchBeginApproveRollingUpgrade(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginApproveRollingUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginApproveRollingUpgrade not implemented")}
+	}
+	beginApproveRollingUpgrade := v.beginApproveRollingUpgrade.get(req)
+	if beginApproveRollingUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approveRollingUpgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.VirtualMachineScaleSetVMInstanceIDs](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armcompute.VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armcompute.VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions{
+				VMInstanceIDs: &body,
+			}
+		}
+		respr, errRespr := v.srv.BeginApproveRollingUpgrade(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginApproveRollingUpgrade = &respr
+		v.beginApproveRollingUpgrade.add(req, beginApproveRollingUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginApproveRollingUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginApproveRollingUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginApproveRollingUpgrade) {
+		v.beginApproveRollingUpgrade.remove(req)
 	}
 
 	return resp, nil
@@ -310,7 +372,16 @@ func (v *VirtualMachineScaleSetsServerTransport) dispatchBeginCreateOrUpdate(req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcompute.VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcompute.VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1356,7 +1427,16 @@ func (v *VirtualMachineScaleSetsServerTransport) dispatchBeginUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcompute.VirtualMachineScaleSetsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcompute.VirtualMachineScaleSetsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -44,6 +44,10 @@ type DedicatedHostsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByHostGroupPager func(resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostsClientListByHostGroupOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse])
 
+	// BeginRedeploy is the fake for method DedicatedHostsClient.BeginRedeploy
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginRedeploy func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRedeployOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse], errResp azfake.ErrorResponder)
+
 	// BeginRestart is the fake for method DedicatedHostsClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginRestart func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse], errResp azfake.ErrorResponder)
@@ -63,6 +67,7 @@ func NewDedicatedHostsServerTransport(srv *DedicatedHostsServer) *DedicatedHosts
 		beginDelete:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]](),
 		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]](),
 		newListByHostGroupPager:    newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]](),
+		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]](),
 		beginRestart:               newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]](),
 	}
@@ -76,6 +81,7 @@ type DedicatedHostsServerTransport struct {
 	beginDelete                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]]
 	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]]
 	newListByHostGroupPager    *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]]
+	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]]
 	beginRestart               *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]]
 }
@@ -102,6 +108,8 @@ func (d *DedicatedHostsServerTransport) Do(req *http.Request) (*http.Response, e
 		resp, err = d.dispatchNewListAvailableSizesPager(req)
 	case "DedicatedHostsClient.NewListByHostGroupPager":
 		resp, err = d.dispatchNewListByHostGroupPager(req)
+	case "DedicatedHostsClient.BeginRedeploy":
+		resp, err = d.dispatchBeginRedeploy(req)
 	case "DedicatedHostsClient.BeginRestart":
 		resp, err = d.dispatchBeginRestart(req)
 	case "DedicatedHostsClient.BeginUpdate":
@@ -346,6 +354,54 @@ func (d *DedicatedHostsServerTransport) dispatchNewListByHostGroupPager(req *htt
 	if !server.PagerResponderMore(newListByHostGroupPager) {
 		d.newListByHostGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (d *DedicatedHostsServerTransport) dispatchBeginRedeploy(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginRedeploy == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRedeploy not implemented")}
+	}
+	beginRedeploy := d.beginRedeploy.get(req)
+	if beginRedeploy == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/hostGroups/(?P<hostGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hosts/(?P<hostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		hostGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hostGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		hostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hostName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginRedeploy(req.Context(), resourceGroupNameParam, hostGroupNameParam, hostNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRedeploy = &respr
+		d.beginRedeploy.add(req, beginRedeploy)
+	}
+
+	resp, err := server.PollerResponderNext(beginRedeploy, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		d.beginRedeploy.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRedeploy) {
+		d.beginRedeploy.remove(req)
+	}
+
 	return resp, nil
 }
 

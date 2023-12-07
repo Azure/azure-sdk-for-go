@@ -30,6 +30,10 @@ type VirtualMachinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginAssessPatches func(ctx context.Context, resourceGroupName string, vmName string, options *armcompute.VirtualMachinesClientBeginAssessPatchesOptions) (resp azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse], errResp azfake.ErrorResponder)
 
+	// BeginAttachDetachDataDisks is the fake for method VirtualMachinesClient.BeginAttachDetachDataDisks
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAttachDetachDataDisks func(ctx context.Context, resourceGroupName string, vmName string, parameters armcompute.AttachDetachDataDisksRequest, options *armcompute.VirtualMachinesClientBeginAttachDetachDataDisksOptions) (resp azfake.PollerResponder[armcompute.VirtualMachinesClientAttachDetachDataDisksResponse], errResp azfake.ErrorResponder)
+
 	// BeginCapture is the fake for method VirtualMachinesClient.BeginCapture
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCapture func(ctx context.Context, resourceGroupName string, vmName string, parameters armcompute.VirtualMachineCaptureParameters, options *armcompute.VirtualMachinesClientBeginCaptureOptions) (resp azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse], errResp azfake.ErrorResponder)
@@ -134,6 +138,7 @@ func NewVirtualMachinesServerTransport(srv *VirtualMachinesServer) *VirtualMachi
 	return &VirtualMachinesServerTransport{
 		srv:                        srv,
 		beginAssessPatches:         newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]](),
+		beginAttachDetachDataDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAttachDetachDataDisksResponse]](),
 		beginCapture:               newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]](),
 		beginConvertToManagedDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientConvertToManagedDisksResponse]](),
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]](),
@@ -161,6 +166,7 @@ func NewVirtualMachinesServerTransport(srv *VirtualMachinesServer) *VirtualMachi
 type VirtualMachinesServerTransport struct {
 	srv                        *VirtualMachinesServer
 	beginAssessPatches         *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAssessPatchesResponse]]
+	beginAttachDetachDataDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientAttachDetachDataDisksResponse]]
 	beginCapture               *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCaptureResponse]]
 	beginConvertToManagedDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientConvertToManagedDisksResponse]]
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.VirtualMachinesClientCreateOrUpdateResponse]]
@@ -196,6 +202,8 @@ func (v *VirtualMachinesServerTransport) Do(req *http.Request) (*http.Response, 
 	switch method {
 	case "VirtualMachinesClient.BeginAssessPatches":
 		resp, err = v.dispatchBeginAssessPatches(req)
+	case "VirtualMachinesClient.BeginAttachDetachDataDisks":
+		resp, err = v.dispatchBeginAttachDetachDataDisks(req)
 	case "VirtualMachinesClient.BeginCapture":
 		resp, err = v.dispatchBeginCapture(req)
 	case "VirtualMachinesClient.BeginConvertToManagedDisks":
@@ -294,6 +302,54 @@ func (v *VirtualMachinesServerTransport) dispatchBeginAssessPatches(req *http.Re
 	}
 	if !server.PollerResponderMore(beginAssessPatches) {
 		v.beginAssessPatches.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualMachinesServerTransport) dispatchBeginAttachDetachDataDisks(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginAttachDetachDataDisks == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAttachDetachDataDisks not implemented")}
+	}
+	beginAttachDetachDataDisks := v.beginAttachDetachDataDisks.get(req)
+	if beginAttachDetachDataDisks == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachines/(?P<vmName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachDetachDataDisks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.AttachDetachDataDisksRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginAttachDetachDataDisks(req.Context(), resourceGroupNameParam, vmNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAttachDetachDataDisks = &respr
+		v.beginAttachDetachDataDisks.add(req, beginAttachDetachDataDisks)
+	}
+
+	resp, err := server.PollerResponderNext(beginAttachDetachDataDisks, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginAttachDetachDataDisks.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAttachDetachDataDisks) {
+		v.beginAttachDetachDataDisks.remove(req)
 	}
 
 	return resp, nil
@@ -415,7 +471,16 @@ func (v *VirtualMachinesServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vmNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcompute.VirtualMachinesClientBeginCreateOrUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcompute.VirtualMachinesClientBeginCreateOrUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, vmNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1395,7 +1460,16 @@ func (v *VirtualMachinesServerTransport) dispatchBeginUpdate(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmNameParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcompute.VirtualMachinesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcompute.VirtualMachinesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

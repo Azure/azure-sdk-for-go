@@ -26,6 +26,14 @@ import (
 
 // VirtualMachineScaleSetVMsServer is a fake server for instances of the armcompute.VirtualMachineScaleSetVMsClient type.
 type VirtualMachineScaleSetVMsServer struct {
+	// BeginApproveRollingUpgrade is the fake for method VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginApproveRollingUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// BeginAttachDetachDataDisks is the fake for method VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginAttachDetachDataDisks func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.AttachDetachDataDisksRequest, options *armcompute.VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse], errResp azfake.ErrorResponder)
+
 	// BeginDeallocate is the fake for method VirtualMachineScaleSetVMsClient.BeginDeallocate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDeallocate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse], errResp azfake.ErrorResponder)
@@ -96,38 +104,42 @@ type VirtualMachineScaleSetVMsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetVMsServerTransport(srv *VirtualMachineScaleSetVMsServer) *VirtualMachineScaleSetVMsServerTransport {
 	return &VirtualMachineScaleSetVMsServerTransport{
-		srv:                     srv,
-		beginDeallocate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
-		beginDelete:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
-		newListPager:            newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
-		beginPerformMaintenance: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
-		beginPowerOff:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
-		beginRedeploy:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
-		beginReimage:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
-		beginReimageAll:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
-		beginRestart:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
-		beginRunCommand:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
-		beginStart:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
-		beginUpdate:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
+		srv:                        srv,
+		beginApproveRollingUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]](),
+		beginAttachDetachDataDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]](),
+		beginDeallocate:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
+		beginDelete:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
+		beginPerformMaintenance:    newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
+		beginPowerOff:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
+		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
+		beginReimage:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
+		beginReimageAll:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
+		beginRestart:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
+		beginRunCommand:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
+		beginStart:                 newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
+		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetVMsServerTransport connects instances of armcompute.VirtualMachineScaleSetVMsClient to instances of VirtualMachineScaleSetVMsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsServerTransport instead.
 type VirtualMachineScaleSetVMsServerTransport struct {
-	srv                     *VirtualMachineScaleSetVMsServer
-	beginDeallocate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
-	beginDelete             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
-	newListPager            *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
-	beginPerformMaintenance *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
-	beginPowerOff           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
-	beginRedeploy           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
-	beginReimage            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
-	beginReimageAll         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
-	beginRestart            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
-	beginRunCommand         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
-	beginStart              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
-	beginUpdate             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
+	srv                        *VirtualMachineScaleSetVMsServer
+	beginApproveRollingUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]]
+	beginAttachDetachDataDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]]
+	beginDeallocate            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
+	beginDelete                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
+	beginPerformMaintenance    *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
+	beginPowerOff              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
+	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
+	beginReimage               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
+	beginReimageAll            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
+	beginRestart               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
+	beginRunCommand            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
+	beginStart                 *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
+	beginUpdate                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMsServerTransport.
@@ -142,6 +154,10 @@ func (v *VirtualMachineScaleSetVMsServerTransport) Do(req *http.Request) (*http.
 	var err error
 
 	switch method {
+	case "VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade":
+		resp, err = v.dispatchBeginApproveRollingUpgrade(req)
+	case "VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks":
+		resp, err = v.dispatchBeginAttachDetachDataDisks(req)
 	case "VirtualMachineScaleSetVMsClient.BeginDeallocate":
 		resp, err = v.dispatchBeginDeallocate(req)
 	case "VirtualMachineScaleSetVMsClient.BeginDelete":
@@ -180,6 +196,106 @@ func (v *VirtualMachineScaleSetVMsServerTransport) Do(req *http.Request) (*http.
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginApproveRollingUpgrade(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginApproveRollingUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginApproveRollingUpgrade not implemented")}
+	}
+	beginApproveRollingUpgrade := v.beginApproveRollingUpgrade.get(req)
+	if beginApproveRollingUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approveRollingUpgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginApproveRollingUpgrade(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginApproveRollingUpgrade = &respr
+		v.beginApproveRollingUpgrade.add(req, beginApproveRollingUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginApproveRollingUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		v.beginApproveRollingUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginApproveRollingUpgrade) {
+		v.beginApproveRollingUpgrade.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginAttachDetachDataDisks(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginAttachDetachDataDisks == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAttachDetachDataDisks not implemented")}
+	}
+	beginAttachDetachDataDisks := v.beginAttachDetachDataDisks.get(req)
+	if beginAttachDetachDataDisks == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachDetachDataDisks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.AttachDetachDataDisksRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginAttachDetachDataDisks(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAttachDetachDataDisks = &respr
+		v.beginAttachDetachDataDisks.add(req, beginAttachDetachDataDisks)
+	}
+
+	resp, err := server.PollerResponderNext(beginAttachDetachDataDisks, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginAttachDetachDataDisks.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAttachDetachDataDisks) {
+		v.beginAttachDetachDataDisks.remove(req)
 	}
 
 	return resp, nil
@@ -983,7 +1099,16 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginUpdate(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		var options *armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

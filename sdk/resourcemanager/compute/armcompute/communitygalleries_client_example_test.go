@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGallery_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/communityGalleryExamples/CommunityGallery_Get.json
 func ExampleCommunityGalleriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,10 +37,24 @@ func ExampleCommunityGalleriesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CommunityGallery = armcompute.CommunityGallery{
 	// 	Name: to.Ptr("publicGalleryName"),
-	// 	Type: to.Ptr("Microsoft.Compute/Locations/CommunityGallery"),
+	// 	Type: to.Ptr("Microsoft.Compute/locations/communityGallery"),
 	// 	Identifier: &armcompute.CommunityGalleryIdentifier{
 	// 		UniqueID: to.Ptr("/CommunityGalleries/publicGalleryName"),
 	// 	},
 	// 	Location: to.Ptr("myLocation"),
-	// }
+	// 	Properties: &armcompute.CommunityGalleryProperties{
+	// 		ArtifactTags: map[string]*string{
+	// 			"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
+	// 		},
+	// 		CommunityMetadata: &armcompute.CommunityGalleryMetadata{
+	// 			Eula: to.Ptr("https://test-uri.com"),
+	// 			PrivacyStatementURI: to.Ptr("https://test-uri.com"),
+	// 			PublicNames: []*string{
+	// 				to.Ptr("prefix-xxxxx")},
+	// 				PublisherContact: to.Ptr("sameple@email.com"),
+	// 				PublisherURI: to.Ptr("https://test-uri.com"),
+	// 			},
+	// 			Disclaimer: to.Ptr("https://test-uri.com"),
+	// 		},
+	// 	}
 }

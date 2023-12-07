@@ -9,7 +9,6 @@ package azappconfig_test
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -21,7 +20,17 @@ import (
 )
 
 var currTime = time.Now().Unix()
-var uniqueSuffix = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
+
+// testId will be used for local testing as a unique identifier. The test proxy will record the base
+// request for snapshots. The deletion time for a snapshot is minimum 1 hour. For quicker
+// local iteration we will use a unique suffix for each test run.
+// to use: switch the testId being used
+//
+//	 Snapshot Name: `// + string(testId)`
+//		KeyValue Prefix: `/*testId +*/`
+var testId = "12723uid"
+
+// var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
 	const (
@@ -337,8 +346,7 @@ func TestSettingWithEscaping(t *testing.T) {
 }
 
 func TestSnapshotListConfigurationSettings(t *testing.T) {
-	testKeyPrefix := string(uniqueSuffix)
-	snapshotName := "listConfigurationsSnapshotTest" + string(uniqueSuffix)
+	snapshotName := "listConfigurationsSnapshotTest" + string(testId)
 	client := NewClientFromConnectionString(t)
 
 	type VL struct {
@@ -348,33 +356,38 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 	Settings := []azappconfig.Setting{
 		{
-			Key:   to.Ptr(testKeyPrefix + "Key"),
 			Value: to.Ptr("value3"),
 			Label: to.Ptr("label"),
 		},
 		{
-			Key:   to.Ptr(testKeyPrefix + "Key1"),
 			Value: to.Ptr("Val1"),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr(testKeyPrefix + "Key2"),
 			Label: to.Ptr("Label1"),
 		},
 		{
-			Key:   to.Ptr(testKeyPrefix + "KeyNoLabel"),
 			Value: to.Ptr("Val1"),
 		},
 		{
-			Key:   to.Ptr(testKeyPrefix + "KeyNoVal"),
 			Label: to.Ptr("Label2"),
 		},
-		{
-			Key: to.Ptr(testKeyPrefix + "NoValNoLabelKey"),
-		},
-		{
-			Key: to.Ptr(testKeyPrefix + "TEST"),
-		},
+		{},
+	}
+
+	Keys := []string{
+		"Key",
+		"Key1",
+		"Key2",
+		"KeyNoLabel",
+		"KeyNoVal",
+		"NoValNoLabelKey",
+	}
+
+	require.Equal(t, len(Settings), len(Keys))
+
+	for i, key := range Keys {
+		Settings[i].Key = to.Ptr(testId + key)
 	}
 
 	settingMap := make(map[string][]VL)
@@ -403,7 +416,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	keyFilter := fmt.Sprintf(testKeyPrefix + "*")
+	keyFilter := fmt.Sprintf(testId + "*")
 	sf := []azappconfig.SettingFilter{
 		{
 			KeyFilter: &keyFilter,
@@ -466,7 +479,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 }
 
 func TestGetSnapshots(t *testing.T) {
-	snapshotName := "getSnapshotsTest" + string(uniqueSuffix)
+	snapshotName := "getSnapshotsTest" + string(testId)
 
 	const (
 		ssCreateCount = 5
@@ -516,7 +529,7 @@ func TestGetSnapshots(t *testing.T) {
 }
 
 func TestSnapshotArchive(t *testing.T) {
-	snapshotName := "archiveSnapshotsTest" + string(uniqueSuffix)
+	snapshotName := "archiveSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
 
@@ -543,7 +556,7 @@ func TestSnapshotArchive(t *testing.T) {
 }
 
 func TestSnapshotRecover(t *testing.T) {
-	snapshotName := "recoverSnapshotsTest" + string(uniqueSuffix)
+	snapshotName := "recoverSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
 
@@ -571,14 +584,9 @@ func TestSnapshotRecover(t *testing.T) {
 }
 
 func TestSnapshotCreate(t *testing.T) {
-	snapshotName := "createSnapshotsTest" + string(uniqueSuffix)
+	snapshotName := "createSnapshotsTest" + string(testId)
 
 	client := NewClientFromConnectionString(t)
-
-	//Check if snapshot exists. If it does fail the test since we can't test creation
-	_, err := client.GetSnapshot(context.Background(), snapshotName, nil)
-
-	require.Error(t, err)
 
 	//Create a snapshot
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)

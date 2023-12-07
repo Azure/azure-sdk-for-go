@@ -239,6 +239,7 @@ func initEnvVars() {
 		azureOpenAI.ChatCompletions = "gpt-35-turbo-0613"
 		azureOpenAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
+		openAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "text-embedding-ada-002"

@@ -1473,7 +1473,8 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 		Expiry: to.Ptr(pastTime.UTC().Format(sas.TimeFormat)),
 	}
 
-	udc, _ := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
 
 	// get permissions and details for sas
 	encryptionScope, err := testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
@@ -1481,7 +1482,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 
 	// Create Blob Signature Values with desired permissions and sign with user delegation credential
 	perms := sas.FilePermissions{Read: true, Create: true, Write: true, Move: true, Delete: true, List: true}
-	sasQueryParams, _ := sas.DatalakeSignatureValues{
+	sasQueryParams, err := sas.DatalakeSignatureValues{
 		Protocol:        sas.ProtocolHTTPS, // Users MUST use HTTPS (not HTTP)
 		StartTime:       time.Now().UTC().Add(time.Second * -10),
 		ExpiryTime:      time.Now().UTC().Add(15 * time.Minute), // 15 minutes before expiration
@@ -1492,8 +1493,12 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 
 	sasURL := fmt.Sprintf(fsClient.DFSURL() + sasQueryParams.Encode())
 	// This URL can be used to authenticate requests now
-	_, err = file.NewClientWithNoCredential(sasURL, nil)
+	srcFileClient, err := file.NewClientWithNoCredential(sasURL, nil)
 	handleError(err)
+
+	_, err = srcFileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
 }
 
 func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {

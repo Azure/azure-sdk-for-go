@@ -542,3 +542,32 @@ directive:
         `  m["type"] = string(ChatRoleFunction)\n` + 
         `}\n`);
 ```
+
+Add in the older style of function call as that's still the only way to talk to older models.
+
+```yaml
+directive:
+  - from: models.go
+    where: $
+    transform: |
+      const text = 
+        `// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the\n` + 
+        `// end-user. "auto" means the model can pick between an end-user or calling a\n` + 
+        `// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is\n` + 
+        `// the default when no functions are present. "auto" is the default if functions\n` + 
+        `// are present.\n` + 
+        `FunctionCall *ChatCompletionsOptionsFunctionCall\n` + 
+        `\n` + 
+        `// A list of functions the model may generate JSON inputs for.\n` + 
+        `Functions []FunctionDefinition\n`;
+
+      return $.replace(/(type ChatCompletionsOptions struct \{.+?FrequencyPenalty \*float32)/s, "$1\n\n" + text);
+  - from: models_serde.go
+    where: $
+    transform: |
+      const populateLines = 
+        `populate(objectMap, "function_call", c.FunctionCall)\n` +
+        `populate(objectMap, "functions", c.Functions)`;
+
+      return $.replace(/(func \(c ChatCompletionsOptions\) MarshalJSON\(\).+?populate\(objectMap, "frequency_penalty", c.FrequencyPenalty\))/s, "$1\n" + populateLines)
+```

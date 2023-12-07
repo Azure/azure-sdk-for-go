@@ -658,6 +658,16 @@ type ChatCompletionsOptions struct {
 	// increases and decrease the likelihood of the model repeating the same statements verbatim.
 	FrequencyPenalty *float32
 
+	// Controls how the model responds to function calls. "none" means the model does not call a function, and responds to the
+	// end-user. "auto" means the model can pick between an end-user or calling a
+	// function. Specifying a particular function via {"name": "my_function"} forces the model to call that function. "none" is
+	// the default when no functions are present. "auto" is the default if functions
+	// are present.
+	FunctionCall *ChatCompletionsOptionsFunctionCall
+
+	// A list of functions the model may generate JSON inputs for.
+	Functions []FunctionDefinition
+
 	// A map between GPT token IDs and bias scores that influences the probability of specific tokens appearing in a completions
 	// response. Token IDs are computed via external tokenizer tools, while bias
 	// scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or exclusive selection

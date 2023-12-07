@@ -30,12 +30,26 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 	t.Run("OpenAI", func(t *testing.T) {
 		chatClient := newOpenAIClientForTest(t)
-		testChatCompletionsFunctions(t, chatClient, openAI)
+		testChatCompletionsFunctions(t, chatClient, openAI.ChatCompletions)
+		testChatCompletionsFunctions(t, chatClient, openAI.ChatCompletionsLegacyFunctions)
 	})
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		chatClient := newAzureOpenAIClientForTest(t, azureOpenAI)
-		testChatCompletionsFunctions(t, chatClient, azureOpenAI)
+		testChatCompletionsFunctions(t, chatClient, azureOpenAI.ChatCompletions)
+	})
+}
+
+func TestGetChatCompletions_usingFunctions_legacy(t *testing.T) {
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testChatCompletionsFunctionsOlderStyle(t, chatClient, openAI.ChatCompletionsLegacyFunctions)
+		testChatCompletionsFunctionsOlderStyle(t, chatClient, openAI.ChatCompletions)
+	})
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newAzureOpenAIClientForTest(t, azureOpenAI)
+		testChatCompletionsFunctionsOlderStyle(t, chatClient, azureOpenAI.ChatCompletionsLegacyFunctions)
 	})
 }
 
@@ -53,9 +67,62 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 	})
 }
 
-func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, tv testVars) {
+func testChatCompletionsFunctionsOlderStyle(t *testing.T, client *azopenai.Client, deploymentName string) {
 	body := azopenai.ChatCompletionsOptions{
-		DeploymentName: &tv.ChatCompletions,
+		DeploymentName: &deploymentName,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestAssistantMessage{
+				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+			},
+		},
+		FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
+			Value: to.Ptr("auto"),
+		},
+		Functions: []azopenai.FunctionDefinition{
+			{
+				Name:        to.Ptr("get_current_weather"),
+				Description: to.Ptr("Get the current weather in a given location"),
+				Parameters: Params{
+					Required: []string{"location"},
+					Type:     "object",
+					Properties: map[string]ParamProperty{
+						"location": {
+							Type:        "string",
+							Description: "The city and state, e.g. San Francisco, CA",
+						},
+						"unit": {
+							Type: "string",
+							Enum: []string{"celsius", "fahrenheit"},
+						},
+					},
+				},
+			},
+		},
+		Temperature: to.Ptr[float32](0.0),
+	}
+
+	resp, err := client.GetChatCompletions(context.Background(), body, nil)
+	require.NoError(t, err)
+
+	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
+
+	require.Equal(t, "get_current_weather", *funcCall.Name)
+
+	type location struct {
+		Location string `json:"location"`
+		Unit     string `json:"unit"`
+	}
+
+	var funcParams *location
+	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
+	require.NoError(t, err)
+
+	require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
+}
+
+func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+	body := azopenai.ChatCompletionsOptions{
+		DeploymentName: &deploymentName,
 		Messages: []azopenai.ChatRequestMessageClassification{
 			&azopenai.ChatRequestAssistantMessage{
 				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),

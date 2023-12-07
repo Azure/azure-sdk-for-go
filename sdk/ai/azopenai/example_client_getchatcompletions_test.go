@@ -131,8 +131,8 @@ func ExampleClient_GetChatCompletions_functions() {
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
 		DeploymentName: &modelDeploymentID,
 		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestAssistantMessage{
-				Content: to.Ptr("What's the weather like in Boston, MA, in celsius?"),
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("What's the weather like in Boston, MA, in celsius?"),
 			},
 		},
 		Tools: []azopenai.ChatCompletionsToolDefinitionClassification{
@@ -166,6 +166,93 @@ func ExampleClient_GetChatCompletions_functions() {
 	}
 
 	funcCall := resp.Choices[0].Message.ToolCalls[0].(*azopenai.ChatCompletionsFunctionToolCall).Function
+
+	// This is the function name we gave in the call to GetCompletions
+	// Prints: Function name: "get_current_weather"
+	fmt.Fprintf(os.Stderr, "Function name: %q\n", *funcCall.Name)
+
+	// The arguments for your function come back as a JSON string
+	var funcParams *struct {
+		Location string `json:"location"`
+		Unit     string `json:"unit"`
+	}
+	err = json.Unmarshal([]byte(*funcCall.Arguments), &funcParams)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Prints:
+	// Parameters: azopenai_test.location{Location:"Boston, MA", Unit:"celsius"}
+	fmt.Fprintf(os.Stderr, "Parameters: %#v\n", *funcParams)
+
+	// Output:
+}
+
+func ExampleClient_GetChatCompletions_legacyFunctions() {
+	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS")
+
+	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
+	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+
+	if azureOpenAIKey == "" || modelDeploymentID == "" || azureOpenAIEndpoint == "" {
+		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
+		return
+	}
+
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
+
+	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
+	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAIEndpoint, keyCredential, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
+		DeploymentName: &modelDeploymentID,
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("What's the weather like in Boston, MA, in celsius?"),
+			},
+		},
+		FunctionCall: &azopenai.ChatCompletionsOptionsFunctionCall{
+			Value: to.Ptr("auto"),
+		},
+		Functions: []azopenai.FunctionDefinition{
+			{
+				Name:        to.Ptr("get_current_weather"),
+				Description: to.Ptr("Get the current weather in a given location"),
+
+				Parameters: map[string]any{
+					"required": []string{"location"},
+					"type":     "object",
+					"properties": map[string]any{
+						"location": map[string]any{
+							"type":        "string",
+							"description": "The city and state, e.g. San Francisco, CA",
+						},
+						"unit": map[string]any{
+							"type": "string",
+							"enum": []string{"celsius", "fahrenheit"},
+						},
+					},
+				},
+			},
+		},
+		Temperature: to.Ptr[float32](0.0),
+	}, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	funcCall := resp.ChatCompletions.Choices[0].Message.FunctionCall
 
 	// This is the function name we gave in the call to GetCompletions
 	// Prints: Function name: "get_current_weather"

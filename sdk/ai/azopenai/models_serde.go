@@ -1278,6 +1278,8 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "model", c.DeploymentName)
 	populate(objectMap, "enhancements", c.Enhancements)
 	populate(objectMap, "frequency_penalty", c.FrequencyPenalty)
+	populate(objectMap, "function_call", c.FunctionCall)
+	populate(objectMap, "functions", c.Functions)
 	populate(objectMap, "logit_bias", c.LogitBias)
 	populate(objectMap, "max_tokens", c.MaxTokens)
 	populate(objectMap, "messages", c.Messages)

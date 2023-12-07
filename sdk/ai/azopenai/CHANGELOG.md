@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (Unreleased)
+## 0.4.0 (2023-12-07)
 
 ### Features Added
 
@@ -9,11 +9,13 @@
 - `azopenai.KeyCredential` has been replaced by [azcore.KeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#KeyCredential).
 - `Deployment` has been renamed to `DeploymentName` throughout all APIs.
 - `CreateImage` has been replaced with `GetImageGenerations`.
-- Chat completions with functions have changed. See the example `ExampleClient_GetChatCompletions_functions` in `example_client_getchatcompletions_extensions_test.go`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Chat completions with functions have been updated to allow for the newer tools-style. See the example function `ExampleClient_GetChatCompletions_functions` 
+  in `example_client_getchatcompletions_extensions_test.go`. The legacy style using `ChatCompletionsOptions.Functions` continues to be supported for older models.
 
 ## 0.3.0 (2023-09-26)
 

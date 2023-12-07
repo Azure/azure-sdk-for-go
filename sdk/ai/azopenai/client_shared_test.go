@@ -34,13 +34,14 @@ type endpoint struct {
 }
 
 type testVars struct {
-	Endpoint        endpoint
-	Completions     string
-	ChatCompletions string
-	Embeddings      string
-	Cognitive       azopenai.AzureCognitiveSearchChatExtensionConfiguration
-	Whisper         endpointWithModel
-	DallE           endpointWithModel
+	Endpoint                       endpoint
+	Completions                    string
+	ChatCompletions                string
+	ChatCompletionsLegacyFunctions string
+	Embeddings                     string
+	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	Whisper                        endpointWithModel
+	DallE                          endpointWithModel
 
 	ChatCompletionsRAI endpointWithModel // at the moment this is Azure only
 
@@ -138,23 +139,19 @@ func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
 	return ep
 }
 
-func newTestVars(prefix string, isCanary bool) testVars {
+func newTestVars(prefix string) testVars {
 	azure := prefix == "AOAI"
-	suffix := ""
-
-	if isCanary {
-		suffix += "_CANARY"
-	}
 
 	tv := testVars{
 		Endpoint: endpoint{
-			URL:    getRequired(prefix + "_ENDPOINT" + suffix),
-			APIKey: getRequired(prefix + "_API_KEY" + suffix),
+			URL:    getRequired(prefix + "_ENDPOINT"),
+			APIKey: getRequired(prefix + "_API_KEY"),
 			Azure:  azure,
 		},
-		Completions:     getRequired(prefix + "_COMPLETIONS_MODEL" + suffix),
-		ChatCompletions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL" + suffix),
-		Embeddings:      getRequired(prefix + "_EMBEDDINGS_MODEL" + suffix),
+		Completions:                    getRequired(prefix + "_COMPLETIONS_MODEL"),
+		ChatCompletions:                getRequired(prefix + "_CHAT_COMPLETIONS_MODEL"),
+		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
+		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
 
 		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
 			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
@@ -240,6 +237,7 @@ func initEnvVars() {
 		openAI.Completions = "text-davinci-003"
 
 		azureOpenAI.ChatCompletions = "gpt-35-turbo-0613"
+		azureOpenAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-embedding-ada-002"
@@ -259,8 +257,8 @@ func initEnvVars() {
 			fmt.Printf("Failed to load .env file: %s\n", err)
 		}
 
-		azureOpenAI = newTestVars("AOAI", false)
-		openAI = newTestVars("OPENAI", false)
+		azureOpenAI = newTestVars("AOAI")
+		openAI = newTestVars("OPENAI")
 	}
 }
 

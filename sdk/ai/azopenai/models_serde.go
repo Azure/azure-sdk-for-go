@@ -388,7 +388,7 @@ func (a *AzureChatEnhancements) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureChatExtensionConfiguration.
 func (a AzureChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	objectMap["type"] = a.Type
+	objectMap["type"] = a.configType
 	return json.Marshal(objectMap)
 }
 
@@ -402,7 +402,7 @@ func (a *AzureChatExtensionConfiguration) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "type":
-			err = unpopulate(val, "Type", &a.Type)
+			err = unpopulate(val, "configType", &a.configType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -496,8 +496,8 @@ func (a *AzureChatOCREnhancementConfiguration) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type AzureCognitiveSearchChatExtensionConfiguration.
 func (a AzureCognitiveSearchChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = AzureChatExtensionTypeAzureCognitiveSearch
+	populate(objectMap, "parameters", a.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -510,11 +510,11 @@ func (a *AzureCognitiveSearchChatExtensionConfiguration) UnmarshalJSON(data []by
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &a.configType)
+			delete(rawMsg, key)
 		case "parameters":
 			err = unpopulate(val, "Parameters", &a.Parameters)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -649,8 +649,8 @@ func (a *AzureCognitiveSearchIndexFieldMappingOptions) UnmarshalJSON(data []byte
 // MarshalJSON implements the json.Marshaller interface for type AzureCosmosDBChatExtensionConfiguration.
 func (a AzureCosmosDBChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = AzureChatExtensionTypeAzureCosmosDB
+	populate(objectMap, "parameters", a.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -663,11 +663,11 @@ func (a *AzureCosmosDBChatExtensionConfiguration) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &a.configType)
+			delete(rawMsg, key)
 		case "parameters":
 			err = unpopulate(val, "Parameters", &a.Parameters)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -898,8 +898,8 @@ func (a *AzureGroundingEnhancementLineSpan) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningIndexChatExtensionConfiguration.
 func (a AzureMachineLearningIndexChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", a.Parameters)
 	objectMap["type"] = AzureChatExtensionTypeAzureMachineLearningIndex
+	populate(objectMap, "parameters", a.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -912,11 +912,11 @@ func (a *AzureMachineLearningIndexChatExtensionConfiguration) UnmarshalJSON(data
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &a.configType)
+			delete(rawMsg, key)
 		case "parameters":
 			err = unpopulate(val, "Parameters", &a.Parameters)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1451,8 +1451,8 @@ func (c *ChatFinishDetails) UnmarshalJSON(data []byte) error {
 func (c ChatRequestAssistantMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content", c.Content)
-	populate(objectMap, "name", c.Name)
 	objectMap["role"] = ChatRoleAssistant
+	populate(objectMap, "name", c.Name)
 	populate(objectMap, "tool_calls", c.ToolCalls)
 	return json.Marshal(objectMap)
 }
@@ -1469,11 +1469,11 @@ func (c *ChatRequestAssistantMessage) UnmarshalJSON(data []byte) error {
 		case "content":
 			err = unpopulate(val, "Content", &c.Content)
 			delete(rawMsg, key)
+		case "role":
+			err = unpopulate(val, "role", &c.role)
+			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &c.Name)
-			delete(rawMsg, key)
-		case "role":
-			err = unpopulate(val, "Role", &c.Role)
 			delete(rawMsg, key)
 		case "tool_calls":
 			c.ToolCalls, err = unmarshalChatCompletionsToolCallClassificationArray(val)
@@ -1489,7 +1489,7 @@ func (c *ChatRequestAssistantMessage) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ChatRequestMessage.
 func (c ChatRequestMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	objectMap["role"] = c.Role
+	objectMap["role"] = c.role
 	return json.Marshal(objectMap)
 }
 
@@ -1503,7 +1503,7 @@ func (c *ChatRequestMessage) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "role":
-			err = unpopulate(val, "Role", &c.Role)
+			err = unpopulate(val, "role", &c.role)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1517,8 +1517,8 @@ func (c *ChatRequestMessage) UnmarshalJSON(data []byte) error {
 func (c ChatRequestSystemMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "content", c.Content)
-	populate(objectMap, "name", c.Name)
 	objectMap["role"] = ChatRoleSystem
+	populate(objectMap, "name", c.Name)
 	return json.Marshal(objectMap)
 }
 
@@ -1534,11 +1534,11 @@ func (c *ChatRequestSystemMessage) UnmarshalJSON(data []byte) error {
 		case "content":
 			err = unpopulate(val, "Content", &c.Content)
 			delete(rawMsg, key)
+		case "role":
+			err = unpopulate(val, "role", &c.role)
+			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &c.Name)
-			delete(rawMsg, key)
-		case "role":
-			err = unpopulate(val, "Role", &c.Role)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1570,7 +1570,7 @@ func (c *ChatRequestToolMessage) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Content", &c.Content)
 			delete(rawMsg, key)
 		case "role":
-			err = unpopulate(val, "Role", &c.Role)
+			err = unpopulate(val, "role", &c.role)
 			delete(rawMsg, key)
 		case "tool_call_id":
 			err = unpopulate(val, "ToolCallID", &c.ToolCallID)
@@ -1587,8 +1587,8 @@ func (c *ChatRequestToolMessage) UnmarshalJSON(data []byte) error {
 func (c ChatRequestUserMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "content", c.Content)
-	populate(objectMap, "name", c.Name)
 	objectMap["role"] = ChatRoleUser
+	populate(objectMap, "name", c.Name)
 	return json.Marshal(objectMap)
 }
 
@@ -1604,11 +1604,11 @@ func (c *ChatRequestUserMessage) UnmarshalJSON(data []byte) error {
 		case "content":
 			err = unpopulate(val, "Content", &c.Content)
 			delete(rawMsg, key)
+		case "role":
+			err = unpopulate(val, "role", &c.role)
+			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &c.Name)
-			delete(rawMsg, key)
-		case "role":
-			err = unpopulate(val, "Role", &c.Role)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2221,8 +2221,8 @@ func (c *ContentFilterResultsForPrompt) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ElasticsearchChatExtensionConfiguration.
 func (e ElasticsearchChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", e.Parameters)
 	objectMap["type"] = AzureChatExtensionTypeElasticsearch
+	populate(objectMap, "parameters", e.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -2235,11 +2235,11 @@ func (e *ElasticsearchChatExtensionConfiguration) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &e.configType)
+			delete(rawMsg, key)
 		case "parameters":
 			err = unpopulate(val, "Parameters", &e.Parameters)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2735,8 +2735,8 @@ func (m *MaxTokensFinishDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OnYourDataAPIKeyAuthenticationOptions.
 func (o OnYourDataAPIKeyAuthenticationOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "key", o.Key)
 	objectMap["type"] = OnYourDataAuthenticationTypeAPIKey
+	populate(objectMap, "key", o.Key)
 	return json.Marshal(objectMap)
 }
 
@@ -2749,11 +2749,11 @@ func (o *OnYourDataAPIKeyAuthenticationOptions) UnmarshalJSON(data []byte) error
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &o.configType)
+			delete(rawMsg, key)
 		case "key":
 			err = unpopulate(val, "Key", &o.Key)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &o.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2766,7 +2766,7 @@ func (o *OnYourDataAPIKeyAuthenticationOptions) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type OnYourDataAuthenticationOptions.
 func (o OnYourDataAuthenticationOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	objectMap["type"] = o.Type
+	objectMap["type"] = o.configType
 	return json.Marshal(objectMap)
 }
 
@@ -2780,7 +2780,7 @@ func (o *OnYourDataAuthenticationOptions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "type":
-			err = unpopulate(val, "Type", &o.Type)
+			err = unpopulate(val, "configType", &o.configType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2811,7 +2811,7 @@ func (o *OnYourDataConnectionStringAuthenticationOptions) UnmarshalJSON(data []b
 			err = unpopulate(val, "ConnectionString", &o.ConnectionString)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &o.Type)
+			err = unpopulate(val, "configType", &o.configType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2948,9 +2948,9 @@ func (o *OnYourDataEmbeddingModelIDDependency) UnmarshalJSON(data []byte) error 
 // MarshalJSON implements the json.Marshaller interface for type OnYourDataKeyAndKeyIDAuthenticationOptions.
 func (o OnYourDataKeyAndKeyIDAuthenticationOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	objectMap["type"] = OnYourDataAuthenticationTypeKeyAndKeyID
 	populate(objectMap, "key", o.Key)
 	populate(objectMap, "keyId", o.KeyID)
-	objectMap["type"] = OnYourDataAuthenticationTypeKeyAndKeyID
 	return json.Marshal(objectMap)
 }
 
@@ -2963,14 +2963,14 @@ func (o *OnYourDataKeyAndKeyIDAuthenticationOptions) UnmarshalJSON(data []byte) 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &o.configType)
+			delete(rawMsg, key)
 		case "key":
 			err = unpopulate(val, "Key", &o.Key)
 			delete(rawMsg, key)
 		case "keyId":
 			err = unpopulate(val, "KeyID", &o.KeyID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &o.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2997,7 +2997,7 @@ func (o *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions) Unmarshal
 		var err error
 		switch key {
 		case "type":
-			err = unpopulate(val, "Type", &o.Type)
+			err = unpopulate(val, "configType", &o.configType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3010,8 +3010,8 @@ func (o *OnYourDataSystemAssignedManagedIdentityAuthenticationOptions) Unmarshal
 // MarshalJSON implements the json.Marshaller interface for type OnYourDataUserAssignedManagedIdentityAuthenticationOptions.
 func (o OnYourDataUserAssignedManagedIdentityAuthenticationOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "managedIdentityResourceId", o.ManagedIdentityResourceID)
 	objectMap["type"] = OnYourDataAuthenticationTypeUserAssignedManagedIdentity
+	populate(objectMap, "managedIdentityResourceId", o.ManagedIdentityResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -3024,11 +3024,11 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) UnmarshalJS
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &o.configType)
+			delete(rawMsg, key)
 		case "managedIdentityResourceId":
 			err = unpopulate(val, "ManagedIdentityResourceID", &o.ManagedIdentityResourceID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &o.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3041,8 +3041,8 @@ func (o *OnYourDataUserAssignedManagedIdentityAuthenticationOptions) UnmarshalJS
 // MarshalJSON implements the json.Marshaller interface for type PineconeChatExtensionConfiguration.
 func (p PineconeChatExtensionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", p.Parameters)
 	objectMap["type"] = AzureChatExtensionTypePinecone
+	populate(objectMap, "parameters", p.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -3055,11 +3055,11 @@ func (p *PineconeChatExtensionConfiguration) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "type":
+			err = unpopulate(val, "configType", &p.configType)
+			delete(rawMsg, key)
 		case "parameters":
 			err = unpopulate(val, "Parameters", &p.Parameters)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

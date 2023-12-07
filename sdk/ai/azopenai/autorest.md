@@ -52,6 +52,82 @@ directive:
       $["ImageGenerationOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
 ```
 
+## Polymorphic adjustments
+
+The polymorphic _input_ models all expose the discriminator but it's ignored when serializing 
+(ie, each type already knows the value and fills it in). So we'll just hide it.
+
+`ChatRequestMessageClassification.Role`
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatRequestMessage
+    transform: $.properties.role["x-ms-client-name"] = "InternalRoleRename"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/InternalRoleRename/g, "role")
+```
+
+`AzureChatExtensionConfigurationClassification.Type`
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AzureChatExtensionConfiguration
+    transform: $.properties.type["x-ms-client-name"] = "InternalChatExtensionTypeRename"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/InternalChatExtensionTypeRename/g, "configType")
+```
+
+`OnYourDataAuthenticationOptionsClassification.Type`
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OnYourDataAuthenticationOptions
+    transform: $.properties.type["x-ms-client-name"] = "InternalOYDAuthTypeRename"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/InternalOYDAuthTypeRename/g, "configType")
+```
+
+`ChatCompletionRequestMessageContentPartClassification.Type` is adjusted below since we're also injecting the swagger.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionRequestMessageContentPart
+    transform: $.properties.type["x-ms-client-name"] = "ChatCompletionRequestMessageContentPartTypeRename"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/ChatCompletionRequestMessageContentPartTypeRename/g, "partType")
+```
+
+## Model -> DeploymentName
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: |
+      $["AudioTranscriptionOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $["AudioTranslationOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $["ChatCompletionsOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $["CompletionsOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $["EmbeddingsOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+      $["ImageGenerationOptions"].properties["model"]["x-ms-client-name"] = "DeploymentName";
+```
+
 ## Cleanup the audio transcription APIs
 
 We're wrapping the audio translation and transcription APIs, so we can eliminate some of 

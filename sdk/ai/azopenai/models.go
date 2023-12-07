@@ -531,7 +531,7 @@ type ChatCompletionRequestMessageContentPartImage struct {
 	// REQUIRED; The type of the content part.
 	partType *ChatCompletionRequestMessageContentPartType
 
-	// REQUIRED
+	// REQUIRED; contains the URL and level of detail for an image prompt
 	ImageURL *ChatCompletionRequestMessageContentPartImageURL
 }
 
@@ -543,6 +543,7 @@ func (c *ChatCompletionRequestMessageContentPartImage) GetChatCompletionRequestM
 	}
 }
 
+// ChatCompletionRequestMessageContentPartImageURL - contains the URL and level of detail for an image prompt
 type ChatCompletionRequestMessageContentPartImageURL struct {
 	// REQUIRED; Either a URL of the image or the base64 encoded image data.
 	URL *string

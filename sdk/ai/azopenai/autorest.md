@@ -28,7 +28,6 @@ directive:
   # Add x-ms-parameter-location to parameters in x-ms-parameterized-host
   - from: swagger-document
     where: $["x-ms-parameterized-host"].parameters.0
-    debug: true
     transform: $["x-ms-parameter-location"] = "client";
   # Make deploymentId a client parameter
   # This must be done in each operation as the parameter is not defined in the components section
@@ -166,7 +165,6 @@ directive:
 directive:
   - from: swagger-document
     where: $.definitions["Azure.Core.Foundations.Error"]
-    debug: true
     transform: |
       $.properties = { 
         code: $.properties["code"],
@@ -461,6 +459,7 @@ directive:
         "properties": {
           "image_url": {
             "type": "object",
+            "title": "contains the URL and level of detail for an image prompt",
             "properties": {
               "url": {
                 "type": "string",

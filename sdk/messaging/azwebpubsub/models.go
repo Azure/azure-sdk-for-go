@@ -39,6 +39,7 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// InnerError - The inner error object
 type InnerError struct {
 	// A more specific error code than was provided by the containing error.
 	Code  *string

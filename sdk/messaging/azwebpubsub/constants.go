@@ -29,6 +29,7 @@ func PossibleContentTypeValues() []ContentType {
 	}
 }
 
+// Permission contains the allowed permissions
 type Permission string
 
 const (

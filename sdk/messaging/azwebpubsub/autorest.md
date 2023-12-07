@@ -34,12 +34,26 @@ directive:
     - from: client.go
       where: $
       transform: return $.replace(/\bCheckPermission\b/g, "checkPermission");
-    # Add more properties to lient
+    # Add more properties to the client
     - from: client.go
       where: $
       transform: >-
         return $.replace(
             /(type Client struct[^}]+})/s, 
             "type Client struct {\n	internal *azcore.Client\n	endpoint string\n	key      *string\n}")
+    # Add comments to type Permission
+    - from: constants.go
+      where: $
+      transform: >-
+        return $.replace(
+            /type Permission string/s, 
+            "// Permission contains the allowed permissions\ntype Permission string")
+    # Add comments to InnerError
+    - from: models.go
+      where: $
+      transform: >-
+        return $.replace(
+            /type InnerError struct/s, 
+            "// InnerError - The inner error object\ntype InnerError struct")
 
 ```

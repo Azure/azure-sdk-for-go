@@ -275,3 +275,314 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 		Tracer: c.appConfigClient.Tracer(),
 	})
 }
+
+// NewGetSnapshotsPager - Gets a list of key-value snapshots.
+//
+//   - options - NewGetSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
+//     method.
+func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *runtime.Pager[NewGetSnapshotsPagerResponse] {
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
+	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
+
+	return runtime.NewPager(runtime.PagingHandler[NewGetSnapshotsPagerResponse]{
+		More: func(NewGetSnapshotsPagerResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *NewGetSnapshotsPagerResponse) (NewGetSnapshotsPagerResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return NewGetSnapshotsPagerResponse{}, err
+			}
+
+			snapshots := []Snapshot{}
+
+			for _, snapshot := range page.Items {
+
+				convertedETag := azcore.ETag(*snapshot.Etag)
+
+				var convertedFilters []KeyValueFilter
+
+				for _, filter := range snapshot.Filters {
+					convertedFilters = append(convertedFilters, KeyValueFilter{
+						Key:   filter.Key,
+						Label: filter.Label,
+					})
+				}
+				snapshots = append(snapshots, Snapshot{
+					Filters:         convertedFilters,
+					CompositionType: snapshot.CompositionType,
+					RetentionPeriod: snapshot.RetentionPeriod,
+					Tags:            snapshot.Tags,
+					Created:         snapshot.Created,
+					ETag:            &convertedETag,
+					Expires:         snapshot.Expires,
+					ItemsCount:      snapshot.ItemsCount,
+					Name:            snapshot.Name,
+					Size:            snapshot.Size,
+					Status:          snapshot.Status,
+				})
+			}
+
+			return NewGetSnapshotsPagerResponse{
+				Snapshots: snapshots,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// NewListConfigurationSettingsForSnapshotPager
+//
+// - snapshotName - The name of the snapshot to list configuration settings for
+// - options - ListConfigurationSettingsForSnapshotOptions contains the optional parameters to retrieve Snapshot configuration settings
+func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
+	if options == nil {
+		options = &ListConfigurationSettingsForSnapshotOptions{}
+	}
+
+	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
+		AcceptDatetime: options.AcceptDatetime,
+		After:          options.After,
+		IfMatch:        options.IfMatch,
+		IfNoneMatch:    options.IfNoneMatch,
+		Select:         options.Select,
+		Snapshot:       &snapshotName,
+		Key:            &options.Key,
+		Label:          &options.Label,
+	}
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
+
+	return runtime.NewPager(runtime.PagingHandler[ListConfigurationSettingsForSnapshotResponse]{
+		More: func(ListConfigurationSettingsForSnapshotResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListConfigurationSettingsForSnapshotResponse) (ListConfigurationSettingsForSnapshotResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return ListConfigurationSettingsForSnapshotResponse{}, err
+			}
+
+			var settings []Setting
+
+			for _, s := range page.Items {
+				settings = append(settings, settingFromGenerated(s))
+			}
+
+			return ListConfigurationSettingsForSnapshotResponse{
+				Settings:  settings,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// BeginCreateSnapshot creates a snapshot of the configuration store.
+//
+// - snapshotName - The name of the snapshot to create.
+// - keyLabelFilter - The filters to apply on the key-values.
+// - options - BeginCreateSnapshotOptions contains the optional parameters to create a Snapshot
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[BeginCreateSnapshotResponse], error) {
+	filter := []generated.KeyValueFilter{}
+
+	if options == nil {
+		options = &BeginCreateSnapshotOptions{}
+	}
+
+	for _, f := range keyLabelFilter {
+		filter = append(filter, generated.KeyValueFilter{
+			Key:   f.KeyFilter,
+			Label: f.LabelFilter,
+		})
+	}
+
+	if len(filter) == 0 {
+		filter = append(filter, generated.KeyValueFilter{})
+	}
+
+	var convertedETag *string
+
+	if options.ETag != nil {
+		convertedETag = (*string)(options.ETag)
+	} else {
+		s := ""
+		convertedETag = &s
+	}
+
+	entity := generated.Snapshot{
+		Filters:         filter,
+		CompositionType: options.CompositionType,
+		RetentionPeriod: options.RetentionPeriod,
+		Tags:            options.Tags,
+		Created:         options.Created,
+		Etag:            convertedETag,
+		Expires:         options.Expires,
+		ItemsCount:      options.ItemsCount,
+		Name:            &snapshotName,
+		Size:            options.Size,
+		Status:          options.Status,
+	}
+
+	opts := generated.AzureAppConfigurationClientBeginCreateSnapshotOptions{
+		ResumeToken: options.ResumeToken,
+	}
+
+	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
+
+	if err != nil {
+		return &runtime.Poller[BeginCreateSnapshotResponse]{}, err
+	}
+
+	return pollerSS, nil
+}
+
+// GetSnapshot gets a snapshot
+//
+// - snapshotName - The name of the snapshot to get.
+// - options - GetSnapshotOptions contains the optional parameters to get a snapshot
+func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {
+	if options == nil {
+		options = &GetSnapshotOptions{}
+	}
+
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotOptions)(options)
+
+	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, opts)
+
+	if err != nil {
+		return GetSnapshotResponse{}, err
+	}
+
+	convertedETag := azcore.ETag(*getResp.ETag)
+
+	var convertedFilters []KeyValueFilter
+
+	for _, filter := range getResp.Snapshot.Filters {
+		convertedFilters = append(convertedFilters, KeyValueFilter{
+			Key:   filter.Key,
+			Label: filter.Label,
+		})
+	}
+
+	convertResp := AzureAppConfigurationClientUpdateSnapshotResponse{
+		Snapshot: Snapshot{
+			Filters:         convertedFilters,
+			CompositionType: getResp.Snapshot.CompositionType,
+			RetentionPeriod: getResp.Snapshot.RetentionPeriod,
+			Tags:            getResp.Snapshot.Tags,
+			Created:         getResp.Snapshot.Created,
+			ETag:            &convertedETag,
+			Expires:         getResp.Snapshot.Expires,
+			ItemsCount:      getResp.Snapshot.ItemsCount,
+			Name:            getResp.Snapshot.Name,
+			Size:            getResp.Snapshot.Size,
+			Status:          getResp.Snapshot.Status,
+		},
+		Link:      getResp.Link,
+		SyncToken: getResp.SyncToken,
+	}
+
+	resp := GetSnapshotResponse{
+		Snapshot:  convertResp.Snapshot,
+		SyncToken: SyncToken(*getResp.SyncToken),
+		Link:      getResp.Link,
+	}
+
+	return resp, nil
+}
+
+// ArchiveSnapshot archives a snapshot
+//
+// - snapshotName - The name of the snapshot to archive.
+// - options - ArchiveSnapshotOptions contains the optional parameters to archive a snapshot
+func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
+	if options == nil {
+		options = &ArchiveSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusArchived, &opts)
+
+	if err != nil {
+		return ArchiveSnapshotResponse{}, err
+	}
+
+	return (ArchiveSnapshotResponse)(resp), nil
+}
+
+// RecoverSnapshot recovers a snapshot
+//
+// - snapshotName - The name of the snapshot to recover.
+// - options - RecoverSnapshotOptions contains the optional parameters to recover a snapshot
+func (c *Client) RecoverSnapshot(ctx context.Context, snapshotName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
+	if options == nil {
+		options = &RecoverSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusReady, &opts)
+
+	if err != nil {
+		return RecoverSnapshotResponse{}, err
+	}
+
+	return (RecoverSnapshotResponse)(resp), nil
+}
+
+func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, status SnapshotStatus, options *updateSnapshotStatusOptions) (updateSnapshotStatusResponse, error) {
+	entity := generated.SnapshotUpdateParameters{
+		Status: &status,
+	}
+
+	opts := (*generated.AzureAppConfigurationClientUpdateSnapshotOptions)(options)
+
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, opts)
+
+	if err != nil {
+		return updateSnapshotStatusResponse{}, err
+	}
+
+	var convertedFilters []KeyValueFilter
+
+	for _, filter := range updateResp.Snapshot.Filters {
+		convertedFilters = append(convertedFilters, KeyValueFilter{
+			Key:   filter.Key,
+			Label: filter.Label,
+		})
+	}
+
+	convertedETag := azcore.ETag(*updateResp.ETag)
+
+	convertResp := AzureAppConfigurationClientUpdateSnapshotResponse{
+		Snapshot: Snapshot{
+			Filters:         convertedFilters,
+			CompositionType: updateResp.Snapshot.CompositionType,
+			RetentionPeriod: updateResp.Snapshot.RetentionPeriod,
+			Tags:            updateResp.Snapshot.Tags,
+			Created:         updateResp.Snapshot.Created,
+			ETag:            &convertedETag,
+			Expires:         updateResp.Snapshot.Expires,
+			ItemsCount:      updateResp.Snapshot.ItemsCount,
+			Name:            updateResp.Snapshot.Name,
+			Size:            updateResp.Snapshot.Size,
+			Status:          updateResp.Snapshot.Status,
+		},
+		Link:      updateResp.Link,
+		SyncToken: updateResp.SyncToken,
+	}
+
+	resp := updateSnapshotStatusResponse{
+		Snapshot:  convertResp.Snapshot,
+		Link:      convertResp.Link,
+		SyncToken: SyncToken(*updateResp.SyncToken),
+	}
+
+	return resp, nil
+}

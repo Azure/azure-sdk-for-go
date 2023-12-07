@@ -9,6 +9,7 @@ package azappconfig
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
 )
 
@@ -77,4 +78,95 @@ type SetSettingResponse struct {
 
 	// SyncToken contains the value returned in the Sync-Token header.
 	SyncToken SyncToken
+}
+
+// ArchiveSnapshotResponse contains the response from the ArchiveSnapshot method.
+type ArchiveSnapshotResponse struct {
+	Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken SyncToken
+}
+
+// RestoreSnapshotResponse contains the response from the RestoreSnapshot method.
+type RestoreSnapshotResponse struct {
+	Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken SyncToken
+}
+
+// NewGetSnapshotsPagerResponse contains the response from the NewGetSnapshotsPager method.
+type NewGetSnapshotsPagerResponse struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Snapshots []Snapshot
+
+	// SyncToken contains the value returned in the Sync-Token header.
+	SyncToken SyncToken
+}
+
+// BeginCreateSnapshotResponse contains the response from the BeginCreateSnapshot method.
+type BeginCreateSnapshotResponse struct {
+}
+
+// ListConfigurationSettingsForSnapshotResponse contains the response from the ListConfigurationSettingsForSnapshot method.
+type ListConfigurationSettingsForSnapshotResponse struct {
+	// Contains the configuration settings returned that match the setting selector provided.
+	Settings []Setting
+
+	// SyncToken contains the value returned in the Sync-Token header.
+	SyncToken SyncToken
+}
+
+// GetSnapshotResponse contains the response from the GetSnapshot method.
+type GetSnapshotResponse struct {
+	Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken SyncToken
+}
+
+// RecoverSnapshotResponse contains the response from the RecoverSnapshot method.
+type RecoverSnapshotResponse struct {
+	Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken SyncToken
+}
+
+// updateSnapshotStatusResponse contains the response from the UpdateSnapshotStatus method.
+type updateSnapshotStatusResponse struct {
+	Snapshot
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken SyncToken
+}
+
+// AzureAppConfigurationClientUpdateSnapshotResponse contains the response from method AzureAppConfigurationClient.UpdateSnapshot.
+type AzureAppConfigurationClientUpdateSnapshotResponse struct {
+	Snapshot
+
+	// ETag contains the information returned from the ETag header response.
+	ETag azcore.ETag
+
+	// Link contains the information returned from the Link header response.
+	Link *string
+
+	// SyncToken contains the information returned from the Sync-Token header response.
+	SyncToken *string
 }

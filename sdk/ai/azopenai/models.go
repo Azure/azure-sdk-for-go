@@ -720,7 +720,7 @@ type ChatCompletionsOptions struct {
 	Temperature *float32
 
 	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
-	ToolChoice any
+	ToolChoice *ChatCompletionsToolChoice
 
 	// The available tool definitions that the chat completions request can use, including caller-defined functions.
 	Tools []ChatCompletionsToolDefinitionClassification

@@ -1316,7 +1316,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "seed", c.Seed)
 	populate(objectMap, "stop", c.Stop)
 	populate(objectMap, "temperature", c.Temperature)
-	populateAny(objectMap, "tool_choice", c.ToolChoice)
+	populate(objectMap, "tool_choice", c.ToolChoice)
 	populate(objectMap, "tools", c.Tools)
 	populate(objectMap, "top_p", c.TopP)
 	populate(objectMap, "user", c.User)

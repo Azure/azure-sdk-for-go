@@ -1490,6 +1490,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 		Permissions:     perms.String(),
 		EncryptionScope: encryptionScope,
 	}.SignWithUserDelegation(udc)
+	_require.Nil(err)
 
 	sasURL := fmt.Sprintf(fsClient.DFSURL() + sasQueryParams.Encode())
 	// This URL can be used to authenticate requests now

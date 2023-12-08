@@ -57,10 +57,10 @@ func RetryAfter(resp *http.Response) time.Duration {
 
 		// custom is used when the regular algorithm failed and is optional.
 		// the returned duration is used verbatim (units is not applied).
-		custom func(string) (time.Duration, error)
+		custom func(string) time.Duration
 	}
 
-	nop := func(string) (time.Duration, error) { return 0, nil }
+	nop := func(string) time.Duration { return 0 }
 
 	// the headers are listed in order of preference
 	retries := []retryData{
@@ -80,12 +80,12 @@ func RetryAfter(resp *http.Response) time.Duration {
 
 			// retry-after values are expressed in either number of
 			// seconds or an HTTP-date indicating when to try again
-			custom: func(ra string) (time.Duration, error) {
+			custom: func(ra string) time.Duration {
 				t, err := time.Parse(time.RFC1123, ra)
 				if err != nil {
-					return 0, err
+					return 0
 				}
-				return time.Until(t), nil
+				return time.Until(t)
 			},
 		},
 	}
@@ -97,7 +97,7 @@ func RetryAfter(resp *http.Response) time.Duration {
 		}
 		if retryAfter, _ := strconv.Atoi(v); retryAfter > 0 {
 			return time.Duration(retryAfter) * retry.units
-		} else if d, err := retry.custom(v); err == nil {
+		} else if d := retry.custom(v); d > 0 {
 			return d
 		}
 	}

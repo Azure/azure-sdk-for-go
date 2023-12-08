@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2023-12-07)
+## 0.4.0 (2023-12-11)
 
 Support for many of the features mentioned in OpenAI's November Dev Day and Microsoft's 2023 Ignite conference
 

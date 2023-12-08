@@ -181,26 +181,6 @@ func PossibleChatCompletionRequestMessageContentPartTypeValues() []ChatCompletio
 	}
 }
 
-// ChatCompletionsResponseFormat - The valid response formats Chat Completions can provide. Used to enable JSON mode.
-type ChatCompletionsResponseFormat string
-
-const (
-	// ChatCompletionsResponseFormatJSONObject - Use a response format that guarantees emission of a valid JSON object. Only structure
-	// is guaranteed and contents must
-	// still be validated.
-	ChatCompletionsResponseFormatJSONObject ChatCompletionsResponseFormat = "json_object"
-	// ChatCompletionsResponseFormatText - Use the default, plain text response format.
-	ChatCompletionsResponseFormatText ChatCompletionsResponseFormat = "text"
-)
-
-// PossibleChatCompletionsResponseFormatValues returns the possible values for the ChatCompletionsResponseFormat const type.
-func PossibleChatCompletionsResponseFormatValues() []ChatCompletionsResponseFormat {
-	return []ChatCompletionsResponseFormat{
-		ChatCompletionsResponseFormatJSONObject,
-		ChatCompletionsResponseFormatText,
-	}
-}
-
 // ChatRole - A description of the intended purpose of a message within a chat completions interaction.
 type ChatRole string
 

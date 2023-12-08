@@ -634,6 +634,20 @@ func (c *ChatCompletionsFunctionToolDefinition) GetChatCompletionsToolDefinition
 	}
 }
 
+// ChatCompletionsJSONResponseFormat - A response format for Chat Completions that restricts responses to emitting valid JSON
+// objects.
+type ChatCompletionsJSONResponseFormat struct {
+	// REQUIRED; The discriminated type for the response format.
+	respType *string
+}
+
+// GetChatCompletionsResponseFormat implements the ChatCompletionsResponseFormatClassification interface for type ChatCompletionsJSONResponseFormat.
+func (c *ChatCompletionsJSONResponseFormat) GetChatCompletionsResponseFormat() *ChatCompletionsResponseFormat {
+	return &ChatCompletionsResponseFormat{
+		respType: c.respType,
+	}
+}
+
 // ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletionsOptions struct {
@@ -689,7 +703,7 @@ type ChatCompletionsOptions struct {
 	PresencePenalty *float32
 
 	// An object specifying the format that the model must output. Used to enable JSON mode.
-	ResponseFormat *ChatCompletionsResponseFormat
+	ResponseFormat ChatCompletionsResponseFormatClassification
 
 	// If specified, the system will make a best effort to sample deterministically such that repeated requests with the same
 	// seed and parameters should return the same result. Determinism is not guaranteed,
@@ -706,7 +720,7 @@ type ChatCompletionsOptions struct {
 	Temperature *float32
 
 	// If specified, the model will configure which of the provided tools it can use for the chat completions response.
-	ToolChoice any
+	ToolChoice *ChatCompletionsToolChoice
 
 	// The available tool definitions that the chat completions request can use, including caller-defined functions.
 	Tools []ChatCompletionsToolDefinitionClassification
@@ -720,6 +734,32 @@ type ChatCompletionsOptions struct {
 
 	// An identifier for the caller or end user of the operation. This may be used for tracking or rate-limiting purposes.
 	User *string
+}
+
+// ChatCompletionsResponseFormat - An abstract representation of a response format configuration usable by Chat Completions.
+// Can be used to enable JSON mode.
+type ChatCompletionsResponseFormat struct {
+	// REQUIRED; The discriminated type for the response format.
+	respType *string
+}
+
+// GetChatCompletionsResponseFormat implements the ChatCompletionsResponseFormatClassification interface for type ChatCompletionsResponseFormat.
+func (c *ChatCompletionsResponseFormat) GetChatCompletionsResponseFormat() *ChatCompletionsResponseFormat {
+	return c
+}
+
+// ChatCompletionsTextResponseFormat - The standard Chat Completions response format that can freely generate text and is
+// not guaranteed to produce response content that adheres to a specific schema.
+type ChatCompletionsTextResponseFormat struct {
+	// REQUIRED; The discriminated type for the response format.
+	respType *string
+}
+
+// GetChatCompletionsResponseFormat implements the ChatCompletionsResponseFormatClassification interface for type ChatCompletionsTextResponseFormat.
+func (c *ChatCompletionsTextResponseFormat) GetChatCompletionsResponseFormat() *ChatCompletionsResponseFormat {
+	return &ChatCompletionsResponseFormat{
+		respType: c.respType,
+	}
 }
 
 // ChatCompletionsToolCall - An abstract representation of a tool call that must be resolved in a subsequent request to perform

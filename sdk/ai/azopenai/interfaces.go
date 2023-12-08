@@ -27,6 +27,15 @@ type ChatCompletionRequestMessageContentPartClassification interface {
 	GetChatCompletionRequestMessageContentPart() *ChatCompletionRequestMessageContentPart
 }
 
+// ChatCompletionsResponseFormatClassification provides polymorphic access to related types.
+// Call the interface's GetChatCompletionsResponseFormat() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ChatCompletionsJSONResponseFormat, *ChatCompletionsResponseFormat, *ChatCompletionsTextResponseFormat
+type ChatCompletionsResponseFormatClassification interface {
+	// GetChatCompletionsResponseFormat returns the ChatCompletionsResponseFormat content of the underlying type.
+	GetChatCompletionsResponseFormat() *ChatCompletionsResponseFormat
+}
+
 // ChatCompletionsToolCallClassification provides polymorphic access to related types.
 // Call the interface's GetChatCompletionsToolCall() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

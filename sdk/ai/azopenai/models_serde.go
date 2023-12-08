@@ -1271,6 +1271,33 @@ func (c *ChatCompletionsFunctionToolDefinition) UnmarshalJSON(data []byte) error
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ChatCompletionsJSONResponseFormat.
+func (c ChatCompletionsJSONResponseFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = "json_object"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsJSONResponseFormat.
+func (c *ChatCompletionsJSONResponseFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "respType", &c.respType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ChatCompletionsOptions.
 func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1289,7 +1316,7 @@ func (c ChatCompletionsOptions) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "seed", c.Seed)
 	populate(objectMap, "stop", c.Stop)
 	populate(objectMap, "temperature", c.Temperature)
-	populateAny(objectMap, "tool_choice", c.ToolChoice)
+	populate(objectMap, "tool_choice", c.ToolChoice)
 	populate(objectMap, "tools", c.Tools)
 	populate(objectMap, "top_p", c.TopP)
 	populate(objectMap, "user", c.User)
@@ -1333,7 +1360,7 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PresencePenalty", &c.PresencePenalty)
 			delete(rawMsg, key)
 		case "response_format":
-			err = unpopulate(val, "ResponseFormat", &c.ResponseFormat)
+			c.ResponseFormat, err = unmarshalChatCompletionsResponseFormatClassification(val)
 			delete(rawMsg, key)
 		case "seed":
 			err = unpopulate(val, "Seed", &c.Seed)
@@ -1355,6 +1382,60 @@ func (c *ChatCompletionsOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "user":
 			err = unpopulate(val, "User", &c.User)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatCompletionsResponseFormat.
+func (c ChatCompletionsResponseFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = c.respType
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsResponseFormat.
+func (c *ChatCompletionsResponseFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "respType", &c.respType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ChatCompletionsTextResponseFormat.
+func (c ChatCompletionsTextResponseFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["type"] = "text"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsTextResponseFormat.
+func (c *ChatCompletionsTextResponseFormat) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, "respType", &c.respType)
 			delete(rawMsg, key)
 		}
 		if err != nil {

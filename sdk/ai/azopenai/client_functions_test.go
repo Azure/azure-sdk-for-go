@@ -28,15 +28,46 @@ type ParamProperty struct {
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
 	// https://platform.openai.com/docs/guides/gpt/function-calling
 
+	useSpecificTool := azopenai.NewChatCompletionsToolChoice(
+		azopenai.ChatCompletionsToolChoiceFunction{Name: "get_current_weather"},
+	)
+
 	t.Run("OpenAI", func(t *testing.T) {
 		chatClient := newOpenAIClientForTest(t)
-		testChatCompletionsFunctions(t, chatClient, openAI.ChatCompletions)
-		testChatCompletionsFunctions(t, chatClient, openAI.ChatCompletionsLegacyFunctions)
+
+		testData := []struct {
+			Model      string
+			ToolChoice *azopenai.ChatCompletionsToolChoice
+		}{
+			// all of these variants use the tool provided - auto just also works since we did provide
+			// a tool reference and ask a question to use it.
+			{Model: openAI.ChatCompletions, ToolChoice: nil},
+			{Model: openAI.ChatCompletions, ToolChoice: azopenai.ChatCompletionsToolChoiceAuto},
+			{Model: openAI.ChatCompletionsLegacyFunctions, ToolChoice: useSpecificTool},
+		}
+
+		for _, td := range testData {
+			testChatCompletionsFunctions(t, chatClient, td.Model, td.ToolChoice)
+		}
 	})
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		chatClient := newAzureOpenAIClientForTest(t, azureOpenAI)
-		testChatCompletionsFunctions(t, chatClient, azureOpenAI.ChatCompletions)
+
+		testData := []struct {
+			Model      string
+			ToolChoice *azopenai.ChatCompletionsToolChoice
+		}{
+			// all of these variants use the tool provided - auto just also works since we did provide
+			// a tool reference and ask a question to use it.
+			{Model: azureOpenAI.ChatCompletions, ToolChoice: nil},
+			{Model: azureOpenAI.ChatCompletions, ToolChoice: azopenai.ChatCompletionsToolChoiceAuto},
+			{Model: azureOpenAI.ChatCompletions, ToolChoice: useSpecificTool},
+		}
+
+		for _, td := range testData {
+			testChatCompletionsFunctions(t, chatClient, td.Model, td.ToolChoice)
+		}
 	})
 }
 
@@ -120,7 +151,7 @@ func testChatCompletionsFunctionsOlderStyle(t *testing.T, client *azopenai.Clien
 	require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
 }
 
-func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, deploymentName string, toolChoice *azopenai.ChatCompletionsToolChoice) {
 	body := azopenai.ChatCompletionsOptions{
 		DeploymentName: &deploymentName,
 		Messages: []azopenai.ChatRequestMessageClassification{
@@ -150,6 +181,7 @@ func testChatCompletionsFunctions(t *testing.T, chatClient *azopenai.Client, dep
 				},
 			},
 		},
+		ToolChoice:  toolChoice,
 		Temperature: to.Ptr[float32](0.0),
 	}
 

@@ -4,8 +4,7 @@ These settings apply only when `--go` is specified on the command line.
 
 ``` yaml
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/d402f685809d6d08be9c0b45065cadd7d78ab870/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2023-12-01-preview/generated.json
-
+- https://github.com/Azure/azure-rest-api-specs/blob/3e0e2a93ddb3c9c44ff1baf4952baa24ca98e9db/specification/cognitiveservices/data-plane/AzureOpenAI/inference/preview/2023-12-01-preview/generated.json
 output-folder: ../azopenai
 clear-output-folder: false
 module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
@@ -96,6 +95,20 @@ directive:
     - models_serde.go
     where: $
     transform: return $.replace(/InternalOYDAuthTypeRename/g, "configType")
+```
+
+`ChatCompletionsResponseFormat.Type`
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsResponseFormat
+    transform: $.properties.type["x-ms-client-name"] = "InternalChatCompletionsResponseFormat"
+  - from:
+    - models.go
+    - models_serde.go
+    where: $
+    transform: return $.replace(/InternalChatCompletionsResponseFormat/g, "respType")
 ```
 
 ## Model -> DeploymentName
@@ -570,4 +583,22 @@ directive:
         `populate(objectMap, "functions", c.Functions)`;
 
       return $.replace(/(func \(c ChatCompletionsOptions\) MarshalJSON\(\).+?populate\(objectMap, "frequency_penalty", c.FrequencyPenalty\))/s, "$1\n" + populateLines)
+```
+
+Fix ToolChoice discriminated union
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ChatCompletionsOptions.properties
+    transform: $["tool_choice"]["x-ms-client-name"] = "ToolChoiceRenameMe"
+  - from: 
+    - models.go
+    - models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/^\s+ToolChoiceRenameMe.+$/m, "ToolChoice *ChatCompletionsToolChoice")   // update the name _and_ type for the field
+        .replace(/ToolChoiceRenameMe/g, "ToolChoice")    // rename all other references
+        .replace(/populateAny\(objectMap, "tool_choice", c\.ToolChoice\)/, 'populate(objectMap, "tool_choice", c.ToolChoice)');   // treat field as typed so nil means omit.
 ```

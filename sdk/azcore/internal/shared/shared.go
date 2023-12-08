@@ -44,22 +44,61 @@ func Delay(ctx context.Context, delay time.Duration) error {
 	}
 }
 
-// RetryAfter returns non-zero if the response contains a Retry-After header value.
+// RetryAfter returns non-zero if the response contains one of the headers with a "retry after" value.
+// Headers are checked in the following order: retry-after-ms, x-ms-retry-after-ms, retry-after
 func RetryAfter(resp *http.Response) time.Duration {
 	if resp == nil {
 		return 0
 	}
-	ra := resp.Header.Get(HeaderRetryAfter)
-	if ra == "" {
-		return 0
+
+	type retryData struct {
+		header string
+		units  time.Duration
+		custom func(string) (time.Duration, error)
 	}
-	// retry-after values are expressed in either number of
-	// seconds or an HTTP-date indicating when to try again
-	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
-		return time.Duration(retryAfter) * time.Second
-	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
-		return time.Until(t)
+
+	nop := func(string) (time.Duration, error) { return 0, nil }
+
+	// the headers are listed in order of preference
+	retries := []retryData{
+		{
+			header: HeaderRetryAfterMS,
+			units:  time.Millisecond,
+			custom: nop,
+		},
+		{
+			header: HeaderXMSRetryAfterMS,
+			units:  time.Millisecond,
+			custom: nop,
+		},
+		{
+			header: HeaderRetryAfter,
+			units:  time.Second,
+
+			// retry-after values are expressed in either number of
+			// seconds or an HTTP-date indicating when to try again
+			custom: func(ra string) (time.Duration, error) {
+				t, err := time.Parse(time.RFC1123, ra)
+				if err != nil {
+					return 0, err
+				}
+				return time.Until(t), nil
+			},
+		},
 	}
+
+	for _, retry := range retries {
+		v := resp.Header.Get(retry.header)
+		if v == "" {
+			continue
+		}
+		if retryAfter, _ := strconv.Atoi(v); retryAfter > 0 {
+			return time.Duration(retryAfter) * retry.units
+		} else if d, err := retry.custom(v); err == nil {
+			return d
+		}
+	}
+
 	return 0
 }
 

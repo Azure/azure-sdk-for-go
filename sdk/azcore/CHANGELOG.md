@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* The `retry-after-ms` and `x-ms-retry-after-ms` headers weren't being checked during retries.
+
 ### Other Changes
 
 ## 1.9.0 (2023-11-06)

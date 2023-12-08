@@ -1075,6 +1075,10 @@ func TestDoForClient(t *testing.T) {
 					assert.Empty(t, rb)
 				}
 
+				for k, v := range tt.headers {
+					assert.Equal(t, v, req.Header[k])
+				}
+
 				assert.Equal(t, policyHeaderValue, req.Header.Get(policyHeaderName))
 
 				rw.Header().Set("content-type", "application/json")

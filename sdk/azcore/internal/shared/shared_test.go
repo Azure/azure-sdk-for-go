@@ -75,6 +75,12 @@ func TestRetryAfter(t *testing.T) {
 	resp.Header.Set(HeaderXMSRetryAfterMS, "400")
 	resp.Header.Set(HeaderRetryAfter, "300")
 	require.Equal(t, time.Duration(400)*time.Millisecond, RetryAfter(resp))
+	resp.Header = http.Header{}
+	resp.Header.Set(HeaderRetryAfterMS, "invalid")
+	require.Zero(t, RetryAfter(resp))
+	resp.Header = http.Header{}
+	resp.Header.Set(HeaderXMSRetryAfterMS, "invalid")
+	require.Zero(t, RetryAfter(resp))
 }
 
 func TestTypeOfT(t *testing.T) {

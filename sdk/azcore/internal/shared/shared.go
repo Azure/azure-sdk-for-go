@@ -54,6 +54,9 @@ func RetryAfter(resp *http.Response) time.Duration {
 	type retryData struct {
 		header string
 		units  time.Duration
+
+		// custom is used when the regular algorithm failed and is optional.
+		// the returned duration is used verbatim (units is not applied).
 		custom func(string) (time.Duration, error)
 	}
 

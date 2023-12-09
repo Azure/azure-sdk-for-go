@@ -19,8 +19,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var currTime = time.Now().Unix()
-
 // testId will be used for local testing as a unique identifier. The test proxy will record the base
 // request for snapshots. The deletion time for a snapshot is minimum 1 hour. For quicker
 // local iteration we will use a unique suffix for each test run.
@@ -28,8 +26,12 @@ var currTime = time.Now().Unix()
 //
 //	 Snapshot Name: `// + string(testId)`
 //		KeyValue Prefix: `/*testId +*/`
-var testId = "12723uid"
 
+// Record Mode
+var testId = "120823uid"
+
+// // Local Testing Mode
+// var currTime = time.Now().Unix()
 // var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
@@ -533,23 +535,18 @@ func TestSnapshotArchive(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	_, err := CreateSnapshot(client, snapshotName, nil)
-
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 	require.NoError(t, err)
 
-	_, err = client.RecoverSnapshot(context.Background(), snapshotName, nil)
+	// Snapshot must exist
+	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-
-	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
-
-	// Check that snapshot is in a "ready" state
-	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Status)
 
 	// Archive the snapshot
-	update, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+	archiveSnapshot, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusArchived, *update.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
 
 	//Best effort snapshot cleanup
 	CleanupSnapshot(client, snapshotName)
@@ -560,24 +557,24 @@ func TestSnapshotRecover(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	_, err := CreateSnapshot(client, snapshotName, nil)
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 	require.NoError(t, err)
 
-	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 
 	_, err = client.ArchiveSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 
 	// Check that snapshot is archived
-	snapshot, err = client.GetSnapshot(context.Background(), snapshotName, nil)
+	archivedSnapshot, err := client.GetSnapshot(context.Background(), *snapshot.Name, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusArchived, *snapshot.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archivedSnapshot.Snapshot.Status)
 
 	// Recover the snapshot
-	update, err := client.RecoverSnapshot(context.Background(), snapshotName, nil)
+	readySnapshot, err := client.RecoverSnapshot(context.Background(), *snapshot.Name, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusReady, *update.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Snapshot.Status)
 
 	// Best effort snapshot cleanup
 	CleanupSnapshot(client, snapshotName)
@@ -592,13 +589,13 @@ func TestSnapshotCreate(t *testing.T) {
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 
 	require.NoError(t, err)
-	require.Equal(t, snapshotName, *snapshot.Snapshot.Name)
+	require.Equal(t, snapshotName, *snapshot.Name)
 
 	// Best effort cleanup snapshot
 	CleanupSnapshot(client, snapshotName)
 }
 
-func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.GetSnapshotResponse, error) {
+func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
 	if sf == nil {
 		all := "*"
 		sf = []azappconfig.SettingFilter{
@@ -618,29 +615,29 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
 
 	if err != nil {
-		return azappconfig.GetSnapshotResponse{}, err
+		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
 	if resp == nil {
-		return azappconfig.GetSnapshotResponse{}, fmt.Errorf("resp is nil")
+		return azappconfig.CreateSnapshotResponse{}, fmt.Errorf("resp is nil")
 	}
-	_, err = resp.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+	snapshot, err := resp.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
 		Frequency: 1 * time.Second,
 	})
 
 	if err != nil {
-		return azappconfig.GetSnapshotResponse{}, err
+		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
 	//Check if snapshot exists. If not fail the test
-	snapshot, err := c.GetSnapshot(context.Background(), snapshotName, nil)
+	_, err = c.GetSnapshot(context.Background(), snapshotName, nil)
 
 	if err != nil {
-		return azappconfig.GetSnapshotResponse{}, err
+		return azappconfig.CreateSnapshotResponse{}, err
 	}
 
-	if snapshotName != *snapshot.Snapshot.Name {
-		return azappconfig.GetSnapshotResponse{}, fmt.Errorf("Snapshot name does not match")
+	if snapshotName != *snapshot.Name {
+		return azappconfig.CreateSnapshotResponse{}, fmt.Errorf("Snapshot name does not match")
 	}
 
 	return snapshot, nil

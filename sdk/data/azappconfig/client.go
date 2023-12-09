@@ -280,18 +280,18 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 //
 //   - options - NewGetSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
 //     method.
-func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *runtime.Pager[NewGetSnapshotsPagerResponse] {
+func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *runtime.Pager[ListGetSnapshotsPagerResponse] {
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
 
-	return runtime.NewPager(runtime.PagingHandler[NewGetSnapshotsPagerResponse]{
-		More: func(NewGetSnapshotsPagerResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListGetSnapshotsPagerResponse]{
+		More: func(ListGetSnapshotsPagerResponse) bool {
 			return ssRespPager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *NewGetSnapshotsPagerResponse) (NewGetSnapshotsPagerResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListGetSnapshotsPagerResponse) (ListGetSnapshotsPagerResponse, error) {
 			page, err := ssRespPager.NextPage(ctx)
 			if err != nil {
-				return NewGetSnapshotsPagerResponse{}, err
+				return ListGetSnapshotsPagerResponse{}, err
 			}
 
 			snapshots := []Snapshot{}
@@ -308,6 +308,7 @@ func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *run
 						Label: filter.Label,
 					})
 				}
+
 				snapshots = append(snapshots, Snapshot{
 					Filters:         convertedFilters,
 					CompositionType: snapshot.CompositionType,
@@ -323,7 +324,7 @@ func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *run
 				})
 			}
 
-			return NewGetSnapshotsPagerResponse{
+			return ListGetSnapshotsPagerResponse{
 				Snapshots: snapshots,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
@@ -383,7 +384,7 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName strin
 // - snapshotName - The name of the snapshot to create.
 // - keyLabelFilter - The filters to apply on the key-values.
 // - options - BeginCreateSnapshotOptions contains the optional parameters to create a Snapshot
-func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[BeginCreateSnapshotResponse], error) {
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
 	filter := []generated.KeyValueFilter{}
 
 	if options == nil {
@@ -401,37 +402,22 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, k
 		filter = append(filter, generated.KeyValueFilter{})
 	}
 
-	var convertedETag *string
-
-	if options.ETag != nil {
-		convertedETag = (*string)(options.ETag)
-	} else {
-		s := ""
-		convertedETag = &s
-	}
-
 	entity := generated.Snapshot{
 		Filters:         filter,
 		CompositionType: options.CompositionType,
 		RetentionPeriod: options.RetentionPeriod,
 		Tags:            options.Tags,
-		Created:         options.Created,
-		Etag:            convertedETag,
-		Expires:         options.Expires,
-		ItemsCount:      options.ItemsCount,
 		Name:            &snapshotName,
-		Size:            options.Size,
-		Status:          options.Status,
 	}
 
 	opts := generated.AzureAppConfigurationClientBeginCreateSnapshotOptions{
 		ResumeToken: options.ResumeToken,
 	}
 
-	pollerSS, err := generated.NewCreateSnapshotPoller[BeginCreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
+	pollerSS, err := generated.NewCreateSnapshotPoller[CreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
 
 	if err != nil {
-		return &runtime.Poller[BeginCreateSnapshotResponse]{}, err
+		return nil, err
 	}
 
 	return pollerSS, nil
@@ -454,37 +440,31 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 		return GetSnapshotResponse{}, err
 	}
 
-	convertedETag := azcore.ETag(*getResp.ETag)
+	convertedETag := azcore.ETag(*getResp.Etag)
 
 	var convertedFilters []KeyValueFilter
 
-	for _, filter := range getResp.Snapshot.Filters {
+	for _, filter := range getResp.Filters {
 		convertedFilters = append(convertedFilters, KeyValueFilter{
 			Key:   filter.Key,
 			Label: filter.Label,
 		})
 	}
 
-	convertResp := AzureAppConfigurationClientUpdateSnapshotResponse{
+	resp := GetSnapshotResponse{
 		Snapshot: Snapshot{
 			Filters:         convertedFilters,
-			CompositionType: getResp.Snapshot.CompositionType,
-			RetentionPeriod: getResp.Snapshot.RetentionPeriod,
-			Tags:            getResp.Snapshot.Tags,
-			Created:         getResp.Snapshot.Created,
+			CompositionType: getResp.CompositionType,
+			RetentionPeriod: getResp.RetentionPeriod,
+			Tags:            getResp.Tags,
+			Created:         getResp.Created,
 			ETag:            &convertedETag,
-			Expires:         getResp.Snapshot.Expires,
-			ItemsCount:      getResp.Snapshot.ItemsCount,
+			Expires:         getResp.Expires,
+			ItemsCount:      getResp.ItemsCount,
 			Name:            getResp.Snapshot.Name,
-			Size:            getResp.Snapshot.Size,
+			Size:            getResp.Size,
 			Status:          getResp.Snapshot.Status,
 		},
-		Link:      getResp.Link,
-		SyncToken: getResp.SyncToken,
-	}
-
-	resp := GetSnapshotResponse{
-		Snapshot:  convertResp.Snapshot,
 		SyncToken: SyncToken(*getResp.SyncToken),
 		Link:      getResp.Link,
 	}
@@ -549,39 +529,33 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 		return updateSnapshotStatusResponse{}, err
 	}
 
+	convertedETag := azcore.ETag(*updateResp.Etag)
+
 	var convertedFilters []KeyValueFilter
 
-	for _, filter := range updateResp.Snapshot.Filters {
+	for _, filter := range updateResp.Filters {
 		convertedFilters = append(convertedFilters, KeyValueFilter{
 			Key:   filter.Key,
 			Label: filter.Label,
 		})
 	}
 
-	convertedETag := azcore.ETag(*updateResp.ETag)
-
-	convertResp := AzureAppConfigurationClientUpdateSnapshotResponse{
+	resp := updateSnapshotStatusResponse{
 		Snapshot: Snapshot{
 			Filters:         convertedFilters,
-			CompositionType: updateResp.Snapshot.CompositionType,
-			RetentionPeriod: updateResp.Snapshot.RetentionPeriod,
-			Tags:            updateResp.Snapshot.Tags,
-			Created:         updateResp.Snapshot.Created,
+			CompositionType: updateResp.CompositionType,
+			RetentionPeriod: updateResp.RetentionPeriod,
+			Tags:            updateResp.Tags,
+			Created:         updateResp.Created,
 			ETag:            &convertedETag,
-			Expires:         updateResp.Snapshot.Expires,
-			ItemsCount:      updateResp.Snapshot.ItemsCount,
+			Expires:         updateResp.Expires,
+			ItemsCount:      updateResp.ItemsCount,
 			Name:            updateResp.Snapshot.Name,
-			Size:            updateResp.Snapshot.Size,
+			Size:            updateResp.Size,
 			Status:          updateResp.Snapshot.Status,
 		},
-		Link:      updateResp.Link,
-		SyncToken: updateResp.SyncToken,
-	}
-
-	resp := updateSnapshotStatusResponse{
-		Snapshot:  convertResp.Snapshot,
-		Link:      convertResp.Link,
 		SyncToken: SyncToken(*updateResp.SyncToken),
+		Link:      updateResp.Link,
 	}
 
 	return resp, nil

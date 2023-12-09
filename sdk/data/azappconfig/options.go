@@ -94,24 +94,6 @@ type BeginCreateSnapshotOptions struct {
 
 	// The tags of the snapshot.
 	Tags map[string]*string
-
-	// READ-ONLY; The time that the snapshot was created.
-	Created *time.Time
-
-	// READ-ONLY; A value representing the current state of the snapshot.
-	ETag *azcore.ETag
-
-	// READ-ONLY; The time that the snapshot will expire.
-	Expires *time.Time
-
-	// READ-ONLY; The amount of key-values in the snapshot.
-	ItemsCount *int64
-
-	// READ-ONLY; The size in bytes of the snapshot.
-	Size *int64
-
-	// READ-ONLY; The current status of the snapshot.
-	Status *SnapshotStatus
 }
 
 // ArchiveSnapshotOptions contains the optional parameters for the ArchiveSnapshot method.

@@ -91,19 +91,8 @@ type ArchiveSnapshotResponse struct {
 	SyncToken SyncToken
 }
 
-// RestoreSnapshotResponse contains the response from the RestoreSnapshot method.
-type RestoreSnapshotResponse struct {
-	Snapshot
-
-	// Link contains the information returned from the Link header response.
-	Link *string
-
-	// SyncToken contains the information returned from the Sync-Token header response.
-	SyncToken SyncToken
-}
-
-// NewGetSnapshotsPagerResponse contains the response from the NewGetSnapshotsPager method.
-type NewGetSnapshotsPagerResponse struct {
+// ListGetSnapshotsPagerResponse contains the response from the NewListGetSnapshotsPager method.
+type ListGetSnapshotsPagerResponse struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Snapshots []Snapshot
 
@@ -112,7 +101,9 @@ type NewGetSnapshotsPagerResponse struct {
 }
 
 // BeginCreateSnapshotResponse contains the response from the BeginCreateSnapshot method.
-type BeginCreateSnapshotResponse struct {
+type CreateSnapshotResponse struct {
+	// Read-Only information about the snapshot retrieved from a Create Snapshot operation.
+	SnapshotInfo
 }
 
 // ListConfigurationSettingsForSnapshotResponse contains the response from the ListConfigurationSettingsForSnapshot method.
@@ -126,6 +117,7 @@ type ListConfigurationSettingsForSnapshotResponse struct {
 
 // GetSnapshotResponse contains the response from the GetSnapshot method.
 type GetSnapshotResponse struct {
+	// Snapshot object in GetSnapshot Response
 	Snapshot
 
 	// Link contains the information returned from the Link header response.

@@ -130,7 +130,7 @@ func (testsuite *VirtualMachinesTestSuite) TestVirtualMachines() {
 	for virtualMachinesClientNewListByLabPager.More() {
 		nextResult, err := virtualMachinesClientNewListByLabPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-		
+
 		virtualMachineName = *nextResult.Value[0].Name
 		break
 	}

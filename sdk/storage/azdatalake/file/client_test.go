@@ -11,7 +11,6 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"hash/crc64"
 	"io"
@@ -1462,9 +1461,6 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
-	_, err = testcommon.GetRequiredEnv(testcommon.DataLakeEncryptionScopeEnvVar)
-	_require.Nil(err)
-
 	// Set current and past time and create key
 	currentTime := time.Now().UTC().Add(-10 * time.Second)
 	pastTime := currentTime.Add(48 * time.Hour)
@@ -1492,7 +1488,7 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 	}.SignWithUserDelegation(udc)
 	_require.Nil(err)
 
-	sasURL := fmt.Sprintf(fsClient.DFSURL() + sasQueryParams.Encode())
+	sasURL := fsClient.DFSURL() + "/file?" + sasQueryParams.Encode()
 	// This URL can be used to authenticate requests now
 	srcFileClient, err := file.NewClientWithNoCredential(sasURL, nil)
 	handleError(err)

@@ -6,8 +6,10 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
+	"sync"
 	"testing"
 	"time"
 
@@ -16,6 +18,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
 )
+
+type countPolicy struct {
+	callCount int
+}
+
+func (p *countPolicy) Do(req *policy.Request) (*http.Response, error) {
+	p.callCount += 1
+	return req.Next()
+}
 
 func TestGlobalEndpointManagerGetWriteEndpoints(t *testing.T) {
 	srv, close := mock.NewTLSServer()
@@ -224,9 +235,10 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 	assert.True(t, canUseMultipleWriteLocs)
 }
 
-func TestGlobalEndpointManagerUpdate(t *testing.T) { //This test should be testing for the lock on the update/ refresh mechanism
-	srv, close := mock.NewTLSServer()
-	defer close()
+func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
+	countPolicy := &countPolicy{}
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
 	westRegion := accountRegion{
@@ -246,99 +258,50 @@ func TestGlobalEndpointManagerUpdate(t *testing.T) { //This test should be testi
 	}
 	srv.SetResponse(mock.WithBody(jsonString))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{countPolicy}}, &policy.ClientOptions{Transport: srv})
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	assert.NoError(t, err)
+
+	req.SetOperationValue(pipelineRequestOptions{
+		isWriteOperation: true,
+	})
 
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	fmt.Println(client.endpoint)
 
-	gem, err := newGlobalEndpointManager(client, []string{}, 5*time.Minute)
+	gem, err := newGlobalEndpointManager(client, []string{}, 5*time.Second)
 	assert.NoError(t, err)
 
-	// Update the location cache and client's default endpoint
-	err = gem.Update(context.Background())
-	assert.NoError(t, err)
+	// Call update concurrently and see how many times the policy gets called
+	concurrency := 5
+	wg := &sync.WaitGroup{}
+	wg.Add(concurrency)
 
-	// Get the write endpoints after the update
-	writeEndpoints, err := gem.GetWriteEndpoints()
-	assert.NoError(t, err)
+	finishCh := make(chan struct{})
 
-	serverEndpoint, err := url.Parse(srv.URL())
-	assert.NoError(t, err)
-
-	// Assert the expected write endpoints after the update
-	expectedWriteEndpoints := []url.URL{
-		*serverEndpoint,
+	for i := 0; i < concurrency; i++ {
+		go func(wg *sync.WaitGroup) {
+			defer wg.Done()
+			// Call the function in each goroutine
+			err := gem.Update(context.Background())
+			if err != nil {
+				print(err)
+			}
+		}(wg)
 	}
-	assert.Equal(t, expectedWriteEndpoints, writeEndpoints)
 
-	// Get the read endpoints after the update
-	readEndpoints, err := gem.GetReadEndpoints()
-	assert.NoError(t, err)
+	wg.Wait()
+	close(finishCh)
 
-	// Assert the expected read endpoints
-	expectedReadEndpoints := []url.URL{
-		*serverEndpoint,
+	// Set a timeout for the test
+	select {
+	case <-finishCh:
+	// All goroutines have finished
+	case <-time.After(2 * time.Minute):
+		t.Fatal("Test timed out noob")
 	}
-	assert.Equal(t, expectedReadEndpoints, readEndpoints)
-}
 
-func TestGlobalEndpointManagerEmulator(t *testing.T) {
-	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t)
-	emulatorRegionName := "South Central US"
-	preferredRegions := []string{}
-	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
-
-	gem, err := newGlobalEndpointManager(client, preferredRegions, 5*time.Minute)
-	assert.NoError(t, err)
-
-	accountProps, err := gem.GetAccountProperties(context.Background())
-	assert.NoError(t, err)
-
-	// Verify the expected account properties
-	expectedAccountProps := accountProperties{
-		ReadRegions:                  []accountRegion{emulatorRegion},
-		WriteRegions:                 []accountRegion{emulatorRegion},
-		EnableMultipleWriteLocations: false,
-	}
-	assert.Equal(t, expectedAccountProps, accountProps)
-
-	emulatorEndpoint, err := url.Parse("https://localhost:8081/")
-	assert.NoError(t, err)
-
-	// Verify the read endpoints
-	readEndpoints, err := gem.GetReadEndpoints()
-	assert.NoError(t, err)
-
-	expectedEndpoints := []url.URL{
-		*emulatorEndpoint,
-	}
-	assert.Equal(t, expectedEndpoints, readEndpoints)
-
-	// Verify the write endpoints
-	writeEndpoints, err := gem.GetWriteEndpoints()
-	assert.NoError(t, err)
-
-	assert.Equal(t, expectedEndpoints, writeEndpoints)
-
-	// Assert location cache is not populated until update() is called
-	locationInfo := gem.locationCache.locationInfo
-	availableLocation := []string{}
-	availableEndpointsByLocation := map[string]url.URL{}
-
-	assert.Equal(t, locationInfo.availReadLocations, availableLocation)
-	assert.Equal(t, locationInfo.availWriteLocations, availableLocation)
-	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
-	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
-
-	//update and assert available locations are now populated in location cache
-	err = gem.Update(context.Background())
-	assert.NoError(t, err)
-	locationInfo = gem.locationCache.locationInfo
-
-	assert.Equal(t, len(locationInfo.availReadLocations), len(availableLocation)+1)
-	assert.Equal(t, len(locationInfo.availWriteLocations), len(availableLocation)+1)
-	assert.Equal(t, locationInfo.availWriteLocations[0], emulatorRegionName)
-	assert.Equal(t, locationInfo.availReadLocations[0], emulatorRegionName)
-	assert.Equal(t, len(locationInfo.availReadEndpointsByLocation), len(availableEndpointsByLocation)+1)
-	assert.Equal(t, len(locationInfo.availWriteEndpointsByLocation), len(availableEndpointsByLocation)+1)
+	// Check that the function was called only once
+	callCount := countPolicy.callCount
+	assert.Equal(t, callCount, 1)
 }

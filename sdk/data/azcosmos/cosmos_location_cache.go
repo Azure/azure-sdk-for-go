@@ -68,8 +68,6 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL) *location
 }
 
 func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
-	lc.mapMutex.Lock()
-	defer lc.mapMutex.Unlock()
 	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
 		nextLoc.prefLocations = prefList
@@ -189,6 +187,8 @@ func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
 }
 
 func (lc *locationCache) refreshStaleEndpoints() {
+	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
 		t := time.Since(info.lastCheckTime)
 		if t > lc.unavailableLocationExpirationTime {

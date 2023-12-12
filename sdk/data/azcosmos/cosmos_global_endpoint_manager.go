@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
 
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -20,23 +21,27 @@ type globalEndpointManager struct {
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
+	gemMutex            sync.Mutex
+	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(client *Client, preferredLocations []string, refreshTimeInterval time.Duration) (globalEndpointManager, error) {
+func newGlobalEndpointManager(client *Client, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(client.endpoint)
 	if err != nil {
-		return globalEndpointManager{}, err
+		return &globalEndpointManager{}, err
 	}
 
 	if refreshTimeInterval == 0 {
 		refreshTimeInterval = defaultUnavailableLocationRefreshInterval
 	}
 
-	gem := globalEndpointManager{
+	gem := &globalEndpointManager{
 		client:              client,
 		preferredLocations:  preferredLocations,
 		locationCache:       newLocationCache(preferredLocations, *endpoint),
-		refreshTimeInterval: refreshTimeInterval}
+		refreshTimeInterval: refreshTimeInterval,
+		lastUpdateTime:      time.Time{},
+	}
 
 	return gem, nil
 }
@@ -73,12 +78,20 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 	gem.locationCache.refreshStaleEndpoints()
 }
 
+func (gem *globalEndpointManager) ShouldRefresh() bool {
+	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
+}
+
 func (gem *globalEndpointManager) Update(ctx context.Context) error {
+	gem.gemMutex.Lock()
+	defer gem.gemMutex.Unlock()
+	if !gem.ShouldRefresh() {
+		return nil
+	}
 	accountProperties, err := gem.GetAccountProperties(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve account properties: %v", err)
 	}
-
 	err = gem.locationCache.update(
 		accountProperties.WriteRegions,
 		accountProperties.ReadRegions,
@@ -87,7 +100,7 @@ func (gem *globalEndpointManager) Update(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to update location cache: %v", err)
 	}
-
+	gem.lastUpdateTime = time.Now()
 	return nil
 }
 

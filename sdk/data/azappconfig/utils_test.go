@@ -55,6 +55,10 @@ func run(m *testing.M) int {
 		if err := recording.AddHeaderRegexSanitizer("x-ms-content-sha256", "fake-content", "", nil); err != nil {
 			panic(err)
 		}
+
+		if err := recording.AddHeaderRegexSanitizer("Operation-Location", "https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
+			panic(err)
+		}
 	}
 
 	return m.Run()

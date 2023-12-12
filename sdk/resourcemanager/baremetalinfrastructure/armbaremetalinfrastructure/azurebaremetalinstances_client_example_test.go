@@ -15,10 +15,109 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/baremetalinfrastructure/armbaremetalinfrastructure/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_Start.json
+func ExampleAzureBareMetalInstancesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbaremetalinfrastructure.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureBareMetalInstancesClient().BeginStart(ctx, "myResourceGroup", "myABMInstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatus = armbaremetalinfrastructure.OperationStatus{
+	// 	Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 	Error: &armbaremetalinfrastructure.OperationStatusError{
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 	},
+	// 	StartTime: to.Ptr("2023-08-01T21:17:24.9052926Z"),
+	// 	Status: to.Ptr(armbaremetalinfrastructure.AsyncOperationStatus("InProgress")),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_Restart.json
+func ExampleAzureBareMetalInstancesClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbaremetalinfrastructure.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureBareMetalInstancesClient().BeginRestart(ctx, "myResourceGroup", "myABMInstance", &armbaremetalinfrastructure.AzureBareMetalInstancesClientBeginRestartOptions{ForceParameter: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatus = armbaremetalinfrastructure.OperationStatus{
+	// 	Name: to.Ptr("00000000-0000-0000-0000-0000000000001"),
+	// 	Error: &armbaremetalinfrastructure.OperationStatusError{
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 	},
+	// 	StartTime: to.Ptr("2023-08-01T21:17:24.9052926Z"),
+	// 	Status: to.Ptr(armbaremetalinfrastructure.AsyncOperationStatus("InProgress")),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_Shutdown.json
+func ExampleAzureBareMetalInstancesClient_BeginShutdown() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbaremetalinfrastructure.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureBareMetalInstancesClient().BeginShutdown(ctx, "myResourceGroup", "myABMInstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OperationStatus = armbaremetalinfrastructure.OperationStatus{
+	// 	Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 	Error: &armbaremetalinfrastructure.OperationStatusError{
+	// 		Code: to.Ptr(""),
+	// 		Message: to.Ptr(""),
+	// 	},
+	// 	StartTime: to.Ptr("2023-08-01T21:17:24.9052926Z"),
+	// 	Status: to.Ptr(armbaremetalinfrastructure.AsyncOperationStatus("InProgress")),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_ListBySubscription.json
 func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +145,14 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("myAzureBareMetalInstance1"),
 		// 			Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
 		// 			ID: to.Ptr("/subscriptions/57d3422f-467a-448e-b798-ebf490849542/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myAzureBareMetalInstance1"),
+		// 			SystemData: &armbaremetalinfrastructure.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@microsoft.com"),
+		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-13T08:01:22.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
+		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 			},
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -59,7 +166,7 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 				HwRevision: to.Ptr("Rev 4.2"),
 		// 				NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 		// 					CircuitID: to.Ptr("/subscriptions/57d3422f-467a-448e-b798-ebf490849542/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuits/myCircuitId"),
-		// 					NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+		// 					NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 		// 						{
 		// 							IPAddress: to.Ptr("123.123.123.123"),
 		// 					}},
@@ -75,6 +182,11 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 					NfsIPAddress: to.Ptr("123.123.119.123"),
 		// 				},
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("myAzureBareMetalInstance2"),
+		// 			Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
+		// 			ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myAzureBareMetalInstance2"),
 		// 			SystemData: &armbaremetalinfrastructure.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user@microsoft.com"),
@@ -83,11 +195,6 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
 		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("myAzureBareMetalInstance2"),
-		// 			Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
-		// 			ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myAzureBareMetalInstance2"),
 		// 			Location: to.Ptr("westus2"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -101,7 +208,7 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 				HwRevision: to.Ptr("Rev 4.2"),
 		// 				NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 		// 					CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuits/myCircuitId"),
-		// 					NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+		// 					NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 		// 						{
 		// 							IPAddress: to.Ptr("123.123.123.123"),
 		// 					}},
@@ -117,20 +224,12 @@ func ExampleAzureBareMetalInstancesClient_NewListBySubscriptionPager() {
 		// 					NfsIPAddress: to.Ptr("123.123.119.123"),
 		// 				},
 		// 			},
-		// 			SystemData: &armbaremetalinfrastructure.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@microsoft.com"),
-		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-13T08:01:22.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
-		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_ListByResourceGroup.json
 func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,6 +257,14 @@ func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("myAzureBareMetalInstance1"),
 		// 			Type: to.Ptr("Microsoft.BareMetalInfrastructure/azureBareMetalInstances"),
 		// 			ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/azureBareMetalInstances/myAzureBareMetalInstance1"),
+		// 			SystemData: &armbaremetalinfrastructure.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@microsoft.com"),
+		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
+		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 			},
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -171,7 +278,7 @@ func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 		// 				HwRevision: to.Ptr("Rev 3"),
 		// 				NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 		// 					CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuit"),
-		// 					NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+		// 					NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 		// 						{
 		// 							IPAddress: to.Ptr("100.100.100.100"),
 		// 					}},
@@ -189,19 +296,19 @@ func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 		// 					NfsIPAddress: to.Ptr("200.200.200.200"),
 		// 				},
 		// 			},
-		// 			SystemData: &armbaremetalinfrastructure.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@microsoft.com"),
-		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
-		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("myABMInstance2"),
 		// 			Type: to.Ptr("Microsoft.BareMetalInfrastructure/azureBareMetalInstances"),
 		// 			ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/azureBareMetalInstances/myABMInstance2"),
+		// 			SystemData: &armbaremetalinfrastructure.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user@microsoft.com"),
+		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-13T08:01:22.123Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
+		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+		// 			},
 		// 			Location: to.Ptr("westus"),
 		// 			Tags: map[string]*string{
 		// 				"key": to.Ptr("value"),
@@ -215,7 +322,7 @@ func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 		// 				HwRevision: to.Ptr("Rev 3"),
 		// 				NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 		// 					CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuit"),
-		// 					NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+		// 					NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 		// 						{
 		// 							IPAddress: to.Ptr("100.100.100.101"),
 		// 					}},
@@ -234,20 +341,12 @@ func ExampleAzureBareMetalInstancesClient_NewListByResourceGroupPager() {
 		// 					NfsIPAddress: to.Ptr("200.200.200.201"),
 		// 				},
 		// 			},
-		// 			SystemData: &armbaremetalinfrastructure.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user@microsoft.com"),
-		// 				CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-13T08:01:22.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user@microsoft.com"),
-		// 				LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_Get.json
 func ExampleAzureBareMetalInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,6 +368,14 @@ func ExampleAzureBareMetalInstancesClient_Get() {
 	// 	Name: to.Ptr("myAzureBareMetalInstance"),
 	// 	Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
 	// 	ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myAzureBareMetalInstance"),
+	// 	SystemData: &armbaremetalinfrastructure.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus2"),
 	// 	Tags: map[string]*string{
 	// 		"key": to.Ptr("value"),
@@ -282,7 +389,7 @@ func ExampleAzureBareMetalInstancesClient_Get() {
 	// 		HwRevision: to.Ptr("Rev 4.2"),
 	// 		NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 	// 			CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuits/myCircuitId"),
-	// 			NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+	// 			NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 	// 				{
 	// 					IPAddress: to.Ptr("123.123.123.123"),
 	// 			}},
@@ -298,18 +405,10 @@ func ExampleAzureBareMetalInstancesClient_Get() {
 	// 			NfsIPAddress: to.Ptr("123.123.119.123"),
 	// 		},
 	// 	},
-	// 	SystemData: &armbaremetalinfrastructure.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@microsoft.com"),
-	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
-	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_PatchTags_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_PatchTags_Delete.json
 func ExampleAzureBareMetalInstancesClient_Update_deleteTagsFieldOfAnAzureBareMetalInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,6 +432,14 @@ func ExampleAzureBareMetalInstancesClient_Update_deleteTagsFieldOfAnAzureBareMet
 	// 	Name: to.Ptr("myABMInstance"),
 	// 	Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
 	// 	ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myABMInstance"),
+	// 	SystemData: &armbaremetalinfrastructure.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 	},
@@ -345,7 +452,7 @@ func ExampleAzureBareMetalInstancesClient_Update_deleteTagsFieldOfAnAzureBareMet
 	// 		HwRevision: to.Ptr("Rev 3"),
 	// 		NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 	// 			CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuit"),
-	// 			NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+	// 			NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 	// 				{
 	// 					IPAddress: to.Ptr("100.100.100.100"),
 	// 			}},
@@ -364,18 +471,10 @@ func ExampleAzureBareMetalInstancesClient_Update_deleteTagsFieldOfAnAzureBareMet
 	// 			NfsIPAddress: to.Ptr("200.200.200.200"),
 	// 		},
 	// 	},
-	// 	SystemData: &armbaremetalinfrastructure.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@microsoft.com"),
-	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
-	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/stable/2021-08-09/examples/AzureBareMetalInstances_PatchTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalInstances_PatchTags.json
 func ExampleAzureBareMetalInstancesClient_Update_updateTagsFieldOfAnAzureBareMetalInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,6 +500,14 @@ func ExampleAzureBareMetalInstancesClient_Update_updateTagsFieldOfAnAzureBareMet
 	// 	Name: to.Ptr("myABMInstance"),
 	// 	Type: to.Ptr("Microsoft.BareMetalInfrastructure/bareMetalInstances"),
 	// 	ID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.BareMetalInfrastructure/bareMetalInstances/myABMInstance"),
+	// 	SystemData: &armbaremetalinfrastructure.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user@microsoft.com"),
+	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
+	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
+	// 	},
 	// 	Location: to.Ptr("westus"),
 	// 	Tags: map[string]*string{
 	// 		"testkey": to.Ptr("testvalue"),
@@ -414,7 +521,7 @@ func ExampleAzureBareMetalInstancesClient_Update_updateTagsFieldOfAnAzureBareMet
 	// 		HwRevision: to.Ptr("Rev 3"),
 	// 		NetworkProfile: &armbaremetalinfrastructure.NetworkProfile{
 	// 			CircuitID: to.Ptr("/subscriptions/f0f4887f-d13c-4943-a8ba-d7da28d2a3fd/resourceGroups/myResourceGroup/providers/Microsoft.Network/expressRouteCircuit"),
-	// 			NetworkInterfaces: []*armbaremetalinfrastructure.IPAddress{
+	// 			NetworkInterfaces: []*armbaremetalinfrastructure.NetworkInterface{
 	// 				{
 	// 					IPAddress: to.Ptr("100.100.100.100"),
 	// 			}},
@@ -432,14 +539,6 @@ func ExampleAzureBareMetalInstancesClient_Update_updateTagsFieldOfAnAzureBareMet
 	// 		StorageProfile: &armbaremetalinfrastructure.StorageProfile{
 	// 			NfsIPAddress: to.Ptr("200.200.200.200"),
 	// 		},
-	// 	},
-	// 	SystemData: &armbaremetalinfrastructure.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-20T23:10:22.682Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user@microsoft.com"),
-	// 		CreatedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-21T08:01:22.000Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user@microsoft.com"),
-	// 		LastModifiedByType: to.Ptr(armbaremetalinfrastructure.CreatedByTypeUser),
 	// 	},
 	// }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.1 (Unreleased)
+## 1.9.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.1 (2023-12-11)
+
+### Bugs Fixed
+
+* The `retry-after-ms` and `x-ms-retry-after-ms` headers weren't being checked during retries.
+
+### Other Changes
+
+* Update dependencies.
 
 ## 1.9.0 (2023-11-06)
 

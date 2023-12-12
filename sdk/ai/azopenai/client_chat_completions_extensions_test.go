@@ -18,22 +18,17 @@ import (
 )
 
 func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, azureOpenAI)
+	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	resp, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{Content: to.Ptr("What does PR complete mean?"), Role: to.Ptr(azopenai.ChatRoleUser)},
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
-		AzureExtensionsOptions: &azopenai.AzureChatExtensionOptions{
-			Extensions: []azopenai.AzureChatExtensionConfiguration{
-				{
-					Type:       to.Ptr(azopenai.AzureChatExtensionTypeAzureCognitiveSearch),
-					Parameters: azureOpenAI.Cognitive,
-				},
-			},
+		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
+			&azureOpenAI.Cognitive,
 		},
-		Deployment: "gpt-4",
+		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 	require.NoError(t, err)
 
@@ -44,26 +39,21 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 	require.Equal(t, azopenai.ChatRoleTool, *msgContext.Messages[0].Role)
 
 	require.NotEmpty(t, *resp.Choices[0].Message.Content)
-	require.Equal(t, azopenai.CompletionsFinishReasonStop, *resp.Choices[0].FinishReason)
+	require.Equal(t, azopenai.CompletionsFinishReasonStopped, *resp.Choices[0].FinishReason)
 }
 
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
-	client := newAzureOpenAIClientForTest(t, azureOpenAICanary)
+	client := newTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	streamResp, err := client.GetChatCompletionsStream(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{Content: to.Ptr("What does PR complete mean?"), Role: to.Ptr(azopenai.ChatRoleUser)},
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What does PR complete mean?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
-		AzureExtensionsOptions: &azopenai.AzureChatExtensionOptions{
-			Extensions: []azopenai.AzureChatExtensionConfiguration{
-				{
-					Type:       to.Ptr(azopenai.AzureChatExtensionTypeAzureCognitiveSearch),
-					Parameters: azureOpenAICanary.Cognitive,
-				},
-			},
+		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
+			&azureOpenAI.Cognitive,
 		},
-		Deployment: "gpt-4",
+		DeploymentName: &azureOpenAI.ChatCompletionsOYD.Model,
 	}, nil)
 
 	require.NoError(t, err)

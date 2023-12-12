@@ -9,6 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,7 +17,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Endpoint)
 
 	_, err := client.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
-		Deployment: "thisdoesntexist",
+		DeploymentName: to.Ptr("thisdoesntexist"),
 	}, nil)
 
 	var respErr *azcore.ResponseError
@@ -60,8 +61,8 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input:      []string{"\"Your text string goes here\""},
-					Deployment: modelOrDeploymentID,
+					Input:          []string{"\"Your text string goes here\""},
+					DeploymentName: &modelOrDeploymentID,
 				},
 				options: nil,
 			},

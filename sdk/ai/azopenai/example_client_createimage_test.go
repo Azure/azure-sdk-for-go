@@ -18,13 +18,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-func ExampleClient_CreateImage() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
+func ExampleClient_GetImageGenerations() {
+	azureOpenAIKey := os.Getenv("AOAI_DALLE_API_KEY")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_DALLE_ENDPOINT")
 
-	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" {
+	azureDeployment := os.Getenv("AOAI_DALLE_MODEL")
+
+	if azureOpenAIKey == "" || azureOpenAIEndpoint == "" || azureDeployment == "" {
 		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
 		return
 	}
@@ -38,9 +40,10 @@ func ExampleClient_CreateImage() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	resp, err := client.CreateImage(context.TODO(), azopenai.ImageGenerationOptions{
+	resp, err := client.GetImageGenerations(context.TODO(), azopenai.ImageGenerationOptions{
 		Prompt:         to.Ptr("a cat"),
 		ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+		DeploymentName: &azureDeployment,
 	}, nil)
 
 	if err != nil {
@@ -56,7 +59,7 @@ func ExampleClient_CreateImage() {
 		resp, err := http.Head(*generatedImage.URL)
 
 		if err != nil {
-			// TODO: handle error
+			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
 		}
 

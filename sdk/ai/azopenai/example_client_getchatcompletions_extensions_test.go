@@ -19,11 +19,11 @@ import (
 //
 // [Azure OpenAI on your data]: https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data
 func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
-	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
+	azureOpenAIKey := os.Getenv("AOAI_CHAT_COMPLETIONS_RAI_API_KEY")
+	modelDeploymentID := os.Getenv("AOAI_CHAT_COMPLETIONS_RAI_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
-	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
+	azureOpenAIEndpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_RAI_ENDPOINT")
 
 	// Azure Cognitive Search configuration
 	searchIndex := os.Getenv("COGNITIVE_SEARCH_API_INDEX")
@@ -47,30 +47,29 @@ func ExampleClient_GetChatCompletions_bringYourOwnDataWithCognitiveSearch() {
 	}
 
 	resp, err := client.GetChatCompletions(context.TODO(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{Content: to.Ptr("What are the differences between Azure Machine Learning and Azure AI services?"), Role: to.Ptr(azopenai.ChatRoleUser)},
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{Content: azopenai.NewChatRequestUserMessageContent("What are the differences between Azure Machine Learning and Azure AI services?")},
 		},
 		MaxTokens: to.Ptr[int32](512),
-		AzureExtensionsOptions: &azopenai.AzureChatExtensionOptions{
-			Extensions: []azopenai.AzureChatExtensionConfiguration{
-				{
-					// This allows Azure OpenAI to use an Azure Cognitive Search index.
-					//
-					// > Because the model has access to, and can reference specific sources to support its responses, answers are not only based on its pretrained knowledge
-					// > but also on the latest information available in the designated data source. This grounding data also helps the model avoid generating responses
-					// > based on outdated or incorrect information.
-					//
-					// Quote from here: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data
-					Type: to.Ptr(azopenai.AzureChatExtensionTypeAzureCognitiveSearch),
-					Parameters: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-						Endpoint:  &searchEndpoint,
-						IndexName: &searchIndex,
-						Key:       &searchAPIKey,
+		AzureExtensionsOptions: []azopenai.AzureChatExtensionConfigurationClassification{
+			&azopenai.AzureCognitiveSearchChatExtensionConfiguration{
+				// This allows Azure OpenAI to use an Azure Cognitive Search index.
+				//
+				// > Because the model has access to, and can reference specific sources to support its responses, answers are not only based on its pretrained knowledge
+				// > but also on the latest information available in the designated data source. This grounding data also helps the model avoid generating responses
+				// > based on outdated or incorrect information.
+				//
+				// Quote from here: https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data
+				Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+					Endpoint:  &searchEndpoint,
+					IndexName: &searchIndex,
+					Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
+						Key: &searchAPIKey,
 					},
 				},
 			},
 		},
-		Deployment: modelDeploymentID,
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -10,6 +7,10 @@ import (
 	"encoding/json"
 	"errors"
 )
+
+// These models and their code are used for the old style of function calling. They were auto-generated
+// in the past (and won't change since they're an evolutionary dead-end at this point) but some older
+// and supported models can only use this variant.
 
 // ChatCompletionsOptionsFunctionCall - Controls how the model responds to function calls. "none" means the model does not
 // call a function, and responds to the end-user. "auto" means the model can pick between an end-user or calling a

@@ -19,7 +19,7 @@ const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
-// which has an offset but no zero value count indicates from the offset to the resource's end.
+// which has an offset and zero value count indicates from the offset to the resource's end.
 type HTTPRange = blob.HTTPRange
 
 // FormatHTTPRange converts an HTTPRange to its string format.

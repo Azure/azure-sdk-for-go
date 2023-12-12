@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 	"sync"
@@ -97,9 +96,6 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 	endpoint, err := url.Parse(client.endpoint)
 	assert.NoError(t, err)
 
-	readEndpoints, err := gem.GetReadEndpoints()
-	assert.NoError(t, err)
-	print(readEndpoints)
 
 	err = gem.MarkEndpointUnavailableForRead(*endpoint)
 	assert.NoError(t, err)
@@ -267,7 +263,6 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	})
 
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
-	fmt.Println(client.endpoint)
 
 	gem, err := newGlobalEndpointManager(client, []string{}, 5*time.Second)
 	assert.NoError(t, err)

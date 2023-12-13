@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (Unreleased)
+## 1.1.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 1.0.0 (2023-10-11)
+## 1.1.0 (2024-01-16)
 
 ### Features Added
 * Added support for [`Snapshots`](https://learn.microsoft.com/azure/azure-app-configuration/concept-snapshots).
@@ -18,6 +18,8 @@
 ### Other Changes
 * Updated to latest version of `azcore`.
 * Enabled spans for distributed tracing.
+
+## 1.0.0 (2023-10-11)
 
 ### Bugs Fixed
 * Check for a `Sync-Token` value before updating the cache.

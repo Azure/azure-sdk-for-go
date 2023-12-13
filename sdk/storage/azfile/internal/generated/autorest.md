@@ -22,6 +22,22 @@ export-clients: true
 use: "@autorest/go@4.0.0-preview.49"
 ```
 
+### Updating service version to 2023-11-03
+
+```yaml
+directive:
+- from: 
+  - zz_directory_client.go
+  - zz_file_client.go
+  - zz_share_client.go
+  - zz_service_client.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`[]string{"2023-08-03"}`, `[]string{ServiceVersion}`).
+      replaceAll(`2023-08-03`, `2023-11-03`);
+```
+
 ### Don't include share name, directory, or file name in path - we have direct URIs
 
 ``` yaml

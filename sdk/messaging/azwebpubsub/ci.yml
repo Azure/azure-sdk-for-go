@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
     - sdk/messaging/azwebpubsub/
-    - eng/
 
 pr:
   branches:
@@ -26,5 +25,5 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'messaging/azwebpubsub/'
+    ServiceDirectory: 'messaging/azwebpubsub'
     UsePipelineProxy: false

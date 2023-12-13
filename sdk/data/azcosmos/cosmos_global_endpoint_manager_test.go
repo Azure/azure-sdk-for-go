@@ -96,7 +96,6 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 	endpoint, err := url.Parse(client.endpoint)
 	assert.NoError(t, err)
 
-
 	err = gem.MarkEndpointUnavailableForRead(*endpoint)
 	assert.NoError(t, err)
 
@@ -255,13 +254,6 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	srv.SetResponse(mock.WithBody(jsonString))
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{countPolicy}}, &policy.ClientOptions{Transport: srv})
-	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	assert.NoError(t, err)
-
-	req.SetOperationValue(pipelineRequestOptions{
-		isWriteOperation: true,
-	})
-
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
 	gem, err := newGlobalEndpointManager(client, []string{}, 5*time.Second)
@@ -272,31 +264,31 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	wg := &sync.WaitGroup{}
 	wg.Add(concurrency)
 
-	finishCh := make(chan struct{})
-
 	for i := 0; i < concurrency; i++ {
 		go func(wg *sync.WaitGroup) {
 			defer wg.Done()
 			// Call the function in each goroutine
 			err := gem.Update(context.Background())
-			if err != nil {
-				print(err)
-			}
+			assert.NoError(t, err)
 		}(wg)
 	}
 
 	wg.Wait()
-	close(finishCh)
 
-	// Set a timeout for the test
-	select {
-	case <-finishCh:
-	// All goroutines have finished
-	case <-time.After(2 * time.Minute):
-		t.Fatal("Test timed out noob")
-	}
-
-	// Check that the function was called only once
+	// Check that the function was called the right number of times
 	callCount := countPolicy.callCount
 	assert.Equal(t, callCount, 1)
+
+	err = gem.Update(context.Background())
+	assert.NoError(t, err)
+	callCount = countPolicy.callCount
+	assert.Equal(t, callCount, 1)
+
+	time.Sleep(5 * time.Second)
+
+	err = gem.Update(context.Background())
+	assert.NoError(t, err)
+	callCount = countPolicy.callCount
+	assert.Equal(t, callCount, 2)
+
 }

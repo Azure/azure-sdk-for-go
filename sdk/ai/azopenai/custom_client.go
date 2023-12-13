@@ -327,3 +327,8 @@ func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageC
 func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c.value)
 }
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatRequestUserMessageContent.
+func (c *ChatRequestUserMessageContent) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.value)
+}

@@ -185,3 +185,8 @@ func (tf ChatCompletionsToolChoiceFunction) MarshalJSON() ([]byte, error) {
 func (tc ChatCompletionsToolChoice) MarshalJSON() ([]byte, error) {
 	return json.Marshal(tc.value)
 }
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ChatCompletionsToolChoice.
+func (tc *ChatCompletionsToolChoice) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &tc.value)
+}

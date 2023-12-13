@@ -1,12 +1,10 @@
 # Release History
 
-## 1.2.1 (Unreleased)
+## 1.2.1 (2023-12-13)
 
 ### Features Added
 
 * Exposed GetSASURL from specialized clients
-
-### Breaking Changes
 
 ### Bugs Fixed
 

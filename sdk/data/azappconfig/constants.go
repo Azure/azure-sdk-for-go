@@ -39,7 +39,7 @@ const (
 	SettingFieldsTags SettingFields = generated.SettingFieldsTags
 )
 
-// Snapshot Fields are fields to retrieve from a snapshot.
+// SnapshotFields are fields to retrieve from a snapshot.
 type SnapshotFields = generated.SnapshotFields
 
 const (
@@ -77,7 +77,7 @@ const (
 	SnapshotFieldsTags SnapshotFields = generated.SnapshotFieldsTags
 )
 
-// The current status of the snapshot
+// SnapshotStatus contains the current status of the snapshot
 type SnapshotStatus = generated.SnapshotStatus
 
 const (
@@ -94,9 +94,13 @@ const (
 	SnapshotStatusReady SnapshotStatus = generated.SnapshotStatusReady
 )
 
+// The creation composition type of the snapshot.
 type CompositionType = generated.CompositionType
 
 const (
-	CompositionTypeKey      CompositionType = generated.CompositionTypeKey
+	// Snapshot is composed with just a Key filter
+	CompositionTypeKey CompositionType = generated.CompositionTypeKey
+
+	// Snapshot is composed with a Key and Label filter
 	CompositionTypeKeyLabel CompositionType = generated.CompositionTypeKeyLabel
 )

@@ -473,11 +473,11 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 	// Cleanup Settings
 	for _, setting := range Settings {
-		client.DeleteSetting(context.Background(), *setting.Key, nil)
+		_, _ = client.DeleteSetting(context.Background(), *setting.Key, nil)
 	}
 
 	// Cleanup Snapshots
-	CleanupSnapshot(client, snapshotName)
+	_ = CleanupSnapshot(client, snapshotName)
 }
 
 func TestGetSnapshots(t *testing.T) {
@@ -525,8 +525,7 @@ func TestGetSnapshots(t *testing.T) {
 	// Cleanup Snapshots
 	for i := 0; i < ssCreateCount; i++ {
 		cleanSSName := snapshotName + fmt.Sprintf("%d", i)
-		err := CleanupSnapshot(client, cleanSSName)
-		require.NoError(t, err)
+		_ = CleanupSnapshot(client, cleanSSName)
 	}
 }
 
@@ -549,7 +548,7 @@ func TestSnapshotArchive(t *testing.T) {
 	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
 
 	//Best effort snapshot cleanup
-	CleanupSnapshot(client, snapshotName)
+	_ = CleanupSnapshot(client, snapshotName)
 }
 
 func TestSnapshotRecover(t *testing.T) {
@@ -577,7 +576,7 @@ func TestSnapshotRecover(t *testing.T) {
 	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Snapshot.Status)
 
 	// Best effort snapshot cleanup
-	CleanupSnapshot(client, snapshotName)
+	_ = CleanupSnapshot(client, snapshotName)
 }
 
 func TestSnapshotCreate(t *testing.T) {

@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// SnapshotInfo contains the snapshot information returned from a Create Snapshot Request
 type SnapshotInfo struct {
 
 	// READ-ONLY; The name of the snapshot.
@@ -39,6 +40,7 @@ type SnapshotInfo struct {
 	RetentionPeriod *int64 `json:"retention_period"`
 }
 
+// Snapshot contains the snapshot information returned from a Get Snapshot Request
 type Snapshot struct {
 
 	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.

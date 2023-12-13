@@ -100,7 +100,7 @@ type ListGetSnapshotsPagerResponse struct {
 	SyncToken SyncToken
 }
 
-// BeginCreateSnapshotResponse contains the response from the BeginCreateSnapshot method.
+// CreateSnapshotResponse contains the response from the BeginCreateSnapshot method.
 type CreateSnapshotResponse struct {
 	// Read-Only information about the snapshot retrieved from a Create Snapshot operation.
 	SnapshotInfo

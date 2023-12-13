@@ -129,7 +129,7 @@ type NewGetSnapshotsPagerOptions struct {
 	Status []SnapshotStatus
 }
 
-// NewListConfigurationSettingsForSnapshotPagerOptions contains the optional parameters for the NewListConfigurationSettingsForSnapshotPager method.
+// ListConfigurationSettingsForSnapshotOptions contains the optional parameters for the NewListConfigurationSettingsForSnapshotPager method.
 type ListConfigurationSettingsForSnapshotOptions struct {
 	// Requests the server to respond with the state of the resource at the specified time.
 	AcceptDatetime *string

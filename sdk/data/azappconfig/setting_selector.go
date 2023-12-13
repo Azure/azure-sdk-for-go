@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
 )
 
+// SettingFilter to select configuration setting entities.
 type SettingFilter struct {
 	// Key filter that will be used to select a set of configuration setting entities.
 	KeyFilter *string

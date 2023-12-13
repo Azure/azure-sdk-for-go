@@ -1,6 +1,6 @@
 # Azure App Platform Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2)
 
 The `armappplatform` module provides operations for working with Azure App Platform.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure App Platform module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2
 ```
 
 ## Authorization

@@ -1,6 +1,6 @@
 # Azure Servations Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3)
 
 The `armreservations` module provides operations for working with Azure Servations.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Servations module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3
 ```
 
 ## Authorization

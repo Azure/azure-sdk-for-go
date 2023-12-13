@@ -1,6 +1,6 @@
 # Azure Managed Application Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications/v2)
 
 The `armmanagedapplications` module provides operations for working with Azure Managed Application.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Managed Application module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications/v2
 ```
 
 ## Authorization

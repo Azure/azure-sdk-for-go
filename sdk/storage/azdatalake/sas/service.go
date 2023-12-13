@@ -42,6 +42,7 @@ type DatalakeSignatureValues struct {
 	AuthorizedObjectID   string // saoid
 	UnauthorizedObjectID string // suoid
 	CorrelationID        string // scid
+	EncryptionScope      string `param:"ses"`
 }
 
 //TODO: add snapshot and versioning support in the future
@@ -94,7 +95,8 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"",                   //snapshot not supported
+		"", //snapshot not supported
+		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -109,13 +111,13 @@ func (v DatalakeSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKe
 
 	p := QueryParameters{
 		// Common SAS parameters
-		version:     v.Version,
-		protocol:    v.Protocol,
-		startTime:   v.StartTime,
-		expiryTime:  v.ExpiryTime,
-		permissions: v.Permissions,
-		ipRange:     v.IPRange,
-
+		version:         v.Version,
+		protocol:        v.Protocol,
+		startTime:       v.StartTime,
+		expiryTime:      v.ExpiryTime,
+		permissions:     v.Permissions,
+		ipRange:         v.IPRange,
+		encryptionScope: v.EncryptionScope,
 		// Container/Blob-specific SAS parameters
 		resource:             resource,
 		cacheControl:         v.CacheControl,
@@ -197,7 +199,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		string(v.Protocol),
 		v.Version,
 		resource,
-		"",                   //snapshot not supported
+		"", //snapshot not supported
+		v.EncryptionScope,
 		v.CacheControl,       // rscc
 		v.ContentDisposition, // rscd
 		v.ContentEncoding,    // rsce
@@ -212,12 +215,13 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	p := QueryParameters{
 		// Common SAS parameters
-		version:     v.Version,
-		protocol:    v.Protocol,
-		startTime:   v.StartTime,
-		expiryTime:  v.ExpiryTime,
-		permissions: v.Permissions,
-		ipRange:     v.IPRange,
+		version:         v.Version,
+		protocol:        v.Protocol,
+		startTime:       v.StartTime,
+		expiryTime:      v.ExpiryTime,
+		permissions:     v.Permissions,
+		ipRange:         v.IPRange,
+		encryptionScope: v.EncryptionScope,
 
 		// Container/Blob-specific SAS parameters
 		resource:             resource,

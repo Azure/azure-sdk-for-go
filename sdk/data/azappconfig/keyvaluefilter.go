@@ -6,6 +6,7 @@
 
 package azappconfig
 
+// KeyValueFilter contains filters to retrieve key-values from a configuration store.
 type KeyValueFilter struct {
 	// REQUIRED; Filters key-values by their key field.
 	Key *string

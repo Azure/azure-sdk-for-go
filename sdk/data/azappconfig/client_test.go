@@ -591,7 +591,7 @@ func TestSnapshotCreate(t *testing.T) {
 	require.Equal(t, snapshotName, *snapshot.Name)
 
 	// Best effort cleanup snapshot
-	CleanupSnapshot(client, snapshotName)
+	_ = CleanupSnapshot(client, snapshotName)
 }
 
 func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {

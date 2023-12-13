@@ -94,7 +94,7 @@ const (
 	SnapshotStatusReady SnapshotStatus = generated.SnapshotStatusReady
 )
 
-// The creation composition type of the snapshot.
+// CompositionType is the composition of filters used to create a snapshot.
 type CompositionType = generated.CompositionType
 
 const (

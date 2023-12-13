@@ -1,6 +1,6 @@
 # Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
 
-This document is intended for users that are familiar with the previous version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**`)
+This document is intended for users that are familiar with the older version of Azure SDKs of management libraries for Go language (package name starts with `services/**/mgmt/**`, also known as track1) and pursue to migrate their application code on to the latest version of Azure SDKs for Go that conform to our [current Azure SDK guidelines](https://azure.github.io/azure-sdk/general_introduction.html) (SDK package name starts with `sdk/resourcemanager/**/arm**`, also known as track2). The older Golang libraries that do not conform to [Azure SDK guidelines](https://azure.github.io/azure-sdk/general_introduction.html) are deprecated by 30 September 2023. Although the older libraries can still be used beyond deprecation, they will no longer receive official support and updates from Microsoft after that date. 
 
 **For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/azcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azcore) and the README for every individual package.**
 

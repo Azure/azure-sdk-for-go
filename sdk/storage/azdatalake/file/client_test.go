@@ -1419,19 +1419,19 @@ func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
 	// create local file
 	_, content := generateData(10 * 1024)
 	err = os.WriteFile("testFile", content, 0644)
-	handleError(err)
+	_require.NoError(err)
 
 	defer func() {
 		err = os.Remove("testFile")
-		handleError(err)
+		_require.NoError(err)
 	}()
 
 	fh, err := os.Open("testFile")
-	handleError(err)
+	_require.NoError(err)
 
 	defer func(fh *os.File) {
 		err := fh.Close()
-		handleError(err)
+		_require.NoError(err)
 	}(fh)
 
 	// upload the file
@@ -1439,26 +1439,36 @@ func (s *UnrecordedTestSuite) TestAccountEncryptionScopeSAS() {
 		Concurrency: 5,
 		ChunkSize:   2 * 1024,
 	})
-	handleError(err)
+	_require.NoError(err)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	response, err := srcFileClient.DownloadStream(context.Background(), nil)
-	handleError(err)
+	_require.NoError(err)
 	testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
-
 	_require.Equal(encryptionScope, *response.EncryptionScope)
+
+	// validate the data downloaded
+	downloadedData, err := io.ReadAll(response.Body)
+	_require.NoError(err)
+	_require.Equal(len(content), len(downloadedData))
+	_require.EqualValues(content, downloadedData)
 }
 
 func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
 	_require.NoError(err)
 
 	filesystemName := testcommon.GenerateFileSystemName(testName)
 	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, filesystemName, svcClient)
-
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 
 	// Set current and past time and create key
@@ -1491,11 +1501,14 @@ func (s *UnrecordedTestSuite) TestGetUserDelegationEncryptionScopeSAS() {
 	sasURL := fsClient.DFSURL() + "/file?" + sasQueryParams.Encode()
 	// This URL can be used to authenticate requests now
 	srcFileClient, err := file.NewClientWithNoCredential(sasURL, nil)
-	handleError(err)
+	_require.NoError(err)
 
 	_, err = srcFileClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
+	response, err := srcFileClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
+	_require.NoError(err)
+	_require.Equal(encryptionScope, *response.EncryptionScope)
 }
 
 func (s *RecordedTestSuite) TestFileGetAccessControlWithNilAccessConditions() {

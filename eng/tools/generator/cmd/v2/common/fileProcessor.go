@@ -4,6 +4,7 @@
 package common
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -591,4 +592,40 @@ func existSuffixFile(path, suffix string) bool {
 	}
 
 	return existed
+}
+
+func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) error {
+	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
+	if err != nil {
+		return err
+	}
+
+	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+
+	readmeModule := module
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	if match.Match(readmeFile) {
+		readmeModule = match.FindString(string(readmeFile))
+	}
+
+	newModule := module
+	current, err := semver.NewVersion(currentVersion)
+	if err != nil {
+		return err
+	}
+	if current.Major() > 1 {
+		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
+	}
+
+	if newModule == readmeModule {
+		return nil
+	}
+
+	newReadmeFile := bytes.ReplaceAll(readmeFile, []byte(readmeModule), []byte(newModule))
+	err = os.WriteFile(filepath.Join(path, "README.md"), newReadmeFile, 0666)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

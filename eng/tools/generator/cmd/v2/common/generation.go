@@ -328,6 +328,11 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			}
 		}
 
+		log.Printf("Replace README.md module...")
+		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+			return nil, err
+		}
+
 		// Example generation should be the last step because the package import relay on the new calculated version
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")

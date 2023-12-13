@@ -1,6 +1,6 @@
 # Azure Stack HCI Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2)
 
 The `armazurestackhci` module provides operations for working with Azure Stack HCI.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Stack HCI module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2
 ```
 
 ## Authorization

@@ -1,6 +1,6 @@
 # Azure Deployment Scripts Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts/v2)
 
 The `armdeploymentscripts` module provides operations for working with Azure Deployment Scripts.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Deployment Scripts module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentscripts/v2
 ```
 
 ## Authorization

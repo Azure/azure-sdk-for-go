@@ -1,6 +1,6 @@
 # Azure Dynatrace Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace/v2)
 
 The `armdynatrace` module provides operations for working with Azure Dynatrace.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Dynatrace module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace/v2
 ```
 
 ## Authorization

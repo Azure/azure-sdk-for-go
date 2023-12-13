@@ -1,6 +1,6 @@
 # Azure Authorization Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3)
 
 The `armauthorization` module provides operations for working with Azure Authorization.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Authorization module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3
 ```
 
 ## Authorization
@@ -78,7 +78,7 @@ A client groups a set of related APIs, providing access to its functionality.  C
 ```go
 client := clientFactory.NewXClient()
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3)
 
 The `armauthorization` module provides operations for working with Azure Authorization.
 
@@ -98,7 +98,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Authorization module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3
 ```
 
 ## Fakes

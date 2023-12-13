@@ -197,7 +197,7 @@
       {
         "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
         "apiVersion": "[variables('mgmtApiVersion')]",
-        "name": "[variables('dataLakeEncryptionScopeName')]",
+        "name": "[variables('dataLakeEncryptionScope')]",
         "properties": {
           "source": "Microsoft.Storage",
           "state": "Enabled"

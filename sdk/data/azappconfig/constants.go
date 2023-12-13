@@ -98,7 +98,7 @@ const (
 type CompositionType = generated.CompositionType
 
 const (
-	// Snapshot is composed with just a Key filter
+	// Snapshot is composed with a Key filter
 	CompositionTypeKey CompositionType = generated.CompositionTypeKey
 
 	// Snapshot is composed with a Key and Label filter

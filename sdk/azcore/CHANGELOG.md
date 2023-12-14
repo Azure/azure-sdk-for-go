@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Update to latest version of `internal`.
+
 ## 1.9.1 (2023-12-11)
 
 ### Bugs Fixed

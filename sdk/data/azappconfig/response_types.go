@@ -91,8 +91,8 @@ type ArchiveSnapshotResponse struct {
 	SyncToken SyncToken
 }
 
-// ListGetSnapshotsPagerResponse contains the response from the NewListGetSnapshotsPager method.
-type ListGetSnapshotsPagerResponse struct {
+// ListSnapshotsPagerResponse contains the response from the NewListGetSnapshotsPager method.
+type ListSnapshotsPagerResponse struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Snapshots []Snapshot
 
@@ -106,8 +106,8 @@ type CreateSnapshotResponse struct {
 	SnapshotInfo
 }
 
-// ListConfigurationSettingsForSnapshotResponse contains the response from the ListConfigurationSettingsForSnapshot method.
-type ListConfigurationSettingsForSnapshotResponse struct {
+// ListSettingsForSnapshotResponse contains the response from the ListConfigurationSettingsForSnapshot method.
+type ListSettingsForSnapshotResponse struct {
 	// Contains the configuration settings returned that match the setting selector provided.
 	Settings []Setting
 

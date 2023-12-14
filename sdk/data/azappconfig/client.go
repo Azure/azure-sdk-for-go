@@ -276,40 +276,42 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 	})
 }
 
-// NewGetSnapshotsPager - Gets a list of key-value snapshots.
+// NewListSnapshotsPager - Gets a list of key-value snapshots.
 //
-//   - options - NewGetSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
+//   - options - NewListSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
 //     method.
-func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *runtime.Pager[ListGetSnapshotsPagerResponse] {
+func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runtime.Pager[ListSnapshotsPagerResponse] {
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
 
-	return runtime.NewPager(runtime.PagingHandler[ListGetSnapshotsPagerResponse]{
-		More: func(ListGetSnapshotsPagerResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsPagerResponse]{
+		More: func(ListSnapshotsPagerResponse) bool {
 			return ssRespPager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListGetSnapshotsPagerResponse) (ListGetSnapshotsPagerResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListSnapshotsPagerResponse) (ListSnapshotsPagerResponse, error) {
 			page, err := ssRespPager.NextPage(ctx)
 			if err != nil {
-				return ListGetSnapshotsPagerResponse{}, err
+				return ListSnapshotsPagerResponse{}, err
 			}
 
-			snapshots := []Snapshot{}
+			snapshots := make([]Snapshot, len(page.Items))
 
-			for _, snapshot := range page.Items {
+			for i := 0; i < len(page.Items); i++ {
+
+				snapshot := page.Items[i]
 
 				convertedETag := azcore.ETag(*snapshot.Etag)
 
-				var convertedFilters []KeyValueFilter
+				convertedFilters := make([]KeyValueFilter, len(snapshot.Filters))
 
-				for _, filter := range snapshot.Filters {
-					convertedFilters = append(convertedFilters, KeyValueFilter{
-						Key:   filter.Key,
-						Label: filter.Label,
-					})
+				for j := 0; j < len(snapshot.Filters); j++ {
+					convertedFilters[j] = KeyValueFilter{
+						Key:   snapshot.Filters[j].Key,
+						Label: snapshot.Filters[j].Label,
+					}
 				}
 
-				snapshots = append(snapshots, Snapshot{
+				snapshots[i] = Snapshot{
 					Filters:         convertedFilters,
 					CompositionType: snapshot.CompositionType,
 					RetentionPeriod: snapshot.RetentionPeriod,
@@ -321,10 +323,10 @@ func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *run
 					Name:            snapshot.Name,
 					Size:            snapshot.Size,
 					Status:          snapshot.Status,
-				})
+				}
 			}
 
-			return ListGetSnapshotsPagerResponse{
+			return ListSnapshotsPagerResponse{
 				Snapshots: snapshots,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
@@ -333,13 +335,13 @@ func (c *Client) NewGetSnapshotsPager(options *NewGetSnapshotsPagerOptions) *run
 	})
 }
 
-// NewListConfigurationSettingsForSnapshotPager
+// NewListSettingsForSnapshotPager
 //
 // - snapshotName - The name of the snapshot to list configuration settings for
-// - options - ListConfigurationSettingsForSnapshotOptions contains the optional parameters to retrieve Snapshot configuration settings
-func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName string, options *ListConfigurationSettingsForSnapshotOptions) *runtime.Pager[ListConfigurationSettingsForSnapshotResponse] {
+// - options - ListSettingsForSnapshotOptions contains the optional parameters to retrieve Snapshot configuration settings
+func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *ListSettingsForSnapshotOptions) *runtime.Pager[ListSettingsForSnapshotResponse] {
 	if options == nil {
-		options = &ListConfigurationSettingsForSnapshotOptions{}
+		options = &ListSettingsForSnapshotOptions{}
 	}
 
 	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
@@ -354,23 +356,25 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName strin
 	}
 	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
 
-	return runtime.NewPager(runtime.PagingHandler[ListConfigurationSettingsForSnapshotResponse]{
-		More: func(ListConfigurationSettingsForSnapshotResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListSettingsForSnapshotResponse]{
+		More: func(ListSettingsForSnapshotResponse) bool {
 			return ssRespPager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListConfigurationSettingsForSnapshotResponse) (ListConfigurationSettingsForSnapshotResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListSettingsForSnapshotResponse) (ListSettingsForSnapshotResponse, error) {
 			page, err := ssRespPager.NextPage(ctx)
 			if err != nil {
-				return ListConfigurationSettingsForSnapshotResponse{}, err
+				return ListSettingsForSnapshotResponse{}, err
 			}
 
-			var settings []Setting
+			settings := make([]Setting, len(page.Items))
 
-			for _, s := range page.Items {
-				settings = append(settings, settingFromGenerated(s))
+			for i := 0; i < len(page.Items); i++ {
+				setting := page.Items[i]
+
+				settings[i] = settingFromGenerated(setting)
 			}
 
-			return ListConfigurationSettingsForSnapshotResponse{
+			return ListSettingsForSnapshotResponse{
 				Settings:  settings,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
@@ -383,12 +387,12 @@ func (c *Client) NewListConfigurationSettingsForSnapshotPager(snapshotName strin
 //
 // - snapshotName - The name of the snapshot to create.
 // - keyLabelFilter - The filters to apply on the key-values.
-// - options - BeginCreateSnapshotOptions contains the optional parameters to create a Snapshot
-func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
+// - options - CreateSnapshotOptions contains the optional parameters to create a Snapshot
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *CreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
 	filter := []generated.KeyValueFilter{}
 
 	if options == nil {
-		options = &BeginCreateSnapshotOptions{}
+		options = &CreateSnapshotOptions{}
 	}
 
 	for _, f := range keyLabelFilter {

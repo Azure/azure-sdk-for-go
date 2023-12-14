@@ -266,7 +266,7 @@ func ExampleClient_BeginCreateSnapshot() {
 		},
 	}
 
-	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.BeginCreateSnapshotOptions{})
+	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.CreateSnapshotOptions{})
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -320,7 +320,7 @@ func ExampleClient_RecoverSnapshot() {
 	}
 }
 
-func ExampleClient_NewGetSnapshotsPager() {
+func ExampleClient_NewListSnapshotsPager() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
 	if connectionString == "" {
 		return
@@ -333,7 +333,7 @@ func ExampleClient_NewGetSnapshotsPager() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	snapshotPager := client.NewGetSnapshotsPager(nil)
+	snapshotPager := client.NewListSnapshotsPager(nil)
 
 	for snapshotPager.More() {
 		snapshotPage, err := snapshotPager.NextPage(context.TODO())
@@ -350,7 +350,7 @@ func ExampleClient_NewGetSnapshotsPager() {
 	}
 }
 
-func ExampleClient_NewListConfigurationSettingsForSnapshotPager() {
+func ExampleClient_NewListSettingsForSnapshotPager() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
 	if connectionString == "" {
 		return
@@ -365,7 +365,7 @@ func ExampleClient_NewListConfigurationSettingsForSnapshotPager() {
 
 	snapshotName := "existing-snapshot-example"
 
-	snapshotPager := client.NewListConfigurationSettingsForSnapshotPager(snapshotName, nil)
+	snapshotPager := client.NewListSettingsForSnapshotPager(snapshotName, nil)
 
 	for snapshotPager.More() {
 		snapshotPage, err := snapshotPager.NextPage(context.TODO())

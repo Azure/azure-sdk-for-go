@@ -77,8 +77,8 @@ type SetSettingOptions struct {
 	OnlyIfUnchanged *azcore.ETag
 }
 
-// BeginCreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
-type BeginCreateSnapshotOptions struct {
+// CreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
+type CreateSnapshotOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 
@@ -114,8 +114,8 @@ type RestoreSnapshotOptions struct {
 	IfNoneMatch *string
 }
 
-// NewGetSnapshotsPagerOptions contains the optional parameters for the NewGetSnapshotsPager method.
-type NewGetSnapshotsPagerOptions struct {
+// ListSnapshotsPagerOptions contains the optional parameters for the ListSnapshotsPager method.
+type ListSnapshotsPagerOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
 
@@ -129,8 +129,8 @@ type NewGetSnapshotsPagerOptions struct {
 	Status []SnapshotStatus
 }
 
-// ListConfigurationSettingsForSnapshotOptions contains the optional parameters for the NewListConfigurationSettingsForSnapshotPager method.
-type ListConfigurationSettingsForSnapshotOptions struct {
+// ListSettingsForSnapshotOptions contains the optional parameters for the NewListSettingsForSnapshotPager method.
+type ListSettingsForSnapshotOptions struct {
 	// Requests the server to respond with the state of the resource at the specified time.
 	AcceptDatetime *string
 

@@ -428,7 +428,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 	_, err := CreateSnapshot(client, snapshotName, sf)
 	require.NoError(t, err)
 
-	respPgr := client.NewListConfigurationSettingsForSnapshotPager(snapshotName, nil)
+	respPgr := client.NewListSettingsForSnapshotPager(snapshotName, nil)
 	require.NotEmpty(t, respPgr)
 
 	settingsAdded := 0
@@ -501,7 +501,7 @@ func TestGetSnapshots(t *testing.T) {
 	}
 
 	// Get Snapshots
-	ssPgr := client.NewGetSnapshotsPager(nil)
+	ssPgr := client.NewListSnapshotsPager(nil)
 
 	require.NotEmpty(t, ssPgr)
 
@@ -606,7 +606,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 
 	retPer := int64(3600)
 
-	opts := &azappconfig.BeginCreateSnapshotOptions{
+	opts := &azappconfig.CreateSnapshotOptions{
 		RetentionPeriod: &retPer,
 	}
 

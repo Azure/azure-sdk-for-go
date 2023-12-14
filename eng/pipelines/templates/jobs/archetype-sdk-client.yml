@@ -148,10 +148,12 @@ stages:
     - job: Analyze
       displayName: Analyze
       variables:
-          Codeql.Enabled: true
-          Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
-          Codeql.SkipTaskAutoInjection: false
-          skipComponentGovernanceDetection: true
+        - name: Codeql.Enabled
+          value: true
+        - name: Codeql.BuildIdentifier
+          value: ${{ parameters.ServiceDirectory }}
+        - name: Codeql.SkipTaskAutoInjection
+          value: false
       pool:
         name: azsdk-pool-mms-ubuntu-2004-general
 

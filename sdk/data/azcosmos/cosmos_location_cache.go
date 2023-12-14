@@ -36,13 +36,13 @@ type databaseAccountLocationsInfo struct {
 }
 
 type accountRegion struct {
-	name     string
-	endpoint string
+	Name     string `json:"name"`
+	Endpoint string `json:"databaseAccountEndpoint"`
 }
 
 type accountProperties struct {
-	ReadRegions                  []accountRegion `json:"readRegions"`
-	WriteRegions                 []accountRegion `json:"writeRegions"`
+	ReadRegions                  []accountRegion `json:"readableLocations"`
+	WriteRegions                 []accountRegion `json:"writableLocations"`
 	EnableMultipleWriteLocations bool            `json:"enableMultipleWriteLocations"`
 }
 
@@ -188,13 +188,13 @@ func (lc *locationCache) databaseAccountRead(dbAcct accountProperties) error {
 
 func (lc *locationCache) refreshStaleEndpoints() {
 	lc.mapMutex.Lock()
+	defer lc.mapMutex.Unlock()
 	for endpoint, info := range lc.locationUnavailabilityInfoMap {
 		t := time.Since(info.lastCheckTime)
 		if t > lc.unavailableLocationExpirationTime {
 			delete(lc.locationUnavailabilityInfoMap, endpoint)
 		}
 	}
-	lc.mapMutex.Unlock()
 }
 
 func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOperations) bool {
@@ -241,13 +241,13 @@ func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string,
 	endpointsByLoc := make(map[string]url.URL)
 	parsedLocs := make([]string, 0)
 	for _, loc := range locs {
-		endpoint, err := url.Parse(loc.endpoint)
+		endpoint, err := url.Parse(loc.Endpoint)
 		if err != nil {
 			return nil, nil, err
 		}
-		if loc.name != "" {
-			endpointsByLoc[loc.name] = *endpoint
-			parsedLocs = append(parsedLocs, loc.name)
+		if loc.Name != "" {
+			endpointsByLoc[loc.Name] = *endpoint
+			parsedLocs = append(parsedLocs, loc.Name)
 		}
 		// TODO else: log
 	}

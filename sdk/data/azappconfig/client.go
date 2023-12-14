@@ -280,18 +280,18 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 //
 //   - options - NewListSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
 //     method.
-func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runtime.Pager[ListSnapshotsPagerResponse] {
+func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.Pager[ListSnapshotsResponse] {
 	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
 
-	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsPagerResponse]{
-		More: func(ListSnapshotsPagerResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsResponse]{
+		More: func(ListSnapshotsResponse) bool {
 			return ssRespPager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListSnapshotsPagerResponse) (ListSnapshotsPagerResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListSnapshotsResponse) (ListSnapshotsResponse, error) {
 			page, err := ssRespPager.NextPage(ctx)
 			if err != nil {
-				return ListSnapshotsPagerResponse{}, err
+				return ListSnapshotsResponse{}, err
 			}
 
 			snapshots := make([]Snapshot, len(page.Items))
@@ -326,7 +326,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsPagerOptions) *runt
 				}
 			}
 
-			return ListSnapshotsPagerResponse{
+			return ListSnapshotsResponse{
 				Snapshots: snapshots,
 				SyncToken: SyncToken(*page.SyncToken),
 			}, nil

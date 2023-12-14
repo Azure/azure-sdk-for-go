@@ -114,8 +114,8 @@ type RestoreSnapshotOptions struct {
 	IfNoneMatch *string
 }
 
-// ListSnapshotsPagerOptions contains the optional parameters for the ListSnapshotsPager method.
-type ListSnapshotsPagerOptions struct {
+// ListSnapshotsOptions contains the optional parameters for the ListSnapshotsPager method.
+type ListSnapshotsOptions struct {
 	// Instructs the server to return elements that appear after the element referred to by the specified token.
 	After *string
 

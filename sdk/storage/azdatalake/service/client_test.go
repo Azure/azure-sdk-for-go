@@ -695,6 +695,26 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsIncludeSystemFileSystems() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	listOptions := service.ListFileSystemsOptions{Include: service.ListFileSystemsInclude{System: to.Ptr(true)}}
+	count := 0
+	pager := svcClient.NewListFileSystemsPager(&listOptions)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, ctnr := range resp.FileSystemItems {
+			_require.NotNil(ctnr.Name)
+			_require.Equal("$logs", *ctnr.Name)
+			count += 1
+		}
+	}
+	_require.Equal(1, count)
+}
+
 func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

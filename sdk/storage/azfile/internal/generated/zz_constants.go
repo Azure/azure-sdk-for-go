@@ -9,6 +9,24 @@
 
 package generated
 
+// AccessRight - Access rights of the access policy.
+type AccessRight string
+
+const (
+	AccessRightDelete AccessRight = "Delete"
+	AccessRightRead   AccessRight = "Read"
+	AccessRightWrite  AccessRight = "Write"
+)
+
+// PossibleAccessRightValues returns the possible values for the AccessRight const type.
+func PossibleAccessRightValues() []AccessRight {
+	return []AccessRight{
+		AccessRightDelete,
+		AccessRightRead,
+		AccessRightWrite,
+	}
+}
+
 type CopyStatusType string
 
 const (

@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/lease"
@@ -4338,6 +4339,42 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLNow() {
 	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
 	_require.NotNil(uResp.FileLastWriteTime)
 	_require.NotEqualValues(*uResp.FileLastWriteTime, *cResp.FileLastWriteTime)
+}
+
+type serviceVersionTest struct{}
+
+// newServiceVersionTestPolicy returns a policy that checks the x-ms-version header
+func newServiceVersionTestPolicy() policy.Policy {
+	return &serviceVersionTest{}
+}
+
+func (m serviceVersionTest) Do(req *policy.Request) (*http.Response, error) {
+	const versionHeader = "x-ms-version"
+	currentVersion := map[string][]string(req.Raw().Header)[versionHeader]
+	if currentVersion[0] != generated.ServiceVersion {
+		return nil, fmt.Errorf(currentVersion[0] + " service version doesn't match expected version: " + generated.ServiceVersion)
+	}
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestServiceVersion(t *testing.T) {
+	client, err := file.NewClientWithNoCredential("https://fake/file/testpath", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{newServiceVersionTestPolicy()},
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	_, err = client.Create(context.Background(), 1024, nil)
+	require.NoError(t, err)
 }
 
 // TODO: Add tests for retry header options

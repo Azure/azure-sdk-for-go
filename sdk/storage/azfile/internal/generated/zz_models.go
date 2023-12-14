@@ -590,7 +590,8 @@ type Handle struct {
 	Path *string `xml:"Path"`
 
 	// REQUIRED; SMB session ID in context of which the file handle was opened
-	SessionID *string `xml:"SessionId"`
+	SessionID       *string        `xml:"SessionId"`
+	AccessRightList []*AccessRight `xml:"AccessRightList>AccessRight"`
 
 	// Time handle was last connected to (UTC)
 	LastReconnectTime *time.Time `xml:"LastReconnectTime"`

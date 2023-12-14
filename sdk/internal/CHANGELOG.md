@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Prevent `exported.Payload` from panicking in the rare event `*http.Response.Body` is `nil`.
+
 ### Other Changes
 
 ## 1.5.1 (2023-12-06)

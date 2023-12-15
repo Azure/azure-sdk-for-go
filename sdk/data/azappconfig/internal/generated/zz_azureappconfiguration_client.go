@@ -490,7 +490,7 @@ func (client *AzureAppConfigurationClient) checkSnapshotsHandleResponse(resp *ht
 //     method.
 func (client *AzureAppConfigurationClient) BeginCreateSnapshot(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*runtime.Poller[AzureAppConfigurationClientCreateSnapshotResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createSnapshot(ctx, name, entity, options)
+		resp, err := client.CreateSnapshot(ctx, name, entity, options)
 		if err != nil {
 			return nil, err
 		}
@@ -505,7 +505,7 @@ func (client *AzureAppConfigurationClient) BeginCreateSnapshot(ctx context.Conte
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-10-01
-func (client *AzureAppConfigurationClient) createSnapshot(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*http.Response, error) {
+func (client *AzureAppConfigurationClient) CreateSnapshot(ctx context.Context, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*http.Response, error) {
 	var err error
 	req, err := client.createSnapshotCreateRequest(ctx, name, entity, options)
 	if err != nil {
@@ -1474,8 +1474,7 @@ func (client *AzureAppConfigurationClient) updateSnapshotHandleResponse(resp *ht
 
 // getNextPageCreateRequest creates the getNextPageCreateRequest request.
 func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
-	urlPath := "/{nextLink}"
-	urlPath = strings.ReplaceAll(urlPath, "{nextLink}", nextLink)
+	urlPath := nextLink
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err

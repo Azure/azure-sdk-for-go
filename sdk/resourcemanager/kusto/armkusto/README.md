@@ -1,6 +1,6 @@
 # Azure Kusto Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2)
 
 The `armkusto` module provides operations for working with Azure Kusto.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Kusto module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2
 ```
 
 ## Authorization

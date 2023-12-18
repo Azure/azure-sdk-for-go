@@ -1,6 +1,6 @@
 # Azure Hybrid Compute Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2)
 
 The `armhybridcompute` module provides operations for working with Azure Hybrid Compute.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Hybrid Compute module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2
 ```
 
 ## Authorization

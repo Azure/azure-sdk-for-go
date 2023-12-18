@@ -52,10 +52,10 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	loc1 = accountRegion{name: "location1", endpoint: loc1Endpoint.String()}
-	loc2 = accountRegion{name: "location2", endpoint: loc2Endpoint.String()}
-	loc3 = accountRegion{name: "location3", endpoint: loc3Endpoint.String()}
-	loc4 = accountRegion{name: "location4", endpoint: loc4Endpoint.String()}
+	loc1 = accountRegion{Name: "location1", Endpoint: loc1Endpoint.String()}
+	loc2 = accountRegion{Name: "location2", Endpoint: loc2Endpoint.String()}
+	loc3 = accountRegion{Name: "location3", Endpoint: loc3Endpoint.String()}
+	loc4 = accountRegion{Name: "location4", Endpoint: loc4Endpoint.String()}
 
 	writeEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc3Endpoint}
 	readEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc4Endpoint}
@@ -191,24 +191,24 @@ func TestGetLocation(t *testing.T) {
 		t.Errorf("Expected GetLocation to return a valid location when provided the default endpoint, but it did not")
 	}
 	for _, region := range dbAcct.WriteRegions {
-		url, err := url.Parse(region.endpoint)
+		url, err := url.Parse(region.Endpoint)
 		if err != nil {
-			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
+			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.name, lc.getLocation(*url)
+		expected, actual := region.Name, lc.getLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
 		}
 	}
 
 	for _, region := range dbAcct.ReadRegions {
-		url, err := url.Parse(region.endpoint)
+		url, err := url.Parse(region.Endpoint)
 		if err != nil {
-			t.Errorf("Failed to parse endpoint %s, %s", region.endpoint, err)
+			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.name, lc.getLocation(*url)
+		expected, actual := region.Name, lc.getLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
 		}
@@ -238,8 +238,8 @@ func TestGetEndpointsByLocation(t *testing.T) {
 		t.Errorf("Expected parsedLocs to contain %d locations, but it contained %d", len(locs), len(parsedLocs))
 	}
 	for i, loc := range locs {
-		if parsedLocs[i] != loc.name {
-			t.Errorf("Expected parsedLocs to contain location %s, but it did not", loc.name)
+		if parsedLocs[i] != loc.Name {
+			t.Errorf("Expected parsedLocs to contain location %s, but it did not", loc.Name)
 		}
 	}
 }
@@ -260,7 +260,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
-	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, "location5"}
+	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, "location5"}
 	prefWriteEndpoints := lc.getPrefAvailableEndpoints(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
 	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
 	expectedWriteEndpoints := []*url.URL{loc2Endpoint, defaultEndpoint, loc1Endpoint}
@@ -274,7 +274,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 
 func TestReadEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
-	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, loc3.name, loc4.name}
+	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {
@@ -323,7 +323,7 @@ func TestWriteEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	lc.enableMultipleWriteLocations = true
 	lc.useMultipleWriteLocations = true
-	lc.locationInfo.prefLocations = []string{loc1.name, loc2.name, loc3.name, loc4.name}
+	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {

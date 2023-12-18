@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -54,6 +55,10 @@ func run(m *testing.M) int {
 		if err := recording.AddHeaderRegexSanitizer("x-ms-content-sha256", "fake-content", "", nil); err != nil {
 			panic(err)
 		}
+
+		if err := recording.AddHeaderRegexSanitizer("Operation-Location", "https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
+			panic(err)
+		}
 	}
 
 	return m.Run()
@@ -79,6 +84,9 @@ func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
 	client, err := azappconfig.NewClientFromConnectionString(connStr, &azappconfig.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: transport,
+			Logging: policy.LogOptions{
+				IncludeBody: true,
+			},
 		},
 	})
 	require.NoError(t, err)

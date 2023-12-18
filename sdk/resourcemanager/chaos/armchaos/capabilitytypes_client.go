@@ -32,7 +32,7 @@ type CapabilityTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCapabilityTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapabilityTypesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CapabilityTypesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewCapabilityTypesClient(subscriptionID string, credential azcore.TokenCred
 // Get - Get a Capability Type resource for given Target Type and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - locationName - String that represents a Location resource name.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - capabilityTypeName - String that represents a Capability Type resource name.
 //   - options - CapabilityTypesClientGetOptions contains the optional parameters for the CapabilityTypesClient.Get method.
 func (client *CapabilityTypesClient) Get(ctx context.Context, locationName string, targetTypeName string, capabilityTypeName string, options *CapabilityTypesClientGetOptions) (CapabilityTypesClientGetResponse, error) {
 	var err error
+	const operationName = "CapabilityTypesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, locationName, targetTypeName, capabilityTypeName, options)
 	if err != nil {
 		return CapabilityTypesClientGetResponse{}, err
@@ -93,7 +97,7 @@ func (client *CapabilityTypesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +114,7 @@ func (client *CapabilityTypesClient) getHandleResponse(resp *http.Response) (Cap
 
 // NewListPager - Get a list of Capability Type resources for given Target Type and location.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - locationName - String that represents a Location resource name.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.NewListPager
@@ -121,25 +125,20 @@ func (client *CapabilityTypesClient) NewListPager(locationName string, targetTyp
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapabilityTypesClientListResponse) (CapabilityTypesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, locationName, targetTypeName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapabilityTypesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, locationName, targetTypeName, options)
+			}, nil)
 			if err != nil {
 				return CapabilityTypesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CapabilityTypesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CapabilityTypesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -163,7 +162,7 @@ func (client *CapabilityTypesClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

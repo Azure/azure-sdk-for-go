@@ -33,7 +33,7 @@ type NatRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNatRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NatRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".NatRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *NatRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NatRulesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NatRulesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NatRulesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,10 +146,13 @@ func (client *NatRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NatRulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NatRulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NatRulesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -288,22 +294,15 @@ func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string,
 		},
 		Fetcher: func(ctx context.Context, page *NatRulesClientListByVPNGatewayResponse) (NatRulesClientListByVPNGatewayResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NatRulesClient.NewListByVPNGatewayPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVPNGatewayCreateRequest(ctx, resourceGroupName, gatewayName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVPNGatewayCreateRequest(ctx, resourceGroupName, gatewayName, options)
+			}, nil)
 			if err != nil {
 				return NatRulesClientListByVPNGatewayResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NatRulesClientListByVPNGatewayResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NatRulesClientListByVPNGatewayResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVPNGatewayHandleResponse(resp)
 		},

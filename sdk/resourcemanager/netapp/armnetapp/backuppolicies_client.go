@@ -32,7 +32,7 @@ type BackupPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,13 @@ func (client *BackupPoliciesClient) BeginCreate(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupPoliciesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupPoliciesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupPoliciesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *BackupPoliciesClient) BeginCreate(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *BackupPoliciesClient) create(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicy, options *BackupPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "BackupPoliciesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 	if err != nil {
 		return nil, err
@@ -139,10 +146,13 @@ func (client *BackupPoliciesClient) BeginDelete(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupPoliciesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupPoliciesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +162,10 @@ func (client *BackupPoliciesClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *BackupPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "BackupPoliciesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, options)
 	if err != nil {
 		return nil, err
@@ -206,6 +220,10 @@ func (client *BackupPoliciesClient) deleteCreateRequest(ctx context.Context, res
 //   - options - BackupPoliciesClientGetOptions contains the optional parameters for the BackupPoliciesClient.Get method.
 func (client *BackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientGetOptions) (BackupPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "BackupPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, options)
 	if err != nil {
 		return BackupPoliciesClientGetResponse{}, err
@@ -273,6 +291,7 @@ func (client *BackupPoliciesClient) NewListPager(resourceGroupName string, accou
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *BackupPoliciesClientListResponse) (BackupPoliciesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupPoliciesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 			if err != nil {
 				return BackupPoliciesClientListResponse{}, err
@@ -286,6 +305,7 @@ func (client *BackupPoliciesClient) NewListPager(resourceGroupName string, accou
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -342,10 +362,13 @@ func (client *BackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BackupPoliciesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[BackupPoliciesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BackupPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -355,6 +378,10 @@ func (client *BackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *BackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicyPatch, options *BackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "BackupPoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 	if err != nil {
 		return nil, err

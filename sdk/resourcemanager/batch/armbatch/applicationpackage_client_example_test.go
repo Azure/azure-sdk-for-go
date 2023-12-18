@@ -45,7 +45,7 @@ func ExampleApplicationPackageClient_Activate() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/1"),
 	// 	Properties: &armbatch.ApplicationPackageProperties{
 	// 		Format: to.Ptr("zip"),
-	// 		LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 		LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.933Z"); return t}()),
 	// 		State: to.Ptr(armbatch.PackageStateActive),
 	// 	},
 	// }
@@ -77,7 +77,7 @@ func ExampleApplicationPackageClient_Create() {
 	// 	Properties: &armbatch.ApplicationPackageProperties{
 	// 		State: to.Ptr(armbatch.PackageStatePending),
 	// 		StorageURL: to.Ptr("http://mystorage1.blob.core.windows.net/myapp?mysas"),
-	// 		StorageURLExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 		StorageURLExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.933Z"); return t}()),
 	// 	},
 	// }
 }
@@ -124,7 +124,7 @@ func ExampleApplicationPackageClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/1"),
 	// 	Properties: &armbatch.ApplicationPackageProperties{
 	// 		Format: to.Ptr("zip"),
-	// 		LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 		LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.933Z"); return t}()),
 	// 		State: to.Ptr(armbatch.PackageStateActive),
 	// 	},
 	// }
@@ -170,7 +170,7 @@ func ExampleApplicationPackageClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/2.0"),
 		// 			Properties: &armbatch.ApplicationPackageProperties{
 		// 				Format: to.Ptr("zip"),
-		// 				LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+		// 				LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.933Z"); return t}()),
 		// 				State: to.Ptr(armbatch.PackageStateActive),
 		// 			},
 		// 	}},

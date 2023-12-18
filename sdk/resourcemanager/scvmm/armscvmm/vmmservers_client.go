@@ -167,7 +167,11 @@ func (client *VmmServersClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+=======
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -426,7 +430,11 @@ func (client *VmmServersClient) update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+=======
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

@@ -49,7 +49,7 @@ func ExampleRoleEligibilityScheduleInstancesClient_NewListForScopePager() {
 		// 			Properties: &armauthorization.RoleEligibilityScheduleInstanceProperties{
 		// 				Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
 		// 				ConditionVersion: to.Ptr("1.0"),
-		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.86Z"); return t}()),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.860Z"); return t}()),
 		// 				EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T00:31:41.477Z"); return t}()),
 		// 				ExpandedProperties: &armauthorization.ExpandedProperties{
 		// 					Principal: &armauthorization.ExpandedPropertiesPrincipal{
@@ -75,7 +75,7 @@ func ExampleRoleEligibilityScheduleInstancesClient_NewListForScopePager() {
 		// 				RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"),
 		// 				RoleEligibilityScheduleID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleEligibilitySchedules/b1477448-2cc6-4ceb-93b4-54a202a89413"),
 		// 				Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
-		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.86Z"); return t}()),
+		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.860Z"); return t}()),
 		// 				Status: to.Ptr(armauthorization.StatusProvisioned),
 		// 			},
 		// 	}},
@@ -108,7 +108,7 @@ func ExampleRoleEligibilityScheduleInstancesClient_Get() {
 	// 	Properties: &armauthorization.RoleEligibilityScheduleInstanceProperties{
 	// 		Condition: to.Ptr("@Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase 'foo_storage_container'"),
 	// 		ConditionVersion: to.Ptr("1.0"),
-	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.86Z"); return t}()),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.860Z"); return t}()),
 	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-10T00:31:41.477Z"); return t}()),
 	// 		ExpandedProperties: &armauthorization.ExpandedProperties{
 	// 			Principal: &armauthorization.ExpandedPropertiesPrincipal{
@@ -134,7 +134,7 @@ func ExampleRoleEligibilityScheduleInstancesClient_Get() {
 	// 		RoleDefinitionID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"),
 	// 		RoleEligibilityScheduleID: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleEligibilitySchedules/b1477448-2cc6-4ceb-93b4-54a202a89413"),
 	// 		Scope: to.Ptr("/providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f"),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.86Z"); return t}()),
+	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-10T00:32:36.860Z"); return t}()),
 	// 		Status: to.Ptr(armauthorization.StatusProvisioned),
 	// 	},
 	// }

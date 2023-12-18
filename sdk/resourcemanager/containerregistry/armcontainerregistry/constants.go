@@ -9,8 +9,8 @@
 package armcontainerregistry
 
 const (
-	moduleName    = "armcontainerregistry"
-	moduleVersion = "v1.2.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	moduleVersion = "v1.3.0-beta.1"
 )
 
 // Action - The action of IP ACL rule.
@@ -373,6 +373,22 @@ func PossibleLogLevelValues() []LogLevel {
 		LogLevelInformation,
 		LogLevelNone,
 		LogLevelWarning,
+	}
+}
+
+// MetadataSearch - Determines whether registry artifacts are indexed for metadata search.
+type MetadataSearch string
+
+const (
+	MetadataSearchDisabled MetadataSearch = "Disabled"
+	MetadataSearchEnabled  MetadataSearch = "Enabled"
+)
+
+// PossibleMetadataSearchValues returns the possible values for the MetadataSearch const type.
+func PossibleMetadataSearchValues() []MetadataSearch {
+	return []MetadataSearch{
+		MetadataSearchDisabled,
+		MetadataSearchEnabled,
 	}
 }
 

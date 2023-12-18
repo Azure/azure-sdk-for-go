@@ -32,7 +32,7 @@ type TenantAccessClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantAccessClient, error) {
-	cl, err := arm.NewClient(moduleName+".TenantAccessClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewTenantAccessClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - TenantAccessClientCreateOptions contains the optional parameters for the TenantAccessClient.Create method.
 func (client *TenantAccessClient) Create(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationCreateParameters, options *TenantAccessClientCreateOptions) (TenantAccessClientCreateResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serviceName, accessName, ifMatch, parameters, options)
 	if err != nil {
 		return TenantAccessClientCreateResponse{}, err
@@ -128,6 +132,10 @@ func (client *TenantAccessClient) createHandleResponse(resp *http.Response) (Ten
 //   - options - TenantAccessClientGetOptions contains the optional parameters for the TenantAccessClient.Get method.
 func (client *TenantAccessClient) Get(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetOptions) (TenantAccessClientGetResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessClientGetResponse{}, err
@@ -196,6 +204,10 @@ func (client *TenantAccessClient) getHandleResponse(resp *http.Response) (Tenant
 //     method.
 func (client *TenantAccessClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientGetEntityTagOptions) (TenantAccessClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessClientGetEntityTagResponse{}, err
@@ -244,11 +256,10 @@ func (client *TenantAccessClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *TenantAccessClient) getEntityTagHandleResponse(resp *http.Response) (TenantAccessClientGetEntityTagResponse, error) {
-	result := TenantAccessClientGetEntityTagResponse{}
+	result := TenantAccessClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -265,25 +276,20 @@ func (client *TenantAccessClient) NewListByServicePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TenantAccessClientListByServiceResponse) (TenantAccessClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantAccessClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return TenantAccessClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TenantAccessClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TenantAccessClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -336,6 +342,10 @@ func (client *TenantAccessClient) listByServiceHandleResponse(resp *http.Respons
 //     method.
 func (client *TenantAccessClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientListSecretsOptions) (TenantAccessClientListSecretsResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessClientListSecretsResponse{}, err
@@ -405,6 +415,10 @@ func (client *TenantAccessClient) listSecretsHandleResponse(resp *http.Response)
 //     method.
 func (client *TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegeneratePrimaryKeyOptions) (TenantAccessClientRegeneratePrimaryKeyResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.RegeneratePrimaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regeneratePrimaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessClientRegeneratePrimaryKeyResponse{}, err
@@ -461,6 +475,10 @@ func (client *TenantAccessClient) regeneratePrimaryKeyCreateRequest(ctx context.
 //     method.
 func (client *TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, options *TenantAccessClientRegenerateSecondaryKeyOptions) (TenantAccessClientRegenerateSecondaryKeyResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.RegenerateSecondaryKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateSecondaryKeyCreateRequest(ctx, resourceGroupName, serviceName, accessName, options)
 	if err != nil {
 		return TenantAccessClientRegenerateSecondaryKeyResponse{}, err
@@ -519,6 +537,10 @@ func (client *TenantAccessClient) regenerateSecondaryKeyCreateRequest(ctx contex
 //   - options - TenantAccessClientUpdateOptions contains the optional parameters for the TenantAccessClient.Update method.
 func (client *TenantAccessClient) Update(ctx context.Context, resourceGroupName string, serviceName string, accessName AccessIDName, ifMatch string, parameters AccessInformationUpdateParameters, options *TenantAccessClientUpdateOptions) (TenantAccessClientUpdateResponse, error) {
 	var err error
+	const operationName = "TenantAccessClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, accessName, ifMatch, parameters, options)
 	if err != nil {
 		return TenantAccessClientUpdateResponse{}, err

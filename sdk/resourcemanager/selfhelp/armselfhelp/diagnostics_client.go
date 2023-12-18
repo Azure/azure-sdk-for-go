@@ -30,7 +30,7 @@ type DiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DiagnosticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiagnosticsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DiagnosticsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiagnosticsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -77,6 +80,10 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 // Generated from API version 2023-09-01-preview
 func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DiagnosticsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, diagnosticsResourceName, diagnosticResourceRequest, options)
 	if err != nil {
 		return nil, err
@@ -123,6 +130,10 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
 func (client *DiagnosticsClient) Get(ctx context.Context, scope string, diagnosticsResourceName string, options *DiagnosticsClientGetOptions) (DiagnosticsClientGetResponse, error) {
 	var err error
+	const operationName = "DiagnosticsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, diagnosticsResourceName, options)
 	if err != nil {
 		return DiagnosticsClientGetResponse{}, err

@@ -9,8 +9,8 @@
 package armnetapp
 
 const (
-	moduleName    = "armnetapp"
-	moduleVersion = "v5.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
+	moduleVersion = "v5.1.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory

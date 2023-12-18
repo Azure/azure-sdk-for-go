@@ -30,7 +30,8 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewJobsClient().NewListBySubscriptionPager(&armstorageimportexport.JobsClientListBySubscriptionOptions{Top: nil,
-		Filter: nil,
+		Filter:         nil,
+		AcceptLanguage: nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -105,10 +106,10 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		// 				StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/xtprodtestarmos2"),
 		// 			},
 		// 			SystemData: &armstorageimportexport.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 		// 			},
@@ -175,10 +176,10 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		// 				StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/xtprodtestarmos2"),
 		// 			},
 		// 			SystemData: &armstorageimportexport.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 		// 			},
@@ -199,7 +200,8 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewJobsClient().NewListByResourceGroupPager("myResourceGroup", &armstorageimportexport.JobsClientListByResourceGroupOptions{Top: nil,
-		Filter: nil,
+		Filter:         nil,
+		AcceptLanguage: nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -267,10 +269,10 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		// 				StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/xtprodtestwu"),
 		// 			},
 		// 			SystemData: &armstorageimportexport.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 		// 			},
@@ -290,7 +292,7 @@ func ExampleJobsClient_Get_getExportJob() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "myJob", "myResourceGroup", nil)
+	res, err := clientFactory.NewJobsClient().Get(ctx, "myJob", "myResourceGroup", &armstorageimportexport.JobsClientGetOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -353,10 +355,10 @@ func ExampleJobsClient_Get_getExportJob() {
 	// 			StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 		},
 	// 		SystemData: &armstorageimportexport.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 		},
@@ -374,7 +376,7 @@ func ExampleJobsClient_Get_getImportJob() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewJobsClient().Get(ctx, "myJob", "myResourceGroup", nil)
+	res, err := clientFactory.NewJobsClient().Get(ctx, "myJob", "myResourceGroup", &armstorageimportexport.JobsClientGetOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -437,10 +439,10 @@ func ExampleJobsClient_Get_getImportJob() {
 	// 		StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 	},
 	// 	SystemData: &armstorageimportexport.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 	},
@@ -464,7 +466,7 @@ func ExampleJobsClient_Update_updateExportJob() {
 			LogLevel:            to.Ptr("Verbose"),
 			State:               to.Ptr(""),
 		},
-	}, nil)
+	}, &armstorageimportexport.JobsClientUpdateOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -525,10 +527,10 @@ func ExampleJobsClient_Update_updateExportJob() {
 	// 			StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 		},
 	// 		SystemData: &armstorageimportexport.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 		},
@@ -552,7 +554,7 @@ func ExampleJobsClient_Update_updateImportJob() {
 			LogLevel:            to.Ptr("Verbose"),
 			State:               to.Ptr(""),
 		},
-	}, nil)
+	}, &armstorageimportexport.JobsClientUpdateOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -615,10 +617,10 @@ func ExampleJobsClient_Update_updateImportJob() {
 	// 		StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 	},
 	// 	SystemData: &armstorageimportexport.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 	},
@@ -666,7 +668,9 @@ func ExampleJobsClient_Create_createExportJob() {
 			},
 			StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 		},
-	}, &armstorageimportexport.JobsClientCreateOptions{ClientTenantID: nil})
+	}, &armstorageimportexport.JobsClientCreateOptions{AcceptLanguage: nil,
+		ClientTenantID: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -727,10 +731,10 @@ func ExampleJobsClient_Create_createExportJob() {
 	// 			StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 		},
 	// 		SystemData: &armstorageimportexport.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 		},
@@ -780,7 +784,9 @@ func ExampleJobsClient_Create_createImportJob() {
 			},
 			StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 		},
-	}, &armstorageimportexport.JobsClientCreateOptions{ClientTenantID: nil})
+	}, &armstorageimportexport.JobsClientCreateOptions{AcceptLanguage: nil,
+		ClientTenantID: nil,
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -843,10 +849,10 @@ func ExampleJobsClient_Create_createImportJob() {
 	// 		StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 	// 	},
 	// 	SystemData: &armstorageimportexport.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armstorageimportexport.CreatedByTypeUser),
 	// 	},
@@ -864,7 +870,7 @@ func ExampleJobsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewJobsClient().Delete(ctx, "myJob", "myResourceGroup", nil)
+	_, err = clientFactory.NewJobsClient().Delete(ctx, "myJob", "myResourceGroup", &armstorageimportexport.JobsClientDeleteOptions{AcceptLanguage: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

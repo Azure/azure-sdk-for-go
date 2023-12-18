@@ -76,14 +76,14 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/eventtypes/management/values`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/eventtypes/management/values`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
 		if err != nil {
 			return nil, err
 		}
@@ -98,7 +98,7 @@ func (a *ActivityLogsServerTransport) dispatchNewListPager(req *http.Request) (*
 				Select: selectParam,
 			}
 		}
-		resp := a.srv.NewListPager(filterUnescaped, options)
+		resp := a.srv.NewListPager(filterParam, options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmonitor.ActivityLogsClientListResponse, createLink func() string) {

@@ -50,12 +50,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T02:40:17.27Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T02:40:17.270Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-91f08e47-2b04-4943-b0cd-a5fb02b88f20"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-91f08e47-2b04-4943-b0cd-a5fb02b88f20.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T07:15:30.78Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T07:15:30.780Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -70,7 +70,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:50:38.98Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:50:38.980Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-41dc63f4-0b08-4029-b3ef-535a131bfa65"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -110,12 +110,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.42Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.420Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sbpremium"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://SBPremium.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.42Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.420Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNamePremium),
@@ -151,7 +151,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:30:49.16Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:30:49.160Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-20e57600-29d0-4035-ac85-74f4c54dcda1"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -171,7 +171,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T18:07:30.05Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T18:07:30.050Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-3e538a1a-58fb-4315-b2ce-76f5c944114c"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -212,12 +212,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T01:01:58.73Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T01:01:58.730Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-4e1bfdf1-0cff-4e86-ae80-cdcac4873039"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-4e1bfdf1-0cff-4e86-ae80-cdcac4873039.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T03:02:59.8Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T03:02:59.800Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -252,7 +252,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T03:29:19.75Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T03:29:19.750Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-c05e9df3-7737-44ee-a321-15f6e0545b97"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -317,7 +317,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-fe2ed660-2cd6-46f2-a9c3-7e11551a1f30"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-fe2ed660-2cd6-46f2-a9c3-7e11551a1f30.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T06:32:57.77Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T06:32:57.770Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -357,7 +357,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-6520cc09-01ac-40a3-bc09-c5c431116e92"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-6520cc09-01ac-40a3-bc09-c5c431116e92.servicebus.windows-int.net:443"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T08:15:36.95Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T08:15:36.950Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -392,12 +392,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.87Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.870Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sbprem"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://SBPrem.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.87Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.870Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNamePremium),
@@ -453,7 +453,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T01:33:50.45Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T01:33:50.450Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-62dd7753-a5f9-42fd-a354-ca38a4505d69"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -498,7 +498,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-8e3b56c1-0ee8-4e13-ae88-5cadf6e2ce11"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-8e3b56c1-0ee8-4e13-ae88-5cadf6e2ce11.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T04:43:54.56Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T04:43:54.560Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -513,12 +513,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:59:12.1Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:59:12.100Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-7ffca4b4-4728-4fb0-b2d0-1e7c016e3a44"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-7ffca4b4-4728-4fb0-b2d0-1e7c016e3a44.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T06:33:52.23Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T06:33:52.230Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -533,7 +533,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T03:45:09.27Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T03:45:09.270Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-d9337efd-9b27-454c-b2a5-dcfea56920d9"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -578,7 +578,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-d447fb03-c7da-40fe-b5eb-14f36888837b"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-d447fb03-c7da-40fe-b5eb-14f36888837b.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T11:09:41.26Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T11:09:41.260Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -598,7 +598,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:reprosb"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://ReproSB.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-27T19:29:58.64Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-27T19:29:58.640Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -613,12 +613,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:35:32.61Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:35:32.610Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-4c90097f-19a8-42e7-bb3c-4ac088994719"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-4c90097f-19a8-42e7-bb3c-4ac088994719.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T09:13:52.27Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T09:13:52.270Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -653,12 +653,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:43:25.71Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:43:25.710Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-5191e541-8e4e-4229-9fdc-b89f6c3e7f12"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-5191e541-8e4e-4229-9fdc-b89f6c3e7f12.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T11:05:31.89Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T11:05:31.890Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -718,7 +718,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-a3c38e9b-32a3-4c51-85d7-263150a8dda9"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-a3c38e9b-32a3-4c51-85d7-263150a8dda9.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T05:03:55.96Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T05:03:55.960Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -733,7 +733,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:42:40.01Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T03:42:40.010Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-70d3fa25-6bbe-4a6b-a381-a52cf0d539e6"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -753,7 +753,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T04:28:10.71Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T04:28:10.710Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-e6536f77-0d1b-4a6b-8f42-29cc15b2930a"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -775,12 +775,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				"tag2": to.Ptr("value2"),
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.760Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.35Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.350Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -835,7 +835,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:51:27.73Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-16T17:51:27.730Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-66ed32d6-611e-4bb0-8e1a-a6d0fc65427c"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
@@ -915,12 +915,12 @@ func ExampleNamespacesClient_NewListPager() {
 		// 			Tags: map[string]*string{
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-28T23:57:40.82Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-28T23:57:40.820Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:bn3-rrama-foo2"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://bn3-rrama-foo2.servicebus.int7.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-28T23:57:40.82Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-28T23:57:40.820Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -985,12 +985,12 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 				"tag2": to.Ptr("value2"),
 		// 			},
 		// 			Properties: &armservicebus.SBNamespaceProperties{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.760Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.35Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.350Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -1043,11 +1043,11 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armservicebus.SBNamespaceProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.760Z"); return t}()),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.760Z"); return t}()),
 	// 	},
 	// 	SKU: &armservicebus.SBSKU{
 	// 		Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -1105,7 +1105,7 @@ func ExampleNamespacesClient_Get() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armservicebus.SBNamespaceProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.760Z"); return t}()),
 	// 		DisableLocalAuth: to.Ptr(false),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
 	// 		PrivateEndpointConnections: []*armservicebus.PrivateEndpointConnection{
@@ -1126,7 +1126,7 @@ func ExampleNamespacesClient_Get() {
 	// 		}},
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.35Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:59.350Z"); return t}()),
 	// 	},
 	// 	SKU: &armservicebus.SBSKU{
 	// 		Name: to.Ptr(armservicebus.SKUNameStandard),
@@ -1169,7 +1169,7 @@ func ExampleNamespacesClient_Update() {
 	// 		"tag4": to.Ptr("value4"),
 	// 	},
 	// 	Properties: &armservicebus.SBNamespaceProperties{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T23:07:58.17Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T23:07:58.170Z"); return t}()),
 	// 		DisableLocalAuth: to.Ptr(false),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-3285"),
 	// 		ProvisioningState: to.Ptr("Succeeded"),

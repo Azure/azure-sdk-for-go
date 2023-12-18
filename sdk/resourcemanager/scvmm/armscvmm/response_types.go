@@ -103,6 +103,7 @@ type InventoryItemsClientListByVMMServerResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
+<<<<<<< HEAD
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
 }
@@ -199,6 +200,10 @@ type VirtualMachineInstancesClientStopResponse struct {
 type VirtualMachineInstancesClientUpdateResponse struct {
 	// Define the virtualMachineInstance.
 	VirtualMachineInstance
+=======
+	// Results of the request to list operations.
+	ResourceProviderOperationList
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualMachineTemplatesClientCreateOrUpdateResponse contains the response from method VirtualMachineTemplatesClient.BeginCreateOrUpdate.
@@ -236,6 +241,74 @@ type VirtualMachineTemplatesClientUpdateResponse struct {
 	VirtualMachineTemplate
 }
 
+<<<<<<< HEAD
+=======
+// VirtualMachinesClientCreateCheckpointResponse contains the response from method VirtualMachinesClient.BeginCreateCheckpoint.
+type VirtualMachinesClientCreateCheckpointResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientCreateOrUpdateResponse contains the response from method VirtualMachinesClient.BeginCreateOrUpdate.
+type VirtualMachinesClientCreateOrUpdateResponse struct {
+	// The VirtualMachines resource definition.
+	VirtualMachine
+}
+
+// VirtualMachinesClientDeleteCheckpointResponse contains the response from method VirtualMachinesClient.BeginDeleteCheckpoint.
+type VirtualMachinesClientDeleteCheckpointResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientDeleteResponse contains the response from method VirtualMachinesClient.BeginDelete.
+type VirtualMachinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientGetResponse contains the response from method VirtualMachinesClient.Get.
+type VirtualMachinesClientGetResponse struct {
+	// The VirtualMachines resource definition.
+	VirtualMachine
+}
+
+// VirtualMachinesClientListByResourceGroupResponse contains the response from method VirtualMachinesClient.NewListByResourceGroupPager.
+type VirtualMachinesClientListByResourceGroupResponse struct {
+	// List of VirtualMachines.
+	VirtualMachineListResult
+}
+
+// VirtualMachinesClientListBySubscriptionResponse contains the response from method VirtualMachinesClient.NewListBySubscriptionPager.
+type VirtualMachinesClientListBySubscriptionResponse struct {
+	// List of VirtualMachines.
+	VirtualMachineListResult
+}
+
+// VirtualMachinesClientRestartResponse contains the response from method VirtualMachinesClient.BeginRestart.
+type VirtualMachinesClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientRestoreCheckpointResponse contains the response from method VirtualMachinesClient.BeginRestoreCheckpoint.
+type VirtualMachinesClientRestoreCheckpointResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientStartResponse contains the response from method VirtualMachinesClient.BeginStart.
+type VirtualMachinesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientStopResponse contains the response from method VirtualMachinesClient.BeginStop.
+type VirtualMachinesClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachinesClientUpdateResponse contains the response from method VirtualMachinesClient.BeginUpdate.
+type VirtualMachinesClientUpdateResponse struct {
+	// The VirtualMachines resource definition.
+	VirtualMachine
+}
+
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.BeginCreateOrUpdate.
 type VirtualNetworksClientCreateOrUpdateResponse struct {
 	// The VirtualNetworks resource definition.

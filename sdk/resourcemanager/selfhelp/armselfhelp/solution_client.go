@@ -30,7 +30,7 @@ type SolutionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSolutionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionClient, error) {
-	cl, err := arm.NewClient(moduleName+".SolutionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -69,10 +69,13 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SolutionClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -95,6 +98,10 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 // Generated from API version 2023-09-01-preview
 func (client *SolutionClient) create(ctx context.Context, scope string, solutionResourceName string, solutionRequestBody SolutionResource, options *SolutionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SolutionClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, solutionResourceName, solutionRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -141,6 +148,10 @@ func (client *SolutionClient) createCreateRequest(ctx context.Context, scope str
 //   - options - SolutionClientGetOptions contains the optional parameters for the SolutionClient.Get method.
 func (client *SolutionClient) Get(ctx context.Context, scope string, solutionResourceName string, options *SolutionClientGetOptions) (SolutionClientGetResponse, error) {
 	var err error
+	const operationName = "SolutionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, solutionResourceName, options)
 	if err != nil {
 		return SolutionClientGetResponse{}, err
@@ -201,10 +212,13 @@ func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, sol
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SolutionClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -214,6 +228,10 @@ func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, sol
 // Generated from API version 2023-09-01-preview
 func (client *SolutionClient) update(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SolutionClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
 	if err != nil {
 		return nil, err

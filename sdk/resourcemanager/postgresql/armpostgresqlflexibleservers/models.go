@@ -15,7 +15,7 @@ type ActiveDirectoryAdministrator struct {
 	// REQUIRED; Properties of the active directory administrator.
 	Properties *AdministratorProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -138,7 +138,7 @@ type Configuration struct {
 	// The properties of a configuration.
 	Properties *ConfigurationProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -231,7 +231,7 @@ type Database struct {
 	// The properties of a database.
 	Properties *DatabaseProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -262,9 +262,75 @@ type DatabaseProperties struct {
 	Collation *string
 }
 
+// DbLevelValidationStatus - Validation status summary for an individual database
+type DbLevelValidationStatus struct {
+	// Name of the database
+	DatabaseName *string
+
+	// End date-time of a database level validation
+	EndedOn *time.Time
+
+	// Start date-time of a database level validation
+	StartedOn *time.Time
+
+	// Summary of database level validations
+	Summary []*ValidationSummaryItem
+}
+
+// DbMigrationStatus - Migration status of an individual database
+type DbMigrationStatus struct {
+	// CDC applied changes counter
+	AppliedChanges *int32
+
+	// CDC delete counter
+	CdcDeleteCounter *int32
+
+	// CDC insert counter
+	CdcInsertCounter *int32
+
+	// CDC update counter
+	CdcUpdateCounter *int32
+
+	// Name of the database
+	DatabaseName *string
+
+	// End date-time of a migration state
+	EndedOn *time.Time
+
+	// Number of tables loaded during the migration of a DB
+	FullLoadCompletedTables *int32
+
+	// Number of tables errored out during the migration of a DB
+	FullLoadErroredTables *int32
+
+	// Number of tables loading during the migration of a DB
+	FullLoadLoadingTables *int32
+
+	// Number of tables queued for the migration of a DB
+	FullLoadQueuedTables *int32
+
+	// CDC incoming changes counter
+	IncomingChanges *int32
+
+	// Lag in seconds between source and target during online phase
+	Latency *int32
+
+	// Error message, if any, for the migration state
+	Message *string
+
+	// Migration operation of an individual database
+	MigrationOperation *string
+
+	// Migration db state of an individual database
+	MigrationState *MigrationDbState
+
+	// Start date-time of a migration state
+	StartedOn *time.Time
+}
+
 // DbServerMetadata - Database server metadata.
 type DbServerMetadata struct {
-	// SKU for the database server
+	// SKU for the database server. This object is empty for PG single server
 	SKU *ServerSKU
 
 	// Storage size in MB for database server
@@ -315,7 +381,7 @@ type FirewallRule struct {
 	// REQUIRED; The properties of a firewall rule.
 	Properties *FirewallRuleProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -435,7 +501,7 @@ type LogFile struct {
 	// The properties of a logFile.
 	Properties *LogFileProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -548,7 +614,7 @@ type LtrServerBackupOperation struct {
 	// Long Term Retention Backup Operation Resource Properties
 	Properties *LtrBackupOperationResponseProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -614,7 +680,7 @@ type MigrationResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -662,6 +728,9 @@ type MigrationResourceProperties struct {
 	// There are two types of migration modes Online and Offline
 	MigrationMode *MigrationMode
 
+	// This indicates the supported Migration option for the migration
+	MigrationOption *MigrationOption
+
 	// End time in UTC for migration window
 	MigrationWindowEndTimeInUTC *time.Time
 
@@ -673,6 +742,9 @@ type MigrationResourceProperties struct {
 	// already exists.
 	OverwriteDbsInTarget *OverwriteDbsInTargetEnum
 
+	// SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source types
+	SSLMode *SSLMode
+
 	// Migration secret parameters
 	SecretParameters *MigrationSecretParameters
 
@@ -683,8 +755,12 @@ type MigrationResourceProperties struct {
 	// for connection
 	SourceDbServerFullyQualifiedDomainName *string
 
-	// ResourceId of the source database server
+	// ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types this
+	// should be ipaddress:port@username or hostname:port@username
 	SourceDbServerResourceID *string
+
+	// migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+	SourceType *SourceType
 
 	// Indicates whether the data migration should start right away
 	StartDataMigration *StartDataMigrationEnum
@@ -787,6 +863,12 @@ type MigrationStatus struct {
 
 // MigrationSubStateDetails - Migration sub state details.
 type MigrationSubStateDetails struct {
+	// Dictionary of
+	DbDetails map[string]*DbMigrationStatus
+
+	// Details for the validation for migration
+	ValidationDetails *ValidationDetails
+
 	// READ-ONLY; Migration sub state.
 	CurrentSubState *MigrationSubState
 }
@@ -809,6 +891,15 @@ type NameAvailability struct {
 	Type *string
 }
 
+// NameProperty - Name property for quota usage
+type NameProperty struct {
+	// Localized name
+	LocalizedValue *string
+
+	// Name value
+	Value *string
+}
+
 // Network properties of a server.
 type Network struct {
 	// Delegated subnet arm resource id. This is required to be passed during create, in case we want the server to be VNET injected,
@@ -821,7 +912,7 @@ type Network struct {
 	// update the value for Private DNS zone.
 	PrivateDNSZoneArmResourceID *string
 
-	// READ-ONLY; public network access is enabled or not
+	// public network access is enabled or not
 	PublicNetworkAccess *ServerPublicNetworkAccessState
 }
 
@@ -867,6 +958,152 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for private endpoint.
+	ID *string
+}
+
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - A list of private endpoint connections.
+type PrivateEndpointConnectionListResult struct {
+	// READ-ONLY; The URL to get the next set of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*PrivateLinkResource
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// QuotaUsage - Quota usage for flexible servers
+type QuotaUsage struct {
+	// Current Quota usage value
+	CurrentValue *int64
+
+	// Fully qualified ARM resource Id
+	ID *string
+
+	// Quota limit
+	Limit *int64
+
+	// Name of quota usage for flexible servers
+	Name *NameProperty
+
+	// Quota unit
+	Unit *string
+}
+
+// QuotaUsagesListResult - Capability for the PostgreSQL server
+type QuotaUsagesListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; A list of quota usages.
+	Value []*QuotaUsage
+}
+
+// Replica properties of a server
+type Replica struct {
+	// Sets the promote mode for a replica server. This is a write only property.
+	PromoteMode *ReadReplicaPromoteMode
+
+	// Sets the promote options for a replica server. This is a write only property.
+	PromoteOption *ReplicationPromoteOption
+
+	// Used to indicate role of the server in replication set.
+	Role *ReplicationRole
+
+	// READ-ONLY; Replicas allowed for a server.
+	Capacity *int32
+
+	// READ-ONLY; Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
+	// values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
+	ReplicationState *ReplicationState
+}
+
 // RestartParameter - Represents server restart parameters.
 type RestartParameter struct {
 	// Failover mode.
@@ -902,7 +1139,7 @@ type Server struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -920,7 +1157,7 @@ type ServerBackup struct {
 	// The properties of a server backup.
 	Properties *ServerBackupProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
@@ -1016,6 +1253,9 @@ type ServerProperties struct {
 	// or 'GeoRestore' or 'ReviveDropped'.
 	PointInTimeUTC *time.Time
 
+	// Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
+	Replica *Replica
+
 	// Replication role of the server
 	ReplicationRole *ReplicationRole
 
@@ -1035,6 +1275,9 @@ type ServerProperties struct {
 
 	// READ-ONLY; The minor version of the server.
 	MinorVersion *string
+
+	// READ-ONLY; List of private endpoint connections associated with the specified resource.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Replicas allowed for a server.
 	ReplicaCapacity *int32
@@ -1068,22 +1311,25 @@ type ServerPropertiesForUpdate struct {
 	// Network properties of a server. These are required to be passed only in case if server is a private access server.
 	Network *Network
 
+	// Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
+	Replica *Replica
+
 	// Replication role of the server
 	ReplicationRole *ReplicationRole
 
 	// Storage properties of a server.
 	Storage *Storage
 
-	// PostgreSQL Server version.
+	// PostgreSQL Server version. Version 16 is currently not supported for MVU.
 	Version *ServerVersion
 }
 
 // ServerSKU - Sku information related properties of a server.
 type ServerSKU struct {
-	// REQUIRED; The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
+	// The name of the sku, typically, tier + family + cores, e.g. StandardD4sv3.
 	Name *string
 
-	// REQUIRED; The tier of the particular SKU, e.g. Burstable.
+	// The tier of the particular SKU, e.g. Burstable.
 	Tier *SKUTier
 }
 
@@ -1114,6 +1360,43 @@ type ServerSKUCapability struct {
 	VCores *int32
 }
 
+// ServerThreatProtectionListResult - A list of the server's Advanced Threat Protection settings.
+type ServerThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*ServerThreatProtectionSettingsModel
+}
+
+// ServerThreatProtectionProperties - Properties of server Threat Protection state.
+type ServerThreatProtectionProperties struct {
+	// REQUIRED; Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied
+	// yet on the specific server.
+	State *ThreatProtectionState
+
+	// READ-ONLY; Specifies the UTC creation time of the policy.
+	CreationTime *time.Time
+}
+
+// ServerThreatProtectionSettingsModel - Server's Advanced Threat Protection settings.
+type ServerThreatProtectionSettingsModel struct {
+	// Advanced Threat Protection properties.
+	Properties *ServerThreatProtectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // ServerVersionCapability - Server version capabilities.
 type ServerVersionCapability struct {
 	// READ-ONLY; Server version
@@ -1134,14 +1417,20 @@ type Storage struct {
 	// Flag to enable / disable Storage Auto grow for flexible server.
 	AutoGrow *StorageAutoGrow
 
+	// Storage tier IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+	Iops *int32
+
 	// Max storage allowed for a server.
 	StorageSizeGB *int32
+
+	// Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS
+	Throughput *int32
 
 	// Name of storage tier for IOPS.
 	Tier *AzureManagedDiskPerformanceTiers
 
-	// READ-ONLY; Storage tier IOPS quantity.
-	Iops *int32
+	// Storage type for the server. Allowed values are PremiumLRS and PremiumV2LRS, and default is Premium_LRS if not specified
+	Type *StorageType
 }
 
 // StorageEditionCapability - Storage edition capability
@@ -1167,6 +1456,9 @@ type StorageMbCapability struct {
 	// READ-ONLY; Default tier for IOPS
 	DefaultIopsTier *string
 
+	// READ-ONLY; Maximum value of Storage size in MB
+	MaximumStorageSizeMb *int64
+
 	// READ-ONLY; The reason for the capability not being available.
 	Reason *string
 
@@ -1181,6 +1473,15 @@ type StorageMbCapability struct {
 
 	// READ-ONLY; List of available options to upgrade the storage performance
 	SupportedIopsTiers []*StorageTierCapability
+
+	// READ-ONLY; Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size
+	SupportedMaximumIops *int32
+
+	// READ-ONLY; Maximum values of throughput in MB/s
+	SupportedMaximumThroughput *int32
+
+	// READ-ONLY; Values of throughput in MB/s
+	SupportedThroughput *int32
 }
 
 // StorageTierCapability - Represents capability of a storage tier
@@ -1238,6 +1539,90 @@ type UserIdentity struct {
 
 	// the object identifier of the Service Principal which this identity represents.
 	PrincipalID *string
+}
+
+// ValidationDetails - Details for the validation for migration
+type ValidationDetails struct {
+	// Details of server level validations
+	DbLevelValidationDetails []*DbLevelValidationStatus
+
+	// Details of server level validations
+	ServerLevelValidationDetails []*ValidationSummaryItem
+
+	// Validation status for migration
+	Status *ValidationState
+
+	// Validation End date-time in UTC
+	ValidationEndTimeInUTC *time.Time
+
+	// Validation Start date-time in UTC
+	ValidationStartTimeInUTC *time.Time
+}
+
+// ValidationMessage - Validation message object
+type ValidationMessage struct {
+	// Validation message string
+	Message *string
+
+	// Severity of validation message
+	State *ValidationState
+}
+
+// ValidationSummaryItem - Validation summary object
+type ValidationSummaryItem struct {
+	// Validation messages
+	Messages []*ValidationMessage
+
+	// Validation status for migration
+	State *ValidationState
+
+	// Validation type
+	Type *string
+}
+
+// VirtualEndpointResource - Represents a virtual endpoint for a server.
+type VirtualEndpointResource struct {
+	// Properties of the virtual endpoint resource.
+	Properties *VirtualEndpointResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VirtualEndpointResourceForPatch - Represents a virtual endpoint for a server.
+type VirtualEndpointResourceForPatch struct {
+	// Properties of the virtual endpoint resource.
+	Properties *VirtualEndpointResourceProperties
+}
+
+// VirtualEndpointResourceProperties - The properties of a virtual endpoint.
+type VirtualEndpointResourceProperties struct {
+	// The endpoint type for the virtual endpoint.
+	EndpointType *VirtualEndpointType
+
+	// List of members for a virtual endpoint
+	Members []*string
+
+	// READ-ONLY; List of virtual endpoints for a server
+	VirtualEndpoints []*string
+}
+
+// VirtualEndpointsListResult - A list of virtual endpoints.
+type VirtualEndpointsListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string
+
+	// The list of virtual endpoints
+	Value []*VirtualEndpointResource
 }
 
 // VirtualNetworkSubnetUsageParameter - Virtual network subnet usage parameter

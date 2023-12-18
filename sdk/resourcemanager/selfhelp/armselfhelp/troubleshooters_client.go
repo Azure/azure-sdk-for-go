@@ -30,7 +30,7 @@ type TroubleshootersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTroubleshootersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TroubleshootersClient, error) {
-	cl, err := arm.NewClient(moduleName+".TroubleshootersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewTroubleshootersClient(credential azcore.TokenCredential, options *arm.Cl
 //     method.
 func (client *TroubleshootersClient) Continue(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientContinueOptions) (TroubleshootersClientContinueResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Continue"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.continueCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientContinueResponse{}, err
@@ -121,6 +125,10 @@ func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response)
 //   - options - TroubleshootersClientCreateOptions contains the optional parameters for the TroubleshootersClient.Create method.
 func (client *TroubleshootersClient) Create(ctx context.Context, scope string, troubleshooterName string, createTroubleshooterRequestBody TroubleshooterResource, options *TroubleshootersClientCreateOptions) (TroubleshootersClientCreateResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, troubleshooterName, createTroubleshooterRequestBody, options)
 	if err != nil {
 		return TroubleshootersClientCreateResponse{}, err
@@ -177,6 +185,10 @@ func (client *TroubleshootersClient) createHandleResponse(resp *http.Response) (
 //   - options - TroubleshootersClientEndOptions contains the optional parameters for the TroubleshootersClient.End method.
 func (client *TroubleshootersClient) End(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientEndOptions) (TroubleshootersClientEndResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.End"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.endCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientEndResponse{}, err
@@ -233,6 +245,10 @@ func (client *TroubleshootersClient) endHandleResponse(resp *http.Response) (Tro
 //   - options - TroubleshootersClientGetOptions contains the optional parameters for the TroubleshootersClient.Get method.
 func (client *TroubleshootersClient) Get(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientGetOptions) (TroubleshootersClientGetResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientGetResponse{}, err
@@ -288,6 +304,10 @@ func (client *TroubleshootersClient) getHandleResponse(resp *http.Response) (Tro
 //   - options - TroubleshootersClientRestartOptions contains the optional parameters for the TroubleshootersClient.Restart method.
 func (client *TroubleshootersClient) Restart(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientRestartOptions) (TroubleshootersClientRestartResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Restart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientRestartResponse{}, err

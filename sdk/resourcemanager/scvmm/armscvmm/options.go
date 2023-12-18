@@ -18,7 +18,11 @@ type AvailabilitySetsClientBeginCreateOrUpdateOptions struct {
 // AvailabilitySetsClientBeginDeleteOptions contains the optional parameters for the AvailabilitySetsClient.BeginDelete method.
 type AvailabilitySetsClientBeginDeleteOptions struct {
 	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+<<<<<<< HEAD
 	Force *Force
+=======
+	Force *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -56,7 +60,11 @@ type CloudsClientBeginCreateOrUpdateOptions struct {
 // CloudsClientBeginDeleteOptions contains the optional parameters for the CloudsClient.BeginDelete method.
 type CloudsClientBeginDeleteOptions struct {
 	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+<<<<<<< HEAD
 	Force *Force
+=======
+	Force *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -112,6 +120,7 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+<<<<<<< HEAD
 // VMInstanceGuestAgentsClientBeginCreateOptions contains the optional parameters for the VMInstanceGuestAgentsClient.BeginCreate
 // method.
 type VMInstanceGuestAgentsClientBeginCreateOptions struct {
@@ -248,6 +257,8 @@ type VirtualMachineInstancesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // VirtualMachineTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineTemplatesClient.BeginCreateOrUpdate
 // method.
 type VirtualMachineTemplatesClientBeginCreateOrUpdateOptions struct {
@@ -259,7 +270,11 @@ type VirtualMachineTemplatesClientBeginCreateOrUpdateOptions struct {
 // method.
 type VirtualMachineTemplatesClientBeginDeleteOptions struct {
 	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+<<<<<<< HEAD
 	Force *Force
+=======
+	Force *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -289,6 +304,102 @@ type VirtualMachineTemplatesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+<<<<<<< HEAD
+=======
+// VirtualMachinesClientBeginCreateCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateCheckpoint
+// method.
+type VirtualMachinesClientBeginCreateCheckpointOptions struct {
+	// Virtualmachine create checkpoint action payload.
+	Body *VirtualMachineCreateCheckpoint
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
+// method.
+type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginDeleteCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginDeleteCheckpoint
+// method.
+type VirtualMachinesClientBeginDeleteCheckpointOptions struct {
+	// Virtualmachine delete checkpoint action payload.
+	Body *VirtualMachineDeleteCheckpoint
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
+type VirtualMachinesClientBeginDeleteOptions struct {
+	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+	Force *bool
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+
+	// Whether to just disable the VM from azure and retain the VM in the VMM.
+	Retain *bool
+}
+
+// VirtualMachinesClientBeginRestartOptions contains the optional parameters for the VirtualMachinesClient.BeginRestart method.
+type VirtualMachinesClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginRestoreCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginRestoreCheckpoint
+// method.
+type VirtualMachinesClientBeginRestoreCheckpointOptions struct {
+	// Virtualmachine restore checkpoint action payload.
+	Body *VirtualMachineRestoreCheckpoint
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart method.
+type VirtualMachinesClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop method.
+type VirtualMachinesClientBeginStopOptions struct {
+	// Virtualmachine stop action payload.
+	Body *StopVirtualMachineOptions
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate method.
+type VirtualMachinesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
+type VirtualMachinesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.NewListByResourceGroupPager
+// method.
+type VirtualMachinesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.NewListBySubscriptionPager
+// method.
+type VirtualMachinesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // VirtualNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginCreateOrUpdate
 // method.
 type VirtualNetworksClientBeginCreateOrUpdateOptions struct {
@@ -299,7 +410,11 @@ type VirtualNetworksClientBeginCreateOrUpdateOptions struct {
 // VirtualNetworksClientBeginDeleteOptions contains the optional parameters for the VirtualNetworksClient.BeginDelete method.
 type VirtualNetworksClientBeginDeleteOptions struct {
 	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+<<<<<<< HEAD
 	Force *Force
+=======
+	Force *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -338,7 +453,11 @@ type VmmServersClientBeginCreateOrUpdateOptions struct {
 // VmmServersClientBeginDeleteOptions contains the optional parameters for the VmmServersClient.BeginDelete method.
 type VmmServersClientBeginDeleteOptions struct {
 	// Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted too.
+<<<<<<< HEAD
 	Force *Force
+=======
+	Force *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Resumes the LRO from the provided token.
 	ResumeToken string

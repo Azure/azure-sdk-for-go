@@ -12,6 +12,7 @@ import "time"
 
 // AvailabilitySet - The AvailabilitySets resource definition.
 type AvailabilitySet struct {
+<<<<<<< HEAD
 	// REQUIRED; The extended location.
 	ExtendedLocation *ExtendedLocation
 
@@ -34,6 +35,30 @@ type AvailabilitySet struct {
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+=======
+	// The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// Gets or sets the location.
+	Location *string
+
+	// Resource properties.
+	Properties *AvailabilitySetProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Type *string
 }
 
@@ -48,11 +73,19 @@ type AvailabilitySetListItem struct {
 
 // AvailabilitySetListResult - List of AvailabilitySets.
 type AvailabilitySetListResult struct {
+<<<<<<< HEAD
 	// List of AvailabilitySets.
 	Value []*AvailabilitySet
 
 	// READ-ONLY; Url to follow for getting next page of resources.
 	NextLink *string
+=======
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of AvailabilitySets.
+	Value []*AvailabilitySet
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // AvailabilitySetProperties - Defines the resource properties.
@@ -63,8 +96,13 @@ type AvailabilitySetProperties struct {
 	// ARM Id of the vmmServer resource in which this resource resides.
 	VmmServerID *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // Checkpoint - Defines the resource properties.
@@ -87,12 +125,17 @@ type Cloud struct {
 	// REQUIRED; The extended location.
 	ExtendedLocation *ExtendedLocation
 
+<<<<<<< HEAD
 	// REQUIRED; The geo-location where the resource lives
+=======
+	// REQUIRED; Gets or sets the location.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Location *string
 
 	// REQUIRED; Resource properties.
 	Properties *CloudProperties
 
+<<<<<<< HEAD
 	// Resource tags.
 	Tags map[string]*string
 
@@ -106,6 +149,21 @@ type Cloud struct {
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+=======
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Type *string
 }
 
@@ -132,8 +190,13 @@ type CloudInventoryItem struct {
 	// READ-ONLY; Gets the tracked resource id corresponding to the inventory resource.
 	ManagedResourceID *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string
@@ -152,11 +215,19 @@ func (c *CloudInventoryItem) GetInventoryItemProperties() *InventoryItemProperti
 
 // CloudListResult - List of Clouds.
 type CloudListResult struct {
+<<<<<<< HEAD
 	// List of Clouds.
 	Value []*Cloud
 
 	// READ-ONLY; Url to follow for getting next page of resources.
 	NextLink *string
+=======
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of Clouds.
+	Value []*Cloud
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // CloudProperties - Defines the resource properties.
@@ -176,11 +247,37 @@ type CloudProperties struct {
 	// READ-ONLY; Name of the cloud in VMMServer.
 	CloudName *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; List of QoS policies available for the cloud.
 	StorageQoSPolicies []*StorageQoSPolicy
+=======
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+
+	// READ-ONLY; List of QoS policies available for the cloud.
+	StorageQoSPolicies []*StorageQoSPolicy
+}
+
+// ErrorDefinition - Error definition.
+type ErrorDefinition struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string
+
+	// READ-ONLY; Internal error details.
+	Details []*ErrorDefinition
+
+	// READ-ONLY; Description of the error.
+	Message *string
+}
+
+// ErrorResponse - Error response.
+type ErrorResponse struct {
+	// The error details.
+	Error *ErrorDefinition
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // ExtendedLocation - The extended location.
@@ -190,6 +287,7 @@ type ExtendedLocation struct {
 
 	// The extended location type.
 	Type *string
+<<<<<<< HEAD
 }
 
 // GuestAgent - Defines the GuestAgent.
@@ -256,6 +354,8 @@ type GuestCredential struct {
 type HTTPProxyConfiguration struct {
 	// Gets or sets httpsProxy url.
 	HTTPSProxy *string
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // HardwareProfile - Defines the resource properties.
@@ -271,15 +371,24 @@ type HardwareProfile struct {
 
 	// Gets or sets the min dynamic memory for the vm.
 	DynamicMemoryMinMB *int32
+<<<<<<< HEAD
+=======
+
+	// Gets highly available property.
+	IsHighlyAvailable *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs.
 	LimitCPUForMigration *LimitCPUForMigration
 
 	// MemoryMB is the size of a virtual machine's memory, in MB.
 	MemoryMB *int32
+<<<<<<< HEAD
 
 	// READ-ONLY; Gets highly available property.
 	IsHighlyAvailable *IsHighlyAvailable
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // HardwareProfileUpdate - Defines the resource properties.
@@ -301,6 +410,7 @@ type HardwareProfileUpdate struct {
 
 	// MemoryMB is the size of a virtual machine's memory, in MB.
 	MemoryMB *int32
+<<<<<<< HEAD
 }
 
 // InfrastructureProfile - Specifies the vmmServer infrastructure specific settings for the virtual machine instance.
@@ -344,6 +454,8 @@ type InfrastructureProfile struct {
 type InfrastructureProfileUpdate struct {
 	// Type of checkpoint supported for the vm.
 	CheckpointType *string
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // InventoryItem - Defines the inventory item.
@@ -356,13 +468,21 @@ type InventoryItem struct {
 	// validate and persist this value.
 	Kind *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+=======
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+=======
+	// READ-ONLY; The system data.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -389,8 +509,13 @@ type InventoryItemProperties struct {
 	// READ-ONLY; Gets the tracked resource id corresponding to the inventory resource.
 	ManagedResourceID *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string
@@ -404,7 +529,11 @@ type InventoryItemsList struct {
 	// REQUIRED; Array of InventoryItems
 	Value []*InventoryItem
 
+<<<<<<< HEAD
 	// READ-ONLY; Url to follow for getting next page of InventoryItems.
+=======
+	// Url to follow for getting next page of InventoryItems.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	NextLink *string
 }
 
@@ -435,6 +564,7 @@ type NetworkInterface struct {
 	// when the name is not set.
 	DisplayName *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the nic ipv4 addresses.
 	IPv4Addresses []*string
 
@@ -442,6 +572,15 @@ type NetworkInterface struct {
 	IPv6Addresses []*string
 
 	// READ-ONLY; Gets the name of the virtual network in vmmServer that the nic is connected to.
+=======
+	// READ-ONLY; Gets or sets the nic ipv4 addresses.
+	IPv4Addresses []*string
+
+	// READ-ONLY; Gets or sets the nic ipv6 addresses.
+	IPv6Addresses []*string
+
+	// READ-ONLY; Gets or sets the name of the virtual network in vmmServer that the nic is connected to.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	NetworkName *string
 }
 
@@ -472,12 +611,17 @@ type NetworkInterfaceUpdate struct {
 // NetworkProfile - Defines the resource properties.
 type NetworkProfile struct {
 	// Gets or sets the list of network interfaces associated with the virtual machine.
+<<<<<<< HEAD
 	NetworkInterfaces []*NetworkInterface
+=======
+	NetworkInterfaces []*NetworkInterfaces
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // NetworkProfileUpdate - Defines the resource properties.
 type NetworkProfileUpdate struct {
 	// Gets or sets the list of network interfaces associated with the virtual machine.
+<<<<<<< HEAD
 	NetworkInterfaces []*NetworkInterfaceUpdate
 }
 
@@ -500,6 +644,9 @@ type Operation struct {
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
 	Origin *Origin
+=======
+	NetworkInterfaces []*NetworkInterfacesUpdate
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // OperationDisplay - Localized display information for this particular operation.
@@ -538,6 +685,7 @@ type OsProfileForVMInstance struct {
 	// Gets or sets computer name.
 	ComputerName *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets os sku.
 	OSSKU *string
 
@@ -546,19 +694,94 @@ type OsProfileForVMInstance struct {
 
 	// READ-ONLY; Gets os version.
 	OSVersion *string
+=======
+	// READ-ONLY; Gets or sets os name.
+	OSName *string
+
+	// READ-ONLY; Gets or sets the type of the os.
+	OSType *OsType
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // ResourcePatch - Object containing tags updates for patch operations.
 type ResourcePatch struct {
 	// Resource tags.
 	Tags map[string]*string
+<<<<<<< HEAD
+=======
+}
+
+// ResourceProviderOperation - Results of the request to list operations.
+type ResourceProviderOperation struct {
+	// Display metadata associated with the operation.
+	Display *ResourceProviderOperationDisplay
+
+	// Indicates whether the operation applies to data-plane.
+	IsDataAction *string
+
+	// Operation name, in format of {provider}/{resource}/{operation}.
+	Name *string
+}
+
+// ResourceProviderOperationDisplay - Display metadata associated with the operation.
+type ResourceProviderOperationDisplay struct {
+	// Description of this operation.
+	Description *string
+
+	// Type of operation: read, write, delete, etc.
+	Operation *string
+
+	// The resource provider.
+	Provider *string
+
+	// Resource on which the operation is performed.
+	Resource *string
+}
+
+// ResourceProviderOperationList - Results of the request to list operations.
+type ResourceProviderOperationList struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of Operations.
+	Value []*ResourceProviderOperation
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // StopVirtualMachineOptions - Defines the stop action properties.
 type StopVirtualMachineOptions struct {
 	// Gets or sets a value indicating whether to request non-graceful VM shutdown. True value for this flag indicates non-graceful
 	// shutdown whereas false indicates otherwise. Defaults to false.
+<<<<<<< HEAD
 	SkipShutdown *SkipShutdown
+=======
+	SkipShutdown *bool
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // StorageProfile - Defines the resource properties.
@@ -622,6 +845,7 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+<<<<<<< HEAD
 }
 
 // VMInstanceHybridIdentityMetadata - Defines the HybridIdentityMetadata.
@@ -670,6 +894,8 @@ type VMMCredential struct {
 
 	// Username to use to connect to VMMServer.
 	Username *string
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VMMServer - The VmmServers resource definition.
@@ -677,12 +903,17 @@ type VMMServer struct {
 	// REQUIRED; The extended location.
 	ExtendedLocation *ExtendedLocation
 
+<<<<<<< HEAD
 	// REQUIRED; The geo-location where the resource lives
+=======
+	// REQUIRED; Gets or sets the location.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Location *string
 
 	// REQUIRED; Resource properties.
 	Properties *VMMServerProperties
 
+<<<<<<< HEAD
 	// Resource tags.
 	Tags map[string]*string
 
@@ -696,16 +927,39 @@ type VMMServer struct {
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+=======
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Type *string
 }
 
 // VMMServerListResult - List of VmmServers.
 type VMMServerListResult struct {
+<<<<<<< HEAD
 	// List of VmmServers.
 	Value []*VMMServer
 
 	// READ-ONLY; Url to follow for getting next page of resources.
 	NextLink *string
+=======
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of VmmServers.
+	Value []*VMMServer
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VMMServerProperties - Defines the resource properties.
@@ -714,11 +968,16 @@ type VMMServerProperties struct {
 	Fqdn *string
 
 	// Credentials to connect to VMMServer.
+<<<<<<< HEAD
 	Credentials *VMMCredential
+=======
+	Credentials *VMMServerPropertiesCredentials
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// Port is the port on which the vmmServer is listening.
 	Port *int32
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the connection status to the vmmServer.
 	ConnectionStatus *string
 
@@ -727,12 +986,34 @@ type VMMServerProperties struct {
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets or sets the connection status to the vmmServer.
+	ConnectionStatus *string
+
+	// READ-ONLY; Gets or sets any error message if connection to vmmServer is having any issue.
+	ErrorMessage *string
+
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Unique ID of vmmServer.
 	UUID *string
 
 	// READ-ONLY; Version is the version of the vmmSever.
 	Version *string
+<<<<<<< HEAD
+=======
+}
+
+// VMMServerPropertiesCredentials - Credentials to connect to VMMServer.
+type VMMServerPropertiesCredentials struct {
+	// Credentials to use to connect to VMMServer.
+	Password *string
+
+	// Username to use to connect to VMMServer.
+	Username *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualDisk - Virtual disk model
@@ -771,13 +1052,21 @@ type VirtualDisk struct {
 	// the name is not set.
 	DisplayName *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the max disk size.
+=======
+	// READ-ONLY; Gets or sets the max disk size.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	MaxDiskSizeGB *int32
 
 	// READ-ONLY; Gets the disk vhd format type.
 	VhdFormatType *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the disk volume type.
+=======
+	// READ-ONLY; Gets or sets the disk volume type.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	VolumeType *string
 }
 
@@ -806,6 +1095,36 @@ type VirtualDiskUpdate struct {
 
 	// Gets or sets the disk vhd type.
 	VhdType *string
+<<<<<<< HEAD
+=======
+}
+
+// VirtualMachine - The VirtualMachines resource definition.
+type VirtualMachine struct {
+	// REQUIRED; The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// REQUIRED; Gets or sets the location.
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *VirtualMachineProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+	Type *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualMachineCreateCheckpoint - Defines the create checkpoint action properties.
@@ -821,6 +1140,7 @@ type VirtualMachineCreateCheckpoint struct {
 type VirtualMachineDeleteCheckpoint struct {
 	// ID of the checkpoint to be deleted.
 	ID *string
+<<<<<<< HEAD
 }
 
 // VirtualMachineInstance - Define the virtualMachineInstance.
@@ -902,6 +1222,8 @@ type VirtualMachineInstanceUpdateProperties struct {
 
 	// Defines the resource properties.
 	StorageProfile *StorageProfileUpdate
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualMachineInventoryItem - The Virtual machine inventory item.
@@ -914,14 +1236,18 @@ type VirtualMachineInventoryItem struct {
 
 	// Gets or sets the nic ip addresses.
 	IPAddresses []*string
+<<<<<<< HEAD
 
 	// READ-ONLY; Gets the bios guid.
 	BiosGUID *string
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the Managed Object name in VMM for the inventory item.
 	InventoryItemName *string
 
 	// READ-ONLY; Gets the tracked resource id corresponding to the inventory resource.
+<<<<<<< HEAD
 	ManagedMachineResourceID *string
 
 	// READ-ONLY; Gets the tracked resource id corresponding to the inventory resource.
@@ -935,12 +1261,26 @@ type VirtualMachineInventoryItem struct {
 
 	// READ-ONLY; Gets os version.
 	OSVersion *string
+=======
+	ManagedResourceID *string
+
+	// READ-ONLY; Gets or sets os name.
+	OSName *string
+
+	// READ-ONLY; Gets or sets the type of the os.
+	OSType *OsType
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the power state of the virtual machine.
 	PowerState *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string
@@ -957,6 +1297,69 @@ func (v *VirtualMachineInventoryItem) GetInventoryItemProperties() *InventoryIte
 	}
 }
 
+<<<<<<< HEAD
+=======
+// VirtualMachineListResult - List of VirtualMachines.
+type VirtualMachineListResult struct {
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of VirtualMachines.
+	Value []*VirtualMachine
+}
+
+// VirtualMachineProperties - Defines the resource properties.
+type VirtualMachineProperties struct {
+	// Availability Sets in vm.
+	AvailabilitySets []*AvailabilitySetListItem
+
+	// Type of checkpoint supported for the vm.
+	CheckpointType *string
+
+	// Checkpoints in the vm.
+	Checkpoints []*Checkpoint
+
+	// ARM Id of the cloud resource to use for deploying the vm.
+	CloudID *string
+
+	// Gets or sets the generation for the vm.
+	Generation *int32
+
+	// Hardware properties.
+	HardwareProfile *HardwareProfile
+
+	// Gets or sets the inventory Item ID for the resource.
+	InventoryItemID *string
+
+	// Network properties.
+	NetworkProfile *NetworkProfile
+
+	// OS properties.
+	OSProfile *OsProfile
+
+	// Storage properties.
+	StorageProfile *StorageProfile
+
+	// ARM Id of the template resource to use for deploying the vm.
+	TemplateID *string
+
+	// Unique ID of the virtual machine.
+	UUID *string
+
+	// VMName is the name of VM on the SCVMM server.
+	VMName *string
+
+	// ARM Id of the vmmServer resource in which this resource resides.
+	VmmServerID *string
+
+	// READ-ONLY; Gets the power state of the virtual machine.
+	PowerState *string
+
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+}
+
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // VirtualMachineRestoreCheckpoint - Defines the restore checkpoint action properties.
 type VirtualMachineRestoreCheckpoint struct {
 	// ID of the checkpoint to be restored to.
@@ -968,12 +1371,17 @@ type VirtualMachineTemplate struct {
 	// REQUIRED; The extended location.
 	ExtendedLocation *ExtendedLocation
 
+<<<<<<< HEAD
 	// REQUIRED; The geo-location where the resource lives
+=======
+	// REQUIRED; Gets or sets the location.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Location *string
 
 	// REQUIRED; Resource properties.
 	Properties *VirtualMachineTemplateProperties
 
+<<<<<<< HEAD
 	// Resource tags.
 	Tags map[string]*string
 
@@ -987,6 +1395,21 @@ type VirtualMachineTemplate struct {
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+=======
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Type *string
 }
 
@@ -995,7 +1418,11 @@ type VirtualMachineTemplateInventoryItem struct {
 	// REQUIRED; They inventory type.
 	InventoryType *InventoryType
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the desired number of vCPUs for the vm.
+=======
+	// READ-ONLY; Gets or sets the desired number of vCPUs for the vm.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	CPUCount *int32
 
 	// READ-ONLY; Gets the Managed Object name in VMM for the inventory item.
@@ -1007,6 +1434,7 @@ type VirtualMachineTemplateInventoryItem struct {
 	// READ-ONLY; MemoryMB is the desired size of a virtual machine's memory, in MB.
 	MemoryMB *int32
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets os name.
 	OSName *string
 
@@ -1015,6 +1443,16 @@ type VirtualMachineTemplateInventoryItem struct {
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets or sets os name.
+	OSName *string
+
+	// READ-ONLY; Gets or sets the type of the os.
+	OSType *OsType
+
+	// READ-ONLY; Gets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string
@@ -1033,11 +1471,19 @@ func (v *VirtualMachineTemplateInventoryItem) GetInventoryItemProperties() *Inve
 
 // VirtualMachineTemplateListResult - List of VirtualMachineTemplates.
 type VirtualMachineTemplateListResult struct {
+<<<<<<< HEAD
 	// List of VirtualMachineTemplates.
 	Value []*VirtualMachineTemplate
 
 	// READ-ONLY; Url to follow for getting next page of resources.
 	NextLink *string
+=======
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of VirtualMachineTemplates.
+	Value []*VirtualMachineTemplate
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualMachineTemplateProperties - Defines the resource properties.
@@ -1051,6 +1497,7 @@ type VirtualMachineTemplateProperties struct {
 	// ARM Id of the vmmServer resource in which this resource resides.
 	VmmServerID *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the desired number of vCPUs for the vm.
 	CPUCount *int32
 
@@ -1079,11 +1526,42 @@ type VirtualMachineTemplateProperties struct {
 	IsHighlyAvailable *IsHighlyAvailable
 
 	// READ-ONLY; Gets a value indicating whether to enable processor compatibility mode for live migration of VMs.
+=======
+	// READ-ONLY; Gets or sets the desired number of vCPUs for the vm.
+	CPUCount *int32
+
+	// READ-ONLY; Gets or sets computer name.
+	ComputerName *string
+
+	// READ-ONLY; Gets or sets the disks of the template.
+	Disks []*VirtualDisk
+
+	// READ-ONLY; Gets or sets a value indicating whether to enable dynamic memory or not.
+	DynamicMemoryEnabled *DynamicMemoryEnabled
+
+	// READ-ONLY; Gets or sets the max dynamic memory for the vm.
+	DynamicMemoryMaxMB *int32
+
+	// READ-ONLY; Gets or sets the min dynamic memory for the vm.
+	DynamicMemoryMinMB *int32
+
+	// READ-ONLY; Gets or sets the generation for the vm.
+	Generation *int32
+
+	// READ-ONLY; Gets or sets a value indicating whether the vm template is customizable or not.
+	IsCustomizable *IsCustomizable
+
+	// READ-ONLY; Gets highly available property.
+	IsHighlyAvailable *string
+
+	// READ-ONLY; Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	LimitCPUForMigration *LimitCPUForMigration
 
 	// READ-ONLY; MemoryMB is the desired size of a virtual machine's memory, in MB.
 	MemoryMB *int32
 
+<<<<<<< HEAD
 	// READ-ONLY; Gets the network interfaces of the template.
 	NetworkInterfaces []*NetworkInterface
 
@@ -1095,6 +1573,43 @@ type VirtualMachineTemplateProperties struct {
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets or sets the network interfaces of the template.
+	NetworkInterfaces []*NetworkInterfaces
+
+	// READ-ONLY; Gets or sets os name.
+	OSName *string
+
+	// READ-ONLY; Gets or sets the type of the os.
+	OSType *OsType
+
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+}
+
+// VirtualMachineUpdate - Defines the virtualMachineUpdate.
+type VirtualMachineUpdate struct {
+	// Defines the resource properties.
+	Properties *VirtualMachineUpdateProperties
+
+	// Gets or sets the Resource tags.
+	Tags map[string]*string
+}
+
+// VirtualMachineUpdateProperties - Defines the resource properties.
+type VirtualMachineUpdateProperties struct {
+	// Availability Sets in vm.
+	AvailabilitySets []*AvailabilitySetListItem
+
+	// Defines the resource properties.
+	HardwareProfile *HardwareProfileUpdate
+
+	// Defines the resource properties.
+	NetworkProfile *NetworkProfileUpdate
+
+	// Defines the resource properties.
+	StorageProfile *StorageProfileUpdate
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualNetwork - The VirtualNetworks resource definition.
@@ -1102,12 +1617,17 @@ type VirtualNetwork struct {
 	// REQUIRED; The extended location.
 	ExtendedLocation *ExtendedLocation
 
+<<<<<<< HEAD
 	// REQUIRED; The geo-location where the resource lives
+=======
+	// REQUIRED; Gets or sets the location.
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Location *string
 
 	// REQUIRED; Resource properties.
 	Properties *VirtualNetworkProperties
 
+<<<<<<< HEAD
 	// Resource tags.
 	Tags map[string]*string
 
@@ -1121,6 +1641,21 @@ type VirtualNetwork struct {
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+=======
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource Name
+	Name *string
+
+	// READ-ONLY; The system data.
+	SystemData *SystemData
+
+	// READ-ONLY; Resource Type
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	Type *string
 }
 
@@ -1135,8 +1670,13 @@ type VirtualNetworkInventoryItem struct {
 	// READ-ONLY; Gets the tracked resource id corresponding to the inventory resource.
 	ManagedResourceID *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string
@@ -1155,11 +1695,19 @@ func (v *VirtualNetworkInventoryItem) GetInventoryItemProperties() *InventoryIte
 
 // VirtualNetworkListResult - List of VirtualNetworks.
 type VirtualNetworkListResult struct {
+<<<<<<< HEAD
 	// List of VirtualNetworks.
 	Value []*VirtualNetwork
 
 	// READ-ONLY; Url to follow for getting next page of resources.
 	NextLink *string
+=======
+	// Url to follow for getting next page of resources.
+	NextLink *string
+
+	// List of VirtualNetworks.
+	Value []*VirtualNetwork
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // VirtualNetworkProperties - Defines the resource properties.
@@ -1176,6 +1724,11 @@ type VirtualNetworkProperties struct {
 	// READ-ONLY; Name of the virtual network in vmmServer.
 	NetworkName *string
 
+<<<<<<< HEAD
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+=======
+	// READ-ONLY; Gets or sets the provisioning state.
+	ProvisioningState *string
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }

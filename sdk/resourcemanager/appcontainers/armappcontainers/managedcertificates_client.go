@@ -32,7 +32,7 @@ type ManagedCertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedCertificatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedCertificatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ManagedCertificatesClient) BeginCreateOrUpdate(ctx context.Context
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedCertificatesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedCertificatesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedCertificatesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *ManagedCertificatesClient) BeginCreateOrUpdate(ctx context.Context
 // Generated from API version 2023-05-01
 func (client *ManagedCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, options *ManagedCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedCertificatesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, managedCertificateName, options)
 	if err != nil {
 		return nil, err
@@ -135,6 +142,10 @@ func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *ManagedCertificatesClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, options *ManagedCertificatesClientDeleteOptions) (ManagedCertificatesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ManagedCertificatesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, managedCertificateName, options)
 	if err != nil {
 		return ManagedCertificatesClientDeleteResponse{}, err
@@ -190,6 +201,10 @@ func (client *ManagedCertificatesClient) deleteCreateRequest(ctx context.Context
 //   - options - ManagedCertificatesClientGetOptions contains the optional parameters for the ManagedCertificatesClient.Get method.
 func (client *ManagedCertificatesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, options *ManagedCertificatesClientGetOptions) (ManagedCertificatesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedCertificatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, managedCertificateName, options)
 	if err != nil {
 		return ManagedCertificatesClientGetResponse{}, err
@@ -258,25 +273,20 @@ func (client *ManagedCertificatesClient) NewListPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedCertificatesClientListResponse) (ManagedCertificatesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedCertificatesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
+			}, nil)
 			if err != nil {
 				return ManagedCertificatesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedCertificatesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedCertificatesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -327,6 +337,10 @@ func (client *ManagedCertificatesClient) listHandleResponse(resp *http.Response)
 //     method.
 func (client *ManagedCertificatesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, managedCertificateEnvelope ManagedCertificatePatch, options *ManagedCertificatesClientUpdateOptions) (ManagedCertificatesClientUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedCertificatesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, managedCertificateName, managedCertificateEnvelope, options)
 	if err != nil {
 		return ManagedCertificatesClientUpdateResponse{}, err

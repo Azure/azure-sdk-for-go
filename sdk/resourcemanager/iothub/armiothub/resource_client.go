@@ -32,7 +32,7 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 //     method.
 func (client *ResourceClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs, options *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, operationInputs, options)
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
@@ -111,6 +115,10 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 //     method.
 func (client *ResourceClient) CreateEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, consumerGroupBody EventHubConsumerGroupBodyDescription, options *ResourceClientCreateEventHubConsumerGroupOptions) (ResourceClientCreateEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CreateEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, options)
 	if err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
@@ -191,10 +199,14 @@ func (client *ResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -207,6 +219,10 @@ func (client *ResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-06-30
 func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, iotHubDescription, options)
 	if err != nil {
 		return nil, err
@@ -267,10 +283,14 @@ func (client *ResourceClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -280,6 +300,10 @@ func (client *ResourceClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-06-30
 func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -333,6 +357,10 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceG
 //     method.
 func (client *ResourceClient) DeleteEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientDeleteEventHubConsumerGroupOptions) (ResourceClientDeleteEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.DeleteEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
 	if err != nil {
 		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
@@ -394,6 +422,10 @@ func (client *ResourceClient) deleteEventHubConsumerGroupCreateRequest(ctx conte
 //   - options - ResourceClientExportDevicesOptions contains the optional parameters for the ResourceClient.ExportDevices method.
 func (client *ResourceClient) ExportDevices(ctx context.Context, resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest, options *ResourceClientExportDevicesOptions) (ResourceClientExportDevicesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.ExportDevices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportDevicesCreateRequest(ctx, resourceGroupName, resourceName, exportDevicesParameters, options)
 	if err != nil {
 		return ResourceClientExportDevicesResponse{}, err
@@ -457,6 +489,10 @@ func (client *ResourceClient) exportDevicesHandleResponse(resp *http.Response) (
 //   - options - ResourceClientGetOptions contains the optional parameters for the ResourceClient.Get method.
 func (client *ResourceClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetOptions) (ResourceClientGetResponse, error) {
 	var err error
+	const operationName = "ResourceClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ResourceClientGetResponse{}, err
@@ -519,25 +555,20 @@ func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetEndpointHealthResponse) (ResourceClientGetEndpointHealthResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetEndpointHealthPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetEndpointHealthResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetEndpointHealthResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetEndpointHealthResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getEndpointHealthHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -588,6 +619,10 @@ func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Respons
 //     method.
 func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientGetEventHubConsumerGroupOptions) (ResourceClientGetEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
 	if err != nil {
 		return ResourceClientGetEventHubConsumerGroupResponse{}, err
@@ -657,6 +692,10 @@ func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.
 //   - options - ResourceClientGetJobOptions contains the optional parameters for the ResourceClient.GetJob method.
 func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName string, resourceName string, jobID string, options *ResourceClientGetJobOptions) (ResourceClientGetJobResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getJobCreateRequest(ctx, resourceGroupName, resourceName, jobID, options)
 	if err != nil {
 		return ResourceClientGetJobResponse{}, err
@@ -723,6 +762,10 @@ func (client *ResourceClient) getJobHandleResponse(resp *http.Response) (Resourc
 //     method.
 func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGroupName string, resourceName string, keyName string, options *ResourceClientGetKeysForKeyNameOptions) (ResourceClientGetKeysForKeyNameResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetKeysForKeyName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getKeysForKeyNameCreateRequest(ctx, resourceGroupName, resourceName, keyName, options)
 	if err != nil {
 		return ResourceClientGetKeysForKeyNameResponse{}, err
@@ -791,25 +834,20 @@ func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetQuotaMetricsResponse) (ResourceClientGetQuotaMetricsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetQuotaMetricsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetQuotaMetricsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetQuotaMetricsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetQuotaMetricsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getQuotaMetricsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -857,6 +895,10 @@ func (client *ResourceClient) getQuotaMetricsHandleResponse(resp *http.Response)
 //   - options - ResourceClientGetStatsOptions contains the optional parameters for the ResourceClient.GetStats method.
 func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetStatsOptions) (ResourceClientGetStatsResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetStats"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getStatsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ResourceClientGetStatsResponse{}, err
@@ -921,25 +963,20 @@ func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, res
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetValidSKUsResponse) (ResourceClientGetValidSKUsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetValidSKUsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetValidSKUsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetValidSKUsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetValidSKUsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getValidSKUsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -990,6 +1027,10 @@ func (client *ResourceClient) getValidSKUsHandleResponse(resp *http.Response) (R
 //   - options - ResourceClientImportDevicesOptions contains the optional parameters for the ResourceClient.ImportDevices method.
 func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, options *ResourceClientImportDevicesOptions) (ResourceClientImportDevicesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.ImportDevices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.importDevicesCreateRequest(ctx, resourceGroupName, resourceName, importDevicesParameters, options)
 	if err != nil {
 		return ResourceClientImportDevicesResponse{}, err
@@ -1056,25 +1097,20 @@ func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListByResourceGroupResponse) (ResourceClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1120,25 +1156,20 @@ func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListBySubscriptionResponse) (ResourceClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1184,25 +1215,20 @@ func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListEventHubConsumerGroupsResponse) (ResourceClientListEventHubConsumerGroupsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListEventHubConsumerGroupsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListEventHubConsumerGroupsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListEventHubConsumerGroupsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListEventHubConsumerGroupsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listEventHubConsumerGroupsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1257,25 +1283,20 @@ func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListJobsResponse) (ResourceClientListJobsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListJobsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListJobsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListJobsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListJobsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listJobsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1326,25 +1347,20 @@ func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListKeysResponse) (ResourceClientListKeysResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListKeysPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListKeysResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListKeysResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListKeysResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listKeysHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1393,6 +1409,10 @@ func (client *ResourceClient) listKeysHandleResponse(resp *http.Response) (Resou
 //   - options - ResourceClientTestAllRoutesOptions contains the optional parameters for the ResourceClient.TestAllRoutes method.
 func (client *ResourceClient) TestAllRoutes(ctx context.Context, iotHubName string, resourceGroupName string, input TestAllRoutesInput, options *ResourceClientTestAllRoutesOptions) (ResourceClientTestAllRoutesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.TestAllRoutes"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.testAllRoutesCreateRequest(ctx, iotHubName, resourceGroupName, input, options)
 	if err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
@@ -1457,6 +1477,10 @@ func (client *ResourceClient) testAllRoutesHandleResponse(resp *http.Response) (
 //   - options - ResourceClientTestRouteOptions contains the optional parameters for the ResourceClient.TestRoute method.
 func (client *ResourceClient) TestRoute(ctx context.Context, iotHubName string, resourceGroupName string, input TestRouteInput, options *ResourceClientTestRouteOptions) (ResourceClientTestRouteResponse, error) {
 	var err error
+	const operationName = "ResourceClient.TestRoute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.testRouteCreateRequest(ctx, iotHubName, resourceGroupName, input, options)
 	if err != nil {
 		return ResourceClientTestRouteResponse{}, err
@@ -1525,10 +1549,14 @@ func (client *ResourceClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1538,6 +1566,10 @@ func (client *ResourceClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-06-30
 func (client *ResourceClient) update(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, iotHubTags, options)
 	if err != nil {
 		return nil, err

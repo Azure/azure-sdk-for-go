@@ -48,12 +48,12 @@ func ExampleIntegrationAccountSessionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/sessions"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Logic/integrationAccounts/testia123/sessions/IntegrationAccountSession1662"),
 		// 			Properties: &armlogic.IntegrationAccountSessionProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:24.0158575Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:24.015Z"); return t}()),
 		// 				Content: map[string]any{
 		// 					"controlNumber": "1234",
 		// 					"controlNumberChangedTime": "2017-02-21T22:30:11.9923759Z",
 		// 				},
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:24.0152955Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:24.015Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -61,12 +61,12 @@ func ExampleIntegrationAccountSessionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/sessions"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Logic/integrationAccounts/testia123/sessions/IntegrationAccountSession6808"),
 		// 			Properties: &armlogic.IntegrationAccountSessionProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.7540113Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.754Z"); return t}()),
 		// 				Content: map[string]any{
 		// 					"controlNumber": "1234",
 		// 					"controlNumberChangedTime": "2017-02-21T22:30:11.9923759Z",
 		// 				},
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.7535558Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.753Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -74,12 +74,12 @@ func ExampleIntegrationAccountSessionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/sessions"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Logic/integrationAccounts/testia123/sessions/IntegrationAccountSession7315"),
 		// 			Properties: &armlogic.IntegrationAccountSessionProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.8370161Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.837Z"); return t}()),
 		// 				Content: map[string]any{
 		// 					"controlNumber": "1234",
 		// 					"controlNumberChangedTime": "2017-02-21T22:30:11.9923759Z",
 		// 				},
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.8367926Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T23:06:23.836Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -109,12 +109,12 @@ func ExampleIntegrationAccountSessionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/sessions"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Logic/integrationAccounts/testia123/sessions/testsession123-ICN"),
 	// 	Properties: &armlogic.IntegrationAccountSessionProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.9796534Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.979Z"); return t}()),
 	// 		Content: map[string]any{
 	// 			"controlNumber": "1234",
 	// 			"controlNumberChangedTime": "2017-02-21T22:30:11.9923759Z",
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.9789189Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.978Z"); return t}()),
 	// 	},
 	// }
 }
@@ -149,12 +149,12 @@ func ExampleIntegrationAccountSessionsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/sessions"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Logic/integrationAccounts/testia123/sessions/testsession123-ICN"),
 	// 	Properties: &armlogic.IntegrationAccountSessionProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.9796534Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.979Z"); return t}()),
 	// 		Content: map[string]any{
 	// 			"controlNumber": "1234",
 	// 			"controlNumberChangedTime": "2017-02-21T22:30:11.9923759Z",
 	// 		},
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.9789189Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-21T20:41:35.978Z"); return t}()),
 	// 	},
 	// }
 }

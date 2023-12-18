@@ -33,7 +33,7 @@ type ProductClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProductClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProductClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - ProductClientCreateOrUpdateOptions contains the optional parameters for the ProductClient.CreateOrUpdate method.
 func (client *ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, options *ProductClientCreateOrUpdateOptions) (ProductClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProductClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, productID, parameters, options)
 	if err != nil {
 		return ProductClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *ProductClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - ProductClientDeleteOptions contains the optional parameters for the ProductClient.Delete method.
 func (client *ProductClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, options *ProductClientDeleteOptions) (ProductClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProductClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, options)
 	if err != nil {
 		return ProductClientDeleteResponse{}, err
@@ -190,6 +198,10 @@ func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - ProductClientGetOptions contains the optional parameters for the ProductClient.Get method.
 func (client *ProductClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetOptions) (ProductClientGetResponse, error) {
 	var err error
+	const operationName = "ProductClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
 		return ProductClientGetResponse{}, err
@@ -257,6 +269,10 @@ func (client *ProductClient) getHandleResponse(resp *http.Response) (ProductClie
 //   - options - ProductClientGetEntityTagOptions contains the optional parameters for the ProductClient.GetEntityTag method.
 func (client *ProductClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductClientGetEntityTagOptions) (ProductClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "ProductClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 	if err != nil {
 		return ProductClientGetEntityTagResponse{}, err
@@ -305,11 +321,10 @@ func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, reso
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *ProductClient) getEntityTagHandleResponse(resp *http.Response) (ProductClientGetEntityTagResponse, error) {
-	result := ProductClientGetEntityTagResponse{}
+	result := ProductClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -326,25 +341,20 @@ func (client *ProductClient) NewListByServicePager(resourceGroupName string, ser
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProductClientListByServiceResponse) (ProductClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProductClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return ProductClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProductClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProductClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -410,25 +420,20 @@ func (client *ProductClient) NewListByTagsPager(resourceGroupName string, servic
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProductClientListByTagsResponse) (ProductClientListByTagsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByTagsCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProductClient.NewListByTagsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTagsCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return ProductClientListByTagsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProductClientListByTagsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProductClientListByTagsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByTagsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -492,6 +497,10 @@ func (client *ProductClient) listByTagsHandleResponse(resp *http.Response) (Prod
 //   - options - ProductClientUpdateOptions contains the optional parameters for the ProductClient.Update method.
 func (client *ProductClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, parameters ProductUpdateParameters, options *ProductClientUpdateOptions) (ProductClientUpdateResponse, error) {
 	var err error
+	const operationName = "ProductClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, productID, ifMatch, parameters, options)
 	if err != nil {
 		return ProductClientUpdateResponse{}, err

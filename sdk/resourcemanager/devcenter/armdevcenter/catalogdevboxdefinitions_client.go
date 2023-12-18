@@ -33,7 +33,7 @@ type CatalogDevBoxDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCatalogDevBoxDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogDevBoxDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".CatalogDevBoxDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewCatalogDevBoxDefinitionsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *CatalogDevBoxDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetOptions) (CatalogDevBoxDefinitionsClientGetResponse, error) {
 	var err error
+	const operationName = "CatalogDevBoxDefinitionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, devBoxDefinitionName, options)
 	if err != nil {
 		return CatalogDevBoxDefinitionsClientGetResponse{}, err
@@ -127,6 +131,10 @@ func (client *CatalogDevBoxDefinitionsClient) getHandleResponse(resp *http.Respo
 //     method.
 func (client *CatalogDevBoxDefinitionsClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, devBoxDefinitionName string, options *CatalogDevBoxDefinitionsClientGetErrorDetailsOptions) (CatalogDevBoxDefinitionsClientGetErrorDetailsResponse, error) {
 	var err error
+	const operationName = "CatalogDevBoxDefinitionsClient.GetErrorDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, devBoxDefinitionName, options)
 	if err != nil {
 		return CatalogDevBoxDefinitionsClientGetErrorDetailsResponse{}, err
@@ -200,25 +208,20 @@ func (client *CatalogDevBoxDefinitionsClient) NewListByCatalogPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CatalogDevBoxDefinitionsClientListByCatalogResponse) (CatalogDevBoxDefinitionsClientListByCatalogResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CatalogDevBoxDefinitionsClient.NewListByCatalogPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
+			}, nil)
 			if err != nil {
 				return CatalogDevBoxDefinitionsClientListByCatalogResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CatalogDevBoxDefinitionsClientListByCatalogResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CatalogDevBoxDefinitionsClientListByCatalogResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByCatalogHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -33,7 +33,7 @@ type UpdatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".UpdatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,7 @@ func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *UpdatesClientListResponse) (UpdatesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UpdatesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, providerName, resourceType, resourceName, options)
 			if err != nil {
 				return UpdatesClientListResponse{}, err
@@ -71,6 +72,7 @@ func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -133,6 +135,7 @@ func (client *UpdatesClient) NewListParentPager(resourceGroupName string, provid
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *UpdatesClientListParentResponse) (UpdatesClientListParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UpdatesClient.NewListParentPager")
 			req, err := client.listParentCreateRequest(ctx, resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName, options)
 			if err != nil {
 				return UpdatesClientListParentResponse{}, err
@@ -146,6 +149,7 @@ func (client *UpdatesClient) NewListParentPager(resourceGroupName string, provid
 			}
 			return client.listParentHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

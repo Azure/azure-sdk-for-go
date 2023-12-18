@@ -18,8 +18,8 @@
 package armconnectedvmware
 
 const (
-	moduleName    = "armconnectedvmware"
-	moduleVersion = "v1.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware"
+	moduleVersion = "v1.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

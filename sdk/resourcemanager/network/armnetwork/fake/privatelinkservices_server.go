@@ -167,7 +167,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCheckPrivateLinkServic
 	}
 	beginCheckPrivateLinkServiceVisibility := p.beginCheckPrivateLinkServiceVisibility.get(req)
 	if beginCheckPrivateLinkServiceVisibility == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkPrivateLinkServiceVisibility`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkPrivateLinkServiceVisibility`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -177,11 +177,11 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCheckPrivateLinkServic
 		if err != nil {
 			return nil, err
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCheckPrivateLinkServiceVisibility(req.Context(), locationUnescaped, body, nil)
+		respr, errRespr := p.srv.BeginCheckPrivateLinkServiceVisibility(req.Context(), locationParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -211,7 +211,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCheckPrivateLinkServic
 	}
 	beginCheckPrivateLinkServiceVisibilityByResourceGroup := p.beginCheckPrivateLinkServiceVisibilityByResourceGroup.get(req)
 	if beginCheckPrivateLinkServiceVisibilityByResourceGroup == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkPrivateLinkServiceVisibility`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkPrivateLinkServiceVisibility`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -221,15 +221,15 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCheckPrivateLinkServic
 		if err != nil {
 			return nil, err
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCheckPrivateLinkServiceVisibilityByResourceGroup(req.Context(), locationUnescaped, resourceGroupNameUnescaped, body, nil)
+		respr, errRespr := p.srv.BeginCheckPrivateLinkServiceVisibilityByResourceGroup(req.Context(), locationParam, resourceGroupNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -259,7 +259,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCreateOrUpdate(req *ht
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -269,15 +269,15 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginCreateOrUpdate(req *ht
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, body, nil)
+		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, serviceNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -307,21 +307,21 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginDelete(req *http.Reque
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, nil)
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -351,25 +351,25 @@ func (p *PrivateLinkServicesServerTransport) dispatchBeginDeletePrivateEndpointC
 	}
 	beginDeletePrivateEndpointConnection := p.beginDeletePrivateEndpointConnection.get(req)
 	if beginDeletePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 		if err != nil {
 			return nil, err
 		}
-		peConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
+		peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := p.srv.BeginDeletePrivateEndpointConnection(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, peConnectionNameUnescaped, nil)
+		respr, errRespr := p.srv.BeginDeletePrivateEndpointConnection(req.Context(), resourceGroupNameParam, serviceNameParam, peConnectionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -397,18 +397,18 @@ func (p *PrivateLinkServicesServerTransport) dispatchGet(req *http.Request) (*ht
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 	if err != nil {
 		return nil, err
 	}
@@ -423,7 +423,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchGet(req *http.Request) (*ht
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, options)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, serviceNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -442,22 +442,22 @@ func (p *PrivateLinkServicesServerTransport) dispatchGetPrivateEndpointConnectio
 	if p.srv.GetPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 	if err != nil {
 		return nil, err
 	}
-	peConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
+	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
 	if err != nil {
 		return nil, err
 	}
@@ -472,7 +472,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchGetPrivateEndpointConnectio
 			Expand: expandParam,
 		}
 	}
-	respr, errRespr := p.srv.GetPrivateEndpointConnection(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, peConnectionNameUnescaped, options)
+	respr, errRespr := p.srv.GetPrivateEndpointConnection(req.Context(), resourceGroupNameParam, serviceNameParam, peConnectionNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -493,17 +493,17 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListPager(resourceGroupNameUnescaped, nil)
+		resp := p.srv.NewListPager(resourceGroupNameParam, nil)
 		newListPager = &resp
 		p.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PrivateLinkServicesClientListResponse, createLink func() string) {
@@ -530,17 +530,17 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateL
 	}
 	newListAutoApprovedPrivateLinkServicesPager := p.newListAutoApprovedPrivateLinkServicesPager.get(req)
 	if newListAutoApprovedPrivateLinkServicesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/autoApprovedPrivateLinkServices`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/autoApprovedPrivateLinkServices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListAutoApprovedPrivateLinkServicesPager(locationUnescaped, nil)
+		resp := p.srv.NewListAutoApprovedPrivateLinkServicesPager(locationParam, nil)
 		newListAutoApprovedPrivateLinkServicesPager = &resp
 		p.newListAutoApprovedPrivateLinkServicesPager.add(req, newListAutoApprovedPrivateLinkServicesPager)
 		server.PagerResponderInjectNextLinks(newListAutoApprovedPrivateLinkServicesPager, req, func(page *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, createLink func() string) {
@@ -567,21 +567,21 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateL
 	}
 	newListAutoApprovedPrivateLinkServicesByResourceGroupPager := p.newListAutoApprovedPrivateLinkServicesByResourceGroupPager.get(req)
 	if newListAutoApprovedPrivateLinkServicesByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/autoApprovedPrivateLinkServices`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/autoApprovedPrivateLinkServices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(locationUnescaped, resourceGroupNameUnescaped, nil)
+		resp := p.srv.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(locationParam, resourceGroupNameParam, nil)
 		newListAutoApprovedPrivateLinkServicesByResourceGroupPager = &resp
 		p.newListAutoApprovedPrivateLinkServicesByResourceGroupPager.add(req, newListAutoApprovedPrivateLinkServicesByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListAutoApprovedPrivateLinkServicesByResourceGroupPager, req, func(page *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse, createLink func() string) {
@@ -608,7 +608,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -641,21 +641,21 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListPrivateEndpointConne
 	}
 	newListPrivateEndpointConnectionsPager := p.newListPrivateEndpointConnectionsPager.get(req)
 	if newListPrivateEndpointConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListPrivateEndpointConnectionsPager(resourceGroupNameUnescaped, serviceNameUnescaped, nil)
+		resp := p.srv.NewListPrivateEndpointConnectionsPager(resourceGroupNameParam, serviceNameParam, nil)
 		newListPrivateEndpointConnectionsPager = &resp
 		p.newListPrivateEndpointConnectionsPager.add(req, newListPrivateEndpointConnectionsPager)
 		server.PagerResponderInjectNextLinks(newListPrivateEndpointConnectionsPager, req, func(page *armnetwork.PrivateLinkServicesClientListPrivateEndpointConnectionsResponse, createLink func() string) {
@@ -680,7 +680,7 @@ func (p *PrivateLinkServicesServerTransport) dispatchUpdatePrivateEndpointConnec
 	if p.srv.UpdatePrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdatePrivateEndpointConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/privateLinkServices/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<peConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -690,19 +690,19 @@ func (p *PrivateLinkServicesServerTransport) dispatchUpdatePrivateEndpointConnec
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	serviceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
 	if err != nil {
 		return nil, err
 	}
-	peConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
+	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.UpdatePrivateEndpointConnection(req.Context(), resourceGroupNameUnescaped, serviceNameUnescaped, peConnectionNameUnescaped, body, nil)
+	respr, errRespr := p.srv.UpdatePrivateEndpointConnection(req.Context(), resourceGroupNameParam, serviceNameParam, peConnectionNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

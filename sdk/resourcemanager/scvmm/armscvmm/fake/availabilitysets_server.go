@@ -20,12 +20,17 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+<<<<<<< HEAD
+=======
+	"strconv"
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 )
 
 // AvailabilitySetsServer is a fake server for instances of the armscvmm.AvailabilitySetsClient type.
 type AvailabilitySetsServer struct {
 	// BeginCreateOrUpdate is the fake for method AvailabilitySetsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+<<<<<<< HEAD
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, body armscvmm.AvailabilitySet, options *armscvmm.AvailabilitySetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method AvailabilitySetsClient.BeginDelete
@@ -35,6 +40,17 @@ type AvailabilitySetsServer struct {
 	// Get is the fake for method AvailabilitySetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, options *armscvmm.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armscvmm.AvailabilitySetsClientGetResponse], errResp azfake.ErrorResponder)
+=======
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, availabilitySetName string, body armscvmm.AvailabilitySet, options *armscvmm.AvailabilitySetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method AvailabilitySetsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armscvmm.AvailabilitySetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armscvmm.AvailabilitySetsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AvailabilitySetsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armscvmm.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armscvmm.AvailabilitySetsClientGetResponse], errResp azfake.ErrorResponder)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// NewListByResourceGroupPager is the fake for method AvailabilitySetsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,8 +61,13 @@ type AvailabilitySetsServer struct {
 	NewListBySubscriptionPager func(options *armscvmm.AvailabilitySetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armscvmm.AvailabilitySetsClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method AvailabilitySetsClient.BeginUpdate
+<<<<<<< HEAD
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, body armscvmm.ResourcePatch, options *armscvmm.AvailabilitySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+=======
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, availabilitySetName string, body armscvmm.ResourcePatch, options *armscvmm.AvailabilitySetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // NewAvailabilitySetsServerTransport creates a new instance of AvailabilitySetsServerTransport with the provided implementation.
@@ -115,7 +136,11 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
+<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+=======
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -129,11 +154,19 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		availabilitySetResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetResourceName")])
 		if err != nil {
 			return nil, err
 		}
 		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, availabilitySetResourceNameParam, body, nil)
+=======
+		availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, availabilitySetNameParam, body, nil)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -163,7 +196,11 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
+<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+=======
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -174,7 +211,11 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginDelete(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		availabilitySetResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetResourceName")])
+=======
+		availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if err != nil {
 			return nil, err
 		}
@@ -182,14 +223,25 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginDelete(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		forceParam := getOptional(armscvmm.Force(forceUnescaped))
+=======
+		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		var options *armscvmm.AvailabilitySetsClientBeginDeleteOptions
 		if forceParam != nil {
 			options = &armscvmm.AvailabilitySetsClientBeginDeleteOptions{
 				Force: forceParam,
 			}
 		}
+<<<<<<< HEAD
 		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, availabilitySetResourceNameParam, options)
+=======
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, availabilitySetNameParam, options)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -202,9 +254,15 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginDelete(req *http.Request)
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+=======
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
@@ -217,7 +275,11 @@ func (a *AvailabilitySetsServerTransport) dispatchGet(req *http.Request) (*http.
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
+<<<<<<< HEAD
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+=======
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -227,11 +289,19 @@ func (a *AvailabilitySetsServerTransport) dispatchGet(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	availabilitySetResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetResourceName")])
 	if err != nil {
 		return nil, err
 	}
 	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, availabilitySetResourceNameParam, nil)
+=======
+	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, availabilitySetNameParam, nil)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -322,7 +392,11 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginUpdate(req *http.Request)
 	}
 	beginUpdate := a.beginUpdate.get(req)
 	if beginUpdate == nil {
+<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+=======
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -336,11 +410,19 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginUpdate(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		availabilitySetResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetResourceName")])
 		if err != nil {
 			return nil, err
 		}
 		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, availabilitySetResourceNameParam, body, nil)
+=======
+		availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, availabilitySetNameParam, body, nil)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -353,9 +435,15 @@ func (a *AvailabilitySetsServerTransport) dispatchBeginUpdate(req *http.Request)
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+=======
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		a.beginUpdate.remove(req)

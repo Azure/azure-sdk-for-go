@@ -1,5 +1,270 @@
 # Release History
 
+## 2.3.0-beta.1 (2023-11-24)
+### Features Added
+
+- New value `ChannelProvisioningStateIdleDueToMirroredPartnerDestinationDeletion` added to enum type `ChannelProvisioningState`
+- New value `ChannelTypePartnerDestination` added to enum type `ChannelType`
+- New value `EndpointTypeMonitorAlert`, `EndpointTypeNamespaceTopic`, `EndpointTypePartnerDestination` added to enum type `EndpointType`
+- New value `PrivateEndpointConnectionsParentTypeNamespaces` added to enum type `PrivateEndpointConnectionsParentType`
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New enum type `AlternativeAuthenticationNameSource` with values `AlternativeAuthenticationNameSourceClientCertificateDNS`, `AlternativeAuthenticationNameSourceClientCertificateEmail`, `AlternativeAuthenticationNameSourceClientCertificateIP`, `AlternativeAuthenticationNameSourceClientCertificateSubject`, `AlternativeAuthenticationNameSourceClientCertificateURI`
+- New enum type `CaCertificateProvisioningState` with values `CaCertificateProvisioningStateCanceled`, `CaCertificateProvisioningStateCreating`, `CaCertificateProvisioningStateDeleted`, `CaCertificateProvisioningStateDeleting`, `CaCertificateProvisioningStateFailed`, `CaCertificateProvisioningStateSucceeded`, `CaCertificateProvisioningStateUpdating`
+- New enum type `ClientCertificateValidationScheme` with values `ClientCertificateValidationSchemeDNSMatchesAuthenticationName`, `ClientCertificateValidationSchemeEmailMatchesAuthenticationName`, `ClientCertificateValidationSchemeIPMatchesAuthenticationName`, `ClientCertificateValidationSchemeSubjectMatchesAuthenticationName`, `ClientCertificateValidationSchemeThumbprintMatch`, `ClientCertificateValidationSchemeURIMatchesAuthenticationName`
+- New enum type `ClientGroupProvisioningState` with values `ClientGroupProvisioningStateCanceled`, `ClientGroupProvisioningStateCreating`, `ClientGroupProvisioningStateDeleted`, `ClientGroupProvisioningStateDeleting`, `ClientGroupProvisioningStateFailed`, `ClientGroupProvisioningStateSucceeded`, `ClientGroupProvisioningStateUpdating`
+- New enum type `ClientProvisioningState` with values `ClientProvisioningStateCanceled`, `ClientProvisioningStateCreating`, `ClientProvisioningStateDeleted`, `ClientProvisioningStateDeleting`, `ClientProvisioningStateFailed`, `ClientProvisioningStateSucceeded`, `ClientProvisioningStateUpdating`
+- New enum type `ClientState` with values `ClientStateDisabled`, `ClientStateEnabled`
+- New enum type `DeliveryMode` with values `DeliveryModePush`, `DeliveryModeQueue`
+- New enum type `DeliverySchema` with values `DeliverySchemaCloudEventSchemaV10`
+- New enum type `EventInputSchema` with values `EventInputSchemaCloudEventSchemaV10`
+- New enum type `FilterOperatorType` with values `FilterOperatorTypeBoolEquals`, `FilterOperatorTypeIsNotNull`, `FilterOperatorTypeIsNullOrUndefined`, `FilterOperatorTypeNumberGreaterThan`, `FilterOperatorTypeNumberGreaterThanOrEquals`, `FilterOperatorTypeNumberIn`, `FilterOperatorTypeNumberInRange`, `FilterOperatorTypeNumberLessThan`, `FilterOperatorTypeNumberLessThanOrEquals`, `FilterOperatorTypeNumberNotIn`, `FilterOperatorTypeNumberNotInRange`, `FilterOperatorTypeStringBeginsWith`, `FilterOperatorTypeStringContains`, `FilterOperatorTypeStringEndsWith`, `FilterOperatorTypeStringIn`, `FilterOperatorTypeStringNotBeginsWith`, `FilterOperatorTypeStringNotContains`, `FilterOperatorTypeStringNotEndsWith`, `FilterOperatorTypeStringNotIn`
+- New enum type `MonitorAlertSeverity` with values `MonitorAlertSeveritySev0`, `MonitorAlertSeveritySev1`, `MonitorAlertSeveritySev2`, `MonitorAlertSeveritySev3`, `MonitorAlertSeveritySev4`
+- New enum type `NamespaceProvisioningState` with values `NamespaceProvisioningStateCanceled`, `NamespaceProvisioningStateCreateFailed`, `NamespaceProvisioningStateCreating`, `NamespaceProvisioningStateDeleteFailed`, `NamespaceProvisioningStateDeleted`, `NamespaceProvisioningStateDeleting`, `NamespaceProvisioningStateFailed`, `NamespaceProvisioningStateSucceeded`, `NamespaceProvisioningStateUpdatedFailed`, `NamespaceProvisioningStateUpdating`
+- New enum type `NamespaceTopicProvisioningState` with values `NamespaceTopicProvisioningStateCanceled`, `NamespaceTopicProvisioningStateCreateFailed`, `NamespaceTopicProvisioningStateCreating`, `NamespaceTopicProvisioningStateDeleteFailed`, `NamespaceTopicProvisioningStateDeleted`, `NamespaceTopicProvisioningStateDeleting`, `NamespaceTopicProvisioningStateFailed`, `NamespaceTopicProvisioningStateSucceeded`, `NamespaceTopicProvisioningStateUpdatedFailed`, `NamespaceTopicProvisioningStateUpdating`
+- New enum type `NetworkSecurityPerimeterAssociationAccessMode` with values `NetworkSecurityPerimeterAssociationAccessModeAudit`, `NetworkSecurityPerimeterAssociationAccessModeEnforced`, `NetworkSecurityPerimeterAssociationAccessModeLearning`
+- New enum type `NetworkSecurityPerimeterConfigProvisioningState` with values `NetworkSecurityPerimeterConfigProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigProvisioningStateCreating`, `NetworkSecurityPerimeterConfigProvisioningStateDeleted`, `NetworkSecurityPerimeterConfigProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigProvisioningStateFailed`, `NetworkSecurityPerimeterConfigProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigProvisioningStateUpdating`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueSeverity` with values `NetworkSecurityPerimeterConfigurationIssueSeverityError`, `NetworkSecurityPerimeterConfigurationIssueSeverityWarning`
+- New enum type `NetworkSecurityPerimeterConfigurationIssueType` with values `NetworkSecurityPerimeterConfigurationIssueTypeConfigurationPropagationFailure`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingIdentityConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeMissingPerimeterConfiguration`, `NetworkSecurityPerimeterConfigurationIssueTypeOther`
+- New enum type `NetworkSecurityPerimeterProfileAccessRuleDirection` with values `NetworkSecurityPerimeterProfileAccessRuleDirectionInbound`, `NetworkSecurityPerimeterProfileAccessRuleDirectionOutbound`
+- New enum type `NetworkSecurityPerimeterResourceType` with values `NetworkSecurityPerimeterResourceTypeDomains`, `NetworkSecurityPerimeterResourceTypeTopics`
+- New enum type `PartnerClientAuthenticationType` with values `PartnerClientAuthenticationTypeAzureAD`
+- New enum type `PartnerDestinationActivationState` with values `PartnerDestinationActivationStateActivated`, `PartnerDestinationActivationStateNeverActivated`
+- New enum type `PartnerDestinationProvisioningState` with values `PartnerDestinationProvisioningStateCanceled`, `PartnerDestinationProvisioningStateCreating`, `PartnerDestinationProvisioningStateDeleting`, `PartnerDestinationProvisioningStateFailed`, `PartnerDestinationProvisioningStateIdleDueToMirroredChannelResourceDeletion`, `PartnerDestinationProvisioningStateSucceeded`, `PartnerDestinationProvisioningStateUpdating`
+- New enum type `PartnerEndpointType` with values `PartnerEndpointTypeWebHook`
+- New enum type `PermissionBindingProvisioningState` with values `PermissionBindingProvisioningStateCanceled`, `PermissionBindingProvisioningStateCreating`, `PermissionBindingProvisioningStateDeleted`, `PermissionBindingProvisioningStateDeleting`, `PermissionBindingProvisioningStateFailed`, `PermissionBindingProvisioningStateSucceeded`, `PermissionBindingProvisioningStateUpdating`
+- New enum type `PermissionType` with values `PermissionTypePublisher`, `PermissionTypeSubscriber`
+- New enum type `PublisherType` with values `PublisherTypeCustom`
+- New enum type `ResourceKind` with values `ResourceKindAzure`, `ResourceKindAzureArc`
+- New enum type `RoutingIdentityType` with values `RoutingIdentityTypeNone`, `RoutingIdentityTypeSystemAssigned`, `RoutingIdentityTypeUserAssigned`
+- New enum type `SKU` with values `SKUBasic`, `SKUPremium`
+- New enum type `SKUName` with values `SKUNameStandard`
+- New enum type `StaticRoutingEnrichmentType` with values `StaticRoutingEnrichmentTypeString`
+- New enum type `SubscriptionProvisioningState` with values `SubscriptionProvisioningStateAwaitingManualAction`, `SubscriptionProvisioningStateCanceled`, `SubscriptionProvisioningStateCreateFailed`, `SubscriptionProvisioningStateCreating`, `SubscriptionProvisioningStateDeleteFailed`, `SubscriptionProvisioningStateDeleted`, `SubscriptionProvisioningStateDeleting`, `SubscriptionProvisioningStateFailed`, `SubscriptionProvisioningStateSucceeded`, `SubscriptionProvisioningStateUpdatedFailed`, `SubscriptionProvisioningStateUpdating`
+- New enum type `TLSVersion` with values `TLSVersionOne0`, `TLSVersionOne1`, `TLSVersionOne2`
+- New enum type `TopicSpaceProvisioningState` with values `TopicSpaceProvisioningStateCanceled`, `TopicSpaceProvisioningStateCreating`, `TopicSpaceProvisioningStateDeleted`, `TopicSpaceProvisioningStateDeleting`, `TopicSpaceProvisioningStateFailed`, `TopicSpaceProvisioningStateSucceeded`, `TopicSpaceProvisioningStateUpdating`
+- New enum type `TopicSpacesConfigurationState` with values `TopicSpacesConfigurationStateDisabled`, `TopicSpacesConfigurationStateEnabled`
+- New function `*AzureADPartnerClientAuthentication.GetPartnerClientAuthentication() *PartnerClientAuthentication`
+- New function `*BoolEqualsFilter.GetFilter() *Filter`
+- New function `NewCaCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CaCertificatesClient, error)`
+- New function `*CaCertificatesClient.BeginCreateOrUpdate(context.Context, string, string, string, CaCertificate, *CaCertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CaCertificatesClientCreateOrUpdateResponse], error)`
+- New function `*CaCertificatesClient.BeginDelete(context.Context, string, string, string, *CaCertificatesClientBeginDeleteOptions) (*runtime.Poller[CaCertificatesClientDeleteResponse], error)`
+- New function `*CaCertificatesClient.Get(context.Context, string, string, string, *CaCertificatesClientGetOptions) (CaCertificatesClientGetResponse, error)`
+- New function `*CaCertificatesClient.NewListByNamespacePager(string, string, *CaCertificatesClientListByNamespaceOptions) *runtime.Pager[CaCertificatesClientListByNamespaceResponse]`
+- New function `*ClientFactory.NewCaCertificatesClient() *CaCertificatesClient`
+- New function `*ClientFactory.NewClientGroupsClient() *ClientGroupsClient`
+- New function `*ClientFactory.NewClientsClient() *ClientsClient`
+- New function `*ClientFactory.NewNamespaceTopicEventSubscriptionsClient() *NamespaceTopicEventSubscriptionsClient`
+- New function `*ClientFactory.NewNamespaceTopicsClient() *NamespaceTopicsClient`
+- New function `*ClientFactory.NewNamespacesClient() *NamespacesClient`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*ClientFactory.NewPartnerDestinationsClient() *PartnerDestinationsClient`
+- New function `*ClientFactory.NewPermissionBindingsClient() *PermissionBindingsClient`
+- New function `*ClientFactory.NewTopicSpacesClient() *TopicSpacesClient`
+- New function `NewClientGroupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientGroupsClient, error)`
+- New function `*ClientGroupsClient.BeginCreateOrUpdate(context.Context, string, string, string, ClientGroup, *ClientGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientGroupsClientCreateOrUpdateResponse], error)`
+- New function `*ClientGroupsClient.BeginDelete(context.Context, string, string, string, *ClientGroupsClientBeginDeleteOptions) (*runtime.Poller[ClientGroupsClientDeleteResponse], error)`
+- New function `*ClientGroupsClient.Get(context.Context, string, string, string, *ClientGroupsClientGetOptions) (ClientGroupsClientGetResponse, error)`
+- New function `*ClientGroupsClient.NewListByNamespacePager(string, string, *ClientGroupsClientListByNamespaceOptions) *runtime.Pager[ClientGroupsClientListByNamespaceResponse]`
+- New function `NewClientsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientsClient, error)`
+- New function `*ClientsClient.BeginCreateOrUpdate(context.Context, string, string, string, Client, *ClientsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientsClientCreateOrUpdateResponse], error)`
+- New function `*ClientsClient.BeginDelete(context.Context, string, string, string, *ClientsClientBeginDeleteOptions) (*runtime.Poller[ClientsClientDeleteResponse], error)`
+- New function `*ClientsClient.Get(context.Context, string, string, string, *ClientsClientGetOptions) (ClientsClientGetResponse, error)`
+- New function `*ClientsClient.NewListByNamespacePager(string, string, *ClientsClientListByNamespaceOptions) *runtime.Pager[ClientsClientListByNamespaceResponse]`
+- New function `*Filter.GetFilter() *Filter`
+- New function `*IsNotNullFilter.GetFilter() *Filter`
+- New function `*IsNullOrUndefinedFilter.GetFilter() *Filter`
+- New function `*MonitorAlertEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*PartnerClientAuthentication.GetPartnerClientAuthentication() *PartnerClientAuthentication`
+- New function `*PartnerDestinationInfo.GetPartnerDestinationInfo() *PartnerDestinationInfo`
+- New function `NewPartnerDestinationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PartnerDestinationsClient, error)`
+- New function `*PartnerDestinationsClient.Activate(context.Context, string, string, *PartnerDestinationsClientActivateOptions) (PartnerDestinationsClientActivateResponse, error)`
+- New function `*PartnerDestinationsClient.BeginCreateOrUpdate(context.Context, string, string, PartnerDestination, *PartnerDestinationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PartnerDestinationsClientCreateOrUpdateResponse], error)`
+- New function `*PartnerDestinationsClient.BeginDelete(context.Context, string, string, *PartnerDestinationsClientBeginDeleteOptions) (*runtime.Poller[PartnerDestinationsClientDeleteResponse], error)`
+- New function `*PartnerDestinationsClient.Get(context.Context, string, string, *PartnerDestinationsClientGetOptions) (PartnerDestinationsClientGetResponse, error)`
+- New function `*PartnerDestinationsClient.NewListByResourceGroupPager(string, *PartnerDestinationsClientListByResourceGroupOptions) *runtime.Pager[PartnerDestinationsClientListByResourceGroupResponse]`
+- New function `*PartnerDestinationsClient.NewListBySubscriptionPager(*PartnerDestinationsClientListBySubscriptionOptions) *runtime.Pager[PartnerDestinationsClientListBySubscriptionResponse]`
+- New function `*PartnerDestinationsClient.BeginUpdate(context.Context, string, string, PartnerDestinationUpdateParameters, *PartnerDestinationsClientBeginUpdateOptions) (*runtime.Poller[PartnerDestinationsClientUpdateResponse], error)`
+- New function `*PartnerEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `*PartnerUpdateDestinationInfo.GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo`
+- New function `NewPermissionBindingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PermissionBindingsClient, error)`
+- New function `*PermissionBindingsClient.BeginCreateOrUpdate(context.Context, string, string, string, PermissionBinding, *PermissionBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PermissionBindingsClientCreateOrUpdateResponse], error)`
+- New function `*PermissionBindingsClient.BeginDelete(context.Context, string, string, string, *PermissionBindingsClientBeginDeleteOptions) (*runtime.Poller[PermissionBindingsClientDeleteResponse], error)`
+- New function `*PermissionBindingsClient.Get(context.Context, string, string, string, *PermissionBindingsClientGetOptions) (PermissionBindingsClientGetResponse, error)`
+- New function `*PermissionBindingsClient.NewListByNamespacePager(string, string, *PermissionBindingsClientListByNamespaceOptions) *runtime.Pager[PermissionBindingsClientListByNamespaceResponse]`
+- New function `*StaticRoutingEnrichment.GetStaticRoutingEnrichment() *StaticRoutingEnrichment`
+- New function `*StaticStringRoutingEnrichment.GetStaticRoutingEnrichment() *StaticRoutingEnrichment`
+- New function `*StringBeginsWithFilter.GetFilter() *Filter`
+- New function `*StringContainsFilter.GetFilter() *Filter`
+- New function `*StringEndsWithFilter.GetFilter() *Filter`
+- New function `*StringInFilter.GetFilter() *Filter`
+- New function `*StringNotBeginsWithFilter.GetFilter() *Filter`
+- New function `*StringNotContainsFilter.GetFilter() *Filter`
+- New function `*StringNotEndsWithFilter.GetFilter() *Filter`
+- New function `*StringNotInFilter.GetFilter() *Filter`
+- New function `NewTopicSpacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TopicSpacesClient, error)`
+- New function `*TopicSpacesClient.BeginCreateOrUpdate(context.Context, string, string, string, TopicSpace, *TopicSpacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[TopicSpacesClientCreateOrUpdateResponse], error)`
+- New function `*TopicSpacesClient.BeginDelete(context.Context, string, string, string, *TopicSpacesClientBeginDeleteOptions) (*runtime.Poller[TopicSpacesClientDeleteResponse], error)`
+- New function `*TopicSpacesClient.Get(context.Context, string, string, string, *TopicSpacesClientGetOptions) (TopicSpacesClientGetResponse, error)`
+- New function `*TopicSpacesClient.NewListByNamespacePager(string, string, *TopicSpacesClientListByNamespaceOptions) *runtime.Pager[TopicSpacesClientListByNamespaceResponse]`
+- New function `*WebhookPartnerDestinationInfo.GetPartnerDestinationInfo() *PartnerDestinationInfo`
+- New function `*WebhookUpdatePartnerDestinationInfo.GetPartnerUpdateDestinationInfo() *PartnerUpdateDestinationInfo`
+- New function `*NamespaceTopicEventSubscriptionDestination.GetEventSubscriptionDestination() *EventSubscriptionDestination`
+- New function `NewNamespaceTopicEventSubscriptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NamespaceTopicEventSubscriptionsClient, error)`
+- New function `*NamespaceTopicEventSubscriptionsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, Subscription, *NamespaceTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse], error)`
+- New function `*NamespaceTopicEventSubscriptionsClient.BeginDelete(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[NamespaceTopicEventSubscriptionsClientDeleteResponse], error)`
+- New function `*NamespaceTopicEventSubscriptionsClient.Get(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientGetOptions) (NamespaceTopicEventSubscriptionsClientGetResponse, error)`
+- New function `*NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes(context.Context, string, string, string, string, *NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesOptions) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error)`
+- New function `*NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager(string, string, string, *NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions) *runtime.Pager[NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse]`
+- New function `*NamespaceTopicEventSubscriptionsClient.BeginUpdate(context.Context, string, string, string, string, SubscriptionUpdateParameters, *NamespaceTopicEventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[NamespaceTopicEventSubscriptionsClientUpdateResponse], error)`
+- New function `NewNamespaceTopicsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NamespaceTopicsClient, error)`
+- New function `*NamespaceTopicsClient.BeginCreateOrUpdate(context.Context, string, string, string, NamespaceTopic, *NamespaceTopicsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NamespaceTopicsClientCreateOrUpdateResponse], error)`
+- New function `*NamespaceTopicsClient.BeginDelete(context.Context, string, string, string, *NamespaceTopicsClientBeginDeleteOptions) (*runtime.Poller[NamespaceTopicsClientDeleteResponse], error)`
+- New function `*NamespaceTopicsClient.Get(context.Context, string, string, string, *NamespaceTopicsClientGetOptions) (NamespaceTopicsClientGetResponse, error)`
+- New function `*NamespaceTopicsClient.NewListByNamespacePager(string, string, *NamespaceTopicsClientListByNamespaceOptions) *runtime.Pager[NamespaceTopicsClientListByNamespaceResponse]`
+- New function `*NamespaceTopicsClient.ListSharedAccessKeys(context.Context, string, string, string, *NamespaceTopicsClientListSharedAccessKeysOptions) (NamespaceTopicsClientListSharedAccessKeysResponse, error)`
+- New function `*NamespaceTopicsClient.BeginRegenerateKey(context.Context, string, string, string, TopicRegenerateKeyRequest, *NamespaceTopicsClientBeginRegenerateKeyOptions) (*runtime.Poller[NamespaceTopicsClientRegenerateKeyResponse], error)`
+- New function `*NamespaceTopicsClient.BeginUpdate(context.Context, string, string, string, NamespaceTopicUpdateParameters, *NamespaceTopicsClientBeginUpdateOptions) (*runtime.Poller[NamespaceTopicsClientUpdateResponse], error)`
+- New function `NewNamespacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NamespacesClient, error)`
+- New function `*NamespacesClient.BeginCreateOrUpdate(context.Context, string, string, Namespace, *NamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- New function `*NamespacesClient.BeginDelete(context.Context, string, string, *NamespacesClientBeginDeleteOptions) (*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- New function `*NamespacesClient.Get(context.Context, string, string, *NamespacesClientGetOptions) (NamespacesClientGetResponse, error)`
+- New function `*NamespacesClient.NewListByResourceGroupPager(string, *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse]`
+- New function `*NamespacesClient.NewListBySubscriptionPager(*NamespacesClientListBySubscriptionOptions) *runtime.Pager[NamespacesClientListBySubscriptionResponse]`
+- New function `*NamespacesClient.ListSharedAccessKeys(context.Context, string, string, *NamespacesClientListSharedAccessKeysOptions) (NamespacesClientListSharedAccessKeysResponse, error)`
+- New function `*NamespacesClient.BeginRegenerateKey(context.Context, string, string, NamespaceRegenerateKeyRequest, *NamespacesClientBeginRegenerateKeyOptions) (*runtime.Poller[NamespacesClientRegenerateKeyResponse], error)`
+- New function `*NamespacesClient.BeginUpdate(context.Context, string, string, NamespaceUpdateParameters, *NamespacesClientBeginUpdateOptions) (*runtime.Poller[NamespacesClientUpdateResponse], error)`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager(string, NetworkSecurityPerimeterResourceType, string, *NetworkSecurityPerimeterConfigurationsClientListOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(context.Context, string, NetworkSecurityPerimeterResourceType, string, string, string, *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New function `*NumberGreaterThanFilter.GetFilter() *Filter`
+- New function `*NumberGreaterThanOrEqualsFilter.GetFilter() *Filter`
+- New function `*NumberInFilter.GetFilter() *Filter`
+- New function `*NumberInRangeFilter.GetFilter() *Filter`
+- New function `*NumberLessThanFilter.GetFilter() *Filter`
+- New function `*NumberLessThanOrEqualsFilter.GetFilter() *Filter`
+- New function `*NumberNotInFilter.GetFilter() *Filter`
+- New function `*NumberNotInRangeFilter.GetFilter() *Filter`
+- New struct `AzureADPartnerClientAuthentication`
+- New struct `AzureADPartnerClientAuthenticationProperties`
+- New struct `BoolEqualsFilter`
+- New struct `CaCertificate`
+- New struct `CaCertificateProperties`
+- New struct `CaCertificatesListResult`
+- New struct `Client`
+- New struct `ClientAuthenticationSettings`
+- New struct `ClientCertificateAuthentication`
+- New struct `ClientGroup`
+- New struct `ClientGroupProperties`
+- New struct `ClientGroupsListResult`
+- New struct `ClientProperties`
+- New struct `ClientsListResult`
+- New struct `DeliveryConfiguration`
+- New struct `DynamicRoutingEnrichment`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `ExtendedLocation`
+- New struct `FiltersConfiguration`
+- New struct `IsNotNullFilter`
+- New struct `IsNullOrUndefinedFilter`
+- New struct `MonitorAlertEventSubscriptionDestination`
+- New struct `MonitorAlertEventSubscriptionDestinationProperties`
+- New struct `Namespace`
+- New struct `NamespaceProperties`
+- New struct `NamespaceRegenerateKeyRequest`
+- New struct `NamespaceSKU`
+- New struct `NamespaceSharedAccessKeys`
+- New struct `NamespaceTopic`
+- New struct `NamespaceTopicEventSubscriptionDestination`
+- New struct `NamespaceTopicEventSubscriptionDestinationProperties`
+- New struct `NamespaceTopicProperties`
+- New struct `NamespaceTopicUpdateParameterProperties`
+- New struct `NamespaceTopicUpdateParameters`
+- New struct `NamespaceTopicsListResult`
+- New struct `NamespaceUpdateParameterProperties`
+- New struct `NamespaceUpdateParameters`
+- New struct `NamespacesListResult`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationIssues`
+- New struct `NetworkSecurityPerimeterConfigurationIssuesProperties`
+- New struct `NetworkSecurityPerimeterConfigurationList`
+- New struct `NetworkSecurityPerimeterConfigurationProfile`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityPerimeterInfo`
+- New struct `NetworkSecurityPerimeterProfileAccessRule`
+- New struct `NetworkSecurityPerimeterProfileAccessRuleProperties`
+- New struct `NumberGreaterThanFilter`
+- New struct `NumberGreaterThanOrEqualsFilter`
+- New struct `NumberInFilter`
+- New struct `NumberInRangeFilter`
+- New struct `NumberLessThanFilter`
+- New struct `NumberLessThanOrEqualsFilter`
+- New struct `NumberNotInFilter`
+- New struct `NumberNotInRangeFilter`
+- New struct `PartnerDestination`
+- New struct `PartnerDestinationProperties`
+- New struct `PartnerDestinationUpdateParameters`
+- New struct `PartnerDestinationsListResult`
+- New struct `PartnerEventSubscriptionDestination`
+- New struct `PartnerEventSubscriptionDestinationProperties`
+- New struct `PermissionBinding`
+- New struct `PermissionBindingProperties`
+- New struct `PermissionBindingsListResult`
+- New struct `PushInfo`
+- New struct `QueueInfo`
+- New struct `ResourceAssociation`
+- New struct `ResourceMoveChangeHistory`
+- New struct `ResourceSKU`
+- New struct `RoutingEnrichments`
+- New struct `RoutingIdentityInfo`
+- New struct `StaticStringRoutingEnrichment`
+- New struct `StringBeginsWithFilter`
+- New struct `StringContainsFilter`
+- New struct `StringEndsWithFilter`
+- New struct `StringInFilter`
+- New struct `StringNotBeginsWithFilter`
+- New struct `StringNotContainsFilter`
+- New struct `StringNotEndsWithFilter`
+- New struct `StringNotInFilter`
+- New struct `Subscription`
+- New struct `SubscriptionProperties`
+- New struct `SubscriptionUpdateParameters`
+- New struct `SubscriptionUpdateParametersProperties`
+- New struct `SubscriptionsListResult`
+- New struct `TopicSpace`
+- New struct `TopicSpaceProperties`
+- New struct `TopicSpacesConfiguration`
+- New struct `TopicSpacesListResult`
+- New struct `TopicTypeAdditionalEnforcedPermission`
+- New struct `TopicsConfiguration`
+- New struct `UpdateTopicSpacesConfigurationInfo`
+- New struct `WebhookPartnerDestinationInfo`
+- New struct `WebhookPartnerDestinationProperties`
+- New struct `WebhookUpdatePartnerDestinationInfo`
+- New field `PartnerDestinationInfo` in struct `ChannelProperties`
+- New field `PartnerDestinationInfo` in struct `ChannelUpdateParametersProperties`
+- New field `SKU` in struct `Domain`
+- New field `EventTypeInfo`, `MinimumTLSVersionAllowed` in struct `DomainProperties`
+- New field `EventTypeInfo`, `MinimumTLSVersionAllowed` in struct `DomainUpdateParameterProperties`
+- New field `SKU` in struct `DomainUpdateParameters`
+- New field `MinimumTLSVersionAllowed` in struct `PartnerNamespaceProperties`
+- New field `MinimumTLSVersionAllowed` in struct `PartnerNamespaceUpdateParameterProperties`
+- New field `ExtendedLocation`, `Kind`, `SKU` in struct `Topic`
+- New field `EventTypeInfo`, `MinimumTLSVersionAllowed` in struct `TopicProperties`
+- New field `AdditionalEnforcedPermissions`, `AreRegionalAndGlobalSourcesSupported` in struct `TopicTypeProperties`
+- New field `EventTypeInfo`, `MinimumTLSVersionAllowed` in struct `TopicUpdateParameterProperties`
+- New field `SKU` in struct `TopicUpdateParameters`
+- New field `PartnerDestinationDetails` in struct `VerifiedPartnerProperties`
+- New field `MinimumTLSVersionAllowed` in struct `WebHookEventSubscriptionDestinationProperties`
+
+
+## 2.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 2.2.0-beta.1 (2023-05-26)
 ### Features Added
 

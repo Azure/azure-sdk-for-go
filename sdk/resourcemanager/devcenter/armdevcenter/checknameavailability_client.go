@@ -32,7 +32,7 @@ type CheckNameAvailabilityClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
-	cl, err := arm.NewClient(moduleName+".CheckNameAvailabilityClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error) {
 	var err error
+	const operationName = "CheckNameAvailabilityClient.Execute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, nameAvailabilityRequest, options)
 	if err != nil {
 		return CheckNameAvailabilityClientExecuteResponse{}, err

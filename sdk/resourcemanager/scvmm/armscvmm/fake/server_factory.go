@@ -19,6 +19,7 @@ import (
 
 // ServerFactory is a fake server for instances of the armscvmm.ClientFactory type.
 type ServerFactory struct {
+<<<<<<< HEAD
 	AvailabilitySetsServer                             AvailabilitySetsServer
 	CloudsServer                                       CloudsServer
 	InventoryItemsServer                               InventoryItemsServer
@@ -29,6 +30,16 @@ type ServerFactory struct {
 	VirtualMachineTemplatesServer                      VirtualMachineTemplatesServer
 	VirtualNetworksServer                              VirtualNetworksServer
 	VmmServersServer                                   VmmServersServer
+=======
+	AvailabilitySetsServer        AvailabilitySetsServer
+	CloudsServer                  CloudsServer
+	InventoryItemsServer          InventoryItemsServer
+	OperationsServer              OperationsServer
+	VirtualMachineTemplatesServer VirtualMachineTemplatesServer
+	VirtualMachinesServer         VirtualMachinesServer
+	VirtualNetworksServer         VirtualNetworksServer
+	VmmServersServer              VmmServersServer
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -43,6 +54,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armscvmm.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
+<<<<<<< HEAD
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
 	trAvailabilitySetsServer                             *AvailabilitySetsServerTransport
@@ -55,6 +67,18 @@ type ServerFactoryTransport struct {
 	trVirtualMachineTemplatesServer                      *VirtualMachineTemplatesServerTransport
 	trVirtualNetworksServer                              *VirtualNetworksServerTransport
 	trVmmServersServer                                   *VmmServersServerTransport
+=======
+	srv                             *ServerFactory
+	trMu                            sync.Mutex
+	trAvailabilitySetsServer        *AvailabilitySetsServerTransport
+	trCloudsServer                  *CloudsServerTransport
+	trInventoryItemsServer          *InventoryItemsServerTransport
+	trOperationsServer              *OperationsServerTransport
+	trVirtualMachineTemplatesServer *VirtualMachineTemplatesServerTransport
+	trVirtualMachinesServer         *VirtualMachinesServerTransport
+	trVirtualNetworksServer         *VirtualNetworksServerTransport
+	trVmmServersServer              *VmmServersServerTransport
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -86,6 +110,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+<<<<<<< HEAD
 	case "VMInstanceGuestAgentsClient":
 		initServer(s, &s.trVMInstanceGuestAgentsServer, func() *VMInstanceGuestAgentsServerTransport {
 			return NewVMInstanceGuestAgentsServerTransport(&s.srv.VMInstanceGuestAgentsServer)
@@ -101,11 +126,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVirtualMachineInstancesServerTransport(&s.srv.VirtualMachineInstancesServer)
 		})
 		resp, err = s.trVirtualMachineInstancesServer.Do(req)
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	case "VirtualMachineTemplatesClient":
 		initServer(s, &s.trVirtualMachineTemplatesServer, func() *VirtualMachineTemplatesServerTransport {
 			return NewVirtualMachineTemplatesServerTransport(&s.srv.VirtualMachineTemplatesServer)
 		})
 		resp, err = s.trVirtualMachineTemplatesServer.Do(req)
+<<<<<<< HEAD
+=======
+	case "VirtualMachinesClient":
+		initServer(s, &s.trVirtualMachinesServer, func() *VirtualMachinesServerTransport {
+			return NewVirtualMachinesServerTransport(&s.srv.VirtualMachinesServer)
+		})
+		resp, err = s.trVirtualMachinesServer.Do(req)
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	case "VirtualNetworksClient":
 		initServer(s, &s.trVirtualNetworksServer, func() *VirtualNetworksServerTransport {
 			return NewVirtualNetworksServerTransport(&s.srv.VirtualNetworksServer)

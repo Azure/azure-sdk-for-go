@@ -32,7 +32,7 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 //     method.
 func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, location string, body FilePathAvailabilityRequest, options *ResourceClientCheckFilePathAvailabilityOptions) (ResourceClientCheckFilePathAvailabilityResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CheckFilePathAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkFilePathAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
@@ -113,6 +117,10 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 //     method.
 func (client *ResourceClient) CheckNameAvailability(ctx context.Context, location string, body ResourceNameAvailabilityRequest, options *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
@@ -173,6 +181,10 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 //     method.
 func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, location string, body QuotaAvailabilityRequest, options *ResourceClientCheckQuotaAvailabilityOptions) (ResourceClientCheckQuotaAvailabilityResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CheckQuotaAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkQuotaAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
@@ -233,6 +245,10 @@ func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Re
 //     method.
 func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, options *ResourceClientQueryNetworkSiblingSetOptions) (ResourceClientQueryNetworkSiblingSetResponse, error) {
 	var err error
+	const operationName = "ResourceClient.QueryNetworkSiblingSet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryNetworkSiblingSetCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientQueryNetworkSiblingSetResponse{}, err
@@ -292,6 +308,10 @@ func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Re
 //     method.
 func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (ResourceClientQueryRegionInfoResponse, error) {
 	var err error
+	const operationName = "ResourceClient.QueryRegionInfo"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.queryRegionInfoCreateRequest(ctx, location, options)
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
@@ -355,10 +375,13 @@ func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientUpdateNetworkSiblingSetResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -368,6 +391,10 @@ func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, 
 // Generated from API version 2023-05-01
 func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginUpdateNetworkSiblingSet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateNetworkSiblingSetCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return nil, err

@@ -32,7 +32,7 @@ type TrunkedNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTrunkedNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrunkedNetworksClient, error) {
-	cl, err := arm.NewClient(moduleName+".TrunkedNetworksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *TrunkedNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrunkedNetworksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TrunkedNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TrunkedNetworksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *TrunkedNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 // Generated from API version 2023-07-01
 func (client *TrunkedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkParameters TrunkedNetwork, options *TrunkedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TrunkedNetworksClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *TrunkedNetworksClient) createOrUpdate(ctx context.Context, resourc
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *TrunkedNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkParameters TrunkedNetwork, options *TrunkedNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -130,10 +140,13 @@ func (client *TrunkedNetworksClient) BeginDelete(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrunkedNetworksClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TrunkedNetworksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TrunkedNetworksClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +156,10 @@ func (client *TrunkedNetworksClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-07-01
 func (client *TrunkedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TrunkedNetworksClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, trunkedNetworkName, options)
 	if err != nil {
 		return nil, err
@@ -161,6 +178,9 @@ func (client *TrunkedNetworksClient) deleteOperation(ctx context.Context, resour
 // deleteCreateRequest creates the Delete request.
 func (client *TrunkedNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,6 +210,10 @@ func (client *TrunkedNetworksClient) deleteCreateRequest(ctx context.Context, re
 //   - options - TrunkedNetworksClientGetOptions contains the optional parameters for the TrunkedNetworksClient.Get method.
 func (client *TrunkedNetworksClient) Get(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientGetOptions) (TrunkedNetworksClientGetResponse, error) {
 	var err error
+	const operationName = "TrunkedNetworksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, trunkedNetworkName, options)
 	if err != nil {
 		return TrunkedNetworksClientGetResponse{}, err
@@ -209,6 +233,9 @@ func (client *TrunkedNetworksClient) Get(ctx context.Context, resourceGroupName 
 // getCreateRequest creates the Get request.
 func (client *TrunkedNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -250,31 +277,29 @@ func (client *TrunkedNetworksClient) NewListByResourceGroupPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TrunkedNetworksClientListByResourceGroupResponse) (TrunkedNetworksClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrunkedNetworksClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return TrunkedNetworksClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TrunkedNetworksClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TrunkedNetworksClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *TrunkedNetworksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *TrunkedNetworksClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,31 +336,29 @@ func (client *TrunkedNetworksClient) NewListBySubscriptionPager(options *Trunked
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TrunkedNetworksClientListBySubscriptionResponse) (TrunkedNetworksClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrunkedNetworksClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return TrunkedNetworksClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TrunkedNetworksClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TrunkedNetworksClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *TrunkedNetworksClient) listBySubscriptionCreateRequest(ctx context.Context, options *TrunkedNetworksClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/trunkedNetworks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -367,6 +390,10 @@ func (client *TrunkedNetworksClient) listBySubscriptionHandleResponse(resp *http
 //   - options - TrunkedNetworksClientUpdateOptions contains the optional parameters for the TrunkedNetworksClient.Update method.
 func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkUpdateParameters TrunkedNetworkPatchParameters, options *TrunkedNetworksClientUpdateOptions) (TrunkedNetworksClientUpdateResponse, error) {
 	var err error
+	const operationName = "TrunkedNetworksClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, trunkedNetworkName, trunkedNetworkUpdateParameters, options)
 	if err != nil {
 		return TrunkedNetworksClientUpdateResponse{}, err
@@ -386,6 +413,9 @@ func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupNa
 // updateCreateRequest creates the Update request.
 func (client *TrunkedNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkUpdateParameters TrunkedNetworkPatchParameters, options *TrunkedNetworksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

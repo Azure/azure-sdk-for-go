@@ -75,14 +75,14 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft.insights/metricNamespaces`
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/metricNamespaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +97,7 @@ func (m *MetricNamespacesServerTransport) dispatchNewListPager(req *http.Request
 				StartTime: startTimeParam,
 			}
 		}
-		resp := m.srv.NewListPager(resourceURIUnescaped, options)
+		resp := m.srv.NewListPager(resourceURIParam, options)
 		newListPager = &resp
 		m.newListPager.add(req, newListPager)
 	}

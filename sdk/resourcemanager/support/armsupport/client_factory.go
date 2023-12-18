@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,76 +37,91 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewChatTranscriptsClient creates a new instance of ChatTranscriptsClient.
 func (c *ClientFactory) NewChatTranscriptsClient() *ChatTranscriptsClient {
 	subClient, _ := NewChatTranscriptsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewChatTranscriptsNoSubscriptionClient creates a new instance of ChatTranscriptsNoSubscriptionClient.
 func (c *ClientFactory) NewChatTranscriptsNoSubscriptionClient() *ChatTranscriptsNoSubscriptionClient {
 	subClient, _ := NewChatTranscriptsNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewCommunicationsClient creates a new instance of CommunicationsClient.
 func (c *ClientFactory) NewCommunicationsClient() *CommunicationsClient {
 	subClient, _ := NewCommunicationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCommunicationsNoSubscriptionClient creates a new instance of CommunicationsNoSubscriptionClient.
 func (c *ClientFactory) NewCommunicationsNoSubscriptionClient() *CommunicationsNoSubscriptionClient {
 	subClient, _ := NewCommunicationsNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewFileWorkspacesClient creates a new instance of FileWorkspacesClient.
 func (c *ClientFactory) NewFileWorkspacesClient() *FileWorkspacesClient {
 	subClient, _ := NewFileWorkspacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFileWorkspacesNoSubscriptionClient creates a new instance of FileWorkspacesNoSubscriptionClient.
 func (c *ClientFactory) NewFileWorkspacesNoSubscriptionClient() *FileWorkspacesNoSubscriptionClient {
 	subClient, _ := NewFileWorkspacesNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewFilesClient creates a new instance of FilesClient.
 func (c *ClientFactory) NewFilesClient() *FilesClient {
 	subClient, _ := NewFilesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFilesNoSubscriptionClient creates a new instance of FilesNoSubscriptionClient.
 func (c *ClientFactory) NewFilesNoSubscriptionClient() *FilesNoSubscriptionClient {
 	subClient, _ := NewFilesNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewProblemClassificationsClient creates a new instance of ProblemClassificationsClient.
 func (c *ClientFactory) NewProblemClassificationsClient() *ProblemClassificationsClient {
 	subClient, _ := NewProblemClassificationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	subClient, _ := NewServicesClient(c.credential, c.options)
 	return subClient
 }
 
+// NewTicketChatTranscriptsNoSubscriptionClient creates a new instance of TicketChatTranscriptsNoSubscriptionClient.
 func (c *ClientFactory) NewTicketChatTranscriptsNoSubscriptionClient() *TicketChatTranscriptsNoSubscriptionClient {
 	subClient, _ := NewTicketChatTranscriptsNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewTicketCommunicationsNoSubscriptionClient creates a new instance of TicketCommunicationsNoSubscriptionClient.
 func (c *ClientFactory) NewTicketCommunicationsNoSubscriptionClient() *TicketCommunicationsNoSubscriptionClient {
 	subClient, _ := NewTicketCommunicationsNoSubscriptionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewTicketsClient creates a new instance of TicketsClient.
 func (c *ClientFactory) NewTicketsClient() *TicketsClient {
 	subClient, _ := NewTicketsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewTicketsNoSubscriptionClient creates a new instance of TicketsNoSubscriptionClient.
 func (c *ClientFactory) NewTicketsNoSubscriptionClient() *TicketsNoSubscriptionClient {
 	subClient, _ := NewTicketsNoSubscriptionClient(c.credential, c.options)
 	return subClient

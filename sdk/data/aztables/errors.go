@@ -15,7 +15,7 @@ var errPartitionKeyRowKeyError = errors.New("entity must have a PartitionKey and
 
 var errTooManyAccessPoliciesError = errors.New("you cannot set more than five (5) access policies at a time")
 
-func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
+func checkEntityForPkRk(entity *map[string]any, err error) error {
 	if _, ok := (*entity)[partitionKey]; !ok {
 		return errPartitionKeyRowKeyError
 	}

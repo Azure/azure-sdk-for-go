@@ -33,7 +33,7 @@ type PrivateLinkServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateLinkServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateLinkServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -135,10 +138,13 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityB
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -214,10 +220,13 @@ func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkServicesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateLinkServicesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkServicesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -291,10 +300,13 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkServicesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateLinkServicesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkServicesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -366,10 +378,13 @@ func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ct
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -582,22 +597,15 @@ func (client *PrivateLinkServicesClient) NewListPager(resourceGroupName string, 
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListResponse) (PrivateLinkServicesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkServicesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return PrivateLinkServicesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkServicesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateLinkServicesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -650,22 +658,15 @@ func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesP
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAutoApprovedPrivateLinkServicesCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAutoApprovedPrivateLinkServicesCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAutoApprovedPrivateLinkServicesHandleResponse(resp)
 		},
@@ -719,22 +720,15 @@ func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesB
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) (PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAutoApprovedPrivateLinkServicesByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAutoApprovedPrivateLinkServicesByResourceGroupCreateRequest(ctx, location, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAutoApprovedPrivateLinkServicesByResourceGroupHandleResponse(resp)
 		},
@@ -789,22 +783,15 @@ func (client *PrivateLinkServicesClient) NewListBySubscriptionPager(options *Pri
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListBySubscriptionResponse) (PrivateLinkServicesClientListBySubscriptionResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkServicesClient.NewListBySubscriptionPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return PrivateLinkServicesClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkServicesClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateLinkServicesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -853,22 +840,15 @@ func (client *PrivateLinkServicesClient) NewListPrivateEndpointConnectionsPager(
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) (PrivateLinkServicesClientListPrivateEndpointConnectionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listPrivateEndpointConnectionsCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateLinkServicesClientListPrivateEndpointConnectionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listPrivateEndpointConnectionsHandleResponse(resp)
 		},

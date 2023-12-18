@@ -79,7 +79,7 @@ func ExampleDefenderSettingsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.IoTSecurity/defenderSettings/default"),
 	// 	Properties: &armiotsecurity.DefenderSettingsProperties{
 	// 		DeviceQuota: to.Ptr[int32](2000),
-	// 		EvaluationEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T00:00:00.0000000Z"); return t}()),
+	// 		EvaluationEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T00:00:00.000Z"); return t}()),
 	// 		MdeIntegration: &armiotsecurity.DefenderSettingsPropertiesMdeIntegration{
 	// 			Status: to.Ptr(armiotsecurity.MdeIntegrationEnabled),
 	// 		},

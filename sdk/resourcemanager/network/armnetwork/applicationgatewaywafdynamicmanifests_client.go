@@ -33,7 +33,7 @@ type ApplicationGatewayWafDynamicManifestsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewayWafDynamicManifestsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationGatewayWafDynamicManifestsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,22 +57,15 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location 
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewayWafDynamicManifestsClientGetResponse) (ApplicationGatewayWafDynamicManifestsClientGetResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewayWafDynamicManifestsClient.NewGetPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getHandleResponse(resp)
 		},

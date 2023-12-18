@@ -10,7 +10,11 @@ package armscvmm
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
+<<<<<<< HEAD
 	moduleVersion = "v1.0.0"
+=======
+	moduleVersion = "v0.4.0"
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

@@ -272,9 +272,9 @@ func ExampleWatchersClient_GetTopology() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Topology = armnetwork.Topology{
-	// 	CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-02T19:31:55.9461781Z"); return t}()),
+	// 	CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-02T19:31:55.946Z"); return t}()),
 	// 	ID: to.Ptr("ce592f46-8164-4bf2-ad36-b8e4acf6fb68"),
-	// 	LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T00:00:13.2005337Z"); return t}()),
+	// 	LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T00:00:13.200Z"); return t}()),
 	// 	Resources: []*armnetwork.TopologyResource{
 	// 		{
 	// 			Name: to.Ptr("MultiTierApp0"),
@@ -498,7 +498,7 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 	// 			}},
 	// 			Summary: to.Ptr("We are sorry, your VPN gateway is unreachable from the Internet"),
 	// 	}},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.0442834Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.044Z"); return t}()),
 	// }
 }
 
@@ -547,7 +547,7 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	// 			}},
 	// 			Summary: to.Ptr("We are sorry, your VPN gateway is unreachable from the Internet"),
 	// 	}},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.0442834Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.044Z"); return t}()),
 	// }
 }
 
@@ -697,14 +697,14 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	poller, err := clientFactory.NewWatchersClient().BeginGetAzureReachabilityReport(ctx, "rg1", "nw1", armnetwork.AzureReachabilityReportParameters{
 		AzureLocations: []*string{
 			to.Ptr("West US")},
-		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00Z"); return t }()),
+		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00.000Z"); return t }()),
 		ProviderLocation: &armnetwork.AzureReachabilityReportLocation{
 			Country: to.Ptr("United States"),
 			State:   to.Ptr("washington"),
 		},
 		Providers: []*string{
 			to.Ptr("Frontier Communications of America, Inc. - ASN 5650")},
-		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t }()),
+		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00.000Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -728,15 +728,15 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	// 			Latencies: []*armnetwork.AzureReachabilityReportLatencyInfo{
 	// 				{
 	// 					Score: to.Ptr[int32](94),
-	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t}()),
+	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				{
 	// 					Score: to.Ptr[int32](94),
-	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-08T00:00:00Z"); return t}()),
+	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-08T00:00:00.000Z"); return t}()),
 	// 				},
 	// 				{
 	// 					Score: to.Ptr[int32](94),
-	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-09T00:00:00Z"); return t}()),
+	// 					TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-09T00:00:00.000Z"); return t}()),
 	// 			}},
 	// 			Provider: to.Ptr("Frontier Communications of America, Inc. - ASN 5650"),
 	// 	}},

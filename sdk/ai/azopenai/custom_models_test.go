@@ -63,4 +63,6 @@ func TestParseResponseError(t *testing.T) {
 	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Hate)
 	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.SelfHarm)
 	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Sexual)
+
+	require.NotNil(t, contentFilterResults)
 }

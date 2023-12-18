@@ -32,7 +32,7 @@ type CustomDomainsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomDomainsClient, error) {
-	cl, err := arm.NewClient(moduleName+".CustomDomainsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CustomDomainsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomDomainsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomDomainsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomDomainsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CustomDomainsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +149,14 @@ func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CustomDomainsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomDomainsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomDomainsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomDomainsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -154,6 +166,10 @@ func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CustomDomainsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -219,10 +235,14 @@ func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CustomDomainsClientDisableCustomHTTPSResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomDomainsClientDisableCustomHTTPSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomDomainsClientDisableCustomHTTPSResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomDomainsClientDisableCustomHTTPSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -232,6 +252,10 @@ func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, 
 // Generated from API version 2023-05-01
 func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginDisableCustomHTTPSOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CustomDomainsClient.BeginDisableCustomHTTPS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.disableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -297,10 +321,14 @@ func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CustomDomainsClientEnableCustomHTTPSResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomDomainsClientEnableCustomHTTPSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CustomDomainsClientEnableCustomHTTPSResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CustomDomainsClientEnableCustomHTTPSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -310,6 +338,10 @@ func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, r
 // Generated from API version 2023-05-01
 func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientBeginEnableCustomHTTPSOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CustomDomainsClient.BeginEnableCustomHTTPS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.enableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -376,6 +408,10 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 //   - options - CustomDomainsClientGetOptions contains the optional parameters for the CustomDomainsClient.Get method.
 func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsClientGetOptions) (CustomDomainsClientGetResponse, error) {
 	var err error
+	const operationName = "CustomDomainsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return CustomDomainsClientGetResponse{}, err
@@ -449,25 +485,20 @@ func (client *CustomDomainsClient) NewListByEndpointPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomDomainsClientListByEndpointResponse) (CustomDomainsClientListByEndpointResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomDomainsClient.NewListByEndpointPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			}, nil)
 			if err != nil {
 				return CustomDomainsClientListByEndpointResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CustomDomainsClientListByEndpointResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CustomDomainsClientListByEndpointResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByEndpointHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -34,7 +34,7 @@ type StaticMembersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStaticMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StaticMembersClient, error) {
-	cl, err := arm.NewClient(moduleName+".StaticMembersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -276,22 +276,15 @@ func (client *StaticMembersClient) NewListPager(resourceGroupName string, networ
 		},
 		Fetcher: func(ctx context.Context, page *StaticMembersClientListResponse) (StaticMembersClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StaticMembersClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, options)
+			}, nil)
 			if err != nil {
 				return StaticMembersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return StaticMembersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return StaticMembersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},

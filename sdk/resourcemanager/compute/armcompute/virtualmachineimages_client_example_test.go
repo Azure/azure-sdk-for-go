@@ -70,7 +70,7 @@ func ExampleVirtualMachineImagesClient_Get_virtualMachineImageGetMaximumSetGen()
 	// 				Value: to.Ptr("aaaaaaa"),
 	// 			},
 	// 			ImageState: to.Ptr(armcompute.ImageStateScheduledForDeprecation),
-	// 			ScheduledDeprecationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T00:00:00+00:00"); return t}()),
+	// 			ScheduledDeprecationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T00:00:00.000Z"); return t}()),
 	// 		},
 	// 		OSDiskImage: &armcompute.OSDiskImage{
 	// 			OperatingSystem: to.Ptr(armcompute.OperatingSystemTypesWindows),

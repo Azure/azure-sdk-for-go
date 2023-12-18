@@ -32,7 +32,7 @@ type ServerUsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerUsagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServerUsagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,7 @@ func (client *ServerUsagesClient) NewListByServerPager(resourceGroupName string,
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ServerUsagesClientListByServerResponse) (ServerUsagesClientListByServerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServerUsagesClient.NewListByServerPager")
 			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			if err != nil {
 				return ServerUsagesClientListByServerResponse{}, err
@@ -70,6 +71,7 @@ func (client *ServerUsagesClient) NewListByServerPager(resourceGroupName string,
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

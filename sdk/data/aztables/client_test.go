@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/stretchr/testify/require"
 )
@@ -21,7 +22,10 @@ var services = []string{"storage", "cosmos"}
 func TestServiceErrors(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name:   "Client.CreateTable",
+				Status: tracing.SpanStatusError,
+			}))
 			defer delete()
 
 			// Create a duplicate table to produce an error
@@ -38,7 +42,9 @@ func TestServiceErrors(t *testing.T) {
 func TestCreateTable(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, false)
+			client, delete := initClientTest(t, service, false, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.Delete",
+			}))
 			defer delete()
 
 			_, err := client.CreateTable(ctx, nil)
@@ -51,7 +57,9 @@ func TestCreateTable(t *testing.T) {
 func TestAddEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.AddEntity",
+			}))
 			defer delete()
 
 			simpleEntity := createSimpleEntity(1, "partition")
@@ -67,7 +75,7 @@ func TestAddEntity(t *testing.T) {
 func TestAddComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			entity := createComplexEntity(1, "partition")
@@ -84,7 +92,9 @@ func TestAddComplexEntity(t *testing.T) {
 func TestDeleteEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.DeleteEntity",
+			}))
 			defer delete()
 
 			simpleEntity := createSimpleEntity(1, "partition")
@@ -102,7 +112,7 @@ func TestDeleteEntity(t *testing.T) {
 func TestDeleteEntityWithETag(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			simpleEntity := createSimpleEntity(1, "partition")
@@ -138,7 +148,9 @@ func TestDeleteEntityWithETag(t *testing.T) {
 func TestMergeEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.GetEntity",
+			}))
 			defer delete()
 
 			entityToCreate := createSimpleEntity(1, "partition")
@@ -154,11 +166,11 @@ func TestMergeEntity(t *testing.T) {
 			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 			require.NoError(t, err)
 
-			var unMarshalledPreMerge map[string]interface{}
+			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
 			require.NoError(t, err)
 
-			var mapEntity map[string]interface{}
+			var mapEntity map[string]any
 			err = json.Unmarshal(marshalled, &mapEntity)
 			require.NoError(t, err)
 			mapEntity["MergeProperty"] = "foo"
@@ -177,7 +189,7 @@ func TestMergeEntity(t *testing.T) {
 			}
 			require.NotEmpty(t, qResp.Entities)
 			postMerge := qResp.Entities[0]
-			var unmarshalledPostMerge map[string]interface{}
+			var unmarshalledPostMerge map[string]any
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(t, err)
 
@@ -193,7 +205,10 @@ func TestMergeEntity(t *testing.T) {
 func TestMergeEntityDoesNotExist(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name:   "Client.UpdateEntity",
+				Status: tracing.SpanStatusError,
+			}))
 			defer delete()
 
 			entityToCreate := createSimpleEntity(1, "partition")
@@ -213,7 +228,9 @@ func TestMergeEntityDoesNotExist(t *testing.T) {
 func TestInsertEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Client.UpsertEntity",
+			}))
 			defer delete()
 
 			// 1. Create Basic Entity
@@ -231,7 +248,7 @@ func TestInsertEntity(t *testing.T) {
 			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 			require.NoError(t, err)
 
-			var unMarshalledPreMerge map[string]interface{}
+			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
 			require.NoError(t, err)
 
@@ -254,7 +271,7 @@ func TestInsertEntity(t *testing.T) {
 				require.NoError(t, err)
 			}
 			postMerge := qResp.Entities[0]
-			var unmarshalledPostMerge map[string]interface{}
+			var unmarshalledPostMerge map[string]any
 			err = json.Unmarshal(postMerge, &unmarshalledPostMerge)
 			require.NoError(t, err)
 
@@ -270,7 +287,7 @@ func TestInsertEntity(t *testing.T) {
 func TestInsertEntityTwice(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			// 1. Create Basic Entity
@@ -290,7 +307,9 @@ func TestInsertEntityTwice(t *testing.T) {
 func TestQuerySimpleEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, NewSpanValidator(t, SpanMatcher{
+				Name: "Pager[ListEntitiesResponse].NextPage",
+			}))
 			defer delete()
 
 			// Add 5 entities
@@ -315,7 +334,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			}
 
 			for i, e := range resp.Entities {
-				var mapModel map[string]interface{}
+				var mapModel map[string]any
 				err := json.Unmarshal(e, &mapModel)
 				require.NoError(t, err)
 
@@ -342,7 +361,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 func TestQueryComplexEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			// Add 5 entities
@@ -386,10 +405,10 @@ func TestQueryComplexEntity(t *testing.T) {
 func TestInvalidEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
-			badEntity := map[string]interface{}{
+			badEntity := map[string]any{
 				"Value":  10,
 				"String": "stringystring",
 			}
@@ -407,7 +426,7 @@ func TestInvalidEntity(t *testing.T) {
 func TestContinuationTokens(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			err := insertNEntities("contToken", 10, client)
@@ -448,7 +467,7 @@ func TestContinuationTokens(t *testing.T) {
 func TestContinuationTokensFilters(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
-			client, delete := initClientTest(t, service, true)
+			client, delete := initClientTest(t, service, true, tracing.Provider{})
 			defer delete()
 
 			err := insertNEntities("contToken", 10, client)
@@ -532,7 +551,7 @@ func TestAzurite(t *testing.T) {
 			PartitionKey: "pencils",
 			RowKey:       "id-003",
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Product":      "Ticonderoga Pencils",
 			"Price":        5.00,
 			"Count":        EDMInt64(12345678901234),

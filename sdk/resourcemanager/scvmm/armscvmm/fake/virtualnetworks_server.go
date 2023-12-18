@@ -20,6 +20,10 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+<<<<<<< HEAD
+=======
+	"strconv"
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 )
 
 // VirtualNetworksServer is a fake server for instances of the armscvmm.VirtualNetworksClient type.
@@ -29,7 +33,11 @@ type VirtualNetworksServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, body armscvmm.VirtualNetwork, options *armscvmm.VirtualNetworksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualNetworksClient.BeginDelete
+<<<<<<< HEAD
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+=======
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	BeginDelete func(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *armscvmm.VirtualNetworksClientBeginDeleteOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualNetworksClient.Get
@@ -45,7 +53,11 @@ type VirtualNetworksServer struct {
 	NewListBySubscriptionPager func(options *armscvmm.VirtualNetworksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armscvmm.VirtualNetworksClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method VirtualNetworksClient.BeginUpdate
+<<<<<<< HEAD
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+=======
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	BeginUpdate func(ctx context.Context, resourceGroupName string, virtualNetworkName string, body armscvmm.ResourcePatch, options *armscvmm.VirtualNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.VirtualNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
@@ -182,7 +194,14 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		forceParam := getOptional(armscvmm.Force(forceUnescaped))
+=======
+		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		var options *armscvmm.VirtualNetworksClientBeginDeleteOptions
 		if forceParam != nil {
 			options = &armscvmm.VirtualNetworksClientBeginDeleteOptions{
@@ -202,9 +221,15 @@ func (v *VirtualNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		v.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+=======
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)
@@ -353,9 +378,15 @@ func (v *VirtualNetworksServerTransport) dispatchBeginUpdate(req *http.Request) 
 		return nil, err
 	}
 
+<<<<<<< HEAD
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		v.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+=======
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		v.beginUpdate.remove(req)

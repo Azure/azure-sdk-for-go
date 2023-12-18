@@ -9,8 +9,8 @@
 package armresourceconnector
 
 const (
-	moduleName    = "armresourceconnector"
-	moduleVersion = "v1.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/armresourceconnector"
+	moduleVersion = "v1.1.0"
 )
 
 // AccessProfileType - Name which contains the role of the kubeconfig.

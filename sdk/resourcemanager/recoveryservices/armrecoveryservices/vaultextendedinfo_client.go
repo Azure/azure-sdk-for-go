@@ -32,7 +32,7 @@ type VaultExtendedInfoClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVaultExtendedInfoClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VaultExtendedInfoClient, error) {
-	cl, err := arm.NewClient(moduleName+".VaultExtendedInfoClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewVaultExtendedInfoClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *VaultExtendedInfoClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientCreateOrUpdateOptions) (VaultExtendedInfoClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "VaultExtendedInfoClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, resourceExtendedInfoDetails, options)
 	if err != nil {
 		return VaultExtendedInfoClientCreateOrUpdateResponse{}, err
@@ -117,6 +121,10 @@ func (client *VaultExtendedInfoClient) createOrUpdateHandleResponse(resp *http.R
 //   - options - VaultExtendedInfoClientGetOptions contains the optional parameters for the VaultExtendedInfoClient.Get method.
 func (client *VaultExtendedInfoClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultExtendedInfoClientGetOptions) (VaultExtendedInfoClientGetResponse, error) {
 	var err error
+	const operationName = "VaultExtendedInfoClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return VaultExtendedInfoClientGetResponse{}, err
@@ -179,6 +187,10 @@ func (client *VaultExtendedInfoClient) getHandleResponse(resp *http.Response) (V
 //     method.
 func (client *VaultExtendedInfoClient) Update(ctx context.Context, resourceGroupName string, vaultName string, resourceExtendedInfoDetails VaultExtendedInfoResource, options *VaultExtendedInfoClientUpdateOptions) (VaultExtendedInfoClientUpdateResponse, error) {
 	var err error
+	const operationName = "VaultExtendedInfoClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, resourceExtendedInfoDetails, options)
 	if err != nil {
 		return VaultExtendedInfoClientUpdateResponse{}, err

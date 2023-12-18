@@ -168,7 +168,11 @@ func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+=======
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -428,7 +432,11 @@ func (client *VirtualNetworksClient) update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+=======
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

@@ -44,14 +44,13 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.StreamingPolicyCollection = armmediaservices.StreamingPolicyCollection{
-		// 	ODataNextLink: to.Ptr("http://server/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaServices/contosomedia/streamingPolicies?api-version=2022-08-01&$skiptoken=secureStreamingPolicyWithEnvelopeEncryptionOnly"),
 		// 	Value: []*armmediaservices.StreamingPolicy{
 		// 		{
 		// 			Name: to.Ptr("clearStreamingPolicy"),
 		// 			Type: to.Ptr("Microsoft.Media/mediaservices/streamingPolicies"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/streamingPolicies/clearStreamingPolicy"),
 		// 			Properties: &armmediaservices.StreamingPolicyProperties{
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.676067Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.676Z"); return t}()),
 		// 				NoEncryption: &armmediaservices.NoEncryption{
 		// 					EnabledProtocols: &armmediaservices.EnabledProtocols{
 		// 						Dash: to.Ptr(true),
@@ -123,7 +122,7 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		// 						SmoothStreaming: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.6781134Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.678Z"); return t}()),
 		// 				DefaultContentKeyPolicyName: to.Ptr("PolicyWithMultipleOptions"),
 		// 				EnvelopeEncryption: &armmediaservices.EnvelopeEncryption{
 		// 					ClearTracks: []*armmediaservices.TrackSelection{
@@ -173,7 +172,7 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		// 						SmoothStreaming: to.Ptr(false),
 		// 					},
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.6781134Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.678Z"); return t}()),
 		// 				DefaultContentKeyPolicyName: to.Ptr("PolicyWithMultipleOptions"),
 		// 			},
 		// 		},
@@ -215,7 +214,7 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		// 						SmoothStreaming: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.6781134Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.678Z"); return t}()),
 		// 				DefaultContentKeyPolicyName: to.Ptr("PolicyWithMultipleOptions"),
 		// 			},
 		// 		},
@@ -224,7 +223,7 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Media/mediaservices/streamingPolicies"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/streamingPolicies/secureStreamingPolicyWithEnvelopeEncryptionOnly"),
 		// 			Properties: &armmediaservices.StreamingPolicyProperties{
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.6781134Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.678Z"); return t}()),
 		// 				DefaultContentKeyPolicyName: to.Ptr("PolicyWithClearKeyOptionAndTokenRestriction"),
 		// 				EnvelopeEncryption: &armmediaservices.EnvelopeEncryption{
 		// 					ClearTracks: []*armmediaservices.TrackSelection{
@@ -273,7 +272,7 @@ func ExampleStreamingPoliciesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Media/mediaservices/streamingPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/streamingPolicies/clearStreamingPolicy"),
 	// 	Properties: &armmediaservices.StreamingPolicyProperties{
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.8501486Z"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-08T18:29:30.850Z"); return t}()),
 	// 		NoEncryption: &armmediaservices.NoEncryption{
 	// 			EnabledProtocols: &armmediaservices.EnabledProtocols{
 	// 				Dash: to.Ptr(true),

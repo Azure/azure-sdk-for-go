@@ -32,7 +32,7 @@ type VolumeQuotaRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVolumeQuotaRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumeQuotaRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".VolumeQuotaRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,13 @@ func (client *VolumeQuotaRulesClient) BeginCreate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeQuotaRulesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeQuotaRulesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeQuotaRulesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *VolumeQuotaRulesClient) BeginCreate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *VolumeQuotaRulesClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, body VolumeQuotaRule, options *VolumeQuotaRulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeQuotaRulesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, options)
 	if err != nil {
 		return nil, err
@@ -151,10 +158,13 @@ func (client *VolumeQuotaRulesClient) BeginDelete(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeQuotaRulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeQuotaRulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeQuotaRulesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -164,6 +174,10 @@ func (client *VolumeQuotaRulesClient) BeginDelete(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *VolumeQuotaRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, options *VolumeQuotaRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeQuotaRulesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, options)
 	if err != nil {
 		return nil, err
@@ -228,6 +242,10 @@ func (client *VolumeQuotaRulesClient) deleteCreateRequest(ctx context.Context, r
 //   - options - VolumeQuotaRulesClientGetOptions contains the optional parameters for the VolumeQuotaRulesClient.Get method.
 func (client *VolumeQuotaRulesClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, options *VolumeQuotaRulesClientGetOptions) (VolumeQuotaRulesClientGetResponse, error) {
 	var err error
+	const operationName = "VolumeQuotaRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, options)
 	if err != nil {
 		return VolumeQuotaRulesClientGetResponse{}, err
@@ -306,6 +324,7 @@ func (client *VolumeQuotaRulesClient) NewListByVolumePager(resourceGroupName str
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *VolumeQuotaRulesClientListByVolumeResponse) (VolumeQuotaRulesClientListByVolumeResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VolumeQuotaRulesClient.NewListByVolumePager")
 			req, err := client.listByVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 			if err != nil {
 				return VolumeQuotaRulesClientListByVolumeResponse{}, err
@@ -319,6 +338,7 @@ func (client *VolumeQuotaRulesClient) NewListByVolumePager(resourceGroupName str
 			}
 			return client.listByVolumeHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -385,10 +405,13 @@ func (client *VolumeQuotaRulesClient) BeginUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumeQuotaRulesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumeQuotaRulesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumeQuotaRulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -398,6 +421,10 @@ func (client *VolumeQuotaRulesClient) BeginUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *VolumeQuotaRulesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, volumeQuotaRuleName string, body VolumeQuotaRulePatch, options *VolumeQuotaRulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumeQuotaRulesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, options)
 	if err != nil {
 		return nil, err

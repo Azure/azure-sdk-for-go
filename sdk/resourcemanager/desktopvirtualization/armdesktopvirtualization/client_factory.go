@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,81 +37,97 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewApplicationGroupsClient creates a new instance of ApplicationGroupsClient.
 func (c *ClientFactory) NewApplicationGroupsClient() *ApplicationGroupsClient {
 	subClient, _ := NewApplicationGroupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewApplicationsClient creates a new instance of ApplicationsClient.
 func (c *ClientFactory) NewApplicationsClient() *ApplicationsClient {
 	subClient, _ := NewApplicationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDesktopsClient creates a new instance of DesktopsClient.
 func (c *ClientFactory) NewDesktopsClient() *DesktopsClient {
 	subClient, _ := NewDesktopsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewHostPoolsClient creates a new instance of HostPoolsClient.
 func (c *ClientFactory) NewHostPoolsClient() *HostPoolsClient {
 	subClient, _ := NewHostPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewMSIXPackagesClient creates a new instance of MSIXPackagesClient.
 func (c *ClientFactory) NewMSIXPackagesClient() *MSIXPackagesClient {
 	subClient, _ := NewMSIXPackagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewMsixImagesClient creates a new instance of MsixImagesClient.
 func (c *ClientFactory) NewMsixImagesClient() *MsixImagesClient {
 	subClient, _ := NewMsixImagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewScalingPlanPersonalSchedulesClient creates a new instance of ScalingPlanPersonalSchedulesClient.
 func (c *ClientFactory) NewScalingPlanPersonalSchedulesClient() *ScalingPlanPersonalSchedulesClient {
 	subClient, _ := NewScalingPlanPersonalSchedulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewScalingPlanPooledSchedulesClient creates a new instance of ScalingPlanPooledSchedulesClient.
 func (c *ClientFactory) NewScalingPlanPooledSchedulesClient() *ScalingPlanPooledSchedulesClient {
 	subClient, _ := NewScalingPlanPooledSchedulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewScalingPlansClient creates a new instance of ScalingPlansClient.
 func (c *ClientFactory) NewScalingPlansClient() *ScalingPlansClient {
 	subClient, _ := NewScalingPlansClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSessionHostsClient creates a new instance of SessionHostsClient.
 func (c *ClientFactory) NewSessionHostsClient() *SessionHostsClient {
 	subClient, _ := NewSessionHostsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewStartMenuItemsClient creates a new instance of StartMenuItemsClient.
 func (c *ClientFactory) NewStartMenuItemsClient() *StartMenuItemsClient {
 	subClient, _ := NewStartMenuItemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewUserSessionsClient creates a new instance of UserSessionsClient.
 func (c *ClientFactory) NewUserSessionsClient() *UserSessionsClient {
 	subClient, _ := NewUserSessionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewWorkspacesClient creates a new instance of WorkspacesClient.
 func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
 	subClient, _ := NewWorkspacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

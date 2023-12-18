@@ -498,7 +498,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	// 						},
 	// 						VMID: to.Ptr("76d6541e-80bd-4dc1-932b-3cae4cfb80e7"),
 	// 					},
-	// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T20:35:05.8401519+00:00"); return t}()),
+	// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T20:35:05.840Z"); return t}()),
 	// 				},
 	// 		}},
 	// 		Source: &armcompute.RestorePointCollectionSourceProperties{

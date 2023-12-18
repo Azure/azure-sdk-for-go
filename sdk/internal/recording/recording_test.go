@@ -493,8 +493,8 @@ func (s *recordingTests) TestStartStopRecordingClient() {
 	require.NoError(err)
 	require.Equal("https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags",
 		data.Entries[0].RequestURI)
-	require.Equal(resp.Request.URL.String(),
-		fmt.Sprintf("%s/acr/v1/some_registry/_tags", defaultOptions().baseURL()))
+	require.Equal("https://azsdkengsys.azurecr.io/acr/v1/some_registry/_tags",
+		resp.Request.URL.String())
 }
 
 func (s *recordingTests) TestStopRecordingNoStart() {

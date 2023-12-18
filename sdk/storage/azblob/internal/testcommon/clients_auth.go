@@ -253,7 +253,6 @@ func CreateNewBlockBlob(ctx context.Context, _require *require.Assertions, block
 
 	_, err := bbClient.Upload(ctx, streaming.NopCloser(strings.NewReader(BlockBlobDefaultData)), nil)
 	_require.NoError(err)
-	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return bbClient
 }
 

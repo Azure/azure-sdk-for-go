@@ -33,7 +33,7 @@ type ConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *ConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configuration Configuration, options *ConfigurationsClientCreateOrUpdateOptions) (ConfigurationsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, configuration, options)
 	if err != nil {
 		return ConfigurationsClientCreateOrUpdateResponse{}, err
@@ -118,6 +122,10 @@ func (client *ConfigurationsClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - ConfigurationsClientDeleteOptions contains the optional parameters for the ConfigurationsClient.Delete method.
 func (client *ConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ConfigurationsClientDeleteOptions) (ConfigurationsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConfigurationsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ConfigurationsClientDeleteResponse{}, err
@@ -178,6 +186,10 @@ func (client *ConfigurationsClient) deleteHandleResponse(resp *http.Response) (C
 //   - options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
 func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ConfigurationsClientGetOptions) (ConfigurationsClientGetResponse, error) {
 	var err error
+	const operationName = "ConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ConfigurationsClientGetResponse{}, err
@@ -239,6 +251,7 @@ func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientLi
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ConfigurationsClientListResponse) (ConfigurationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConfigurationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return ConfigurationsClientListResponse{}, err
@@ -252,6 +265,7 @@ func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientLi
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -292,6 +306,10 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 //   - options - ConfigurationsClientUpdateOptions contains the optional parameters for the ConfigurationsClient.Update method.
 func (client *ConfigurationsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, configuration Configuration, options *ConfigurationsClientUpdateOptions) (ConfigurationsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, configuration, options)
 	if err != nil {
 		return ConfigurationsClientUpdateResponse{}, err

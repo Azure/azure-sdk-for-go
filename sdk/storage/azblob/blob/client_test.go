@@ -289,7 +289,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		_, err = srcBlob.Upload(context.Background(), body, nil)
 		_require.NoError(err)
 
-		// downlod to a temp file and verify contents
+		// download to a temp file and verify contents
 		tmp, err := os.CreateTemp("", "")
 		_require.NoError(err)
 		defer tmp.Close()
@@ -298,6 +298,10 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		n, err := srcBlob.DownloadFile(context.Background(), tmp, &f)
 		_require.NoError(err)
 		_require.Equal(int64(contentSize), n)
+
+		stat, err := tmp.Stat()
+		_require.NoError(err)
+		_require.Equal(int64(contentSize), stat.Size())
 
 		// Compute md5 of file, and verify it against stored value.
 		_, _ = tmp.Seek(0, io.SeekStart)
@@ -327,6 +331,10 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 
 	// 199 MB file, more blocks than threads
 	testUploadDownload(199 * MiB)
+
+	testUploadDownload(7 * MiB)
+
+	testUploadDownload(8241066)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobStartCopyDestEmpty() {
@@ -3653,40 +3661,6 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 	// Get new blob client with sasUrl and attempt GetProperties
 	_, err = blob.NewClientWithNoCredential(sasUrl, nil)
 	_require.NoError(err)
-}
-
-func (s *BlobUnrecordedTestsSuite) TestNoSharedKeyCredError() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	// Creating service client
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	// Creating container client
-	containerName := testcommon.GenerateContainerName(testName)
-	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
-	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
-
-	// Creating blob client without credentials
-	blockBlobName := testcommon.GenerateBlobName(testName)
-	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
-
-	// Adding SAS and options
-	permissions := sas.BlobPermissions{
-		Read:   true,
-		Add:    true,
-		Write:  true,
-		Create: true,
-		Delete: true,
-	}
-	start := time.Now().Add(-time.Hour)
-	expiry := start.Add(time.Hour)
-	opts := blob.GetSASURLOptions{StartTime: &start}
-
-	// GetSASURL fails (with MissingSharedKeyCredential) because blob client is created without credentials
-	_, err = bbClient.BlobClient().GetSASURL(permissions, expiry, &opts)
-	_require.Equal(err, bloberror.MissingSharedKeyCredential)
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {

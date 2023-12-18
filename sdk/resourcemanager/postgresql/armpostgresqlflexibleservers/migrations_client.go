@@ -30,7 +30,7 @@ type MigrationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMigrationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MigrationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func NewMigrationsClient(credential azcore.TokenCredential, options *arm.ClientO
 // Create - Creates a new migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -52,6 +52,10 @@ func NewMigrationsClient(credential azcore.TokenCredential, options *arm.ClientO
 //   - options - MigrationsClientCreateOptions contains the optional parameters for the MigrationsClient.Create method.
 func (client *MigrationsClient) Create(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResource, options *MigrationsClientCreateOptions) (MigrationsClientCreateResponse, error) {
 	var err error
+	const operationName = "MigrationsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, parameters, options)
 	if err != nil {
 		return MigrationsClientCreateResponse{}, err
@@ -92,7 +96,7 @@ func (client *MigrationsClient) createCreateRequest(ctx context.Context, subscri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -113,7 +117,7 @@ func (client *MigrationsClient) createHandleResponse(resp *http.Response) (Migra
 // Delete - Deletes a migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -121,6 +125,10 @@ func (client *MigrationsClient) createHandleResponse(resp *http.Response) (Migra
 //   - options - MigrationsClientDeleteOptions contains the optional parameters for the MigrationsClient.Delete method.
 func (client *MigrationsClient) Delete(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *MigrationsClientDeleteOptions) (MigrationsClientDeleteResponse, error) {
 	var err error
+	const operationName = "MigrationsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, options)
 	if err != nil {
 		return MigrationsClientDeleteResponse{}, err
@@ -160,7 +168,7 @@ func (client *MigrationsClient) deleteCreateRequest(ctx context.Context, subscri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +177,7 @@ func (client *MigrationsClient) deleteCreateRequest(ctx context.Context, subscri
 // Get - Gets details of a migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -177,6 +185,10 @@ func (client *MigrationsClient) deleteCreateRequest(ctx context.Context, subscri
 //   - options - MigrationsClientGetOptions contains the optional parameters for the MigrationsClient.Get method.
 func (client *MigrationsClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error) {
 	var err error
+	const operationName = "MigrationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, options)
 	if err != nil {
 		return MigrationsClientGetResponse{}, err
@@ -217,7 +229,7 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, subscripti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -234,7 +246,7 @@ func (client *MigrationsClient) getHandleResponse(resp *http.Response) (Migratio
 
 // NewListByTargetServerPager - List all the migrations on a given target server.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -246,25 +258,20 @@ func (client *MigrationsClient) NewListByTargetServerPager(subscriptionID string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MigrationsClientListByTargetServerResponse) (MigrationsClientListByTargetServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByTargetServerCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MigrationsClient.NewListByTargetServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTargetServerCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, options)
+			}, nil)
 			if err != nil {
 				return MigrationsClientListByTargetServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MigrationsClientListByTargetServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MigrationsClientListByTargetServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByTargetServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -288,7 +295,7 @@ func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	if options != nil && options.MigrationListFilter != nil {
 		reqQP.Set("migrationListFilter", string(*options.MigrationListFilter))
 	}
@@ -310,7 +317,7 @@ func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Resp
 // migration definition. Certain property updates initiate migration state transitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -319,6 +326,10 @@ func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Resp
 //   - options - MigrationsClientUpdateOptions contains the optional parameters for the MigrationsClient.Update method.
 func (client *MigrationsClient) Update(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResourceForPatch, options *MigrationsClientUpdateOptions) (MigrationsClientUpdateResponse, error) {
 	var err error
+	const operationName = "MigrationsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, parameters, options)
 	if err != nil {
 		return MigrationsClientUpdateResponse{}, err
@@ -359,7 +370,7 @@ func (client *MigrationsClient) updateCreateRequest(ctx context.Context, subscri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

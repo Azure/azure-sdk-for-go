@@ -55,7 +55,7 @@ func ExampleCertificateClient_NewListByBatchAccountPager_listCertificates() {
 		// 				Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 		// 				ThumbprintAlgorithm: to.Ptr("sha1"),
 		// 				ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 		// 				PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 		// 			},
 		// 	}},
@@ -152,7 +152,7 @@ func ExampleCertificateClient_Create_createCertificateFull() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -193,7 +193,7 @@ func ExampleCertificateClient_Create_createCertificateMinimalCer() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -234,7 +234,7 @@ func ExampleCertificateClient_Create_createCertificateMinimalPfx() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -273,7 +273,7 @@ func ExampleCertificateClient_Update() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -328,7 +328,7 @@ func ExampleCertificateClient_Get_getCertificate() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -372,9 +372,9 @@ func ExampleCertificateClient_Get_getCertificateWithDeletionError() {
 	// 			}},
 	// 		},
 	// 		PreviousProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateDeleting),
-	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:15:25.5625498Z"); return t}()),
+	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:15:25.562Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
@@ -408,9 +408,9 @@ func ExampleCertificateClient_CancelDeletion() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		PreviousProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateFailed),
-	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:22:54.3299195Z"); return t}()),
+	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:22:54.329Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }

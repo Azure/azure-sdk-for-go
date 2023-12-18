@@ -32,7 +32,7 @@ type JobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 //   - options - JobsClientCreateOrUpdateOptions contains the optional parameters for the JobsClient.CreateOrUpdate method.
 func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, parameters Job, options *JobsClientCreateOrUpdateOptions) (JobsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "JobsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, parameters, options)
 	if err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
@@ -130,6 +134,10 @@ func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (Job
 //   - options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
 func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobsClientDeleteOptions) (JobsClientDeleteResponse, error) {
 	var err error
+	const operationName = "JobsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
 	if err != nil {
 		return JobsClientDeleteResponse{}, err
@@ -190,6 +198,10 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 //   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
 func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	var err error
+	const operationName = "JobsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
 	if err != nil {
 		return JobsClientGetResponse{}, err
@@ -263,25 +275,20 @@ func (client *JobsClient) NewListByAgentPager(resourceGroupName string, serverNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobsClientListByAgentResponse) (JobsClientListByAgentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobsClient.NewListByAgentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			}, nil)
 			if err != nil {
 				return JobsClientListByAgentResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobsClientListByAgentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobsClientListByAgentResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAgentHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

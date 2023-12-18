@@ -370,7 +370,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// 				IsGlobal: to.Ptr(armnetwork.IsGlobalTrue),
 	// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 			},
-	// 			CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 			CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T12:33:22.257Z"); return t}()),
 	// 			Region: to.Ptr("westus"),
 	// 	}},
 	// }
@@ -402,7 +402,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// 	SkipToken: to.Ptr("FakeSkipTokenCode"),
 	// 	Value: []armnetwork.ActiveBaseSecurityAdminRuleClassification{
 	// 		&armnetwork.ActiveDefaultSecurityAdminRule{
-	// 			CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 			CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T12:33:22.257Z"); return t}()),
 	// 			ConfigurationDescription: to.Ptr("SampleDescription"),
 	// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/myTestSecurityConfig/ruleCollections/testRuleCollection/rules/SampleAdminRule"),
 	// 			Kind: to.Ptr(armnetwork.EffectiveAdminRuleKindDefault),

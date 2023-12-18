@@ -36,9 +36,9 @@ func ExampleAlertOperationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AlertOperationResult = armauthorization.AlertOperationResult{
-	// 	CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467+00:00"); return t}()),
+	// 	CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467Z"); return t}()),
 	// 	ID: to.Ptr("{operationId}"),
-	// 	LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467+00:00"); return t}()),
+	// 	LastActionDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T03:04:06.467Z"); return t}()),
 	// 	ResourceLocation: to.Ptr("https://management.azure.com/providers/Microsoft.Subscription/subscriptions/afa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleManagementAlerts/DuplicateRoleCreated?api-version=2022-08-01-preview"),
 	// 	Status: to.Ptr("Running"),
 	// 	StatusDetail: to.Ptr("{\"result\":[{\"name\":\"DuplicateRoleCreated\",\"statusDetail\":\"Alert scan is not yet started.\"}]}"),

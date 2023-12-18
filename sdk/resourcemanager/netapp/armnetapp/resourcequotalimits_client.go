@@ -32,7 +32,7 @@ type ResourceQuotaLimitsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceQuotaLimitsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceQuotaLimitsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 //   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
 func (client *ResourceQuotaLimitsClient) Get(ctx context.Context, location string, quotaLimitName string, options *ResourceQuotaLimitsClientGetOptions) (ResourceQuotaLimitsClientGetResponse, error) {
 	var err error
+	const operationName = "ResourceQuotaLimitsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, quotaLimitName, options)
 	if err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
@@ -115,6 +119,7 @@ func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ResourceQuotaLimitsClientListResponse) (ResourceQuotaLimitsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceQuotaLimitsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, location, options)
 			if err != nil {
 				return ResourceQuotaLimitsClientListResponse{}, err
@@ -128,6 +133,7 @@ func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -1415,6 +1415,68 @@ func (s *ContainerRecordedTestsSuite) TestListBlobIncludeMetadata() {
 	}
 }
 
+func (s *ContainerRecordedTestsSuite) TestListBlobIncludeMetadataEmptyValue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	metadata := map[string]*string{
+		"Foo":   to.Ptr("bar"),
+		"Emtpy": to.Ptr(""),
+	}
+
+	blobName := testcommon.GenerateBlobName(testName)
+	for i := 0; i < 6; i++ {
+		bbClient := testcommon.GetBlockBlobClient(blobName+strconv.Itoa(i), containerClient)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), &blockblob.UploadOptions{
+			Metadata: metadata,
+		})
+		_require.NoError(err)
+	}
+
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: container.ListBlobsInclude{Metadata: true},
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		_require.Len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems, 6)
+		for _, blob := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			_require.NotNil(blob.Metadata)
+			_require.Len(blob.Metadata, len(metadata))
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	//----------------------------------------------------------
+
+	pager1 := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
+		Include: container.ListBlobsInclude{Metadata: true, Tags: true},
+	})
+
+	for pager1.More() {
+		resp, err := pager1.NextPage(context.Background())
+		_require.NoError(err)
+		if err != nil {
+			break
+		}
+		_require.Len(resp.Segment.BlobItems, 6)
+		for _, blob := range resp.Segment.BlobItems {
+			_require.NotNil(blob.Metadata)
+			_require.Len(blob.Metadata, len(metadata))
+		}
+	}
+}
+
 func (s *ContainerRecordedTestsSuite) TestBlobListWrapper() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

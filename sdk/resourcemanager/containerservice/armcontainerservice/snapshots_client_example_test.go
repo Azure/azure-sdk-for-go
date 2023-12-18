@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,9 +45,9 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("snapshot1"),
 		// 			Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-		// 			ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 		// 			SystemData: &armcontainerservice.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 			},
@@ -58,7 +58,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 			},
 		// 			Properties: &armcontainerservice.SnapshotProperties{
 		// 				CreationData: &armcontainerservice.CreationData{
-		// 					SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+		// 					SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 		// 				},
 		// 				EnableFIPS: to.Ptr(false),
 		// 				KubernetesVersion: to.Ptr("1.20.5"),
@@ -73,7 +73,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,9 +100,9 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 		{
 		// 			Name: to.Ptr("snapshot1"),
 		// 			Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-		// 			ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 		// 			SystemData: &armcontainerservice.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 			},
@@ -113,7 +113,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armcontainerservice.SnapshotProperties{
 		// 				CreationData: &armcontainerservice.CreationData{
-		// 					SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+		// 					SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 		// 				},
 		// 				EnableFIPS: to.Ptr(false),
 		// 				KubernetesVersion: to.Ptr("1.20.5"),
@@ -128,7 +128,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,9 +149,9 @@ func ExampleSnapshotsClient_Get() {
 	// res.Snapshot = armcontainerservice.Snapshot{
 	// 	Name: to.Ptr("snapshot1"),
 	// 	Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 	ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 	SystemData: &armcontainerservice.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 	},
@@ -162,7 +162,7 @@ func ExampleSnapshotsClient_Get() {
 	// 	},
 	// 	Properties: &armcontainerservice.SnapshotProperties{
 	// 		CreationData: &armcontainerservice.CreationData{
-	// 			SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 		},
 	// 		EnableFIPS: to.Ptr(false),
 	// 		KubernetesVersion: to.Ptr("1.20.5"),
@@ -175,7 +175,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 		},
 		Properties: &armcontainerservice.SnapshotProperties{
 			CreationData: &armcontainerservice.CreationData{
-				SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 			},
 		},
 	}, nil)
@@ -207,9 +207,9 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// res.Snapshot = armcontainerservice.Snapshot{
 	// 	Name: to.Ptr("snapshot1"),
 	// 	Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 	ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 	SystemData: &armcontainerservice.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 	},
@@ -220,7 +220,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// 	},
 	// 	Properties: &armcontainerservice.SnapshotProperties{
 	// 		CreationData: &armcontainerservice.CreationData{
-	// 			SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 		},
 	// 		EnableFIPS: to.Ptr(false),
 	// 		KubernetesVersion: to.Ptr("1.20.5"),
@@ -233,7 +233,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,9 +259,9 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// res.Snapshot = armcontainerservice.Snapshot{
 	// 	Name: to.Ptr("snapshot1"),
 	// 	Type: to.Ptr("Microsoft.ContainerService/Snapshots"),
-	// 	ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1"),
 	// 	SystemData: &armcontainerservice.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 	},
@@ -272,7 +272,7 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// 	},
 	// 	Properties: &armcontainerservice.SnapshotProperties{
 	// 		CreationData: &armcontainerservice.CreationData{
-	// 			SourceResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0"),
 	// 		},
 	// 		EnableFIPS: to.Ptr(false),
 	// 		KubernetesVersion: to.Ptr("1.20.5"),
@@ -285,7 +285,7 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/SnapshotsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1ba9df47907f9012ae14ca4616aed9e5665f9e5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

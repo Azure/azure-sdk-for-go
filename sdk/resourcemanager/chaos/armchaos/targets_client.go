@@ -32,7 +32,7 @@ type TargetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetsClient, error) {
-	cl, err := arm.NewClient(moduleName+".TargetsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrUpdate - Create or update a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -56,6 +56,10 @@ func NewTargetsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - TargetsClientCreateOrUpdateOptions contains the optional parameters for the TargetsClient.CreateOrUpdate method.
 func (client *TargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, target Target, options *TargetsClientCreateOrUpdateOptions) (TargetsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "TargetsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, target, options)
 	if err != nil {
 		return TargetsClientCreateOrUpdateResponse{}, err
@@ -104,7 +108,7 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, target); err != nil {
@@ -125,7 +129,7 @@ func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - Delete a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -134,6 +138,10 @@ func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - TargetsClientDeleteOptions contains the optional parameters for the TargetsClient.Delete method.
 func (client *TargetsClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientDeleteOptions) (TargetsClientDeleteResponse, error) {
 	var err error
+	const operationName = "TargetsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
 	if err != nil {
 		return TargetsClientDeleteResponse{}, err
@@ -181,7 +189,7 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +198,7 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get a Target resource that extends a tracked regional resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -199,6 +207,10 @@ func (client *TargetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - TargetsClientGetOptions contains the optional parameters for the TargetsClient.Get method.
 func (client *TargetsClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *TargetsClientGetOptions) (TargetsClientGetResponse, error) {
 	var err error
+	const operationName = "TargetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
 	if err != nil {
 		return TargetsClientGetResponse{}, err
@@ -247,7 +259,7 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +276,7 @@ func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClie
 
 // NewListPager - Get a list of Target resources that extend a tracked regional resource.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -276,25 +288,20 @@ func (client *TargetsClient) NewListPager(resourceGroupName string, parentProvid
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TargetsClientListResponse) (TargetsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TargetsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, options)
+			}, nil)
 			if err != nil {
 				return TargetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TargetsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TargetsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -326,7 +333,7 @@ func (client *TargetsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

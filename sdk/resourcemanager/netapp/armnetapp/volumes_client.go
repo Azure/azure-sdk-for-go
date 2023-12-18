@@ -33,7 +33,7 @@ type VolumesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumesClient, error) {
-	cl, err := arm.NewClient(moduleName+".VolumesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,13 @@ func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientAuthorizeReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientAuthorizeReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientAuthorizeReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, reso
 // Generated from API version 2023-05-01
 func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginAuthorizeReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.authorizeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -145,10 +152,13 @@ func (client *VolumesClient) BeginBreakFileLocks(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientBreakFileLocksResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientBreakFileLocksResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientBreakFileLocksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -158,6 +168,10 @@ func (client *VolumesClient) BeginBreakFileLocks(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *VolumesClient) breakFileLocks(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakFileLocksOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginBreakFileLocks"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.breakFileLocksCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -230,10 +244,13 @@ func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientBreakReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientBreakReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientBreakReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -243,6 +260,10 @@ func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resource
 // Generated from API version 2023-05-01
 func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginBreakReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.breakReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -316,10 +337,13 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -329,6 +353,10 @@ func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -398,10 +426,13 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -411,6 +442,10 @@ func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -480,10 +515,13 @@ func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientDeleteReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientDeleteReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientDeleteReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -493,6 +531,10 @@ func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginDeleteReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -557,10 +599,14 @@ func (client *VolumesClient) BeginFinalizeRelocation(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[VolumesClientFinalizeRelocationResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientFinalizeRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientFinalizeRelocationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientFinalizeRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -570,6 +616,10 @@ func (client *VolumesClient) BeginFinalizeRelocation(ctx context.Context, resour
 // Generated from API version 2023-05-01
 func (client *VolumesClient) finalizeRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginFinalizeRelocationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginFinalizeRelocation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.finalizeRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -629,6 +679,10 @@ func (client *VolumesClient) finalizeRelocationCreateRequest(ctx context.Context
 //   - options - VolumesClientGetOptions contains the optional parameters for the VolumesClient.Get method.
 func (client *VolumesClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientGetOptions) (VolumesClientGetResponse, error) {
 	var err error
+	const operationName = "VolumesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return VolumesClientGetResponse{}, err
@@ -701,25 +755,20 @@ func (client *VolumesClient) NewListPager(resourceGroupName string, accountName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VolumesClientListResponse) (VolumesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VolumesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
+			}, nil)
 			if err != nil {
 				return VolumesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VolumesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VolumesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -781,10 +830,13 @@ func (client *VolumesClient) BeginListGetGroupIDListForLdapUser(ctx context.Cont
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientListGetGroupIDListForLdapUserResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientListGetGroupIDListForLdapUserResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -794,6 +846,10 @@ func (client *VolumesClient) BeginListGetGroupIDListForLdapUser(ctx context.Cont
 // Generated from API version 2023-05-01
 func (client *VolumesClient) listGetGroupIDListForLdapUser(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body GetGroupIDListForLDAPUserRequest, options *VolumesClientBeginListGetGroupIDListForLdapUserOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginListGetGroupIDListForLdapUser"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listGetGroupIDListForLdapUserCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -861,6 +917,7 @@ func (client *VolumesClient) NewListReplicationsPager(resourceGroupName string, 
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *VolumesClientListReplicationsResponse) (VolumesClientListReplicationsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VolumesClient.NewListReplicationsPager")
 			req, err := client.listReplicationsCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 			if err != nil {
 				return VolumesClientListReplicationsResponse{}, err
@@ -874,6 +931,7 @@ func (client *VolumesClient) NewListReplicationsPager(resourceGroupName string, 
 			}
 			return client.listReplicationsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -938,10 +996,13 @@ func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupN
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientPoolChangeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPoolChangeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -951,6 +1012,10 @@ func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupN
 // Generated from API version 2023-05-01
 func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginPoolChange"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.poolChangeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -1020,10 +1085,13 @@ func (client *VolumesClient) BeginPopulateAvailabilityZone(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientPopulateAvailabilityZoneResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientPopulateAvailabilityZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientPopulateAvailabilityZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1033,6 +1101,10 @@ func (client *VolumesClient) BeginPopulateAvailabilityZone(ctx context.Context, 
 // Generated from API version 2023-05-01
 func (client *VolumesClient) populateAvailabilityZone(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginPopulateAvailabilityZoneOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginPopulateAvailabilityZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.populateAvailabilityZoneCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1100,10 +1172,13 @@ func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, r
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientReInitializeReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReInitializeReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1113,6 +1188,10 @@ func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, r
 // Generated from API version 2023-05-01
 func (client *VolumesClient) reInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginReInitializeReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reInitializeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1181,10 +1260,13 @@ func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientReestablishReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientReestablishReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientReestablishReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1195,6 +1277,10 @@ func (client *VolumesClient) BeginReestablishReplication(ctx context.Context, re
 // Generated from API version 2023-05-01
 func (client *VolumesClient) reestablishReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body ReestablishReplicationRequest, options *VolumesClientBeginReestablishReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginReestablishReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reestablishReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -1261,10 +1347,14 @@ func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[VolumesClientRelocateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRelocateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRelocateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRelocateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1274,6 +1364,10 @@ func (client *VolumesClient) BeginRelocate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *VolumesClient) relocate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRelocateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginRelocate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.relocateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1340,6 +1434,10 @@ func (client *VolumesClient) relocateCreateRequest(ctx context.Context, resource
 //     method.
 func (client *VolumesClient) ReplicationStatus(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientReplicationStatusOptions) (VolumesClientReplicationStatusResponse, error) {
 	var err error
+	const operationName = "VolumesClient.ReplicationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.replicationStatusCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return VolumesClientReplicationStatusResponse{}, err
@@ -1415,10 +1513,14 @@ func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[VolumesClientResetCifsPasswordResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResetCifsPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientResetCifsPasswordResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResetCifsPasswordResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1428,6 +1530,10 @@ func (client *VolumesClient) BeginResetCifsPassword(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *VolumesClient) resetCifsPassword(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResetCifsPasswordOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginResetCifsPassword"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resetCifsPasswordCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1495,10 +1601,13 @@ func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientResyncReplicationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientResyncReplicationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1509,6 +1618,10 @@ func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginResyncReplication"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resyncReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1575,10 +1688,13 @@ func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRevertResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1588,6 +1704,10 @@ func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *VolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginRevert"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revertCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -1656,10 +1776,14 @@ func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[VolumesClientRevertRelocationResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientRevertRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientRevertRelocationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientRevertRelocationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1670,6 +1794,10 @@ func (client *VolumesClient) BeginRevertRelocation(ctx context.Context, resource
 // Generated from API version 2023-05-01
 func (client *VolumesClient) revertRelocation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginRevertRelocationOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginRevertRelocation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revertRelocationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
 		return nil, err
@@ -1736,10 +1864,13 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1749,6 +1880,10 @@ func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "VolumesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
 		return nil, err

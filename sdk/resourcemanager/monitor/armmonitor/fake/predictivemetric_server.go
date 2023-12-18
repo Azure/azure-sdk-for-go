@@ -70,42 +70,42 @@ func (p *PredictiveMetricServerTransport) dispatchGet(req *http.Request) (*http.
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/autoscalesettings/(?P<autoscaleSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/predictiveMetrics`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/autoscalesettings/(?P<autoscaleSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/predictiveMetrics`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	autoscaleSettingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("autoscaleSettingName")])
+	autoscaleSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("autoscaleSettingName")])
 	if err != nil {
 		return nil, err
 	}
-	timespanUnescaped, err := url.QueryUnescape(qp.Get("timespan"))
+	timespanParam, err := url.QueryUnescape(qp.Get("timespan"))
 	if err != nil {
 		return nil, err
 	}
-	intervalUnescaped, err := url.QueryUnescape(qp.Get("interval"))
+	intervalParam, err := url.QueryUnescape(qp.Get("interval"))
 	if err != nil {
 		return nil, err
 	}
-	metricNamespaceUnescaped, err := url.QueryUnescape(qp.Get("metricNamespace"))
+	metricNamespaceParam, err := url.QueryUnescape(qp.Get("metricNamespace"))
 	if err != nil {
 		return nil, err
 	}
-	metricNameUnescaped, err := url.QueryUnescape(qp.Get("metricName"))
+	metricNameParam, err := url.QueryUnescape(qp.Get("metricName"))
 	if err != nil {
 		return nil, err
 	}
-	aggregationUnescaped, err := url.QueryUnescape(qp.Get("aggregation"))
+	aggregationParam, err := url.QueryUnescape(qp.Get("aggregation"))
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, autoscaleSettingNameUnescaped, timespanUnescaped, intervalUnescaped, metricNamespaceUnescaped, metricNameUnescaped, aggregationUnescaped, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, autoscaleSettingNameParam, timespanParam, intervalParam, metricNamespaceParam, metricNameParam, aggregationParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

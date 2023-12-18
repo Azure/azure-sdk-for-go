@@ -46,8 +46,10 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	var proxy *recording.TestProxyInstance
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		var err error
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -85,7 +87,9 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, &recording.RecordingOptions{GroupForReplace: "1"})
+		opts := proxy.Options
+		opts.GroupForReplace = "1"
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
 		if err != nil {
 			panic(err)
 		}

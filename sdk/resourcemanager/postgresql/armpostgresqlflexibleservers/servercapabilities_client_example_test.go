@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCapabilities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCapabilities.json
 func ExampleServerCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,6 +536,25 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																											Name: to.Ptr("P80"),
 		// 																											Iops: to.Ptr[int32](20000),
 		// 																									}},
+		// 																							}},
+		// 																						},
+		// 																						{
+		// 																							Name: to.Ptr("ManagedDiskV2"),
+		// 																							DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																							SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																								{
+		// 																									DefaultIopsTier: to.Ptr("None"),
+		// 																									MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																									StorageSizeMb: to.Ptr[int64](32768),
+		// 																									SupportedIops: to.Ptr[int32](3000),
+		// 																									SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																										{
+		// 																											Name: to.Ptr("None"),
+		// 																											Iops: to.Ptr[int32](0),
+		// 																									}},
+		// 																									SupportedMaximumIops: to.Ptr[int32](80000),
+		// 																									SupportedMaximumThroughput: to.Ptr[int32](750),
+		// 																									SupportedThroughput: to.Ptr[int32](125),
 		// 																							}},
 		// 																					}},
 		// 																				},
@@ -1067,6 +1086,25 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																							Name: to.Ptr("P80"),
 		// 																																																																							Iops: to.Ptr[int32](20000),
 		// 																																																																					}},
+		// 																																																																			}},
+		// 																																																																		},
+		// 																																																																		{
+		// 																																																																			Name: to.Ptr("ManagedDiskV2"),
+		// 																																																																			DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																			SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																				{
+		// 																																																																					DefaultIopsTier: to.Ptr("None"),
+		// 																																																																					MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																					StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																					SupportedIops: to.Ptr[int32](3000),
+		// 																																																																					SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																						{
+		// 																																																																							Name: to.Ptr("None"),
+		// 																																																																							Iops: to.Ptr[int32](0),
+		// 																																																																					}},
+		// 																																																																					SupportedMaximumIops: to.Ptr[int32](80000),
+		// 																																																																					SupportedMaximumThroughput: to.Ptr[int32](750),
+		// 																																																																					SupportedThroughput: to.Ptr[int32](125),
 		// 																																																																			}},
 		// 																																																																	}},
 		// 																																																																},
@@ -1611,6 +1649,25 @@ func ExampleServerCapabilitiesClient_NewListPager() {
 		// 																																																																																																																					Name: to.Ptr("P80"),
 		// 																																																																																																																					Iops: to.Ptr[int32](20000),
 		// 																																																																																																																			}},
+		// 																																																																																																																	}},
+		// 																																																																																																																},
+		// 																																																																																																																{
+		// 																																																																																																																	Name: to.Ptr("ManagedDiskV2"),
+		// 																																																																																																																	DefaultStorageSizeMb: to.Ptr[int64](65536),
+		// 																																																																																																																	SupportedStorageMb: []*armpostgresqlflexibleservers.StorageMbCapability{
+		// 																																																																																																																		{
+		// 																																																																																																																			DefaultIopsTier: to.Ptr("None"),
+		// 																																																																																																																			MaximumStorageSizeMb: to.Ptr[int64](67108864),
+		// 																																																																																																																			StorageSizeMb: to.Ptr[int64](32768),
+		// 																																																																																																																			SupportedIops: to.Ptr[int32](3000),
+		// 																																																																																																																			SupportedIopsTiers: []*armpostgresqlflexibleservers.StorageTierCapability{
+		// 																																																																																																																				{
+		// 																																																																																																																					Name: to.Ptr("None"),
+		// 																																																																																																																					Iops: to.Ptr[int32](0),
+		// 																																																																																																																			}},
+		// 																																																																																																																			SupportedMaximumIops: to.Ptr[int32](80000),
+		// 																																																																																																																			SupportedMaximumThroughput: to.Ptr[int32](750),
+		// 																																																																																																																			SupportedThroughput: to.Ptr[int32](125),
 		// 																																																																																																																	}},
 		// 																																																																																																															}},
 		// 																																																																																																													}},

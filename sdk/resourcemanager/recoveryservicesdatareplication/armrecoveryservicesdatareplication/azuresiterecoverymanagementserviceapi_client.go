@@ -32,7 +32,7 @@ type AzureSiteRecoveryManagementServiceAPIClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAzureSiteRecoveryManagementServiceAPIClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureSiteRecoveryManagementServiceAPIClient, error) {
-	cl, err := arm.NewClient(moduleName+".AzureSiteRecoveryManagementServiceAPIClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewAzureSiteRecoveryManagementServiceAPIClient(subscriptionID string, crede
 //     the AzureSiteRecoveryManagementServiceAPIClient.CheckNameAvailability method.
 func (client *AzureSiteRecoveryManagementServiceAPIClient) CheckNameAvailability(ctx context.Context, location string, options *AzureSiteRecoveryManagementServiceAPIClientCheckNameAvailabilityOptions) (AzureSiteRecoveryManagementServiceAPIClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "AzureSiteRecoveryManagementServiceAPIClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, options)
 	if err != nil {
 		return AzureSiteRecoveryManagementServiceAPIClientCheckNameAvailabilityResponse{}, err
@@ -71,6 +75,9 @@ func (client *AzureSiteRecoveryManagementServiceAPIClient) CheckNameAvailability
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *AzureSiteRecoveryManagementServiceAPIClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, options *AzureSiteRecoveryManagementServiceAPIClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataReplication/locations/{location}/checkNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -112,6 +119,10 @@ func (client *AzureSiteRecoveryManagementServiceAPIClient) checkNameAvailability
 //     AzureSiteRecoveryManagementServiceAPIClient.DeploymentPreflight method.
 func (client *AzureSiteRecoveryManagementServiceAPIClient) DeploymentPreflight(ctx context.Context, resourceGroupName string, deploymentID string, options *AzureSiteRecoveryManagementServiceAPIClientDeploymentPreflightOptions) (AzureSiteRecoveryManagementServiceAPIClientDeploymentPreflightResponse, error) {
 	var err error
+	const operationName = "AzureSiteRecoveryManagementServiceAPIClient.DeploymentPreflight"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deploymentPreflightCreateRequest(ctx, resourceGroupName, deploymentID, options)
 	if err != nil {
 		return AzureSiteRecoveryManagementServiceAPIClientDeploymentPreflightResponse{}, err
@@ -131,6 +142,9 @@ func (client *AzureSiteRecoveryManagementServiceAPIClient) DeploymentPreflight(c
 // deploymentPreflightCreateRequest creates the DeploymentPreflight request.
 func (client *AzureSiteRecoveryManagementServiceAPIClient) deploymentPreflightCreateRequest(ctx context.Context, resourceGroupName string, deploymentID string, options *AzureSiteRecoveryManagementServiceAPIClientDeploymentPreflightOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/deployments/{deploymentId}/preflight"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

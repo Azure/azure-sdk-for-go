@@ -54,7 +54,7 @@ type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
-// which has an offset but no zero value count indicates from the offset to the resource's end.
+// which has an offset and zero value count indicates from the offset to the resource's end.
 type HTTPRange = exported.HTTPRange
 
 // ShareFileRangeList - The list of file ranges.
@@ -669,7 +669,7 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 		leaseAccessConditions = o.LeaseAccessConditions
 
 		if o.SourceContentValidation != nil {
-			err := o.SourceContentValidation.Apply(opts)
+			err := o.SourceContentValidation.apply(opts)
 			if err != nil {
 				return "", nil, nil, nil, err
 			}

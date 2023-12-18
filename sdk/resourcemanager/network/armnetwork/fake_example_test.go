@@ -50,7 +50,7 @@ func ExampleInterfacesServer() {
 	}
 
 	// now create the corresponding client, connecting the fake server via the client options
-	client, err := armnetwork.NewInterfacesClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armnetwork.NewInterfacesClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewInterfacesServerTransport(&fakeInterfacesServer),
 		},

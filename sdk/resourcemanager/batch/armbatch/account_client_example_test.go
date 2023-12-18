@@ -65,7 +65,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateByos() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		KeyVaultReference: &armbatch.KeyVaultReference{
@@ -123,7 +123,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateDefault() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -182,7 +182,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateSystemAssignedIdentity()
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -248,7 +248,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateUserAssignedIdentity() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -307,7 +307,7 @@ func ExampleAccountClient_BeginCreate_privateBatchAccountCreate() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		KeyVaultReference: &armbatch.KeyVaultReference{
@@ -360,7 +360,7 @@ func ExampleAccountClient_Update() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -424,7 +424,7 @@ func ExampleAccountClient_Get_batchAccountGet() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -464,7 +464,7 @@ func ExampleAccountClient_Get_privateBatchAccountGet() {
 	// 		ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 		AutoStorage: &armbatch.AutoStorageProperties{
 	// 			StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 			LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 	// 		},
 	// 		DedicatedCoreQuota: to.Ptr[int32](20),
 	// 		LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -528,7 +528,7 @@ func ExampleAccountClient_NewListPager() {
 		// 				ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 		// 				AutoStorage: &armbatch.AutoStorageProperties{
 		// 					StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-		// 					LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+		// 					LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 		// 				},
 		// 				DedicatedCoreQuota: to.Ptr[int32](20),
 		// 				LowPriorityCoreQuota: to.Ptr[int32](20),
@@ -579,7 +579,7 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 				ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 		// 				AutoStorage: &armbatch.AutoStorageProperties{
 		// 					StorageAccountID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
-		// 					LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+		// 					LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.987Z"); return t}()),
 		// 				},
 		// 				DedicatedCoreQuota: to.Ptr[int32](20),
 		// 				LowPriorityCoreQuota: to.Ptr[int32](20),

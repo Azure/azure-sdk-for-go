@@ -316,17 +316,3 @@ func TestTimeInterval(t *testing.T) {
 	_, _, err = to.Ptr(azquery.TimeInterval("hi")).Values()
 	require.Error(t, err)
 }
-
-func TestLogConstants(t *testing.T) {
-	batchMethod := []azquery.BatchQueryRequestMethod{azquery.BatchQueryRequestMethodPOST}
-	batchMethodRes := azquery.PossibleBatchQueryRequestMethodValues()
-	require.Equal(t, batchMethod, batchMethodRes)
-
-	batchPath := []azquery.BatchQueryRequestPath{azquery.BatchQueryRequestPathQuery}
-	batchPathRes := azquery.PossibleBatchQueryRequestPathValues()
-	require.Equal(t, batchPath, batchPathRes)
-
-	logsColumnType := []azquery.LogsColumnType{azquery.LogsColumnTypeBool, azquery.LogsColumnTypeDatetime, azquery.LogsColumnTypeDecimal, azquery.LogsColumnTypeDynamic, azquery.LogsColumnTypeGUID, azquery.LogsColumnTypeInt, azquery.LogsColumnTypeLong, azquery.LogsColumnTypeReal, azquery.LogsColumnTypeString, azquery.LogsColumnTypeTimespan}
-	logsColumnTypeRes := azquery.PossibleLogsColumnTypeValues()
-	require.Equal(t, logsColumnType, logsColumnTypeRes)
-}

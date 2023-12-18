@@ -2465,7 +2465,7 @@ func (s *SnapshotPolicyVolumeList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SnapshotProperties.
 func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "created", s.Created)
+	populateDateTimeRFC3339(objectMap, "created", s.Created)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "snapshotId", s.SnapshotID)
 	return json.Marshal(objectMap)
@@ -2481,7 +2481,7 @@ func (s *SnapshotProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeRFC3339(val, "Created", &s.Created)
+			err = unpopulateDateTimeRFC3339(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
@@ -2741,11 +2741,11 @@ func (s *SubvolumeModel) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SubvolumeModelProperties.
 func (s SubvolumeModelProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "accessedTimeStamp", s.AccessedTimeStamp)
+	populateDateTimeRFC3339(objectMap, "accessedTimeStamp", s.AccessedTimeStamp)
 	populate(objectMap, "bytesUsed", s.BytesUsed)
-	populateTimeRFC3339(objectMap, "changedTimeStamp", s.ChangedTimeStamp)
-	populateTimeRFC3339(objectMap, "creationTimeStamp", s.CreationTimeStamp)
-	populateTimeRFC3339(objectMap, "modifiedTimeStamp", s.ModifiedTimeStamp)
+	populateDateTimeRFC3339(objectMap, "changedTimeStamp", s.ChangedTimeStamp)
+	populateDateTimeRFC3339(objectMap, "creationTimeStamp", s.CreationTimeStamp)
+	populateDateTimeRFC3339(objectMap, "modifiedTimeStamp", s.ModifiedTimeStamp)
 	populate(objectMap, "parentPath", s.ParentPath)
 	populate(objectMap, "path", s.Path)
 	populate(objectMap, "permissions", s.Permissions)
@@ -2764,19 +2764,19 @@ func (s *SubvolumeModelProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "accessedTimeStamp":
-			err = unpopulateTimeRFC3339(val, "AccessedTimeStamp", &s.AccessedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "AccessedTimeStamp", &s.AccessedTimeStamp)
 			delete(rawMsg, key)
 		case "bytesUsed":
 			err = unpopulate(val, "BytesUsed", &s.BytesUsed)
 			delete(rawMsg, key)
 		case "changedTimeStamp":
-			err = unpopulateTimeRFC3339(val, "ChangedTimeStamp", &s.ChangedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "ChangedTimeStamp", &s.ChangedTimeStamp)
 			delete(rawMsg, key)
 		case "creationTimeStamp":
-			err = unpopulateTimeRFC3339(val, "CreationTimeStamp", &s.CreationTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "CreationTimeStamp", &s.CreationTimeStamp)
 			delete(rawMsg, key)
 		case "modifiedTimeStamp":
-			err = unpopulateTimeRFC3339(val, "ModifiedTimeStamp", &s.ModifiedTimeStamp)
+			err = unpopulateDateTimeRFC3339(val, "ModifiedTimeStamp", &s.ModifiedTimeStamp)
 			delete(rawMsg, key)
 		case "parentPath":
 			err = unpopulate(val, "ParentPath", &s.ParentPath)
@@ -2932,10 +2932,10 @@ func (s *SubvolumesList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -2951,7 +2951,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -2960,7 +2960,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)

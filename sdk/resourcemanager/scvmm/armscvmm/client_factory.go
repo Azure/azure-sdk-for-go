@@ -61,6 +61,7 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return subClient
 }
 
+<<<<<<< HEAD
 // NewVMInstanceGuestAgentsClient creates a new instance of VMInstanceGuestAgentsClient.
 func (c *ClientFactory) NewVMInstanceGuestAgentsClient() *VMInstanceGuestAgentsClient {
 	subClient, _ := NewVMInstanceGuestAgentsClient(c.credential, c.options)
@@ -79,12 +80,23 @@ func (c *ClientFactory) NewVirtualMachineInstancesClient() *VirtualMachineInstan
 	return subClient
 }
 
+=======
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // NewVirtualMachineTemplatesClient creates a new instance of VirtualMachineTemplatesClient.
 func (c *ClientFactory) NewVirtualMachineTemplatesClient() *VirtualMachineTemplatesClient {
 	subClient, _ := NewVirtualMachineTemplatesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+<<<<<<< HEAD
+=======
+// NewVirtualMachinesClient creates a new instance of VirtualMachinesClient.
+func (c *ClientFactory) NewVirtualMachinesClient() *VirtualMachinesClient {
+	subClient, _ := NewVirtualMachinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+>>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 // NewVirtualNetworksClient creates a new instance of VirtualNetworksClient.
 func (c *ClientFactory) NewVirtualNetworksClient() *VirtualNetworksClient {
 	subClient, _ := NewVirtualNetworksClient(c.subscriptionID, c.credential, c.options)

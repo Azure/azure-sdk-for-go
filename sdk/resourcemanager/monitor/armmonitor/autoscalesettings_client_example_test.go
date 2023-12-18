@@ -85,8 +85,8 @@ func ExampleAutoscaleSettingsClient_NewListByResourceGroupPager() {
 		// 								Minimum: to.Ptr("1"),
 		// 							},
 		// 							FixedDate: &armmonitor.TimeWindow{
-		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t}()),
-		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t}()),
+		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t}()),
+		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t}()),
 		// 								TimeZone: to.Ptr("UTC"),
 		// 							},
 		// 							Rules: []*armmonitor.ScaleRule{
@@ -242,8 +242,8 @@ func ExampleAutoscaleSettingsClient_CreateOrUpdate() {
 						Minimum: to.Ptr("1"),
 					},
 					FixedDate: &armmonitor.TimeWindow{
-						End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
-						Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
+						End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t }()),
+						Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t }()),
 						TimeZone: to.Ptr("UTC"),
 					},
 					Rules: []*armmonitor.ScaleRule{
@@ -395,8 +395,8 @@ func ExampleAutoscaleSettingsClient_CreateOrUpdate() {
 	// 						Minimum: to.Ptr("1"),
 	// 					},
 	// 					FixedDate: &armmonitor.TimeWindow{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t}()),
+	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t}()),
+	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t}()),
 	// 						TimeZone: to.Ptr("UTC"),
 	// 					},
 	// 					Rules: []*armmonitor.ScaleRule{
@@ -578,8 +578,8 @@ func ExampleAutoscaleSettingsClient_Get() {
 	// 						Minimum: to.Ptr("1"),
 	// 					},
 	// 					FixedDate: &armmonitor.TimeWindow{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t}()),
+	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t}()),
+	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t}()),
 	// 						TimeZone: to.Ptr("UTC"),
 	// 					},
 	// 					Rules: []*armmonitor.ScaleRule{
@@ -728,8 +728,8 @@ func ExampleAutoscaleSettingsClient_Update() {
 						Minimum: to.Ptr("1"),
 					},
 					FixedDate: &armmonitor.TimeWindow{
-						End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t }()),
-						Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t }()),
+						End:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t }()),
+						Start:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t }()),
 						TimeZone: to.Ptr("UTC"),
 					},
 					Rules: []*armmonitor.ScaleRule{
@@ -883,8 +883,8 @@ func ExampleAutoscaleSettingsClient_Update() {
 	// 						Minimum: to.Ptr("1"),
 	// 					},
 	// 					FixedDate: &armmonitor.TimeWindow{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t}()),
+	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t}()),
+	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t}()),
 	// 						TimeZone: to.Ptr("UTC"),
 	// 					},
 	// 					Rules: []*armmonitor.ScaleRule{
@@ -1055,8 +1055,8 @@ func ExampleAutoscaleSettingsClient_NewListBySubscriptionPager() {
 		// 								Minimum: to.Ptr("1"),
 		// 							},
 		// 							FixedDate: &armmonitor.TimeWindow{
-		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00Z"); return t}()),
-		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00Z"); return t}()),
+		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:30:00.000Z"); return t}()),
+		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-05T14:00:00.000Z"); return t}()),
 		// 								TimeZone: to.Ptr("UTC"),
 		// 							},
 		// 							Rules: []*armmonitor.ScaleRule{

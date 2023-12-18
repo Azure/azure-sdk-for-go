@@ -31,7 +31,7 @@ type TicketsNoSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTicketsNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TicketsNoSubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".TicketsNoSubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewTicketsNoSubscriptionClient(credential azcore.TokenCredential, options *
 //     method.
 func (client *TicketsNoSubscriptionClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *TicketsNoSubscriptionClientCheckNameAvailabilityOptions) (TicketsNoSubscriptionClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "TicketsNoSubscriptionClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, checkNameAvailabilityInput, options)
 	if err != nil {
 		return TicketsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
@@ -119,10 +123,13 @@ func (client *TicketsNoSubscriptionClient) BeginCreate(ctx context.Context, supp
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TicketsNoSubscriptionClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TicketsNoSubscriptionClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TicketsNoSubscriptionClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -142,6 +149,10 @@ func (client *TicketsNoSubscriptionClient) BeginCreate(ctx context.Context, supp
 // Generated from API version 2022-09-01-preview
 func (client *TicketsNoSubscriptionClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsNoSubscriptionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TicketsNoSubscriptionClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, supportTicketName, createSupportTicketParameters, options)
 	if err != nil {
 		return nil, err
@@ -189,6 +200,10 @@ func (client *TicketsNoSubscriptionClient) createCreateRequest(ctx context.Conte
 //     method.
 func (client *TicketsNoSubscriptionClient) Get(ctx context.Context, supportTicketName string, options *TicketsNoSubscriptionClientGetOptions) (TicketsNoSubscriptionClientGetResponse, error) {
 	var err error
+	const operationName = "TicketsNoSubscriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, supportTicketName, options)
 	if err != nil {
 		return TicketsNoSubscriptionClientGetResponse{}, err
@@ -248,25 +263,20 @@ func (client *TicketsNoSubscriptionClient) NewListPager(options *TicketsNoSubscr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TicketsNoSubscriptionClientListResponse) (TicketsNoSubscriptionClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TicketsNoSubscriptionClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return TicketsNoSubscriptionClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TicketsNoSubscriptionClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TicketsNoSubscriptionClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -312,6 +322,10 @@ func (client *TicketsNoSubscriptionClient) listHandleResponse(resp *http.Respons
 //     method.
 func (client *TicketsNoSubscriptionClient) Update(ctx context.Context, supportTicketName string, updateSupportTicket UpdateSupportTicket, options *TicketsNoSubscriptionClientUpdateOptions) (TicketsNoSubscriptionClientUpdateResponse, error) {
 	var err error
+	const operationName = "TicketsNoSubscriptionClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, supportTicketName, updateSupportTicket, options)
 	if err != nil {
 		return TicketsNoSubscriptionClientUpdateResponse{}, err

@@ -32,7 +32,7 @@ type ReplicationVaultHealthClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationVaultHealthClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationVaultHealthClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationVaultHealthClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewReplicationVaultHealthClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ReplicationVaultHealthClient) Get(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationVaultHealthClientGetOptions) (ReplicationVaultHealthClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationVaultHealthClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, options)
 	if err != nil {
 		return ReplicationVaultHealthClientGetResponse{}, err
@@ -118,10 +122,14 @@ func (client *ReplicationVaultHealthClient) BeginRefresh(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationVaultHealthClientRefreshResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationVaultHealthClientRefreshResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationVaultHealthClientRefreshResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationVaultHealthClientRefreshResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -131,6 +139,10 @@ func (client *ReplicationVaultHealthClient) BeginRefresh(ctx context.Context, re
 // Generated from API version 2023-06-01
 func (client *ReplicationVaultHealthClient) refresh(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationVaultHealthClientBeginRefreshOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationVaultHealthClient.BeginRefresh"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshCreateRequest(ctx, resourceName, resourceGroupName, options)
 	if err != nil {
 		return nil, err

@@ -409,7 +409,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutASnapshot() {
 	// 			AcceleratedNetwork: to.Ptr(true),
 	// 		},
 	// 		SupportsHibernation: to.Ptr(true),
-	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079Z"); return t}()),
 	// 	},
 	// }
 }
@@ -486,7 +486,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutAnIncrementalSnapshot() {
 	// 			AcceleratedNetwork: to.Ptr(true),
 	// 		},
 	// 		SupportsHibernation: to.Ptr(true),
-	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
+	// 		TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079Z"); return t}()),
 	// 		UniqueID: to.Ptr("a395e9c1-fb9e-446e-a9ba-7b2fa0bcd305"),
 	// 	},
 	// }
@@ -575,7 +575,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.9278721+00:00"); return t}()),
+		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.927Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -644,7 +644,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 				},
 		// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.6630569+00:00"); return t}()),
+		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.663Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -686,7 +686,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 				},
 		// 				OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
-		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.3247198+00:00"); return t}()),
+		// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.324Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

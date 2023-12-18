@@ -11,10 +11,7 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
-<<<<<<< HEAD
 	"reflect"
-=======
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	"sync"
 )
 
@@ -35,23 +32,11 @@ func contains[T comparable](s []T, v T) bool {
 	return false
 }
 
-<<<<<<< HEAD
 func getOptional[T any](v T) *T {
 	if reflect.ValueOf(v).IsZero() {
 		return nil
 	}
 	return &v
-=======
-func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
-	if v == "" {
-		return nil, nil
-	}
-	t, err := parse(v)
-	if err != nil {
-		return nil, err
-	}
-	return &t, err
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 func newTracker[T any]() *tracker[T] {

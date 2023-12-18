@@ -20,17 +20,12 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-<<<<<<< HEAD
-=======
-	"strconv"
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 )
 
 // CloudsServer is a fake server for instances of the armscvmm.CloudsClient type.
 type CloudsServer struct {
 	// BeginCreateOrUpdate is the fake for method CloudsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-<<<<<<< HEAD
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, cloudResourceName string, body armscvmm.Cloud, options *armscvmm.CloudsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.CloudsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CloudsClient.BeginDelete
@@ -40,17 +35,6 @@ type CloudsServer struct {
 	// Get is the fake for method CloudsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudResourceName string, options *armscvmm.CloudsClientGetOptions) (resp azfake.Responder[armscvmm.CloudsClientGetResponse], errResp azfake.ErrorResponder)
-=======
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, cloudName string, body armscvmm.Cloud, options *armscvmm.CloudsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armscvmm.CloudsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginDelete is the fake for method CloudsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, cloudName string, options *armscvmm.CloudsClientBeginDeleteOptions) (resp azfake.PollerResponder[armscvmm.CloudsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method CloudsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, cloudName string, options *armscvmm.CloudsClientGetOptions) (resp azfake.Responder[armscvmm.CloudsClientGetResponse], errResp azfake.ErrorResponder)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 
 	// NewListByResourceGroupPager is the fake for method CloudsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -61,13 +45,8 @@ type CloudsServer struct {
 	NewListBySubscriptionPager func(options *armscvmm.CloudsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armscvmm.CloudsClientListBySubscriptionResponse])
 
 	// BeginUpdate is the fake for method CloudsClient.BeginUpdate
-<<<<<<< HEAD
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudResourceName string, body armscvmm.ResourcePatch, options *armscvmm.CloudsClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.CloudsClientUpdateResponse], errResp azfake.ErrorResponder)
-=======
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudName string, body armscvmm.ResourcePatch, options *armscvmm.CloudsClientBeginUpdateOptions) (resp azfake.PollerResponder[armscvmm.CloudsClientUpdateResponse], errResp azfake.ErrorResponder)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 }
 
 // NewCloudsServerTransport creates a new instance of CloudsServerTransport with the provided implementation.
@@ -136,11 +115,7 @@ func (c *CloudsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-=======
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -154,19 +129,11 @@ func (c *CloudsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-<<<<<<< HEAD
 		cloudResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudResourceName")])
 		if err != nil {
 			return nil, err
 		}
 		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, cloudResourceNameParam, body, nil)
-=======
-		cloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, cloudNameParam, body, nil)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -196,11 +163,7 @@ func (c *CloudsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-=======
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -211,11 +174,7 @@ func (c *CloudsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		if err != nil {
 			return nil, err
 		}
-<<<<<<< HEAD
 		cloudResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudResourceName")])
-=======
-		cloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudName")])
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if err != nil {
 			return nil, err
 		}
@@ -223,25 +182,14 @@ func (c *CloudsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		if err != nil {
 			return nil, err
 		}
-<<<<<<< HEAD
 		forceParam := getOptional(armscvmm.Force(forceUnescaped))
-=======
-		forceParam, err := parseOptional(forceUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		var options *armscvmm.CloudsClientBeginDeleteOptions
 		if forceParam != nil {
 			options = &armscvmm.CloudsClientBeginDeleteOptions{
 				Force: forceParam,
 			}
 		}
-<<<<<<< HEAD
 		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, cloudResourceNameParam, options)
-=======
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, cloudNameParam, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -254,15 +202,9 @@ func (c *CloudsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-<<<<<<< HEAD
 	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-=======
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
@@ -275,11 +217,7 @@ func (c *CloudsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-<<<<<<< HEAD
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-=======
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -289,19 +227,11 @@ func (c *CloudsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	cloudResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudResourceName")])
 	if err != nil {
 		return nil, err
 	}
 	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudResourceNameParam, nil)
-=======
-	cloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, cloudNameParam, nil)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -392,11 +322,7 @@ func (c *CloudsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-<<<<<<< HEAD
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-=======
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ScVmm/clouds/(?P<cloudName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -410,19 +336,11 @@ func (c *CloudsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		if err != nil {
 			return nil, err
 		}
-<<<<<<< HEAD
 		cloudResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudResourceName")])
 		if err != nil {
 			return nil, err
 		}
 		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudResourceNameParam, body, nil)
-=======
-		cloudNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudNameParam, body, nil)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -435,15 +353,9 @@ func (c *CloudsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-<<<<<<< HEAD
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-=======
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		c.beginUpdate.remove(req)

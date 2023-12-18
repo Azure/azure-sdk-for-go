@@ -51,21 +51,13 @@ func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCrede
 //   - vmmServerName - Name of the VMMServer.
 //   - inventoryItemResourceName - Name of the inventoryItem.
 //   - options - InventoryItemsClientCreateOptions contains the optional parameters for the InventoryItemsClient.Create method.
-<<<<<<< HEAD
 func (client *InventoryItemsClient) Create(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, options *InventoryItemsClientCreateOptions) (InventoryItemsClientCreateResponse, error) {
-=======
-func (client *InventoryItemsClient) Create(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *InventoryItemsClientCreateOptions) (InventoryItemsClientCreateResponse, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "InventoryItemsClient.Create"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemResourceName, options)
-=======
-	req, err := client.createCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return InventoryItemsClientCreateResponse{}, err
 	}
@@ -73,11 +65,7 @@ func (client *InventoryItemsClient) Create(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return InventoryItemsClientCreateResponse{}, err
 	}
-<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-=======
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return InventoryItemsClientCreateResponse{}, err
 	}
@@ -138,21 +126,13 @@ func (client *InventoryItemsClient) createHandleResponse(resp *http.Response) (I
 //   - vmmServerName - Name of the VMMServer.
 //   - inventoryItemResourceName - Name of the inventoryItem.
 //   - options - InventoryItemsClientDeleteOptions contains the optional parameters for the InventoryItemsClient.Delete method.
-<<<<<<< HEAD
 func (client *InventoryItemsClient) Delete(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, options *InventoryItemsClientDeleteOptions) (InventoryItemsClientDeleteResponse, error) {
-=======
-func (client *InventoryItemsClient) Delete(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *InventoryItemsClientDeleteOptions) (InventoryItemsClientDeleteResponse, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "InventoryItemsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemResourceName, options)
-=======
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return InventoryItemsClientDeleteResponse{}, err
 	}
@@ -205,21 +185,13 @@ func (client *InventoryItemsClient) deleteCreateRequest(ctx context.Context, res
 //   - vmmServerName - Name of the VMMServer.
 //   - inventoryItemResourceName - Name of the inventoryItem.
 //   - options - InventoryItemsClientGetOptions contains the optional parameters for the InventoryItemsClient.Get method.
-<<<<<<< HEAD
 func (client *InventoryItemsClient) Get(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemResourceName string, options *InventoryItemsClientGetOptions) (InventoryItemsClientGetResponse, error) {
-=======
-func (client *InventoryItemsClient) Get(ctx context.Context, resourceGroupName string, vmmServerName string, inventoryItemName string, options *InventoryItemsClientGetOptions) (InventoryItemsClientGetResponse, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "InventoryItemsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemResourceName, options)
-=======
-	req, err := client.getCreateRequest(ctx, resourceGroupName, vmmServerName, inventoryItemName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return InventoryItemsClientGetResponse{}, err
 	}

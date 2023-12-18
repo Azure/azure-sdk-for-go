@@ -73,23 +73,14 @@ func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // CreateOrUpdate - Onboards the ScVmm fabric cloud as an Azure cloud resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudResourceName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "CloudsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudResourceName, body, options)
-=======
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -161,23 +152,14 @@ func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Delete - Deregisters the ScVmm fabric cloud from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientBeginDeleteOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "CloudsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudResourceName, options)
-=======
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -185,11 +167,7 @@ func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-=======
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -232,21 +210,13 @@ func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudResourceName - Name of the Cloud.
 //   - options - CloudsClientGetOptions contains the optional parameters for the CloudsClient.Get method.
-<<<<<<< HEAD
 func (client *CloudsClient) Get(ctx context.Context, resourceGroupName string, cloudResourceName string, options *CloudsClientGetOptions) (CloudsClientGetResponse, error) {
-=======
-func (client *CloudsClient) Get(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientGetOptions) (CloudsClientGetResponse, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "CloudsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudResourceName, options)
-=======
-	req, err := client.getCreateRequest(ctx, resourceGroupName, cloudName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return CloudsClientGetResponse{}, err
 	}
@@ -441,23 +411,14 @@ func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Update - Updates the Clouds resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *CloudsClient) update(ctx context.Context, resourceGroupName string, cloudResourceName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *CloudsClient) update(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "CloudsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudResourceName, body, options)
-=======
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -465,11 +426,7 @@ func (client *CloudsClient) update(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-=======
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

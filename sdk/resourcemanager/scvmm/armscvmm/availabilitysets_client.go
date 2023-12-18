@@ -73,23 +73,14 @@ func (client *AvailabilitySetsClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Onboards the ScVmm availability set as an Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *AvailabilitySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *AvailabilitySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "AvailabilitySetsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetResourceName, body, options)
-=======
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -161,23 +152,14 @@ func (client *AvailabilitySetsClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deregisters the ScVmm availability set from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *AvailabilitySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, options *AvailabilitySetsClientBeginDeleteOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *AvailabilitySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginDeleteOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "AvailabilitySetsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetResourceName, options)
-=======
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -185,11 +167,7 @@ func (client *AvailabilitySetsClient) deleteOperation(ctx context.Context, resou
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-=======
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -232,21 +210,13 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - availabilitySetResourceName - Name of the AvailabilitySet.
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
-<<<<<<< HEAD
 func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, options *AvailabilitySetsClientGetOptions) (AvailabilitySetsClientGetResponse, error) {
-=======
-func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientGetOptions) (AvailabilitySetsClientGetResponse, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "AvailabilitySetsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.getCreateRequest(ctx, resourceGroupName, availabilitySetResourceName, options)
-=======
-	req, err := client.getCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
@@ -442,23 +412,14 @@ func (client *AvailabilitySetsClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates the AvailabilitySets resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-<<<<<<< HEAD
 // Generated from API version 2023-10-07
 func (client *AvailabilitySetsClient) update(ctx context.Context, resourceGroupName string, availabilitySetResourceName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*http.Response, error) {
-=======
-// Generated from API version 2020-06-05-preview
-func (client *AvailabilitySetsClient) update(ctx context.Context, resourceGroupName string, availabilitySetName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*http.Response, error) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	var err error
 	const operationName = "AvailabilitySetsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-<<<<<<< HEAD
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetResourceName, body, options)
-=======
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 	if err != nil {
 		return nil, err
 	}
@@ -466,11 +427,7 @@ func (client *AvailabilitySetsClient) update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-=======
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
->>>>>>> 2621632e48ea508e16ce568001402f92fca4afa0
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

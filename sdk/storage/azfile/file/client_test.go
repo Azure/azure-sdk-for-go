@@ -31,7 +31,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	"hash/crc64"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -891,7 +890,7 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyDestEmpty() {
 	_require.NoError(err)
 
 	// Read the file data to verify the copy
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	defer func() {
 		err = resp.Body.Close()
 		_require.NoError(err)
@@ -1491,7 +1490,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyUsingSASSrc() {
 	dResp, err := copyFileClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
 
-	data, err := ioutil.ReadAll(dResp.Body)
+	data, err := io.ReadAll(dResp.Body)
 	defer func() {
 		err = dResp.Body.Close()
 		_require.NoError(err)
@@ -1928,7 +1927,76 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob(
 	})
 	_require.NoError(err)
 
-	data, err := ioutil.ReadAll(dResp.Body)
+	data, err := io.ReadAll(dResp.Body)
+	defer func() {
+		err = dResp.Body.Close()
+		_require.NoError(err)
+	}()
+
+	_require.EqualValues(data, content)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthFile() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Getting token
+	accessToken, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 10
+	contentSize := 1024 * 8 // 8KB
+	_, content := testcommon.GenerateData(contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient("src" + testcommon.GenerateFileName(testName))
+	_, err = srcFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	destFileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/dest" + testcommon.GenerateFileName(testName)
+	destFClient, err := file.NewClient(destFileURL, cred, &file.ClientOptions{FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup)})
+	_require.NoError(err)
+
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+		CopySourceAuthorization: to.Ptr("Bearer " + accessToken.Token),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+
+	// validate the content uploaded
+	dResp, err := destFClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range: file.HTTPRange{Offset: 0, Count: int64(contentSize)},
+	})
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
 	defer func() {
 		err = dResp.Body.Close()
 		_require.NoError(err)
@@ -2079,7 +2147,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadFile() {
 	content := make([]byte, fileSize)
 	_, err = rand.Read(content)
 	_require.NoError(err)
-	err = ioutil.WriteFile("testFile", content, 0644)
+	err = os.WriteFile("testFile", content, 0644)
 	_require.NoError(err)
 
 	defer func() {
@@ -2340,7 +2408,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 	_require.NotNil(resp.ContentMD5)
 	_require.Equal(*resp.ContentType, "application/octet-stream")
 
-	downloadedData, err := ioutil.ReadAll(resp.Body)
+	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(downloadedData, contentD[:1024])
 
@@ -2363,7 +2431,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 	_require.Equal(*resp.ContentLanguage, "test")
 	// Note: when it's downloading range, range's MD5 is returned, when set rangeGetContentMD5=true, currently set it to false, so should be empty
 
-	downloadedData, err = ioutil.ReadAll(resp.Body)
+	downloadedData, err = io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(downloadedData, contentD[1024:])
 
@@ -2393,7 +2461,7 @@ func (f *FileRecordedTestsSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 	_require.EqualValues(resp.ContentMD5, pResp.ContentMD5) // Note: This case is inted to get entire fClient, entire file's MD5 will be returned.
 	_require.Nil(resp.FileContentMD5)                       // Note: FileContentMD5 is returned, only when range is specified explicitly.
 
-	downloadedData, err = ioutil.ReadAll(resp.Body)
+	downloadedData, err = io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(downloadedData, contentD[:])
 
@@ -2471,7 +2539,7 @@ func (f *FileRecordedTestsSuite) TestFileDownloadDataEntireFile() {
 	_require.NoError(err)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(string(data), testcommon.FileDefaultData)
 }
@@ -2496,7 +2564,7 @@ func (f *FileRecordedTestsSuite) TestFileDownloadDataCountExact() {
 	})
 	_require.NoError(err)
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(string(data), testcommon.FileDefaultData)
 }
@@ -2521,7 +2589,7 @@ func (f *FileRecordedTestsSuite) TestFileDownloadDataCountOutOfRange() {
 	})
 	_require.NoError(err)
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(string(data), testcommon.FileDefaultData)
 }
@@ -2613,7 +2681,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeTransactionalMD5() {
 	_require.NoError(err)
 	_require.Equal(*resp.ContentLength, int64(2048))
 
-	downloadedData, err := ioutil.ReadAll(resp.Body)
+	downloadedData, err := io.ReadAll(resp.Body)
 	_require.NoError(err)
 	_require.EqualValues(downloadedData, contentD[:])
 }
@@ -2854,7 +2922,7 @@ func (f *FileRecordedTestsSuite) TestClearRangeNonDefaultCount() {
 	dResp, err := fClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
 
-	_bytes, err := ioutil.ReadAll(dResp.Body)
+	_bytes, err := io.ReadAll(dResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(_bytes, []byte{0})
 }
@@ -3094,7 +3162,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallFile() {
 	// create local file
 	_, content := testcommon.GenerateData(int(fileSize))
 	srcFileName := "testFileUpload"
-	err = ioutil.WriteFile(srcFileName, content, 0644)
+	err = os.WriteFile(srcFileName, content, 0644)
 	_require.NoError(err)
 	defer func() {
 		err = os.Remove(srcFileName)
@@ -3611,6 +3679,82 @@ func (f *FileRecordedTestsSuite) TestFileRenameUsingOAuth() {
 	_, err = srcFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLUsingOAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	sharedKeyCred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	tokenCred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 10
+	contentSize := 1024 * 8 // 8KB
+	_, content := testcommon.GenerateData(contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(sharedKeyCred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/dest" + testcommon.GenerateFileName(testName)
+	destFClient, err := file.NewClient(destFileURL, tokenCred, &file.ClientOptions{FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup)})
+	_require.NoError(err)
+
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentValidation: file.SourceContentValidationTypeCRC64(contentCRC64),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+
+	// validate the content uploaded
+	dResp, err := destFClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range: file.HTTPRange{Offset: 0, Count: int64(contentSize)},
+	})
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	defer func() {
+		err = dResp.Body.Close()
+		_require.NoError(err)
+	}()
+
+	_require.EqualValues(data, content)
 }
 
 func (f *FileRecordedTestsSuite) TestFileRenameDifferentDir() {
@@ -4152,7 +4296,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLTrailingDot() {
 	})
 	_require.NoError(err)
 
-	data, err := ioutil.ReadAll(dResp.Body)
+	data, err := io.ReadAll(dResp.Body)
 	defer func() {
 		err = dResp.Body.Close()
 		_require.NoError(err)

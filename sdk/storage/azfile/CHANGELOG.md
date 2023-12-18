@@ -9,6 +9,8 @@
 
 ### Bugs Fixed
 
+* Fixed a bug where `UploadRangeFromURL` using OAuth was returning error.
+
 ### Other Changes
 
 

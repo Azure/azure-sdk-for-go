@@ -51,27 +51,27 @@ func Test(t *testing.T) {
 	}
 }
 
-func (s *FileRecordedTestsSuite) SetupSuite() {
-	s.proxy = testcommon.SetupSuite(&s.Suite)
+func (f *FileRecordedTestsSuite) SetupSuite() {
+	f.proxy = testcommon.SetupSuite(&f.Suite)
 }
 
-func (s *FileRecordedTestsSuite) TearDownSuite() {
-	testcommon.TearDownSuite(&s.Suite, s.proxy)
+func (f *FileRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&f.Suite, f.proxy)
 }
 
-func (s *FileRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(s.T(), suite, test)
+func (f *FileRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(f.T(), suite, test)
 }
 
-func (s *FileRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(s.T(), suite, test)
+func (f *FileRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(f.T(), suite, test)
 }
 
-func (s *FileUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (f *FileUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (s *FileUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (f *FileUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
@@ -4519,6 +4519,109 @@ func TestServiceVersion(t *testing.T) {
 
 	_, err = client.Create(context.Background(), 1024, nil)
 	require.NoError(t, err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileClientDefaultAudience() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		Audience:          to.Ptr("https://storage.azure.com/"),
+	}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClientAudience, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = fileClientAudience.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	_, err = fileClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileClientCustomAudience() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		Audience:          to.Ptr("https://" + accountName + ".file.core.windows.net"),
+	}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClientAudience, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = fileClientAudience.Create(context.Background(), 2048, nil)
+	_require.NoError(err)
+
+	_, err = fileClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileClientAudienceNegative() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + fileName
+
+	options := &file.ClientOptions{
+		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
+		Audience:          to.Ptr("https://badaudience.file.core.windows.net"),
+	}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	fileClientAudience, err := file.NewClient(fileURL, cred, options)
+	_require.NoError(err)
+
+	_, err = fileClientAudience.Create(context.Background(), 2048, nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
 // TODO: Add tests for retry header options

@@ -53,6 +53,17 @@ var (
 	DatalakeContentEncoding    = "my_encoding"
 )
 
+var (
+	testEncryptedKey        = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
+	testEncryptedHash       = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
+	testEncryptionAlgorithm = file.EncryptionAlgorithmTypeAES256
+	TestCPKByValue          = file.CPKInfo{
+		EncryptionKey:       &testEncryptedKey,
+		EncryptionKeySHA256: &testEncryptedHash,
+		EncryptionAlgorithm: &testEncryptionAlgorithm,
+	}
+)
+
 var BasicHeaders = file.HTTPHeaders{
 	ContentType:        &DatalakeContentType,
 	ContentDisposition: &DatalakeContentDisposition,

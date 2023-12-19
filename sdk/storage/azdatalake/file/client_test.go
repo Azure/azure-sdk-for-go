@@ -1776,7 +1776,7 @@ func (s *RecordedTestSuite) TestFileSetMetadataWithCPK() {
 	res, err := fClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
 	_require.NoError(err)
 	_require.Equal(*(res.IsServerEncrypted), true)
-	_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256) //TODO: Tanya
+	_require.Equal(res.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
 
 func validatePropertiesSet(_require *require.Assertions, fileClient *file.Client, disposition string) {
@@ -2529,6 +2529,57 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	downloadedContentMD5 := downloadedMD5Value[:]
 
 	_require.EqualValues(downloadedContentMD5, contentMD5)
+}
+
+func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 1 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		CPKInfo:     &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), &file.GetPropertiesOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	dResp, err := fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+	_require.Equal(true, *(dResp.IsServerEncrypted))
+	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, dResp.EncryptionKeySHA256)
 }
 
 func (s *UnrecordedTestSuite) TestFileUploadFile() {
@@ -4037,6 +4088,95 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+}
+
+func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 10 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// create local file
+	_, content := testcommon.GenerateData(int(fileSize))
+	srcFileName := "testFileUpload"
+	err = os.WriteFile(srcFileName, content, 0644)
+	_require.NoError(err)
+	defer func() {
+		err = os.Remove(srcFileName)
+		_require.NoError(err)
+	}()
+	fh, err := os.Open(srcFileName)
+	_require.NoError(err)
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	srcHash := md5.New()
+	_, err = io.Copy(srcHash, fh)
+	_require.NoError(err)
+	contentMD5 := srcHash.Sum(nil)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+		CPKInfo:     &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	destFileName := "SmallFile-downloaded.bin"
+	destFile, err := os.Create(destFileName)
+	_require.NoError(err)
+	defer func(name string) {
+		err = os.Remove(name)
+		_require.NoError(err)
+	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		_require.NoError(err)
+	}(destFile)
+
+	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
+		ChunkSize:   2 * 1024,
+		Concurrency: 5,
+		Range: &file.HTTPRange{
+			Offset: 0,
+			Count:  10 * 1024,
+		},
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+
+	destHash := md5.New()
+	_, err = io.Copy(destHash, destFile)
+	_require.NoError(err)
+	downloadedContentMD5 := destHash.Sum(nil)
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), &file.GetPropertiesOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+	_require.Equal(*(gResp2.IsServerEncrypted), true)
+	_require.Equal(gResp2.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
 
 func (s *RecordedTestSuite) TestFileUploadDownloadWithProgress() {

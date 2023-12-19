@@ -95,10 +95,10 @@ type ManifestAttributes struct {
 	ChangeableAttributes *ManifestWriteableProperties
 
 	// Config blob media type
-	ConfigMediaType *string `json:"configMediaType,omitempty"`
+	ConfigMediaType *string
 
 	// Media type for this Manifest
-	MediaType *string `json:"mediaType,omitempty"`
+	MediaType *string
 
 	// READ-ONLY; CPU architecture
 	Architecture *ArtifactArchitecture

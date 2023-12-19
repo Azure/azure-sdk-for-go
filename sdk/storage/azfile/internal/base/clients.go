@@ -67,7 +67,7 @@ func GetAudience(clOpts *ClientOptions) string {
 	if clOpts == nil || clOpts.Audience == nil {
 		return shared.TokenScope
 	} else {
-		return strings.TrimRight(*clOpts.Audience, "/") + shared.DefaultOAuthScope
+		return strings.TrimRight(*clOpts.Audience, "/") + "/.default"
 	}
 }
 

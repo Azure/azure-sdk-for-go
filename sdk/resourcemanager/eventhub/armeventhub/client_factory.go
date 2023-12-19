@@ -38,6 +38,12 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewApplicationGroupClient creates a new instance of ApplicationGroupClient.
+func (c *ClientFactory) NewApplicationGroupClient() *ApplicationGroupClient {
+	subClient, _ := NewApplicationGroupClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewClustersClient creates a new instance of ClustersClient.
 func (c *ClientFactory) NewClustersClient() *ClustersClient {
 	subClient, _ := NewClustersClient(c.subscriptionID, c.credential, c.options)
@@ -71,6 +77,18 @@ func (c *ClientFactory) NewEventHubsClient() *EventHubsClient {
 // NewNamespacesClient creates a new instance of NamespacesClient.
 func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
 	subClient, _ := NewNamespacesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNetworkSecurityPerimeterConfigurationClient creates a new instance of NetworkSecurityPerimeterConfigurationClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationClient() *NetworkSecurityPerimeterConfigurationClient {
+	subClient, _ := NewNetworkSecurityPerimeterConfigurationClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	subClient, _ := NewNetworkSecurityPerimeterConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

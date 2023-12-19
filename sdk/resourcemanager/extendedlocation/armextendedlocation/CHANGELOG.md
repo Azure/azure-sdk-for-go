@@ -1,5 +1,26 @@
 # Release History
 
+## 1.3.0-beta.1 (2023-11-30)
+### Features Added
+
+- New function `*ClientFactory.NewResourceSyncRulesClient() *ResourceSyncRulesClient`
+- New function `*CustomLocationsClient.FindTargetResourceGroup(context.Context, string, string, CustomLocationFindTargetResourceGroupProperties, *CustomLocationsClientFindTargetResourceGroupOptions) (CustomLocationsClientFindTargetResourceGroupResponse, error)`
+- New function `NewResourceSyncRulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceSyncRulesClient, error)`
+- New function `*ResourceSyncRulesClient.BeginCreateOrUpdate(context.Context, string, string, string, ResourceSyncRule, *ResourceSyncRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ResourceSyncRulesClientCreateOrUpdateResponse], error)`
+- New function `*ResourceSyncRulesClient.Delete(context.Context, string, string, string, *ResourceSyncRulesClientDeleteOptions) (ResourceSyncRulesClientDeleteResponse, error)`
+- New function `*ResourceSyncRulesClient.Get(context.Context, string, string, string, *ResourceSyncRulesClientGetOptions) (ResourceSyncRulesClientGetResponse, error)`
+- New function `*ResourceSyncRulesClient.NewListByCustomLocationIDPager(string, string, *ResourceSyncRulesClientListByCustomLocationIDOptions) *runtime.Pager[ResourceSyncRulesClientListByCustomLocationIDResponse]`
+- New function `*ResourceSyncRulesClient.BeginUpdate(context.Context, string, string, string, PatchableResourceSyncRule, *ResourceSyncRulesClientBeginUpdateOptions) (*runtime.Poller[ResourceSyncRulesClientUpdateResponse], error)`
+- New struct `CustomLocationFindTargetResourceGroupProperties`
+- New struct `CustomLocationFindTargetResourceGroupResult`
+- New struct `MatchExpressionsProperties`
+- New struct `PatchableResourceSyncRule`
+- New struct `ResourceSyncRule`
+- New struct `ResourceSyncRuleListResult`
+- New struct `ResourceSyncRuleProperties`
+- New struct `ResourceSyncRulePropertiesSelector`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

@@ -19,23 +19,34 @@ import (
 
 // ServerFactory is a fake server for instances of the armappplatform.ClientFactory type.
 type ServerFactory struct {
-	AppsServer                  AppsServer
-	BindingsServer              BindingsServer
-	BuildServiceAgentPoolServer BuildServiceAgentPoolServer
-	BuildServiceBuilderServer   BuildServiceBuilderServer
-	BuildServiceServer          BuildServiceServer
-	BuildpackBindingServer      BuildpackBindingServer
-	CertificatesServer          CertificatesServer
-	ConfigServersServer         ConfigServersServer
-	ConfigurationServicesServer ConfigurationServicesServer
-	CustomDomainsServer         CustomDomainsServer
-	DeploymentsServer           DeploymentsServer
-	MonitoringSettingsServer    MonitoringSettingsServer
-	OperationsServer            OperationsServer
-	RuntimeVersionsServer       RuntimeVersionsServer
-	SKUsServer                  SKUsServer
-	ServiceRegistriesServer     ServiceRegistriesServer
-	ServicesServer              ServicesServer
+	APIPortalCustomDomainsServer  APIPortalCustomDomainsServer
+	APIPortalsServer              APIPortalsServer
+	ApplicationAcceleratorsServer ApplicationAcceleratorsServer
+	ApplicationLiveViewsServer    ApplicationLiveViewsServer
+	AppsServer                    AppsServer
+	BindingsServer                BindingsServer
+	BuildServiceAgentPoolServer   BuildServiceAgentPoolServer
+	BuildServiceBuilderServer     BuildServiceBuilderServer
+	BuildServiceServer            BuildServiceServer
+	BuildpackBindingServer        BuildpackBindingServer
+	CertificatesServer            CertificatesServer
+	ConfigServersServer           ConfigServersServer
+	ConfigurationServicesServer   ConfigurationServicesServer
+	CustomDomainsServer           CustomDomainsServer
+	CustomizedAcceleratorsServer  CustomizedAcceleratorsServer
+	DeploymentsServer             DeploymentsServer
+	DevToolPortalsServer          DevToolPortalsServer
+	GatewayCustomDomainsServer    GatewayCustomDomainsServer
+	GatewayRouteConfigsServer     GatewayRouteConfigsServer
+	GatewaysServer                GatewaysServer
+	MonitoringSettingsServer      MonitoringSettingsServer
+	OperationsServer              OperationsServer
+	PredefinedAcceleratorsServer  PredefinedAcceleratorsServer
+	RuntimeVersionsServer         RuntimeVersionsServer
+	SKUsServer                    SKUsServer
+	ServiceRegistriesServer       ServiceRegistriesServer
+	ServicesServer                ServicesServer
+	StoragesServer                StoragesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -50,25 +61,36 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armappplatform.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trAppsServer                  *AppsServerTransport
-	trBindingsServer              *BindingsServerTransport
-	trBuildServiceAgentPoolServer *BuildServiceAgentPoolServerTransport
-	trBuildServiceBuilderServer   *BuildServiceBuilderServerTransport
-	trBuildServiceServer          *BuildServiceServerTransport
-	trBuildpackBindingServer      *BuildpackBindingServerTransport
-	trCertificatesServer          *CertificatesServerTransport
-	trConfigServersServer         *ConfigServersServerTransport
-	trConfigurationServicesServer *ConfigurationServicesServerTransport
-	trCustomDomainsServer         *CustomDomainsServerTransport
-	trDeploymentsServer           *DeploymentsServerTransport
-	trMonitoringSettingsServer    *MonitoringSettingsServerTransport
-	trOperationsServer            *OperationsServerTransport
-	trRuntimeVersionsServer       *RuntimeVersionsServerTransport
-	trSKUsServer                  *SKUsServerTransport
-	trServiceRegistriesServer     *ServiceRegistriesServerTransport
-	trServicesServer              *ServicesServerTransport
+	srv                             *ServerFactory
+	trMu                            sync.Mutex
+	trAPIPortalCustomDomainsServer  *APIPortalCustomDomainsServerTransport
+	trAPIPortalsServer              *APIPortalsServerTransport
+	trApplicationAcceleratorsServer *ApplicationAcceleratorsServerTransport
+	trApplicationLiveViewsServer    *ApplicationLiveViewsServerTransport
+	trAppsServer                    *AppsServerTransport
+	trBindingsServer                *BindingsServerTransport
+	trBuildServiceAgentPoolServer   *BuildServiceAgentPoolServerTransport
+	trBuildServiceBuilderServer     *BuildServiceBuilderServerTransport
+	trBuildServiceServer            *BuildServiceServerTransport
+	trBuildpackBindingServer        *BuildpackBindingServerTransport
+	trCertificatesServer            *CertificatesServerTransport
+	trConfigServersServer           *ConfigServersServerTransport
+	trConfigurationServicesServer   *ConfigurationServicesServerTransport
+	trCustomDomainsServer           *CustomDomainsServerTransport
+	trCustomizedAcceleratorsServer  *CustomizedAcceleratorsServerTransport
+	trDeploymentsServer             *DeploymentsServerTransport
+	trDevToolPortalsServer          *DevToolPortalsServerTransport
+	trGatewayCustomDomainsServer    *GatewayCustomDomainsServerTransport
+	trGatewayRouteConfigsServer     *GatewayRouteConfigsServerTransport
+	trGatewaysServer                *GatewaysServerTransport
+	trMonitoringSettingsServer      *MonitoringSettingsServerTransport
+	trOperationsServer              *OperationsServerTransport
+	trPredefinedAcceleratorsServer  *PredefinedAcceleratorsServerTransport
+	trRuntimeVersionsServer         *RuntimeVersionsServerTransport
+	trSKUsServer                    *SKUsServerTransport
+	trServiceRegistriesServer       *ServiceRegistriesServerTransport
+	trServicesServer                *ServicesServerTransport
+	trStoragesServer                *StoragesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -84,6 +106,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "APIPortalCustomDomainsClient":
+		initServer(s, &s.trAPIPortalCustomDomainsServer, func() *APIPortalCustomDomainsServerTransport {
+			return NewAPIPortalCustomDomainsServerTransport(&s.srv.APIPortalCustomDomainsServer)
+		})
+		resp, err = s.trAPIPortalCustomDomainsServer.Do(req)
+	case "APIPortalsClient":
+		initServer(s, &s.trAPIPortalsServer, func() *APIPortalsServerTransport { return NewAPIPortalsServerTransport(&s.srv.APIPortalsServer) })
+		resp, err = s.trAPIPortalsServer.Do(req)
+	case "ApplicationAcceleratorsClient":
+		initServer(s, &s.trApplicationAcceleratorsServer, func() *ApplicationAcceleratorsServerTransport {
+			return NewApplicationAcceleratorsServerTransport(&s.srv.ApplicationAcceleratorsServer)
+		})
+		resp, err = s.trApplicationAcceleratorsServer.Do(req)
+	case "ApplicationLiveViewsClient":
+		initServer(s, &s.trApplicationLiveViewsServer, func() *ApplicationLiveViewsServerTransport {
+			return NewApplicationLiveViewsServerTransport(&s.srv.ApplicationLiveViewsServer)
+		})
+		resp, err = s.trApplicationLiveViewsServer.Do(req)
 	case "AppsClient":
 		initServer(s, &s.trAppsServer, func() *AppsServerTransport { return NewAppsServerTransport(&s.srv.AppsServer) })
 		resp, err = s.trAppsServer.Do(req)
@@ -126,9 +166,32 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCustomDomainsServerTransport(&s.srv.CustomDomainsServer)
 		})
 		resp, err = s.trCustomDomainsServer.Do(req)
+	case "CustomizedAcceleratorsClient":
+		initServer(s, &s.trCustomizedAcceleratorsServer, func() *CustomizedAcceleratorsServerTransport {
+			return NewCustomizedAcceleratorsServerTransport(&s.srv.CustomizedAcceleratorsServer)
+		})
+		resp, err = s.trCustomizedAcceleratorsServer.Do(req)
 	case "DeploymentsClient":
 		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
 		resp, err = s.trDeploymentsServer.Do(req)
+	case "DevToolPortalsClient":
+		initServer(s, &s.trDevToolPortalsServer, func() *DevToolPortalsServerTransport {
+			return NewDevToolPortalsServerTransport(&s.srv.DevToolPortalsServer)
+		})
+		resp, err = s.trDevToolPortalsServer.Do(req)
+	case "GatewayCustomDomainsClient":
+		initServer(s, &s.trGatewayCustomDomainsServer, func() *GatewayCustomDomainsServerTransport {
+			return NewGatewayCustomDomainsServerTransport(&s.srv.GatewayCustomDomainsServer)
+		})
+		resp, err = s.trGatewayCustomDomainsServer.Do(req)
+	case "GatewayRouteConfigsClient":
+		initServer(s, &s.trGatewayRouteConfigsServer, func() *GatewayRouteConfigsServerTransport {
+			return NewGatewayRouteConfigsServerTransport(&s.srv.GatewayRouteConfigsServer)
+		})
+		resp, err = s.trGatewayRouteConfigsServer.Do(req)
+	case "GatewaysClient":
+		initServer(s, &s.trGatewaysServer, func() *GatewaysServerTransport { return NewGatewaysServerTransport(&s.srv.GatewaysServer) })
+		resp, err = s.trGatewaysServer.Do(req)
 	case "MonitoringSettingsClient":
 		initServer(s, &s.trMonitoringSettingsServer, func() *MonitoringSettingsServerTransport {
 			return NewMonitoringSettingsServerTransport(&s.srv.MonitoringSettingsServer)
@@ -137,6 +200,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PredefinedAcceleratorsClient":
+		initServer(s, &s.trPredefinedAcceleratorsServer, func() *PredefinedAcceleratorsServerTransport {
+			return NewPredefinedAcceleratorsServerTransport(&s.srv.PredefinedAcceleratorsServer)
+		})
+		resp, err = s.trPredefinedAcceleratorsServer.Do(req)
 	case "RuntimeVersionsClient":
 		initServer(s, &s.trRuntimeVersionsServer, func() *RuntimeVersionsServerTransport {
 			return NewRuntimeVersionsServerTransport(&s.srv.RuntimeVersionsServer)
@@ -153,6 +221,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
+	case "StoragesClient":
+		initServer(s, &s.trStoragesServer, func() *StoragesServerTransport { return NewStoragesServerTransport(&s.srv.StoragesServer) })
+		resp, err = s.trStoragesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

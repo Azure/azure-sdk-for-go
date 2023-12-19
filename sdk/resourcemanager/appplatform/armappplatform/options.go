@@ -8,6 +8,109 @@
 
 package armappplatform
 
+// APIPortalCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type APIPortalCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalCustomDomainsClientBeginDeleteOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginDelete
+// method.
+type APIPortalCustomDomainsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalCustomDomainsClientGetOptions contains the optional parameters for the APIPortalCustomDomainsClient.Get method.
+type APIPortalCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.NewListPager
+// method.
+type APIPortalCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
+// method.
+type APIPortalsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalsClientBeginDeleteOptions contains the optional parameters for the APIPortalsClient.BeginDelete method.
+type APIPortalsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalsClientGetOptions contains the optional parameters for the APIPortalsClient.Get method.
+type APIPortalsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.NewListPager method.
+type APIPortalsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientValidateDomainOptions contains the optional parameters for the APIPortalsClient.ValidateDomain method.
+type APIPortalsClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginCreateOrUpdate
+// method.
+type ApplicationAcceleratorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationAcceleratorsClientBeginDeleteOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginDelete
+// method.
+type ApplicationAcceleratorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationAcceleratorsClientGetOptions contains the optional parameters for the ApplicationAcceleratorsClient.Get method.
+type ApplicationAcceleratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.NewListPager
+// method.
+type ApplicationAcceleratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationLiveViewsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginCreateOrUpdate
+// method.
+type ApplicationLiveViewsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationLiveViewsClientBeginDeleteOptions contains the optional parameters for the ApplicationLiveViewsClient.BeginDelete
+// method.
+type ApplicationLiveViewsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ApplicationLiveViewsClientGetOptions contains the optional parameters for the ApplicationLiveViewsClient.Get method.
+type ApplicationLiveViewsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationLiveViewsClientListOptions contains the optional parameters for the ApplicationLiveViewsClient.NewListPager
+// method.
+type ApplicationLiveViewsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate method.
 type AppsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -119,6 +222,12 @@ type BuildServiceBuilderClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BuildServiceBuilderClientListDeploymentsOptions contains the optional parameters for the BuildServiceBuilderClient.ListDeployments
+// method.
+type BuildServiceBuilderClientListDeploymentsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BuildServiceBuilderClientListOptions contains the optional parameters for the BuildServiceBuilderClient.NewListPager method.
 type BuildServiceBuilderClientListOptions struct {
 	// placeholder for future optional parameters
@@ -213,6 +322,12 @@ type BuildpackBindingClientBeginDeleteOptions struct {
 
 // BuildpackBindingClientGetOptions contains the optional parameters for the BuildpackBindingClient.Get method.
 type BuildpackBindingClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BuildpackBindingClientListForClusterOptions contains the optional parameters for the BuildpackBindingClient.NewListForClusterPager
+// method.
+type BuildpackBindingClientListForClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -329,6 +444,37 @@ type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CustomizedAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomizedAcceleratorsClient.BeginCreateOrUpdate
+// method.
+type CustomizedAcceleratorsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CustomizedAcceleratorsClientBeginDeleteOptions contains the optional parameters for the CustomizedAcceleratorsClient.BeginDelete
+// method.
+type CustomizedAcceleratorsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CustomizedAcceleratorsClientGetOptions contains the optional parameters for the CustomizedAcceleratorsClient.Get method.
+type CustomizedAcceleratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizedAcceleratorsClientListOptions contains the optional parameters for the CustomizedAcceleratorsClient.NewListPager
+// method.
+type CustomizedAcceleratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomizedAcceleratorsClientValidateOptions contains the optional parameters for the CustomizedAcceleratorsClient.Validate
+// method.
+type CustomizedAcceleratorsClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
 // method.
 type DeploymentsClientBeginCreateOrUpdateOptions struct {
@@ -338,6 +484,23 @@ type DeploymentsClientBeginCreateOrUpdateOptions struct {
 
 // DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
 type DeploymentsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDisableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginDisableRemoteDebugging
+// method.
+type DeploymentsClientBeginDisableRemoteDebuggingOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginEnableRemoteDebuggingOptions contains the optional parameters for the DeploymentsClient.BeginEnableRemoteDebugging
+// method.
+type DeploymentsClientBeginEnableRemoteDebuggingOptions struct {
+	// Parameters for enable remote debugging
+	RemoteDebuggingPayload *RemoteDebuggingPayload
+
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -396,6 +559,12 @@ type DeploymentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeploymentsClientGetRemoteDebuggingConfigOptions contains the optional parameters for the DeploymentsClient.GetRemoteDebuggingConfig
+// method.
+type DeploymentsClientGetRemoteDebuggingConfigOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DeploymentsClientListForClusterOptions contains the optional parameters for the DeploymentsClient.NewListForClusterPager
 // method.
 type DeploymentsClientListForClusterOptions struct {
@@ -407,6 +576,116 @@ type DeploymentsClientListForClusterOptions struct {
 type DeploymentsClientListOptions struct {
 	// Version of the deployments to be listed
 	Version []string
+}
+
+// DevToolPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevToolPortalsClient.BeginCreateOrUpdate
+// method.
+type DevToolPortalsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DevToolPortalsClientBeginDeleteOptions contains the optional parameters for the DevToolPortalsClient.BeginDelete method.
+type DevToolPortalsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DevToolPortalsClientGetOptions contains the optional parameters for the DevToolPortalsClient.Get method.
+type DevToolPortalsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.NewListPager method.
+type DevToolPortalsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type GatewayCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayCustomDomainsClientBeginDeleteOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginDelete
+// method.
+type GatewayCustomDomainsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayCustomDomainsClientGetOptions contains the optional parameters for the GatewayCustomDomainsClient.Get method.
+type GatewayCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.NewListPager
+// method.
+type GatewayCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginCreateOrUpdate
+// method.
+type GatewayRouteConfigsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayRouteConfigsClientBeginDeleteOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginDelete
+// method.
+type GatewayRouteConfigsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayRouteConfigsClientGetOptions contains the optional parameters for the GatewayRouteConfigsClient.Get method.
+type GatewayRouteConfigsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.NewListPager method.
+type GatewayRouteConfigsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewaysClient.BeginCreateOrUpdate method.
+type GatewaysClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewaysClientBeginDeleteOptions contains the optional parameters for the GatewaysClient.BeginDelete method.
+type GatewaysClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewaysClientBeginUpdateCapacityOptions contains the optional parameters for the GatewaysClient.BeginUpdateCapacity method.
+type GatewaysClientBeginUpdateCapacityOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewaysClientGetOptions contains the optional parameters for the GatewaysClient.Get method.
+type GatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientListEnvSecretsOptions contains the optional parameters for the GatewaysClient.ListEnvSecrets method.
+type GatewaysClientListEnvSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.NewListPager method.
+type GatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientValidateDomainOptions contains the optional parameters for the GatewaysClient.ValidateDomain method.
+type GatewaysClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
@@ -430,6 +709,31 @@ type MonitoringSettingsClientGetOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PredefinedAcceleratorsClientBeginDisableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginDisable
+// method.
+type PredefinedAcceleratorsClientBeginDisableOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PredefinedAcceleratorsClientBeginEnableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginEnable
+// method.
+type PredefinedAcceleratorsClientBeginEnableOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PredefinedAcceleratorsClientGetOptions contains the optional parameters for the PredefinedAcceleratorsClient.Get method.
+type PredefinedAcceleratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.NewListPager
+// method.
+type PredefinedAcceleratorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -480,6 +784,18 @@ type ServicesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ServicesClientBeginStartOptions contains the optional parameters for the ServicesClient.BeginStart method.
+type ServicesClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginStopOptions contains the optional parameters for the ServicesClient.BeginStop method.
+type ServicesClientBeginStopOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
 type ServicesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -525,5 +841,27 @@ type ServicesClientListTestKeysOptions struct {
 
 // ServicesClientRegenerateTestKeyOptions contains the optional parameters for the ServicesClient.RegenerateTestKey method.
 type ServicesClientRegenerateTestKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate method.
+type StoragesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
+type StoragesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StoragesClientGetOptions contains the optional parameters for the StoragesClient.Get method.
+type StoragesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesClientListOptions contains the optional parameters for the StoragesClient.NewListPager method.
+type StoragesClientListOptions struct {
 	// placeholder for future optional parameters
 }

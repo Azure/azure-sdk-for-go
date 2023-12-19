@@ -32,7 +32,7 @@ type DatabaseOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseOperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *DatabaseOperationsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, databaseName string, operationID string, options *DatabaseOperationsClientCancelOptions) (DatabaseOperationsClientCancelResponse, error) {
 	var err error
+	const operationName = "DatabaseOperationsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, databaseName, operationID, options)
 	if err != nil {
 		return DatabaseOperationsClientCancelResponse{}, err
@@ -86,6 +90,9 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,25 +123,20 @@ func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabaseOperationsClientListByDatabaseResponse) (DatabaseOperationsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabaseOperationsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return DatabaseOperationsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabaseOperationsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabaseOperationsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

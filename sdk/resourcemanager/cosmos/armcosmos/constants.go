@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v2.6.0"
+	moduleVersion = "v3.0.0-beta.2"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -127,6 +127,22 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 	}
 }
 
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
 // CompositePathSortOrder - Sort order for composite paths.
 type CompositePathSortOrder string
 
@@ -217,14 +233,16 @@ func PossibleContinuousTierValues() []ContinuousTier {
 type CreateMode string
 
 const (
-	CreateModeDefault CreateMode = "Default"
-	CreateModeRestore CreateMode = "Restore"
+	CreateModeDefault            CreateMode = "Default"
+	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
+	CreateModeRestore            CreateMode = "Restore"
 )
 
 // PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
 		CreateModeDefault,
+		CreateModePointInTimeRestore,
 		CreateModeRestore,
 	}
 }
@@ -246,6 +264,25 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+type DataTransferComponent string
+
+const (
+	DataTransferComponentAzureBlobStorage  DataTransferComponent = "AzureBlobStorage"
+	DataTransferComponentCosmosDBCassandra DataTransferComponent = "CosmosDBCassandra"
+	DataTransferComponentCosmosDBMongo     DataTransferComponent = "CosmosDBMongo"
+	DataTransferComponentCosmosDBSQL       DataTransferComponent = "CosmosDBSql"
+)
+
+// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
+func PossibleDataTransferComponentValues() []DataTransferComponent {
+	return []DataTransferComponent{
+		DataTransferComponentAzureBlobStorage,
+		DataTransferComponentCosmosDBCassandra,
+		DataTransferComponentCosmosDBMongo,
+		DataTransferComponentCosmosDBSQL,
 	}
 }
 
@@ -310,6 +347,24 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 		DefaultConsistencyLevelEventual,
 		DefaultConsistencyLevelSession,
 		DefaultConsistencyLevelStrong,
+	}
+}
+
+// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
+type EnableFullTextQuery string
+
+const (
+	EnableFullTextQueryFalse EnableFullTextQuery = "False"
+	EnableFullTextQueryNone  EnableFullTextQuery = "None"
+	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
+)
+
+// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
+func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
+	return []EnableFullTextQuery{
+		EnableFullTextQueryFalse,
+		EnableFullTextQueryNone,
+		EnableFullTextQueryTrue,
 	}
 }
 
@@ -448,6 +503,32 @@ func PossibleMinimalTLSVersionValues() []MinimalTLSVersion {
 	}
 }
 
+// MongoClusterStatus - The status of the resource at the time the operation was called.
+type MongoClusterStatus string
+
+const (
+	MongoClusterStatusDropping     MongoClusterStatus = "Dropping"
+	MongoClusterStatusProvisioning MongoClusterStatus = "Provisioning"
+	MongoClusterStatusReady        MongoClusterStatus = "Ready"
+	MongoClusterStatusStarting     MongoClusterStatus = "Starting"
+	MongoClusterStatusStopped      MongoClusterStatus = "Stopped"
+	MongoClusterStatusStopping     MongoClusterStatus = "Stopping"
+	MongoClusterStatusUpdating     MongoClusterStatus = "Updating"
+)
+
+// PossibleMongoClusterStatusValues returns the possible values for the MongoClusterStatus const type.
+func PossibleMongoClusterStatusValues() []MongoClusterStatus {
+	return []MongoClusterStatus{
+		MongoClusterStatusDropping,
+		MongoClusterStatusProvisioning,
+		MongoClusterStatusReady,
+		MongoClusterStatusStarting,
+		MongoClusterStatusStopped,
+		MongoClusterStatusStopping,
+		MongoClusterStatusUpdating,
+	}
+}
+
 // MongoRoleDefinitionType - Indicates whether the Role Definition was built-in or user created.
 type MongoRoleDefinitionType string
 
@@ -477,6 +558,20 @@ func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	return []NetworkACLBypass{
 		NetworkACLBypassAzureServices,
 		NetworkACLBypassNone,
+	}
+}
+
+// NodeKind - The kind of a node in the mongo cluster.
+type NodeKind string
+
+const (
+	NodeKindShard NodeKind = "Shard"
+)
+
+// PossibleNodeKindValues returns the possible values for the NodeKind const type.
+func PossibleNodeKindValues() []NodeKind {
+	return []NodeKind{
+		NodeKindShard,
 	}
 }
 
@@ -537,6 +632,7 @@ type OperationType string
 const (
 	OperationTypeCreate          OperationType = "Create"
 	OperationTypeDelete          OperationType = "Delete"
+	OperationTypeRecreate        OperationType = "Recreate"
 	OperationTypeReplace         OperationType = "Replace"
 	OperationTypeSystemOperation OperationType = "SystemOperation"
 )
@@ -546,6 +642,7 @@ func PossibleOperationTypeValues() []OperationType {
 	return []OperationType{
 		OperationTypeCreate,
 		OperationTypeDelete,
+		OperationTypeRecreate,
 		OperationTypeReplace,
 		OperationTypeSystemOperation,
 	}
@@ -594,13 +691,36 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	}
 }
 
+// ProvisioningState - The provisioning state of the resource.
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled   ProvisioningState = "Canceled"
+	ProvisioningStateDropping   ProvisioningState = "Dropping"
+	ProvisioningStateFailed     ProvisioningState = "Failed"
+	ProvisioningStateInProgress ProvisioningState = "InProgress"
+	ProvisioningStateSucceeded  ProvisioningState = "Succeeded"
+	ProvisioningStateUpdating   ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateDropping,
+		ProvisioningStateFailed,
+		ProvisioningStateInProgress,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
+	}
+}
+
 // PublicNetworkAccess - Whether requests from Public Network are allowed
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -608,7 +728,6 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -785,6 +904,24 @@ func PossibleStatusValues() []Status {
 		StatusInternallyReady,
 		StatusOnline,
 		StatusUninitialized,
+	}
+}
+
+// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
+type ThroughputPolicyType string
+
+const (
+	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
+	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
+	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+)
+
+// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
+func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
+	return []ThroughputPolicyType{
+		ThroughputPolicyTypeCustom,
+		ThroughputPolicyTypeEqual,
+		ThroughputPolicyTypeNone,
 	}
 }
 

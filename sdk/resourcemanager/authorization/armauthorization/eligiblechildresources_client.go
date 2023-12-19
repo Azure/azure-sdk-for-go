@@ -40,7 +40,7 @@ func NewEligibleChildResourcesClient(credential azcore.TokenCredential, options 
 
 // NewGetPager - Get the child resources of a resource on which user has eligible access
 //
-// Generated from API version 2020-10-01
+// Generated from API version 2020-10-01-preview
 //   - scope - The scope of the role management policy.
 //   - options - EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.NewGetPager
 //     method.
@@ -79,7 +79,7 @@ func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2020-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

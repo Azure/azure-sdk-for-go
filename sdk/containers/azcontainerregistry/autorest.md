@@ -82,16 +82,17 @@ directive:
       delete $.properties.signed
 ```
 
-### Remove "definitions.ManifestAttributesBase.properties.configMediaType"
-
-as we don't have customer scenario using it.
+### Add "definitions.ManifestAttributesBase.properties.mediaType"
 
 ```yaml
 directive:
   - from: swagger-document
     where: $.definitions.ManifestAttributesBase
     transform: >
-      delete $.properties.configMediaType
+      $.properties["mediaType"] = {
+        "type": "string",
+        "description": "Media type for this Manifest"
+      }
 ```
 
 ### Change "parameters.ApiVersionParameter.required" to true

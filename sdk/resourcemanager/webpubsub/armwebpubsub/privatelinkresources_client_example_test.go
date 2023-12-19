@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateLinkResources_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubPrivateLinkResources_List.json
 func ExamplePrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,22 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 		// 									Type: to.Ptr("Microsoft.Web/sites"),
 		// 									Description: to.Ptr("Azure App Service can be used as an upstream"),
 		// 									GroupID: to.Ptr("sites"),
+		// 								},
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("vault"),
+		// 								Properties: &armwebpubsub.ShareablePrivateLinkResourceProperties{
+		// 									Type: to.Ptr("Microsoft.KeyVault/vaults"),
+		// 									Description: to.Ptr("Azure Key Vault can be used as credentials store"),
+		// 									GroupID: to.Ptr("vault"),
+		// 								},
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("table"),
+		// 								Properties: &armwebpubsub.ShareablePrivateLinkResourceProperties{
+		// 									Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 									Description: to.Ptr("Azure Storage Table can be used as message store"),
+		// 									GroupID: to.Ptr("table"),
 		// 								},
 		// 						}},
 		// 					},

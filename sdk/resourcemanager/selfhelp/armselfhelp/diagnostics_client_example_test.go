@@ -13,68 +13,11 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
-func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsAvailableForADiagnosticResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
-		Name: to.Ptr("sampleName"),
-		Type: to.Ptr("Microsoft.Help/diagnostics"),
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResponse = armselfhelp.CheckNameAvailabilityResponse{
-	// 	NameAvailable: to.Ptr(true),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
-func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsNotAvailableForADiagnosticResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
-		Name: to.Ptr("sampleName"),
-		Type: to.Ptr("Microsoft.Help/diagnostics"),
-	},
-	})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.CheckNameAvailabilityResponse = armselfhelp.CheckNameAvailabilityResponse{
-	// 	Message: to.Ptr("Name not available"),
-	// 	NameAvailable: to.Ptr(false),
-	// 	Reason: to.Ptr("Name is already in use"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CreateDiagnosticForKeyVaultResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
 func ExampleDiagnosticsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +28,7 @@ func ExampleDiagnosticsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDiagnosticsClient().BeginCreate(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", armselfhelp.DiagnosticResource{}, nil)
+	poller, err := clientFactory.NewDiagnosticsClient().BeginCreate(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", armselfhelp.DiagnosticResource{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -99,7 +42,7 @@ func ExampleDiagnosticsClient_BeginCreate() {
 	// res.DiagnosticResource = armselfhelp.DiagnosticResource{
 	// 	Name: to.Ptr("Microsoft.Help/diagnostics"),
 	// 	Type: to.Ptr("VMNotWorkingInsight"),
-	// 	ID: to.Ptr("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),
+	// 	ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),
 	// 	Properties: &armselfhelp.DiagnosticResourceProperties{
 	// 		AcceptedAt: to.Ptr("2023-03-10T03:04:40Z"),
 	// 		Diagnostics: []*armselfhelp.Diagnostic{
@@ -118,12 +61,12 @@ func ExampleDiagnosticsClient_BeginCreate() {
 	// 				SolutionID: to.Ptr("sampleSolutionId"),
 	// 				Status: to.Ptr(armselfhelp.StatusSucceeded),
 	// 		}},
-	// 		ProvisioningState: to.Ptr(armselfhelp.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armselfhelp.DiagnosticProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/GetDiagnosticForKeyVaultResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/GetDiagnosticForKeyVaultResource.json
 func ExampleDiagnosticsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +77,7 @@ func ExampleDiagnosticsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDiagnosticsClient().Get(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", nil)
+	res, err := clientFactory.NewDiagnosticsClient().Get(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,7 +87,7 @@ func ExampleDiagnosticsClient_Get() {
 	// res.DiagnosticResource = armselfhelp.DiagnosticResource{
 	// 	Name: to.Ptr("Microsoft.Help/diagnostics"),
 	// 	Type: to.Ptr("VMNotWorkingInsight"),
-	// 	ID: to.Ptr("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),
+	// 	ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),
 	// 	Properties: &armselfhelp.DiagnosticResourceProperties{
 	// 		AcceptedAt: to.Ptr("2023-03-10T03:04:40Z"),
 	// 		Diagnostics: []*armselfhelp.Diagnostic{
@@ -163,7 +106,7 @@ func ExampleDiagnosticsClient_Get() {
 	// 				SolutionID: to.Ptr("sampleSolutionId"),
 	// 				Status: to.Ptr(armselfhelp.StatusSucceeded),
 	// 		}},
-	// 		ProvisioningState: to.Ptr(armselfhelp.ProvisioningStateSucceeded),
+	// 		ProvisioningState: to.Ptr(armselfhelp.DiagnosticProvisioningStateSucceeded),
 	// 	},
 	// }
 }

@@ -6,7 +6,9 @@
 
 package azappconfig
 
-import "github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+)
 
 // SettingFields are fields to retrieve from a configuration setting.
 type SettingFields = generated.SettingFields
@@ -35,4 +37,70 @@ const (
 
 	// A list of tags that can help identify what a configuration setting may be applicable for.
 	SettingFieldsTags SettingFields = generated.SettingFieldsTags
+)
+
+// SnapshotFields are fields to retrieve from a snapshot.
+type SnapshotFields = generated.SnapshotFields
+
+const (
+	//The composition type of a snapshot.
+	SnapshotFieldsCompositionType SnapshotFields = generated.SnapshotFieldsCompositionType
+
+	// The time when the snapshot was created.
+	SnapshotFieldsCreated SnapshotFields = generated.SnapshotFieldsCreated
+
+	// An ETag indicating the version of a snapshot.
+	SnapshotFieldsEtag SnapshotFields = generated.SnapshotFieldsEtag
+
+	// The time when the snapshot will expire once archived.
+	SnapshotFieldsExpires SnapshotFields = generated.SnapshotFieldsExpires
+
+	// A list of filters used to generate the snapshot.
+	SnapshotFieldsFilters SnapshotFields = generated.SnapshotFieldsFilters
+
+	// The number of items in the snapshot.
+	SnapshotFieldsItemsCount SnapshotFields = generated.SnapshotFieldsItemsCount
+
+	// The primary identifier of a snapshot.
+	SnapshotFieldsName SnapshotFields = generated.SnapshotFieldsName
+
+	// Retention period in seconds of the snapshot upon archiving.
+	SnapshotFieldsRetentionPeriod SnapshotFields = generated.SnapshotFieldsRetentionPeriod
+
+	// Size of the snapshot.
+	SnapshotFieldsSize SnapshotFields = generated.SnapshotFieldsSize
+
+	// Status of the snapshot.
+	SnapshotFieldsStatus SnapshotFields = generated.SnapshotFieldsStatus
+
+	// A list of tags on the snapshot.
+	SnapshotFieldsTags SnapshotFields = generated.SnapshotFieldsTags
+)
+
+// SnapshotStatus contains the current status of the snapshot
+type SnapshotStatus = generated.SnapshotStatus
+
+const (
+	// Snapshot is archived state.
+	SnapshotStatusArchived SnapshotStatus = generated.SnapshotStatusArchived
+
+	// Snapshot is in failing state.
+	SnapshotStatusFailed SnapshotStatus = generated.SnapshotStatusFailed
+
+	// Snapshot is in provisioning state.
+	SnapshotStatusProvisioning SnapshotStatus = generated.SnapshotStatusProvisioning
+
+	// Snapshot is in ready state.
+	SnapshotStatusReady SnapshotStatus = generated.SnapshotStatusReady
+)
+
+// CompositionType is the composition of filters used to create a snapshot.
+type CompositionType = generated.CompositionType
+
+const (
+	// Snapshot is composed with a Key filter
+	CompositionTypeKey CompositionType = generated.CompositionTypeKey
+
+	// Snapshot is composed with a Key and Label filter
+	CompositionTypeKeyLabel CompositionType = generated.CompositionTypeKeyLabel
 )

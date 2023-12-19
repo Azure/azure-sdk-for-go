@@ -1,5 +1,26 @@
 # Release History
 
+## 1.3.0-beta.1 (2023-11-30)
+### Features Added
+
+- New function `*Client.ListReplicaSKUs(context.Context, string, string, string, *ClientListReplicaSKUsOptions) (ClientListReplicaSKUsResponse, error)`
+- New function `*ClientFactory.NewReplicasClient() *ReplicasClient`
+- New function `NewReplicasClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ReplicasClient, error)`
+- New function `*ReplicasClient.BeginCreateOrUpdate(context.Context, string, string, string, Replica, *ReplicasClientBeginCreateOrUpdateOptions) (*runtime.Poller[ReplicasClientCreateOrUpdateResponse], error)`
+- New function `*ReplicasClient.Delete(context.Context, string, string, string, *ReplicasClientDeleteOptions) (ReplicasClientDeleteResponse, error)`
+- New function `*ReplicasClient.Get(context.Context, string, string, string, *ReplicasClientGetOptions) (ReplicasClientGetResponse, error)`
+- New function `*ReplicasClient.NewListPager(string, string, *ReplicasClientListOptions) *runtime.Pager[ReplicasClientListResponse]`
+- New function `*ReplicasClient.BeginRestart(context.Context, string, string, string, *ReplicasClientBeginRestartOptions) (*runtime.Poller[ReplicasClientRestartResponse], error)`
+- New function `*ReplicasClient.BeginUpdate(context.Context, string, string, string, Replica, *ReplicasClientBeginUpdateOptions) (*runtime.Poller[ReplicasClientUpdateResponse], error)`
+- New struct `IPRule`
+- New struct `Replica`
+- New struct `ReplicaList`
+- New struct `ReplicaProperties`
+- New field `IPRules` in struct `NetworkACLs`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `RegionEndpointEnabled`, `ResourceStopped` in struct `Properties`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

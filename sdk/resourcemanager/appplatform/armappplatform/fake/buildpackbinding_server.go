@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -39,6 +39,10 @@ type BuildpackBindingServer struct {
 	// NewListPager is the fake for method BuildpackBindingClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *armappplatform.BuildpackBindingClientListOptions) (resp azfake.PagerResponder[armappplatform.BuildpackBindingClientListResponse])
+
+	// NewListForClusterPager is the fake for method BuildpackBindingClient.NewListForClusterPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForClusterPager func(resourceGroupName string, serviceName string, options *armappplatform.BuildpackBindingClientListForClusterOptions) (resp azfake.PagerResponder[armappplatform.BuildpackBindingClientListForClusterResponse])
 }
 
 // NewBuildpackBindingServerTransport creates a new instance of BuildpackBindingServerTransport with the provided implementation.
@@ -46,20 +50,22 @@ type BuildpackBindingServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBuildpackBindingServerTransport(srv *BuildpackBindingServer) *BuildpackBindingServerTransport {
 	return &BuildpackBindingServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListResponse]](),
+		srv:                    srv,
+		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientCreateOrUpdateResponse]](),
+		beginDelete:            newTracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientDeleteResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListResponse]](),
+		newListForClusterPager: newTracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListForClusterResponse]](),
 	}
 }
 
 // BuildpackBindingServerTransport connects instances of armappplatform.BuildpackBindingClient to instances of BuildpackBindingServer.
 // Don't use this type directly, use NewBuildpackBindingServerTransport instead.
 type BuildpackBindingServerTransport struct {
-	srv                 *BuildpackBindingServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListResponse]]
+	srv                    *BuildpackBindingServer
+	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientCreateOrUpdateResponse]]
+	beginDelete            *tracker[azfake.PollerResponder[armappplatform.BuildpackBindingClientDeleteResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListResponse]]
+	newListForClusterPager *tracker[azfake.PagerResponder[armappplatform.BuildpackBindingClientListForClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for BuildpackBindingServerTransport.
@@ -82,6 +88,8 @@ func (b *BuildpackBindingServerTransport) Do(req *http.Request) (*http.Response,
 		resp, err = b.dispatchGet(req)
 	case "BuildpackBindingClient.NewListPager":
 		resp, err = b.dispatchNewListPager(req)
+	case "BuildpackBindingClient.NewListForClusterPager":
+		resp, err = b.dispatchNewListForClusterPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -299,6 +307,47 @@ func (b *BuildpackBindingServerTransport) dispatchNewListPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newListPager) {
 		b.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BuildpackBindingServerTransport) dispatchNewListForClusterPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListForClusterPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForClusterPager not implemented")}
+	}
+	newListForClusterPager := b.newListForClusterPager.get(req)
+	if newListForClusterPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buildpackBindings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListForClusterPager(resourceGroupNameParam, serviceNameParam, nil)
+		newListForClusterPager = &resp
+		b.newListForClusterPager.add(req, newListForClusterPager)
+		server.PagerResponderInjectNextLinks(newListForClusterPager, req, func(page *armappplatform.BuildpackBindingClientListForClusterResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForClusterPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListForClusterPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForClusterPager) {
+		b.newListForClusterPager.remove(req)
 	}
 	return resp, nil
 }

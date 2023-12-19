@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -64,6 +64,14 @@ type ServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateTestKey func(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest armappplatform.RegenerateTestKeyRequestPayload, options *armappplatform.ServicesClientRegenerateTestKeyOptions) (resp azfake.Responder[armappplatform.ServicesClientRegenerateTestKeyResponse], errResp azfake.ErrorResponder)
 
+	// BeginStart is the fake for method ServicesClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginStart func(ctx context.Context, resourceGroupName string, serviceName string, options *armappplatform.ServicesClientBeginStartOptions) (resp azfake.PollerResponder[armappplatform.ServicesClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method ServicesClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginStop func(ctx context.Context, resourceGroupName string, serviceName string, options *armappplatform.ServicesClientBeginStopOptions) (resp azfake.PollerResponder[armappplatform.ServicesClientStopResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serviceName string, resource armappplatform.ServiceResource, options *armappplatform.ServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armappplatform.ServicesClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -79,6 +87,8 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		beginDelete:                newTracker[azfake.PollerResponder[armappplatform.ServicesClientDeleteResponse]](),
 		newListPager:               newTracker[azfake.PagerResponder[armappplatform.ServicesClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armappplatform.ServicesClientListBySubscriptionResponse]](),
+		beginStart:                 newTracker[azfake.PollerResponder[armappplatform.ServicesClientStartResponse]](),
+		beginStop:                  newTracker[azfake.PollerResponder[armappplatform.ServicesClientStopResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armappplatform.ServicesClientUpdateResponse]](),
 	}
 }
@@ -91,6 +101,8 @@ type ServicesServerTransport struct {
 	beginDelete                *tracker[azfake.PollerResponder[armappplatform.ServicesClientDeleteResponse]]
 	newListPager               *tracker[azfake.PagerResponder[armappplatform.ServicesClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armappplatform.ServicesClientListBySubscriptionResponse]]
+	beginStart                 *tracker[azfake.PollerResponder[armappplatform.ServicesClientStartResponse]]
+	beginStop                  *tracker[azfake.PollerResponder[armappplatform.ServicesClientStopResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armappplatform.ServicesClientUpdateResponse]]
 }
 
@@ -126,6 +138,10 @@ func (s *ServicesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = s.dispatchListTestKeys(req)
 	case "ServicesClient.RegenerateTestKey":
 		resp, err = s.dispatchRegenerateTestKey(req)
+	case "ServicesClient.BeginStart":
+		resp, err = s.dispatchBeginStart(req)
+	case "ServicesClient.BeginStop":
+		resp, err = s.dispatchBeginStop(req)
 	case "ServicesClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
 	default:
@@ -500,6 +516,94 @@ func (s *ServicesServerTransport) dispatchRegenerateTestKey(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := s.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginStart(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		s.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		s.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		s.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServicesServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
+	}
+	beginStop := s.beginStop.get(req)
+	if beginStop == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginStop(req.Context(), resourceGroupNameParam, serviceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStop = &respr
+		s.beginStop.add(req, beginStop)
+	}
+
+	resp, err := server.PollerResponderNext(beginStop, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		s.beginStop.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStop) {
+		s.beginStop.remove(req)
+	}
+
 	return resp, nil
 }
 

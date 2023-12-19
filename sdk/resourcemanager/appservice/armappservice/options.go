@@ -830,6 +830,11 @@ type EnvironmentsClientUpdateWorkerPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GetUsagesInLocationClientListOptions contains the optional parameters for the GetUsagesInLocationClient.NewListPager method.
+type GetUsagesInLocationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
 type GlobalClientGetDeletedWebAppOptions struct {
 	// placeholder for future optional parameters
@@ -4172,6 +4177,12 @@ type WebSiteManagementClientGetSourceControlOptions struct {
 // WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions contains the optional parameters for the WebSiteManagementClient.GetSubscriptionDeploymentLocations
 // method.
 type WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebSiteManagementClientListAseRegionsOptions contains the optional parameters for the WebSiteManagementClient.NewListAseRegionsPager
+// method.
+type WebSiteManagementClientListAseRegionsOptions struct {
 	// placeholder for future optional parameters
 }
 

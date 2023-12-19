@@ -51,7 +51,7 @@ func ExampleManagedDatabasesClient_NewListByInstancePager() {
 		// 			Location: to.Ptr("southeastasia"),
 		// 			Properties: &armsql.ManagedDatabaseProperties{
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.73Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.730Z"); return t}()),
 		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
 		// 				IsLedgerOn: to.Ptr(false),
 		// 				Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
@@ -64,7 +64,7 @@ func ExampleManagedDatabasesClient_NewListByInstancePager() {
 		// 			Location: to.Ptr("southeastasia"),
 		// 			Properties: &armsql.ManagedDatabaseProperties{
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.73Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.730Z"); return t}()),
 		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
 		// 				IsLedgerOn: to.Ptr(false),
 		// 				Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
@@ -99,7 +99,7 @@ func ExampleManagedDatabasesClient_Get() {
 	// 	Location: to.Ptr("southeastasia"),
 	// 	Properties: &armsql.ManagedDatabaseProperties{
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.73Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.730Z"); return t}()),
 	// 		DefaultSecondaryLocation: to.Ptr("North Europe"),
 	// 		IsLedgerOn: to.Ptr(false),
 	// 		Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
@@ -764,7 +764,7 @@ func ExampleManagedDatabasesClient_NewListInaccessibleByInstancePager() {
 		// 			Location: to.Ptr("southeastasia"),
 		// 			Properties: &armsql.ManagedDatabaseProperties{
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.73Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.730Z"); return t}()),
 		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
 		// 				Status: to.Ptr(armsql.ManagedDatabaseStatusInaccessible),
 		// 			},
@@ -776,7 +776,7 @@ func ExampleManagedDatabasesClient_NewListInaccessibleByInstancePager() {
 		// 			Location: to.Ptr("southeastasia"),
 		// 			Properties: &armsql.ManagedDatabaseProperties{
 		// 				Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.73Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-04T15:00:17.730Z"); return t}()),
 		// 				DefaultSecondaryLocation: to.Ptr("North Europe"),
 		// 				Status: to.Ptr(armsql.ManagedDatabaseStatusInaccessible),
 		// 			},

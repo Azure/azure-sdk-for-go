@@ -142,6 +142,9 @@ type IotDpsPropertiesDescription struct {
 	// List of IoT hubs associated with this provisioning service.
 	IotHubs []*IotHubDefinitionDescription
 
+	// Portal endpoint to enable CORS for this provisioning service.
+	PortalOperationsHostName *string
+
 	// Private endpoint connections created on this IotHub
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -207,6 +210,26 @@ type IotHubDefinitionDescription struct {
 
 	// READ-ONLY; Host name of the IoT hub.
 	Name *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // NameAvailabilityInfo - Description of name availability.
@@ -324,6 +347,15 @@ type ProvisioningServiceDescription struct {
 	// ETag convention.
 	Etag *string
 
+	// The managed identities for a provisioning service.
+	Identity *ManagedServiceIdentity
+
+	// The resource group of the resource.
+	Resourcegroup *string
+
+	// The subscription id of the resource.
+	Subscriptionid *string
+
 	// The resource tags.
 	Tags map[string]*string
 
@@ -399,6 +431,15 @@ type SystemData struct {
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // VerificationCodeRequest - The JSON-serialized leaf certificate

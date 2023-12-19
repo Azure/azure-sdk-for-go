@@ -10,6 +10,201 @@ package armappplatform
 
 import "time"
 
+// APIPortalCustomDomainProperties - The properties of custom domain for API portal
+type APIPortalCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string
+}
+
+// APIPortalCustomDomainResource - Custom domain of the API portal
+type APIPortalCustomDomainResource struct {
+	// The properties of custom domain for API portal
+	Properties *APIPortalCustomDomainProperties
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// APIPortalCustomDomainResourceCollection - Object that includes an array of API portal custom domain resources and a possible
+// link for next set
+type APIPortalCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of API portal custom domain resources
+	Value []*APIPortalCustomDomainResource
+}
+
+// APIPortalInstance - Collection of instances belong to the API portal
+type APIPortalInstance struct {
+	// READ-ONLY; Name of the API portal instance
+	Name *string
+
+	// READ-ONLY; Status of the API portal instance
+	Status *string
+}
+
+// APIPortalProperties - API portal properties payload
+type APIPortalProperties struct {
+	// The array of resource Ids of gateway to integrate with API portal.
+	GatewayIDs []*string
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool
+
+	// Indicates whether the API portal exposes endpoint.
+	Public *bool
+
+	// Collection of OpenAPI source URL locations.
+	SourceUrls []*string
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties
+
+	// READ-ONLY; Collection of instances belong to API portal.
+	Instances []*APIPortalInstance
+
+	// READ-ONLY; State of the API portal.
+	ProvisioningState *APIPortalProvisioningState
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *APIPortalResourceRequests
+
+	// READ-ONLY; URL of the API portal, exposed when 'public' is true.
+	URL *string
+}
+
+// APIPortalResource - API portal resource
+type APIPortalResource struct {
+	// API portal properties payload
+	Properties *APIPortalProperties
+
+	// Sku of the API portal resource
+	SKU *SKU
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// APIPortalResourceCollection - Object that includes an array of API portal resources and a possible link for next set
+type APIPortalResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of API portal resources
+	Value []*APIPortalResource
+}
+
+// APIPortalResourceRequests - Resource requests of the API portal
+type APIPortalResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each API portal instance
+	CPU *string
+
+	// READ-ONLY; Memory allocated to each API portal instance
+	Memory *string
+}
+
+// AcceleratorAuthSetting - Auth setting payload.
+type AcceleratorAuthSetting struct {
+	// REQUIRED; The type of the auth setting.
+	AuthType *string
+}
+
+// GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorAuthSetting.
+func (a *AcceleratorAuthSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSetting { return a }
+
+// AcceleratorBasicAuthSetting - Auth setting for basic auth.
+type AcceleratorBasicAuthSetting struct {
+	// REQUIRED; The type of the auth setting.
+	AuthType *string
+
+	// REQUIRED; Username of git repository basic auth.
+	Username *string
+
+	// Password of git repository basic auth.
+	Password *string
+}
+
+// GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorBasicAuthSetting.
+func (a *AcceleratorBasicAuthSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSetting {
+	return &AcceleratorAuthSetting{
+		AuthType: a.AuthType,
+	}
+}
+
+type AcceleratorGitRepository struct {
+	// REQUIRED; Properties of the auth setting payload.
+	AuthSetting AcceleratorAuthSettingClassification
+
+	// REQUIRED; Git repository URL for the accelerator.
+	URL *string
+
+	// Git repository branch to be used.
+	Branch *string
+
+	// Git repository commit to be used.
+	Commit *string
+
+	// Git repository tag to be used.
+	GitTag *string
+
+	// Interval for checking for updates to Git or image repository.
+	IntervalInSeconds *int32
+}
+
+// AcceleratorPublicSetting - Auth setting for public url.
+type AcceleratorPublicSetting struct {
+	// REQUIRED; The type of the auth setting.
+	AuthType *string
+}
+
+// GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorPublicSetting.
+func (a *AcceleratorPublicSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSetting {
+	return &AcceleratorAuthSetting{
+		AuthType: a.AuthType,
+	}
+}
+
+// AcceleratorSSHSetting - Auth setting for SSH auth.
+type AcceleratorSSHSetting struct {
+	// REQUIRED; The type of the auth setting.
+	AuthType *string
+
+	// Public SSH Key of git repository.
+	HostKey *string
+
+	// SSH Key algorithm of git repository.
+	HostKeyAlgorithm *string
+
+	// Private SSH Key algorithm of git repository.
+	PrivateKey *string
+}
+
+// GetAcceleratorAuthSetting implements the AcceleratorAuthSettingClassification interface for type AcceleratorSSHSetting.
+func (a *AcceleratorSSHSetting) GetAcceleratorAuthSetting() *AcceleratorAuthSetting {
+	return &AcceleratorAuthSetting{
+		AuthType: a.AuthType,
+	}
+}
+
 // ActiveDeploymentCollection - Object that includes an array of Deployment resource name and set them as active.
 type ActiveDeploymentCollection struct {
 	// Collection of Deployment name.
@@ -52,16 +247,19 @@ type AppResourceCollection struct {
 // AppResourceProperties - App resource properties payload
 type AppResourceProperties struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]any
+	AddonConfigs map[string]any
+
+	// List of custom persistent disks
+	CustomPersistentDisks []*CustomPersistentDiskResource
 
 	// Indicate if end to end TLS is enabled.
 	EnableEndToEndTLS *bool
 
-	// Fully qualified dns Name.
-	Fqdn *string
-
 	// Indicate if only https is allowed.
 	HTTPSOnly *bool
+
+	// App ingress settings payload.
+	IngressSettings *IngressSettings
 
 	// Collection of loaded certificates
 	LoadedCertificates []*LoadedCertificate
@@ -72,8 +270,17 @@ type AppResourceProperties struct {
 	// Indicates whether the App exposes public endpoint
 	Public *bool
 
+	// Collection of auth secrets
+	Secrets []*Secret
+
 	// Temporary disk settings
 	TemporaryDisk *TemporaryDisk
+
+	// Additional App settings in vnet injection instance
+	VnetAddons *AppVNetAddons
+
+	// READ-ONLY; Fully qualified dns Name.
+	Fqdn *string
 
 	// READ-ONLY; Provisioning state of the App
 	ProvisioningState *AppResourceProvisioningState
@@ -82,10 +289,159 @@ type AppResourceProperties struct {
 	URL *string
 }
 
+// AppVNetAddons - Additional App settings in vnet injection instance
+type AppVNetAddons struct {
+	// Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
+	PublicEndpoint *bool
+
+	// READ-ONLY; URL of the App in vnet injection instance which could be accessed from internet
+	PublicEndpointURL *string
+}
+
+type ApplicationAcceleratorComponent struct {
+	ResourceRequests *ApplicationAcceleratorResourceRequests
+
+	// READ-ONLY
+	Instances []*ApplicationAcceleratorInstance
+
+	// READ-ONLY
+	Name *string
+}
+
+type ApplicationAcceleratorInstance struct {
+	// READ-ONLY; Name of the Application Accelerator instance.
+	Name *string
+
+	// READ-ONLY; Status of the Application Accelerator instance. It can be Pending, Running, Succeeded, Failed, Unknown.
+	Status *string
+}
+
+// ApplicationAcceleratorProperties - Application accelerator properties payload
+type ApplicationAcceleratorProperties struct {
+	// READ-ONLY; Collection of components belong to application accelerator.
+	Components []*ApplicationAcceleratorComponent
+
+	// READ-ONLY; State of the application accelerator.
+	ProvisioningState *ApplicationAcceleratorProvisioningState
+}
+
+// ApplicationAcceleratorResource - Application accelerator resource
+type ApplicationAcceleratorResource struct {
+	// Application accelerator properties payload
+	Properties *ApplicationAcceleratorProperties
+
+	// Sku of the application accelerator resource
+	SKU *SKU
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ApplicationAcceleratorResourceCollection - Object that includes an array of application accelerator resources and a possible
+// link for next set
+type ApplicationAcceleratorResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of application accelerator resources
+	Value []*ApplicationAcceleratorResource
+}
+
+type ApplicationAcceleratorResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each application accelerator component. 1 core can be represented by 1 or 1000m
+	CPU *string
+
+	// READ-ONLY; Instance count of the application accelerator component.
+	InstanceCount *int32
+
+	// READ-ONLY; Memory allocated to each application accelerator component. 1 GB can be represented by 1Gi or 1024Mi.
+	Memory *string
+}
+
 // ApplicationInsightsAgentVersions - Application Insights agent versions properties payload
 type ApplicationInsightsAgentVersions struct {
 	// READ-ONLY; Indicates the version of application insight java agent
 	Java *string
+}
+
+// ApplicationLiveViewComponent - Application Live View properties payload
+type ApplicationLiveViewComponent struct {
+	// READ-ONLY; Collection of instances belong to Application Live View.
+	Instances []*ApplicationLiveViewInstance
+
+	// READ-ONLY; Name of the component.
+	Name any
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *ApplicationLiveViewResourceRequests
+}
+
+// ApplicationLiveViewInstance - Collection of instances belong to the Application Live View
+type ApplicationLiveViewInstance struct {
+	// READ-ONLY; Name of the Application Live View instance.
+	Name *string
+
+	// READ-ONLY; Status of the Application Live View instance. It can be Pending, Running, Succeeded, Failed, Unknown.
+	Status *string
+}
+
+// ApplicationLiveViewProperties - Application Live View properties payload
+type ApplicationLiveViewProperties struct {
+	// READ-ONLY; Component details of Application Live View
+	Components []*ApplicationLiveViewComponent
+
+	// READ-ONLY; State of the Application Live View.
+	ProvisioningState *ApplicationLiveViewProvisioningState
+}
+
+// ApplicationLiveViewResource - Application Live View resource
+type ApplicationLiveViewResource struct {
+	// Application Live View properties payload
+	Properties *ApplicationLiveViewProperties
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ApplicationLiveViewResourceCollection - Object that includes an array of Application Live View resources and a possible
+// link for next set
+type ApplicationLiveViewResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of Application Live View resources
+	Value []*ApplicationLiveViewResource
+}
+
+// ApplicationLiveViewResourceRequests - The resource quantity for required CPU and Memory of Application Live View component
+type ApplicationLiveViewResourceRequests struct {
+	// READ-ONLY; Cpu quantity allocated to each Application Live View component instance. 1 core can be represented by 1 or 1000m.
+	CPU *string
+
+	// READ-ONLY; Desired instance count of Application Live View component instance.
+	InstanceCount *int32
+
+	// READ-ONLY; Memory quantity allocated to each Application Live View component instance. 1 GB can be represented by 1Gi or
+	// 1024Mi.
+	Memory *string
 }
 
 // AvailableOperations - Available operations of the service
@@ -100,6 +456,38 @@ type AvailableOperations struct {
 type AvailableRuntimeVersions struct {
 	// READ-ONLY; A list of all supported runtime versions.
 	Value []*SupportedRuntimeVersion
+}
+
+// AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
+type AzureFileVolume struct {
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *Type
+
+	// If set to true, it will create and mount a dedicated directory for every individual app instance.
+	EnableSubPath *bool
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool
+
+	// The share name of the Azure File share.
+	ShareName *string
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type AzureFileVolume.
+func (a *AzureFileVolume) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return &CustomPersistentDiskProperties{
+		EnableSubPath: a.EnableSubPath,
+		MountOptions:  a.MountOptions,
+		MountPath:     a.MountPath,
+		ReadOnly:      a.ReadOnly,
+		Type:          a.Type,
+	}
 }
 
 // BindingResource - Binding resource payload
@@ -132,7 +520,7 @@ type BindingResourceCollection struct {
 // BindingResourceProperties - Binding resource properties payload
 type BindingResourceProperties struct {
 	// Binding parameters of the Binding resource
-	BindingParameters map[string]any
+	BindingParameters map[string]*string
 
 	// The key of the bound resource
 	Key *string
@@ -197,11 +585,25 @@ type BuildProperties struct {
 	// The relative path of source code
 	RelativePath *string
 
+	// The customized build resource for this build
+	ResourceRequests *BuildResourceRequests
+
 	// READ-ONLY; Provisioning state of the KPack build result
 	ProvisioningState *BuildProvisioningState
 
 	// READ-ONLY; The build result triggered by this build
 	TriggeredBuildResult *TriggeredBuildResult
+}
+
+// BuildResourceRequests - Resource request payload of Build Resource.
+type BuildResourceRequests struct {
+	// Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m. The default value is 1, this should
+	// not exceed build service agent pool cpu size.
+	CPU *string
+
+	// Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi. The default value is 2Gi, this
+	// should not exceed build service agent pool memory size.
+	Memory *string
 }
 
 // BuildResult - Build result resource payload
@@ -241,6 +643,9 @@ type BuildResultLog struct {
 type BuildResultProperties struct {
 	// The build pod name which can be used to get the build log streaming.
 	BuildPodName *string
+
+	// Error when build is failed.
+	Error *Error
 
 	// The name of this build result
 	Name *string
@@ -371,8 +776,14 @@ type BuildServicePropertiesResourceRequests struct {
 
 // BuildStageProperties - The build stage (init-container and container) resources in build pod.
 type BuildStageProperties struct {
+	// READ-ONLY; The exit code of this build init container.
+	ExitCode *string
+
 	// READ-ONLY; The name of this build stage resource.
 	Name *string
+
+	// READ-ONLY; The reason of this build init container.
+	Reason *string
 
 	// READ-ONLY; The provisioning state of this build stage resource.
 	Status *KPackBuildStageProvisioningState
@@ -501,6 +912,9 @@ type CertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string
 
@@ -540,12 +954,27 @@ type CertificateResourceCollection struct {
 
 // ClusterResourceProperties - Service properties payload
 type ClusterResourceProperties struct {
+	// The name of the resource group that contains the infrastructure resources
+	InfraResourceGroup *string
+
+	// The resource Id of the Managed Environment that the Spring Apps instance builds on
+	ManagedEnvironmentID *string
+
+	// Purchasing 3rd party product of the Service resource.
+	MarketplaceResource *MarketplaceResource
+
 	// Network profile of the Service
 	NetworkProfile *NetworkProfile
-	ZoneRedundant  *bool
+
+	// Additional Service settings in vnet injection instance
+	VnetAddons    *ServiceVNetAddons
+	ZoneRedundant *bool
 
 	// READ-ONLY; Fully qualified dns name of the service instance
 	Fqdn *string
+
+	// READ-ONLY; Power state of the Service
+	PowerState *PowerState
 
 	// READ-ONLY; Provisioning state of the Service
 	ProvisioningState *ProvisioningState
@@ -774,6 +1203,12 @@ type ConfigurationServiceSettingsValidateResult struct {
 	GitPropertyValidationResult *ConfigurationServiceGitPropertyValidateResult
 }
 
+// ContainerProbeSettings - Container liveness and readiness probe settings
+type ContainerProbeSettings struct {
+	// Indicates whether disable the liveness and readiness probe
+	DisableProbe *bool
+}
+
 // ContentCertificateProperties - Properties of certificate imported from key vault.
 type ContentCertificateProperties struct {
 	// REQUIRED; The type of the certificate source.
@@ -797,6 +1232,9 @@ type ContentCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string
 
@@ -807,14 +1245,56 @@ type ContentCertificateProperties struct {
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type ContentCertificateProperties.
 func (c *ContentCertificateProperties) GetCertificateProperties() *CertificateProperties {
 	return &CertificateProperties{
-		ActivateDate:   c.ActivateDate,
-		DNSNames:       c.DNSNames,
-		ExpirationDate: c.ExpirationDate,
-		IssuedDate:     c.IssuedDate,
-		Issuer:         c.Issuer,
-		SubjectName:    c.SubjectName,
-		Thumbprint:     c.Thumbprint,
-		Type:           c.Type,
+		ActivateDate:      c.ActivateDate,
+		DNSNames:          c.DNSNames,
+		ExpirationDate:    c.ExpirationDate,
+		IssuedDate:        c.IssuedDate,
+		Issuer:            c.Issuer,
+		ProvisioningState: c.ProvisioningState,
+		SubjectName:       c.SubjectName,
+		Thumbprint:        c.Thumbprint,
+		Type:              c.Type,
+	}
+}
+
+// CustomContainer - Custom container payload
+type CustomContainer struct {
+	// Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
+	Args []*string
+
+	// Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
+	Command []*string
+
+	// Container image of the custom container. This should be in the form of : without the server name of the registry
+	ContainerImage *string
+
+	// Credential of the image registry
+	ImageRegistryCredential *ImageRegistryCredential
+
+	// Language framework of the container image uploaded
+	LanguageFramework *string
+
+	// The name of the registry that contains the container image
+	Server *string
+}
+
+// CustomContainerUserSourceInfo - Custom container user source info
+type CustomContainerUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string
+
+	// Custom container payload
+	CustomContainer *CustomContainer
+
+	// Version of the source
+	Version *string
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type CustomContainerUserSourceInfo.
+func (c *CustomContainerUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    c.Type,
+		Version: c.Version,
 	}
 }
 
@@ -828,6 +1308,9 @@ type CustomDomainProperties struct {
 
 	// READ-ONLY; The app name of domain.
 	AppName *string
+
+	// READ-ONLY; Provisioning state of the Domain
+	ProvisioningState *CustomDomainResourceProvisioningState
 }
 
 // CustomDomainResource - Custom domain resource payload.
@@ -872,6 +1355,98 @@ type CustomDomainValidateResult struct {
 	Message *string
 }
 
+// CustomPersistentDiskProperties - Custom persistent disk resource payload.
+type CustomPersistentDiskProperties struct {
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *Type
+
+	// If set to true, it will create and mount a dedicated directory for every individual app instance.
+	EnableSubPath *bool
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type CustomPersistentDiskProperties.
+func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return c
+}
+
+// CustomPersistentDiskResource - Custom persistent disk resource payload.
+type CustomPersistentDiskResource struct {
+	// REQUIRED; The resource id of Azure Spring Apps Storage resource.
+	StorageID *string
+
+	// Properties of the custom persistent disk resource payload.
+	CustomPersistentDiskProperties CustomPersistentDiskPropertiesClassification
+}
+
+// CustomScaleRule - Azure Spring Apps App Instance Custom scaling rule.
+type CustomScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe custom scale rule.
+	Metadata map[string]*string
+
+	// Type of the custom scale rule eg: azure-servicebus, redis etc.
+	Type *string
+}
+
+// CustomizedAcceleratorProperties - Customized accelerator properties payload
+type CustomizedAcceleratorProperties struct {
+	// REQUIRED
+	GitRepository   *AcceleratorGitRepository
+	AcceleratorTags []*string
+	Description     *string
+	DisplayName     *string
+	IconURL         *string
+
+	// READ-ONLY; State of the customized accelerator.
+	ProvisioningState *CustomizedAcceleratorProvisioningState
+}
+
+// CustomizedAcceleratorResource - Customized accelerator resource
+type CustomizedAcceleratorResource struct {
+	// Customized accelerator properties payload
+	Properties *CustomizedAcceleratorProperties
+
+	// Sku of the customized accelerator resource
+	SKU *SKU
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+type CustomizedAcceleratorResourceCollection struct {
+	NextLink *string
+	Value    []*CustomizedAcceleratorResource
+}
+
+// CustomizedAcceleratorValidateResult - Validation result for customized accelerator properties
+type CustomizedAcceleratorValidateResult struct {
+	// The detail validation results
+	ErrorMessage *string
+
+	// State of the customized accelerator validation result
+	State *CustomizedAcceleratorValidateResultState
+}
+
 // DeploymentInstance - Deployment instance payload
 type DeploymentInstance struct {
 	// READ-ONLY; Discovery status of the deployment instance
@@ -891,6 +1466,12 @@ type DeploymentInstance struct {
 
 	// READ-ONLY; Availability zone information of the deployment instance
 	Zone *string
+}
+
+// DeploymentList - A list of deployments resource ids.
+type DeploymentList struct {
+	// A list of deployment resource ids.
+	Deployments []*string
 }
 
 // DeploymentResource - Deployment resource payload
@@ -947,15 +1528,151 @@ type DeploymentResourceProperties struct {
 // DeploymentSettings - Deployment settings payload
 type DeploymentSettings struct {
 	// Collection of addons
-	AddonConfigs map[string]map[string]any
+	AddonConfigs map[string]any
+
+	// Container liveness and readiness probe settings
+	ContainerProbeSettings *ContainerProbeSettings
 
 	// Collection of environment variables
 	EnvironmentVariables map[string]*string
+
+	// Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	LivenessProbe *Probe
+
+	// Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the probe fails.
+	// More info:
+	// https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	ReadinessProbe *Probe
 
 	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required
 	// CPU and Memory, the old field cpu and memoryInGB will be deprecated
 	// later.
 	ResourceRequests *ResourceRequests
+
+	// Scaling properties for the Azure Spring Apps App Instance.
+	Scale *Scale
+
+	// StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are executed until
+	// this completes successfully. If this probe fails, the Pod will be restarted,
+	// just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App Instance's
+	// lifecycle, when it might take a long time to load data or warm a cache,
+	// than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	StartupProbe *Probe
+
+	// Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request. Value
+	// must be non-negative integer. The value zero indicates stop immediately via the
+	// kill signal (no opportunity to shut down). If this value is nil, the default grace period will be used instead. The grace
+	// period is the duration in seconds after the processes running in the App
+	// Instance are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+	// value longer than the expected cleanup time for your process. Defaults to 90
+	// seconds.
+	TerminationGracePeriodSeconds *int32
+}
+
+// DevToolPortalFeatureDetail - Detail settings for Dev Tool Portal feature
+type DevToolPortalFeatureDetail struct {
+	// State of the plugin
+	State *DevToolPortalFeatureState
+
+	// READ-ONLY; Route path to visit the plugin
+	Route *string
+}
+
+// DevToolPortalFeatureSettings - Settings for Dev Tool Portal
+type DevToolPortalFeatureSettings struct {
+	// Detail of Accelerator plugin
+	ApplicationAccelerator *DevToolPortalFeatureDetail
+
+	// Detail of App Live View plugin
+	ApplicationLiveView *DevToolPortalFeatureDetail
+}
+
+// DevToolPortalInstance - Collection of instances belong to the Dev Tool Portal.
+type DevToolPortalInstance struct {
+	// READ-ONLY; Name of the Dev Tool Portal instance.
+	Name *string
+
+	// READ-ONLY; Status of the Dev Tool Portal instance. It can be Pending, Running, Succeeded, Failed, Unknown.
+	Status *string
+}
+
+// DevToolPortalProperties - Dev Tool Portal properties payload
+type DevToolPortalProperties struct {
+	// Settings for Dev Tool Portal
+	Features *DevToolPortalFeatureSettings
+
+	// Indicates whether the resource exposes public endpoint
+	Public *bool
+
+	// Single sign-on related configuration
+	SsoProperties *DevToolPortalSsoProperties
+
+	// READ-ONLY; Collection of instances belong to Dev Tool Portal.
+	Instances []*DevToolPortalInstance
+
+	// READ-ONLY; State of the Dev Tool Portal.
+	ProvisioningState *DevToolPortalProvisioningState
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *DevToolPortalResourceRequests
+
+	// READ-ONLY; URL of the resource, exposed when 'public' is true.
+	URL *string
+}
+
+// DevToolPortalResource - Dev Tool Portal resource
+type DevToolPortalResource struct {
+	// Dev Tool Portal properties payload
+	Properties *DevToolPortalProperties
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// DevToolPortalResourceCollection - Object that includes an array of Dev Tool Portal resources and a possible link for next
+// set
+type DevToolPortalResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of Dev Tool Portal resources
+	Value []*DevToolPortalResource
+}
+
+// DevToolPortalResourceRequests - The resource quantity for required CPU and Memory of Dev Tool Portal
+type DevToolPortalResourceRequests struct {
+	// READ-ONLY; Cpu quantity allocated to each Dev Tool Portal instance. 1 core can be represented by 1 or 1000m
+	CPU *string
+
+	// READ-ONLY; Desired instance count of Dev Tool Portal.
+	InstanceCount *int32
+
+	// READ-ONLY; Memory quantity allocated to each Dev Tool Portal instance. 1 GB can be represented by 1Gi or 1024Mi.
+	Memory *string
+}
+
+// DevToolPortalSsoProperties - Single sign-on related configuration
+type DevToolPortalSsoProperties struct {
+	// The public identifier for the application
+	ClientID *string
+
+	// The secret known only to the application and the authorization server
+	ClientSecret *string
+
+	// The URI of a JSON file with generic OIDC provider configuration.
+	MetadataURL *string
+
+	// It defines the specific actions applications can be allowed to do on a user's behalf
+	Scopes []*string
 }
 
 // DiagnosticParameters - Diagnostic parameters of diagnostic operations
@@ -977,6 +1694,312 @@ type Error struct {
 
 	// The message of error.
 	Message *string
+}
+
+// ExecAction describes a "run in container" action.
+type ExecAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType
+
+	// Command is the command line to execute inside the container, the working directory for the command is root ('/') in the
+	// container's filesystem. The command is not run inside a shell, so traditional
+	// shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of
+	// 0 is treated as live/healthy and non-zero is unhealthy.
+	Command []*string
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ExecAction.
+func (e *ExecAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: e.Type,
+	}
+}
+
+// GatewayAPIMetadataProperties - API metadata property for Spring Cloud Gateway
+type GatewayAPIMetadataProperties struct {
+	// Detailed description of the APIs available on the Gateway instance (default: Generated OpenAPI 3 document that describes
+	// the API routes configured.)
+	Description *string
+
+	// Location of additional documentation for the APIs available on the Gateway instance
+	Documentation *string
+
+	// Base URL that API consumers will use to access APIs on the Gateway instance.
+	ServerURL *string
+
+	// Title describing the context of the APIs available on the Gateway instance (default: Spring Cloud Gateway for K8S)
+	Title *string
+
+	// Version of APIs available on this Gateway instance (default: unspecified).
+	Version *string
+}
+
+// GatewayAPIRoute - API route config of the Spring Cloud Gateway
+type GatewayAPIRoute struct {
+	// A description, will be applied to methods in the generated OpenAPI documentation.
+	Description *string
+
+	// To modify the request before sending it to the target endpoint, or the received response.
+	Filters []*string
+
+	// Route processing order.
+	Order *int32
+
+	// A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request headers and
+	// parameter values. All of the predicates associated with a route must evaluate
+	// to true for the route to be matched to the request.
+	Predicates []*string
+
+	// Enable sso validation.
+	SsoEnabled *bool
+
+	// Classification tags, will be applied to methods in the generated OpenAPI documentation.
+	Tags []*string
+
+	// A title, will be applied to methods in the generated OpenAPI documentation.
+	Title *string
+
+	// Pass currently-authenticated user's identity token to application service, default is 'false'
+	TokenRelay *bool
+
+	// Full uri, will override appName.
+	URI *string
+}
+
+// GatewayCorsProperties - Cross-Origin Resource Sharing property
+type GatewayCorsProperties struct {
+	// Whether user credentials are supported on cross-site requests. Valid values: true, false.
+	AllowCredentials *bool
+
+	// Allowed headers in cross-site requests. The special value * allows actual requests to send any header.
+	AllowedHeaders []*string
+
+	// Allowed HTTP methods on cross-site requests. The special value * allows all methods. If not set, GET and HEAD are allowed
+	// by default.
+	AllowedMethods []*string
+
+	// Allowed origins to make cross-site requests. The special value * allows all domains.
+	AllowedOrigins []*string
+
+	// HTTP response headers to expose for cross-site requests.
+	ExposedHeaders []*string
+
+	// How long, in seconds, the response from a pre-flight request can be cached by clients.
+	MaxAge *int32
+}
+
+// GatewayCustomDomainProperties - The properties of custom domain for Spring Cloud Gateway
+type GatewayCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string
+}
+
+// GatewayCustomDomainResource - Custom domain of the Spring Cloud Gateway
+type GatewayCustomDomainResource struct {
+	// The properties of custom domain for Spring Cloud Gateway
+	Properties *GatewayCustomDomainProperties
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// GatewayCustomDomainResourceCollection - Object that includes an array of Spring Cloud Gateway custom domain resources and
+// a possible link for next set
+type GatewayCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of Spring Cloud Gateway custom domain resources
+	Value []*GatewayCustomDomainResource
+}
+
+// GatewayInstance - Collection of instances belong to the Spring Cloud Gateway
+type GatewayInstance struct {
+	// READ-ONLY; Name of the Spring Cloud Gateway instance
+	Name *string
+
+	// READ-ONLY; Status of the Spring Cloud Gateway instance
+	Status *string
+}
+
+// GatewayOperatorProperties - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorProperties struct {
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway operator.
+	Instances []*GatewayInstance
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayOperatorResourceRequests
+}
+
+// GatewayOperatorResourceRequests - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each Spring Cloud Gateway Operator instance.
+	CPU *string
+
+	// READ-ONLY; Instance count of the Spring Cloud Gateway Operator.
+	InstanceCount *int32
+
+	// READ-ONLY; Memory allocated to each Spring Cloud Gateway Operator instance.
+	Memory *string
+}
+
+// GatewayProperties - Spring Cloud Gateway properties payload
+type GatewayProperties struct {
+	// API metadata property for Spring Cloud Gateway
+	APIMetadataProperties *GatewayAPIMetadataProperties
+
+	// Collection of APM type used in Spring Cloud Gateway
+	ApmTypes []*ApmType
+
+	// Cross-Origin Resource Sharing property
+	CorsProperties *GatewayCorsProperties
+
+	// Environment variables of Spring Cloud Gateway
+	EnvironmentVariables *GatewayPropertiesEnvironmentVariables
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool
+
+	// Indicates whether the Spring Cloud Gateway exposes endpoint.
+	Public *bool
+
+	// The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayResourceRequests
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties
+
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway.
+	Instances []*GatewayInstance
+
+	// READ-ONLY; Properties of the Spring Cloud Gateway Operator.
+	OperatorProperties *GatewayOperatorProperties
+
+	// READ-ONLY; State of the Spring Cloud Gateway.
+	ProvisioningState *GatewayProvisioningState
+
+	// READ-ONLY; URL of the Spring Cloud Gateway, exposed when 'public' is true.
+	URL *string
+}
+
+// GatewayPropertiesEnvironmentVariables - Environment variables of Spring Cloud Gateway
+type GatewayPropertiesEnvironmentVariables struct {
+	// Non-sensitive properties
+	Properties map[string]*string
+
+	// Sensitive properties
+	Secrets map[string]*string
+}
+
+// GatewayResource - Spring Cloud Gateway resource
+type GatewayResource struct {
+	// Spring Cloud Gateway properties payload
+	Properties *GatewayProperties
+
+	// Sku of the Spring Cloud Gateway resource
+	SKU *SKU
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// GatewayResourceCollection - Object that includes an array of gateway resources and a possible link for next set
+type GatewayResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of gateway resources
+	Value []*GatewayResource
+}
+
+// GatewayResourceRequests - Resource request payload of Spring Cloud Gateway.
+type GatewayResourceRequests struct {
+	// Cpu allocated to each Spring Cloud Gateway instance.
+	CPU *string
+
+	// Memory allocated to each Spring Cloud Gateway instance.
+	Memory *string
+}
+
+// GatewayRouteConfigOpenAPIProperties - OpenAPI properties of Spring Cloud Gateway route config.
+type GatewayRouteConfigOpenAPIProperties struct {
+	// The URI of OpenAPI specification.
+	URI *string
+}
+
+// GatewayRouteConfigProperties - API route config of the Spring Cloud Gateway
+type GatewayRouteConfigProperties struct {
+	// The resource Id of the Azure Spring Apps app, required unless route defines uri.
+	AppResourceID *string
+
+	// To modify the request before sending it to the target endpoint, or the received response in app level.
+	Filters []*string
+
+	// OpenAPI properties of Spring Cloud Gateway route config.
+	OpenAPI *GatewayRouteConfigOpenAPIProperties
+
+	// A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated against request
+	// headers and parameter values. All of the predicates associated with a route
+	// must evaluate to true for the route to be matched to the request.
+	Predicates []*string
+
+	// Protocol of routed Azure Spring Apps applications.
+	Protocol *GatewayRouteConfigProtocol
+
+	// Array of API routes, each route contains properties such as title, uri, ssoEnabled, predicates, filters.
+	Routes []*GatewayAPIRoute
+
+	// Enable Single Sign-On in app level.
+	SsoEnabled *bool
+
+	// READ-ONLY; State of the Spring Cloud Gateway route config.
+	ProvisioningState *GatewayProvisioningState
+}
+
+// GatewayRouteConfigResource - Spring Cloud Gateway route config resource
+type GatewayRouteConfigResource struct {
+	// API route config of the Spring Cloud Gateway
+	Properties *GatewayRouteConfigProperties
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// GatewayRouteConfigResourceCollection - Object that includes an array of Spring Cloud Gateway route config resources and
+// a possible link for next set
+type GatewayRouteConfigResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string
+
+	// Collection of Spring Cloud Gateway route config resources
+	Value []*GatewayRouteConfigResource
 }
 
 // GitPatternRepository - Git repository property payload for config server
@@ -1013,6 +2036,79 @@ type GitPatternRepository struct {
 
 	// Username of git repository basic auth.
 	Username *string
+}
+
+// HTTPGetAction describes an action based on HTTP Get requests.
+type HTTPGetAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType
+
+	// Path to access on the HTTP server.
+	Path *string
+
+	// Scheme to use for connecting to the host. Defaults to HTTP.
+	// Possible enum values:
+	// * "HTTP" means that the scheme used will be http://
+	// * "HTTPS" means that the scheme used will be https://
+	Scheme *HTTPSchemeType
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type HTTPGetAction.
+func (h *HTTPGetAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: h.Type,
+	}
+}
+
+// HTTPScaleRule - Azure Spring Apps App Instance Http scaling rule.
+type HTTPScaleRule struct {
+	// Authentication secrets for the custom scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe http scale rule.
+	Metadata map[string]*string
+}
+
+// ImageRegistryCredential - Credential of the image registry
+type ImageRegistryCredential struct {
+	// The password of the image registry credential
+	Password *string
+
+	// The username of the image registry credential
+	Username *string
+}
+
+// IngressConfig - Ingress configuration payload for Azure Spring Apps resource.
+type IngressConfig struct {
+	// Ingress read time out in seconds.
+	ReadTimeoutInSeconds *int32
+}
+
+// IngressSettings - App ingress settings payload.
+type IngressSettings struct {
+	// How ingress should communicate with this app backend service.
+	BackendProtocol *BackendProtocol
+
+	// Client-Certification Authentication.
+	ClientAuth *IngressSettingsClientAuth
+
+	// Ingress read time out in seconds.
+	ReadTimeoutInSeconds *int32
+
+	// Ingress send time out in seconds.
+	SendTimeoutInSeconds *int32
+
+	// Type of the affinity, set this to Cookie to enable session affinity.
+	SessionAffinity *SessionAffinity
+
+	// Time in seconds until the cookie expires.
+	SessionCookieMaxAge *int32
+}
+
+// IngressSettingsClientAuth - Client-Certification Authentication.
+type IngressSettingsClientAuth struct {
+	// Collection of certificate resource id.
+	Certificates []*string
 }
 
 // JarUploadedUserSourceInfo - Uploaded Jar binary for a deployment
@@ -1082,6 +2178,9 @@ type KeyVaultCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string
 
@@ -1092,14 +2191,15 @@ type KeyVaultCertificateProperties struct {
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type KeyVaultCertificateProperties.
 func (k *KeyVaultCertificateProperties) GetCertificateProperties() *CertificateProperties {
 	return &CertificateProperties{
-		ActivateDate:   k.ActivateDate,
-		DNSNames:       k.DNSNames,
-		ExpirationDate: k.ExpirationDate,
-		IssuedDate:     k.IssuedDate,
-		Issuer:         k.Issuer,
-		SubjectName:    k.SubjectName,
-		Thumbprint:     k.Thumbprint,
-		Type:           k.Type,
+		ActivateDate:      k.ActivateDate,
+		DNSNames:          k.DNSNames,
+		ExpirationDate:    k.ExpirationDate,
+		IssuedDate:        k.IssuedDate,
+		Issuer:            k.Issuer,
+		ProvisioningState: k.ProvisioningState,
+		SubjectName:       k.SubjectName,
+		Thumbprint:        k.Thumbprint,
+		Type:              k.Type,
 	}
 }
 
@@ -1140,6 +2240,21 @@ type ManagedIdentityProperties struct {
 
 	// Type of the managed identity
 	Type *ManagedIdentityType
+
+	// Properties of user-assigned managed identities
+	UserAssignedIdentities map[string]*UserAssignedManagedIdentity
+}
+
+// MarketplaceResource - Purchasing 3rd Party product for one Azure Spring Apps instance
+type MarketplaceResource struct {
+	// The plan id of the 3rd Party Artifact that is being procured.
+	Plan *string
+
+	// The 3rd Party artifact that is being procured.
+	Product *string
+
+	// The publisher id of the 3rd Party Artifact that is being bought.
+	Publisher *string
 }
 
 // MetricDimension - Specifications of the Dimension of metrics
@@ -1295,6 +2410,12 @@ type NetworkProfile struct {
 	// Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
 	AppSubnetID *string
 
+	// Ingress configuration payload for Azure Spring Apps resource.
+	IngressConfig *IngressConfig
+
+	// The egress traffic type of Azure Spring Apps VNet instances.
+	OutboundType *string
+
 	// Azure Spring Apps service reserved CIDR
 	ServiceCidr *string
 
@@ -1371,6 +2492,88 @@ type PersistentDisk struct {
 	UsedInGB *int32
 }
 
+// PredefinedAcceleratorProperties - Predefined accelerator properties payload
+type PredefinedAcceleratorProperties struct {
+	// State of the predefined accelerator.
+	State *PredefinedAcceleratorState
+
+	// READ-ONLY
+	AcceleratorTags []*string
+
+	// READ-ONLY
+	Description *string
+
+	// READ-ONLY
+	DisplayName *string
+
+	// READ-ONLY
+	IconURL *string
+
+	// READ-ONLY; Provisioning state of the predefined accelerator.
+	ProvisioningState *PredefinedAcceleratorProvisioningState
+}
+
+// PredefinedAcceleratorResource - Predefined accelerator resource
+type PredefinedAcceleratorResource struct {
+	// Predefined accelerator properties payload
+	Properties *PredefinedAcceleratorProperties
+
+	// Sku of the predefined accelerator resource
+	SKU *SKU
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+type PredefinedAcceleratorResourceCollection struct {
+	NextLink *string
+	Value    []*PredefinedAcceleratorResource
+}
+
+// Probe describes a health check to be performed against an App Instance to determine whether it is alive or ready to receive
+// traffic.
+type Probe struct {
+	// REQUIRED; Indicate whether the probe is disabled.
+	DisableProbe *bool
+
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
+	FailureThreshold *int32
+
+	// Number of seconds after the App Instance has started before probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	InitialDelaySeconds *int32
+
+	// How often (in seconds) to perform the probe. Minimum value is 1.
+	PeriodSeconds *int32
+
+	// The action of the probe.
+	ProbeAction ProbeActionClassification
+
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and
+	// startup. Minimum value is 1.
+	SuccessThreshold *int32
+
+	// Number of seconds after which the probe times out. Minimum value is 1.
+	TimeoutSeconds *int32
+}
+
+// ProbeAction - The action of the probe.
+type ProbeAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ProbeAction.
+func (p *ProbeAction) GetProbeAction() *ProbeAction { return p }
+
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags.
 type ProxyResource struct {
@@ -1387,10 +2590,37 @@ type ProxyResource struct {
 	Type *string
 }
 
+// QueueScaleRule - Azure Spring Apps App Instance Azure Queue based scaling rule.
+type QueueScaleRule struct {
+	// Authentication secrets for the queue scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Queue length.
+	QueueLength *int32
+
+	// Queue name.
+	QueueName *string
+}
+
 // RegenerateTestKeyRequestPayload - Regenerate test key request payload
 type RegenerateTestKeyRequestPayload struct {
 	// REQUIRED; Type of the test key
 	KeyType *TestKeyType
+}
+
+// RemoteDebugging - Remote debugging config.
+type RemoteDebugging struct {
+	// Indicate if remote debugging is enabled
+	Enabled *bool
+
+	// Application debugging port
+	Port *int32
+}
+
+// RemoteDebuggingPayload - Remote debugging payload.
+type RemoteDebuggingPayload struct {
+	// Application debugging port.
+	Port *int32
 }
 
 // RequiredTraffic - Required inbound or outbound traffic for Azure Spring Apps resource.
@@ -1560,6 +2790,60 @@ type SKUCapacity struct {
 	ScaleType *SKUScaleType
 }
 
+// SKUObject - Resource Sku object used for scaling out and scaling in.
+type SKUObject struct {
+	// Sku of the Spring Cloud Gateway resource
+	SKU *SKU
+}
+
+// Scale - Azure Spring Apps scaling configurations.
+type Scale struct {
+	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
+	MaxReplicas *int32
+
+	// Optional. Minimum number of container replicas.
+	MinReplicas *int32
+
+	// Scaling rules.
+	Rules []*ScaleRule
+}
+
+// ScaleRule - Azure Spring Apps App Instance scaling rule.
+type ScaleRule struct {
+	// Azure Queue based scaling.
+	AzureQueue *QueueScaleRule
+
+	// Custom scale rule.
+	Custom *CustomScaleRule
+
+	// HTTP requests based scaling.
+	HTTP *HTTPScaleRule
+
+	// Scale Rule Name
+	Name *string
+
+	// Tcp requests based scaling.
+	TCP *TCPScaleRule
+}
+
+// ScaleRuleAuth - Auth Secrets for Azure Spring Apps App Instance Scale Rule
+type ScaleRuleAuth struct {
+	// Name of the Azure Spring Apps App Instance secret from which to pull the auth params.
+	SecretRef *string
+
+	// Trigger Parameter that uses the secret
+	TriggerParameter *string
+}
+
+// Secret definition.
+type Secret struct {
+	// Secret Name.
+	Name *string
+
+	// Secret Value.
+	Value *string
+}
+
 // ServiceRegistryInstance - Collection of instances belong to the Service Registry
 type ServiceRegistryInstance struct {
 	// READ-ONLY; Name of the Service Registry instance
@@ -1666,6 +2950,12 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification
 }
 
+// ServiceVNetAddons - Additional Service settings in vnet injection instance
+type ServiceVNetAddons struct {
+	// Indicates whether the log stream in vnet injection instance could be accessed from internet.
+	LogStreamPublicEndpoint *bool
+}
+
 // SourceUploadedUserSourceInfo - Uploaded Java source code binary for a deployment
 type SourceUploadedUserSourceInfo struct {
 	// REQUIRED; Type of the source uploaded
@@ -1702,6 +2992,21 @@ func (s *SourceUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 	}
 }
 
+// SsoProperties - Single sign-on related configuration
+type SsoProperties struct {
+	// The public identifier for the application
+	ClientID *string
+
+	// The secret known only to the application and the authorization server
+	ClientSecret *string
+
+	// The URI of Issuer Identifier
+	IssuerURI *string
+
+	// It defines the specific actions applications can be allowed to do on a user's behalf
+	Scope []*string
+}
+
 // StackProperties - KPack ClusterStack properties payload
 type StackProperties struct {
 	// Id of the ClusterStack.
@@ -1709,6 +3014,61 @@ type StackProperties struct {
 
 	// Version of the ClusterStack
 	Version *string
+}
+
+// StorageAccount - storage resource of type Azure Storage Account.
+type StorageAccount struct {
+	// REQUIRED; The account key of the Azure Storage Account.
+	AccountKey *string
+
+	// REQUIRED; The account name of the Azure Storage Account.
+	AccountName *string
+
+	// REQUIRED; The type of the storage.
+	StorageType *StorageType
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageAccount.
+func (s *StorageAccount) GetStorageProperties() *StorageProperties {
+	return &StorageProperties{
+		StorageType: s.StorageType,
+	}
+}
+
+// StorageProperties - Storage resource payload.
+type StorageProperties struct {
+	// REQUIRED; The type of the storage.
+	StorageType *StorageType
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
+func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s }
+
+// StorageResource - Storage resource payload.
+type StorageResource struct {
+	// Properties of the storage resource payload.
+	Properties StoragePropertiesClassification
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// StorageResourceCollection - Collection compose of storage resources list and a possible link for next page.
+type StorageResourceCollection struct {
+	// The link to next page of storage list.
+	NextLink *string
+
+	// The storage resources list.
+	Value []*StorageResource
 }
 
 // SupportedBuildpackResource - Supported buildpack resource payload
@@ -1814,6 +3174,28 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType
 }
 
+// TCPScaleRule - Azure Spring Apps App Instance Tcp scaling rule.
+type TCPScaleRule struct {
+	// Authentication secrets for the tcp scale rule.
+	Auth []*ScaleRuleAuth
+
+	// Metadata properties to describe tcp scale rule.
+	Metadata map[string]*string
+}
+
+// TCPSocketAction describes an action based on opening a socket
+type TCPSocketAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type TCPSocketAction.
+func (t *TCPSocketAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: t.Type,
+	}
+}
+
 // TemporaryDisk - Temporary disk payload
 type TemporaryDisk struct {
 	// Mount path of the temporary disk
@@ -1889,6 +3271,15 @@ func (u *UploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 		Type:    u.Type,
 		Version: u.Version,
 	}
+}
+
+// UserAssignedManagedIdentity - The details of the user-assigned managed identity assigned to an App.
+type UserAssignedManagedIdentity struct {
+	// READ-ONLY; Client Id of user-assigned managed identity.
+	ClientID *string
+
+	// READ-ONLY; Principal Id of user-assigned managed identity.
+	PrincipalID *string
 }
 
 // UserSourceInfo - Source information for a deployment

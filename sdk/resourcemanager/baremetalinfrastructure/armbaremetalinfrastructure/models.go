@@ -21,40 +21,40 @@ type AzureBareMetalInstance struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system metadata relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AzureBareMetalInstanceProperties - Describes the properties of an AzureBareMetal instance.
+// AzureBareMetalInstanceProperties - Describes the properties of an Azure Bare Metal Instance.
 type AzureBareMetalInstanceProperties struct {
-	// Specifies the hardware settings for the AzureBareMetal instance.
+	// Specifies the hardware settings for the Azure Bare Metal Instance.
 	HardwareProfile *HardwareProfile
 
-	// Specifies the network settings for the AzureBareMetal instance.
+	// Specifies the network settings for the Azure Bare Metal Instance.
 	NetworkProfile *NetworkProfile
 
-	// Specifies the operating system settings for the AzureBareMetal instance.
+	// Specifies the operating system settings for the Azure Bare Metal Instance.
 	OSProfile *OSProfile
 
 	// ARM ID of another AzureBareMetalInstance that will share a network with this AzureBareMetalInstance
 	PartnerNodeID *string
 
-	// Specifies the storage settings for the AzureBareMetal instance disks.
+	// Specifies the storage settings for the Azure Bare Metal Instance disks.
 	StorageProfile *StorageProfile
 
-	// READ-ONLY; Specifies the AzureBareMetal instance unique ID.
+	// READ-ONLY; Specifies the Azure Bare Metal Instance unique ID.
 	AzureBareMetalInstanceID *string
 
-	// READ-ONLY; Hardware revision of an AzureBareMetal instance
+	// READ-ONLY; Hardware revision of an Azure Bare Metal Instance
 	HwRevision *string
 
 	// READ-ONLY; Resource power state
@@ -67,16 +67,58 @@ type AzureBareMetalInstanceProperties struct {
 	ProximityPlacementGroup *string
 }
 
-// AzureBareMetalInstancesListResult - The response from the List AzureBareMetal Instances operation.
+// AzureBareMetalInstancesListResult - The response from the List Azure Bare Metal Instances operation.
 type AzureBareMetalInstancesListResult struct {
-	// The URL to get the next set of AzureBareMetal instances.
+	// The URL to get the next set of Azure Bare Metal Instances.
 	NextLink *string
 
-	// The list of Azure BareMetal instances.
+	// The list of Azure Bare Metal Instances.
 	Value []*AzureBareMetalInstance
 }
 
-// Disk - Specifies the disk information fo the AzureBareMetal instance
+// AzureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties)
+type AzureBareMetalStorageInstance struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// AzureBareMetalStorageInstance properties
+	Properties *AzureBareMetalStorageInstanceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureBareMetalStorageInstanceProperties - Describes the properties of an AzureBareMetalStorageInstance.
+type AzureBareMetalStorageInstanceProperties struct {
+	// Specifies the AzureBareMetaStorageInstance unique ID.
+	AzureBareMetalStorageInstanceUniqueIdentifier *string
+
+	// Specifies the storage properties for the AzureBareMetalStorage instance.
+	StorageProperties *StorageProperties
+}
+
+// AzureBareMetalStorageInstancesListResult - The response from the Get AzureBareMetalStorageInstances operation.
+type AzureBareMetalStorageInstancesListResult struct {
+	// The URL to get the next set of AzureBareMetalStorage instances.
+	NextLink *string
+
+	// The list of AzureBareMetalStorage instances.
+	Value []*AzureBareMetalStorageInstance
+}
+
+// Disk - Specifies the disk information fo the Azure Bare Metal Instance
 type Disk struct {
 	// Specifies the size of an empty data disk in gigabytes.
 	DiskSizeGB *int32
@@ -89,66 +131,40 @@ type Disk struct {
 	Lun *int32
 }
 
-// Display - Detailed BareMetal operation information
-type Display struct {
-	// READ-ONLY; The localized friendly description for the operation as shown to the user.
-	Description *string
-
-	// READ-ONLY; The localized friendly name for the operation as shown to the user.
-	Operation *string
-
-	// READ-ONLY; The localized friendly form of the resource provider name.
-	Provider *string
-
-	// READ-ONLY; The localized friendly form of the resource type related to this action/operation.
-	Resource *string
+// ForceState - The active state empowers the server with the ability to forcefully terminate and halt any existing processes
+// that may be running on the server
+type ForceState struct {
+	// Whether to force restart by shutting all processes.
+	ForceState *AzureBareMetalInstanceForcePowerState
 }
 
-// ErrorDefinition - Error definition.
-type ErrorDefinition struct {
-	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string
-
-	// READ-ONLY; Internal error details.
-	Details []*ErrorDefinition
-
-	// READ-ONLY; Description of the error.
-	Message *string
-}
-
-// ErrorResponse - Error response.
-type ErrorResponse struct {
-	// The error details.
-	Error *ErrorDefinition
-}
-
-// HardwareProfile - Specifies the hardware settings for the AzureBareMetal instance.
+// HardwareProfile - Specifies the hardware settings for the Azure Bare Metal Instance.
 type HardwareProfile struct {
-	// READ-ONLY; Specifies the AzureBareMetal instance SKU.
+	// READ-ONLY; Specifies the Azure Bare Metal Instance SKU.
 	AzureBareMetalInstanceSize *AzureBareMetalInstanceSizeNamesEnum
 
 	// READ-ONLY; Name of the hardware type (vendor and/or their product name)
 	HardwareType *AzureBareMetalHardwareTypeNamesEnum
 }
 
-// IPAddress - Specifies the IP address of the network interface.
-type IPAddress struct {
+// NetworkInterface - Specifies the network interfaces of a bare metal resource.
+type NetworkInterface struct {
 	// Specifies the IP address of the network interface.
 	IPAddress *string
 }
 
-// NetworkProfile - Specifies the network settings for the AzureBareMetal instance disks.
+// NetworkProfile - Specifies the network settings for the Azure Bare Metal Instance disks.
 type NetworkProfile struct {
-	// Specifies the network interfaces for the AzureBareMetal instance.
-	NetworkInterfaces []*IPAddress
+	// Specifies the network interfaces for the Azure Bare Metal Instance.
+	NetworkInterfaces []*NetworkInterface
 
 	// READ-ONLY; Specifies the circuit id for connecting to express route.
 	CircuitID *string
 }
 
-// OSProfile - Specifies the operating system settings for the AzureBareMetal instance.
+// OSProfile - Specifies the operating system settings for the Azure Bare Metal instance.
 type OSProfile struct {
-	// Specifies the host OS name of the AzureBareMetal instance.
+	// Specifies the host OS name of the Azure Bare Metal instance.
 	ComputerName *string
 
 	// Specifies the SSH public key used to access the operating system.
@@ -161,50 +177,119 @@ type OSProfile struct {
 	Version *string
 }
 
-// Operation - AzureBareMetal operation information
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Displayed AzureBareMetal operation information
-	Display *Display
+	// Localized display information for this particular operation.
+	Display *OperationDisplay
 
-	// READ-ONLY; indicates whether an operation is a data action or not.
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name
-	// that appears in RBAC / the event service.
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationList - List of AzureBareMetal operations
-type OperationList struct {
-	// List of AzureBareMetal operations
+// OperationDisplay - Localized display information for this particular operation.
+type OperationDisplay struct {
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string
+
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string
+
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string
+
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string
+}
+
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
+// OperationStatus - The OperationStatus object returns the state of an asynchronous operation.
+type OperationStatus struct {
+	// An error from the Azure Bare Metal Infrastructure service.
+	Error *OperationStatusError
 
-	// READ-ONLY; The name of the resource
+	// Unique Operation Status Identifier.
 	Name *string
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// Start Time when the operation was initially executed.
+	StartTime *string
+
+	// Status of the operation.
+	Status *AsyncOperationStatus
 }
 
-// Result - Sample result definition
-type Result struct {
-	// Sample property of type string
-	SampleProperty *string
+// OperationStatusError - An error from the Azure Bare Metal Infrastructure service.
+type OperationStatusError struct {
+	// Server-defined set of error codes.
+	Code *string
+
+	// Human-readable representation of the error.
+	Message *string
 }
 
-// StorageProfile - Specifies the storage settings for the AzureBareMetal instance disks.
+// StorageBillingProperties - Describes the billing related details of the AzureBareMetalStorageInstance.
+type StorageBillingProperties struct {
+	// the SKU type that is provisioned
+	AzureBareMetalStorageInstanceSize *string
+
+	// the billing mode for the storage instance
+	BillingMode *string
+}
+
+// StorageProfile - Specifies the storage settings for the Azure Bare Metal instance disks.
 type StorageProfile struct {
-	// Specifies information about the operating system disk used by baremetal instance.
+	// Specifies information about the operating system disk used by bare metal instance.
 	OSDisks []*Disk
 
 	// READ-ONLY; IP Address to connect to storage.
 	NfsIPAddress *string
+}
+
+// StorageProperties - described the storage properties of the azure bare metal storage instance
+type StorageProperties struct {
+	// the kind of storage instance
+	Generation *string
+
+	// the hardware type of the storage instance
+	HardwareType *string
+
+	// the offering type for which the resource is getting provisioned
+	OfferingType *string
+
+	// State of provisioning of the AzureBareMetalStorageInstance
+	ProvisioningState *ProvisioningState
+
+	// the billing related information for the resource
+	StorageBillingProperties *StorageBillingProperties
+
+	// the storage protocol for which the resource is getting provisioned
+	StorageType *string
+
+	// the workload for which the resource is getting provisioned
+	WorkloadType *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -228,27 +313,8 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// Tags field of the AzureBareMetal instance.
+// Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
 type Tags struct {
-	// Tags field of the AzureBareMetal instance.
+	// Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
 	Tags map[string]*string
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }

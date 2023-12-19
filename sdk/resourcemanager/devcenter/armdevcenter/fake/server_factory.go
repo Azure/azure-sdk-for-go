@@ -20,10 +20,13 @@ import (
 // ServerFactory is a fake server for instances of the armdevcenter.ClientFactory type.
 type ServerFactory struct {
 	AttachedNetworksServer               AttachedNetworksServer
+	CatalogDevBoxDefinitionsServer       CatalogDevBoxDefinitionsServer
 	CatalogsServer                       CatalogsServer
 	CheckNameAvailabilityServer          CheckNameAvailabilityServer
+	CustomizationTasksServer             CustomizationTasksServer
 	DevBoxDefinitionsServer              DevBoxDefinitionsServer
 	DevCentersServer                     DevCentersServer
+	EnvironmentDefinitionsServer         EnvironmentDefinitionsServer
 	EnvironmentTypesServer               EnvironmentTypesServer
 	GalleriesServer                      GalleriesServer
 	ImageVersionsServer                  ImageVersionsServer
@@ -55,10 +58,13 @@ type ServerFactoryTransport struct {
 	srv                                    *ServerFactory
 	trMu                                   sync.Mutex
 	trAttachedNetworksServer               *AttachedNetworksServerTransport
+	trCatalogDevBoxDefinitionsServer       *CatalogDevBoxDefinitionsServerTransport
 	trCatalogsServer                       *CatalogsServerTransport
 	trCheckNameAvailabilityServer          *CheckNameAvailabilityServerTransport
+	trCustomizationTasksServer             *CustomizationTasksServerTransport
 	trDevBoxDefinitionsServer              *DevBoxDefinitionsServerTransport
 	trDevCentersServer                     *DevCentersServerTransport
+	trEnvironmentDefinitionsServer         *EnvironmentDefinitionsServerTransport
 	trEnvironmentTypesServer               *EnvironmentTypesServerTransport
 	trGalleriesServer                      *GalleriesServerTransport
 	trImageVersionsServer                  *ImageVersionsServerTransport
@@ -93,6 +99,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAttachedNetworksServerTransport(&s.srv.AttachedNetworksServer)
 		})
 		resp, err = s.trAttachedNetworksServer.Do(req)
+	case "CatalogDevBoxDefinitionsClient":
+		initServer(s, &s.trCatalogDevBoxDefinitionsServer, func() *CatalogDevBoxDefinitionsServerTransport {
+			return NewCatalogDevBoxDefinitionsServerTransport(&s.srv.CatalogDevBoxDefinitionsServer)
+		})
+		resp, err = s.trCatalogDevBoxDefinitionsServer.Do(req)
 	case "CatalogsClient":
 		initServer(s, &s.trCatalogsServer, func() *CatalogsServerTransport { return NewCatalogsServerTransport(&s.srv.CatalogsServer) })
 		resp, err = s.trCatalogsServer.Do(req)
@@ -101,6 +112,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCheckNameAvailabilityServerTransport(&s.srv.CheckNameAvailabilityServer)
 		})
 		resp, err = s.trCheckNameAvailabilityServer.Do(req)
+	case "CustomizationTasksClient":
+		initServer(s, &s.trCustomizationTasksServer, func() *CustomizationTasksServerTransport {
+			return NewCustomizationTasksServerTransport(&s.srv.CustomizationTasksServer)
+		})
+		resp, err = s.trCustomizationTasksServer.Do(req)
 	case "DevBoxDefinitionsClient":
 		initServer(s, &s.trDevBoxDefinitionsServer, func() *DevBoxDefinitionsServerTransport {
 			return NewDevBoxDefinitionsServerTransport(&s.srv.DevBoxDefinitionsServer)
@@ -109,6 +125,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DevCentersClient":
 		initServer(s, &s.trDevCentersServer, func() *DevCentersServerTransport { return NewDevCentersServerTransport(&s.srv.DevCentersServer) })
 		resp, err = s.trDevCentersServer.Do(req)
+	case "EnvironmentDefinitionsClient":
+		initServer(s, &s.trEnvironmentDefinitionsServer, func() *EnvironmentDefinitionsServerTransport {
+			return NewEnvironmentDefinitionsServerTransport(&s.srv.EnvironmentDefinitionsServer)
+		})
+		resp, err = s.trEnvironmentDefinitionsServer.Do(req)
 	case "EnvironmentTypesClient":
 		initServer(s, &s.trEnvironmentTypesServer, func() *EnvironmentTypesServerTransport {
 			return NewEnvironmentTypesServerTransport(&s.srv.EnvironmentTypesServer)

@@ -63,6 +63,11 @@ type ClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClientListReplicaSKUsOptions contains the optional parameters for the Client.ListReplicaSKUs method.
+type ClientListReplicaSKUsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClientListSKUsOptions contains the optional parameters for the Client.ListSKUs method.
 type ClientListSKUsOptions struct {
 	// placeholder for future optional parameters
@@ -146,6 +151,39 @@ type PrivateEndpointConnectionsClientUpdateOptions struct {
 // PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
 // method.
 type PrivateLinkResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicasClient.BeginCreateOrUpdate method.
+type ReplicasClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientBeginRestartOptions contains the optional parameters for the ReplicasClient.BeginRestart method.
+type ReplicasClientBeginRestartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientBeginUpdateOptions contains the optional parameters for the ReplicasClient.BeginUpdate method.
+type ReplicasClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ReplicasClientDeleteOptions contains the optional parameters for the ReplicasClient.Delete method.
+type ReplicasClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientGetOptions contains the optional parameters for the ReplicasClient.Get method.
+type ReplicasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
+type ReplicasClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

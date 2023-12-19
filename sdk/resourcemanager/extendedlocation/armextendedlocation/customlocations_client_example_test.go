@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListOperations.json
 func ExampleCustomLocationsClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,12 +151,56 @@ func ExampleCustomLocationsClient_NewListOperationsPager() {
 		// 			},
 		// 			IsDataAction: to.Ptr(false),
 		// 			Origin: to.Ptr("user,system"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.ExtendedLocation/customLocations/resourceSyncRules/read"),
+		// 			Display: &armextendedlocation.CustomLocationOperationValueDisplay{
+		// 				Description: to.Ptr("Gets a Resource Sync Rule resource"),
+		// 				Operation: to.Ptr("Get Resource Sync Rule"),
+		// 				Provider: to.Ptr("Microsoft.ExtendedLocation"),
+		// 				Resource: to.Ptr("Resource Sync Rules"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("user,system"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.ExtendedLocation/customLocations/resourceSyncRules/write"),
+		// 			Display: &armextendedlocation.CustomLocationOperationValueDisplay{
+		// 				Description: to.Ptr("Creates or Updates a Resource Sync Rule resource"),
+		// 				Operation: to.Ptr("Create or Update Resource Sync Rule"),
+		// 				Provider: to.Ptr("Microsoft.ExtendedLocation"),
+		// 				Resource: to.Ptr("Resource Sync Rules"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("user,system"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.ExtendedLocation/customLocations/resourceSyncRules/delete"),
+		// 			Display: &armextendedlocation.CustomLocationOperationValueDisplay{
+		// 				Description: to.Ptr("Deletes Resource Sync Rule resource"),
+		// 				Operation: to.Ptr("Delete Resource Sync Rule"),
+		// 				Provider: to.Ptr("Microsoft.ExtendedLocation"),
+		// 				Resource: to.Ptr("Resource Sync Rules"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("user,system"),
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.ExtendedLocation/customLocations/findTargetResourceGroup/action"),
+		// 			Display: &armextendedlocation.CustomLocationOperationValueDisplay{
+		// 				Description: to.Ptr("Evaluate Labels Against Resource Sync Rules to Get Target Resource Group"),
+		// 				Operation: to.Ptr("Find Target Resource Group Action"),
+		// 				Provider: to.Ptr("Microsoft.ExtendedLocation"),
+		// 				Resource: to.Ptr("Resource Sync Rules"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("user,system"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListBySubscription.json
 func ExampleCustomLocationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,10 +276,10 @@ func ExampleCustomLocationsClient_NewListBySubscriptionPager() {
 		// 						ProvisioningState: to.Ptr("Succeeded"),
 		// 					},
 		// 					SystemData: &armextendedlocation.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 						CreatedBy: to.Ptr("string"),
 		// 						CreatedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 						LastModifiedBy: to.Ptr("string"),
 		// 						LastModifiedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
 		// 					},
@@ -244,7 +288,7 @@ func ExampleCustomLocationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListByResourceGroup.json
 func ExampleCustomLocationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,10 +364,10 @@ func ExampleCustomLocationsClient_NewListByResourceGroupPager() {
 		// 						ProvisioningState: to.Ptr("Succeeded"),
 		// 					},
 		// 					SystemData: &armextendedlocation.SystemData{
-		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 						CreatedBy: to.Ptr("string"),
 		// 						CreatedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
-		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 						LastModifiedBy: to.Ptr("string"),
 		// 						LastModifiedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
 		// 					},
@@ -332,7 +376,7 @@ func ExampleCustomLocationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsGet.json
 func ExampleCustomLocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,17 +416,17 @@ func ExampleCustomLocationsClient_Get() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		SystemData: &armextendedlocation.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsCreate_Update.json
 func ExampleCustomLocationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +496,7 @@ func ExampleCustomLocationsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsDelete.json
 func ExampleCustomLocationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +517,7 @@ func ExampleCustomLocationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsPatch.json
 func ExampleCustomLocationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,17 +575,17 @@ func ExampleCustomLocationsClient_Update() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		SystemData: &armextendedlocation.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListEnabledResourceTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListEnabledResourceTypes.json
 func ExampleCustomLocationsClient_NewListEnabledResourceTypesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,14 +657,43 @@ func ExampleCustomLocationsClient_NewListEnabledResourceTypesPager() {
 		// 				}},
 		// 			},
 		// 			SystemData: &armextendedlocation.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T18:53:29.092Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.092Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armextendedlocation.CreatedByTypeApplication),
 		// 			},
 		// 	}},
 		// }
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fb9c8e2ca33e9723c2b2fc849f627329067feb54/specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsFindTargetResourceGroup.json
+func ExampleCustomLocationsClient_FindTargetResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armextendedlocation.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCustomLocationsClient().FindTargetResourceGroup(ctx, "testresourcegroup", "customLocation01", armextendedlocation.CustomLocationFindTargetResourceGroupProperties{
+		Labels: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CustomLocationFindTargetResourceGroupResult = armextendedlocation.CustomLocationFindTargetResourceGroupResult{
+	// 	MatchedResourceSyncRule: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ExtendedLocation/customLocations/tesla-customlocation-1-chumpishness/resourceSyncRules/test-resource-sync-rule"),
+	// 	TargetResourceGroup: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/target-resource-group/"),
+	// }
 }

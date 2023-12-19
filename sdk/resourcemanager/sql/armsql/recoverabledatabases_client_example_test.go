@@ -48,7 +48,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverableDatabases/recoverabledatabasetest-1235"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Standard"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("S0"),
 		// 			},
 		// 		},
@@ -58,7 +58,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverableDatabases/recoverabledatabasetest-9231"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Premium"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T03:20:31.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T03:20:31.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("P1"),
 		// 			},
 		// 		},
@@ -68,7 +68,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverabledatabases/recoverabledatabasetest-0342"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Basic"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T02:06:18.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T02:06:18.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("Basic"),
 		// 			},
 		// 	}},
@@ -102,7 +102,7 @@ func ExampleRecoverableDatabasesClient_Get_getARecoverableDatabase() {
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-6852/providers/Microsoft.Sql/servers/recoverabledatabasetest-2080/recoverableDatabases/recoverabledatabasetest-9187"),
 	// 	Properties: &armsql.RecoverableDatabaseProperties{
 	// 		Edition: to.Ptr("Basic"),
-	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 	// 		ServiceLevelObjective: to.Ptr("Basic"),
 	// 	},
 	// }
@@ -140,7 +140,7 @@ func ExampleRecoverableDatabasesClient_Get_getsARecoverableDatabaseWithExpandEqu
 	// 			"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": &armsql.DatabaseKey{
 	// 			},
 	// 		},
-	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 	// 		ServiceLevelObjective: to.Ptr("Basic"),
 	// 	},
 	// }

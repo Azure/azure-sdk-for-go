@@ -8,6 +8,104 @@
 
 package armappplatform
 
+// APIPortalCustomDomainsClientCreateOrUpdateResponse contains the response from method APIPortalCustomDomainsClient.BeginCreateOrUpdate.
+type APIPortalCustomDomainsClientCreateOrUpdateResponse struct {
+	// Custom domain of the API portal
+	APIPortalCustomDomainResource
+}
+
+// APIPortalCustomDomainsClientDeleteResponse contains the response from method APIPortalCustomDomainsClient.BeginDelete.
+type APIPortalCustomDomainsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIPortalCustomDomainsClientGetResponse contains the response from method APIPortalCustomDomainsClient.Get.
+type APIPortalCustomDomainsClientGetResponse struct {
+	// Custom domain of the API portal
+	APIPortalCustomDomainResource
+}
+
+// APIPortalCustomDomainsClientListResponse contains the response from method APIPortalCustomDomainsClient.NewListPager.
+type APIPortalCustomDomainsClientListResponse struct {
+	// Object that includes an array of API portal custom domain resources and a possible link for next set
+	APIPortalCustomDomainResourceCollection
+}
+
+// APIPortalsClientCreateOrUpdateResponse contains the response from method APIPortalsClient.BeginCreateOrUpdate.
+type APIPortalsClientCreateOrUpdateResponse struct {
+	// API portal resource
+	APIPortalResource
+}
+
+// APIPortalsClientDeleteResponse contains the response from method APIPortalsClient.BeginDelete.
+type APIPortalsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIPortalsClientGetResponse contains the response from method APIPortalsClient.Get.
+type APIPortalsClientGetResponse struct {
+	// API portal resource
+	APIPortalResource
+}
+
+// APIPortalsClientListResponse contains the response from method APIPortalsClient.NewListPager.
+type APIPortalsClientListResponse struct {
+	// Object that includes an array of API portal resources and a possible link for next set
+	APIPortalResourceCollection
+}
+
+// APIPortalsClientValidateDomainResponse contains the response from method APIPortalsClient.ValidateDomain.
+type APIPortalsClientValidateDomainResponse struct {
+	// Validation result for custom domain.
+	CustomDomainValidateResult
+}
+
+// ApplicationAcceleratorsClientCreateOrUpdateResponse contains the response from method ApplicationAcceleratorsClient.BeginCreateOrUpdate.
+type ApplicationAcceleratorsClientCreateOrUpdateResponse struct {
+	// Application accelerator resource
+	ApplicationAcceleratorResource
+}
+
+// ApplicationAcceleratorsClientDeleteResponse contains the response from method ApplicationAcceleratorsClient.BeginDelete.
+type ApplicationAcceleratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ApplicationAcceleratorsClientGetResponse contains the response from method ApplicationAcceleratorsClient.Get.
+type ApplicationAcceleratorsClientGetResponse struct {
+	// Application accelerator resource
+	ApplicationAcceleratorResource
+}
+
+// ApplicationAcceleratorsClientListResponse contains the response from method ApplicationAcceleratorsClient.NewListPager.
+type ApplicationAcceleratorsClientListResponse struct {
+	// Object that includes an array of application accelerator resources and a possible link for next set
+	ApplicationAcceleratorResourceCollection
+}
+
+// ApplicationLiveViewsClientCreateOrUpdateResponse contains the response from method ApplicationLiveViewsClient.BeginCreateOrUpdate.
+type ApplicationLiveViewsClientCreateOrUpdateResponse struct {
+	// Application Live View resource
+	ApplicationLiveViewResource
+}
+
+// ApplicationLiveViewsClientDeleteResponse contains the response from method ApplicationLiveViewsClient.BeginDelete.
+type ApplicationLiveViewsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ApplicationLiveViewsClientGetResponse contains the response from method ApplicationLiveViewsClient.Get.
+type ApplicationLiveViewsClientGetResponse struct {
+	// Application Live View resource
+	ApplicationLiveViewResource
+}
+
+// ApplicationLiveViewsClientListResponse contains the response from method ApplicationLiveViewsClient.NewListPager.
+type ApplicationLiveViewsClientListResponse struct {
+	// Object that includes an array of Application Live View resources and a possible link for next set
+	ApplicationLiveViewResourceCollection
+}
+
 // AppsClientCreateOrUpdateResponse contains the response from method AppsClient.BeginCreateOrUpdate.
 type AppsClientCreateOrUpdateResponse struct {
 	// App resource payload
@@ -119,6 +217,12 @@ type BuildServiceBuilderClientGetResponse struct {
 	BuilderResource
 }
 
+// BuildServiceBuilderClientListDeploymentsResponse contains the response from method BuildServiceBuilderClient.ListDeployments.
+type BuildServiceBuilderClientListDeploymentsResponse struct {
+	// A list of deployments resource ids.
+	DeploymentList
+}
+
 // BuildServiceBuilderClientListResponse contains the response from method BuildServiceBuilderClient.NewListPager.
 type BuildServiceBuilderClientListResponse struct {
 	// Object that includes an array of Builder resources and a possible link for next set
@@ -218,6 +322,12 @@ type BuildpackBindingClientDeleteResponse struct {
 type BuildpackBindingClientGetResponse struct {
 	// Buildpack Binding Resource object
 	BuildpackBindingResource
+}
+
+// BuildpackBindingClientListForClusterResponse contains the response from method BuildpackBindingClient.NewListForClusterPager.
+type BuildpackBindingClientListForClusterResponse struct {
+	// Object that includes an array of BuildpackBinding resources and a possible link for next set
+	BuildpackBindingResourceCollection
 }
 
 // BuildpackBindingClientListResponse contains the response from method BuildpackBindingClient.NewListPager.
@@ -331,6 +441,34 @@ type CustomDomainsClientUpdateResponse struct {
 	CustomDomainResource
 }
 
+// CustomizedAcceleratorsClientCreateOrUpdateResponse contains the response from method CustomizedAcceleratorsClient.BeginCreateOrUpdate.
+type CustomizedAcceleratorsClientCreateOrUpdateResponse struct {
+	// Customized accelerator resource
+	CustomizedAcceleratorResource
+}
+
+// CustomizedAcceleratorsClientDeleteResponse contains the response from method CustomizedAcceleratorsClient.BeginDelete.
+type CustomizedAcceleratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CustomizedAcceleratorsClientGetResponse contains the response from method CustomizedAcceleratorsClient.Get.
+type CustomizedAcceleratorsClientGetResponse struct {
+	// Customized accelerator resource
+	CustomizedAcceleratorResource
+}
+
+// CustomizedAcceleratorsClientListResponse contains the response from method CustomizedAcceleratorsClient.NewListPager.
+type CustomizedAcceleratorsClientListResponse struct {
+	CustomizedAcceleratorResourceCollection
+}
+
+// CustomizedAcceleratorsClientValidateResponse contains the response from method CustomizedAcceleratorsClient.Validate.
+type CustomizedAcceleratorsClientValidateResponse struct {
+	// Validation result for customized accelerator properties
+	CustomizedAcceleratorValidateResult
+}
+
 // DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.
 type DeploymentsClientCreateOrUpdateResponse struct {
 	// Deployment resource payload
@@ -340,6 +478,18 @@ type DeploymentsClientCreateOrUpdateResponse struct {
 // DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.BeginDelete.
 type DeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// DeploymentsClientDisableRemoteDebuggingResponse contains the response from method DeploymentsClient.BeginDisableRemoteDebugging.
+type DeploymentsClientDisableRemoteDebuggingResponse struct {
+	// Remote debugging config.
+	RemoteDebugging
+}
+
+// DeploymentsClientEnableRemoteDebuggingResponse contains the response from method DeploymentsClient.BeginEnableRemoteDebugging.
+type DeploymentsClientEnableRemoteDebuggingResponse struct {
+	// Remote debugging config.
+	RemoteDebugging
 }
 
 // DeploymentsClientGenerateHeapDumpResponse contains the response from method DeploymentsClient.BeginGenerateHeapDump.
@@ -356,6 +506,12 @@ type DeploymentsClientGenerateThreadDumpResponse struct {
 type DeploymentsClientGetLogFileURLResponse struct {
 	// Log file URL payload
 	LogFileURLResponse
+}
+
+// DeploymentsClientGetRemoteDebuggingConfigResponse contains the response from method DeploymentsClient.GetRemoteDebuggingConfig.
+type DeploymentsClientGetRemoteDebuggingConfigResponse struct {
+	// Remote debugging config.
+	RemoteDebugging
 }
 
 // DeploymentsClientGetResponse contains the response from method DeploymentsClient.Get.
@@ -402,6 +558,116 @@ type DeploymentsClientUpdateResponse struct {
 	DeploymentResource
 }
 
+// DevToolPortalsClientCreateOrUpdateResponse contains the response from method DevToolPortalsClient.BeginCreateOrUpdate.
+type DevToolPortalsClientCreateOrUpdateResponse struct {
+	// Dev Tool Portal resource
+	DevToolPortalResource
+}
+
+// DevToolPortalsClientDeleteResponse contains the response from method DevToolPortalsClient.BeginDelete.
+type DevToolPortalsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DevToolPortalsClientGetResponse contains the response from method DevToolPortalsClient.Get.
+type DevToolPortalsClientGetResponse struct {
+	// Dev Tool Portal resource
+	DevToolPortalResource
+}
+
+// DevToolPortalsClientListResponse contains the response from method DevToolPortalsClient.NewListPager.
+type DevToolPortalsClientListResponse struct {
+	// Object that includes an array of Dev Tool Portal resources and a possible link for next set
+	DevToolPortalResourceCollection
+}
+
+// GatewayCustomDomainsClientCreateOrUpdateResponse contains the response from method GatewayCustomDomainsClient.BeginCreateOrUpdate.
+type GatewayCustomDomainsClientCreateOrUpdateResponse struct {
+	// Custom domain of the Spring Cloud Gateway
+	GatewayCustomDomainResource
+}
+
+// GatewayCustomDomainsClientDeleteResponse contains the response from method GatewayCustomDomainsClient.BeginDelete.
+type GatewayCustomDomainsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewayCustomDomainsClientGetResponse contains the response from method GatewayCustomDomainsClient.Get.
+type GatewayCustomDomainsClientGetResponse struct {
+	// Custom domain of the Spring Cloud Gateway
+	GatewayCustomDomainResource
+}
+
+// GatewayCustomDomainsClientListResponse contains the response from method GatewayCustomDomainsClient.NewListPager.
+type GatewayCustomDomainsClientListResponse struct {
+	// Object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for next set
+	GatewayCustomDomainResourceCollection
+}
+
+// GatewayRouteConfigsClientCreateOrUpdateResponse contains the response from method GatewayRouteConfigsClient.BeginCreateOrUpdate.
+type GatewayRouteConfigsClientCreateOrUpdateResponse struct {
+	// Spring Cloud Gateway route config resource
+	GatewayRouteConfigResource
+}
+
+// GatewayRouteConfigsClientDeleteResponse contains the response from method GatewayRouteConfigsClient.BeginDelete.
+type GatewayRouteConfigsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewayRouteConfigsClientGetResponse contains the response from method GatewayRouteConfigsClient.Get.
+type GatewayRouteConfigsClientGetResponse struct {
+	// Spring Cloud Gateway route config resource
+	GatewayRouteConfigResource
+}
+
+// GatewayRouteConfigsClientListResponse contains the response from method GatewayRouteConfigsClient.NewListPager.
+type GatewayRouteConfigsClientListResponse struct {
+	// Object that includes an array of Spring Cloud Gateway route config resources and a possible link for next set
+	GatewayRouteConfigResourceCollection
+}
+
+// GatewaysClientCreateOrUpdateResponse contains the response from method GatewaysClient.BeginCreateOrUpdate.
+type GatewaysClientCreateOrUpdateResponse struct {
+	// Spring Cloud Gateway resource
+	GatewayResource
+}
+
+// GatewaysClientDeleteResponse contains the response from method GatewaysClient.BeginDelete.
+type GatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewaysClientGetResponse contains the response from method GatewaysClient.Get.
+type GatewaysClientGetResponse struct {
+	// Spring Cloud Gateway resource
+	GatewayResource
+}
+
+// GatewaysClientListEnvSecretsResponse contains the response from method GatewaysClient.ListEnvSecrets.
+type GatewaysClientListEnvSecretsResponse struct {
+	// Sensitive properties for Spring Cloud Gateway
+	Value map[string]*string
+}
+
+// GatewaysClientListResponse contains the response from method GatewaysClient.NewListPager.
+type GatewaysClientListResponse struct {
+	// Object that includes an array of gateway resources and a possible link for next set
+	GatewayResourceCollection
+}
+
+// GatewaysClientUpdateCapacityResponse contains the response from method GatewaysClient.BeginUpdateCapacity.
+type GatewaysClientUpdateCapacityResponse struct {
+	// Spring Cloud Gateway resource
+	GatewayResource
+}
+
+// GatewaysClientValidateDomainResponse contains the response from method GatewaysClient.ValidateDomain.
+type GatewaysClientValidateDomainResponse struct {
+	// Validation result for custom domain.
+	CustomDomainValidateResult
+}
+
 // MonitoringSettingsClientGetResponse contains the response from method MonitoringSettingsClient.Get.
 type MonitoringSettingsClientGetResponse struct {
 	// Monitoring Setting resource
@@ -424,6 +690,27 @@ type MonitoringSettingsClientUpdatePutResponse struct {
 type OperationsClientListResponse struct {
 	// Available operations of the service
 	AvailableOperations
+}
+
+// PredefinedAcceleratorsClientDisableResponse contains the response from method PredefinedAcceleratorsClient.BeginDisable.
+type PredefinedAcceleratorsClientDisableResponse struct {
+	// placeholder for future response values
+}
+
+// PredefinedAcceleratorsClientEnableResponse contains the response from method PredefinedAcceleratorsClient.BeginEnable.
+type PredefinedAcceleratorsClientEnableResponse struct {
+	// placeholder for future response values
+}
+
+// PredefinedAcceleratorsClientGetResponse contains the response from method PredefinedAcceleratorsClient.Get.
+type PredefinedAcceleratorsClientGetResponse struct {
+	// Predefined accelerator resource
+	PredefinedAcceleratorResource
+}
+
+// PredefinedAcceleratorsClientListResponse contains the response from method PredefinedAcceleratorsClient.NewListPager.
+type PredefinedAcceleratorsClientListResponse struct {
+	PredefinedAcceleratorResourceCollection
 }
 
 // RuntimeVersionsClientListRuntimeVersionsResponse contains the response from method RuntimeVersionsClient.ListRuntimeVersions.
@@ -518,8 +805,41 @@ type ServicesClientRegenerateTestKeyResponse struct {
 	TestKeys
 }
 
+// ServicesClientStartResponse contains the response from method ServicesClient.BeginStart.
+type ServicesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ServicesClientStopResponse contains the response from method ServicesClient.BeginStop.
+type ServicesClientStopResponse struct {
+	// placeholder for future response values
+}
+
 // ServicesClientUpdateResponse contains the response from method ServicesClient.BeginUpdate.
 type ServicesClientUpdateResponse struct {
 	// Service resource
 	ServiceResource
+}
+
+// StoragesClientCreateOrUpdateResponse contains the response from method StoragesClient.BeginCreateOrUpdate.
+type StoragesClientCreateOrUpdateResponse struct {
+	// Storage resource payload.
+	StorageResource
+}
+
+// StoragesClientDeleteResponse contains the response from method StoragesClient.BeginDelete.
+type StoragesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StoragesClientGetResponse contains the response from method StoragesClient.Get.
+type StoragesClientGetResponse struct {
+	// Storage resource payload.
+	StorageResource
+}
+
+// StoragesClientListResponse contains the response from method StoragesClient.NewListPager.
+type StoragesClientListResponse struct {
+	// Collection compose of storage resources list and a possible link for next page.
+	StorageResourceCollection
 }

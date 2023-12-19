@@ -43,6 +43,12 @@ func (c *ClientFactory) NewAttachedNetworksClient() *AttachedNetworksClient {
 	return subClient
 }
 
+// NewCatalogDevBoxDefinitionsClient creates a new instance of CatalogDevBoxDefinitionsClient.
+func (c *ClientFactory) NewCatalogDevBoxDefinitionsClient() *CatalogDevBoxDefinitionsClient {
+	subClient, _ := NewCatalogDevBoxDefinitionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewCatalogsClient creates a new instance of CatalogsClient.
 func (c *ClientFactory) NewCatalogsClient() *CatalogsClient {
 	subClient, _ := NewCatalogsClient(c.subscriptionID, c.credential, c.options)
@@ -55,6 +61,12 @@ func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityC
 	return subClient
 }
 
+// NewCustomizationTasksClient creates a new instance of CustomizationTasksClient.
+func (c *ClientFactory) NewCustomizationTasksClient() *CustomizationTasksClient {
+	subClient, _ := NewCustomizationTasksClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDevBoxDefinitionsClient creates a new instance of DevBoxDefinitionsClient.
 func (c *ClientFactory) NewDevBoxDefinitionsClient() *DevBoxDefinitionsClient {
 	subClient, _ := NewDevBoxDefinitionsClient(c.subscriptionID, c.credential, c.options)
@@ -64,6 +76,12 @@ func (c *ClientFactory) NewDevBoxDefinitionsClient() *DevBoxDefinitionsClient {
 // NewDevCentersClient creates a new instance of DevCentersClient.
 func (c *ClientFactory) NewDevCentersClient() *DevCentersClient {
 	subClient, _ := NewDevCentersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewEnvironmentDefinitionsClient creates a new instance of EnvironmentDefinitionsClient.
+func (c *ClientFactory) NewEnvironmentDefinitionsClient() *EnvironmentDefinitionsClient {
+	subClient, _ := NewEnvironmentDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

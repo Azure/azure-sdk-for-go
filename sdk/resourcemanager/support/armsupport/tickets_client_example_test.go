@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityWithSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CheckNameAvailabilityWithSubscription.json
 func ExampleTicketsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleTicketsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,6 +78,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("usa"),
 		// 					FirstName: to.Ptr("abc"),
@@ -88,10 +89,17 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T21:36:23.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
 		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
 		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
 		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid"),
 		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
@@ -104,6 +112,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("119120321001170"),
 		// 				TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
@@ -128,6 +138,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T21:36:18.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -144,6 +155,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("118032014183771"),
 		// 				Title: to.Ptr("Test - please ignore"),
@@ -153,7 +166,127 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingStateForASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTicketsClient().NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
+		Filter: to.Ptr("createdDate ge 2020-03-10T22:08:51Z and status eq 'Updating'"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TicketsListResult = armsupport.TicketsListResult{
+		// 	Value: []*armsupport.TicketDetails{
+		// 		{
+		// 			Name: to.Ptr("testticket"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("usa"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T21:36:23.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
+		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid"),
+		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T17:36:18.000Z"); return t}()),
+		// 					SLAMinutes: to.Ptr[int32](240),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				},
+		// 				Severity: to.Ptr(armsupport.SeverityLevelModerate),
+		// 				Status: to.Ptr("Updating"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("119120321001170"),
+		// 				TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
+		// 					ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/testserver"),
+		// 				},
+		// 				Title: to.Ptr("my title"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("testticket2"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket2"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("USA"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T21:36:18.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				ServiceDisplayName: to.Ptr("Subscription management"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
+		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T17:36:18.000Z"); return t}()),
+		// 					SLAMinutes: to.Ptr[int32](240),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T21:36:18.000Z"); return t}()),
+		// 				},
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Updating"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("118032014183771"),
+		// 				Title: to.Ptr("Test - please ignore"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,6 +318,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("usa"),
 		// 					FirstName: to.Ptr("abc"),
@@ -195,10 +329,17 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
 		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
 		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
 		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid"),
 		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
@@ -211,6 +352,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("119120321001170"),
 		// 				TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
@@ -235,6 +378,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -251,6 +395,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("118032014183771"),
 		// 				Title: to.Ptr("Test - please ignore"),
@@ -260,7 +406,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsInOpenStateBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,6 +438,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 		// 			Properties: &armsupport.TicketDetailsProperties{
 		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 		// 				ContactDetails: &armsupport.ContactProfile{
 		// 					Country: to.Ptr("usa"),
 		// 					FirstName: to.Ptr("abc"),
@@ -302,10 +449,17 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
 		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
 		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
 		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid"),
 		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
@@ -318,6 +472,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("119120321001170"),
 		// 				TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
@@ -342,6 +498,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 		// 				},
 		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 		// 				ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -358,6 +515,8 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 		// 				SupportEngineer: &armsupport.Engineer{
 		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
 		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 		// 				SupportPlanType: to.Ptr("Premier"),
 		// 				SupportTicketID: to.Ptr("118032014183771"),
 		// 				Title: to.Ptr("Test - please ignore"),
@@ -367,7 +526,345 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetSubscriptionSupportTicketDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInUpdatingStateBySubscription.json
+func ExampleTicketsClient_NewListPager_listSupportTicketsInUpdatingStateForASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTicketsClient().NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
+		Filter: to.Ptr("status eq 'Updating'"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TicketsListResult = armsupport.TicketsListResult{
+		// 	Value: []*armsupport.TicketDetails{
+		// 		{
+		// 			Name: to.Ptr("testticket"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("usa"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
+		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_service_guid"),
+		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-21T17:36:18.000Z"); return t}()),
+		// 					SLAMinutes: to.Ptr[int32](240),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				},
+		// 				Severity: to.Ptr(armsupport.SeverityLevelModerate),
+		// 				Status: to.Ptr("Updating"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("119120321001170"),
+		// 				TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
+		// 					ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/testserver"),
+		// 				},
+		// 				Title: to.Ptr("my title"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("testticket2"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket2"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("USA"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				ServiceDisplayName: to.Ptr("Subscription management"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
+		// 				ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-21T17:36:18.000Z"); return t}()),
+		// 					SLAMinutes: to.Ptr[int32](240),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+		// 				},
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Updating"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("118032014183771"),
+		// 				Title: to.Ptr("Test - please ignore"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainProblemClassificationIdForASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTicketsClient().NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
+		Filter: to.Ptr("ProblemClassificationId eq 'compute_vm_problemClassification_guid'"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TicketsListResult = armsupport.TicketsListResult{
+		// 	Value: []*armsupport.TicketDetails{
+		// 		{
+		// 			Name: to.Ptr("testTicket1"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testTicket1"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("usa"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:52:10.000Z"); return t}()),
+		// 				EnrollmentID: to.Ptr(""),
+		// 				FileWorkspaceName: to.Ptr("testTicket1"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-12T23:05:19.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Compute-VM (cores-vCPUs) subscription limit increases"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/service_guid/problemClassifications/compute_vm_problemClassification_guid"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				ServiceDisplayName: to.Ptr("service_displayName"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/service_guid"),
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Open"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("2205060010000072"),
+		// 				Title: to.Ptr("my title"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("testTicket2"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testTicket2"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("USA"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:38:42.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("testTicket2"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:39:14.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("Compute-VM (cores-vCPUs) subscription limit increases"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/service_guid/problemClassifications/compute_vm_problemClassification_guid"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				ServiceDisplayName: to.Ptr("service_displayName"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/service_guid"),
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Open"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("2205040010000077"),
+		// 				Title: to.Ptr("Test - please ignore"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
+func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainServiceIdForASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTicketsClient().NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
+		Filter: to.Ptr("ServiceId eq 'vm_windows_service_guid'"),
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.TicketsListResult = armsupport.TicketsListResult{
+		// 	Value: []*armsupport.TicketDetails{
+		// 		{
+		// 			Name: to.Ptr("testticket1"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("my description"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("usa"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:52:10.000Z"); return t}()),
+		// 				EnrollmentID: to.Ptr(""),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-12T23:05:19.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("problemClassification_displayName"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/vm_windows_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
+		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Windows"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/vm_windows_service_guid"),
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Open"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("2205040010000082"),
+		// 				Title: to.Ptr("my title"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("testticket2"),
+		// 			Type: to.Ptr("Microsoft.Support/supportTickets"),
+		// 			ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets"),
+		// 			Properties: &armsupport.TicketDetailsProperties{
+		// 				Description: to.Ptr("This is a test - please ignore"),
+		// 				AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 				ContactDetails: &armsupport.ContactProfile{
+		// 					Country: to.Ptr("USA"),
+		// 					FirstName: to.Ptr("abc"),
+		// 					LastName: to.Ptr("xyz"),
+		// 					PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+		// 					PreferredSupportLanguage: to.Ptr("en-US"),
+		// 					PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+		// 					PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
+		// 				},
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:38:42.000Z"); return t}()),
+		// 				FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+		// 				ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T21:39:14.000Z"); return t}()),
+		// 				ProblemClassificationDisplayName: to.Ptr("problemClassification_displayName"),
+		// 				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/vm_windows_service_guid/problemClassifications/problemClassification_guid"),
+		// 				ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
+		// 				Require24X7Response: to.Ptr(false),
+		// 				SecondaryConsent: []*armsupport.SecondaryConsent{
+		// 					{
+		// 						Type: to.Ptr("VirtualMachine"),
+		// 						UserConsent: to.Ptr(armsupport.UserConsentYes),
+		// 				}},
+		// 				ServiceDisplayName: to.Ptr("Virtual Machine running Windows"),
+		// 				ServiceID: to.Ptr("/providers/Microsoft.Support/services/vm_windows_service_guid"),
+		// 				Severity: to.Ptr(armsupport.SeverityLevelMinimal),
+		// 				Status: to.Ptr("Open"),
+		// 				SupportEngineer: &armsupport.Engineer{
+		// 					EmailAddress: to.Ptr("xyz@contoso.com"),
+		// 				},
+		// 				SupportPlanDisplayName: to.Ptr("Premier"),
+		// 				SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+		// 				SupportPlanType: to.Ptr("Premier"),
+		// 				SupportTicketID: to.Ptr("2205040010000080"),
+		// 				Title: to.Ptr("Test - please ignore"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetSubscriptionSupportTicketDetails.json
 func ExampleTicketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,6 +898,7 @@ func ExampleTicketsClient_Get() {
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -417,6 +915,8 @@ func ExampleTicketsClient_Get() {
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 			EmailAddress: to.Ptr("xyz@contoso.com"),
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("118032014183770"),
 	// 		Title: to.Ptr("Test - please ignore"),
@@ -424,7 +924,73 @@ func ExampleTicketsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASupportTicket() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTicketsClient().Update(ctx, "testticket", armsupport.UpdateSupportTicket{
+		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.TicketDetails = armsupport.TicketDetails{
+	// 	Name: to.Ptr("testticket"),
+	// 	Type: to.Ptr("Microsoft.Support/supportTickets"),
+	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
+	// 	Properties: &armsupport.TicketDetailsProperties{
+	// 		Description: to.Ptr("This is a test - please ignore"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+	// 		ContactDetails: &armsupport.ContactProfile{
+	// 			AdditionalEmailAddresses: []*string{
+	// 				to.Ptr("tname@contoso.com"),
+	// 				to.Ptr("teamtest@contoso.com")},
+	// 				Country: to.Ptr("USA"),
+	// 				FirstName: to.Ptr("abc"),
+	// 				LastName: to.Ptr("xyz"),
+	// 				PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+	// 				PreferredSupportLanguage: to.Ptr("en-US"),
+	// 				PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
+	// 			},
+	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
+	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
+	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
+	// 			Require24X7Response: to.Ptr(false),
+	// 			ServiceDisplayName: to.Ptr("Subscription management"),
+	// 			ServiceID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
+	// 			ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-21T17:36:18.000Z"); return t}()),
+	// 				SLAMinutes: to.Ptr[int32](240),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 			},
+	// 			Severity: to.Ptr(armsupport.SeverityLevelCritical),
+	// 			Status: to.Ptr("Open"),
+	// 			SupportEngineer: &armsupport.Engineer{
+	// 				EmailAddress: to.Ptr("xyz@contoso.com"),
+	// 			},
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+	// 			SupportPlanType: to.Ptr("Premier"),
+	// 			SupportTicketID: to.Ptr("118032014183770"),
+	// 			Title: to.Ptr("Test - please ignore"),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,6 +1042,7 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
 	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
 	// 			},
 	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -492,6 +1059,8 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
 	// 			SupportEngineer: &armsupport.Engineer{
 	// 				EmailAddress: to.Ptr("xyz@contoso.com"),
 	// 			},
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 			SupportPlanType: to.Ptr("Premier"),
 	// 			SupportTicketID: to.Ptr("118032014183770"),
 	// 			Title: to.Ptr("Test - please ignore"),
@@ -499,7 +1068,7 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateSeverityOfSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateSeverityOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,6 +1107,7 @@ func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
 	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
 	// 			},
 	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -554,6 +1124,8 @@ func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
 	// 			SupportEngineer: &armsupport.Engineer{
 	// 				EmailAddress: to.Ptr("xyz@contoso.com"),
 	// 			},
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 			SupportPlanType: to.Ptr("Premier"),
 	// 			SupportTicketID: to.Ptr("118032014183770"),
 	// 			Title: to.Ptr("Test - please ignore"),
@@ -561,7 +1133,7 @@ func ExampleTicketsClient_Update_updateSeverityOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateStatusOfSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateStatusOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,6 +1172,7 @@ func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
 	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
 	// 			},
 	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
 	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
@@ -615,6 +1188,8 @@ func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
 	// 			Status: to.Ptr("Closed"),
 	// 			SupportEngineer: &armsupport.Engineer{
 	// 			},
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 			SupportPlanType: to.Ptr("Premier"),
 	// 			SupportTicketID: to.Ptr("118032014183770"),
 	// 			Title: to.Ptr("Test - please ignore"),
@@ -622,7 +1197,7 @@ func ExampleTicketsClient_Update_updateStatusOfASupportTicket() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBillingSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBillingSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -645,9 +1220,11 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 				PreferredTimeZone:        to.Ptr("Pacific Standard Time"),
 				PrimaryEmailAddress:      to.Ptr("abc@contoso.com"),
 			},
+			FileWorkspaceName:       to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/billing_service_guid/problemClassifications/billing_problemClassification_guid"),
 			ServiceID:               to.Ptr("/providers/Microsoft.Support/services/billing_service_guid"),
 			Severity:                to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID:           to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 			Title:                   to.Ptr("my title"),
 		},
 	}, nil)
@@ -677,6 +1254,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Refund request"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/billing_service_guid/problemClassifications/billing_problemClassification_guid"),
@@ -692,6 +1270,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -699,7 +1279,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSubMgmtSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSubMgmtSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,9 +1302,11 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 				PreferredTimeZone:        to.Ptr("Pacific Standard Time"),
 				PrimaryEmailAddress:      to.Ptr("abc@contoso.com"),
 			},
+			FileWorkspaceName:       to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/subscription_management_problemClassification_guid"),
 			ServiceID:               to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
 			Severity:                to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID:           to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 			Title:                   to.Ptr("my title"),
 		},
 	}, nil)
@@ -754,6 +1336,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Transfer ownership of my subscription"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/subscription_management_problemClassification_guid"),
@@ -769,6 +1352,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -776,7 +1361,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateTechnicalSupportTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateTechnicalSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASpecificResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,7 +1374,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -799,9 +1385,17 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 				PreferredTimeZone:        to.Ptr("Pacific Standard Time"),
 				PrimaryEmailAddress:      to.Ptr("abc@contoso.com"),
 			},
+			FileWorkspaceName:       to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_running_linux_service_guid/problemClassifications/problemClassification_guid"),
-			ServiceID:               to.Ptr("/providers/Microsoft.Support/services/cddd3eb5-1830-b494-44fd-782f691479dc"),
-			Severity:                to.Ptr(armsupport.SeverityLevelModerate),
+			ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
+			SecondaryConsent: []*armsupport.SecondaryConsent{
+				{
+					Type:        to.Ptr("virtualmachinerunninglinuxservice"),
+					UserConsent: to.Ptr(armsupport.UserConsentYes),
+				}},
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/cddd3eb5-1830-b494-44fd-782f691479dc"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 			TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
 				ResourceID: to.Ptr("/subscriptions/subid/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/testserver"),
 			},
@@ -824,6 +1418,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -834,10 +1429,17 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Connectivity / Cannot connect to virtual machine by using RDP or SSH"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_running_linux_service_guid/problemClassifications/problemClassification_guid"),
+	// 		ProblemScopingQuestions: to.Ptr("{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did the problem begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API Type of the Cosmos DB account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide additional details about the issue you're facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test ticket, please ignore and close\",\"value\":\"test ticket, please ignore and close\",\"type\":\"string\"}}]}"),
 	// 		Require24X7Response: to.Ptr(false),
+	// 		SecondaryConsent: []*armsupport.SecondaryConsent{
+	// 			{
+	// 				Type: to.Ptr("virtualmachinerunninglinuxservice"),
+	// 				UserConsent: to.Ptr(armsupport.UserConsentYes),
+	// 		}},
 	// 		ServiceDisplayName: to.Ptr("Virtual Machine running Linux"),
 	// 		ServiceID: to.Ptr("/providers/Microsoft.Support/services/virtual_machine_running_linux_service_guid"),
 	// 		ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
@@ -849,6 +1451,8 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		TechnicalTicketDetails: &armsupport.TechnicalTicketDetails{
@@ -859,7 +1463,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActiveJobsAndJobSchedulesForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -872,7 +1476,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -892,9 +1497,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -913,6 +1519,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -923,6 +1530,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Batch"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid"),
@@ -947,6 +1555,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -954,7 +1564,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlManagedInstanceQuotaTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlManagedInstanceQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzureSqlManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -967,7 +1577,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -991,9 +1602,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1012,6 +1624,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1022,6 +1635,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("SQL Database Managed Instance"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_datawarehouse_problemClassification_guid"),
@@ -1050,6 +1664,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1057,7 +1673,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatchAccountsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1070,7 +1686,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1090,9 +1707,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1111,6 +1729,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1121,6 +1740,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Batch"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid"),
@@ -1145,6 +1765,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1152,7 +1774,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateCoresQuotaTicketForSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateCoresQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComputeVmCores() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1165,7 +1787,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1184,9 +1807,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1205,6 +1829,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1215,6 +1840,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Compute-VM (cores-vCPUs) subscription limit increases"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/cores_problemClassification_guid"),
@@ -1238,6 +1864,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1245,7 +1873,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1258,7 +1886,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1278,9 +1907,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1299,6 +1929,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1309,6 +1940,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("SQL Data Warehouse"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_datawarehouse_problemClassification_guid"),
@@ -1333,6 +1965,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1340,7 +1974,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1353,7 +1987,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1373,9 +2008,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1394,6 +2030,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1404,6 +2041,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("SQL database"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_database_problemClassification_guid"),
@@ -1428,6 +2066,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1435,7 +2075,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1448,7 +2088,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1468,9 +2109,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1489,6 +2131,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1499,6 +2142,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Machine Learning service"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/machine_learning_service_problemClassification_guid"),
@@ -1523,6 +2167,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1530,7 +2176,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1543,7 +2189,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1563,9 +2210,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1584,6 +2232,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1594,6 +2243,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Batch"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid"),
@@ -1618,6 +2268,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1625,7 +2277,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPoolsForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1638,7 +2290,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1658,9 +2311,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1679,6 +2333,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1689,6 +2344,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Batch"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid"),
@@ -1713,6 +2369,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1720,7 +2378,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1733,7 +2391,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1753,9 +2412,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1774,6 +2434,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1784,6 +2445,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("SQL Data Warehouse"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_datawarehouse_problemClassification_guid"),
@@ -1808,6 +2470,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1815,7 +2479,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatabaseQuotaTicketForServers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1828,7 +2492,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1848,9 +2513,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -1869,6 +2535,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -1879,6 +2546,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("SQL database"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_database_problemClassification_guid"),
@@ -1903,6 +2571,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1910,7 +2580,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateGenericQuotaTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateGenericQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServicesThatDoNotRequireAdditionalDetailsInTheQuotaTicketDetailsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1980,6 +2650,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -1987,7 +2658,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVmFamilyCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2000,7 +2671,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -2020,9 +2692,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -2041,6 +2714,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -2051,6 +2725,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Machine Learning service"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/machine_learning_service_problemClassification_guid"),
@@ -2075,6 +2750,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),
@@ -2082,7 +2759,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVmFamilyCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2095,7 +2772,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	}
 	poller, err := clientFactory.NewTicketsClient().BeginCreate(ctx, "testticket", armsupport.TicketDetails{
 		Properties: &armsupport.TicketDetailsProperties{
-			Description: to.Ptr("my description"),
+			Description:               to.Ptr("my description"),
+			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -2115,9 +2793,10 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 						Region:  to.Ptr("EastUS"),
 					}},
 			},
-			ServiceID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
-			Severity:  to.Ptr(armsupport.SeverityLevelModerate),
-			Title:     to.Ptr("my title"),
+			ServiceID:     to.Ptr("/providers/Microsoft.Support/services/quota_service_guid"),
+			Severity:      to.Ptr(armsupport.SeverityLevelModerate),
+			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+			Title:         to.Ptr("my title"),
 		},
 	}, nil)
 	if err != nil {
@@ -2136,6 +2815,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 	ID: to.Ptr("/subscriptions/subid/providers/Microsoft.Support/supportTickets/testticket"),
 	// 	Properties: &armsupport.TicketDetailsProperties{
 	// 		Description: to.Ptr("my description"),
+	// 		AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
 	// 		ContactDetails: &armsupport.ContactProfile{
 	// 			Country: to.Ptr("usa"),
 	// 			FirstName: to.Ptr("abc"),
@@ -2146,6 +2826,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 			PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 		},
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18.000Z"); return t}()),
+	// 		FileWorkspaceName: to.Ptr("testticket"),
 	// 		ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23.000Z"); return t}()),
 	// 		ProblemClassificationDisplayName: to.Ptr("Batch"),
 	// 		ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid"),
@@ -2170,6 +2851,8 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// 		Status: to.Ptr("Open"),
 	// 		SupportEngineer: &armsupport.Engineer{
 	// 		},
+	// 		SupportPlanDisplayName: to.Ptr("Premier"),
+	// 		SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
 	// 		SupportPlanType: to.Ptr("Premier"),
 	// 		SupportTicketID: to.Ptr("119120321001170"),
 	// 		Title: to.Ptr("my title"),

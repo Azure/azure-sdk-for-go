@@ -23,7 +23,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -46,6 +46,12 @@ func (c *ClientFactory) NewClient() *Client {
 // NewLedgerClient creates a new instance of LedgerClient.
 func (c *ClientFactory) NewLedgerClient() *LedgerClient {
 	subClient, _ := NewLedgerClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewManagedCCFClient creates a new instance of ManagedCCFClient.
+func (c *ClientFactory) NewManagedCCFClient() *ManagedCCFClient {
+	subClient, _ := NewManagedCCFClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

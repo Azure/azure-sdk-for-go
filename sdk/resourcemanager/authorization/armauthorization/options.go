@@ -8,6 +8,272 @@
 
 package armauthorization
 
+// AccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Get
+// method.
+type AccessReviewDefaultSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the AccessReviewDefaultSettingsClient.Put
+// method.
+type AccessReviewDefaultSettingsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionClientCreateOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.Create
+// method.
+type AccessReviewHistoryDefinitionClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.DeleteByID
+// method.
+type AccessReviewHistoryDefinitionClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI
+// method.
+type AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.NewListPager
+// method.
+type AccessReviewHistoryDefinitionInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.GetByID
+// method.
+type AccessReviewHistoryDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.NewListPager
+// method.
+type AccessReviewHistoryDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+	Filter *string
+}
+
+// AccessReviewInstanceClientAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstanceClient.AcceptRecommendations
+// method.
+type AccessReviewInstanceClientAcceptRecommendationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ApplyDecisions
+// method.
+type AccessReviewInstanceClientApplyDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the AccessReviewInstanceClient.ResetDecisions
+// method.
+type AccessReviewInstanceClientResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the AccessReviewInstanceClient.SendReminders
+// method.
+type AccessReviewInstanceClientSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceClientStopOptions contains the optional parameters for the AccessReviewInstanceClient.Stop method.
+type AccessReviewInstanceClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.NewListPager
+// method.
+type AccessReviewInstanceContactedReviewersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.NewListPager
+// method.
+type AccessReviewInstanceDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstanceMyDecisionsClientGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.GetByID
+// method.
+type AccessReviewInstanceMyDecisionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.NewListPager
+// method.
+type AccessReviewInstanceMyDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstanceMyDecisionsClientPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.Patch
+// method.
+type AccessReviewInstanceMyDecisionsClientPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.GetByID
+// method.
+type AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.NewListPager
+// method.
+type AccessReviewInstancesAssignedForMyApprovalClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewInstancesClientCreateOptions contains the optional parameters for the AccessReviewInstancesClient.Create method.
+type AccessReviewInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
+// method.
+type AccessReviewInstancesClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.NewListPager
+// method.
+type AccessReviewInstancesClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager
+// method.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
+// method.
+type AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+type AccessReviewScheduleDefinitionsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.GetByID
+// method.
+type AccessReviewScheduleDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.NewListPager
+// method.
+type AccessReviewScheduleDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// AccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.Stop
+// method.
+type AccessReviewScheduleDefinitionsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientGetOptions contains the optional parameters for the AlertConfigurationsClient.Get method.
+type AlertConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientListForScopeOptions contains the optional parameters for the AlertConfigurationsClient.NewListForScopePager
+// method.
+type AlertConfigurationsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientUpdateOptions contains the optional parameters for the AlertConfigurationsClient.Update method.
+type AlertConfigurationsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertDefinitionsClientGetOptions contains the optional parameters for the AlertDefinitionsClient.Get method.
+type AlertDefinitionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertDefinitionsClientListForScopeOptions contains the optional parameters for the AlertDefinitionsClient.NewListForScopePager
+// method.
+type AlertDefinitionsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncidentsClientGetOptions contains the optional parameters for the AlertIncidentsClient.Get method.
+type AlertIncidentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncidentsClientListForScopeOptions contains the optional parameters for the AlertIncidentsClient.NewListForScopePager
+// method.
+type AlertIncidentsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertIncidentsClientRemediateOptions contains the optional parameters for the AlertIncidentsClient.Remediate method.
+type AlertIncidentsClientRemediateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertOperationClientGetOptions contains the optional parameters for the AlertOperationClient.Get method.
+type AlertOperationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertsClientBeginRefreshAllOptions contains the optional parameters for the AlertsClient.BeginRefreshAll method.
+type AlertsClientBeginRefreshAllOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AlertsClientBeginRefreshOptions contains the optional parameters for the AlertsClient.BeginRefresh method.
+type AlertsClientBeginRefreshOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// AlertsClientGetOptions contains the optional parameters for the AlertsClient.Get method.
+type AlertsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertsClientListForScopeOptions contains the optional parameters for the AlertsClient.NewListForScopePager method.
+type AlertsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertsClientUpdateOptions contains the optional parameters for the AlertsClient.Update method.
+type AlertsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
 // method.
 type ClassicAdministratorsClientListOptions struct {
@@ -96,6 +362,11 @@ type EligibleChildResourcesClientGetOptions struct {
 // GlobalAdministratorClientElevateAccessOptions contains the optional parameters for the GlobalAdministratorClient.ElevateAccess
 // method.
 type GlobalAdministratorClientElevateAccessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
+type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -422,5 +693,159 @@ type RoleManagementPolicyAssignmentsClientGetOptions struct {
 // RoleManagementPolicyAssignmentsClientListForScopeOptions contains the optional parameters for the RoleManagementPolicyAssignmentsClient.NewListForScopePager
 // method.
 type RoleManagementPolicyAssignmentsClientListForScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Get
+// method.
+type ScopeAccessReviewDefaultSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Put
+// method.
+type ScopeAccessReviewDefaultSettingsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionClientCreateOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionClient.Create
+// method.
+type ScopeAccessReviewHistoryDefinitionClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionClient.DeleteByID
+// method.
+type ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionInstanceClient.GenerateDownloadURI
+// method.
+type ScopeAccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionInstancesClient.NewListPager
+// method.
+type ScopeAccessReviewHistoryDefinitionInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.GetByID
+// method.
+type ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.NewListPager
+// method.
+type ScopeAccessReviewHistoryDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+	Filter *string
+}
+
+// ScopeAccessReviewInstanceClientApplyDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.ApplyDecisions
+// method.
+type ScopeAccessReviewInstanceClientApplyDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientRecordAllDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.RecordAllDecisions
+// method.
+type ScopeAccessReviewInstanceClientRecordAllDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientResetDecisionsOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.ResetDecisions
+// method.
+type ScopeAccessReviewInstanceClientResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientSendRemindersOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.SendReminders
+// method.
+type ScopeAccessReviewInstanceClientSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceClientStopOptions contains the optional parameters for the ScopeAccessReviewInstanceClient.Stop
+// method.
+type ScopeAccessReviewInstanceClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceContactedReviewersClient.NewListPager
+// method.
+type ScopeAccessReviewInstanceContactedReviewersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceDecisionsClient.NewListPager
+// method.
+type ScopeAccessReviewInstanceDecisionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewInstancesClientCreateOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.Create
+// method.
+type ScopeAccessReviewInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstancesClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.GetByID
+// method.
+type ScopeAccessReviewInstancesClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.NewListPager
+// method.
+type ScopeAccessReviewInstancesClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.DeleteByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.GetByID
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.NewListPager
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientListOptions struct {
+	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+	// When one specified $filter=assignedToMeToReview(), only items that
+	// are assigned to the calling user to review are returned
+	Filter *string
+}
+
+// ScopeAccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.Stop
+// method.
+type ScopeAccessReviewScheduleDefinitionsClientStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantLevelAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager
+// method.
+type TenantLevelAccessReviewInstanceContactedReviewersClientListOptions struct {
 	// placeholder for future optional parameters
 }

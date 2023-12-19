@@ -32,7 +32,7 @@ type ReplicationEligibilityResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationEligibilityResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationEligibilityResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationEligibilityResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewReplicationEligibilityResultsClient(subscriptionID string, credential az
 //     method.
 func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, resourceGroupName string, virtualMachineName string, options *ReplicationEligibilityResultsClientGetOptions) (ReplicationEligibilityResultsClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationEligibilityResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
 		return ReplicationEligibilityResultsClientGetResponse{}, err
@@ -114,6 +118,10 @@ func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.
 //     method.
 func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, resourceGroupName string, virtualMachineName string, options *ReplicationEligibilityResultsClientListOptions) (ReplicationEligibilityResultsClientListResponse, error) {
 	var err error
+	const operationName = "ReplicationEligibilityResultsClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
 		return ReplicationEligibilityResultsClientListResponse{}, err

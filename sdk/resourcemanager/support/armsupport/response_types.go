@@ -8,6 +8,24 @@
 
 package armsupport
 
+// ChatTranscriptsClientGetResponse contains the response from method ChatTranscriptsClient.Get.
+type ChatTranscriptsClientGetResponse struct {
+	// Object that represents a Chat Transcript resource.
+	ChatTranscriptDetails
+}
+
+// ChatTranscriptsClientListResponse contains the response from method ChatTranscriptsClient.NewListPager.
+type ChatTranscriptsClientListResponse struct {
+	// Collection of Chat Transcripts resources.
+	ChatTranscriptsListResult
+}
+
+// ChatTranscriptsNoSubscriptionClientGetResponse contains the response from method ChatTranscriptsNoSubscriptionClient.Get.
+type ChatTranscriptsNoSubscriptionClientGetResponse struct {
+	// Object that represents a Chat Transcript resource.
+	ChatTranscriptDetails
+}
+
 // CommunicationsClientCheckNameAvailabilityResponse contains the response from method CommunicationsClient.CheckNameAvailability.
 type CommunicationsClientCheckNameAvailabilityResponse struct {
 	// Output of check name availability API.
@@ -30,6 +48,94 @@ type CommunicationsClientGetResponse struct {
 type CommunicationsClientListResponse struct {
 	// Collection of Communication resources.
 	CommunicationsListResult
+}
+
+// CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse contains the response from method CommunicationsNoSubscriptionClient.CheckNameAvailability.
+type CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse struct {
+	// Output of check name availability API.
+	CheckNameAvailabilityOutput
+}
+
+// CommunicationsNoSubscriptionClientCreateResponse contains the response from method CommunicationsNoSubscriptionClient.BeginCreate.
+type CommunicationsNoSubscriptionClientCreateResponse struct {
+	// Object that represents a Communication resource.
+	CommunicationDetails
+}
+
+// CommunicationsNoSubscriptionClientGetResponse contains the response from method CommunicationsNoSubscriptionClient.Get.
+type CommunicationsNoSubscriptionClientGetResponse struct {
+	// Object that represents a Communication resource.
+	CommunicationDetails
+}
+
+// FileWorkspacesClientCreateResponse contains the response from method FileWorkspacesClient.Create.
+type FileWorkspacesClientCreateResponse struct {
+	// Object that represents FileWorkspaceDetails resource
+	FileWorkspaceDetails
+}
+
+// FileWorkspacesClientGetResponse contains the response from method FileWorkspacesClient.Get.
+type FileWorkspacesClientGetResponse struct {
+	// Object that represents FileWorkspaceDetails resource
+	FileWorkspaceDetails
+}
+
+// FileWorkspacesNoSubscriptionClientCreateResponse contains the response from method FileWorkspacesNoSubscriptionClient.Create.
+type FileWorkspacesNoSubscriptionClientCreateResponse struct {
+	// Object that represents FileWorkspaceDetails resource
+	FileWorkspaceDetails
+}
+
+// FileWorkspacesNoSubscriptionClientGetResponse contains the response from method FileWorkspacesNoSubscriptionClient.Get.
+type FileWorkspacesNoSubscriptionClientGetResponse struct {
+	// Object that represents FileWorkspaceDetails resource
+	FileWorkspaceDetails
+}
+
+// FilesClientCreateResponse contains the response from method FilesClient.Create.
+type FilesClientCreateResponse struct {
+	// Object that represents File Details resource
+	FileDetails
+}
+
+// FilesClientGetResponse contains the response from method FilesClient.Get.
+type FilesClientGetResponse struct {
+	// Object that represents File Details resource
+	FileDetails
+}
+
+// FilesClientListResponse contains the response from method FilesClient.NewListPager.
+type FilesClientListResponse struct {
+	// Object that represents a collection of File resources.
+	FilesListResult
+}
+
+// FilesClientUploadResponse contains the response from method FilesClient.Upload.
+type FilesClientUploadResponse struct {
+	// placeholder for future response values
+}
+
+// FilesNoSubscriptionClientCreateResponse contains the response from method FilesNoSubscriptionClient.Create.
+type FilesNoSubscriptionClientCreateResponse struct {
+	// Object that represents File Details resource
+	FileDetails
+}
+
+// FilesNoSubscriptionClientGetResponse contains the response from method FilesNoSubscriptionClient.Get.
+type FilesNoSubscriptionClientGetResponse struct {
+	// Object that represents File Details resource
+	FileDetails
+}
+
+// FilesNoSubscriptionClientListResponse contains the response from method FilesNoSubscriptionClient.NewListPager.
+type FilesNoSubscriptionClientListResponse struct {
+	// Object that represents a collection of File resources.
+	FilesListResult
+}
+
+// FilesNoSubscriptionClientUploadResponse contains the response from method FilesNoSubscriptionClient.Upload.
+type FilesNoSubscriptionClientUploadResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -62,6 +168,18 @@ type ServicesClientListResponse struct {
 	ServicesListResult
 }
 
+// TicketChatTranscriptsNoSubscriptionClientListResponse contains the response from method TicketChatTranscriptsNoSubscriptionClient.NewListPager.
+type TicketChatTranscriptsNoSubscriptionClientListResponse struct {
+	// Collection of Chat Transcripts resources.
+	ChatTranscriptsListResult
+}
+
+// TicketCommunicationsNoSubscriptionClientListResponse contains the response from method TicketCommunicationsNoSubscriptionClient.NewListPager.
+type TicketCommunicationsNoSubscriptionClientListResponse struct {
+	// Collection of Communication resources.
+	CommunicationsListResult
+}
+
 // TicketsClientCheckNameAvailabilityResponse contains the response from method TicketsClient.CheckNameAvailability.
 type TicketsClientCheckNameAvailabilityResponse struct {
 	// Output of check name availability API.
@@ -88,6 +206,36 @@ type TicketsClientListResponse struct {
 
 // TicketsClientUpdateResponse contains the response from method TicketsClient.Update.
 type TicketsClientUpdateResponse struct {
+	// Object that represents SupportTicketDetails resource.
+	TicketDetails
+}
+
+// TicketsNoSubscriptionClientCheckNameAvailabilityResponse contains the response from method TicketsNoSubscriptionClient.CheckNameAvailability.
+type TicketsNoSubscriptionClientCheckNameAvailabilityResponse struct {
+	// Output of check name availability API.
+	CheckNameAvailabilityOutput
+}
+
+// TicketsNoSubscriptionClientCreateResponse contains the response from method TicketsNoSubscriptionClient.BeginCreate.
+type TicketsNoSubscriptionClientCreateResponse struct {
+	// Object that represents SupportTicketDetails resource.
+	TicketDetails
+}
+
+// TicketsNoSubscriptionClientGetResponse contains the response from method TicketsNoSubscriptionClient.Get.
+type TicketsNoSubscriptionClientGetResponse struct {
+	// Object that represents SupportTicketDetails resource.
+	TicketDetails
+}
+
+// TicketsNoSubscriptionClientListResponse contains the response from method TicketsNoSubscriptionClient.NewListPager.
+type TicketsNoSubscriptionClientListResponse struct {
+	// Object that represents a collection of SupportTicket resources.
+	TicketsListResult
+}
+
+// TicketsNoSubscriptionClientUpdateResponse contains the response from method TicketsNoSubscriptionClient.Update.
+type TicketsNoSubscriptionClientUpdateResponse struct {
 	// Object that represents SupportTicketDetails resource.
 	TicketDetails
 }

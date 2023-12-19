@@ -42,3 +42,9 @@ func (c *ClientFactory) NewCustomLocationsClient() *CustomLocationsClient {
 	subClient, _ := NewCustomLocationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+// NewResourceSyncRulesClient creates a new instance of ResourceSyncRulesClient.
+func (c *ClientFactory) NewResourceSyncRulesClient() *ResourceSyncRulesClient {
+	subClient, _ := NewResourceSyncRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

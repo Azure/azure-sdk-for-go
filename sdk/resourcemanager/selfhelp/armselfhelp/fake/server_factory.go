@@ -19,9 +19,12 @@ import (
 
 // ServerFactory is a fake server for instances of the armselfhelp.ClientFactory type.
 type ServerFactory struct {
-	DiagnosticsServer       DiagnosticsServer
-	DiscoverySolutionServer DiscoverySolutionServer
-	OperationsServer        OperationsServer
+	CheckNameAvailabilityServer CheckNameAvailabilityServer
+	DiagnosticsServer           DiagnosticsServer
+	DiscoverySolutionServer     DiscoverySolutionServer
+	OperationsServer            OperationsServer
+	SolutionServer              SolutionServer
+	TroubleshootersServer       TroubleshootersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,11 +39,14 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armselfhelp.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                       *ServerFactory
-	trMu                      sync.Mutex
-	trDiagnosticsServer       *DiagnosticsServerTransport
-	trDiscoverySolutionServer *DiscoverySolutionServerTransport
-	trOperationsServer        *OperationsServerTransport
+	srv                           *ServerFactory
+	trMu                          sync.Mutex
+	trCheckNameAvailabilityServer *CheckNameAvailabilityServerTransport
+	trDiagnosticsServer           *DiagnosticsServerTransport
+	trDiscoverySolutionServer     *DiscoverySolutionServerTransport
+	trOperationsServer            *OperationsServerTransport
+	trSolutionServer              *SolutionServerTransport
+	trTroubleshootersServer       *TroubleshootersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -56,6 +62,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "CheckNameAvailabilityClient":
+		initServer(s, &s.trCheckNameAvailabilityServer, func() *CheckNameAvailabilityServerTransport {
+			return NewCheckNameAvailabilityServerTransport(&s.srv.CheckNameAvailabilityServer)
+		})
+		resp, err = s.trCheckNameAvailabilityServer.Do(req)
 	case "DiagnosticsClient":
 		initServer(s, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
 		resp, err = s.trDiagnosticsServer.Do(req)
@@ -67,6 +78,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SolutionClient":
+		initServer(s, &s.trSolutionServer, func() *SolutionServerTransport { return NewSolutionServerTransport(&s.srv.SolutionServer) })
+		resp, err = s.trSolutionServer.Do(req)
+	case "TroubleshootersClient":
+		initServer(s, &s.trTroubleshootersServer, func() *TroubleshootersServerTransport {
+			return NewTroubleshootersServerTransport(&s.srv.TroubleshootersServer)
+		})
+		resp, err = s.trTroubleshootersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

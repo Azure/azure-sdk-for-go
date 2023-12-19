@@ -1397,6 +1397,10 @@ type StorageAccount struct {
 	// The container in the storage account, only to be specified for WASB storage accounts.
 	Container *string
 
+	// Enable secure channel or not, it's an optional field. Default value is false when cluster version < 5.1 and true when cluster
+	// version >= 5.1 ,
+	EnableSecureChannel *bool
+
 	// The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
 	FileSystem *string
 

@@ -45,7 +45,7 @@ func ExampleJobDetailsClient_Get() {
 	// 		EntityFriendlyName: to.Ptr("testvm"),
 	// 		JobType: to.Ptr("AzureIaaSVMJob"),
 	// 		Operation: to.Ptr("Backup"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014604Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T05:31:07.014Z"); return t}()),
 	// 		Status: to.Ptr("InProgress"),
 	// 		Duration: to.Ptr("PT9.8782791S"),
 	// 		ExtendedInfo: &armrecoveryservicesbackup.AzureIaaSVMJobExtendedInfo{

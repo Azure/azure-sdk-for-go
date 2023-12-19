@@ -37,6 +37,114 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAccessReviewDefaultSettingsClient creates a new instance of AccessReviewDefaultSettingsClient.
+func (c *ClientFactory) NewAccessReviewDefaultSettingsClient() *AccessReviewDefaultSettingsClient {
+	subClient, _ := NewAccessReviewDefaultSettingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewHistoryDefinitionClient creates a new instance of AccessReviewHistoryDefinitionClient.
+func (c *ClientFactory) NewAccessReviewHistoryDefinitionClient() *AccessReviewHistoryDefinitionClient {
+	subClient, _ := NewAccessReviewHistoryDefinitionClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewHistoryDefinitionInstanceClient creates a new instance of AccessReviewHistoryDefinitionInstanceClient.
+func (c *ClientFactory) NewAccessReviewHistoryDefinitionInstanceClient() *AccessReviewHistoryDefinitionInstanceClient {
+	subClient, _ := NewAccessReviewHistoryDefinitionInstanceClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewHistoryDefinitionInstancesClient creates a new instance of AccessReviewHistoryDefinitionInstancesClient.
+func (c *ClientFactory) NewAccessReviewHistoryDefinitionInstancesClient() *AccessReviewHistoryDefinitionInstancesClient {
+	subClient, _ := NewAccessReviewHistoryDefinitionInstancesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewHistoryDefinitionsClient creates a new instance of AccessReviewHistoryDefinitionsClient.
+func (c *ClientFactory) NewAccessReviewHistoryDefinitionsClient() *AccessReviewHistoryDefinitionsClient {
+	subClient, _ := NewAccessReviewHistoryDefinitionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstanceClient creates a new instance of AccessReviewInstanceClient.
+func (c *ClientFactory) NewAccessReviewInstanceClient() *AccessReviewInstanceClient {
+	subClient, _ := NewAccessReviewInstanceClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstanceContactedReviewersClient creates a new instance of AccessReviewInstanceContactedReviewersClient.
+func (c *ClientFactory) NewAccessReviewInstanceContactedReviewersClient() *AccessReviewInstanceContactedReviewersClient {
+	subClient, _ := NewAccessReviewInstanceContactedReviewersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstanceDecisionsClient creates a new instance of AccessReviewInstanceDecisionsClient.
+func (c *ClientFactory) NewAccessReviewInstanceDecisionsClient() *AccessReviewInstanceDecisionsClient {
+	subClient, _ := NewAccessReviewInstanceDecisionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient.
+func (c *ClientFactory) NewAccessReviewInstanceMyDecisionsClient() *AccessReviewInstanceMyDecisionsClient {
+	subClient, _ := NewAccessReviewInstanceMyDecisionsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstancesAssignedForMyApprovalClient creates a new instance of AccessReviewInstancesAssignedForMyApprovalClient.
+func (c *ClientFactory) NewAccessReviewInstancesAssignedForMyApprovalClient() *AccessReviewInstancesAssignedForMyApprovalClient {
+	subClient, _ := NewAccessReviewInstancesAssignedForMyApprovalClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewInstancesClient creates a new instance of AccessReviewInstancesClient.
+func (c *ClientFactory) NewAccessReviewInstancesClient() *AccessReviewInstancesClient {
+	subClient, _ := NewAccessReviewInstancesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient creates a new instance of AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.
+func (c *ClientFactory) NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient() *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient {
+	subClient, _ := NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAccessReviewScheduleDefinitionsClient creates a new instance of AccessReviewScheduleDefinitionsClient.
+func (c *ClientFactory) NewAccessReviewScheduleDefinitionsClient() *AccessReviewScheduleDefinitionsClient {
+	subClient, _ := NewAccessReviewScheduleDefinitionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAlertConfigurationsClient creates a new instance of AlertConfigurationsClient.
+func (c *ClientFactory) NewAlertConfigurationsClient() *AlertConfigurationsClient {
+	subClient, _ := NewAlertConfigurationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAlertDefinitionsClient creates a new instance of AlertDefinitionsClient.
+func (c *ClientFactory) NewAlertDefinitionsClient() *AlertDefinitionsClient {
+	subClient, _ := NewAlertDefinitionsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAlertIncidentsClient creates a new instance of AlertIncidentsClient.
+func (c *ClientFactory) NewAlertIncidentsClient() *AlertIncidentsClient {
+	subClient, _ := NewAlertIncidentsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAlertOperationClient creates a new instance of AlertOperationClient.
+func (c *ClientFactory) NewAlertOperationClient() *AlertOperationClient {
+	subClient, _ := NewAlertOperationClient(c.credential, c.options)
+	return subClient
+}
+
+// NewAlertsClient creates a new instance of AlertsClient.
+func (c *ClientFactory) NewAlertsClient() *AlertsClient {
+	subClient, _ := NewAlertsClient(c.credential, c.options)
+	return subClient
+}
+
 // NewClassicAdministratorsClient creates a new instance of ClassicAdministratorsClient.
 func (c *ClientFactory) NewClassicAdministratorsClient() *ClassicAdministratorsClient {
 	subClient, _ := NewClassicAdministratorsClient(c.subscriptionID, c.credential, c.options)
@@ -58,6 +166,12 @@ func (c *ClientFactory) NewEligibleChildResourcesClient() *EligibleChildResource
 // NewGlobalAdministratorClient creates a new instance of GlobalAdministratorClient.
 func (c *ClientFactory) NewGlobalAdministratorClient() *GlobalAdministratorClient {
 	subClient, _ := NewGlobalAdministratorClient(c.credential, c.options)
+	return subClient
+}
+
+// NewOperationsClient creates a new instance of OperationsClient.
+func (c *ClientFactory) NewOperationsClient() *OperationsClient {
+	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
@@ -130,5 +244,71 @@ func (c *ClientFactory) NewRoleManagementPoliciesClient() *RoleManagementPolicie
 // NewRoleManagementPolicyAssignmentsClient creates a new instance of RoleManagementPolicyAssignmentsClient.
 func (c *ClientFactory) NewRoleManagementPolicyAssignmentsClient() *RoleManagementPolicyAssignmentsClient {
 	subClient, _ := NewRoleManagementPolicyAssignmentsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewDefaultSettingsClient creates a new instance of ScopeAccessReviewDefaultSettingsClient.
+func (c *ClientFactory) NewScopeAccessReviewDefaultSettingsClient() *ScopeAccessReviewDefaultSettingsClient {
+	subClient, _ := NewScopeAccessReviewDefaultSettingsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewHistoryDefinitionClient creates a new instance of ScopeAccessReviewHistoryDefinitionClient.
+func (c *ClientFactory) NewScopeAccessReviewHistoryDefinitionClient() *ScopeAccessReviewHistoryDefinitionClient {
+	subClient, _ := NewScopeAccessReviewHistoryDefinitionClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewHistoryDefinitionInstanceClient creates a new instance of ScopeAccessReviewHistoryDefinitionInstanceClient.
+func (c *ClientFactory) NewScopeAccessReviewHistoryDefinitionInstanceClient() *ScopeAccessReviewHistoryDefinitionInstanceClient {
+	subClient, _ := NewScopeAccessReviewHistoryDefinitionInstanceClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewHistoryDefinitionInstancesClient creates a new instance of ScopeAccessReviewHistoryDefinitionInstancesClient.
+func (c *ClientFactory) NewScopeAccessReviewHistoryDefinitionInstancesClient() *ScopeAccessReviewHistoryDefinitionInstancesClient {
+	subClient, _ := NewScopeAccessReviewHistoryDefinitionInstancesClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewHistoryDefinitionsClient creates a new instance of ScopeAccessReviewHistoryDefinitionsClient.
+func (c *ClientFactory) NewScopeAccessReviewHistoryDefinitionsClient() *ScopeAccessReviewHistoryDefinitionsClient {
+	subClient, _ := NewScopeAccessReviewHistoryDefinitionsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewInstanceClient creates a new instance of ScopeAccessReviewInstanceClient.
+func (c *ClientFactory) NewScopeAccessReviewInstanceClient() *ScopeAccessReviewInstanceClient {
+	subClient, _ := NewScopeAccessReviewInstanceClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewInstanceContactedReviewersClient creates a new instance of ScopeAccessReviewInstanceContactedReviewersClient.
+func (c *ClientFactory) NewScopeAccessReviewInstanceContactedReviewersClient() *ScopeAccessReviewInstanceContactedReviewersClient {
+	subClient, _ := NewScopeAccessReviewInstanceContactedReviewersClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewInstanceDecisionsClient creates a new instance of ScopeAccessReviewInstanceDecisionsClient.
+func (c *ClientFactory) NewScopeAccessReviewInstanceDecisionsClient() *ScopeAccessReviewInstanceDecisionsClient {
+	subClient, _ := NewScopeAccessReviewInstanceDecisionsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewInstancesClient creates a new instance of ScopeAccessReviewInstancesClient.
+func (c *ClientFactory) NewScopeAccessReviewInstancesClient() *ScopeAccessReviewInstancesClient {
+	subClient, _ := NewScopeAccessReviewInstancesClient(c.credential, c.options)
+	return subClient
+}
+
+// NewScopeAccessReviewScheduleDefinitionsClient creates a new instance of ScopeAccessReviewScheduleDefinitionsClient.
+func (c *ClientFactory) NewScopeAccessReviewScheduleDefinitionsClient() *ScopeAccessReviewScheduleDefinitionsClient {
+	subClient, _ := NewScopeAccessReviewScheduleDefinitionsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewTenantLevelAccessReviewInstanceContactedReviewersClient creates a new instance of TenantLevelAccessReviewInstanceContactedReviewersClient.
+func (c *ClientFactory) NewTenantLevelAccessReviewInstanceContactedReviewersClient() *TenantLevelAccessReviewInstanceContactedReviewersClient {
+	subClient, _ := NewTenantLevelAccessReviewInstanceContactedReviewersClient(c.credential, c.options)
 	return subClient
 }

@@ -47,7 +47,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Creates applications for the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
@@ -75,7 +75,7 @@ func (client *ApplicationsClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Creates applications for the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ApplicationsClient) create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginCreate"
@@ -121,7 +121,7 @@ func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,7 +133,7 @@ func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Deletes the specified application on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
@@ -160,7 +160,7 @@ func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes the specified application on the HDInsight cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginDelete"
@@ -206,7 +206,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets properties of the specified application.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
@@ -266,7 +266,7 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +284,7 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 // GetAzureAsyncOperationStatus - Gets the async operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
@@ -341,7 +341,7 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -358,7 +358,7 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleResponse(res
 
 // NewListByClusterPager - Lists all of the applications for the HDInsight cluster.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2023-04-15-preview
 //   - resourceGroupName - The name of the resource group.
 //   - clusterName - The name of the cluster.
 //   - options - ApplicationsClientListByClusterOptions contains the optional parameters for the ApplicationsClient.NewListByClusterPager
@@ -406,7 +406,7 @@ func (client *ApplicationsClient) listByClusterCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2023-04-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

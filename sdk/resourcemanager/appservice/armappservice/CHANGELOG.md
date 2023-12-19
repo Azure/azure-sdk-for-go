@@ -1,5 +1,24 @@
 # Release History
 
+## 2.3.0 (2023-11-30)
+### Features Added
+
+- New enum type `DaprLogLevel` with values `DaprLogLevelDebug`, `DaprLogLevelError`, `DaprLogLevelInfo`, `DaprLogLevelWarn`
+- New enum type `TLSCipherSuites` with values `TLSCipherSuitesTLSAES128GCMSHA256`, `TLSCipherSuitesTLSAES256GCMSHA384`, `TLSCipherSuitesTLSECDHEECDSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSECDHEECDSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSECDHEECDSAWITHAES256GCMSHA384`, `TLSCipherSuitesTLSECDHERSAWITHAES128CBCSHA`, `TLSCipherSuitesTLSECDHERSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSECDHERSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSECDHERSAWITHAES256CBCSHA`, `TLSCipherSuitesTLSECDHERSAWITHAES256CBCSHA384`, `TLSCipherSuitesTLSECDHERSAWITHAES256GCMSHA384`, `TLSCipherSuitesTLSRSAWITHAES128CBCSHA`, `TLSCipherSuitesTLSRSAWITHAES128CBCSHA256`, `TLSCipherSuitesTLSRSAWITHAES128GCMSHA256`, `TLSCipherSuitesTLSRSAWITHAES256CBCSHA`, `TLSCipherSuitesTLSRSAWITHAES256CBCSHA256`, `TLSCipherSuitesTLSRSAWITHAES256GCMSHA384`
+- New function `*ClientFactory.NewGetUsagesInLocationClient() *GetUsagesInLocationClient`
+- New function `NewGetUsagesInLocationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GetUsagesInLocationClient, error)`
+- New function `*GetUsagesInLocationClient.NewListPager(string, *GetUsagesInLocationClientListOptions) *runtime.Pager[GetUsagesInLocationClientListResponse]`
+- New function `*WebSiteManagementClient.NewListAseRegionsPager(*WebSiteManagementClientListAseRegionsOptions) *runtime.Pager[WebSiteManagementClientListAseRegionsResponse]`
+- New struct `AseRegion`
+- New struct `AseRegionCollection`
+- New struct `AseRegionProperties`
+- New struct `DaprConfig`
+- New struct `ResourceConfig`
+- New field `EnvironmentID` in struct `ResourceNameAvailabilityRequest`
+- New field `MinTLSCipherSuite` in struct `SiteConfig`
+- New field `DaprConfig`, `ResourceConfig`, `WorkloadProfileName` in struct `SiteProperties`
+
+
 ## 2.2.0 (2023-11-24)
 ### Features Added
 

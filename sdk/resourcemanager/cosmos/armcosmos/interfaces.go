@@ -17,6 +17,16 @@ type BackupPolicyClassification interface {
 	GetBackupPolicy() *BackupPolicy
 }
 
+// DataTransferDataSourceSinkClassification provides polymorphic access to related types.
+// Call the interface's GetDataTransferDataSourceSink() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureBlobDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *DataTransferDataSourceSink, *MongoDataTransferDataSourceSink,
+// - *SQLDataTransferDataSourceSink
+type DataTransferDataSourceSinkClassification interface {
+	// GetDataTransferDataSourceSink returns the DataTransferDataSourceSink content of the underlying type.
+	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
+}
+
 // ServiceResourcePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetServiceResourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

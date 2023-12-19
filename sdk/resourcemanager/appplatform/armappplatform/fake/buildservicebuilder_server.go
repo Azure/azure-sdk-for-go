@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -39,6 +39,10 @@ type BuildServiceBuilderServer struct {
 	// NewListPager is the fake for method BuildServiceBuilderClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, serviceName string, buildServiceName string, options *armappplatform.BuildServiceBuilderClientListOptions) (resp azfake.PagerResponder[armappplatform.BuildServiceBuilderClientListResponse])
+
+	// ListDeployments is the fake for method BuildServiceBuilderClient.ListDeployments
+	// HTTP status codes to indicate success: http.StatusOK
+	ListDeployments func(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, options *armappplatform.BuildServiceBuilderClientListDeploymentsOptions) (resp azfake.Responder[armappplatform.BuildServiceBuilderClientListDeploymentsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBuildServiceBuilderServerTransport creates a new instance of BuildServiceBuilderServerTransport with the provided implementation.
@@ -82,6 +86,8 @@ func (b *BuildServiceBuilderServerTransport) Do(req *http.Request) (*http.Respon
 		resp, err = b.dispatchGet(req)
 	case "BuildServiceBuilderClient.NewListPager":
 		resp, err = b.dispatchNewListPager(req)
+	case "BuildServiceBuilderClient.ListDeployments":
+		resp, err = b.dispatchListDeployments(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -283,6 +289,47 @@ func (b *BuildServiceBuilderServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	if !server.PagerResponderMore(newListPager) {
 		b.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BuildServiceBuilderServerTransport) dispatchListDeployments(req *http.Request) (*http.Response, error) {
+	if b.srv.ListDeployments == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDeployments not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buildServices/(?P<buildServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builders/(?P<builderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listUsingDeployments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	buildServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("buildServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	builderNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("builderName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.ListDeployments(req.Context(), resourceGroupNameParam, serviceNameParam, buildServiceNameParam, builderNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentList, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

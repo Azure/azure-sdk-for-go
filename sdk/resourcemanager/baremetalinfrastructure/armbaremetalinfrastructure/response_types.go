@@ -16,14 +16,32 @@ type AzureBareMetalInstancesClientGetResponse struct {
 
 // AzureBareMetalInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalInstancesClient.NewListByResourceGroupPager.
 type AzureBareMetalInstancesClientListByResourceGroupResponse struct {
-	// The response from the List AzureBareMetal Instances operation.
+	// The response from the List Azure Bare Metal Instances operation.
 	AzureBareMetalInstancesListResult
 }
 
 // AzureBareMetalInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalInstancesClient.NewListBySubscriptionPager.
 type AzureBareMetalInstancesClientListBySubscriptionResponse struct {
-	// The response from the List AzureBareMetal Instances operation.
+	// The response from the List Azure Bare Metal Instances operation.
 	AzureBareMetalInstancesListResult
+}
+
+// AzureBareMetalInstancesClientRestartResponse contains the response from method AzureBareMetalInstancesClient.BeginRestart.
+type AzureBareMetalInstancesClientRestartResponse struct {
+	// The OperationStatus object returns the state of an asynchronous operation.
+	OperationStatus
+}
+
+// AzureBareMetalInstancesClientShutdownResponse contains the response from method AzureBareMetalInstancesClient.BeginShutdown.
+type AzureBareMetalInstancesClientShutdownResponse struct {
+	// The OperationStatus object returns the state of an asynchronous operation.
+	OperationStatus
+}
+
+// AzureBareMetalInstancesClientStartResponse contains the response from method AzureBareMetalInstancesClient.BeginStart.
+type AzureBareMetalInstancesClientStartResponse struct {
+	// The OperationStatus object returns the state of an asynchronous operation.
+	OperationStatus
 }
 
 // AzureBareMetalInstancesClientUpdateResponse contains the response from method AzureBareMetalInstancesClient.Update.
@@ -32,8 +50,43 @@ type AzureBareMetalInstancesClientUpdateResponse struct {
 	AzureBareMetalInstance
 }
 
+// AzureBareMetalStorageInstancesClientCreateResponse contains the response from method AzureBareMetalStorageInstancesClient.Create.
+type AzureBareMetalStorageInstancesClientCreateResponse struct {
+	// AzureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties)
+	AzureBareMetalStorageInstance
+}
+
+// AzureBareMetalStorageInstancesClientDeleteResponse contains the response from method AzureBareMetalStorageInstancesClient.Delete.
+type AzureBareMetalStorageInstancesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AzureBareMetalStorageInstancesClientGetResponse contains the response from method AzureBareMetalStorageInstancesClient.Get.
+type AzureBareMetalStorageInstancesClientGetResponse struct {
+	// AzureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties)
+	AzureBareMetalStorageInstance
+}
+
+// AzureBareMetalStorageInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalStorageInstancesClient.NewListByResourceGroupPager.
+type AzureBareMetalStorageInstancesClientListByResourceGroupResponse struct {
+	// The response from the Get AzureBareMetalStorageInstances operation.
+	AzureBareMetalStorageInstancesListResult
+}
+
+// AzureBareMetalStorageInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalStorageInstancesClient.NewListBySubscriptionPager.
+type AzureBareMetalStorageInstancesClientListBySubscriptionResponse struct {
+	// The response from the Get AzureBareMetalStorageInstances operation.
+	AzureBareMetalStorageInstancesListResult
+}
+
+// AzureBareMetalStorageInstancesClientUpdateResponse contains the response from method AzureBareMetalStorageInstancesClient.Update.
+type AzureBareMetalStorageInstancesClientUpdateResponse struct {
+	// AzureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties)
+	AzureBareMetalStorageInstance
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// List of AzureBareMetal operations
-	OperationList
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }

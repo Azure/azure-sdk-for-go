@@ -52,12 +52,16 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, resourceName string, options *armsignalr.ClientListKeysOptions) (resp azfake.Responder[armsignalr.ClientListKeysResponse], errResp azfake.ErrorResponder)
 
+	// ListReplicaSKUs is the fake for method Client.ListReplicaSKUs
+	// HTTP status codes to indicate success: http.StatusOK
+	ListReplicaSKUs func(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *armsignalr.ClientListReplicaSKUsOptions) (resp azfake.Responder[armsignalr.ClientListReplicaSKUsResponse], errResp azfake.ErrorResponder)
+
 	// ListSKUs is the fake for method Client.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSKUs func(ctx context.Context, resourceGroupName string, resourceName string, options *armsignalr.ClientListSKUsOptions) (resp azfake.Responder[armsignalr.ClientListSKUsResponse], errResp azfake.ErrorResponder)
 
 	// BeginRegenerateKey is the fake for method Client.BeginRegenerateKey
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRegenerateKey func(ctx context.Context, resourceGroupName string, resourceName string, parameters armsignalr.RegenerateKeyParameters, options *armsignalr.ClientBeginRegenerateKeyOptions) (resp azfake.PollerResponder[armsignalr.ClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method Client.BeginRestart
@@ -124,6 +128,8 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		resp, err = s.dispatchNewListBySubscriptionPager(req)
 	case "Client.ListKeys":
 		resp, err = s.dispatchListKeys(req)
+	case "Client.ListReplicaSKUs":
+		resp, err = s.dispatchListReplicaSKUs(req)
 	case "Client.ListSKUs":
 		resp, err = s.dispatchListSKUs(req)
 	case "Client.BeginRegenerateKey":
@@ -404,6 +410,43 @@ func (s *ServerTransport) dispatchListKeys(req *http.Request) (*http.Response, e
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchListReplicaSKUs(req *http.Request) (*http.Response, error) {
+	if s.srv.ListReplicaSKUs == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListReplicaSKUs not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SignalRService/signalR/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicas/(?P<replicaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	replicaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicaName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListReplicaSKUs(req.Context(), resourceGroupNameParam, resourceNameParam, replicaNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SKUList, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
 	if s.srv.ListSKUs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
@@ -474,9 +517,9 @@ func (s *ServerTransport) dispatchBeginRegenerateKey(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginRegenerateKey.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRegenerateKey) {
 		s.beginRegenerateKey.remove(req)

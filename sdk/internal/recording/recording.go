@@ -941,8 +941,19 @@ type RecordingHTTPClient struct {
 }
 
 func (c RecordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
+	origScheme := req.URL.Scheme
+	origHost := req.URL.Host
 	req = c.options.ReplaceAuthority(c.t, req)
-	return c.defaultClient.Do(req)
+	resp, err := c.defaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	// if the request succeeds, restore the scheme/host with their original values.
+	// this is imporant for things like LROs that might use the originating URL to
+	// poll for status and/or fetch the final result.
+	resp.Request.URL.Scheme = origScheme
+	resp.Request.URL.Host = origHost
+	return resp, nil
 }
 
 // NewRecordingHTTPClient returns a type that implements `azcore.Transporter`. This will automatically route tests on the `Do` call.

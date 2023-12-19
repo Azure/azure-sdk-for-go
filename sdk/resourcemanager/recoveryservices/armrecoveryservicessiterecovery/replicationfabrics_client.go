@@ -32,7 +32,7 @@ type ReplicationFabricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationFabricsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationFabricsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *ReplicationFabricsClient) BeginCheckConsistency(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientCheckConsistencyResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientCheckConsistencyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientCheckConsistencyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientCheckConsistencyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *ReplicationFabricsClient) BeginCheckConsistency(ctx context.Contex
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationFabricsClientBeginCheckConsistencyOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginCheckConsistency"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkConsistencyCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -132,10 +140,14 @@ func (client *ReplicationFabricsClient) BeginCreate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -145,6 +157,10 @@ func (client *ReplicationFabricsClient) BeginCreate(ctx context.Context, resourc
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) create(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, input FabricCreationInput, options *ReplicationFabricsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, fabricName, input, options)
 	if err != nil {
 		return nil, err
@@ -208,10 +224,14 @@ func (client *ReplicationFabricsClient) BeginDelete(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -221,6 +241,10 @@ func (client *ReplicationFabricsClient) BeginDelete(ctx context.Context, resourc
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -275,6 +299,10 @@ func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context,
 //   - options - ReplicationFabricsClientGetOptions contains the optional parameters for the ReplicationFabricsClient.Get method.
 func (client *ReplicationFabricsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationFabricsClientGetOptions) (ReplicationFabricsClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return ReplicationFabricsClientGetResponse{}, err
@@ -346,25 +374,20 @@ func (client *ReplicationFabricsClient) NewListPager(resourceName string, resour
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationFabricsClientListResponse) (ReplicationFabricsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationFabricsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationFabricsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationFabricsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationFabricsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -418,10 +441,14 @@ func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientMigrateToAADResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientMigrateToAADResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientMigrateToAADResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientMigrateToAADResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -431,6 +458,10 @@ func (client *ReplicationFabricsClient) BeginMigrateToAAD(ctx context.Context, r
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationFabricsClientBeginMigrateToAADOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginMigrateToAAD"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.migrateToAADCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -490,10 +521,14 @@ func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientPurgeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientPurgeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientPurgeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -503,6 +538,10 @@ func (client *ReplicationFabricsClient) BeginPurge(ctx context.Context, resource
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) purge(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, options *ReplicationFabricsClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginPurge"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.purgeCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
 	if err != nil {
 		return nil, err
@@ -563,10 +602,14 @@ func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientReassociateGatewayResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientReassociateGatewayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientReassociateGatewayResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientReassociateGatewayResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -576,6 +619,10 @@ func (client *ReplicationFabricsClient) BeginReassociateGateway(ctx context.Cont
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, options *ReplicationFabricsClientBeginReassociateGatewayOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginReassociateGateway"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reassociateGatewayCreateRequest(ctx, resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, options)
 	if err != nil {
 		return nil, err
@@ -640,10 +687,14 @@ func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationFabricsClientRenewCertificateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationFabricsClientRenewCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationFabricsClientRenewCertificateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationFabricsClientRenewCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -653,6 +704,10 @@ func (client *ReplicationFabricsClient) BeginRenewCertificate(ctx context.Contex
 // Generated from API version 2023-06-01
 func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, renewCertificate RenewCertificateInput, options *ReplicationFabricsClientBeginRenewCertificateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationFabricsClient.BeginRenewCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.renewCertificateCreateRequest(ctx, resourceName, resourceGroupName, fabricName, renewCertificate, options)
 	if err != nil {
 		return nil, err

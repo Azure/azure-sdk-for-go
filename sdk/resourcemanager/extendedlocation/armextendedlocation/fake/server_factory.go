@@ -19,7 +19,8 @@ import (
 
 // ServerFactory is a fake server for instances of the armextendedlocation.ClientFactory type.
 type ServerFactory struct {
-	CustomLocationsServer CustomLocationsServer
+	CustomLocationsServer   CustomLocationsServer
+	ResourceSyncRulesServer ResourceSyncRulesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -34,9 +35,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armextendedlocation.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                     *ServerFactory
-	trMu                    sync.Mutex
-	trCustomLocationsServer *CustomLocationsServerTransport
+	srv                       *ServerFactory
+	trMu                      sync.Mutex
+	trCustomLocationsServer   *CustomLocationsServerTransport
+	trResourceSyncRulesServer *ResourceSyncRulesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -57,6 +59,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCustomLocationsServerTransport(&s.srv.CustomLocationsServer)
 		})
 		resp, err = s.trCustomLocationsServer.Do(req)
+	case "ResourceSyncRulesClient":
+		initServer(s, &s.trResourceSyncRulesServer, func() *ResourceSyncRulesServerTransport {
+			return NewResourceSyncRulesServerTransport(&s.srv.ResourceSyncRulesServer)
+		})
+		resp, err = s.trResourceSyncRulesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -19,16 +19,19 @@ import (
 
 // ServerFactory is a fake server for instances of the armeventhub.ClientFactory type.
 type ServerFactory struct {
-	ClustersServer                   ClustersServer
-	ConfigurationServer              ConfigurationServer
-	ConsumerGroupsServer             ConsumerGroupsServer
-	DisasterRecoveryConfigsServer    DisasterRecoveryConfigsServer
-	EventHubsServer                  EventHubsServer
-	NamespacesServer                 NamespacesServer
-	OperationsServer                 OperationsServer
-	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	PrivateLinkResourcesServer       PrivateLinkResourcesServer
-	SchemaRegistryServer             SchemaRegistryServer
+	ApplicationGroupServer                       ApplicationGroupServer
+	ClustersServer                               ClustersServer
+	ConfigurationServer                          ConfigurationServer
+	ConsumerGroupsServer                         ConsumerGroupsServer
+	DisasterRecoveryConfigsServer                DisasterRecoveryConfigsServer
+	EventHubsServer                              EventHubsServer
+	NamespacesServer                             NamespacesServer
+	NetworkSecurityPerimeterConfigurationServer  NetworkSecurityPerimeterConfigurationServer
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+	OperationsServer                             OperationsServer
+	PrivateEndpointConnectionsServer             PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer                   PrivateLinkResourcesServer
+	SchemaRegistryServer                         SchemaRegistryServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -43,18 +46,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armeventhub.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trClustersServer                   *ClustersServerTransport
-	trConfigurationServer              *ConfigurationServerTransport
-	trConsumerGroupsServer             *ConsumerGroupsServerTransport
-	trDisasterRecoveryConfigsServer    *DisasterRecoveryConfigsServerTransport
-	trEventHubsServer                  *EventHubsServerTransport
-	trNamespacesServer                 *NamespacesServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trSchemaRegistryServer             *SchemaRegistryServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trApplicationGroupServer                       *ApplicationGroupServerTransport
+	trClustersServer                               *ClustersServerTransport
+	trConfigurationServer                          *ConfigurationServerTransport
+	trConsumerGroupsServer                         *ConsumerGroupsServerTransport
+	trDisasterRecoveryConfigsServer                *DisasterRecoveryConfigsServerTransport
+	trEventHubsServer                              *EventHubsServerTransport
+	trNamespacesServer                             *NamespacesServerTransport
+	trNetworkSecurityPerimeterConfigurationServer  *NetworkSecurityPerimeterConfigurationServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trSchemaRegistryServer                         *SchemaRegistryServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -70,6 +76,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ApplicationGroupClient":
+		initServer(s, &s.trApplicationGroupServer, func() *ApplicationGroupServerTransport {
+			return NewApplicationGroupServerTransport(&s.srv.ApplicationGroupServer)
+		})
+		resp, err = s.trApplicationGroupServer.Do(req)
 	case "ClustersClient":
 		initServer(s, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
 		resp, err = s.trClustersServer.Do(req)
@@ -94,6 +105,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "NamespacesClient":
 		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
 		resp, err = s.trNamespacesServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationServer, func() *NetworkSecurityPerimeterConfigurationServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(s, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

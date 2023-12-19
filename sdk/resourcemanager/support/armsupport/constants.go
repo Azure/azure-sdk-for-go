@@ -10,7 +10,7 @@ package armsupport
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 // CommunicationDirection - Direction of communication.
@@ -42,6 +42,42 @@ func PossibleCommunicationTypeValues() []CommunicationType {
 	return []CommunicationType{
 		CommunicationTypePhone,
 		CommunicationTypeWeb,
+	}
+}
+
+// Consent - Advanced diagnostic consent to be updated on the support ticket.
+type Consent string
+
+const (
+	ConsentNo  Consent = "No"
+	ConsentYes Consent = "Yes"
+)
+
+// PossibleConsentValues returns the possible values for the Consent const type.
+func PossibleConsentValues() []Consent {
+	return []Consent{
+		ConsentNo,
+		ConsentYes,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -100,6 +136,14 @@ func PossibleStatusValues() []Status {
 	}
 }
 
+// TranscriptContentType - Content type.
+type TranscriptContentType string
+
+// PossibleTranscriptContentTypeValues returns the possible values for the TranscriptContentType const type.
+func PossibleTranscriptContentTypeValues() []TranscriptContentType {
+	return []TranscriptContentType{}
+}
+
 // Type - The type of resource.
 type Type string
 
@@ -113,5 +157,21 @@ func PossibleTypeValues() []Type {
 	return []Type{
 		TypeMicrosoftSupportCommunications,
 		TypeMicrosoftSupportSupportTickets,
+	}
+}
+
+// UserConsent - User consent value provided
+type UserConsent string
+
+const (
+	UserConsentNo  UserConsent = "No"
+	UserConsentYes UserConsent = "Yes"
+)
+
+// PossibleUserConsentValues returns the possible values for the UserConsent const type.
+func PossibleUserConsentValues() []UserConsent {
+	return []UserConsent{
+		UserConsentNo,
+		UserConsentYes,
 	}
 }

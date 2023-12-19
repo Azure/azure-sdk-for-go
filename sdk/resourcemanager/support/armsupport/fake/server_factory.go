@@ -19,11 +19,21 @@ import (
 
 // ServerFactory is a fake server for instances of the armsupport.ClientFactory type.
 type ServerFactory struct {
-	CommunicationsServer         CommunicationsServer
-	OperationsServer             OperationsServer
-	ProblemClassificationsServer ProblemClassificationsServer
-	ServicesServer               ServicesServer
-	TicketsServer                TicketsServer
+	ChatTranscriptsServer                     ChatTranscriptsServer
+	ChatTranscriptsNoSubscriptionServer       ChatTranscriptsNoSubscriptionServer
+	CommunicationsServer                      CommunicationsServer
+	CommunicationsNoSubscriptionServer        CommunicationsNoSubscriptionServer
+	FileWorkspacesServer                      FileWorkspacesServer
+	FileWorkspacesNoSubscriptionServer        FileWorkspacesNoSubscriptionServer
+	FilesServer                               FilesServer
+	FilesNoSubscriptionServer                 FilesNoSubscriptionServer
+	OperationsServer                          OperationsServer
+	ProblemClassificationsServer              ProblemClassificationsServer
+	ServicesServer                            ServicesServer
+	TicketChatTranscriptsNoSubscriptionServer TicketChatTranscriptsNoSubscriptionServer
+	TicketCommunicationsNoSubscriptionServer  TicketCommunicationsNoSubscriptionServer
+	TicketsServer                             TicketsServer
+	TicketsNoSubscriptionServer               TicketsNoSubscriptionServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -38,13 +48,23 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armsupport.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                            *ServerFactory
-	trMu                           sync.Mutex
-	trCommunicationsServer         *CommunicationsServerTransport
-	trOperationsServer             *OperationsServerTransport
-	trProblemClassificationsServer *ProblemClassificationsServerTransport
-	trServicesServer               *ServicesServerTransport
-	trTicketsServer                *TicketsServerTransport
+	srv                                         *ServerFactory
+	trMu                                        sync.Mutex
+	trChatTranscriptsServer                     *ChatTranscriptsServerTransport
+	trChatTranscriptsNoSubscriptionServer       *ChatTranscriptsNoSubscriptionServerTransport
+	trCommunicationsServer                      *CommunicationsServerTransport
+	trCommunicationsNoSubscriptionServer        *CommunicationsNoSubscriptionServerTransport
+	trFileWorkspacesServer                      *FileWorkspacesServerTransport
+	trFileWorkspacesNoSubscriptionServer        *FileWorkspacesNoSubscriptionServerTransport
+	trFilesServer                               *FilesServerTransport
+	trFilesNoSubscriptionServer                 *FilesNoSubscriptionServerTransport
+	trOperationsServer                          *OperationsServerTransport
+	trProblemClassificationsServer              *ProblemClassificationsServerTransport
+	trServicesServer                            *ServicesServerTransport
+	trTicketChatTranscriptsNoSubscriptionServer *TicketChatTranscriptsNoSubscriptionServerTransport
+	trTicketCommunicationsNoSubscriptionServer  *TicketCommunicationsNoSubscriptionServerTransport
+	trTicketsServer                             *TicketsServerTransport
+	trTicketsNoSubscriptionServer               *TicketsNoSubscriptionServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -60,11 +80,44 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ChatTranscriptsClient":
+		initServer(s, &s.trChatTranscriptsServer, func() *ChatTranscriptsServerTransport {
+			return NewChatTranscriptsServerTransport(&s.srv.ChatTranscriptsServer)
+		})
+		resp, err = s.trChatTranscriptsServer.Do(req)
+	case "ChatTranscriptsNoSubscriptionClient":
+		initServer(s, &s.trChatTranscriptsNoSubscriptionServer, func() *ChatTranscriptsNoSubscriptionServerTransport {
+			return NewChatTranscriptsNoSubscriptionServerTransport(&s.srv.ChatTranscriptsNoSubscriptionServer)
+		})
+		resp, err = s.trChatTranscriptsNoSubscriptionServer.Do(req)
 	case "CommunicationsClient":
 		initServer(s, &s.trCommunicationsServer, func() *CommunicationsServerTransport {
 			return NewCommunicationsServerTransport(&s.srv.CommunicationsServer)
 		})
 		resp, err = s.trCommunicationsServer.Do(req)
+	case "CommunicationsNoSubscriptionClient":
+		initServer(s, &s.trCommunicationsNoSubscriptionServer, func() *CommunicationsNoSubscriptionServerTransport {
+			return NewCommunicationsNoSubscriptionServerTransport(&s.srv.CommunicationsNoSubscriptionServer)
+		})
+		resp, err = s.trCommunicationsNoSubscriptionServer.Do(req)
+	case "FileWorkspacesClient":
+		initServer(s, &s.trFileWorkspacesServer, func() *FileWorkspacesServerTransport {
+			return NewFileWorkspacesServerTransport(&s.srv.FileWorkspacesServer)
+		})
+		resp, err = s.trFileWorkspacesServer.Do(req)
+	case "FileWorkspacesNoSubscriptionClient":
+		initServer(s, &s.trFileWorkspacesNoSubscriptionServer, func() *FileWorkspacesNoSubscriptionServerTransport {
+			return NewFileWorkspacesNoSubscriptionServerTransport(&s.srv.FileWorkspacesNoSubscriptionServer)
+		})
+		resp, err = s.trFileWorkspacesNoSubscriptionServer.Do(req)
+	case "FilesClient":
+		initServer(s, &s.trFilesServer, func() *FilesServerTransport { return NewFilesServerTransport(&s.srv.FilesServer) })
+		resp, err = s.trFilesServer.Do(req)
+	case "FilesNoSubscriptionClient":
+		initServer(s, &s.trFilesNoSubscriptionServer, func() *FilesNoSubscriptionServerTransport {
+			return NewFilesNoSubscriptionServerTransport(&s.srv.FilesNoSubscriptionServer)
+		})
+		resp, err = s.trFilesNoSubscriptionServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -76,9 +129,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
+	case "TicketChatTranscriptsNoSubscriptionClient":
+		initServer(s, &s.trTicketChatTranscriptsNoSubscriptionServer, func() *TicketChatTranscriptsNoSubscriptionServerTransport {
+			return NewTicketChatTranscriptsNoSubscriptionServerTransport(&s.srv.TicketChatTranscriptsNoSubscriptionServer)
+		})
+		resp, err = s.trTicketChatTranscriptsNoSubscriptionServer.Do(req)
+	case "TicketCommunicationsNoSubscriptionClient":
+		initServer(s, &s.trTicketCommunicationsNoSubscriptionServer, func() *TicketCommunicationsNoSubscriptionServerTransport {
+			return NewTicketCommunicationsNoSubscriptionServerTransport(&s.srv.TicketCommunicationsNoSubscriptionServer)
+		})
+		resp, err = s.trTicketCommunicationsNoSubscriptionServer.Do(req)
 	case "TicketsClient":
 		initServer(s, &s.trTicketsServer, func() *TicketsServerTransport { return NewTicketsServerTransport(&s.srv.TicketsServer) })
 		resp, err = s.trTicketsServer.Do(req)
+	case "TicketsNoSubscriptionClient":
+		initServer(s, &s.trTicketsNoSubscriptionServer, func() *TicketsNoSubscriptionServerTransport {
+			return NewTicketsNoSubscriptionServerTransport(&s.srv.TicketsNoSubscriptionServer)
+		})
+		resp, err = s.trTicketsNoSubscriptionServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

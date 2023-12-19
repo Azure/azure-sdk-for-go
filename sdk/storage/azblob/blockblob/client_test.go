@@ -5033,6 +5033,134 @@ func (s *BlockBlobUnrecordedTestsSuite) TestUploadStreamToBlobProperties() {
 	_require.EqualValues(actualBlobData, blobData)
 }
 
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadDownloadStream() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	blobSize := 11 * 1024 * 1024
+	bufferSize := 2 * 1024 * 1024
+	maxBuffers := 2
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Set up test blob
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+	blobContentReader, blobData := testcommon.GenerateData(blobSize)
+
+	_, err = bbClient.UploadStream(context.Background(), blobContentReader, &blockblob.UploadStreamOptions{
+		BlockSize:   int64(bufferSize),
+		Concurrency: maxBuffers,
+		Metadata:    testcommon.BasicMetadata,
+		Tags:        testcommon.BasicBlobTagsMap,
+		HTTPHeaders: &testcommon.BasicHeaders,
+	})
+	_require.NoError(err)
+
+	downloadResponse, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	bbClient2 := testcommon.GetBlockBlobClient("blobName2", containerClient)
+
+	// UploadStream using http.Response.Body as the reader
+	_, err = bbClient2.UploadStream(context.Background(), downloadResponse.Body, &blockblob.UploadStreamOptions{
+		BlockSize:   int64(bufferSize),
+		Concurrency: maxBuffers,
+	})
+	_require.NoError(err)
+
+	downloadResp2, err := bbClient2.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	// Assert that the content is correct
+	actualBlobData, err := io.ReadAll(downloadResp2.Body)
+	_require.NoError(err)
+	_require.Equal(len(actualBlobData), len(blobData))
+	_require.EqualValues(actualBlobData, blobData)
+}
+
+// This test simulates UploadStream and DownloadBuffer methods,
+// and verifies length and content of file
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadStreamDownloadBuffer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	const MiB = 1024 * 1024
+	testUploadDownload := func(contentSize int) {
+		content := make([]byte, contentSize)
+		_, _ = rand.Read(content)
+		contentMD5 := md5.Sum(content)
+		body := streaming.NopCloser(bytes.NewReader(content))
+
+		srcBlob := containerClient.NewBlockBlobClient("srcblob")
+
+		// Prepare source bbClient for copy.
+		_, err = srcBlob.UploadStream(context.Background(), body, &blockblob.UploadStreamOptions{
+			BlockSize:   4 * MiB,
+			Concurrency: 5,
+		})
+		_require.NoError(err)
+
+		// Download to a buffer and verify contents
+		buff := make([]byte, contentSize)
+		b := blob.DownloadBufferOptions{
+			BlockSize:   5 * MiB,
+			Concurrency: 4,
+		}
+		n, err := srcBlob.DownloadBuffer(context.Background(), buff, &b)
+		_require.NoError(err)
+		_require.Equal(int64(contentSize), n)
+		_require.Equal(contentMD5, md5.Sum(buff[:]))
+	}
+
+	testUploadDownload(0) // zero byte blob
+	testUploadDownload(5 * MiB)
+	testUploadDownload(20 * MiB)
+	testUploadDownload(199 * MiB)
+}
+
+type fakeReader struct {
+	cnt int
+}
+
+func (a *fakeReader) Read(bytes []byte) (count int, err error) {
+	if a.cnt < 5 {
+		_, buf := testcommon.GenerateData(1024)
+		n := copy(bytes, buf)
+		a.cnt++
+		return n, nil
+	}
+	return 0, io.ErrUnexpectedEOF
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlobUploadStreamUsingCustomReader() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := testcommon.GetBlockBlobClient(testcommon.GenerateBlobName(testName), containerClient)
+
+	r := &fakeReader{}
+	_, err = bbClient.UploadStream(context.Background(), r, nil)
+	_require.Error(err)
+	_require.Equal(err, io.ErrUnexpectedEOF)
+}
+
 func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

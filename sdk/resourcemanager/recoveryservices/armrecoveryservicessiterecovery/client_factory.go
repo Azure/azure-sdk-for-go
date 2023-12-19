@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,141 +37,169 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewMigrationRecoveryPointsClient creates a new instance of MigrationRecoveryPointsClient.
 func (c *ClientFactory) NewMigrationRecoveryPointsClient() *MigrationRecoveryPointsClient {
 	subClient, _ := NewMigrationRecoveryPointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewRecoveryPointsClient creates a new instance of RecoveryPointsClient.
 func (c *ClientFactory) NewRecoveryPointsClient() *RecoveryPointsClient {
 	subClient, _ := NewRecoveryPointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationAlertSettingsClient creates a new instance of ReplicationAlertSettingsClient.
 func (c *ClientFactory) NewReplicationAlertSettingsClient() *ReplicationAlertSettingsClient {
 	subClient, _ := NewReplicationAlertSettingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationAppliancesClient creates a new instance of ReplicationAppliancesClient.
 func (c *ClientFactory) NewReplicationAppliancesClient() *ReplicationAppliancesClient {
 	subClient, _ := NewReplicationAppliancesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationEligibilityResultsClient creates a new instance of ReplicationEligibilityResultsClient.
 func (c *ClientFactory) NewReplicationEligibilityResultsClient() *ReplicationEligibilityResultsClient {
 	subClient, _ := NewReplicationEligibilityResultsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationEventsClient creates a new instance of ReplicationEventsClient.
 func (c *ClientFactory) NewReplicationEventsClient() *ReplicationEventsClient {
 	subClient, _ := NewReplicationEventsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationFabricsClient creates a new instance of ReplicationFabricsClient.
 func (c *ClientFactory) NewReplicationFabricsClient() *ReplicationFabricsClient {
 	subClient, _ := NewReplicationFabricsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationJobsClient creates a new instance of ReplicationJobsClient.
 func (c *ClientFactory) NewReplicationJobsClient() *ReplicationJobsClient {
 	subClient, _ := NewReplicationJobsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationLogicalNetworksClient creates a new instance of ReplicationLogicalNetworksClient.
 func (c *ClientFactory) NewReplicationLogicalNetworksClient() *ReplicationLogicalNetworksClient {
 	subClient, _ := NewReplicationLogicalNetworksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationMigrationItemsClient creates a new instance of ReplicationMigrationItemsClient.
 func (c *ClientFactory) NewReplicationMigrationItemsClient() *ReplicationMigrationItemsClient {
 	subClient, _ := NewReplicationMigrationItemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationNetworkMappingsClient creates a new instance of ReplicationNetworkMappingsClient.
 func (c *ClientFactory) NewReplicationNetworkMappingsClient() *ReplicationNetworkMappingsClient {
 	subClient, _ := NewReplicationNetworkMappingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationNetworksClient creates a new instance of ReplicationNetworksClient.
 func (c *ClientFactory) NewReplicationNetworksClient() *ReplicationNetworksClient {
 	subClient, _ := NewReplicationNetworksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationPoliciesClient creates a new instance of ReplicationPoliciesClient.
 func (c *ClientFactory) NewReplicationPoliciesClient() *ReplicationPoliciesClient {
 	subClient, _ := NewReplicationPoliciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationProtectableItemsClient creates a new instance of ReplicationProtectableItemsClient.
 func (c *ClientFactory) NewReplicationProtectableItemsClient() *ReplicationProtectableItemsClient {
 	subClient, _ := NewReplicationProtectableItemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationProtectedItemsClient creates a new instance of ReplicationProtectedItemsClient.
 func (c *ClientFactory) NewReplicationProtectedItemsClient() *ReplicationProtectedItemsClient {
 	subClient, _ := NewReplicationProtectedItemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationProtectionContainerMappingsClient creates a new instance of ReplicationProtectionContainerMappingsClient.
 func (c *ClientFactory) NewReplicationProtectionContainerMappingsClient() *ReplicationProtectionContainerMappingsClient {
 	subClient, _ := NewReplicationProtectionContainerMappingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationProtectionContainersClient creates a new instance of ReplicationProtectionContainersClient.
 func (c *ClientFactory) NewReplicationProtectionContainersClient() *ReplicationProtectionContainersClient {
 	subClient, _ := NewReplicationProtectionContainersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationProtectionIntentsClient creates a new instance of ReplicationProtectionIntentsClient.
 func (c *ClientFactory) NewReplicationProtectionIntentsClient() *ReplicationProtectionIntentsClient {
 	subClient, _ := NewReplicationProtectionIntentsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationRecoveryPlansClient creates a new instance of ReplicationRecoveryPlansClient.
 func (c *ClientFactory) NewReplicationRecoveryPlansClient() *ReplicationRecoveryPlansClient {
 	subClient, _ := NewReplicationRecoveryPlansClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationRecoveryServicesProvidersClient creates a new instance of ReplicationRecoveryServicesProvidersClient.
 func (c *ClientFactory) NewReplicationRecoveryServicesProvidersClient() *ReplicationRecoveryServicesProvidersClient {
 	subClient, _ := NewReplicationRecoveryServicesProvidersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationStorageClassificationMappingsClient creates a new instance of ReplicationStorageClassificationMappingsClient.
 func (c *ClientFactory) NewReplicationStorageClassificationMappingsClient() *ReplicationStorageClassificationMappingsClient {
 	subClient, _ := NewReplicationStorageClassificationMappingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationStorageClassificationsClient creates a new instance of ReplicationStorageClassificationsClient.
 func (c *ClientFactory) NewReplicationStorageClassificationsClient() *ReplicationStorageClassificationsClient {
 	subClient, _ := NewReplicationStorageClassificationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationVaultHealthClient creates a new instance of ReplicationVaultHealthClient.
 func (c *ClientFactory) NewReplicationVaultHealthClient() *ReplicationVaultHealthClient {
 	subClient, _ := NewReplicationVaultHealthClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationVaultSettingClient creates a new instance of ReplicationVaultSettingClient.
 func (c *ClientFactory) NewReplicationVaultSettingClient() *ReplicationVaultSettingClient {
 	subClient, _ := NewReplicationVaultSettingClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewReplicationvCentersClient creates a new instance of ReplicationvCentersClient.
 func (c *ClientFactory) NewReplicationvCentersClient() *ReplicationvCentersClient {
 	subClient, _ := NewReplicationvCentersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSupportedOperatingSystemsClient creates a new instance of SupportedOperatingSystemsClient.
 func (c *ClientFactory) NewSupportedOperatingSystemsClient() *SupportedOperatingSystemsClient {
 	subClient, _ := NewSupportedOperatingSystemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewTargetComputeSizesClient creates a new instance of TargetComputeSizesClient.
 func (c *ClientFactory) NewTargetComputeSizesClient() *TargetComputeSizesClient {
 	subClient, _ := NewTargetComputeSizesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

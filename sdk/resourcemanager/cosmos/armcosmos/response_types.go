@@ -24,6 +24,12 @@ type CassandraClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// CassandraClustersClientGetBackupResponse contains the response from method CassandraClustersClient.GetBackup.
+type CassandraClustersClientGetBackupResponse struct {
+	// A restorable backup of a Cassandra cluster.
+	BackupResource
+}
+
 // CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
 type CassandraClustersClientGetResponse struct {
 	// Representation of a managed Cassandra cluster.
@@ -34,6 +40,12 @@ type CassandraClustersClientGetResponse struct {
 type CassandraClustersClientInvokeCommandResponse struct {
 	// Response of /command api
 	CommandOutput
+}
+
+// CassandraClustersClientListBackupsResponse contains the response from method CassandraClustersClient.NewListBackupsPager.
+type CassandraClustersClientListBackupsResponse struct {
+	// List of restorable backups for a Cassandra cluster.
+	ListBackups
 }
 
 // CassandraClustersClientListByResourceGroupResponse contains the response from method CassandraClustersClient.NewListByResourceGroupPager.
@@ -106,6 +118,12 @@ type CassandraResourcesClientCreateUpdateCassandraTableResponse struct {
 	CassandraTableGetResults
 }
 
+// CassandraResourcesClientCreateUpdateCassandraViewResponse contains the response from method CassandraResourcesClient.BeginCreateUpdateCassandraView.
+type CassandraResourcesClientCreateUpdateCassandraViewResponse struct {
+	// An Azure Cosmos DB Cassandra view.
+	CassandraViewGetResults
+}
+
 // CassandraResourcesClientDeleteCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraKeyspace.
 type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 	// placeholder for future response values
@@ -113,6 +131,11 @@ type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 
 // CassandraResourcesClientDeleteCassandraTableResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraTable.
 type CassandraResourcesClientDeleteCassandraTableResponse struct {
+	// placeholder for future response values
+}
+
+// CassandraResourcesClientDeleteCassandraViewResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraView.
+type CassandraResourcesClientDeleteCassandraViewResponse struct {
 	// placeholder for future response values
 }
 
@@ -140,6 +163,18 @@ type CassandraResourcesClientGetCassandraTableThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
+// CassandraResourcesClientGetCassandraViewResponse contains the response from method CassandraResourcesClient.GetCassandraView.
+type CassandraResourcesClientGetCassandraViewResponse struct {
+	// An Azure Cosmos DB Cassandra view.
+	CassandraViewGetResults
+}
+
+// CassandraResourcesClientGetCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.GetCassandraViewThroughput.
+type CassandraResourcesClientGetCassandraViewThroughputResponse struct {
+	// An Azure Cosmos DB resource throughput.
+	ThroughputSettingsGetResults
+}
+
 // CassandraResourcesClientListCassandraKeyspacesResponse contains the response from method CassandraResourcesClient.NewListCassandraKeyspacesPager.
 type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 	// The List operation response, that contains the Cassandra keyspaces and their properties.
@@ -150,6 +185,12 @@ type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 type CassandraResourcesClientListCassandraTablesResponse struct {
 	// The List operation response, that contains the Cassandra tables and their properties.
 	CassandraTableListResult
+}
+
+// CassandraResourcesClientListCassandraViewsResponse contains the response from method CassandraResourcesClient.NewListCassandraViewsPager.
+type CassandraResourcesClientListCassandraViewsResponse struct {
+	// The List operation response, that contains the Cassandra views and their properties.
+	CassandraViewListResult
 }
 
 // CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale.
@@ -176,6 +217,18 @@ type CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse str
 	ThroughputSettingsGetResults
 }
 
+// CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale.
+type CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse struct {
+	// An Azure Cosmos DB resource throughput.
+	ThroughputSettingsGetResults
+}
+
+// CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput.
+type CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse struct {
+	// An Azure Cosmos DB resource throughput.
+	ThroughputSettingsGetResults
+}
+
 // CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput.
 type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
@@ -184,6 +237,12 @@ type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 
 // CassandraResourcesClientUpdateCassandraTableThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraTableThroughput.
 type CassandraResourcesClientUpdateCassandraTableThroughputResponse struct {
+	// An Azure Cosmos DB resource throughput.
+	ThroughputSettingsGetResults
+}
+
+// CassandraResourcesClientUpdateCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraViewThroughput.
+type CassandraResourcesClientUpdateCassandraViewThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
 	ThroughputSettingsGetResults
 }
@@ -228,6 +287,42 @@ type CollectionPartitionRegionClientListMetricsResponse struct {
 type CollectionRegionClientListMetricsResponse struct {
 	// The response to a list metrics request.
 	MetricListResult
+}
+
+// DataTransferJobsClientCancelResponse contains the response from method DataTransferJobsClient.Cancel.
+type DataTransferJobsClientCancelResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientCreateResponse contains the response from method DataTransferJobsClient.Create.
+type DataTransferJobsClientCreateResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientGetResponse contains the response from method DataTransferJobsClient.Get.
+type DataTransferJobsClientGetResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientListByDatabaseAccountResponse contains the response from method DataTransferJobsClient.NewListByDatabaseAccountPager.
+type DataTransferJobsClientListByDatabaseAccountResponse struct {
+	// The List operation response, that contains the Data Transfer jobs and their properties.
+	DataTransferJobFeedResults
+}
+
+// DataTransferJobsClientPauseResponse contains the response from method DataTransferJobsClient.Pause.
+type DataTransferJobsClientPauseResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientResumeResponse contains the response from method DataTransferJobsClient.Resume.
+type DataTransferJobsClientResumeResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
 }
 
 // DatabaseAccountRegionClientListMetricsResponse contains the response from method DatabaseAccountRegionClient.NewListMetricsPager.
@@ -357,6 +452,29 @@ type DatabaseClientListUsagesResponse struct {
 	UsagesResult
 }
 
+// GraphResourcesClientCreateUpdateGraphResponse contains the response from method GraphResourcesClient.BeginCreateUpdateGraph.
+type GraphResourcesClientCreateUpdateGraphResponse struct {
+	// An Azure Cosmos DB Graph resource.
+	GraphResourceGetResults
+}
+
+// GraphResourcesClientDeleteGraphResourceResponse contains the response from method GraphResourcesClient.BeginDeleteGraphResource.
+type GraphResourcesClientDeleteGraphResourceResponse struct {
+	// placeholder for future response values
+}
+
+// GraphResourcesClientGetGraphResponse contains the response from method GraphResourcesClient.GetGraph.
+type GraphResourcesClientGetGraphResponse struct {
+	// An Azure Cosmos DB Graph resource.
+	GraphResourceGetResults
+}
+
+// GraphResourcesClientListGraphsResponse contains the response from method GraphResourcesClient.NewListGraphsPager.
+type GraphResourcesClientListGraphsResponse struct {
+	// The List operation response, that contains the Graph resource and their properties.
+	GraphResourcesListResult
+}
+
 // GremlinResourcesClientCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResourcesClient.BeginCreateUpdateGremlinDatabase.
 type GremlinResourcesClientCreateUpdateGremlinDatabaseResponse struct {
 	// An Azure Cosmos DB Gremlin database.
@@ -469,6 +587,76 @@ type LocationsClientListResponse struct {
 	LocationListResult
 }
 
+// MongoClustersClientCheckNameAvailabilityResponse contains the response from method MongoClustersClient.CheckNameAvailability.
+type MongoClustersClientCheckNameAvailabilityResponse struct {
+	// The check availability result.
+	CheckNameAvailabilityResponse
+}
+
+// MongoClustersClientCreateOrUpdateFirewallRuleResponse contains the response from method MongoClustersClient.BeginCreateOrUpdateFirewallRule.
+type MongoClustersClientCreateOrUpdateFirewallRuleResponse struct {
+	// Represents a mongo cluster firewall rule.
+	FirewallRule
+}
+
+// MongoClustersClientCreateOrUpdateResponse contains the response from method MongoClustersClient.BeginCreateOrUpdate.
+type MongoClustersClientCreateOrUpdateResponse struct {
+	// Represents a mongo cluster resource.
+	MongoCluster
+}
+
+// MongoClustersClientDeleteFirewallRuleResponse contains the response from method MongoClustersClient.BeginDeleteFirewallRule.
+type MongoClustersClientDeleteFirewallRuleResponse struct {
+	// placeholder for future response values
+}
+
+// MongoClustersClientDeleteResponse contains the response from method MongoClustersClient.BeginDelete.
+type MongoClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MongoClustersClientGetFirewallRuleResponse contains the response from method MongoClustersClient.GetFirewallRule.
+type MongoClustersClientGetFirewallRuleResponse struct {
+	// Represents a mongo cluster firewall rule.
+	FirewallRule
+}
+
+// MongoClustersClientGetResponse contains the response from method MongoClustersClient.Get.
+type MongoClustersClientGetResponse struct {
+	// Represents a mongo cluster resource.
+	MongoCluster
+}
+
+// MongoClustersClientListByResourceGroupResponse contains the response from method MongoClustersClient.NewListByResourceGroupPager.
+type MongoClustersClientListByResourceGroupResponse struct {
+	// A list of mongo clusters.
+	MongoClusterListResult
+}
+
+// MongoClustersClientListConnectionStringsResponse contains the response from method MongoClustersClient.ListConnectionStrings.
+type MongoClustersClientListConnectionStringsResponse struct {
+	// The connection strings for the given mongo cluster.
+	ListConnectionStringsResult
+}
+
+// MongoClustersClientListFirewallRulesResponse contains the response from method MongoClustersClient.NewListFirewallRulesPager.
+type MongoClustersClientListFirewallRulesResponse struct {
+	// A list of firewall rules.
+	FirewallRuleListResult
+}
+
+// MongoClustersClientListResponse contains the response from method MongoClustersClient.NewListPager.
+type MongoClustersClientListResponse struct {
+	// A list of mongo clusters.
+	MongoClusterListResult
+}
+
+// MongoClustersClientUpdateResponse contains the response from method MongoClustersClient.BeginUpdate.
+type MongoClustersClientUpdateResponse struct {
+	// Represents a mongo cluster resource.
+	MongoCluster
+}
+
 // MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection.
 type MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse struct {
 	// An Azure Cosmos DB MongoDB collection.
@@ -549,6 +737,12 @@ type MongoDBResourcesClientGetMongoUserDefinitionResponse struct {
 	MongoUserDefinitionGetResults
 }
 
+// MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse contains the response from method MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge.
+type MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse struct {
+	// List of physical partitions and their properties returned by a merge operation.
+	PhysicalPartitionStorageInfoCollection
+}
+
 // MongoDBResourcesClientListMongoDBCollectionsResponse contains the response from method MongoDBResourcesClient.NewListMongoDBCollectionsPager.
 type MongoDBResourcesClientListMongoDBCollectionsResponse struct {
 	// The List operation response, that contains the MongoDB collections and their properties.
@@ -595,6 +789,36 @@ type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse struct {
 type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
 	ThroughputSettingsGetResults
+}
+
+// MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput.
+type MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution.
+type MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse contains the response from method MongoDBResourcesClient.BeginMongoDBDatabasePartitionMerge.
+type MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse struct {
+	// List of physical partitions and their properties returned by a merge operation.
+	PhysicalPartitionStorageInfoCollection
+}
+
+// MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput.
+type MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution.
+type MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
 }
 
 // MongoDBResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation.
@@ -959,6 +1183,12 @@ type SQLResourcesClientListClientEncryptionKeysResponse struct {
 	ClientEncryptionKeysListResult
 }
 
+// SQLResourcesClientListSQLContainerPartitionMergeResponse contains the response from method SQLResourcesClient.BeginListSQLContainerPartitionMerge.
+type SQLResourcesClientListSQLContainerPartitionMergeResponse struct {
+	// List of physical partitions and their properties returned by a merge operation.
+	PhysicalPartitionStorageInfoCollection
+}
+
 // SQLResourcesClientListSQLContainersResponse contains the response from method SQLResourcesClient.NewListSQLContainersPager.
 type SQLResourcesClientListSQLContainersResponse struct {
 	// The List operation response, that contains the containers and their properties.
@@ -1029,6 +1259,36 @@ type SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse struct {
 type SQLResourcesClientRetrieveContinuousBackupInformationResponse struct {
 	// Backup information of a resource.
 	BackupInformation
+}
+
+// SQLResourcesClientSQLContainerRedistributeThroughputResponse contains the response from method SQLResourcesClient.BeginSQLContainerRedistributeThroughput.
+type SQLResourcesClientSQLContainerRedistributeThroughputResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution.
+type SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// SQLResourcesClientSQLDatabasePartitionMergeResponse contains the response from method SQLResourcesClient.BeginSQLDatabasePartitionMerge.
+type SQLResourcesClientSQLDatabasePartitionMergeResponse struct {
+	// List of physical partitions and their properties returned by a merge operation.
+	PhysicalPartitionStorageInfoCollection
+}
+
+// SQLResourcesClientSQLDatabaseRedistributeThroughputResponse contains the response from method SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput.
+type SQLResourcesClientSQLDatabaseRedistributeThroughputResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
+}
+
+// SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution.
+type SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse struct {
+	// An Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+	PhysicalPartitionThroughputInfoResult
 }
 
 // SQLResourcesClientUpdateSQLContainerThroughputResponse contains the response from method SQLResourcesClient.BeginUpdateSQLContainerThroughput.

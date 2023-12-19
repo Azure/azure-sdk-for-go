@@ -32,7 +32,7 @@ type ReplicationUsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationUsagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationUsagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,7 @@ func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, va
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationUsagesClientListResponse) (ReplicationUsagesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationUsagesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
 			if err != nil {
 				return ReplicationUsagesClientListResponse{}, err
@@ -69,6 +70,7 @@ func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, va
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

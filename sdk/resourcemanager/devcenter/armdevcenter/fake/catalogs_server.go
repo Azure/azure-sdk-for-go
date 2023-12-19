@@ -25,6 +25,10 @@ import (
 
 // CatalogsServer is a fake server for instances of the armdevcenter.CatalogsClient type.
 type CatalogsServer struct {
+	// BeginConnect is the fake for method CatalogsClient.BeginConnect
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginConnect func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.CatalogsClientBeginConnectOptions) (resp azfake.PollerResponder[armdevcenter.CatalogsClientConnectResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method CatalogsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body armdevcenter.Catalog, options *armdevcenter.CatalogsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevcenter.CatalogsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,6 +40,10 @@ type CatalogsServer struct {
 	// Get is the fake for method CatalogsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.CatalogsClientGetOptions) (resp azfake.Responder[armdevcenter.CatalogsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetSyncErrorDetails is the fake for method CatalogsClient.GetSyncErrorDetails
+	// HTTP status codes to indicate success: http.StatusOK
+	GetSyncErrorDetails func(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *armdevcenter.CatalogsClientGetSyncErrorDetailsOptions) (resp azfake.Responder[armdevcenter.CatalogsClientGetSyncErrorDetailsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByDevCenterPager is the fake for method CatalogsClient.NewListByDevCenterPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -56,6 +64,7 @@ type CatalogsServer struct {
 func NewCatalogsServerTransport(srv *CatalogsServer) *CatalogsServerTransport {
 	return &CatalogsServerTransport{
 		srv:                     srv,
+		beginConnect:            newTracker[azfake.PollerResponder[armdevcenter.CatalogsClientConnectResponse]](),
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armdevcenter.CatalogsClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armdevcenter.CatalogsClientDeleteResponse]](),
 		newListByDevCenterPager: newTracker[azfake.PagerResponder[armdevcenter.CatalogsClientListByDevCenterResponse]](),
@@ -68,6 +77,7 @@ func NewCatalogsServerTransport(srv *CatalogsServer) *CatalogsServerTransport {
 // Don't use this type directly, use NewCatalogsServerTransport instead.
 type CatalogsServerTransport struct {
 	srv                     *CatalogsServer
+	beginConnect            *tracker[azfake.PollerResponder[armdevcenter.CatalogsClientConnectResponse]]
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armdevcenter.CatalogsClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armdevcenter.CatalogsClientDeleteResponse]]
 	newListByDevCenterPager *tracker[azfake.PagerResponder[armdevcenter.CatalogsClientListByDevCenterResponse]]
@@ -87,12 +97,16 @@ func (c *CatalogsServerTransport) Do(req *http.Request) (*http.Response, error) 
 	var err error
 
 	switch method {
+	case "CatalogsClient.BeginConnect":
+		resp, err = c.dispatchBeginConnect(req)
 	case "CatalogsClient.BeginCreateOrUpdate":
 		resp, err = c.dispatchBeginCreateOrUpdate(req)
 	case "CatalogsClient.BeginDelete":
 		resp, err = c.dispatchBeginDelete(req)
 	case "CatalogsClient.Get":
 		resp, err = c.dispatchGet(req)
+	case "CatalogsClient.GetSyncErrorDetails":
+		resp, err = c.dispatchGetSyncErrorDetails(req)
 	case "CatalogsClient.NewListByDevCenterPager":
 		resp, err = c.dispatchNewListByDevCenterPager(req)
 	case "CatalogsClient.BeginSync":
@@ -105,6 +119,54 @@ func (c *CatalogsServerTransport) Do(req *http.Request) (*http.Response, error) 
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (c *CatalogsServerTransport) dispatchBeginConnect(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginConnect == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginConnect not implemented")}
+	}
+	beginConnect := c.beginConnect.get(req)
+	if beginConnect == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
+		if err != nil {
+			return nil, err
+		}
+		catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginConnect(req.Context(), resourceGroupNameParam, devCenterNameParam, catalogNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginConnect = &respr
+		c.beginConnect.add(req, beginConnect)
+	}
+
+	resp, err := server.PollerResponderNext(beginConnect, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		c.beginConnect.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginConnect) {
+		c.beginConnect.remove(req)
 	}
 
 	return resp, nil
@@ -241,6 +303,43 @@ func (c *CatalogsServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Catalog, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CatalogsServerTransport) dispatchGetSyncErrorDetails(req *http.Request) (*http.Response, error) {
+	if c.srv.GetSyncErrorDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSyncErrorDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getSyncErrorDetails`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if matches == nil || len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	devCenterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("devCenterName")])
+	if err != nil {
+		return nil, err
+	}
+	catalogNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("catalogName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetSyncErrorDetails(req.Context(), resourceGroupNameParam, devCenterNameParam, catalogNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SyncErrorDetails, req)
 	if err != nil {
 		return nil, err
 	}

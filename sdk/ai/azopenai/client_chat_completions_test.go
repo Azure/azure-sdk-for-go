@@ -8,6 +8,7 @@ package azopenai_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -23,17 +24,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func newTestChatCompletionOptions(tv testVars) azopenai.ChatCompletionsOptions {
+func newTestChatCompletionOptions(deployment string) azopenai.ChatCompletionsOptions {
 	return azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{
-				Role:    to.Ptr(azopenai.ChatRole("user")),
-				Content: to.Ptr("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("Count to 10, with a comma between each number, no newlines and a period at the end. E.g., 1, 2, 3, ..."),
 			},
 		},
-		MaxTokens:   to.Ptr(int32(1024)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  tv.ChatCompletions,
+		MaxTokens:      to.Ptr(int32(1024)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &deployment,
 	}
 }
 
@@ -42,12 +42,12 @@ var expectedRole = azopenai.ChatRoleAssistant
 
 func TestClient_GetChatCompletions(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Endpoint)
-	testGetChatCompletions(t, client, azureOpenAI)
+	testGetChatCompletions(t, client, azureOpenAI.ChatCompletionsRAI.Model, true)
 }
 
 func TestClient_GetChatCompletionsStream(t *testing.T) {
-	chatClient := newAzureOpenAIClientForTest(t, azureOpenAICanary)
-	testGetChatCompletionsStream(t, chatClient, azureOpenAICanary)
+	chatClient := newTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+	testGetChatCompletionsStream(t, chatClient, azureOpenAI.ChatCompletionsRAI.Model)
 }
 
 func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
@@ -56,7 +56,7 @@ func TestClient_OpenAI_GetChatCompletions(t *testing.T) {
 	}
 
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletions(t, chatClient, openAI)
+	testGetChatCompletions(t, chatClient, openAI.ChatCompletions, false)
 }
 
 func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
@@ -65,14 +65,14 @@ func TestClient_OpenAI_GetChatCompletionsStream(t *testing.T) {
 	}
 
 	chatClient := newOpenAIClientForTest(t)
-	testGetChatCompletionsStream(t, chatClient, openAI)
+	testGetChatCompletionsStream(t, chatClient, openAI.ChatCompletions)
 }
 
-func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) {
+func testGetChatCompletions(t *testing.T, client *azopenai.Client, deployment string, checkRAI bool) {
 	expected := azopenai.ChatCompletions{
 		Choices: []azopenai.ChatChoice{
 			{
-				Message: &azopenai.ChatChoiceMessage{
+				Message: &azopenai.ChatResponseMessage{
 					Role:    &expectedRole,
 					Content: &expectedContent,
 				},
@@ -89,15 +89,15 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 		},
 	}
 
-	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(tv), nil)
+	resp, err := client.GetChatCompletions(context.Background(), newTestChatCompletionOptions(deployment), nil)
 	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
-	if tv.Endpoint.Azure {
+	if checkRAI {
 		// Azure also provides content-filtering. This particular prompt and responses
 		// will be considered safe.
-		expected.PromptFilterResults = []azopenai.PromptFilterResult{
-			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+		expected.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
+			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
 		}
 		expected.Choices[0].ContentFilterResults = safeContentFilter
 	}
@@ -111,8 +111,8 @@ func testGetChatCompletions(t *testing.T, client *azopenai.Client, tv testVars) 
 	require.Equal(t, expected, resp.ChatCompletions)
 }
 
-func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
-	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(tv), nil)
+func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, deployment string) {
+	streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(deployment), nil)
 
 	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
 		t.Skipf("OpenAI resource overloaded, skipping this test")
@@ -136,8 +136,8 @@ func testGetChatCompletionsStream(t *testing.T, client *azopenai.Client, tv test
 		require.NoError(t, err)
 
 		if completion.PromptFilterResults != nil {
-			require.Equal(t, []azopenai.PromptFilterResult{
-				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+			require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
 			}, completion.PromptFilterResults)
 		}
 
@@ -187,22 +187,21 @@ func TestClient_GetChatCompletions_DefaultAzureCredential(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	testGetChatCompletions(t, chatClient, azureOpenAI)
+	testGetChatCompletions(t, chatClient, azureOpenAI.ChatCompletions, true)
 }
 
 func TestClient_GetChatCompletions_InvalidModel(t *testing.T) {
 	client := newTestClient(t, azureOpenAI.Endpoint)
 
 	_, err := client.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatMessage{
-			{
-				Role:    to.Ptr(azopenai.ChatRole("user")),
-				Content: to.Ptr("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
+		Messages: []azopenai.ChatRequestMessageClassification{
+			&azopenai.ChatRequestUserMessage{
+				Content: azopenai.NewChatRequestUserMessageContent("Count to 100, with a comma between each number and no newlines. E.g., 1, 2, 3, ..."),
 			},
 		},
-		MaxTokens:   to.Ptr(int32(1024)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  "invalid model name",
+		MaxTokens:      to.Ptr(int32(1024)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: to.Ptr("invalid model name"),
 	}, nil)
 
 	var respErr *azcore.ResponseError
@@ -217,15 +216,92 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newBogusAzureOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(azureOpenAI.ChatCompletions), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
 	})
 
 	t.Run("OpenAI", func(t *testing.T) {
 		client := newBogusOpenAIClient(t)
-		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI), nil)
+		streamResp, err := client.GetChatCompletionsStream(context.Background(), newTestChatCompletionOptions(openAI.ChatCompletions), nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)
+	})
+}
+
+func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
+	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+		imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+
+		content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
+			&azopenai.ChatCompletionRequestMessageContentPartText{
+				Text: to.Ptr("Describe this image"),
+			},
+			&azopenai.ChatCompletionRequestMessageContentPartImage{
+				ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
+					URL: &imageURL,
+				},
+			},
+		})
+
+		resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: content,
+				},
+			},
+			DeploymentName: to.Ptr(deploymentName),
+		}, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, resp.Choices[0].Message.Content)
+
+		t.Logf(*resp.Choices[0].Message.Content)
+	}
+
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testFn(t, chatClient, openAI.Vision.Model)
+	})
+
+	t.Run("AOAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
+		testFn(t, chatClient, azureOpenAI.Vision.Model)
+	})
+}
+
+func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {
+	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+		body := azopenai.ChatCompletionsOptions{
+			DeploymentName: &deploymentName,
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestSystemMessage{Content: to.Ptr("You are a helpful assistant designed to output JSON.")},
+				&azopenai.ChatRequestUserMessage{
+					Content: azopenai.NewChatRequestUserMessageContent("List capital cities and their states"),
+				},
+			},
+			// Without this format directive you end up getting JSON, but with a non-JSON preamble, like this:
+			// "I'm happy to help! Here are some examples of capital cities and their corresponding states:\n\n```json\n{\n" (etc)
+			ResponseFormat: &azopenai.ChatCompletionsJSONResponseFormat{},
+			Temperature:    to.Ptr[float32](0.0),
+		}
+
+		resp, err := chatClient.GetChatCompletions(context.Background(), body, nil)
+		require.NoError(t, err)
+
+		// validate that it came back as JSON data
+		var v any
+		err = json.Unmarshal([]byte(*resp.Choices[0].Message.Content), &v)
+		require.NoError(t, err)
+		require.NotEmpty(t, v)
+	}
+
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testFn(t, chatClient, "gpt-3.5-turbo-1106")
+	})
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.DallE.Endpoint)
+		testFn(t, chatClient, "gpt-4-1106-preview")
 	})
 }

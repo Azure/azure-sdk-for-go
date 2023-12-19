@@ -3694,6 +3694,7 @@ func (s *ServiceSpecification) UnmarshalJSON(data []byte) error {
 func (s StorageAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "container", s.Container)
+	populate(objectMap, "enableSecureChannel", s.EnableSecureChannel)
 	populate(objectMap, "fileSystem", s.FileSystem)
 	populate(objectMap, "fileshare", s.Fileshare)
 	populate(objectMap, "isDefault", s.IsDefault)
@@ -3716,6 +3717,9 @@ func (s *StorageAccount) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "container":
 			err = unpopulate(val, "Container", &s.Container)
+			delete(rawMsg, key)
+		case "enableSecureChannel":
+			err = unpopulate(val, "EnableSecureChannel", &s.EnableSecureChannel)
 			delete(rawMsg, key)
 		case "fileSystem":
 			err = unpopulate(val, "FileSystem", &s.FileSystem)

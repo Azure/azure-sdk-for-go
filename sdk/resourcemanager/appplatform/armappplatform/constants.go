@@ -10,8 +10,30 @@ package armappplatform
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.2"
 )
+
+// APIPortalProvisioningState - State of the API portal.
+type APIPortalProvisioningState string
+
+const (
+	APIPortalProvisioningStateCreating  APIPortalProvisioningState = "Creating"
+	APIPortalProvisioningStateDeleting  APIPortalProvisioningState = "Deleting"
+	APIPortalProvisioningStateFailed    APIPortalProvisioningState = "Failed"
+	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = "Succeeded"
+	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = "Updating"
+)
+
+// PossibleAPIPortalProvisioningStateValues returns the possible values for the APIPortalProvisioningState const type.
+func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
+	return []APIPortalProvisioningState{
+		APIPortalProvisioningStateCreating,
+		APIPortalProvisioningStateDeleting,
+		APIPortalProvisioningStateFailed,
+		APIPortalProvisioningStateSucceeded,
+		APIPortalProvisioningStateUpdating,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -24,6 +46,28 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ApmType - Type of application performance monitoring
+type ApmType string
+
+const (
+	ApmTypeAppDynamics         ApmType = "AppDynamics"
+	ApmTypeApplicationInsights ApmType = "ApplicationInsights"
+	ApmTypeDynatrace           ApmType = "Dynatrace"
+	ApmTypeElasticAPM          ApmType = "ElasticAPM"
+	ApmTypeNewRelic            ApmType = "NewRelic"
+)
+
+// PossibleApmTypeValues returns the possible values for the ApmType const type.
+func PossibleApmTypeValues() []ApmType {
+	return []ApmType{
+		ApmTypeAppDynamics,
+		ApmTypeApplicationInsights,
+		ApmTypeDynatrace,
+		ApmTypeElasticAPM,
+		ApmTypeNewRelic,
 	}
 }
 
@@ -49,6 +93,68 @@ func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState
 	}
 }
 
+// ApplicationAcceleratorProvisioningState - State of the application accelerator.
+type ApplicationAcceleratorProvisioningState string
+
+const (
+	ApplicationAcceleratorProvisioningStateCreating  ApplicationAcceleratorProvisioningState = "Creating"
+	ApplicationAcceleratorProvisioningStateDeleting  ApplicationAcceleratorProvisioningState = "Deleting"
+	ApplicationAcceleratorProvisioningStateFailed    ApplicationAcceleratorProvisioningState = "Failed"
+	ApplicationAcceleratorProvisioningStateSucceeded ApplicationAcceleratorProvisioningState = "Succeeded"
+	ApplicationAcceleratorProvisioningStateUpdating  ApplicationAcceleratorProvisioningState = "Updating"
+)
+
+// PossibleApplicationAcceleratorProvisioningStateValues returns the possible values for the ApplicationAcceleratorProvisioningState const type.
+func PossibleApplicationAcceleratorProvisioningStateValues() []ApplicationAcceleratorProvisioningState {
+	return []ApplicationAcceleratorProvisioningState{
+		ApplicationAcceleratorProvisioningStateCreating,
+		ApplicationAcceleratorProvisioningStateDeleting,
+		ApplicationAcceleratorProvisioningStateFailed,
+		ApplicationAcceleratorProvisioningStateSucceeded,
+		ApplicationAcceleratorProvisioningStateUpdating,
+	}
+}
+
+// ApplicationLiveViewProvisioningState - State of the Application Live View.
+type ApplicationLiveViewProvisioningState string
+
+const (
+	ApplicationLiveViewProvisioningStateCanceled  ApplicationLiveViewProvisioningState = "Canceled"
+	ApplicationLiveViewProvisioningStateCreating  ApplicationLiveViewProvisioningState = "Creating"
+	ApplicationLiveViewProvisioningStateDeleting  ApplicationLiveViewProvisioningState = "Deleting"
+	ApplicationLiveViewProvisioningStateFailed    ApplicationLiveViewProvisioningState = "Failed"
+	ApplicationLiveViewProvisioningStateSucceeded ApplicationLiveViewProvisioningState = "Succeeded"
+	ApplicationLiveViewProvisioningStateUpdating  ApplicationLiveViewProvisioningState = "Updating"
+)
+
+// PossibleApplicationLiveViewProvisioningStateValues returns the possible values for the ApplicationLiveViewProvisioningState const type.
+func PossibleApplicationLiveViewProvisioningStateValues() []ApplicationLiveViewProvisioningState {
+	return []ApplicationLiveViewProvisioningState{
+		ApplicationLiveViewProvisioningStateCanceled,
+		ApplicationLiveViewProvisioningStateCreating,
+		ApplicationLiveViewProvisioningStateDeleting,
+		ApplicationLiveViewProvisioningStateFailed,
+		ApplicationLiveViewProvisioningStateSucceeded,
+		ApplicationLiveViewProvisioningStateUpdating,
+	}
+}
+
+// BackendProtocol - How ingress should communicate with this app backend service.
+type BackendProtocol string
+
+const (
+	BackendProtocolDefault BackendProtocol = "Default"
+	BackendProtocolGRPC    BackendProtocol = "GRPC"
+)
+
+// PossibleBackendProtocolValues returns the possible values for the BackendProtocol const type.
+func PossibleBackendProtocolValues() []BackendProtocol {
+	return []BackendProtocol{
+		BackendProtocolDefault,
+		BackendProtocolGRPC,
+	}
+}
+
 // BindingType - Buildpack Binding Type
 type BindingType string
 
@@ -56,6 +162,7 @@ const (
 	BindingTypeApacheSkyWalking    BindingType = "ApacheSkyWalking"
 	BindingTypeAppDynamics         BindingType = "AppDynamics"
 	BindingTypeApplicationInsights BindingType = "ApplicationInsights"
+	BindingTypeCACertificates      BindingType = "CACertificates"
 	BindingTypeDynatrace           BindingType = "Dynatrace"
 	BindingTypeElasticAPM          BindingType = "ElasticAPM"
 	BindingTypeNewRelic            BindingType = "NewRelic"
@@ -67,6 +174,7 @@ func PossibleBindingTypeValues() []BindingType {
 		BindingTypeApacheSkyWalking,
 		BindingTypeAppDynamics,
 		BindingTypeApplicationInsights,
+		BindingTypeCACertificates,
 		BindingTypeDynatrace,
 		BindingTypeElasticAPM,
 		BindingTypeNewRelic,
@@ -183,6 +291,28 @@ func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisi
 	}
 }
 
+// CertificateResourceProvisioningState - Provisioning state of the Certificate
+type CertificateResourceProvisioningState string
+
+const (
+	CertificateResourceProvisioningStateCreating  CertificateResourceProvisioningState = "Creating"
+	CertificateResourceProvisioningStateDeleting  CertificateResourceProvisioningState = "Deleting"
+	CertificateResourceProvisioningStateFailed    CertificateResourceProvisioningState = "Failed"
+	CertificateResourceProvisioningStateSucceeded CertificateResourceProvisioningState = "Succeeded"
+	CertificateResourceProvisioningStateUpdating  CertificateResourceProvisioningState = "Updating"
+)
+
+// PossibleCertificateResourceProvisioningStateValues returns the possible values for the CertificateResourceProvisioningState const type.
+func PossibleCertificateResourceProvisioningStateValues() []CertificateResourceProvisioningState {
+	return []CertificateResourceProvisioningState{
+		CertificateResourceProvisioningStateCreating,
+		CertificateResourceProvisioningStateDeleting,
+		CertificateResourceProvisioningStateFailed,
+		CertificateResourceProvisioningStateSucceeded,
+		CertificateResourceProvisioningStateUpdating,
+	}
+}
+
 // ConfigServerState - State of the config server.
 type ConfigServerState string
 
@@ -247,6 +377,68 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CustomDomainResourceProvisioningState - Provisioning state of the Domain
+type CustomDomainResourceProvisioningState string
+
+const (
+	CustomDomainResourceProvisioningStateCreating  CustomDomainResourceProvisioningState = "Creating"
+	CustomDomainResourceProvisioningStateDeleting  CustomDomainResourceProvisioningState = "Deleting"
+	CustomDomainResourceProvisioningStateFailed    CustomDomainResourceProvisioningState = "Failed"
+	CustomDomainResourceProvisioningStateSucceeded CustomDomainResourceProvisioningState = "Succeeded"
+	CustomDomainResourceProvisioningStateUpdating  CustomDomainResourceProvisioningState = "Updating"
+)
+
+// PossibleCustomDomainResourceProvisioningStateValues returns the possible values for the CustomDomainResourceProvisioningState const type.
+func PossibleCustomDomainResourceProvisioningStateValues() []CustomDomainResourceProvisioningState {
+	return []CustomDomainResourceProvisioningState{
+		CustomDomainResourceProvisioningStateCreating,
+		CustomDomainResourceProvisioningStateDeleting,
+		CustomDomainResourceProvisioningStateFailed,
+		CustomDomainResourceProvisioningStateSucceeded,
+		CustomDomainResourceProvisioningStateUpdating,
+	}
+}
+
+// CustomizedAcceleratorProvisioningState - State of the customized accelerator.
+type CustomizedAcceleratorProvisioningState string
+
+const (
+	CustomizedAcceleratorProvisioningStateCreating  CustomizedAcceleratorProvisioningState = "Creating"
+	CustomizedAcceleratorProvisioningStateDeleting  CustomizedAcceleratorProvisioningState = "Deleting"
+	CustomizedAcceleratorProvisioningStateFailed    CustomizedAcceleratorProvisioningState = "Failed"
+	CustomizedAcceleratorProvisioningStateSucceeded CustomizedAcceleratorProvisioningState = "Succeeded"
+	CustomizedAcceleratorProvisioningStateUpdating  CustomizedAcceleratorProvisioningState = "Updating"
+)
+
+// PossibleCustomizedAcceleratorProvisioningStateValues returns the possible values for the CustomizedAcceleratorProvisioningState const type.
+func PossibleCustomizedAcceleratorProvisioningStateValues() []CustomizedAcceleratorProvisioningState {
+	return []CustomizedAcceleratorProvisioningState{
+		CustomizedAcceleratorProvisioningStateCreating,
+		CustomizedAcceleratorProvisioningStateDeleting,
+		CustomizedAcceleratorProvisioningStateFailed,
+		CustomizedAcceleratorProvisioningStateSucceeded,
+		CustomizedAcceleratorProvisioningStateUpdating,
+	}
+}
+
+// CustomizedAcceleratorValidateResultState - State of the customized accelerator validation result
+type CustomizedAcceleratorValidateResultState string
+
+const (
+	// CustomizedAcceleratorValidateResultStateInvalid - Customized accelerator properties are invalid.
+	CustomizedAcceleratorValidateResultStateInvalid CustomizedAcceleratorValidateResultState = "Invalid"
+	// CustomizedAcceleratorValidateResultStateValid - Customized accelerator properties are valid.
+	CustomizedAcceleratorValidateResultStateValid CustomizedAcceleratorValidateResultState = "Valid"
+)
+
+// PossibleCustomizedAcceleratorValidateResultStateValues returns the possible values for the CustomizedAcceleratorValidateResultState const type.
+func PossibleCustomizedAcceleratorValidateResultStateValues() []CustomizedAcceleratorValidateResultState {
+	return []CustomizedAcceleratorValidateResultState{
+		CustomizedAcceleratorValidateResultStateInvalid,
+		CustomizedAcceleratorValidateResultStateValid,
+	}
+}
+
 // DeploymentResourceProvisioningState - Provisioning state of the Deployment
 type DeploymentResourceProvisioningState string
 
@@ -280,6 +472,105 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return []DeploymentResourceStatus{
 		DeploymentResourceStatusRunning,
 		DeploymentResourceStatusStopped,
+	}
+}
+
+// DevToolPortalFeatureState - State of the plugin
+type DevToolPortalFeatureState string
+
+const (
+	// DevToolPortalFeatureStateDisabled - Disable the plugin in Dev Tool Portal.
+	DevToolPortalFeatureStateDisabled DevToolPortalFeatureState = "Disabled"
+	// DevToolPortalFeatureStateEnabled - Enable the plugin in Dev Tool Portal.
+	DevToolPortalFeatureStateEnabled DevToolPortalFeatureState = "Enabled"
+)
+
+// PossibleDevToolPortalFeatureStateValues returns the possible values for the DevToolPortalFeatureState const type.
+func PossibleDevToolPortalFeatureStateValues() []DevToolPortalFeatureState {
+	return []DevToolPortalFeatureState{
+		DevToolPortalFeatureStateDisabled,
+		DevToolPortalFeatureStateEnabled,
+	}
+}
+
+// DevToolPortalProvisioningState - State of the Dev Tool Portal.
+type DevToolPortalProvisioningState string
+
+const (
+	DevToolPortalProvisioningStateCanceled  DevToolPortalProvisioningState = "Canceled"
+	DevToolPortalProvisioningStateCreating  DevToolPortalProvisioningState = "Creating"
+	DevToolPortalProvisioningStateDeleting  DevToolPortalProvisioningState = "Deleting"
+	DevToolPortalProvisioningStateFailed    DevToolPortalProvisioningState = "Failed"
+	DevToolPortalProvisioningStateSucceeded DevToolPortalProvisioningState = "Succeeded"
+	DevToolPortalProvisioningStateUpdating  DevToolPortalProvisioningState = "Updating"
+)
+
+// PossibleDevToolPortalProvisioningStateValues returns the possible values for the DevToolPortalProvisioningState const type.
+func PossibleDevToolPortalProvisioningStateValues() []DevToolPortalProvisioningState {
+	return []DevToolPortalProvisioningState{
+		DevToolPortalProvisioningStateCanceled,
+		DevToolPortalProvisioningStateCreating,
+		DevToolPortalProvisioningStateDeleting,
+		DevToolPortalProvisioningStateFailed,
+		DevToolPortalProvisioningStateSucceeded,
+		DevToolPortalProvisioningStateUpdating,
+	}
+}
+
+// GatewayProvisioningState - State of the Spring Cloud Gateway.
+type GatewayProvisioningState string
+
+const (
+	GatewayProvisioningStateCreating  GatewayProvisioningState = "Creating"
+	GatewayProvisioningStateDeleting  GatewayProvisioningState = "Deleting"
+	GatewayProvisioningStateFailed    GatewayProvisioningState = "Failed"
+	GatewayProvisioningStateSucceeded GatewayProvisioningState = "Succeeded"
+	GatewayProvisioningStateUpdating  GatewayProvisioningState = "Updating"
+)
+
+// PossibleGatewayProvisioningStateValues returns the possible values for the GatewayProvisioningState const type.
+func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
+	return []GatewayProvisioningState{
+		GatewayProvisioningStateCreating,
+		GatewayProvisioningStateDeleting,
+		GatewayProvisioningStateFailed,
+		GatewayProvisioningStateSucceeded,
+		GatewayProvisioningStateUpdating,
+	}
+}
+
+// GatewayRouteConfigProtocol - Protocol of routed Azure Spring Apps applications.
+type GatewayRouteConfigProtocol string
+
+const (
+	GatewayRouteConfigProtocolHTTP  GatewayRouteConfigProtocol = "HTTP"
+	GatewayRouteConfigProtocolHTTPS GatewayRouteConfigProtocol = "HTTPS"
+)
+
+// PossibleGatewayRouteConfigProtocolValues returns the possible values for the GatewayRouteConfigProtocol const type.
+func PossibleGatewayRouteConfigProtocolValues() []GatewayRouteConfigProtocol {
+	return []GatewayRouteConfigProtocol{
+		GatewayRouteConfigProtocolHTTP,
+		GatewayRouteConfigProtocolHTTPS,
+	}
+}
+
+// HTTPSchemeType - Scheme to use for connecting to the host. Defaults to HTTP.
+// Possible enum values:
+// * "HTTP" means that the scheme used will be http://
+// * "HTTPS" means that the scheme used will be https://
+type HTTPSchemeType string
+
+const (
+	HTTPSchemeTypeHTTP  HTTPSchemeType = "HTTP"
+	HTTPSchemeTypeHTTPS HTTPSchemeType = "HTTPS"
+)
+
+// PossibleHTTPSchemeTypeValues returns the possible values for the HTTPSchemeType const type.
+func PossibleHTTPSchemeTypeValues() []HTTPSchemeType {
+	return []HTTPSchemeType{
+		HTTPSchemeTypeHTTP,
+		HTTPSchemeTypeHTTPS,
 	}
 }
 
@@ -360,6 +651,78 @@ func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 		MonitoringSettingStateNotAvailable,
 		MonitoringSettingStateSucceeded,
 		MonitoringSettingStateUpdating,
+	}
+}
+
+// PowerState - Power state of the Service
+type PowerState string
+
+const (
+	PowerStateRunning PowerState = "Running"
+	PowerStateStopped PowerState = "Stopped"
+)
+
+// PossiblePowerStateValues returns the possible values for the PowerState const type.
+func PossiblePowerStateValues() []PowerState {
+	return []PowerState{
+		PowerStateRunning,
+		PowerStateStopped,
+	}
+}
+
+// PredefinedAcceleratorProvisioningState - Provisioning state of the predefined accelerator.
+type PredefinedAcceleratorProvisioningState string
+
+const (
+	PredefinedAcceleratorProvisioningStateCreating  PredefinedAcceleratorProvisioningState = "Creating"
+	PredefinedAcceleratorProvisioningStateFailed    PredefinedAcceleratorProvisioningState = "Failed"
+	PredefinedAcceleratorProvisioningStateSucceeded PredefinedAcceleratorProvisioningState = "Succeeded"
+	PredefinedAcceleratorProvisioningStateUpdating  PredefinedAcceleratorProvisioningState = "Updating"
+)
+
+// PossiblePredefinedAcceleratorProvisioningStateValues returns the possible values for the PredefinedAcceleratorProvisioningState const type.
+func PossiblePredefinedAcceleratorProvisioningStateValues() []PredefinedAcceleratorProvisioningState {
+	return []PredefinedAcceleratorProvisioningState{
+		PredefinedAcceleratorProvisioningStateCreating,
+		PredefinedAcceleratorProvisioningStateFailed,
+		PredefinedAcceleratorProvisioningStateSucceeded,
+		PredefinedAcceleratorProvisioningStateUpdating,
+	}
+}
+
+// PredefinedAcceleratorState - State of the predefined accelerator.
+type PredefinedAcceleratorState string
+
+const (
+	// PredefinedAcceleratorStateDisabled - Disable the predefined accelerator.
+	PredefinedAcceleratorStateDisabled PredefinedAcceleratorState = "Disabled"
+	// PredefinedAcceleratorStateEnabled - Enable the predefined accelerator.
+	PredefinedAcceleratorStateEnabled PredefinedAcceleratorState = "Enabled"
+)
+
+// PossiblePredefinedAcceleratorStateValues returns the possible values for the PredefinedAcceleratorState const type.
+func PossiblePredefinedAcceleratorStateValues() []PredefinedAcceleratorState {
+	return []PredefinedAcceleratorState{
+		PredefinedAcceleratorStateDisabled,
+		PredefinedAcceleratorStateEnabled,
+	}
+}
+
+// ProbeActionType - The type of the action to take to perform the health check.
+type ProbeActionType string
+
+const (
+	ProbeActionTypeExecAction      ProbeActionType = "ExecAction"
+	ProbeActionTypeHTTPGetAction   ProbeActionType = "HTTPGetAction"
+	ProbeActionTypeTCPSocketAction ProbeActionType = "TCPSocketAction"
+)
+
+// PossibleProbeActionTypeValues returns the possible values for the ProbeActionType const type.
+func PossibleProbeActionTypeValues() []ProbeActionType {
+	return []ProbeActionType{
+		ProbeActionTypeExecAction,
+		ProbeActionTypeHTTPGetAction,
+		ProbeActionTypeTCPSocketAction,
 	}
 }
 
@@ -469,6 +832,36 @@ func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvision
 	}
 }
 
+// SessionAffinity - Type of the affinity, set this to Cookie to enable session affinity.
+type SessionAffinity string
+
+const (
+	SessionAffinityCookie SessionAffinity = "Cookie"
+	SessionAffinityNone   SessionAffinity = "None"
+)
+
+// PossibleSessionAffinityValues returns the possible values for the SessionAffinity const type.
+func PossibleSessionAffinityValues() []SessionAffinity {
+	return []SessionAffinity{
+		SessionAffinityCookie,
+		SessionAffinityNone,
+	}
+}
+
+// StorageType - The type of the storage.
+type StorageType string
+
+const (
+	StorageTypeStorageAccount StorageType = "StorageAccount"
+)
+
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypeStorageAccount,
+	}
+}
+
 // SupportedRuntimePlatform - The platform of this runtime version (possible values: "Java" or ".NET").
 type SupportedRuntimePlatform string
 
@@ -534,5 +927,19 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 	return []TrafficDirection{
 		TrafficDirectionInbound,
 		TrafficDirectionOutbound,
+	}
+}
+
+// Type - The type of the underlying resource to mount as a persistent disk.
+type Type string
+
+const (
+	TypeAzureFileVolume Type = "AzureFileVolume"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeAzureFileVolume,
 	}
 }

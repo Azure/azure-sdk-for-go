@@ -39,6 +39,9 @@ type AllowedEnvironmentTypeListResult struct {
 
 // AllowedEnvironmentTypeProperties - Properties of an allowed environment type.
 type AllowedEnvironmentTypeProperties struct {
+	// READ-ONLY; The display name of the allowed environment type.
+	DisplayName *string
+
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
@@ -115,6 +118,24 @@ type Catalog struct {
 	Type *string
 }
 
+// CatalogConflictError - An individual conflict error.
+type CatalogConflictError struct {
+	// READ-ONLY; Name of the conflicting catalog item.
+	Name *string
+
+	// READ-ONLY; The path of the file that has a conflicting name.
+	Path *string
+}
+
+// CatalogErrorDetails - Catalog error details
+type CatalogErrorDetails struct {
+	// An identifier for the error.
+	Code *string
+
+	// A message describing the error.
+	Message *string
+}
+
 // CatalogListResult - Results of the catalog list operation.
 type CatalogListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
@@ -132,6 +153,18 @@ type CatalogProperties struct {
 	// Properties for a GitHub catalog type.
 	GitHub *GitCatalog
 
+	// Indicates the type of sync that is configured for the catalog.
+	SyncType *CatalogSyncType
+
+	// READ-ONLY; The connection state of the catalog.
+	ConnectionState *CatalogConnectionState
+
+	// READ-ONLY; When the catalog was last connected.
+	LastConnectionTime *time.Time
+
+	// READ-ONLY; Stats of the latest synchronization.
+	LastSyncStats *SyncStats
+
 	// READ-ONLY; When the catalog was last synced.
 	LastSyncTime *time.Time
 
@@ -140,6 +173,22 @@ type CatalogProperties struct {
 
 	// READ-ONLY; The synchronization state of the catalog.
 	SyncState *CatalogSyncState
+}
+
+// CatalogResourceValidationErrorDetails - List of validator error details. Populated when changes are made to the resource
+// or its dependent resources that impact the validity of the Catalog resource.
+type CatalogResourceValidationErrorDetails struct {
+	// READ-ONLY; Errors associated with resources synchronized from the catalog.
+	Errors []*CatalogErrorDetails
+}
+
+// CatalogSyncError - An individual synchronization error.
+type CatalogSyncError struct {
+	// READ-ONLY; Errors associated with the file.
+	ErrorDetails []*CatalogErrorDetails
+
+	// READ-ONLY; The path of the file the error is associated with.
+	Path *string
 }
 
 // CatalogUpdate - The catalog's properties for partial update. Properties not provided in the update request will not be
@@ -159,6 +208,9 @@ type CatalogUpdateProperties struct {
 
 	// Properties for a GitHub catalog type.
 	GitHub *GitCatalog
+
+	// Indicates the type of sync that is configured for the catalog.
+	SyncType *CatalogSyncType
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -180,6 +232,83 @@ type CheckNameAvailabilityResponse struct {
 
 	// The reason why the given name is not available.
 	Reason *CheckNameAvailabilityReason
+}
+
+// CustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
+type CustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionKeyIdentity
+
+	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	// or https://contosovault.vault.azure.net/keys/contosokek.
+	KeyEncryptionKeyURL *string
+}
+
+// CustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity
+// should be used to auth to Key Vault.
+type CustomerManagedKeyEncryptionKeyIdentity struct {
+	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
+	// Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only.
+	DelegatedIdentityClientID *string
+
+	// Values can be systemAssignedIdentity or userAssignedIdentity
+	IdentityType *IdentityType
+
+	// user assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/
+	// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
+	// and delegatedResourceIdentity.
+	UserAssignedIdentityResourceID *string
+}
+
+// CustomizationTask - Represents a Task to be used in customizing a Dev Box.
+type CustomizationTask struct {
+	// Task properties
+	Properties *CustomizationTaskProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CustomizationTaskInput - Input for a Task.
+type CustomizationTaskInput struct {
+	// READ-ONLY; Description of the input.
+	Description *string
+
+	// READ-ONLY; Whether or not the input is required.
+	Required *bool
+
+	// READ-ONLY; Type of the input.
+	Type *CustomizationTaskInputType
+}
+
+// CustomizationTaskListResult - Results of the Task list operation.
+type CustomizationTaskListResult struct {
+	// READ-ONLY; URL to get the next set of results if there are any.
+	NextLink *string
+
+	// READ-ONLY; Current page of results.
+	Value []*CustomizationTask
+}
+
+// CustomizationTaskProperties - Properties of a Task.
+type CustomizationTaskProperties struct {
+	// READ-ONLY; Inputs to the task.
+	Inputs map[string]*CustomizationTaskInput
+
+	// READ-ONLY; The default timeout for the task.
+	Timeout *int32
+
+	// READ-ONLY; Validation status for the Task.
+	ValidationStatus *CatalogResourceValidationStatus
 }
 
 // DevBoxDefinition - Represents a definition for a Developer Machine.
@@ -241,6 +370,9 @@ type DevBoxDefinitionProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Validation status for the Dev Box Definition.
+	ValidationStatus *CatalogResourceValidationStatus
 }
 
 // DevBoxDefinitionUpdate - Partial update of a Dev Box definition resource.
@@ -299,6 +431,11 @@ type DevCenter struct {
 	Type *string
 }
 
+type Encryption struct {
+	// All Customer-managed key encryption properties for the resource.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
+}
+
 // EndpointDependency - A domain name and connection details used to access a dependency.
 type EndpointDependency struct {
 	// READ-ONLY; Human-readable supplemental information about the dependency and when it is applicable.
@@ -315,6 +452,69 @@ type EndpointDependency struct {
 type EndpointDetail struct {
 	// READ-ONLY; The port an endpoint is connected to.
 	Port *int32
+}
+
+// EnvironmentDefinition - Represents an environment definition catalog item.
+type EnvironmentDefinition struct {
+	// Environment definition properties.
+	Properties *EnvironmentDefinitionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EnvironmentDefinitionListResult - Results of the environment definition list operation.
+type EnvironmentDefinitionListResult struct {
+	// READ-ONLY; URL to get the next set of results if there are any.
+	NextLink *string
+
+	// READ-ONLY; Current page of results.
+	Value []*EnvironmentDefinition
+}
+
+// EnvironmentDefinitionParameter - Properties of an Environment Definition parameter
+type EnvironmentDefinitionParameter struct {
+	// READ-ONLY; Description of the parameter
+	Description *string
+
+	// READ-ONLY; Unique ID of the parameter
+	ID *string
+
+	// READ-ONLY; Display name of the parameter
+	Name *string
+
+	// READ-ONLY; Whether or not this parameter is read-only. If true, default should have a value.
+	ReadOnly *bool
+
+	// READ-ONLY; Whether or not this parameter is required
+	Required *bool
+
+	// READ-ONLY; A string of one of the basic JSON types (number, integer, array, object, boolean, string)
+	Type *ParameterType
+}
+
+// EnvironmentDefinitionProperties - Properties of an environment definition.
+type EnvironmentDefinitionProperties struct {
+	// READ-ONLY; A short description of the environment definition.
+	Description *string
+
+	// READ-ONLY; Input parameters passed to an environment.
+	Parameters []*EnvironmentDefinitionParameter
+
+	// READ-ONLY; Path to the Environment Definition entrypoint file.
+	TemplatePath *string
+
+	// READ-ONLY; Validation status for the environment definition.
+	ValidationStatus *CatalogResourceValidationStatus
 }
 
 // EnvironmentRole - A role that can be assigned to a user.
@@ -358,6 +558,9 @@ type EnvironmentTypeListResult struct {
 
 // EnvironmentTypeProperties - Properties of an environment type.
 type EnvironmentTypeProperties struct {
+	// The display name of the environment type.
+	DisplayName *string
+
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
 }
@@ -365,8 +568,18 @@ type EnvironmentTypeProperties struct {
 // EnvironmentTypeUpdate - The environment type for partial update. Properties not provided in the update request will not
 // be changed.
 type EnvironmentTypeUpdate struct {
+	// Properties of an environment type to be updated.
+	Properties *EnvironmentTypeUpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// EnvironmentTypeUpdateProperties - Properties of an environment type. These properties can be updated after the resource
+// has been created.
+type EnvironmentTypeUpdateProperties struct {
+	// The display name of the environment type.
+	DisplayName *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -937,17 +1150,33 @@ type PoolProperties struct {
 	// Name of a Dev Box definition in parent Project of this Pool
 	DevBoxDefinitionName *string
 
+	// The display name of the pool.
+	DisplayName *string
+
 	// Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created.
 	LicenseType *LicenseType
 
 	// Indicates whether owners of Dev Boxes in this pool are added as local administrators on the Dev Box.
 	LocalAdministrator *LocalAdminStatus
 
+	// The regions of the managed virtual network (required when managedNetworkType is Managed).
+	ManagedVirtualNetworkRegions []*string
+
 	// Name of a Network Connection in parent Project of this Pool
 	NetworkConnectionName *string
 
+	// Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single sign on
+	// be enabled on the tenant.
+	SingleSignOnStatus *SingleSignOnStatus
+
 	// Stop on disconnect configuration settings for Dev Boxes created in this pool.
 	StopOnDisconnect *StopOnDisconnectConfiguration
+
+	// Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network.
+	VirtualNetworkType *VirtualNetworkType
+
+	// READ-ONLY; Indicates the number of provisioned Dev Boxes in this pool.
+	DevBoxCount *int32
 
 	// READ-ONLY; Overall health status of the Pool. Indicates whether or not the Pool is available to create Dev Boxes.
 	HealthStatus *HealthStatus
@@ -977,17 +1206,30 @@ type PoolUpdateProperties struct {
 	// Name of a Dev Box definition in parent Project of this Pool
 	DevBoxDefinitionName *string
 
+	// The display name of the pool.
+	DisplayName *string
+
 	// Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created.
 	LicenseType *LicenseType
 
 	// Indicates whether owners of Dev Boxes in this pool are added as local administrators on the Dev Box.
 	LocalAdministrator *LocalAdminStatus
 
+	// The regions of the managed virtual network (required when managedNetworkType is Managed).
+	ManagedVirtualNetworkRegions []*string
+
 	// Name of a Network Connection in parent Project of this Pool
 	NetworkConnectionName *string
 
+	// Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single sign on
+	// be enabled on the tenant.
+	SingleSignOnStatus *SingleSignOnStatus
+
 	// Stop on disconnect configuration settings for Dev Boxes created in this pool.
 	StopOnDisconnect *StopOnDisconnectConfiguration
+
+	// Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network.
+	VirtualNetworkType *VirtualNetworkType
 }
 
 // Project - Represents a project resource.
@@ -1059,12 +1301,18 @@ type ProjectEnvironmentTypeProperties struct {
 	// subscription.
 	DeploymentTargetID *string
 
+	// The display name of the project environment type.
+	DisplayName *string
+
 	// Defines whether this Environment Type can be used in this Project.
 	Status *EnvironmentTypeEnableStatus
 
 	// Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role
 	// definition IDs.
 	UserRoleAssignments map[string]*UserRoleAssignmentValue
+
+	// READ-ONLY; The number of environments of this type.
+	EnvironmentCount *int32
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -1125,6 +1373,9 @@ type ProjectProperties struct {
 	// Resource Id of an associated DevCenter
 	DevCenterID *string
 
+	// The display name of the project.
+	DisplayName *string
+
 	// When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project. This will
 	// have no effect on existing Dev Boxes when reduced.
 	MaxDevBoxesPerUser *int32
@@ -1156,6 +1407,9 @@ type ProjectUpdateProperties struct {
 	// Resource Id of an associated DevCenter
 	DevCenterID *string
 
+	// The display name of the project.
+	DisplayName *string
+
 	// When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project. This will
 	// have no effect on existing Dev Boxes when reduced.
 	MaxDevBoxesPerUser *int32
@@ -1163,6 +1417,12 @@ type ProjectUpdateProperties struct {
 
 // Properties of the devcenter.
 type Properties struct {
+	// The display name of the devcenter.
+	DisplayName *string
+
+	// Encryption settings to be used for server-side encryption for proprietary content (such as catalogs, logs, customizations).
+	Encryption *Encryption
+
 	// READ-ONLY; The URI of the Dev Center.
 	DevCenterURI *string
 
@@ -1334,6 +1594,39 @@ type StopOnDisconnectConfiguration struct {
 	Status *StopOnDisconnectEnableStatus
 }
 
+// SyncErrorDetails - Synchronization error details.
+type SyncErrorDetails struct {
+	// READ-ONLY; Catalog items that have conflicting names.
+	Conflicts []*CatalogConflictError
+
+	// READ-ONLY; Errors that occured during synchronization.
+	Errors []*CatalogSyncError
+
+	// READ-ONLY; Error information for the overall synchronization operation.
+	OperationError *CatalogErrorDetails
+}
+
+// SyncStats - Stats of the synchronization.
+type SyncStats struct {
+	// READ-ONLY; Count of catalog items added during synchronization.
+	Added *int32
+
+	// READ-ONLY; Count of catalog items removed during synchronization.
+	Removed *int32
+
+	// READ-ONLY; Count of synchronization errors that occured during synchronization.
+	SynchronizationErrors *int32
+
+	// READ-ONLY; Count of catalog items that were unchanged during synchronization.
+	Unchanged *int32
+
+	// READ-ONLY; Count of catalog items updated during synchronization.
+	Updated *int32
+
+	// READ-ONLY; Count of catalog items that had validation errors during synchronization.
+	ValidationErrors *int32
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1363,14 +1656,29 @@ type Update struct {
 	// The geo-location where the resource lives
 	Location *string
 
+	// Properties of a Dev Center to be updated.
+	Properties *UpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// UpdateProperties - Properties of the devcenter. These properties can be updated after the resource has been created.
+type UpdateProperties struct {
+	// The display name of the devcenter.
+	DisplayName *string
+
+	// Encryption settings to be used for server-side encryption for proprietary content (such as catalogs, logs, customizations).
+	Encryption *Encryption
 }
 
 // Usage - The core usage details.
 type Usage struct {
 	// The current usage.
 	CurrentValue *int64
+
+	// The fully qualified arm resource id.
+	ID *string
 
 	// The limit integer.
 	Limit *int64

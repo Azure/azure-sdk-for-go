@@ -37,6 +37,8 @@ type BlobClient struct {
 //   - options - BlobClientCancelUploadOptions contains the optional parameters for the BlobClient.CancelUpload method.
 func (client *BlobClient) CancelUpload(ctx context.Context, location string, options *BlobClientCancelUploadOptions) (BlobClientCancelUploadResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.CancelUpload", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelUploadCreateRequest(ctx, location, options)
 	if err != nil {
 		return BlobClientCancelUploadResponse{}, err
@@ -73,6 +75,8 @@ func (client *BlobClient) cancelUploadCreateRequest(ctx context.Context, locatio
 //   - options - BlobClientCheckBlobExistsOptions contains the optional parameters for the BlobClient.CheckBlobExists method.
 func (client *BlobClient) CheckBlobExists(ctx context.Context, name string, digest string, options *BlobClientCheckBlobExistsOptions) (BlobClientCheckBlobExistsResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.CheckBlobExists", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkBlobExistsCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return BlobClientCheckBlobExistsResponse{}, err
@@ -134,6 +138,8 @@ func (client *BlobClient) checkBlobExistsHandleResponse(resp *http.Response) (Bl
 //   - options - BlobClientCheckChunkExistsOptions contains the optional parameters for the BlobClient.CheckChunkExists method.
 func (client *BlobClient) CheckChunkExists(ctx context.Context, name string, digest string, rangeParam string, options *BlobClientCheckChunkExistsOptions) (BlobClientCheckChunkExistsResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.CheckChunkExists", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkChunkExistsCreateRequest(ctx, name, digest, rangeParam, options)
 	if err != nil {
 		return BlobClientCheckChunkExistsResponse{}, err
@@ -196,6 +202,8 @@ func (client *BlobClient) checkChunkExistsHandleResponse(resp *http.Response) (B
 //   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.completeUpload method.
 func (client *BlobClient) completeUpload(ctx context.Context, digest string, location string, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.CompleteUpload", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.completeUploadCreateRequest(ctx, digest, location, options)
 	if err != nil {
 		return BlobClientCompleteUploadResponse{}, err
@@ -251,6 +259,8 @@ func (client *BlobClient) completeUploadHandleResponse(resp *http.Response) (Blo
 //   - options - BlobClientDeleteBlobOptions contains the optional parameters for the BlobClient.DeleteBlob method.
 func (client *BlobClient) DeleteBlob(ctx context.Context, name string, digest string, options *BlobClientDeleteBlobOptions) (BlobClientDeleteBlobResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.DeleteBlob", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteBlobCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return BlobClientDeleteBlobResponse{}, err
@@ -303,6 +313,8 @@ func (client *BlobClient) deleteBlobHandleResponse(resp *http.Response) (BlobCli
 //   - options - BlobClientGetBlobOptions contains the optional parameters for the BlobClient.GetBlob method.
 func (client *BlobClient) GetBlob(ctx context.Context, name string, digest string, options *BlobClientGetBlobOptions) (BlobClientGetBlobResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.GetBlob", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getBlobCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return BlobClientGetBlobResponse{}, err
@@ -367,6 +379,8 @@ func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClient
 //   - options - BlobClientGetChunkOptions contains the optional parameters for the BlobClient.GetChunk method.
 func (client *BlobClient) GetChunk(ctx context.Context, name string, digest string, rangeParam string, options *BlobClientGetChunkOptions) (BlobClientGetChunkResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.GetChunk", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getChunkCreateRequest(ctx, name, digest, rangeParam, options)
 	if err != nil {
 		return BlobClientGetChunkResponse{}, err
@@ -429,6 +443,8 @@ func (client *BlobClient) getChunkHandleResponse(resp *http.Response) (BlobClien
 //   - options - BlobClientGetUploadStatusOptions contains the optional parameters for the BlobClient.GetUploadStatus method.
 func (client *BlobClient) GetUploadStatus(ctx context.Context, location string, options *BlobClientGetUploadStatusOptions) (BlobClientGetUploadStatusResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.GetUploadStatus", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getUploadStatusCreateRequest(ctx, location, options)
 	if err != nil {
 		return BlobClientGetUploadStatusResponse{}, err
@@ -479,6 +495,8 @@ func (client *BlobClient) getUploadStatusHandleResponse(resp *http.Response) (Bl
 //   - options - BlobClientMountBlobOptions contains the optional parameters for the BlobClient.MountBlob method.
 func (client *BlobClient) MountBlob(ctx context.Context, name string, from string, mount string, options *BlobClientMountBlobOptions) (BlobClientMountBlobResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.MountBlob", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.mountBlobCreateRequest(ctx, name, from, mount, options)
 	if err != nil {
 		return BlobClientMountBlobResponse{}, err
@@ -537,6 +555,8 @@ func (client *BlobClient) mountBlobHandleResponse(resp *http.Response) (BlobClie
 //   - options - BlobClientStartUploadOptions contains the optional parameters for the BlobClient.StartUpload method.
 func (client *BlobClient) StartUpload(ctx context.Context, name string, options *BlobClientStartUploadOptions) (BlobClientStartUploadResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.StartUpload", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startUploadCreateRequest(ctx, name, options)
 	if err != nil {
 		return BlobClientStartUploadResponse{}, err
@@ -592,6 +612,8 @@ func (client *BlobClient) startUploadHandleResponse(resp *http.Response) (BlobCl
 //   - options - blobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.
 func (client *BlobClient) uploadChunk(ctx context.Context, location string, chunkData io.ReadSeekCloser, options *blobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "BlobClient.uploadChunk", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.uploadChunkCreateRequest(ctx, location, chunkData, options)
 	if err != nil {
 		return BlobClientUploadChunkResponse{}, err

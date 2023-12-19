@@ -37,6 +37,8 @@ type Client struct {
 //   - options - ClientDeleteManifestOptions contains the optional parameters for the Client.DeleteManifest method.
 func (client *Client) DeleteManifest(ctx context.Context, name string, digest string, options *ClientDeleteManifestOptions) (ClientDeleteManifestResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteManifest", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteManifestCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ClientDeleteManifestResponse{}, err
@@ -79,6 +81,8 @@ func (client *Client) deleteManifestCreateRequest(ctx context.Context, name stri
 //   - options - ClientDeleteRepositoryOptions contains the optional parameters for the Client.DeleteRepository method.
 func (client *Client) DeleteRepository(ctx context.Context, name string, options *ClientDeleteRepositoryOptions) (ClientDeleteRepositoryResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteRepository", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteRepositoryCreateRequest(ctx, name, options)
 	if err != nil {
 		return ClientDeleteRepositoryResponse{}, err
@@ -121,6 +125,8 @@ func (client *Client) deleteRepositoryCreateRequest(ctx context.Context, name st
 //   - options - ClientDeleteTagOptions contains the optional parameters for the Client.DeleteTag method.
 func (client *Client) DeleteTag(ctx context.Context, name string, tag string, options *ClientDeleteTagOptions) (ClientDeleteTagResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteTag", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteTagCreateRequest(ctx, name, tag, options)
 	if err != nil {
 		return ClientDeleteTagResponse{}, err
@@ -167,6 +173,8 @@ func (client *Client) deleteTagCreateRequest(ctx context.Context, name string, t
 //   - options - ClientGetManifestOptions contains the optional parameters for the Client.GetManifest method.
 func (client *Client) GetManifest(ctx context.Context, name string, reference string, options *ClientGetManifestOptions) (ClientGetManifestResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetManifest", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getManifestCreateRequest(ctx, name, reference, options)
 	if err != nil {
 		return ClientGetManifestResponse{}, err
@@ -224,6 +232,8 @@ func (client *Client) getManifestHandleResponse(resp *http.Response) (ClientGetM
 //   - options - ClientGetManifestPropertiesOptions contains the optional parameters for the Client.GetManifestProperties method.
 func (client *Client) GetManifestProperties(ctx context.Context, name string, digest string, options *ClientGetManifestPropertiesOptions) (ClientGetManifestPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetManifestProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getManifestPropertiesCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ClientGetManifestPropertiesResponse{}, err
@@ -280,6 +290,8 @@ func (client *Client) getManifestPropertiesHandleResponse(resp *http.Response) (
 //     method.
 func (client *Client) GetRepositoryProperties(ctx context.Context, name string, options *ClientGetRepositoryPropertiesOptions) (ClientGetRepositoryPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetRepositoryProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getRepositoryPropertiesCreateRequest(ctx, name, options)
 	if err != nil {
 		return ClientGetRepositoryPropertiesResponse{}, err
@@ -332,6 +344,8 @@ func (client *Client) getRepositoryPropertiesHandleResponse(resp *http.Response)
 //   - options - ClientGetTagPropertiesOptions contains the optional parameters for the Client.GetTagProperties method.
 func (client *Client) GetTagProperties(ctx context.Context, name string, tag string, options *ClientGetTagPropertiesOptions) (ClientGetTagPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetTagProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getTagPropertiesCreateRequest(ctx, name, tag, options)
 	if err != nil {
 		return ClientGetTagPropertiesResponse{}, err
@@ -402,6 +416,7 @@ func (client *Client) NewListManifestsPager(name string, options *ClientListMani
 			}
 			return client.listManifestsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -467,6 +482,7 @@ func (client *Client) NewListRepositoriesPager(options *ClientListRepositoriesOp
 			}
 			return client.listRepositoriesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -526,6 +542,7 @@ func (client *Client) NewListTagsPager(name string, options *ClientListTagsOptio
 			}
 			return client.listTagsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -582,6 +599,8 @@ func (client *Client) listTagsHandleResponse(resp *http.Response) (ClientListTag
 //     method.
 func (client *Client) UpdateManifestProperties(ctx context.Context, name string, digest string, options *ClientUpdateManifestPropertiesOptions) (ClientUpdateManifestPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateManifestProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateManifestPropertiesCreateRequest(ctx, name, digest, options)
 	if err != nil {
 		return ClientUpdateManifestPropertiesResponse{}, err
@@ -644,6 +663,8 @@ func (client *Client) updateManifestPropertiesHandleResponse(resp *http.Response
 //     method.
 func (client *Client) UpdateRepositoryProperties(ctx context.Context, name string, options *ClientUpdateRepositoryPropertiesOptions) (ClientUpdateRepositoryPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateRepositoryProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateRepositoryPropertiesCreateRequest(ctx, name, options)
 	if err != nil {
 		return ClientUpdateRepositoryPropertiesResponse{}, err
@@ -702,6 +723,8 @@ func (client *Client) updateRepositoryPropertiesHandleResponse(resp *http.Respon
 //   - options - ClientUpdateTagPropertiesOptions contains the optional parameters for the Client.UpdateTagProperties method.
 func (client *Client) UpdateTagProperties(ctx context.Context, name string, tag string, options *ClientUpdateTagPropertiesOptions) (ClientUpdateTagPropertiesResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateTagProperties", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateTagPropertiesCreateRequest(ctx, name, tag, options)
 	if err != nil {
 		return ClientUpdateTagPropertiesResponse{}, err
@@ -766,6 +789,8 @@ func (client *Client) updateTagPropertiesHandleResponse(resp *http.Response) (Cl
 //   - options - ClientUploadManifestOptions contains the optional parameters for the Client.UploadManifest method.
 func (client *Client) UploadManifest(ctx context.Context, name string, reference string, contentType ContentType, manifestData io.ReadSeekCloser, options *ClientUploadManifestOptions) (ClientUploadManifestResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UploadManifest", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.uploadManifestCreateRequest(ctx, name, reference, contentType, manifestData, options)
 	if err != nil {
 		return ClientUploadManifestResponse{}, err

@@ -17,6 +17,7 @@ honor-body-placement: true
 remove-unreferenced-types: true
 module-name: sdk/containers/azcontainerregistry
 module: github.com/Azure/azure-sdk-for-go/$(module-name)
+inject-spans: true
 ```
 
 ## Customizations

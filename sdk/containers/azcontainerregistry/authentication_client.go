@@ -36,6 +36,8 @@ type authenticationClient struct {
 //     authenticationClient.ExchangeAADAccessTokenForACRRefreshToken method.
 func (client *authenticationClient) ExchangeAADAccessTokenForACRRefreshToken(ctx context.Context, grantType postContentSchemaGrantType, service string, options *authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions) (authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "AuthenticationClient.ExchangeAADAccessTokenForACRRefreshToken", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exchangeAADAccessTokenForACRRefreshTokenCreateRequest(ctx, grantType, service, options)
 	if err != nil {
 		return authenticationClientExchangeAADAccessTokenForACRRefreshTokenResponse{}, err
@@ -103,6 +105,8 @@ func (client *authenticationClient) exchangeAADAccessTokenForACRRefreshTokenHand
 //     authenticationClient.ExchangeACRRefreshTokenForACRAccessToken method.
 func (client *authenticationClient) ExchangeACRRefreshTokenForACRAccessToken(ctx context.Context, service string, scope string, refreshToken string, options *authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions) (authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse, error) {
 	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "AuthenticationClient.ExchangeACRRefreshTokenForACRAccessToken", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exchangeACRRefreshTokenForACRAccessTokenCreateRequest(ctx, service, scope, refreshToken, options)
 	if err != nil {
 		return authenticationClientExchangeACRRefreshTokenForACRAccessTokenResponse{}, err

@@ -18,7 +18,8 @@ import (
 )
 
 const (
-	TokenScope = "https://storage.azure.com/.default"
+	TokenScope        = "https://storage.azure.com/.default"
+	DefaultOAuthScope = "/.default"
 )
 
 const (

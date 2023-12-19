@@ -27,13 +27,14 @@ import (
 )
 
 const (
-	DefaultEndpointSuffix       = "core.windows.net/"
-	DefaultBlobEndpointSuffix   = "blob.core.windows.net/"
-	AccountNameEnvVar           = "AZURE_STORAGE_ACCOUNT_NAME"
-	AccountKeyEnvVar            = "AZURE_STORAGE_ACCOUNT_KEY"
-	DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
-	SubscriptionID              = "SUBSCRIPTION_ID"
-	ResourceGroupName           = "RESOURCE_GROUP_NAME"
+	DefaultEndpointSuffix         = "core.windows.net/"
+	DefaultBlobEndpointSuffix     = "blob.core.windows.net/"
+	AccountNameEnvVar             = "AZURE_STORAGE_ACCOUNT_NAME"
+	AccountKeyEnvVar              = "AZURE_STORAGE_ACCOUNT_KEY"
+	DefaultEndpointSuffixEnvVar   = "AZURE_STORAGE_ENDPOINT_SUFFIX"
+	DataLakeEncryptionScopeEnvVar = "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE"
+	SubscriptionID                = "SUBSCRIPTION_ID"
+	ResourceGroupName             = "RESOURCE_GROUP_NAME"
 )
 
 const (

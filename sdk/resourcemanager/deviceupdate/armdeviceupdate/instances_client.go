@@ -46,7 +46,7 @@ func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates or updates instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - instanceName - Instance name.
@@ -73,7 +73,7 @@ func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Creates or updates instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *InstancesClient) create(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancesClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, instance); err != nil {
@@ -131,7 +131,7 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 // BeginDelete - Deletes instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - instanceName - Instance name.
@@ -157,7 +157,7 @@ func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancesClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Returns instance details for the given instance and account name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - instanceName - Instance name.
@@ -263,7 +263,7 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *InstancesClient) getHandleResponse(resp *http.Response) (Instances
 
 // Head - Checks whether instance exists.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - instanceName - Instance name.
@@ -330,7 +330,7 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 
 // NewListByAccountPager - Returns instances for the given account name.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.NewListByAccountPager
@@ -386,7 +386,7 @@ func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -404,7 +404,7 @@ func (client *InstancesClient) listByAccountHandleResponse(resp *http.Response) 
 // Update - Updates instance's tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - instanceName - Instance name.
@@ -456,7 +456,7 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tagUpdatePayload); err != nil {

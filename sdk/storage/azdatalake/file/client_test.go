@@ -2705,7 +2705,7 @@ func (s *RecordedTestSuite) TestFileUploadTinyStream() {
 	_require.EqualValues(downloadedContentMD5, contentMD5)
 }
 
-func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
+func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

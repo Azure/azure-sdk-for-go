@@ -57,7 +57,7 @@ clientFactory, err := armconnectedvmware.NewClientFactory(<subscription ID>, cre
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewVirtualMachinesClient()
+client := clientFactory.NewVCentersClient()
 ```
 
 ## Fakes

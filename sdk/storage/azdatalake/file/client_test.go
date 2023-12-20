@@ -2733,8 +2733,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	contentMD5 := md5Value[:]
 
 	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
-		Concurrency: 5,
-		CPKInfo:     &testcommon.TestCPKByValue,
+		CPKInfo: &testcommon.TestCPKByValue,
 	})
 	_require.NoError(err)
 

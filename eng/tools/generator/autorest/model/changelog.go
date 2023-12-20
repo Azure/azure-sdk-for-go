@@ -171,7 +171,7 @@ func getNewContents(c *delta.Content) []string {
 	}
 
 	if len(c.Funcs) > 0 {
-		for _, k := range sortFuncItem(c.Funcs) {
+		for _, k := range SortFuncItem(c.Funcs) {
 			v := c.Funcs[k]
 			params := ""
 			if v.Params != nil {
@@ -262,7 +262,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	}
 	// write function changes
 	if len(b.Funcs) > 0 {
-		for _, k := range sortFuncItem(b.Funcs) {
+		for _, k := range SortFuncItem(b.Funcs) {
 			v := b.Funcs[k]
 			if v.Params != nil {
 				line := fmt.Sprintf("Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
@@ -324,7 +324,7 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(removed.Funcs) > 0 {
 		var lroItem []string
 		var paginationItem []string
-		for _, k := range sortFuncItem(removed.Funcs) {
+		for _, k := range SortFuncItem(removed.Funcs) {
 			v := removed.Funcs[k]
 			if v.ReplacedBy != nil {
 				var line string
@@ -405,7 +405,7 @@ func sortChangeItem[T sortItem](change map[string]T) []string {
 	return s
 }
 
-func sortFuncItem[T delta.FuncSig | exports.Func](change map[string]T) []string {
+func SortFuncItem[T delta.FuncSig | exports.Func](change map[string]T) []string {
 	s := make([]string, 0, len(change))
 	for k := range change {
 		s = append(s, k)

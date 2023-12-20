@@ -8631,6 +8631,53 @@ func (l *LongTermRetentionPolicyListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type LongTermRetentionPolicyProperties.
+func (l LongTermRetentionPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "backupStorageAccessTier", l.BackupStorageAccessTier)
+	populate(objectMap, "makeBackupsImmutable", l.MakeBackupsImmutable)
+	populate(objectMap, "monthlyRetention", l.MonthlyRetention)
+	populate(objectMap, "weekOfYear", l.WeekOfYear)
+	populate(objectMap, "weeklyRetention", l.WeeklyRetention)
+	populate(objectMap, "yearlyRetention", l.YearlyRetention)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LongTermRetentionPolicyProperties.
+func (l *LongTermRetentionPolicyProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupStorageAccessTier":
+			err = unpopulate(val, "BackupStorageAccessTier", &l.BackupStorageAccessTier)
+			delete(rawMsg, key)
+		case "makeBackupsImmutable":
+			err = unpopulate(val, "MakeBackupsImmutable", &l.MakeBackupsImmutable)
+			delete(rawMsg, key)
+		case "monthlyRetention":
+			err = unpopulate(val, "MonthlyRetention", &l.MonthlyRetention)
+			delete(rawMsg, key)
+		case "weekOfYear":
+			err = unpopulate(val, "WeekOfYear", &l.WeekOfYear)
+			delete(rawMsg, key)
+		case "weeklyRetention":
+			err = unpopulate(val, "WeeklyRetention", &l.WeeklyRetention)
+			delete(rawMsg, key)
+		case "yearlyRetention":
+			err = unpopulate(val, "YearlyRetention", &l.YearlyRetention)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MaintenanceConfigurationCapability.
 func (m MaintenanceConfigurationCapability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

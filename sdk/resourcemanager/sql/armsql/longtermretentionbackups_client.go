@@ -488,6 +488,7 @@ func (client *LongTermRetentionBackupsClient) deleteCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -579,6 +580,7 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

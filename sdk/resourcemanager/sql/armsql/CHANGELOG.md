@@ -1,9 +1,15 @@
 # Release History
 
 ## 2.0.0-beta.4 (2023-12-22)
+### Breaking Changes
+
+- Type of `LongTermRetentionPolicy.Properties` has been changed from `*BaseLongTermRetentionPolicyProperties` to `*LongTermRetentionPolicyProperties`
+- Type of `ServerProperties.MinimalTLSVersion` has been changed from `*string` to `*MinimalTLSVersion`
+
 ### Features Added
 
 - New enum type `BackupStorageAccessTier` with values `BackupStorageAccessTierArchive`, `BackupStorageAccessTierHot`
+- New enum type `MinimalTLSVersion` with values `MinimalTLSVersionNone`, `MinimalTLSVersionOne0`, `MinimalTLSVersionOne1`, `MinimalTLSVersionOne2`, `MinimalTLSVersionOne3`
 - New function `*ClientFactory.NewJobPrivateEndpointsClient() *JobPrivateEndpointsClient`
 - New function `NewJobPrivateEndpointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JobPrivateEndpointsClient, error)`
 - New function `*JobPrivateEndpointsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, JobPrivateEndpoint, *JobPrivateEndpointsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JobPrivateEndpointsClientCreateOrUpdateResponse], error)`
@@ -19,6 +25,7 @@
 - New struct `JobPrivateEndpoint`
 - New struct `JobPrivateEndpointListResult`
 - New struct `JobPrivateEndpointProperties`
+- New struct `LongTermRetentionPolicyProperties`
 - New field `DNSZone`, `MaintenanceConfigurationID` in struct `InstancePoolProperties`
 - New field `Properties`, `SKU` in struct `InstancePoolUpdate`
 - New field `BackupStorageAccessTier`, `IsBackupImmutable` in struct `LongTermRetentionBackupProperties`

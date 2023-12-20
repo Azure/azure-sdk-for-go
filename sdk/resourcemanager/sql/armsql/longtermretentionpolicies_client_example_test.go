@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyListByDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyListByDatabase.json
 func ExampleLongTermRetentionPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,9 @@ func ExampleLongTermRetentionPoliciesClient_NewListByDatabasePager() {
 		// 			Name: to.Ptr("default"),
 		// 			Type: to.Ptr("Microsoft.Sql/resourceGroups/servers/databases/backupLongTermRetentionPolicies"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver/databases/testDatabase/backupLongTermRetentionPolicies/default"),
-		// 			Properties: &armsql.BaseLongTermRetentionPolicyProperties{
+		// 			Properties: &armsql.LongTermRetentionPolicyProperties{
+		// 				BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+		// 				MakeBackupsImmutable: to.Ptr(true),
 		// 				MonthlyRetention: to.Ptr("P1Y"),
 		// 				WeekOfYear: to.Ptr[int32](5),
 		// 				WeeklyRetention: to.Ptr("P1M"),
@@ -57,7 +59,7 @@ func ExampleLongTermRetentionPoliciesClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyGet.json
 func ExampleLongTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +81,9 @@ func ExampleLongTermRetentionPoliciesClient_Get() {
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.Sql/resourceGroups/servers/databases/backupLongTermRetentionPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver/databases/testDatabase/backupLongTermRetentionPolicies/default"),
-	// 	Properties: &armsql.BaseLongTermRetentionPolicyProperties{
+	// 	Properties: &armsql.LongTermRetentionPolicyProperties{
+	// 		BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+	// 		MakeBackupsImmutable: to.Ptr(true),
 	// 		MonthlyRetention: to.Ptr("P1Y"),
 	// 		WeekOfYear: to.Ptr[int32](5),
 	// 		WeeklyRetention: to.Ptr("P1M"),
@@ -88,7 +92,7 @@ func ExampleLongTermRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LongTermRetentionPolicyCreateOrUpdate.json
 func ExampleLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,11 +104,13 @@ func ExampleLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewLongTermRetentionPoliciesClient().BeginCreateOrUpdate(ctx, "resourceGroup", "testserver", "testDatabase", armsql.LongTermRetentionPolicyNameDefault, armsql.LongTermRetentionPolicy{
-		Properties: &armsql.BaseLongTermRetentionPolicyProperties{
-			MonthlyRetention: to.Ptr("P1Y"),
-			WeekOfYear:       to.Ptr[int32](5),
-			WeeklyRetention:  to.Ptr("P1M"),
-			YearlyRetention:  to.Ptr("P5Y"),
+		Properties: &armsql.LongTermRetentionPolicyProperties{
+			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+			MakeBackupsImmutable:    to.Ptr(true),
+			MonthlyRetention:        to.Ptr("P1Y"),
+			WeekOfYear:              to.Ptr[int32](5),
+			WeeklyRetention:         to.Ptr("P1M"),
+			YearlyRetention:         to.Ptr("P5Y"),
 		},
 	}, nil)
 	if err != nil {
@@ -121,7 +127,9 @@ func ExampleLongTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("default"),
 	// 	Type: to.Ptr("Microsoft.Sql/resourceGroups/servers/databases/backupLongTermRetentionPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/resourceGroups/resourceGroup/servers/testserver/databases/testDatabase/backupLongTermRetentionPolicies/default"),
-	// 	Properties: &armsql.BaseLongTermRetentionPolicyProperties{
+	// 	Properties: &armsql.LongTermRetentionPolicyProperties{
+	// 		BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+	// 		MakeBackupsImmutable: to.Ptr(true),
 	// 		MonthlyRetention: to.Ptr("P1Y"),
 	// 		WeekOfYear: to.Ptr[int32](5),
 	// 		WeeklyRetention: to.Ptr("P1M"),

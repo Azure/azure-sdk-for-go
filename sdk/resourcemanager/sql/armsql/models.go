@@ -3703,7 +3703,7 @@ type LongTermRetentionOperationResultProperties struct {
 // LongTermRetentionPolicy - A long term retention policy.
 type LongTermRetentionPolicy struct {
 	// Resource properties.
-	Properties *BaseLongTermRetentionPolicyProperties
+	Properties *LongTermRetentionPolicyProperties
 
 	// READ-ONLY; Resource ID.
 	ID *string
@@ -3722,6 +3722,27 @@ type LongTermRetentionPolicyListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*LongTermRetentionPolicy
+}
+
+// LongTermRetentionPolicyProperties - Properties of a long term retention policy
+type LongTermRetentionPolicyProperties struct {
+	// The BackupStorageAccessTier for the LTR backups
+	BackupStorageAccessTier *BackupStorageAccessTier
+
+	// The setting whether to make LTR backups immutable
+	MakeBackupsImmutable *bool
+
+	// The monthly retention policy for an LTR backup in an ISO 8601 format.
+	MonthlyRetention *string
+
+	// The week of year to take the yearly backup in an ISO 8601 format.
+	WeekOfYear *int32
+
+	// The weekly retention policy for an LTR backup in an ISO 8601 format.
+	WeeklyRetention *string
+
+	// The yearly retention policy for an LTR backup in an ISO 8601 format.
+	YearlyRetention *string
 }
 
 // MaintenanceConfigurationCapability - The maintenance configuration capability
@@ -7201,8 +7222,8 @@ type ServerProperties struct {
 	// A CMK URI of the key to use for encryption.
 	KeyID *string
 
-	// Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
-	MinimalTLSVersion *string
+	// Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
+	MinimalTLSVersion *MinimalTLSVersion
 
 	// The resource id of a user assigned identity to be used by default.
 	PrimaryUserAssignedIdentityID *string

@@ -68,6 +68,12 @@ type BackupInstancesClientSyncBackupInstanceResponse struct {
 	// placeholder for future response values
 }
 
+// BackupInstancesClientTriggerCrossRegionRestoreResponse contains the response from method BackupInstancesClient.BeginTriggerCrossRegionRestore.
+type BackupInstancesClientTriggerCrossRegionRestoreResponse struct {
+	// Operation Job Extended Info
+	OperationJobExtendedInfo
+}
+
 // BackupInstancesClientTriggerRehydrateResponse contains the response from method BackupInstancesClient.BeginTriggerRehydrate.
 type BackupInstancesClientTriggerRehydrateResponse struct {
 	// placeholder for future response values
@@ -75,6 +81,12 @@ type BackupInstancesClientTriggerRehydrateResponse struct {
 
 // BackupInstancesClientTriggerRestoreResponse contains the response from method BackupInstancesClient.BeginTriggerRestore.
 type BackupInstancesClientTriggerRestoreResponse struct {
+	// Operation Job Extended Info
+	OperationJobExtendedInfo
+}
+
+// BackupInstancesClientValidateCrossRegionRestoreResponse contains the response from method BackupInstancesClient.BeginValidateCrossRegionRestore.
+type BackupInstancesClientValidateCrossRegionRestoreResponse struct {
 	// Operation Job Extended Info
 	OperationJobExtendedInfo
 }
@@ -241,6 +253,24 @@ type ExportJobsClientTriggerResponse struct {
 type ExportJobsOperationResultClientGetResponse struct {
 	// The result for export jobs containing blob details.
 	ExportJobsResult
+}
+
+// FetchCrossRegionRestoreJobClientGetResponse contains the response from method FetchCrossRegionRestoreJobClient.Get.
+type FetchCrossRegionRestoreJobClientGetResponse struct {
+	// AzureBackup Job Resource Class
+	AzureBackupJobResource
+}
+
+// FetchCrossRegionRestoreJobsClientListResponse contains the response from method FetchCrossRegionRestoreJobsClient.NewListPager.
+type FetchCrossRegionRestoreJobsClientListResponse struct {
+	// List of AzureBackup Job resources
+	AzureBackupJobResourceList
+}
+
+// FetchSecondaryRecoveryPointsClientListResponse contains the response from method FetchSecondaryRecoveryPointsClient.NewListPager.
+type FetchSecondaryRecoveryPointsClientListResponse struct {
+	// Azure backup recoveryPoint resource list
+	AzureBackupRecoveryPointResourceList
 }
 
 // JobsClientGetResponse contains the response from method JobsClient.Get.

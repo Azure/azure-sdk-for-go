@@ -94,7 +94,7 @@ type BasePolicyRuleClassification interface {
 // BaseResourcePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetBaseResourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BaseResourceProperties
+// - *BaseResourceProperties, *DefaultResourceProperties
 type BaseResourcePropertiesClassification interface {
 	// GetBaseResourceProperties returns the BaseResourceProperties content of the underlying type.
 	GetBaseResourceProperties() *BaseResourceProperties
@@ -148,8 +148,8 @@ type FeatureValidationResponseBaseClassification interface {
 // ItemLevelRestoreCriteriaClassification provides polymorphic access to related types.
 // Call the interface's GetItemLevelRestoreCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ItemLevelRestoreCriteria, *ItemPathBasedRestoreCriteria, *KubernetesClusterRestoreCriteria, *KubernetesPVRestoreCriteria,
-// - *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
+// - *ItemLevelRestoreCriteria, *ItemPathBasedRestoreCriteria, *KubernetesClusterRestoreCriteria, *KubernetesClusterVaultTierRestoreCriteria,
+// - *KubernetesPVRestoreCriteria, *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
 type ItemLevelRestoreCriteriaClassification interface {
 	// GetItemLevelRestoreCriteria returns the ItemLevelRestoreCriteria content of the underlying type.
 	GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria

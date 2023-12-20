@@ -1,5 +1,18 @@
 # Release History
 
+## 2.2.0 (2023-12-22)
+### Features Added
+
+- New enum type `OnBuildError` with values `OnBuildErrorAbort`, `OnBuildErrorCleanup`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `ImageTemplatePropertiesErrorHandling`
+- New struct `ImageTemplateUpdateParametersProperties`
+- New field `ErrorHandling` in struct `ImageTemplateProperties`
+- New field `Properties` in struct `ImageTemplateUpdateParameters`
+
+
 ## 2.1.0 (2023-11-24)
 ### Features Added
 

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImageVersion_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/communityGalleryExamples/CommunityGalleryImageVersion_Get.json
 func ExampleCommunityGalleryImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,12 +37,16 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CommunityGalleryImageVersion = armcompute.CommunityGalleryImageVersion{
 	// 	Name: to.Ptr("myGalleryImageVersionName"),
-	// 	Type: to.Ptr("Microsoft.Compute/Locations/CommunityGalleryImageVersion"),
+	// 	Type: to.Ptr("Microsoft.Compute/locations/communityGalleryImageVersion"),
 	// 	Identifier: &armcompute.CommunityGalleryIdentifier{
 	// 		UniqueID: to.Ptr("/CommunityGalleries/publicGalleryName/Images/myGalleryImageName/Versions/myGalleryImageVersionName"),
 	// 	},
 	// 	Location: to.Ptr("myLocation"),
 	// 	Properties: &armcompute.CommunityGalleryImageVersionProperties{
+	// 		ArtifactTags: map[string]*string{
+	// 			"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
+	// 		},
+	// 		Disclaimer: to.Ptr("https://test-uri.com"),
 	// 		EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28.000Z"); return t}()),
 	// 		ExcludeFromLatest: to.Ptr(false),
 	// 		PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28.000Z"); return t}()),
@@ -56,7 +60,7 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImageVersion_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/communityGalleryExamples/CommunityGalleryImageVersion_List.json
 func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,6 +91,10 @@ func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 		// 			},
 		// 			Location: to.Ptr("myLocation"),
 		// 			Properties: &armcompute.CommunityGalleryImageVersionProperties{
+		// 				ArtifactTags: map[string]*string{
+		// 					"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
+		// 				},
+		// 				Disclaimer: to.Ptr("https://test-uri.com"),
 		// 				EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28.000Z"); return t}()),
 		// 				ExcludeFromLatest: to.Ptr(false),
 		// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28.000Z"); return t}()),

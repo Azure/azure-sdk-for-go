@@ -9,8 +9,8 @@
 package armnetapp
 
 const (
-	moduleName    = "armnetapp"
-	moduleVersion = "v5.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
+	moduleVersion = "v6.0.0-beta.1"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -71,6 +71,24 @@ func PossibleAvsDataStoreValues() []AvsDataStore {
 	return []AvsDataStore{
 		AvsDataStoreDisabled,
 		AvsDataStoreEnabled,
+	}
+}
+
+// BackupType - Type of backup Manual or Scheduled
+type BackupType string
+
+const (
+	// BackupTypeManual - Manual backup
+	BackupTypeManual BackupType = "Manual"
+	// BackupTypeScheduled - Scheduled backup
+	BackupTypeScheduled BackupType = "Scheduled"
+)
+
+// PossibleBackupTypeValues returns the possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{
+		BackupTypeManual,
+		BackupTypeScheduled,
 	}
 }
 

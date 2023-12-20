@@ -107,7 +107,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchCreateOrUpdate(req *http.Requ
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -117,15 +117,15 @@ func (a *ActivityLogAlertsServerTransport) dispatchCreateOrUpdate(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	activityLogAlertNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
+	activityLogAlertNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, activityLogAlertNameUnescaped, body, nil)
+	respr, errRespr := a.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, activityLogAlertNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -144,21 +144,21 @@ func (a *ActivityLogAlertsServerTransport) dispatchDelete(req *http.Request) (*h
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	activityLogAlertNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
+	activityLogAlertNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameUnescaped, activityLogAlertNameUnescaped, nil)
+	respr, errRespr := a.srv.Delete(req.Context(), resourceGroupNameParam, activityLogAlertNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -177,21 +177,21 @@ func (a *ActivityLogAlertsServerTransport) dispatchGet(req *http.Request) (*http
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	activityLogAlertNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
+	activityLogAlertNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameUnescaped, activityLogAlertNameUnescaped, nil)
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, activityLogAlertNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -212,17 +212,17 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, nil)
+		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armmonitor.ActivityLogAlertsClientListByResourceGroupResponse, createLink func() string) {
@@ -249,7 +249,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchNewListBySubscriptionIDPager(
 	}
 	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -280,7 +280,7 @@ func (a *ActivityLogAlertsServerTransport) dispatchUpdate(req *http.Request) (*h
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/activityLogAlerts/(?P<activityLogAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
@@ -290,15 +290,15 @@ func (a *ActivityLogAlertsServerTransport) dispatchUpdate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	activityLogAlertNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
+	activityLogAlertNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("activityLogAlertName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameUnescaped, activityLogAlertNameUnescaped, body, nil)
+	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameParam, activityLogAlertNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

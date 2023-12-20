@@ -33,7 +33,7 @@ type LoadBalancerOutboundRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerOutboundRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".LoadBalancerOutboundRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore
 // Get - Gets the specified load balancer outbound rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - outboundRuleName - The name of the outbound rule.
@@ -99,7 +99,7 @@ func (client *LoadBalancerOutboundRulesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +116,7 @@ func (client *LoadBalancerOutboundRulesClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets all the outbound rules in a load balancer.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.NewListPager
@@ -128,22 +128,15 @@ func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName st
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerOutboundRulesClientListResponse) (LoadBalancerOutboundRulesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerOutboundRulesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
+			}, nil)
 			if err != nil {
 				return LoadBalancerOutboundRulesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LoadBalancerOutboundRulesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LoadBalancerOutboundRulesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -171,7 +164,7 @@ func (client *LoadBalancerOutboundRulesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

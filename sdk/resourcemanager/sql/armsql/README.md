@@ -1,6 +1,6 @@
 # Azure SQL Database Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2)
 
 The `armsql` module provides operations for working with Azure SQL Database.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure SQL Database module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2
 ```
 
 ## Authorization
@@ -59,6 +59,13 @@ A client groups a set of related APIs, providing access to its functionality.  C
 ```go
 client := clientFactory.NewInstanceFailoverGroupsClient()
 ```
+
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## More sample code
 

@@ -32,7 +32,7 @@ type ServiceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServiceClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ServiceClient) BeginApplyNetworkConfigurationUpdates(ctx context.C
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientApplyNetworkConfigurationUpdatesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientApplyNetworkConfigurationUpdatesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientApplyNetworkConfigurationUpdatesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *ServiceClient) BeginApplyNetworkConfigurationUpdates(ctx context.C
 // Generated from API version 2022-08-01
 func (client *ServiceClient) applyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginApplyNetworkConfigurationUpdatesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginApplyNetworkConfigurationUpdates"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.applyNetworkConfigurationUpdatesCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
@@ -138,10 +145,13 @@ func (client *ServiceClient) BeginBackup(ctx context.Context, resourceGroupName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientBackupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientBackupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientBackupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +162,10 @@ func (client *ServiceClient) BeginBackup(ctx context.Context, resourceGroupName 
 // Generated from API version 2022-08-01
 func (client *ServiceClient) backup(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginBackupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.backupCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -205,6 +219,10 @@ func (client *ServiceClient) backupCreateRequest(ctx context.Context, resourceGr
 //     method.
 func (client *ServiceClient) CheckNameAvailability(ctx context.Context, parameters ServiceCheckNameAvailabilityParameters, options *ServiceClientCheckNameAvailabilityOptions) (ServiceClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ServiceClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ServiceClientCheckNameAvailabilityResponse{}, err
@@ -267,10 +285,14 @@ func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ServiceClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -281,6 +303,10 @@ func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // Generated from API version 2022-08-01
 func (client *ServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceResource, options *ServiceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -338,10 +364,14 @@ func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ServiceClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -351,6 +381,10 @@ func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Generated from API version 2022-08-01
 func (client *ServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
@@ -401,6 +435,10 @@ func (client *ServiceClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
 func (client *ServiceClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientGetOptions) (ServiceClientGetResponse, error) {
 	var err error
+	const operationName = "ServiceClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return ServiceClientGetResponse{}, err
@@ -460,6 +498,10 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 //     method.
 func (client *ServiceClient) GetDomainOwnershipIdentifier(ctx context.Context, options *ServiceClientGetDomainOwnershipIdentifierOptions) (ServiceClientGetDomainOwnershipIdentifierResponse, error) {
 	var err error
+	const operationName = "ServiceClient.GetDomainOwnershipIdentifier"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDomainOwnershipIdentifierCreateRequest(ctx, options)
 	if err != nil {
 		return ServiceClientGetDomainOwnershipIdentifierResponse{}, err
@@ -512,6 +554,10 @@ func (client *ServiceClient) getDomainOwnershipIdentifierHandleResponse(resp *ht
 //   - options - ServiceClientGetSsoTokenOptions contains the optional parameters for the ServiceClient.GetSsoToken method.
 func (client *ServiceClient) GetSsoToken(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientGetSsoTokenOptions) (ServiceClientGetSsoTokenResponse, error) {
 	var err error
+	const operationName = "ServiceClient.GetSsoToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSsoTokenCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return ServiceClientGetSsoTokenResponse{}, err
@@ -573,25 +619,20 @@ func (client *ServiceClient) NewListPager(options *ServiceClientListOptions) *ru
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServiceClientListResponse) (ServiceClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ServiceClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServiceClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -634,25 +675,20 @@ func (client *ServiceClient) NewListByResourceGroupPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServiceClientListByResourceGroupResponse) (ServiceClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ServiceClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServiceClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -705,10 +741,13 @@ func (client *ServiceClient) BeginMigrateToStv2(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientMigrateToStv2Response]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientMigrateToStv2Response](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientMigrateToStv2Response]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -720,6 +759,10 @@ func (client *ServiceClient) BeginMigrateToStv2(ctx context.Context, resourceGro
 // Generated from API version 2022-08-01
 func (client *ServiceClient) migrateToStv2(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginMigrateToStv2Options) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginMigrateToStv2"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.migrateToStv2CreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
@@ -779,10 +822,13 @@ func (client *ServiceClient) BeginRestore(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientRestoreResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -794,6 +840,10 @@ func (client *ServiceClient) BeginRestore(ctx context.Context, resourceGroupName
 // Generated from API version 2022-08-01
 func (client *ServiceClient) restore(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters, options *ServiceClientBeginRestoreOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -852,10 +902,14 @@ func (client *ServiceClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ServiceClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -865,6 +919,10 @@ func (client *ServiceClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Generated from API version 2022-08-01
 func (client *ServiceClient) update(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateParameters, options *ServiceClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ServiceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err

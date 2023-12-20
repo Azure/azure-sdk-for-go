@@ -92,7 +92,8 @@ type DiagnosticResource struct {
 
 // DiagnosticResourceProperties - Diagnostic resource properties.
 type DiagnosticResourceProperties struct {
-	// Global parameters that can be passed to all solutionIds.
+	// Global parameters is an optional map which can be used to add key and value to request body to improve the diagnostics
+	// results
 	GlobalParameters map[string]*string
 
 	// SolutionIds that are needed to be invoked.
@@ -385,7 +386,7 @@ type SolutionMetadataResource struct {
 	Type *string
 }
 
-// SolutionPatchRequestBody - Solution response.
+// SolutionPatchRequestBody - Solution response
 type SolutionPatchRequestBody struct {
 	// Solution result
 	Properties *SolutionResourceProperties
@@ -396,41 +397,44 @@ type SolutionResource struct {
 	// Solution result
 	Properties *SolutionResourceProperties
 
-	// READ-ONLY; Full resource uri of the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Type of resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // SolutionResourceProperties - Solution result
 type SolutionResourceProperties struct {
-	// The HTML content that needs to be rendered and shown to customer.
-	Content *string
-
 	// Client input parameters to run Solution
 	Parameters map[string]*string
 
-	// Status of solution provisioning.
-	ProvisioningState *SolutionProvisioningState
-
-	// Solution replacement maps.
-	ReplacementMaps *ReplacementMaps
-
-	// List of section object.
-	Sections []*Section
-
-	// Solution Id to identify single solution.
-	SolutionID *string
-
-	// The title.
-	Title *string
-
 	// Solution request trigger criteria
 	TriggerCriteria []*TriggerCriterion
+
+	// READ-ONLY; The HTML content that needs to be rendered and shown to customer.
+	Content *string
+
+	// READ-ONLY; Status of solution provisioning.
+	ProvisioningState *SolutionProvisioningState
+
+	// READ-ONLY; Solution replacement maps.
+	ReplacementMaps *ReplacementMaps
+
+	// READ-ONLY; List of section object.
+	Sections []*Section
+
+	// READ-ONLY; Solution Id to identify single solution.
+	SolutionID *string
+
+	// READ-ONLY; The title.
+	Title *string
 }
 
 // Solutions - List of solutions
@@ -518,8 +522,8 @@ type StepInput struct {
 	// Use Index as QuestionId.
 	QuestionID *string
 
-	// Text Input. Will be a single line input.
-	QuestionType *string
+	// Type of Question
+	QuestionType *QuestionType
 
 	// Result of Automate step.
 	RecommendedOption *string
@@ -605,7 +609,7 @@ type TroubleshooterResponse struct {
 	// id of the question.
 	QuestionID *string
 
-	// Text Input. Will be a single line input.
+	// Type of Question
 	QuestionType *QuestionType
 
 	// Response key for SingleInput. For Multi-line test/open ended question it is free form text

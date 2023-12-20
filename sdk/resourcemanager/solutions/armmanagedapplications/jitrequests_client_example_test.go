@@ -57,7 +57,7 @@ func ExampleJitRequestsClient_Get() {
 	// 		JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 	// 			Type: to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 	// 			Duration: to.Ptr("PT8H"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t}()),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
 	// 		UpdatedBy: &armmanagedapplications.ApplicationClientDetails{
@@ -90,7 +90,7 @@ func ExampleJitRequestsClient_BeginCreateOrUpdate() {
 			JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 				Type:      to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 				Duration:  to.Ptr("PT8H"),
-				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t }()),
+				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t }()),
 			},
 		},
 	}, nil)
@@ -123,7 +123,7 @@ func ExampleJitRequestsClient_BeginCreateOrUpdate() {
 	// 		JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 	// 			Type: to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 	// 			Duration: to.Ptr("PT8H"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t}()),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
 	// 		UpdatedBy: &armmanagedapplications.ApplicationClientDetails{
@@ -175,7 +175,7 @@ func ExampleJitRequestsClient_Update() {
 	// 		JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 	// 			Type: to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 	// 			Duration: to.Ptr("PT8H"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t}()),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
 	// 		UpdatedBy: &armmanagedapplications.ApplicationClientDetails{
@@ -242,7 +242,7 @@ func ExampleJitRequestsClient_ListBySubscription() {
 	// 				JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 	// 					Type: to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 	// 					Duration: to.Ptr("PT8H"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t}()),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t}()),
 	// 				},
 	// 				ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
 	// 				UpdatedBy: &armmanagedapplications.ApplicationClientDetails{
@@ -270,7 +270,7 @@ func ExampleJitRequestsClient_ListBySubscription() {
 	// 				JitSchedulingPolicy: &armmanagedapplications.JitSchedulingPolicy{
 	// 					Type: to.Ptr(armmanagedapplications.JitSchedulingTypeOnce),
 	// 					Duration: to.Ptr("PT8H"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.6661804Z"); return t}()),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-22T05:48:30.666Z"); return t}()),
 	// 				},
 	// 				ProvisioningState: to.Ptr(armmanagedapplications.ProvisioningStateSucceeded),
 	// 				UpdatedBy: &armmanagedapplications.ApplicationClientDetails{

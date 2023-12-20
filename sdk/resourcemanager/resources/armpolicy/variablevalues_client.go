@@ -32,7 +32,7 @@ type VariableValuesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVariableValuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VariableValuesClient, error) {
-	cl, err := arm.NewClient(moduleName+".VariableValuesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewVariableValuesClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *VariableValuesClient) CreateOrUpdate(ctx context.Context, variableName string, variableValueName string, parameters VariableValue, options *VariableValuesClientCreateOrUpdateOptions) (VariableValuesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, variableName, variableValueName, parameters, options)
 	if err != nil {
 		return VariableValuesClientCreateOrUpdateResponse{}, err
@@ -122,6 +126,10 @@ func (client *VariableValuesClient) createOrUpdateHandleResponse(resp *http.Resp
 //     method.
 func (client *VariableValuesClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string, parameters VariableValue, options *VariableValuesClientCreateOrUpdateAtManagementGroupOptions) (VariableValuesClientCreateOrUpdateAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.CreateOrUpdateAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupID, variableName, variableValueName, parameters, options)
 	if err != nil {
 		return VariableValuesClientCreateOrUpdateAtManagementGroupResponse{}, err
@@ -187,6 +195,10 @@ func (client *VariableValuesClient) createOrUpdateAtManagementGroupHandleRespons
 //   - options - VariableValuesClientDeleteOptions contains the optional parameters for the VariableValuesClient.Delete method.
 func (client *VariableValuesClient) Delete(ctx context.Context, variableName string, variableValueName string, options *VariableValuesClientDeleteOptions) (VariableValuesClientDeleteResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, variableName, variableValueName, options)
 	if err != nil {
 		return VariableValuesClientDeleteResponse{}, err
@@ -241,6 +253,10 @@ func (client *VariableValuesClient) deleteCreateRequest(ctx context.Context, var
 //     method.
 func (client *VariableValuesClient) DeleteAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string, options *VariableValuesClientDeleteAtManagementGroupOptions) (VariableValuesClientDeleteAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.DeleteAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupID, variableName, variableValueName, options)
 	if err != nil {
 		return VariableValuesClientDeleteAtManagementGroupResponse{}, err
@@ -292,6 +308,10 @@ func (client *VariableValuesClient) deleteAtManagementGroupCreateRequest(ctx con
 //   - options - VariableValuesClientGetOptions contains the optional parameters for the VariableValuesClient.Get method.
 func (client *VariableValuesClient) Get(ctx context.Context, variableName string, variableValueName string, options *VariableValuesClientGetOptions) (VariableValuesClientGetResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, variableName, variableValueName, options)
 	if err != nil {
 		return VariableValuesClientGetResponse{}, err
@@ -355,6 +375,10 @@ func (client *VariableValuesClient) getHandleResponse(resp *http.Response) (Vari
 //     method.
 func (client *VariableValuesClient) GetAtManagementGroup(ctx context.Context, managementGroupID string, variableName string, variableValueName string, options *VariableValuesClientGetAtManagementGroupOptions) (VariableValuesClientGetAtManagementGroupResponse, error) {
 	var err error
+	const operationName = "VariableValuesClient.GetAtManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupID, variableName, variableValueName, options)
 	if err != nil {
 		return VariableValuesClientGetAtManagementGroupResponse{}, err
@@ -418,25 +442,20 @@ func (client *VariableValuesClient) NewListPager(variableName string, options *V
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VariableValuesClientListResponse) (VariableValuesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, variableName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VariableValuesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, variableName, options)
+			}, nil)
 			if err != nil {
 				return VariableValuesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VariableValuesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VariableValuesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -485,25 +504,20 @@ func (client *VariableValuesClient) NewListForManagementGroupPager(managementGro
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *VariableValuesClientListForManagementGroupResponse) (VariableValuesClientListForManagementGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, variableName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VariableValuesClient.NewListForManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForManagementGroupCreateRequest(ctx, managementGroupID, variableName, options)
+			}, nil)
 			if err != nil {
 				return VariableValuesClientListForManagementGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VariableValuesClientListForManagementGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VariableValuesClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForManagementGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

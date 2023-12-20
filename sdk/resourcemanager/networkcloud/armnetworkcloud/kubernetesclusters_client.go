@@ -32,7 +32,7 @@ type KubernetesClustersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewKubernetesClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KubernetesClustersClient, error) {
-	cl, err := arm.NewClient(moduleName+".KubernetesClustersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *KubernetesClustersClient) BeginCreateOrUpdate(ctx context.Context,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[KubernetesClustersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *KubernetesClustersClient) BeginCreateOrUpdate(ctx context.Context,
 // Generated from API version 2023-07-01
 func (client *KubernetesClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterParameters KubernetesCluster, options *KubernetesClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "KubernetesClustersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterParameters, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *KubernetesClustersClient) createOrUpdate(ctx context.Context, reso
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *KubernetesClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterParameters KubernetesCluster, options *KubernetesClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -130,10 +140,13 @@ func (client *KubernetesClustersClient) BeginDelete(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[KubernetesClustersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +156,10 @@ func (client *KubernetesClustersClient) BeginDelete(ctx context.Context, resourc
 // Generated from API version 2023-07-01
 func (client *KubernetesClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "KubernetesClustersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, kubernetesClusterName, options)
 	if err != nil {
 		return nil, err
@@ -161,6 +178,9 @@ func (client *KubernetesClustersClient) deleteOperation(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *KubernetesClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,6 +210,10 @@ func (client *KubernetesClustersClient) deleteCreateRequest(ctx context.Context,
 //   - options - KubernetesClustersClientGetOptions contains the optional parameters for the KubernetesClustersClient.Get method.
 func (client *KubernetesClustersClient) Get(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientGetOptions) (KubernetesClustersClientGetResponse, error) {
 	var err error
+	const operationName = "KubernetesClustersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, kubernetesClusterName, options)
 	if err != nil {
 		return KubernetesClustersClientGetResponse{}, err
@@ -209,6 +233,9 @@ func (client *KubernetesClustersClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *KubernetesClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -250,31 +277,29 @@ func (client *KubernetesClustersClient) NewListByResourceGroupPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *KubernetesClustersClientListByResourceGroupResponse) (KubernetesClustersClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "KubernetesClustersClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return KubernetesClustersClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return KubernetesClustersClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KubernetesClustersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *KubernetesClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *KubernetesClustersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,31 +336,29 @@ func (client *KubernetesClustersClient) NewListBySubscriptionPager(options *Kube
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *KubernetesClustersClientListBySubscriptionResponse) (KubernetesClustersClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "KubernetesClustersClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return KubernetesClustersClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return KubernetesClustersClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return KubernetesClustersClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *KubernetesClustersClient) listBySubscriptionCreateRequest(ctx context.Context, options *KubernetesClustersClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/kubernetesClusters"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -374,10 +397,13 @@ func (client *KubernetesClustersClient) BeginRestartNode(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientRestartNodeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[KubernetesClustersClientRestartNodeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientRestartNodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -387,6 +413,10 @@ func (client *KubernetesClustersClient) BeginRestartNode(ctx context.Context, re
 // Generated from API version 2023-07-01
 func (client *KubernetesClustersClient) restartNode(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "KubernetesClustersClient.BeginRestartNode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartNodeCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, options)
 	if err != nil {
 		return nil, err
@@ -405,6 +435,9 @@ func (client *KubernetesClustersClient) restartNode(ctx context.Context, resourc
 // restartNodeCreateRequest creates the RestartNode request.
 func (client *KubernetesClustersClient) restartNodeCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/restartNode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -446,10 +479,13 @@ func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[KubernetesClustersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -460,6 +496,10 @@ func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourc
 // Generated from API version 2023-07-01
 func (client *KubernetesClustersClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "KubernetesClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
 	if err != nil {
 		return nil, err
@@ -478,6 +518,9 @@ func (client *KubernetesClustersClient) update(ctx context.Context, resourceGrou
 // updateCreateRequest creates the Update request.
 func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

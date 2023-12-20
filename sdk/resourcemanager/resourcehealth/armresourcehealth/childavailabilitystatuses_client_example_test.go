@@ -46,7 +46,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// 	Properties: &armresourcehealth.AvailabilityStatusProperties{
 	// 		AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 	// 		DetailedStatus: to.Ptr(""),
-	// 		OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+	// 		OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44.000Z"); return t}()),
 	// 		ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 	// 		ReasonType: to.Ptr(""),
 	// 		RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -60,7 +60,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// 				ActionURL: to.Ptr("<#SupportCase>"),
 	// 				ActionURLText: to.Ptr("contact support"),
 	// 		}},
-	// 		ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:19:11.955255Z"); return t}()),
+	// 		ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-04T01:19:11.955Z"); return t}()),
 	// 		Summary: to.Ptr("There aren't any known Azure platform problems affecting this virtual machine"),
 	// 	},
 	// }
@@ -100,7 +100,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44.000Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -114,7 +114,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 						ActionURL: to.Ptr("<#SupportCase>"),
 		// 						ActionURLText: to.Ptr("contact support"),
 		// 				}},
-		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T19:45:45.6640838Z"); return t}()),
+		// 				ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-05T19:45:45.664Z"); return t}()),
 		// 				Summary: to.Ptr("There aren't any known Azure platform problems affecting this virtual machine"),
 		// 			},
 		// 		},
@@ -126,7 +126,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03.000Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr("Customer Initiated"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -140,7 +140,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 						ActionURL: to.Ptr("<#SupportCase>"),
 		// 						ActionURLText: to.Ptr("contact support"),
 		// 				}},
-		// 				ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:56:03Z"); return t}()),
+		// 				ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:56:03.000Z"); return t}()),
 		// 				RootCauseAttributionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:02.514Z"); return t}()),
 		// 				Summary: to.Ptr("This virtual machine is rebooting as requested by an authorized user or process. It will be back online after the reboot completes."),
 		// 			},
@@ -153,7 +153,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12.000Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -178,7 +178,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23.000Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr("Customer Initiated"),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -192,7 +192,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 						ActionURL: to.Ptr("<#SupportCase>"),
 		// 						ActionURLText: to.Ptr("contact support"),
 		// 				}},
-		// 				ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:50:23Z"); return t}()),
+		// 				ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:50:23.000Z"); return t}()),
 		// 				RootCauseAttributionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:22.256Z"); return t}()),
 		// 				Summary: to.Ptr("This virtual machine is rebooting as requested by an authorized user or process. It will be back online after the reboot completes."),
 		// 			},
@@ -205,7 +205,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 			Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 				AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 				DetailedStatus: to.Ptr(""),
-		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00Z"); return t}()),
+		// 				OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00.000Z"); return t}()),
 		// 				ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 				ReasonType: to.Ptr(""),
 		// 				RecommendedActions: []*armresourcehealth.RecommendedAction{

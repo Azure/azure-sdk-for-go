@@ -139,7 +139,7 @@ func main() {
 ```
 
 ##### Creating the client from a SAS token
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use the `ServiceClient.GetAccountSASToken` or `Client.GetTableSASToken()` methods.
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://learn.microsoft.com/rest/api/storageservices/create-service-sas) or use the `ServiceClient.GetAccountSASToken` or `Client.GetTableSASToken()` methods.
 
 ```golang
 import (
@@ -229,7 +229,7 @@ aztables.EDMEntity{
         PartitionKey: "pencils",
         RowKey: "Wooden Pencils",
     },
-    Properties: map[string]interface{}{
+    Properties: map[string]any{
         "Product": "Ticonderoga Pencils",
         "Price": 5.00,
         "Count": aztables.EDMInt64(12345678901234),
@@ -324,7 +324,7 @@ func main() {
             PartitionKey: "001234",
             RowKey: "RedMarker",
         },
-        Properties: map[string]interface{}{
+        Properties: map[string]any{
             "Stock": 15,
             "Price": 9.99,
             "Comments": "great product",
@@ -582,7 +582,7 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 ### Additional documentation
-For more extensive documentation on Azure Tables, see the [Azure Tables documentation][Tables_product_doc] on docs.microsoft.com.
+For more extensive documentation on Azure Tables, see the [Azure Tables documentation][Tables_product_doc] on learn.microsoft.com.
 
 ## Known Issues
 A list of currently known issues relating to Cosmos DB table endpoints can be found [here](https://aka.ms/tablesknownissues).
@@ -597,36 +597,36 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 <!-- LINKS -->
 [source_code]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/data/aztables
 [Tables_ref_docs]:https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/aztables
-[Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
+[Tables_product_doc]:https://learn.microsoft.com/azure/cosmos-db/table-introduction
 
 [azure_subscription]:https://azure.microsoft.com/free/
-[azure_storage_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
-[azure_cosmos_account]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_storage_account]:https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
+[azure_cosmos_account]:https://learn.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
 [pip_link]:https://pypi.org/project/pip/
 
-[azure_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
-[azure_cli_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
-[azure_portal_create_cosmos]:https://docs.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
-[azure_portal_create_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
-[azure_powershell_create_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-powershell
-[azure_cli_create_account]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
+[azure_create_cosmos]:https://learn.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_cli_create_cosmos]:https://learn.microsoft.com/azure/cosmos-db/scripts/cli/table/create
+[azure_portal_create_cosmos]:https://learn.microsoft.com/azure/cosmos-db/create-cosmosdb-resources-portal
+[azure_portal_create_account]:https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
+[azure_powershell_create_account]:https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-powershell
+[azure_cli_create_account]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
 
-[azure_cli_account_url]:https://docs.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show
-[azure_powershell_account_url]:https://docs.microsoft.com/powershell/module/az.storage/get-azstorageaccount?view=azps-4.6.1
-[azure_portal_account_url]:https://docs.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints
+[azure_cli_account_url]:https://learn.microsoft.com/cli/azure/storage/account?view=azure-cli-latest#az-storage-account-show
+[azure_powershell_account_url]:https://learn.microsoft.com/powershell/module/az.storage/get-azstorageaccount?view=azps-4.6.1
+[azure_portal_account_url]:https://learn.microsoft.com/azure/storage/common/storage-account-overview#storage-account-endpoints
 
-[azure_sas_token]:https://docs.microsoft.com/azure/storage/common/storage-sas-overview
-[azure_shared_key]:https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key
+[azure_sas_token]:https://learn.microsoft.com/azure/storage/common/storage-sas-overview
+[azure_shared_key]:https://learn.microsoft.com/rest/api/storageservices/authorize-with-shared-key
 
 [azure_core_ref_docs]:https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore
 [azure_core_readme]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/README.md
 
-[tables_error_codes]: https://docs.microsoft.com/rest/api/storageservices/table-service-error-codes
+[tables_error_codes]: https://learn.microsoft.com/rest/api/storageservices/table-service-error-codes
 
 [msft_oss_coc]:https://opensource.microsoft.com/codeofconduct/
 [msft_oss_coc_faq]:https://opensource.microsoft.com/codeofconduct/faq/
 [contact_msft_oss]:mailto:opencode@microsoft.com
 
-[tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
+[tables_rest]: https://learn.microsoft.com/rest/api/storageservices/table-service-rest-api
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

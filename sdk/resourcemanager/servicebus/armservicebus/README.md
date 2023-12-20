@@ -60,6 +60,13 @@ A client groups a set of related APIs, providing access to its functionality.  C
 client := clientFactory.NewNamespacesClient()
 ```
 
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
+
 ## More sample code
 
 - [Disaster Recovery Config](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/servicebus/disaster_recovery_config)

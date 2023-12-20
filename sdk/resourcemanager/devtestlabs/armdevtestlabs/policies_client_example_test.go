@@ -56,7 +56,7 @@ func ExamplePoliciesClient_NewListPager() {
 		// 			},
 		// 			Properties: &armdevtestlabs.PolicyProperties{
 		// 				Description: to.Ptr("{policyDescription}"),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 		// 				EvaluatorType: to.Ptr(armdevtestlabs.PolicyEvaluatorType("{policyEvaluatorType}")),
 		// 				FactData: to.Ptr("{policyFactData}"),
 		// 				FactName: to.Ptr(armdevtestlabs.PolicyFactName("{policyFactName}")),
@@ -91,7 +91,7 @@ func ExamplePoliciesClient_Get() {
 	// res.Policy = armdevtestlabs.Policy{
 	// 	Properties: &armdevtestlabs.PolicyProperties{
 	// 		Description: to.Ptr("{policyDescription}"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		EvaluatorType: to.Ptr(armdevtestlabs.PolicyEvaluatorType("{policyEvaluatorType}")),
 	// 		FactData: to.Ptr("{policyFactData}"),
 	// 		FactName: to.Ptr(armdevtestlabs.PolicyFactName("{policyFactName}")),
@@ -141,7 +141,7 @@ func ExamplePoliciesClient_CreateOrUpdate() {
 	// 	Location: to.Ptr("{location}"),
 	// 	Properties: &armdevtestlabs.PolicyProperties{
 	// 		Description: to.Ptr("{policyDescription}"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		EvaluatorType: to.Ptr(armdevtestlabs.PolicyEvaluatorType("{policyEvaluatorType}")),
 	// 		FactData: to.Ptr("{policyFactData}"),
 	// 		FactName: to.Ptr(armdevtestlabs.PolicyFactName("{policyFactName}")),
@@ -199,7 +199,7 @@ func ExamplePoliciesClient_Update() {
 	// 	Location: to.Ptr("{location}"),
 	// 	Properties: &armdevtestlabs.PolicyProperties{
 	// 		Description: to.Ptr("{policyDescription}"),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T18:40:48.1739018-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-02T01:40:48.173Z"); return t}()),
 	// 		EvaluatorType: to.Ptr(armdevtestlabs.PolicyEvaluatorType("{policyEvaluatorType}")),
 	// 		FactData: to.Ptr("{policyFactData}"),
 	// 		FactName: to.Ptr(armdevtestlabs.PolicyFactName("{policyFactName}")),

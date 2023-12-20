@@ -32,7 +32,7 @@ type ImpactedResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImpactedResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ImpactedResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCr
 //   - options - ImpactedResourcesClientGetOptions contains the optional parameters for the ImpactedResourcesClient.Get method.
 func (client *ImpactedResourcesClient) Get(ctx context.Context, eventTrackingID string, impactedResourceName string, options *ImpactedResourcesClientGetOptions) (ImpactedResourcesClientGetResponse, error) {
 	var err error
+	const operationName = "ImpactedResourcesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, eventTrackingID, impactedResourceName, options)
 	if err != nil {
 		return ImpactedResourcesClientGetResponse{}, err
@@ -113,6 +117,10 @@ func (client *ImpactedResourcesClient) getHandleResponse(resp *http.Response) (I
 //     method.
 func (client *ImpactedResourcesClient) GetByTenantID(ctx context.Context, eventTrackingID string, impactedResourceName string, options *ImpactedResourcesClientGetByTenantIDOptions) (ImpactedResourcesClientGetByTenantIDResponse, error) {
 	var err error
+	const operationName = "ImpactedResourcesClient.GetByTenantID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByTenantIDCreateRequest(ctx, eventTrackingID, impactedResourceName, options)
 	if err != nil {
 		return ImpactedResourcesClientGetByTenantIDResponse{}, err
@@ -172,25 +180,20 @@ func (client *ImpactedResourcesClient) NewListBySubscriptionIDAndEventIDPager(ev
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse) (ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
+			}, nil)
 			if err != nil {
 				return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionIDAndEventIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -240,25 +243,20 @@ func (client *ImpactedResourcesClient) NewListByTenantIDAndEventIDPager(eventTra
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImpactedResourcesClientListByTenantIDAndEventIDResponse) (ImpactedResourcesClientListByTenantIDAndEventIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImpactedResourcesClient.NewListByTenantIDAndEventIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
+			}, nil)
 			if err != nil {
 				return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByTenantIDAndEventIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -111,14 +111,14 @@ func (a *AsyncOperationID) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AsyncOperationStatus.
 func (a AsyncOperationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
+	populateDateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "error", a.Error)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "percentComplete", a.PercentComplete)
 	populateAny(objectMap, "properties", a.Properties)
 	populate(objectMap, "resourceId", a.ResourceID)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
+	populateDateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	return json.Marshal(objectMap)
 }
@@ -133,7 +133,7 @@ func (a *AsyncOperationStatus) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
+			err = unpopulateDateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &a.Error)
@@ -154,7 +154,7 @@ func (a *AsyncOperationStatus) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ResourceID", &a.ResourceID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
+			err = unpopulateDateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &a.Status)
@@ -1079,6 +1079,37 @@ func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EventHubConfiguration.
+func (e EventHubConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", e.ID)
+	populate(objectMap, "reportingInterval", e.ReportingInterval)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubConfiguration.
+func (e *EventHubConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &e.ID)
+			delete(rawMsg, key)
+		case "reportingInterval":
+			err = unpopulate(val, "ReportingInterval", &e.ReportingInterval)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type HTTPSServerCertificate.
 func (h HTTPSServerCertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1394,6 +1425,33 @@ func (m *MobileNetwork) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type NASRerouteConfiguration.
+func (n NASRerouteConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "macroMmeGroupId", n.MacroMmeGroupID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type NASRerouteConfiguration.
+func (n *NASRerouteConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", n, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "macroMmeGroupId":
+			err = unpopulate(val, "MacroMmeGroupID", &n.MacroMmeGroupID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", n, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type NaptConfiguration.
 func (n NaptConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1620,8 +1678,9 @@ func (p *PacketCaptureListResult) UnmarshalJSON(data []byte) error {
 func (p PacketCapturePropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bytesToCapturePerPacket", p.BytesToCapturePerPacket)
-	populateTimeRFC3339(objectMap, "captureStartTime", p.CaptureStartTime)
+	populateDateTimeRFC3339(objectMap, "captureStartTime", p.CaptureStartTime)
 	populate(objectMap, "networkInterfaces", p.NetworkInterfaces)
+	populate(objectMap, "outputFiles", p.OutputFiles)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "reason", p.Reason)
 	populate(objectMap, "status", p.Status)
@@ -1643,10 +1702,13 @@ func (p *PacketCapturePropertiesFormat) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "BytesToCapturePerPacket", &p.BytesToCapturePerPacket)
 			delete(rawMsg, key)
 		case "captureStartTime":
-			err = unpopulateTimeRFC3339(val, "CaptureStartTime", &p.CaptureStartTime)
+			err = unpopulateDateTimeRFC3339(val, "CaptureStartTime", &p.CaptureStartTime)
 			delete(rawMsg, key)
 		case "networkInterfaces":
 			err = unpopulate(val, "NetworkInterfaces", &p.NetworkInterfaces)
+			delete(rawMsg, key)
+		case "outputFiles":
+			err = unpopulate(val, "OutputFiles", &p.OutputFiles)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &p.ProvisioningState)
@@ -1788,8 +1850,10 @@ func (p *PacketCoreControlPlaneListResult) UnmarshalJSON(data []byte) error {
 func (p PacketCoreControlPlanePropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "controlPlaneAccessInterface", p.ControlPlaneAccessInterface)
+	populate(objectMap, "controlPlaneAccessVirtualIpv4Addresses", p.ControlPlaneAccessVirtualIPv4Addresses)
 	populate(objectMap, "coreNetworkTechnology", p.CoreNetworkTechnology)
 	populate(objectMap, "diagnosticsUpload", p.DiagnosticsUpload)
+	populate(objectMap, "eventHub", p.EventHub)
 	populate(objectMap, "installation", p.Installation)
 	populate(objectMap, "installedVersion", p.InstalledVersion)
 	populateAny(objectMap, "interopSettings", p.InteropSettings)
@@ -1798,6 +1862,7 @@ func (p PacketCoreControlPlanePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "rollbackVersion", p.RollbackVersion)
 	populate(objectMap, "sku", p.SKU)
+	populate(objectMap, "signaling", p.Signaling)
 	populate(objectMap, "sites", p.Sites)
 	populate(objectMap, "ueMtu", p.UeMtu)
 	populate(objectMap, "version", p.Version)
@@ -1816,11 +1881,17 @@ func (p *PacketCoreControlPlanePropertiesFormat) UnmarshalJSON(data []byte) erro
 		case "controlPlaneAccessInterface":
 			err = unpopulate(val, "ControlPlaneAccessInterface", &p.ControlPlaneAccessInterface)
 			delete(rawMsg, key)
+		case "controlPlaneAccessVirtualIpv4Addresses":
+			err = unpopulate(val, "ControlPlaneAccessVirtualIPv4Addresses", &p.ControlPlaneAccessVirtualIPv4Addresses)
+			delete(rawMsg, key)
 		case "coreNetworkTechnology":
 			err = unpopulate(val, "CoreNetworkTechnology", &p.CoreNetworkTechnology)
 			delete(rawMsg, key)
 		case "diagnosticsUpload":
 			err = unpopulate(val, "DiagnosticsUpload", &p.DiagnosticsUpload)
+			delete(rawMsg, key)
+		case "eventHub":
+			err = unpopulate(val, "EventHub", &p.EventHub)
 			delete(rawMsg, key)
 		case "installation":
 			err = unpopulate(val, "Installation", &p.Installation)
@@ -1845,6 +1916,9 @@ func (p *PacketCoreControlPlanePropertiesFormat) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "sku":
 			err = unpopulate(val, "SKU", &p.SKU)
+			delete(rawMsg, key)
+		case "signaling":
+			err = unpopulate(val, "Signaling", &p.Signaling)
 			delete(rawMsg, key)
 		case "sites":
 			err = unpopulate(val, "Sites", &p.Sites)
@@ -2082,6 +2156,7 @@ func (p PacketCoreDataPlanePropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "userPlaneAccessInterface", p.UserPlaneAccessInterface)
+	populate(objectMap, "userPlaneAccessVirtualIpv4Addresses", p.UserPlaneAccessVirtualIPv4Addresses)
 	return json.Marshal(objectMap)
 }
 
@@ -2099,6 +2174,9 @@ func (p *PacketCoreDataPlanePropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "userPlaneAccessInterface":
 			err = unpopulate(val, "UserPlaneAccessInterface", &p.UserPlaneAccessInterface)
+			delete(rawMsg, key)
+		case "userPlaneAccessVirtualIpv4Addresses":
+			err = unpopulate(val, "UserPlaneAccessVirtualIPv4Addresses", &p.UserPlaneAccessVirtualIPv4Addresses)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2785,6 +2863,33 @@ func (s *ServiceResourceID) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "id":
 			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SignalingConfiguration.
+func (s SignalingConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nasReroute", s.NasReroute)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SignalingConfiguration.
+func (s *SignalingConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nasReroute":
+			err = unpopulate(val, "NasReroute", &s.NasReroute)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3832,10 +3937,10 @@ func (s *SubResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3851,7 +3956,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -3860,7 +3965,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)

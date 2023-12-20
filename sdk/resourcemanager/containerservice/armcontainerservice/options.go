@@ -22,6 +22,13 @@ type AgentPoolsClientBeginCreateOrUpdateOptions struct {
 	ResumeToken string
 }
 
+// AgentPoolsClientBeginDeleteMachinesOptions contains the optional parameters for the AgentPoolsClient.BeginDeleteMachines
+// method.
+type AgentPoolsClientBeginDeleteMachinesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
 type AgentPoolsClientBeginDeleteOptions struct {
 	// ignore-pod-disruption-budget=true to delete those pods on a node without considering Pod Disruption Budget
@@ -316,6 +323,23 @@ type ManagedClustersClientListOptions struct {
 // ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager
 // method.
 type ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusResultClientGetByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.GetByAgentPool
+// method.
+type OperationStatusResultClientGetByAgentPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusResultClientGetOptions contains the optional parameters for the OperationStatusResultClient.Get method.
+type OperationStatusResultClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager
+// method.
+type OperationStatusResultClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

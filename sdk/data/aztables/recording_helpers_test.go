@@ -32,7 +32,7 @@ func cosmosURI(accountName string) string {
 
 func insertNEntities(pk string, n int, client *Client) error {
 	for i := 0; i < n; i++ {
-		e := &map[string]interface{}{
+		e := &map[string]any{
 			"PartitionKey": pk,
 			"RowKey":       fmt.Sprint(i),
 			"Value":        i + 1,
@@ -83,8 +83,8 @@ func createSimpleEntityWithRowKey(count int, pk string, rk string) basicTestEnti
 }
 
 // Use this for a replaced entity to assert a property (Bool) is removed
-func createSimpleEntityNoBool(count int, pk string) map[string]interface{} {
-	m := make(map[string]interface{})
+func createSimpleEntityNoBool(count int, pk string) map[string]any {
+	m := make(map[string]any)
 	m[partitionKey] = pk
 	m[rowKey] = fmt.Sprint(count)
 	m["String"] = fmt.Sprintf("some string %d", count)
@@ -130,7 +130,7 @@ func createEdmEntity(count int, pk string) EDMEntity {
 			PartitionKey: pk,
 			RowKey:       fmt.Sprint(count),
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Bool":     false,
 			"Int32":    int32(1234),
 			"Int64":    EDMInt64(123456789012),
@@ -143,7 +143,7 @@ func createEdmEntity(count int, pk string) EDMEntity {
 	}
 }
 
-func requireSameDateTime(t *testing.T, time1, time2 interface{}) {
+func requireSameDateTime(t *testing.T, time1, time2 any) {
 	t1 := time.Time(time1.(EDMDateTime))
 	t2 := time.Time(time2.(EDMDateTime))
 	require.Equal(t, t1.Year(), t2.Year())

@@ -37,9 +37,9 @@ func ExampleBackupOperationStatusesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperationStatus = armrecoveryservicesbackup.OperationStatus{
 	// 	Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00.00000Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 	ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T06:52:53.886027Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-03T06:52:53.886Z"); return t}()),
 	// 	Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesInProgress),
 	// }
 }

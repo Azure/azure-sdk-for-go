@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
 func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsAvailableForADiagn
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
 func ExampleCheckNameAvailabilityClient_Post_exampleWhenNameIsNotAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

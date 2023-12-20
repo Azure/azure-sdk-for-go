@@ -53,7 +53,7 @@ func ExampleClient_GetAudioTranscription() {
 		// different or additional metadata. See [azopenai.AudioTranscriptionFormat] for more examples.
 		ResponseFormat: to.Ptr(azopenai.AudioTranscriptionFormatText),
 
-		Deployment: modelDeploymentID,
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {

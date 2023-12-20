@@ -41,7 +41,7 @@ func ExampleSuppressionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Advisor/suppressions"),
 	// 	ID: to.Ptr("/resourceUri/providers/Microsoft.Advisor/recommendations/recommendationId/suppressions/suppressionName1"),
 	// 	Properties: &armadvisor.SuppressionProperties{
-	// 		ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-25T22:24:43.3216408Z"); return t}()),
+	// 		ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-25T22:24:43.321Z"); return t}()),
 	// 		SuppressionID: to.Ptr("suppressionId1"),
 	// 		TTL: to.Ptr("7.00:00:00"),
 	// 	},
@@ -129,7 +129,7 @@ func ExampleSuppressionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Advisor/suppressions"),
 		// 			ID: to.Ptr("/resourceUri/providers/Microsoft.Advisor/recommendations/recommendationId/suppressions/suppressionName1"),
 		// 			Properties: &armadvisor.SuppressionProperties{
-		// 				ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-24T22:24:43.3216408Z"); return t}()),
+		// 				ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-24T22:24:43.321Z"); return t}()),
 		// 				SuppressionID: to.Ptr("suppressionId1"),
 		// 				TTL: to.Ptr("7.00:00:00"),
 		// 			},
@@ -139,7 +139,7 @@ func ExampleSuppressionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Advisor/suppressions"),
 		// 			ID: to.Ptr("/resourceUri/providers/Microsoft.Advisor/recommendations/recommendationId/suppressions/suppressionName2"),
 		// 			Properties: &armadvisor.SuppressionProperties{
-		// 				ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-25T22:24:43.3216408Z"); return t}()),
+		// 				ExpirationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-25T22:24:43.321Z"); return t}()),
 		// 				SuppressionID: to.Ptr("suppressionId2"),
 		// 				TTL: to.Ptr("7.00:00:00"),
 		// 			},

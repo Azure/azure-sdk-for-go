@@ -110,7 +110,7 @@ ensure proper round-trip serialization of all properties.
 			PartitionKey: "pencils",
 			RowKey: "id-003",
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Product": "Ticonderoga Pencils",
 			"Price": 5.00,
 			"Count": aztables.EDMInt64(12345678901234),
@@ -150,7 +150,7 @@ Creating Entities
 			PartitionKey: "001234",
 			RowKey: "RedMarker",
 		},
-		Properties: map[string]interface{}{
+		Properties: map[string]any{
 			"Stock": 15,
 			"Price": 9.99,
 			"Comments": "great product",

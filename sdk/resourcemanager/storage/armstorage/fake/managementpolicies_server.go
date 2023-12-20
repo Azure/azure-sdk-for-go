@@ -82,7 +82,7 @@ func (m *ManagementPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -92,19 +92,25 @@ func (m *ManagementPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	managementPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementPolicyName")])
+	managementPolicyNameParam, err := parseWithCast(matches[regex.SubexpIndex("managementPolicyName")], func(v string) (armstorage.ManagementPolicyName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armstorage.ManagementPolicyName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, armstorage.ManagementPolicyName(managementPolicyNameUnescaped), body, nil)
+	respr, errRespr := m.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, managementPolicyNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -123,25 +129,31 @@ func (m *ManagementPoliciesServerTransport) dispatchDelete(req *http.Request) (*
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	managementPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementPolicyName")])
+	managementPolicyNameParam, err := parseWithCast(matches[regex.SubexpIndex("managementPolicyName")], func(v string) (armstorage.ManagementPolicyName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armstorage.ManagementPolicyName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Delete(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, armstorage.ManagementPolicyName(managementPolicyNameUnescaped), nil)
+	respr, errRespr := m.srv.Delete(req.Context(), resourceGroupNameParam, accountNameParam, managementPolicyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -160,25 +172,31 @@ func (m *ManagementPoliciesServerTransport) dispatchGet(req *http.Request) (*htt
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementPolicies/(?P<managementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	managementPolicyNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("managementPolicyName")])
+	managementPolicyNameParam, err := parseWithCast(matches[regex.SubexpIndex("managementPolicyName")], func(v string) (armstorage.ManagementPolicyName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armstorage.ManagementPolicyName(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, armstorage.ManagementPolicyName(managementPolicyNameUnescaped), nil)
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, managementPolicyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

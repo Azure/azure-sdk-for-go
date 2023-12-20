@@ -32,7 +32,7 @@ type PatchSchedulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PatchSchedulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PatchSchedulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *PatchSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, parameters PatchSchedule, options *PatchSchedulesClientCreateOrUpdateOptions) (PatchSchedulesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "PatchSchedulesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, defaultParam, parameters, options)
 	if err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
@@ -123,6 +127,10 @@ func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - PatchSchedulesClientDeleteOptions contains the optional parameters for the PatchSchedulesClient.Delete method.
 func (client *PatchSchedulesClient) Delete(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, options *PatchSchedulesClientDeleteOptions) (PatchSchedulesClientDeleteResponse, error) {
 	var err error
+	const operationName = "PatchSchedulesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, defaultParam, options)
 	if err != nil {
 		return PatchSchedulesClientDeleteResponse{}, err
@@ -178,6 +186,10 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 //   - options - PatchSchedulesClientGetOptions contains the optional parameters for the PatchSchedulesClient.Get method.
 func (client *PatchSchedulesClient) Get(ctx context.Context, resourceGroupName string, name string, defaultParam DefaultName, options *PatchSchedulesClientGetOptions) (PatchSchedulesClientGetResponse, error) {
 	var err error
+	const operationName = "PatchSchedulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, defaultParam, options)
 	if err != nil {
 		return PatchSchedulesClientGetResponse{}, err
@@ -246,25 +258,20 @@ func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PatchSchedulesClientListByRedisResourceResponse) (PatchSchedulesClientListByRedisResourceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PatchSchedulesClient.NewListByRedisResourcePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, options)
+			}, nil)
 			if err != nil {
 				return PatchSchedulesClientListByRedisResourceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PatchSchedulesClientListByRedisResourceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PatchSchedulesClientListByRedisResourceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByRedisResourceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

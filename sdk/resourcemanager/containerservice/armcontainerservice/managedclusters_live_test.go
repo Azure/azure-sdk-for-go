@@ -16,8 +16,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -44,11 +45,11 @@ func (testsuite *ManagedclustersTestSuite) SetupSuite() {
 	testsuite.agentPoolName = "agentpoolna"
 	testsuite.configName = "configna"
 	testsuite.resourceName = "containerservicena"
-	testsuite.azureClientId = testutil.GetEnv("AZURE_CLIENT_ID", "000000000000")
-	testsuite.azureClientSecret = testutil.GetEnv("AZURE_CLIENT_SECRET", "000000000000")
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.azureClientId = recording.GetEnvVariable("AZURE_CLIENT_ID", "000000000000")
+	testsuite.azureClientSecret = recording.GetEnvVariable("AZURE_CLIENT_SECRET", "000000000000")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/containerservice/armcontainerservice/testdata")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)

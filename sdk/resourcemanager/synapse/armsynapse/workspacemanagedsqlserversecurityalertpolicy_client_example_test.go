@@ -41,7 +41,7 @@ func ExampleWorkspaceManagedSQLServerSecurityAlertPolicyClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Synapse/workspaces/securityAlertPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/wsg-7398/providers/Microsoft.Synapse/workspaces/testWorkspace/securityAlertPolicies/Default"),
 	// 	Properties: &armsynapse.ServerSecurityAlertPolicyProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.52Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.520Z"); return t}()),
 	// 		DisabledAlerts: []*string{
 	// 			to.Ptr("Access_Anomaly")},
 	// 			EmailAccountAdmins: to.Ptr(true),
@@ -95,7 +95,7 @@ func ExampleWorkspaceManagedSQLServerSecurityAlertPolicyClient_BeginCreateOrUpda
 	// 	Type: to.Ptr("Microsoft.Synapse/workspaces/securityAlertPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/wsg-7398/providers/Microsoft.Synapse/workspaces/testWorkspace/securityAlertPolicies/Default"),
 	// 	Properties: &armsynapse.ServerSecurityAlertPolicyProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.52Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.520Z"); return t}()),
 	// 		DisabledAlerts: []*string{
 	// 			to.Ptr("Access_Anomaly"),
 	// 			to.Ptr("Usage_Anomaly")},
@@ -144,7 +144,7 @@ func ExampleWorkspaceManagedSQLServerSecurityAlertPolicyClient_BeginCreateOrUpda
 	// 	Type: to.Ptr("Microsoft.Synapse/workspaces/securityAlertPolicies"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/wsg-7398/providers/Microsoft.Synapse/workspaces/testWorkspace/securityAlertPolicies/Default"),
 	// 	Properties: &armsynapse.ServerSecurityAlertPolicyProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.52Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.520Z"); return t}()),
 	// 		DisabledAlerts: []*string{
 	// 			to.Ptr("")},
 	// 			EmailAccountAdmins: to.Ptr(true),
@@ -187,7 +187,7 @@ func ExampleWorkspaceManagedSQLServerSecurityAlertPolicyClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Synapse/workspaces/securityAlertPolicies"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/wsg-7398/providers/Microsoft.Synapse/workspaces/testWorkspace/securityAlertPolicies"),
 		// 			Properties: &armsynapse.ServerSecurityAlertPolicyProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.52Z"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T04:52:49.520Z"); return t}()),
 		// 				DisabledAlerts: []*string{
 		// 					to.Ptr("Access_Anomaly")},
 		// 					EmailAccountAdmins: to.Ptr(true),

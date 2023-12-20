@@ -38,9 +38,9 @@ func ExampleQuotaByPeriodKeysClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.QuotaCounterContract = armapimanagement.QuotaCounterContract{
 	// 	CounterKey: to.Ptr("ba"),
-	// 	PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40Z"); return t}()),
+	// 	PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40.000Z"); return t}()),
 	// 	PeriodKey: to.Ptr("0_P3Y6M4DT12H30M5S"),
-	// 	PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35Z"); return t}()),
+	// 	PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35.000Z"); return t}()),
 	// 	Value: &armapimanagement.QuotaCounterValueContractProperties{
 	// 		CallsCount: to.Ptr[int32](0),
 	// 		KbTransferred: to.Ptr[float64](2.5625),
@@ -73,9 +73,9 @@ func ExampleQuotaByPeriodKeysClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.QuotaCounterContract = armapimanagement.QuotaCounterContract{
 	// 	CounterKey: to.Ptr("ba"),
-	// 	PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40Z"); return t}()),
+	// 	PeriodEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-08T16:54:40.000Z"); return t}()),
 	// 	PeriodKey: to.Ptr("0_P3Y6M4DT12H30M5S"),
-	// 	PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35Z"); return t}()),
+	// 	PeriodStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-08-04T04:24:35.000Z"); return t}()),
 	// 	Value: &armapimanagement.QuotaCounterValueContractProperties{
 	// 		CallsCount: to.Ptr[int32](0),
 	// 		KbTransferred: to.Ptr[float64](2.5625),

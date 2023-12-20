@@ -33,7 +33,7 @@ type LocalNetworkGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLocalNetworkGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalNetworkGatewaysClient, error) {
-	cl, err := arm.NewClient(moduleName+".LocalNetworkGatewaysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewLocalNetworkGatewaysClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Creates or updates a local network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - localNetworkGatewayName - The name of the local network gateway.
 //   - parameters - Parameters supplied to the create or update local network gateway operation.
@@ -61,17 +61,20 @@ func (client *LocalNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LocalNetworkGatewaysClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LocalNetworkGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LocalNetworkGatewaysClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a local network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LocalNetworkGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway, options *LocalNetworkGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LocalNetworkGatewaysClient.BeginCreateOrUpdate"
@@ -113,7 +116,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +128,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdateCreateRequest(ctx contex
 // BeginDelete - Deletes the specified local network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - localNetworkGatewayName - The name of the local network gateway.
 //   - options - LocalNetworkGatewaysClientBeginDeleteOptions contains the optional parameters for the LocalNetworkGatewaysClient.BeginDelete
@@ -138,17 +141,20 @@ func (client *LocalNetworkGatewaysClient) BeginDelete(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LocalNetworkGatewaysClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LocalNetworkGatewaysClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LocalNetworkGatewaysClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified local network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LocalNetworkGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, options *LocalNetworkGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LocalNetworkGatewaysClient.BeginDelete"
@@ -190,7 +196,7 @@ func (client *LocalNetworkGatewaysClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +205,7 @@ func (client *LocalNetworkGatewaysClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets the specified local network gateway in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - localNetworkGatewayName - The name of the local network gateway.
 //   - options - LocalNetworkGatewaysClientGetOptions contains the optional parameters for the LocalNetworkGatewaysClient.Get
@@ -246,7 +252,7 @@ func (client *LocalNetworkGatewaysClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +269,7 @@ func (client *LocalNetworkGatewaysClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Gets all the local network gateways in a resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.NewListPager
 //     method.
@@ -274,22 +280,15 @@ func (client *LocalNetworkGatewaysClient) NewListPager(resourceGroupName string,
 		},
 		Fetcher: func(ctx context.Context, page *LocalNetworkGatewaysClientListResponse) (LocalNetworkGatewaysClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LocalNetworkGatewaysClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return LocalNetworkGatewaysClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LocalNetworkGatewaysClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LocalNetworkGatewaysClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -313,7 +312,7 @@ func (client *LocalNetworkGatewaysClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +330,7 @@ func (client *LocalNetworkGatewaysClient) listHandleResponse(resp *http.Response
 // UpdateTags - Updates a local network gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - localNetworkGatewayName - The name of the local network gateway.
 //   - parameters - Parameters supplied to update local network gateway tags.
@@ -379,7 +378,7 @@ func (client *LocalNetworkGatewaysClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

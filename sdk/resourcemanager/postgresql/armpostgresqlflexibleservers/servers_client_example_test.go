@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateGeoRestoreWithDataEncryptionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateGeoRestoreWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLoc
 				PrimaryKeyURI:                   to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
 			},
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.407Z"); return t }()),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
 	}, nil)
@@ -93,7 +93,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLoc
 	// 		AvailabilityZone: to.Ptr("2"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumEnabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -136,7 +136,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAGeoRestoreInGeoPairedLoc
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreatePointInTimeRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreatePointInTimeRestore.json
 func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 		Location: to.Ptr("westus"),
 		Properties: &armpostgresqlflexibleservers.ServerProperties{
 			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModePointInTimeRestore),
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.407Z"); return t }()),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
 	}, nil)
@@ -182,7 +182,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	// 		AvailabilityZone: to.Ptr("2"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -219,7 +219,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreate.json
 func ExampleServersClient_BeginCreate_createANewServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.719Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -330,7 +330,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithAadAuthEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateWithAadAuthEnabled.json
 func ExampleServersClient_BeginCreate_createANewServerWithActiveDirectoryAuthenticationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +410,7 @@ func ExampleServersClient_BeginCreate_createANewServerWithActiveDirectoryAuthent
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.719Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
@@ -447,7 +447,7 @@ func ExampleServersClient_BeginCreate_createANewServerWithActiveDirectoryAuthent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReplica.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateReplica.json
 func ExampleServersClient_BeginCreate_serverCreateReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleServersClient_BeginCreate_serverCreateReplica() {
 				PrimaryKeyURI:                   to.Ptr("https://test-kv.vault.azure.net/keys/test-key1/77f57315bab34b0189daa113fbc78787"),
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity"),
 			},
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.4078005+00:00"); return t }()),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T00:04:59.407Z"); return t }()),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
 		},
 	}, nil)
@@ -515,7 +515,7 @@ func ExampleServersClient_BeginCreate_serverCreateReplica() {
 	// 		AvailabilityZone: to.Ptr("2"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -539,6 +539,11 @@ func ExampleServersClient_BeginCreate_serverCreateReplica() {
 	// 		Network: &armpostgresqlflexibleservers.Network{
 	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
 	// 		},
+	// 		Replica: &armpostgresqlflexibleservers.Replica{
+	// 			Capacity: to.Ptr[int32](0),
+	// 			ReplicationState: to.Ptr(armpostgresqlflexibleservers.ReplicationStateActive),
+	// 			Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
+	// 		},
 	// 		ReplicaCapacity: to.Ptr[int32](0),
 	// 		ReplicationRole: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
 	// 		SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername"),
@@ -558,7 +563,7 @@ func ExampleServersClient_BeginCreate_serverCreateReplica() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReviveDropped.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateReviveDropped.json
 func ExampleServersClient_BeginCreate_serverCreateReviveDropped() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +578,7 @@ func ExampleServersClient_BeginCreate_serverCreateReviveDropped() {
 		Location: to.Ptr("westus"),
 		Properties: &armpostgresqlflexibleservers.ServerProperties{
 			CreateMode:             to.Ptr(armpostgresqlflexibleservers.CreateModeReviveDropped),
-			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T00:04:59.4078005+00:00"); return t }()),
+			PointInTimeUTC:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T00:04:59.407Z"); return t }()),
 			SourceServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5"),
 		},
 	}, nil)
@@ -604,7 +609,7 @@ func ExampleServersClient_BeginCreate_serverCreateReviveDropped() {
 	// 		AvailabilityZone: to.Ptr("2"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc5-rev.postgres.database.azure.com"),
@@ -640,7 +645,7 @@ func ExampleServersClient_BeginCreate_serverCreateReviveDropped() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithDataEncryptionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerCreateWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginCreate_serverCreateWithDataEncryptionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -732,7 +737,7 @@ func ExampleServersClient_BeginCreate_serverCreateWithDataEncryptionEnabled() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.7197478+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:08:06.719Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -775,7 +780,187 @@ func ExampleServersClient_BeginCreate_serverCreateWithDataEncryptionEnabled() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/PromoteReplicaAsForcedStandaloneServer.json
+func ExampleServersClient_BeginUpdate_promoteAReplicaServerAsAStandaloneServerAsForcedIEItWillPromoteAReplicaServerImmediatelyWithoutWaitingForPrimaryAndReplicaToBeInSync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testResourceGroup", "pgtestsvc4-replica", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReplicationPromoteOptionForced),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresqlflexibleservers.Server{
+	// 	Name: to.Ptr("pgtestsvc4-replica"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4-replica"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresqlflexibleservers.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+	// 			Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4-replica.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresqlflexibleservers.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		Replica: &armpostgresqlflexibleservers.Replica{
+	// 			Capacity: to.Ptr[int32](0),
+	// 			Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleNone),
+	// 		},
+	// 		State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
+	// 		Storage: &armpostgresqlflexibleservers.Storage{
+	// 			AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
+	// 			Iops: to.Ptr[int32](5000),
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 			Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP30),
+	// 		},
+	// 		Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresqlflexibleservers.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/PromoteReplicaAsPlannedStandaloneServer.json
+func ExampleServersClient_BeginUpdate_promoteAReplicaServerAsAStandaloneServerAsPlannedIEItWillWaitForReplicationToComplete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testResourceGroup", "pgtestsvc4-replica", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeStandalone),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReplicationPromoteOptionPlanned),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresqlflexibleservers.Server{
+	// 	Name: to.Ptr("pgtestsvc4-replica"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4-replica"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresqlflexibleservers.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+	// 			Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4-replica.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresqlflexibleservers.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		Replica: &armpostgresqlflexibleservers.Replica{
+	// 			Capacity: to.Ptr[int32](0),
+	// 			Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleNone),
+	// 		},
+	// 		State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
+	// 		Storage: &armpostgresqlflexibleservers.Storage{
+	// 			AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
+	// 			Iops: to.Ptr[int32](5000),
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 			Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP30),
+	// 		},
+	// 		Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresqlflexibleservers.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerUpdate.json
 func ExampleServersClient_BeginUpdate_serverUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,7 +1016,7 @@ func ExampleServersClient_BeginUpdate_serverUpdate() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](20),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -871,7 +1056,7 @@ func ExampleServersClient_BeginUpdate_serverUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithAadAuthEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerUpdateWithAadAuthEnabled.json
 func ExampleServersClient_BeginUpdate_serverUpdateWithAadAuthEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -933,7 +1118,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithAadAuthEnabled() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](20),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -973,7 +1158,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithAadAuthEnabled() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
 func ExampleServersClient_BeginUpdate_serverUpdateWithCustomerMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1022,7 +1207,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithCustomerMaintenanceWindow(
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1062,7 +1247,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithCustomerMaintenanceWindow(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithDataEncryptionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerUpdateWithDataEncryptionEnabled.json
 func ExampleServersClient_BeginUpdate_serverUpdateWithDataEncryptionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1144,7 +1329,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithDataEncryptionEnabled() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](20),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumEnabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1190,7 +1375,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithDataEncryptionEnabled() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithMajorVersionUpgrade.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerUpdateWithMajorVersionUpgrade.json
 func ExampleServersClient_BeginUpdate_serverUpdateWithMajorVersionUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1234,7 +1419,7 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithMajorVersionUpgrade() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -1274,7 +1459,187 @@ func ExampleServersClient_BeginUpdate_serverUpdateWithMajorVersionUpgrade() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/PromoteReplicaAsForcedSwitchover.json
+func ExampleServersClient_BeginUpdate_switchOverAReplicaServerAsForcedIEItWillReplicaAsPrimaryAndOriginalPrimaryAsReplicaImmediatelyWithoutWaitingForPrimaryAndReplicaToBeInSync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testResourceGroup", "pgtestsvc4-replica", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReplicationPromoteOptionForced),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresqlflexibleservers.Server{
+	// 	Name: to.Ptr("pgtestsvc4-replica"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4-replica"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresqlflexibleservers.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+	// 			Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4-replica.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresqlflexibleservers.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		Replica: &armpostgresqlflexibleservers.Replica{
+	// 			Capacity: to.Ptr[int32](5),
+	// 			Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRolePrimary),
+	// 		},
+	// 		State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
+	// 		Storage: &armpostgresqlflexibleservers.Storage{
+	// 			AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
+	// 			Iops: to.Ptr[int32](5000),
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 			Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP30),
+	// 		},
+	// 		Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresqlflexibleservers.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/PromoteReplicaAsPlannedSwitchover.json
+func ExampleServersClient_BeginUpdate_switchOverAReplicaServerAsPlannedIEItWillWaitForReplicationToCompleteBeforePromotingReplicaAsPrimaryAndOriginalPrimaryAsReplica() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "testResourceGroup", "pgtestsvc4-replica", armpostgresqlflexibleservers.ServerForUpdate{
+		Properties: &armpostgresqlflexibleservers.ServerPropertiesForUpdate{
+			Replica: &armpostgresqlflexibleservers.Replica{
+				PromoteMode:   to.Ptr(armpostgresqlflexibleservers.ReadReplicaPromoteModeSwitchover),
+				PromoteOption: to.Ptr(armpostgresqlflexibleservers.ReplicationPromoteOptionPlanned),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresqlflexibleservers.Server{
+	// 	Name: to.Ptr("pgtestsvc4-replica"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc4-replica"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresqlflexibleservers.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](20),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
+	// 			Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4-replica.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
+	// 			StandbyAvailabilityZone: to.Ptr("2"),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateHealthy),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresqlflexibleservers.Network{
+	// 			DelegatedSubnetResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
+	// 			PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone.postgres.database.azure.com"),
+	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateDisabled),
+	// 		},
+	// 		Replica: &armpostgresqlflexibleservers.Replica{
+	// 			Capacity: to.Ptr[int32](5),
+	// 			Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRolePrimary),
+	// 		},
+	// 		State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
+	// 		Storage: &armpostgresqlflexibleservers.Storage{
+	// 			AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowEnabled),
+	// 			Iops: to.Ptr[int32](5000),
+	// 			StorageSizeGB: to.Ptr[int32](1024),
+	// 			Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP30),
+	// 		},
+	// 		Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+	// 	},
+	// 	SKU: &armpostgresqlflexibleservers.SKU{
+	// 		Name: to.Ptr("Standard_D8s_v3"),
+	// 		Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1295,7 +1660,7 @@ func ExampleServersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerGet.json
 func ExampleServersClient_Get_serverGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1330,7 +1695,7 @@ func ExampleServersClient_Get_serverGet() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:07:25.8166567+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:07:25.816Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
@@ -1364,7 +1729,95 @@ func ExampleServersClient_Get_serverGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerGetWithVnet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerGetWithPrivateEndpoints.json
+func ExampleServersClient_Get_serverGetWithPrivateEndpoints() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "pgtestsvc2", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Server = armpostgresqlflexibleservers.Server{
+	// 	Name: to.Ptr("pgtestsvc1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc2"),
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"ElasticServer": to.Ptr("1"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.ServerProperties{
+	// 		AdministratorLogin: to.Ptr("cloudsa"),
+	// 		AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
+	// 			ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
+	// 			PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+	// 		},
+	// 		AvailabilityZone: to.Ptr("1"),
+	// 		Backup: &armpostgresqlflexibleservers.Backup{
+	// 			BackupRetentionDays: to.Ptr[int32](7),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:07:25.816Z"); return t}()),
+	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+	// 		},
+	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc2.postgres.database.azure.com"),
+	// 		HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
+	// 			Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateNotEnabled),
+	// 		},
+	// 		MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		MinorVersion: to.Ptr("6"),
+	// 		Network: &armpostgresqlflexibleservers.Network{
+	// 			PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
+	// 		},
+	// 		PrivateEndpointConnections: []*armpostgresqlflexibleservers.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("asdfasdfa.40c899c7-5847-493e-9c9e-d0a0c90aaf92"),
+	// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc2/privateEndpointConnections/asdfasdfa.40c899c7-5847-493e-9c9e-d0a0c90aaf92"),
+	// 				Properties: &armpostgresqlflexibleservers.PrivateEndpointConnectionProperties{
+	// 					GroupIDs: []*string{
+	// 						to.Ptr("postgresqlServer")},
+	// 						PrivateEndpoint: &armpostgresqlflexibleservers.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/pe-test-rg/providers/Microsoft.Network/privateEndpoints/asdfasdfa"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armpostgresqlflexibleservers.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("Auto-Approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr(armpostgresqlflexibleservers.PrivateEndpointServiceConnectionStatusApproved),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armpostgresqlflexibleservers.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 					},
+	// 			}},
+	// 			State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
+	// 			Storage: &armpostgresqlflexibleservers.Storage{
+	// 				AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
+	// 				Iops: to.Ptr[int32](2300),
+	// 				StorageSizeGB: to.Ptr[int32](512),
+	// 				Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP20),
+	// 			},
+	// 			Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
+	// 		},
+	// 		SKU: &armpostgresqlflexibleservers.SKU{
+	// 			Name: to.Ptr("Standard_D4s_v3"),
+	// 			Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerGetWithVnet.json
 func ExampleServersClient_Get_serverGetWithVnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1399,7 +1852,7 @@ func ExampleServersClient_Get_serverGetWithVnet() {
 	// 		AvailabilityZone: to.Ptr("1"),
 	// 		Backup: &armpostgresqlflexibleservers.Backup{
 	// 			BackupRetentionDays: to.Ptr[int32](7),
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 	// 			GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 	// 		},
 	// 		FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
@@ -1436,7 +1889,7 @@ func ExampleServersClient_Get_serverGetWithVnet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1477,7 +1930,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
@@ -1523,7 +1976,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.8131437+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.813Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
@@ -1553,7 +2006,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerList.json
 func ExampleServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1594,7 +2047,7 @@ func ExampleServersClient_NewListPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.3723361+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T01:16:58.372Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("c7d7483a8ceb.test-private-dns-zone.postgres.database.azure.com"),
@@ -1638,7 +2091,7 @@ func ExampleServersClient_NewListPager() {
 		// 				AvailabilityZone: to.Ptr("1"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.8131437+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-26T23:15:38.813Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
@@ -1668,7 +2121,7 @@ func ExampleServersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerRestart.json
 func ExampleServersClient_BeginRestart_serverRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1689,7 +2142,7 @@ func ExampleServersClient_BeginRestart_serverRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerRestartWithFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerRestartWithFailover.json
 func ExampleServersClient_BeginRestart_serverRestartWithFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1714,7 +2167,7 @@ func ExampleServersClient_BeginRestart_serverRestartWithFailover() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerStart.json
 func ExampleServersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1735,7 +2188,7 @@ func ExampleServersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ServerStop.json
 func ExampleServersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

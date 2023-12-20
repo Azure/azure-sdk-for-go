@@ -33,7 +33,7 @@ type GroupUserClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupUserClient, error) {
-	cl, err := arm.NewClient(moduleName+".GroupUserClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewGroupUserClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCheckEntityExistsOptions) (GroupUserClientCheckEntityExistsResponse, error) {
 	var err error
+	const operationName = "GroupUserClient.CheckEntityExists"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
 		return GroupUserClientCheckEntityExistsResponse{}, err
@@ -115,6 +119,10 @@ func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Contex
 //   - options - GroupUserClientCreateOptions contains the optional parameters for the GroupUserClient.Create method.
 func (client *GroupUserClient) Create(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientCreateOptions) (GroupUserClientCreateResponse, error) {
 	var err error
+	const operationName = "GroupUserClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
 		return GroupUserClientCreateResponse{}, err
@@ -185,6 +193,10 @@ func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupU
 //   - options - GroupUserClientDeleteOptions contains the optional parameters for the GroupUserClient.Delete method.
 func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserClientDeleteOptions) (GroupUserClientDeleteResponse, error) {
 	var err error
+	const operationName = "GroupUserClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, groupID, userID, options)
 	if err != nil {
 		return GroupUserClientDeleteResponse{}, err
@@ -247,25 +259,20 @@ func (client *GroupUserClient) NewListPager(resourceGroupName string, serviceNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GroupUserClientListResponse) (GroupUserClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupUserClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
+			}, nil)
 			if err != nil {
 				return GroupUserClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GroupUserClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GroupUserClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

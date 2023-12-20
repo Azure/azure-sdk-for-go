@@ -103,10 +103,10 @@ func unmarshalDeliveryRuleConditionClassification(rawMsg json.RawMessage) (Deliv
 		b = &DeliveryRuleClientPortCondition{}
 	case string(MatchVariableCookies):
 		b = &DeliveryRuleCookiesCondition{}
-	case string(MatchVariableHostName):
-		b = &DeliveryRuleHostNameCondition{}
 	case string(MatchVariableHTTPVersion):
 		b = &DeliveryRuleHTTPVersionCondition{}
+	case string(MatchVariableHostName):
+		b = &DeliveryRuleHostNameCondition{}
 	case string(MatchVariableIsDevice):
 		b = &DeliveryRuleIsDeviceCondition{}
 	case string(MatchVariablePostArgs):
@@ -125,12 +125,12 @@ func unmarshalDeliveryRuleConditionClassification(rawMsg json.RawMessage) (Deliv
 		b = &DeliveryRuleRequestSchemeCondition{}
 	case string(MatchVariableRequestURI):
 		b = &DeliveryRuleRequestURICondition{}
+	case string(MatchVariableSSLProtocol):
+		b = &DeliveryRuleSSLProtocolCondition{}
 	case string(MatchVariableServerPort):
 		b = &DeliveryRuleServerPortCondition{}
 	case string(MatchVariableSocketAddr):
 		b = &DeliveryRuleSocketAddrCondition{}
-	case string(MatchVariableSSLProtocol):
-		b = &DeliveryRuleSSLProtocolCondition{}
 	case string(MatchVariableURLFileExtension):
 		b = &DeliveryRuleURLFileExtensionCondition{}
 	case string(MatchVariableURLFileName):

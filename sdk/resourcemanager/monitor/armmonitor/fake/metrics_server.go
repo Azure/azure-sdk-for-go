@@ -84,14 +84,14 @@ func (m *MetricsServerTransport) dispatchList(req *http.Request) (*http.Response
 	if m.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metrics`
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metrics`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func (m *MetricsServerTransport) dispatchList(req *http.Request) (*http.Response
 			ValidateDimensions:  validateDimensionsParam,
 		}
 	}
-	respr, errRespr := m.srv.List(req.Context(), resourceURIUnescaped, options)
+	respr, errRespr := m.srv.List(req.Context(), resourceURIParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -200,14 +200,14 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScope(req *http.Reque
 	if m.srv.ListAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAtSubscriptionScope not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metrics`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metrics`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	regionUnescaped, err := url.QueryUnescape(qp.Get("region"))
+	regionParam, err := url.QueryUnescape(qp.Get("region"))
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +297,7 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScope(req *http.Reque
 			ValidateDimensions:  validateDimensionsParam,
 		}
 	}
-	respr, errRespr := m.srv.ListAtSubscriptionScope(req.Context(), regionUnescaped, options)
+	respr, errRespr := m.srv.ListAtSubscriptionScope(req.Context(), regionParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -316,7 +316,7 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScopePost(req *http.R
 	if m.srv.ListAtSubscriptionScopePost == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAtSubscriptionScopePost not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/metrics`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metrics`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
@@ -327,7 +327,7 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScopePost(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	regionUnescaped, err := url.QueryUnescape(qp.Get("region"))
+	regionParam, err := url.QueryUnescape(qp.Get("region"))
 	if err != nil {
 		return nil, err
 	}
@@ -418,7 +418,7 @@ func (m *MetricsServerTransport) dispatchListAtSubscriptionScopePost(req *http.R
 			Body:                &body,
 		}
 	}
-	respr, errRespr := m.srv.ListAtSubscriptionScopePost(req.Context(), regionUnescaped, options)
+	respr, errRespr := m.srv.ListAtSubscriptionScopePost(req.Context(), regionParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

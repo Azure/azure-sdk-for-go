@@ -28,11 +28,11 @@ type SubvolumesClient struct {
 }
 
 // NewSubvolumesClient creates a new instance of SubvolumesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSubvolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubvolumesClient, error) {
-	cl, err := arm.NewClient(moduleName+".SubvolumesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewSubvolumesClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -62,19 +62,26 @@ func (client *SubvolumesClient) BeginCreate(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SubvolumesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Create - Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 func (client *SubvolumesClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumeInfo, options *SubvolumesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SubvolumesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -122,7 +129,7 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -134,7 +141,7 @@ func (client *SubvolumesClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Delete subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -149,19 +156,26 @@ func (client *SubvolumesClient) BeginDelete(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SubvolumesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Delete subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 func (client *SubvolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SubvolumesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
 	if err != nil {
 		return nil, err
@@ -209,7 +223,7 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -217,7 +231,7 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Returns the path associated with the subvolumeName provided
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -226,6 +240,10 @@ func (client *SubvolumesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - SubvolumesClientGetOptions contains the optional parameters for the SubvolumesClient.Get method.
 func (client *SubvolumesClient) Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientGetOptions) (SubvolumesClientGetResponse, error) {
 	var err error
+	const operationName = "SubvolumesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
 	if err != nil {
 		return SubvolumesClientGetResponse{}, err
@@ -274,7 +292,7 @@ func (client *SubvolumesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +310,7 @@ func (client *SubvolumesClient) getHandleResponse(resp *http.Response) (Subvolum
 // BeginGetMetadata - Get details of the specified subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -308,19 +326,26 @@ func (client *SubvolumesClient) BeginGetMetadata(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientGetMetadataResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SubvolumesClientGetMetadataResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientGetMetadataResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // GetMetadata - Get details of the specified subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 func (client *SubvolumesClient) getMetadata(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *SubvolumesClientBeginGetMetadataOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SubvolumesClient.BeginGetMetadata"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getMetadataCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, options)
 	if err != nil {
 		return nil, err
@@ -368,7 +393,7 @@ func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +401,7 @@ func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, re
 
 // NewListByVolumePager - Returns a list of the subvolumes in the volume
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -389,25 +414,20 @@ func (client *SubvolumesClient) NewListByVolumePager(resourceGroupName string, a
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SubvolumesClientListByVolumeResponse) (SubvolumesClientListByVolumeResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubvolumesClient.NewListByVolumePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+			}, nil)
 			if err != nil {
 				return SubvolumesClientListByVolumeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SubvolumesClientListByVolumeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SubvolumesClientListByVolumeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVolumeHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -439,7 +459,7 @@ func (client *SubvolumesClient) listByVolumeCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -457,7 +477,7 @@ func (client *SubvolumesClient) listByVolumeHandleResponse(resp *http.Response) 
 // BeginUpdate - Patch a subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -473,19 +493,26 @@ func (client *SubvolumesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SubvolumesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SubvolumesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SubvolumesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Update - Patch a subvolume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 func (client *SubvolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body SubvolumePatchRequest, options *SubvolumesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SubvolumesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, options)
 	if err != nil {
 		return nil, err
@@ -533,7 +560,7 @@ func (client *SubvolumesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -32,7 +32,7 @@ type PolicyOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPolicyOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyOperationStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".PolicyOperationStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewPolicyOperationStatusClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *PolicyOperationStatusClient) Get(ctx context.Context, resourceGroupName string, vaultName string, policyName string, operationID string, options *PolicyOperationStatusClientGetOptions) (PolicyOperationStatusClientGetResponse, error) {
 	var err error
+	const operationName = "PolicyOperationStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, policyName, operationID, options)
 	if err != nil {
 		return PolicyOperationStatusClientGetResponse{}, err
@@ -74,6 +78,9 @@ func (client *PolicyOperationStatusClient) Get(ctx context.Context, resourceGrou
 // getCreateRequest creates the Get request.
 func (client *PolicyOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, policyName string, operationID string, options *PolicyOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}/operations/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

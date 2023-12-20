@@ -37,8 +37,8 @@ func ExampleOperationStatusClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperationStatus = armstoragesync.OperationStatus{
 	// 	Name: to.Ptr("14b50e24-f68d-4b29-a882-38be9dfb8bd1"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:23.3735483Z"); return t}()),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:21.7328715Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:23.373Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:21.732Z"); return t}()),
 	// 	Status: to.Ptr("Succeeded"),
 	// }
 }

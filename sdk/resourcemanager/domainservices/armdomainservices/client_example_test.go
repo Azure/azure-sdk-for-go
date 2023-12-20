@@ -58,7 +58,7 @@ func ExampleClient_NewListPager() {
 		// 				},
 		// 				FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 		// 				LdapsSettings: &armdomainservices.LdapsSettings{
-		// 					CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21Z"); return t}()),
+		// 					CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21.000Z"); return t}()),
 		// 					CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
 		// 					ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
 		// 					Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
@@ -83,12 +83,12 @@ func ExampleClient_NewListPager() {
 		// 										Name: to.Ptr("The managed domain is experiencing a network error"),
 		// 										ID: to.Ptr("AADDS104"),
 		// 										Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-		// 										LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.2697888Z"); return t}()),
-		// 										Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.7834289Z"); return t}()),
+		// 										LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.269Z"); return t}()),
+		// 										Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.783Z"); return t}()),
 		// 										ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
 		// 										Severity: to.Ptr("2"),
 		// 								}},
-		// 								HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21Z"); return t}()),
+		// 								HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21.000Z"); return t}()),
 		// 								HealthMonitors: []*armdomainservices.HealthMonitor{
 		// 									{
 		// 										Name: to.Ptr("Backup"),
@@ -153,7 +153,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 		// 				LdapsSettings: &armdomainservices.LdapsSettings{
-		// 					CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21Z"); return t}()),
+		// 					CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21.000Z"); return t}()),
 		// 					CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
 		// 					ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
 		// 					Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
@@ -178,12 +178,12 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 										Name: to.Ptr("The managed domain is experiencing a network error"),
 		// 										ID: to.Ptr("AADDS104"),
 		// 										Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-		// 										LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.2697888Z"); return t}()),
-		// 										Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.7834289Z"); return t}()),
+		// 										LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.269Z"); return t}()),
+		// 										Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.783Z"); return t}()),
 		// 										ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
 		// 										Severity: to.Ptr("2"),
 		// 								}},
-		// 								HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21Z"); return t}()),
+		// 								HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21.000Z"); return t}()),
 		// 								HealthMonitors: []*armdomainservices.HealthMonitor{
 		// 									{
 		// 										Name: to.Ptr("Backup"),
@@ -274,7 +274,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 	// 		LdapsSettings: &armdomainservices.LdapsSettings{
-	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21Z"); return t}()),
+	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21.000Z"); return t}()),
 	// 			CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
 	// 			ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
 	// 			Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
@@ -339,7 +339,7 @@ func ExampleClient_Get() {
 	// 		},
 	// 		FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 	// 		LdapsSettings: &armdomainservices.LdapsSettings{
-	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21Z"); return t}()),
+	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21.000Z"); return t}()),
 	// 			CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
 	// 			ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
 	// 			Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
@@ -364,12 +364,12 @@ func ExampleClient_Get() {
 	// 								Name: to.Ptr("The managed domain is experiencing a network error"),
 	// 								ID: to.Ptr("AADDS104"),
 	// 								Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-	// 								LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.2697888Z"); return t}()),
-	// 								Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.7834289Z"); return t}()),
+	// 								LastDetected: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T17:46:39.269Z"); return t}()),
+	// 								Raised: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-18T01:55:40.783Z"); return t}()),
 	// 								ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
 	// 								Severity: to.Ptr("2"),
 	// 						}},
-	// 						HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21Z"); return t}()),
+	// 						HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2018-02-15T21:43:21.000Z"); return t}()),
 	// 						HealthMonitors: []*armdomainservices.HealthMonitor{
 	// 							{
 	// 								Name: to.Ptr("Backup"),
@@ -429,7 +429,7 @@ func ExampleClient_BeginUpdate() {
 	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "TestResourceGroup", "TestDomainService.com", armdomainservices.DomainService{
 		Properties: &armdomainservices.DomainServiceProperties{
 			ConfigDiagnostics: &armdomainservices.ConfigDiagnostics{
-				LastExecuted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2021-05-05T12:00:23Z;"); return t }()),
+				LastExecuted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "NaN-NaN-NaNTNaN:NaN:NaN.NaNZ"); return t }()),
 				ValidatorResults: []*armdomainservices.ConfigDiagnosticsValidatorResult{
 					{
 						Issues: []*armdomainservices.ConfigDiagnosticsValidatorResultIssue{
@@ -496,7 +496,7 @@ func ExampleClient_BeginUpdate() {
 	// 		},
 	// 		FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 	// 		LdapsSettings: &armdomainservices.LdapsSettings{
-	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21Z"); return t}()),
+	// 			CertificateNotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-15T21:43:21.000Z"); return t}()),
 	// 			CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
 	// 			ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
 	// 			Ldaps: to.Ptr(armdomainservices.LdapsEnabled),

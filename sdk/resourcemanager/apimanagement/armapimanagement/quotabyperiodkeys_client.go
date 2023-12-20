@@ -32,7 +32,7 @@ type QuotaByPeriodKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaByPeriodKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".QuotaByPeriodKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewQuotaByPeriodKeysClient(subscriptionID string, credential azcore.TokenCr
 //   - options - QuotaByPeriodKeysClientGetOptions contains the optional parameters for the QuotaByPeriodKeysClient.Get method.
 func (client *QuotaByPeriodKeysClient) Get(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, options *QuotaByPeriodKeysClientGetOptions) (QuotaByPeriodKeysClientGetResponse, error) {
 	var err error
+	const operationName = "QuotaByPeriodKeysClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, options)
 	if err != nil {
 		return QuotaByPeriodKeysClientGetResponse{}, err
@@ -131,6 +135,10 @@ func (client *QuotaByPeriodKeysClient) getHandleResponse(resp *http.Response) (Q
 //     method.
 func (client *QuotaByPeriodKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueUpdateContract, options *QuotaByPeriodKeysClientUpdateOptions) (QuotaByPeriodKeysClientUpdateResponse, error) {
 	var err error
+	const operationName = "QuotaByPeriodKeysClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, quotaCounterKey, quotaPeriodKey, parameters, options)
 	if err != nil {
 		return QuotaByPeriodKeysClientUpdateResponse{}, err

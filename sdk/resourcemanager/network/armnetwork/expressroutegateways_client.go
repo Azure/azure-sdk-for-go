@@ -33,7 +33,7 @@ type ExpressRouteGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewExpressRouteGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteGatewaysClient, error) {
-	cl, err := arm.NewClient(moduleName+".ExpressRouteGatewaysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewExpressRouteGatewaysClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Creates or updates a ExpressRoute gateway in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRouteGatewayName - The name of the ExpressRoute gateway.
 //   - putExpressRouteGatewayParameters - Parameters required in an ExpressRoute gateway PUT operation.
@@ -61,17 +61,20 @@ func (client *ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpressRouteGatewaysClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExpressRouteGatewaysClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpressRouteGatewaysClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a ExpressRoute gateway in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, putExpressRouteGatewayParameters ExpressRouteGateway, options *ExpressRouteGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteGatewaysClient.BeginCreateOrUpdate"
@@ -113,7 +116,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, putExpressRouteGatewayParameters); err != nil {
@@ -126,7 +129,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx contex
 // be deleted when there are no connection subresources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRouteGatewayName - The name of the ExpressRoute gateway.
 //   - options - ExpressRouteGatewaysClientBeginDeleteOptions contains the optional parameters for the ExpressRouteGatewaysClient.BeginDelete
@@ -139,10 +142,13 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpressRouteGatewaysClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExpressRouteGatewaysClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpressRouteGatewaysClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,7 +156,7 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 // when there are no connection subresources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteGatewaysClient.BeginDelete"
@@ -192,7 +198,7 @@ func (client *ExpressRouteGatewaysClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +207,7 @@ func (client *ExpressRouteGatewaysClient) deleteCreateRequest(ctx context.Contex
 // Get - Fetches the details of a ExpressRoute gateway in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRouteGatewayName - The name of the ExpressRoute gateway.
 //   - options - ExpressRouteGatewaysClientGetOptions contains the optional parameters for the ExpressRouteGatewaysClient.Get
@@ -248,7 +254,7 @@ func (client *ExpressRouteGatewaysClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +272,7 @@ func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *http.Response)
 // ListByResourceGroup - Lists ExpressRoute gateways in a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - ExpressRouteGatewaysClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteGatewaysClient.ListByResourceGroup
 //     method.
@@ -308,7 +314,7 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +332,7 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp
 // ListBySubscription - Lists ExpressRoute gateways under a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - options - ExpressRouteGatewaysClientListBySubscriptionOptions contains the optional parameters for the ExpressRouteGatewaysClient.ListBySubscription
 //     method.
 func (client *ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context, options *ExpressRouteGatewaysClientListBySubscriptionOptions) (ExpressRouteGatewaysClientListBySubscriptionResponse, error) {
@@ -363,7 +369,7 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -381,7 +387,7 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp 
 // BeginUpdateTags - Updates express route gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the ExpressRouteGateway.
 //   - expressRouteGatewayName - The name of the gateway.
 //   - expressRouteGatewayParameters - Parameters supplied to update a virtual wan express route gateway tags.
@@ -395,17 +401,20 @@ func (client *ExpressRouteGatewaysClient) BeginUpdateTags(ctx context.Context, r
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpressRouteGatewaysClientUpdateTagsResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExpressRouteGatewaysClientUpdateTagsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpressRouteGatewaysClientUpdateTagsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // UpdateTags - Updates express route gateway tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ExpressRouteGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, expressRouteGatewayParameters TagsObject, options *ExpressRouteGatewaysClientBeginUpdateTagsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteGatewaysClient.BeginUpdateTags"
@@ -447,7 +456,7 @@ func (client *ExpressRouteGatewaysClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, expressRouteGatewayParameters); err != nil {

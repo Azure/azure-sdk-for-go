@@ -32,7 +32,7 @@ type FeatureSupportClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FeatureSupportClient, error) {
-	cl, err := arm.NewClient(moduleName+".FeatureSupportClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCrede
 //   - options - FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
 func (client *FeatureSupportClient) Validate(ctx context.Context, azureRegion string, parameters FeatureSupportRequestClassification, options *FeatureSupportClientValidateOptions) (FeatureSupportClientValidateResponse, error) {
 	var err error
+	const operationName = "FeatureSupportClient.Validate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
 		return FeatureSupportClientValidateResponse{}, err

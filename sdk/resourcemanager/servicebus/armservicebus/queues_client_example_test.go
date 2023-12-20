@@ -226,9 +226,9 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 		// 			Type: to.Ptr("Microsoft.ServiceBus/Namespaces/Queues"),
 		// 			ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-3174/queues/sdk-queues-5647"),
 		// 			Properties: &armservicebus.SBQueueProperties{
-		// 				AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+		// 				AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:32.4592931Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:32.459Z"); return t}()),
 		// 				DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
 		// 				DuplicateDetectionHistoryTimeWindow: to.Ptr("PT10M"),
 		// 				EnableExpress: to.Ptr(false),
@@ -242,7 +242,7 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 		// 				RequiresSession: to.Ptr(false),
 		// 				SizeInBytes: to.Ptr[int64](0),
 		// 				Status: to.Ptr(armservicebus.EntityStatusActive),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:34.6243761Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:34.624Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -278,7 +278,7 @@ func ExampleQueuesClient_CreateOrUpdate() {
 	// 	Properties: &armservicebus.SBQueueProperties{
 	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:34.227Z"); return t}()),
 	// 		AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:33.68Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:33.680Z"); return t}()),
 	// 		DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
 	// 		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT10M"),
 	// 		EnableExpress: to.Ptr(false),
@@ -337,9 +337,9 @@ func ExampleQueuesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.ServiceBus/Namespaces/Queues"),
 	// 	ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-3174/queues/sdk-Queues-5647"),
 	// 	Properties: &armservicebus.SBQueueProperties{
-	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 	// 		AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:32.4592931Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:32.459Z"); return t}()),
 	// 		DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
 	// 		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT10M"),
 	// 		EnableExpress: to.Ptr(false),
@@ -353,7 +353,7 @@ func ExampleQueuesClient_Get() {
 	// 		RequiresSession: to.Ptr(false),
 	// 		SizeInBytes: to.Ptr[int64](0),
 	// 		Status: to.Ptr(armservicebus.EntityStatusActive),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:34.6243761Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T18:07:34.624Z"); return t}()),
 	// 	},
 	// }
 }

@@ -32,7 +32,7 @@ type NetworkInterfacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkInterfacesClient, error) {
-	cl, err := arm.NewClient(moduleName+".NetworkInterfacesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkInterfacesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkInterfacesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkInterfacesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 // Generated from API version 2023-09-01-preview
 func (client *NetworkInterfacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, networkInterfaces NetworkInterfaces, options *NetworkInterfacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NetworkInterfacesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkInterfaceName, networkInterfaces, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +141,13 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkInterfacesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkInterfacesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkInterfacesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +157,10 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 // Generated from API version 2023-09-01-preview
 func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NetworkInterfacesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +211,10 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 //   - options - NetworkInterfacesClientGetOptions contains the optional parameters for the NetworkInterfacesClient.Get method.
 func (client *NetworkInterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesClientGetOptions) (NetworkInterfacesClientGetResponse, error) {
 	var err error
+	const operationName = "NetworkInterfacesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 	if err != nil {
 		return NetworkInterfacesClientGetResponse{}, err
@@ -261,25 +279,20 @@ func (client *NetworkInterfacesClient) NewListPager(resourceGroupName string, op
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListResponse) (NetworkInterfacesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return NetworkInterfacesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NetworkInterfacesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NetworkInterfacesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -326,25 +339,20 @@ func (client *NetworkInterfacesClient) NewListAllPager(options *NetworkInterface
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListAllResponse) (NetworkInterfacesClientListAllResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAllCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAllCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return NetworkInterfacesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NetworkInterfacesClientListAllResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NetworkInterfacesClientListAllResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -391,10 +399,13 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkInterfacesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NetworkInterfacesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkInterfacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -404,6 +415,10 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 // Generated from API version 2023-09-01-preview
 func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroupName string, networkInterfaceName string, networkInterfaces NetworkInterfacesUpdateRequest, options *NetworkInterfacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NetworkInterfacesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkInterfaceName, networkInterfaces, options)
 	if err != nil {
 		return nil, err

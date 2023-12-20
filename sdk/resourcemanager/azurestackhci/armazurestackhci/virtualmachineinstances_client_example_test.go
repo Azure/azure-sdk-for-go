@@ -412,7 +412,7 @@ func ExampleVirtualMachineInstancesClient_BeginCreateOrUpdate_putVirtualMachineI
 	// 						DisplayStatus: to.Ptr("Ok"),
 	// 						Level: to.Ptr(armazurestackhci.StatusLevelTypesInfo),
 	// 						Message: to.Ptr("The agent is healthy"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2009-06-15T13:45:30"); return t}()),
+	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2009-06-15T05:45:30.000Z"); return t}()),
 	// 				}},
 	// 				VMConfigAgentVersion: to.Ptr("1.0.0"),
 	// 			},

@@ -1,6 +1,6 @@
 # Azure Selfhelp Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2)
 
 The `armselfhelp` module provides operations for working with Azure Selfhelp.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Selfhelp module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2
 ```
 
 ## Authorization
@@ -59,6 +59,13 @@ A client groups a set of related APIs, providing access to its functionality.  C
 ```go
 client := clientFactory.NewDiagnosticsClient()
 ```
+
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## Provide Feedback
 

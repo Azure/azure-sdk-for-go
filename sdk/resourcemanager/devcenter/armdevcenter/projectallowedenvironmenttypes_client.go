@@ -33,7 +33,7 @@ type ProjectAllowedEnvironmentTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectAllowedEnvironmentTypesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProjectAllowedEnvironmentTypesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProjectAllowedEnvironmentTypesClient(subscriptionID string, credential a
 //     method.
 func (client *ProjectAllowedEnvironmentTypesClient) Get(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, options *ProjectAllowedEnvironmentTypesClientGetOptions) (ProjectAllowedEnvironmentTypesClientGetResponse, error) {
 	var err error
+	const operationName = "ProjectAllowedEnvironmentTypesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, projectName, environmentTypeName, options)
 	if err != nil {
 		return ProjectAllowedEnvironmentTypesClientGetResponse{}, err
@@ -123,25 +127,20 @@ func (client *ProjectAllowedEnvironmentTypesClient) NewListPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProjectAllowedEnvironmentTypesClientListResponse) (ProjectAllowedEnvironmentTypesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, projectName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProjectAllowedEnvironmentTypesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
 			if err != nil {
 				return ProjectAllowedEnvironmentTypesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProjectAllowedEnvironmentTypesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProjectAllowedEnvironmentTypesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

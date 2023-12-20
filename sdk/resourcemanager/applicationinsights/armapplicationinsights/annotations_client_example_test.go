@@ -75,7 +75,7 @@ func ExampleAnnotationsClient_Create() {
 	// 	{
 	// 		AnnotationName: to.Ptr("TestAnnotation"),
 	// 		Category: to.Ptr("Text"),
-	// 		EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657+00:00"); return t}()),
+	// 		EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t}()),
 	// 		ID: to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
 	// 		Properties: to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 	// }}
@@ -120,7 +120,7 @@ func ExampleAnnotationsClient_Get() {
 	// 	{
 	// 		AnnotationName: to.Ptr("TestAnnotation"),
 	// 		Category: to.Ptr("Text"),
-	// 		EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657+00:00"); return t}()),
+	// 		EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t}()),
 	// 		ID: to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
 	// 		Properties: to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 	// }}

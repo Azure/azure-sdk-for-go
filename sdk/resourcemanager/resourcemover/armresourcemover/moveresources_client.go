@@ -32,7 +32,7 @@ type MoveResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMoveResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MoveResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".MoveResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *MoveResourcesClient) BeginCreate(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveResourcesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveResourcesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveResourcesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *MoveResourcesClient) BeginCreate(ctx context.Context, resourceGrou
 // Generated from API version 2023-08-01
 func (client *MoveResourcesClient) create(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveResourcesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +148,13 @@ func (client *MoveResourcesClient) BeginDelete(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveResourcesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveResourcesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveResourcesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -154,6 +164,10 @@ func (client *MoveResourcesClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-08-01
 func (client *MoveResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveResourcesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +223,10 @@ func (client *MoveResourcesClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - MoveResourcesClientGetOptions contains the optional parameters for the MoveResourcesClient.Get method.
 func (client *MoveResourcesClient) Get(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientGetOptions) (MoveResourcesClientGetResponse, error) {
 	var err error
+	const operationName = "MoveResourcesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 	if err != nil {
 		return MoveResourcesClientGetResponse{}, err
@@ -276,25 +294,20 @@ func (client *MoveResourcesClient) NewListPager(resourceGroupName string, moveCo
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MoveResourcesClientListResponse) (MoveResourcesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MoveResourcesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
+			}, nil)
 			if err != nil {
 				return MoveResourcesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MoveResourcesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MoveResourcesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -33,7 +33,7 @@ type AvailableServiceAliasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAvailableServiceAliasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableServiceAliasesClient, error) {
-	cl, err := arm.NewClient(moduleName+".AvailableServiceAliasesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewAvailableServiceAliasesClient(subscriptionID string, credential azcore.T
 
 // NewListPager - Gets all available service aliases for this subscription in this region.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - location - The location.
 //   - options - AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListPager
 //     method.
@@ -57,22 +57,15 @@ func (client *AvailableServiceAliasesClient) NewListPager(location string, optio
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListResponse) (AvailableServiceAliasesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return AvailableServiceAliasesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailableServiceAliasesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailableServiceAliasesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -96,7 +89,7 @@ func (client *AvailableServiceAliasesClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +106,7 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *http.Respo
 
 // NewListByResourceGroupPager - Gets all available service aliases for this resource group in this region.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - location - The location.
 //   - options - AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.NewListByResourceGroupPager
@@ -125,22 +118,15 @@ func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourc
 		},
 		Fetcher: func(ctx context.Context, page *AvailableServiceAliasesClientListByResourceGroupResponse) (AvailableServiceAliasesClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableServiceAliasesClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
+			}, nil)
 			if err != nil {
 				return AvailableServiceAliasesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailableServiceAliasesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailableServiceAliasesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -168,7 +154,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

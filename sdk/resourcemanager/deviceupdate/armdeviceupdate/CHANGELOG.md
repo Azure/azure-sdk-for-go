@@ -1,5 +1,18 @@
 # Release History
 
+## 1.3.0 (2023-12-22)
+### Features Added
+
+- New struct `Encryption`
+- New field `Encryption` in struct `AccountProperties`
+
+
+## 1.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

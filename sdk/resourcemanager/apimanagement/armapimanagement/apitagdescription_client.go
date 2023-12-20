@@ -33,7 +33,7 @@ type APITagDescriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPITagDescriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APITagDescriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".APITagDescriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewAPITagDescriptionClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *APITagDescriptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagDescriptionID string, parameters TagDescriptionCreateParameters, options *APITagDescriptionClientCreateOrUpdateOptions) (APITagDescriptionClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APITagDescriptionClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, tagDescriptionID, parameters, options)
 	if err != nil {
 		return APITagDescriptionClientCreateOrUpdateResponse{}, err
@@ -143,6 +147,10 @@ func (client *APITagDescriptionClient) createOrUpdateHandleResponse(resp *http.R
 //     method.
 func (client *APITagDescriptionClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagDescriptionID string, ifMatch string, options *APITagDescriptionClientDeleteOptions) (APITagDescriptionClientDeleteResponse, error) {
 	var err error
+	const operationName = "APITagDescriptionClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, tagDescriptionID, ifMatch, options)
 	if err != nil {
 		return APITagDescriptionClientDeleteResponse{}, err
@@ -206,6 +214,10 @@ func (client *APITagDescriptionClient) deleteCreateRequest(ctx context.Context, 
 //   - options - APITagDescriptionClientGetOptions contains the optional parameters for the APITagDescriptionClient.Get method.
 func (client *APITagDescriptionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagDescriptionID string, options *APITagDescriptionClientGetOptions) (APITagDescriptionClientGetResponse, error) {
 	var err error
+	const operationName = "APITagDescriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, tagDescriptionID, options)
 	if err != nil {
 		return APITagDescriptionClientGetResponse{}, err
@@ -281,6 +293,10 @@ func (client *APITagDescriptionClient) getHandleResponse(resp *http.Response) (A
 //     method.
 func (client *APITagDescriptionClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagDescriptionID string, options *APITagDescriptionClientGetEntityTagOptions) (APITagDescriptionClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APITagDescriptionClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, tagDescriptionID, options)
 	if err != nil {
 		return APITagDescriptionClientGetEntityTagResponse{}, err
@@ -333,11 +349,10 @@ func (client *APITagDescriptionClient) getEntityTagCreateRequest(ctx context.Con
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Response) (APITagDescriptionClientGetEntityTagResponse, error) {
-	result := APITagDescriptionClientGetEntityTagResponse{}
+	result := APITagDescriptionClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -357,25 +372,20 @@ func (client *APITagDescriptionClient) NewListByServicePager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APITagDescriptionClientListByServiceResponse) (APITagDescriptionClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APITagDescriptionClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APITagDescriptionClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APITagDescriptionClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APITagDescriptionClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

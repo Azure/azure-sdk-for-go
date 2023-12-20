@@ -32,7 +32,7 @@ type GalleryImagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryImagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".GalleryImagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GalleryImagesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-09-01-preview
 func (client *GalleryImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryImageName string, galleryImages GalleryImages, options *GalleryImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleryImagesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryImageName, galleryImages, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +141,13 @@ func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GalleryImagesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +157,10 @@ func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-09-01-preview
 func (client *GalleryImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryImageName string, options *GalleryImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleryImagesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryImageName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +211,10 @@ func (client *GalleryImagesClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - GalleryImagesClientGetOptions contains the optional parameters for the GalleryImagesClient.Get method.
 func (client *GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryImageName string, options *GalleryImagesClientGetOptions) (GalleryImagesClientGetResponse, error) {
 	var err error
+	const operationName = "GalleryImagesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryImageName, options)
 	if err != nil {
 		return GalleryImagesClientGetResponse{}, err
@@ -260,25 +278,20 @@ func (client *GalleryImagesClient) NewListPager(resourceGroupName string, option
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GalleryImagesClientListResponse) (GalleryImagesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryImagesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return GalleryImagesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GalleryImagesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GalleryImagesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -325,25 +338,20 @@ func (client *GalleryImagesClient) NewListAllPager(options *GalleryImagesClientL
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GalleryImagesClientListAllResponse) (GalleryImagesClientListAllResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAllCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryImagesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAllCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return GalleryImagesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GalleryImagesClientListAllResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GalleryImagesClientListAllResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -390,10 +398,13 @@ func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GalleryImagesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -403,6 +414,10 @@ func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGrou
 // Generated from API version 2023-09-01-preview
 func (client *GalleryImagesClient) update(ctx context.Context, resourceGroupName string, galleryImageName string, galleryImages GalleryImagesUpdateRequest, options *GalleryImagesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GalleryImagesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryImageName, galleryImages, options)
 	if err != nil {
 		return nil, err

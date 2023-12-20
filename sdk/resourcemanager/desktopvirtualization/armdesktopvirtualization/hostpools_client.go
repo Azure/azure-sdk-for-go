@@ -33,7 +33,7 @@ type HostPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHostPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostPoolsClient, error) {
-	cl, err := arm.NewClient(moduleName+".HostPoolsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewHostPoolsClient(subscriptionID string, credential azcore.TokenCredential
 //     method.
 func (client *HostPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostPoolName string, hostPool HostPool, options *HostPoolsClientCreateOrUpdateOptions) (HostPoolsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "HostPoolsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, hostPoolName, hostPool, options)
 	if err != nil {
 		return HostPoolsClientCreateOrUpdateResponse{}, err
@@ -118,6 +122,10 @@ func (client *HostPoolsClient) createOrUpdateHandleResponse(resp *http.Response)
 //   - options - HostPoolsClientDeleteOptions contains the optional parameters for the HostPoolsClient.Delete method.
 func (client *HostPoolsClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, options *HostPoolsClientDeleteOptions) (HostPoolsClientDeleteResponse, error) {
 	var err error
+	const operationName = "HostPoolsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 	if err != nil {
 		return HostPoolsClientDeleteResponse{}, err
@@ -171,6 +179,10 @@ func (client *HostPoolsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - HostPoolsClientGetOptions contains the optional parameters for the HostPoolsClient.Get method.
 func (client *HostPoolsClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, options *HostPoolsClientGetOptions) (HostPoolsClientGetResponse, error) {
 	var err error
+	const operationName = "HostPoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 	if err != nil {
 		return HostPoolsClientGetResponse{}, err
@@ -232,25 +244,20 @@ func (client *HostPoolsClient) NewListPager(options *HostPoolsClientListOptions)
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HostPoolsClientListResponse) (HostPoolsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HostPoolsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return HostPoolsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HostPoolsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HostPoolsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -302,25 +309,20 @@ func (client *HostPoolsClient) NewListByResourceGroupPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HostPoolsClientListByResourceGroupResponse) (HostPoolsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HostPoolsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return HostPoolsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HostPoolsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HostPoolsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -374,6 +376,10 @@ func (client *HostPoolsClient) listByResourceGroupHandleResponse(resp *http.Resp
 //     method.
 func (client *HostPoolsClient) RetrieveRegistrationToken(ctx context.Context, resourceGroupName string, hostPoolName string, options *HostPoolsClientRetrieveRegistrationTokenOptions) (HostPoolsClientRetrieveRegistrationTokenResponse, error) {
 	var err error
+	const operationName = "HostPoolsClient.RetrieveRegistrationToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.retrieveRegistrationTokenCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 	if err != nil {
 		return HostPoolsClientRetrieveRegistrationTokenResponse{}, err
@@ -434,6 +440,10 @@ func (client *HostPoolsClient) retrieveRegistrationTokenHandleResponse(resp *htt
 //   - options - HostPoolsClientUpdateOptions contains the optional parameters for the HostPoolsClient.Update method.
 func (client *HostPoolsClient) Update(ctx context.Context, resourceGroupName string, hostPoolName string, options *HostPoolsClientUpdateOptions) (HostPoolsClientUpdateResponse, error) {
 	var err error
+	const operationName = "HostPoolsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostPoolName, options)
 	if err != nil {
 		return HostPoolsClientUpdateResponse{}, err

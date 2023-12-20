@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_Get.json
 func ExamplePartnerDestinationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,14 +47,14 @@ func ExamplePartnerDestinationsClient_Get() {
 	// 		ActivationState: to.Ptr(armeventgrid.PartnerDestinationActivationStateNeverActivated),
 	// 		EndpointBaseURL: to.Ptr("https://somepartnerhostname"),
 	// 		EndpointServiceContext: to.Ptr("ContosoCorp.Accounts.User1"),
-	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410433Z"); return t}()),
+	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 	// 		MessageForActivation: to.Ptr("Some message to the approver"),
 	// 		ProvisioningState: to.Ptr(armeventgrid.PartnerDestinationProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_CreateOrUpdate.json
 func ExamplePartnerDestinationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePartnerDestinationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_Delete.json
 func ExamplePartnerDestinationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExamplePartnerDestinationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_Update.json
 func ExamplePartnerDestinationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,14 +167,14 @@ func ExamplePartnerDestinationsClient_BeginUpdate() {
 	// 		ActivationState: to.Ptr(armeventgrid.PartnerDestinationActivationStateNeverActivated),
 	// 		EndpointBaseURL: to.Ptr("https://somepartnerhostname"),
 	// 		EndpointServiceContext: to.Ptr("ContosoCorp.Accounts.User1"),
-	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410433Z"); return t}()),
+	// 		ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 	// 		MessageForActivation: to.Ptr("Some message to the approver"),
 	// 		ProvisioningState: to.Ptr(armeventgrid.PartnerDestinationProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_ListBySubscription.json
 func ExamplePartnerDestinationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExamplePartnerDestinationsClient_NewListBySubscriptionPager() {
 		// 				ActivationState: to.Ptr(armeventgrid.PartnerDestinationActivationStateNeverActivated),
 		// 				EndpointBaseURL: to.Ptr("https://somepartnerhostname"),
 		// 				EndpointServiceContext: to.Ptr("ContosoCorp.Accounts.User1"),
-		// 				ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410433Z"); return t}()),
+		// 				ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 		// 				MessageForActivation: to.Ptr("Some message to the approver"),
 		// 				ProvisioningState: to.Ptr(armeventgrid.PartnerDestinationProvisioningStateSucceeded),
 		// 			},
@@ -218,7 +218,7 @@ func ExamplePartnerDestinationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_ListByResourceGroup.json
 func ExamplePartnerDestinationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExamplePartnerDestinationsClient_NewListByResourceGroupPager() {
 		// 				ActivationState: to.Ptr(armeventgrid.PartnerDestinationActivationStateNeverActivated),
 		// 				EndpointBaseURL: to.Ptr("https://somepartnerhostname"),
 		// 				EndpointServiceContext: to.Ptr("ContosoCorp.Accounts.User1"),
-		// 				ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410433Z"); return t}()),
+		// 				ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-21T22:50:25.410Z"); return t}()),
 		// 				MessageForActivation: to.Ptr("Some message to the approver"),
 		// 				ProvisioningState: to.Ptr(armeventgrid.PartnerDestinationProvisioningStateSucceeded),
 		// 			},
@@ -262,7 +262,7 @@ func ExamplePartnerDestinationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/173bb3b6fd5b1809fdbf347f67fccfa0440ac126/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Activate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/PartnerDestinations_Activate.json
 func ExamplePartnerDestinationsClient_Activate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

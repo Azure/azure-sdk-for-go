@@ -51,7 +51,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByCreated() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -64,25 +64,25 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByCreated() {
 		// 							AssetName: to.Ptr("job2-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.2334355Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.233Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job2-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.2334355Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.233Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -94,8 +94,8 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByCreated() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.2334355Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.233Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -108,26 +108,26 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByCreated() {
 		// 							AssetName: to.Ptr("job3-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.2334355Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.233Z"); return t}()),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](100),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.2334355Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.233Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateFinished),
 		// 						AssetName: to.Ptr("job3-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.2334355Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.233Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateFinished),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -169,8 +169,8 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByLastmodified
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.3623605Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.362Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -183,26 +183,26 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByLastmodified
 		// 							AssetName: to.Ptr("job3-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.3623605Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.362Z"); return t}()),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](100),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.3623605Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.362Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateFinished),
 		// 						AssetName: to.Ptr("job3-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.3623605Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.362Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateFinished),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:20.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -214,7 +214,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByLastmodified
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -227,25 +227,25 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByLastmodified
 		// 							AssetName: to.Ptr("job2-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.3623605Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.362Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job2-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.3623605Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.362Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:10.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -287,8 +287,8 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByNameAndState
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.1104174Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.110Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -301,26 +301,26 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByNameAndState
 		// 							AssetName: to.Ptr("job3-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.1104174Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.110Z"); return t}()),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](100),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.1104174Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.110Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateFinished),
 		// 						AssetName: to.Ptr("job3-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.1104174Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.110Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateFinished),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -362,7 +362,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -375,7 +375,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
 		// 							AssetName: to.Ptr("job1-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
@@ -388,10 +388,10 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
 		// 				State: to.Ptr(armmediaservices.JobStateQueued),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -403,7 +403,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -416,25 +416,25 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByName() {
 		// 							AssetName: to.Ptr("job2-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.6894373Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.689Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job2-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.6894373Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.689Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -476,7 +476,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateEqual()
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -489,25 +489,25 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateEqual()
 		// 							AssetName: to.Ptr("job2-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.8284289Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.828Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job2-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.8284289Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.828Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -519,7 +519,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateEqual()
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -532,25 +532,25 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateEqual()
 		// 							AssetName: to.Ptr("job3-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.8284289Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.828Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job3-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.8284289Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.828Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -592,7 +592,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqua
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -605,7 +605,7 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqua
 		// 							AssetName: to.Ptr("job1-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
@@ -618,10 +618,10 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqua
 		// 				State: to.Ptr(armmediaservices.JobStateQueued),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -633,8 +633,8 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqua
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.0097637Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.009Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -647,26 +647,26 @@ func ExampleJobsClient_NewListPager_listsJobsForTheTransformFilterByStateNotEqua
 		// 							AssetName: to.Ptr("job4-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.0097637Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.009Z"); return t}()),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](100),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.0097637Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.009Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateFinished),
 		// 						AssetName: to.Ptr("job4-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.0097637Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:33.009Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateFinished),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -708,7 +708,7 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -721,7 +721,7 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 							AssetName: to.Ptr("job1-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
@@ -734,10 +734,10 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 				State: to.Ptr(armmediaservices.JobStateQueued),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -749,7 +749,7 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -762,25 +762,25 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 							AssetName: to.Ptr("job2-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](50),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.2462651Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.246Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 						AssetName: to.Ptr("job2-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.2462651Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.246Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateProcessing),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -792,8 +792,8 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 			Properties: &armmediaservices.JobProperties{
 		// 				CorrelationData: map[string]*string{
 		// 				},
-		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:32.2462651Z"); return t}()),
+		// 				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:32.246Z"); return t}()),
 		// 				Input: &armmediaservices.JobInputs{
 		// 					ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 		// 					Inputs: []armmediaservices.JobInputClassification{
@@ -806,26 +806,26 @@ func ExampleJobsClient_NewListPager_listsAllOfTheJobsForTheTransform() {
 		// 							AssetName: to.Ptr("job3-InputAsset"),
 		// 					}},
 		// 				},
-		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				Outputs: []armmediaservices.JobOutputClassification{
 		// 					&armmediaservices.JobOutputAsset{
 		// 						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:32.2462651Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:32.246Z"); return t}()),
 		// 						Label: to.Ptr("example-custom-label"),
 		// 						Progress: to.Ptr[int32](100),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.2462651Z"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.246Z"); return t}()),
 		// 						State: to.Ptr(armmediaservices.JobStateFinished),
 		// 						AssetName: to.Ptr("job3-OutputAsset"),
 		// 				}},
 		// 				Priority: to.Ptr(armmediaservices.PriorityLow),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.2462651Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:04:32.246Z"); return t}()),
 		// 				State: to.Ptr(armmediaservices.JobStateFinished),
 		// 			},
 		// 			SystemData: &armmediaservices.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("contoso@microsoft.com"),
 		// 				CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 		// 			},
@@ -859,7 +859,7 @@ func ExampleJobsClient_Get() {
 	// 	Properties: &armmediaservices.JobProperties{
 	// 		CorrelationData: map[string]*string{
 	// 		},
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		Input: &armmediaservices.JobInputs{
 	// 			ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 	// 			Inputs: []armmediaservices.JobInputClassification{
@@ -872,7 +872,7 @@ func ExampleJobsClient_Get() {
 	// 					AssetName: to.Ptr("job1-InputAsset"),
 	// 			}},
 	// 		},
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		Outputs: []armmediaservices.JobOutputClassification{
 	// 			&armmediaservices.JobOutputAsset{
 	// 				ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
@@ -885,10 +885,10 @@ func ExampleJobsClient_Get() {
 	// 		State: to.Ptr(armmediaservices.JobStateQueued),
 	// 	},
 	// 	SystemData: &armmediaservices.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("contoso@microsoft.com"),
 	// 		CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 	// 		LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 	// 	},
@@ -985,7 +985,7 @@ func ExampleJobsClient_Update() {
 	// 		Description: to.Ptr("Example job to illustrate update."),
 	// 		CorrelationData: map[string]*string{
 	// 		},
-	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		Input: &armmediaservices.JobInputs{
 	// 			ODataType: to.Ptr("#Microsoft.Media.JobInputs"),
 	// 			Inputs: []armmediaservices.JobInputClassification{
@@ -998,7 +998,7 @@ func ExampleJobsClient_Update() {
 	// 					AssetName: to.Ptr("job1-InputAsset"),
 	// 			}},
 	// 		},
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.9584586Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.958Z"); return t}()),
 	// 		Outputs: []armmediaservices.JobOutputClassification{
 	// 			&armmediaservices.JobOutputAsset{
 	// 				ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
@@ -1011,10 +1011,10 @@ func ExampleJobsClient_Update() {
 	// 		State: to.Ptr(armmediaservices.JobStateQueued),
 	// 	},
 	// 	SystemData: &armmediaservices.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-01T00:00:00.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("contoso@microsoft.com"),
 	// 		CreatedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.9584586Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-17T23:14:33.958Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("contoso@microsoft.com"),
 	// 		LastModifiedByType: to.Ptr(armmediaservices.CreatedByTypeUser),
 	// 	},

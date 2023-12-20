@@ -48,7 +48,7 @@ func ExampleSQLPoolOperationResultsClient_BeginGetLocationHeaderResult() {
 	// 	},
 	// 	Properties: &armsynapse.SQLPoolResourceProperties{
 	// 		Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-25T09:22:46.68Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-25T09:22:46.680Z"); return t}()),
 	// 		MaxSizeBytes: to.Ptr[int64](263882790666240),
 	// 		Status: to.Ptr("Paused"),
 	// 	},

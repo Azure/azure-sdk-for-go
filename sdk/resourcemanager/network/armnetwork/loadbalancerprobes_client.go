@@ -33,7 +33,7 @@ type LoadBalancerProbesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerProbesClient, error) {
-	cl, err := arm.NewClient(moduleName+".LoadBalancerProbesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewLoadBalancerProbesClient(subscriptionID string, credential azcore.TokenC
 // Get - Gets load balancer probe.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - probeName - The name of the probe.
@@ -98,7 +98,7 @@ func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Gets all the load balancer probes.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.NewListPager
@@ -127,22 +127,15 @@ func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, l
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancerProbesClientListResponse) (LoadBalancerProbesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancerProbesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
+			}, nil)
 			if err != nil {
 				return LoadBalancerProbesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LoadBalancerProbesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LoadBalancerProbesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -170,7 +163,7 @@ func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

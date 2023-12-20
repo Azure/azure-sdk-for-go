@@ -32,7 +32,7 @@ type AccessConnectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAccessConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessConnectorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AccessConnectorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *AccessConnectorsClient) BeginCreateOrUpdate(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AccessConnectorsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessConnectorsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AccessConnectorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessConnectorsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *AccessConnectorsClient) BeginCreateOrUpdate(ctx context.Context, r
 // Generated from API version 2023-05-01
 func (client *AccessConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, options *AccessConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AccessConnectorsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectorName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -129,10 +137,14 @@ func (client *AccessConnectorsClient) BeginDelete(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AccessConnectorsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessConnectorsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AccessConnectorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessConnectorsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -142,6 +154,10 @@ func (client *AccessConnectorsClient) BeginDelete(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *AccessConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AccessConnectorsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectorName, options)
 	if err != nil {
 		return nil, err
@@ -192,6 +208,10 @@ func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, r
 //   - options - AccessConnectorsClientGetOptions contains the optional parameters for the AccessConnectorsClient.Get method.
 func (client *AccessConnectorsClient) Get(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientGetOptions) (AccessConnectorsClientGetResponse, error) {
 	var err error
+	const operationName = "AccessConnectorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, connectorName, options)
 	if err != nil {
 		return AccessConnectorsClientGetResponse{}, err
@@ -255,25 +275,20 @@ func (client *AccessConnectorsClient) NewListByResourceGroupPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessConnectorsClientListByResourceGroupResponse) (AccessConnectorsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessConnectorsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AccessConnectorsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccessConnectorsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AccessConnectorsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -319,25 +334,20 @@ func (client *AccessConnectorsClient) NewListBySubscriptionPager(options *Access
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessConnectorsClientListBySubscriptionResponse) (AccessConnectorsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessConnectorsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AccessConnectorsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccessConnectorsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AccessConnectorsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -383,10 +393,14 @@ func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AccessConnectorsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AccessConnectorsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -396,6 +410,10 @@ func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *AccessConnectorsClient) update(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AccessConnectorsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, connectorName, parameters, options)
 	if err != nil {
 		return nil, err

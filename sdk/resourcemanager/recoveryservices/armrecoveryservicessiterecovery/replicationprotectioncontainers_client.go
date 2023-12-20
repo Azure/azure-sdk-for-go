@@ -32,7 +32,7 @@ type ReplicationProtectionContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationProtectionContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationProtectionContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *ReplicationProtectionContainersClient) BeginCreate(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationProtectionContainersClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainersClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *ReplicationProtectionContainersClient) BeginCreate(ctx context.Con
 // Generated from API version 2023-06-01
 func (client *ReplicationProtectionContainersClient) create(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, options *ReplicationProtectionContainersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +149,14 @@ func (client *ReplicationProtectionContainersClient) BeginDelete(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationProtectionContainersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -154,6 +166,10 @@ func (client *ReplicationProtectionContainersClient) BeginDelete(ctx context.Con
 // Generated from API version 2023-06-01
 func (client *ReplicationProtectionContainersClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, options)
 	if err != nil {
 		return nil, err
@@ -219,10 +235,14 @@ func (client *ReplicationProtectionContainersClient) BeginDiscoverProtectableIte
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationProtectionContainersClientDiscoverProtectableItemResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientDiscoverProtectableItemResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainersClientDiscoverProtectableItemResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientDiscoverProtectableItemResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -232,6 +252,10 @@ func (client *ReplicationProtectionContainersClient) BeginDiscoverProtectableIte
 // Generated from API version 2023-06-01
 func (client *ReplicationProtectionContainersClient) discoverProtectableItem(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, options *ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginDiscoverProtectableItem"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.discoverProtectableItemCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, discoverProtectableItemRequest, options)
 	if err != nil {
 		return nil, err
@@ -296,6 +320,10 @@ func (client *ReplicationProtectionContainersClient) discoverProtectableItemCrea
 //     method.
 func (client *ReplicationProtectionContainersClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, options *ReplicationProtectionContainersClientGetOptions) (ReplicationProtectionContainersClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationProtectionContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, options)
 	if err != nil {
 		return ReplicationProtectionContainersClientGetResponse{}, err
@@ -368,25 +396,20 @@ func (client *ReplicationProtectionContainersClient) NewListPager(resourceName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationProtectionContainersClientListResponse) (ReplicationProtectionContainersClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationProtectionContainersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationProtectionContainersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationProtectionContainersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationProtectionContainersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -439,25 +462,20 @@ func (client *ReplicationProtectionContainersClient) NewListByReplicationFabrics
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationProtectionContainersClientListByReplicationFabricsResponse) (ReplicationProtectionContainersClientListByReplicationFabricsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationProtectionContainersClient.NewListByReplicationFabricsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByReplicationFabricsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationProtectionContainersClientListByReplicationFabricsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationProtectionContainersClientListByReplicationFabricsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationProtectionContainersClientListByReplicationFabricsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByReplicationFabricsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -517,10 +535,14 @@ func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx c
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationProtectionContainersClientSwitchProtectionResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainersClientSwitchProtectionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectionContainersClientSwitchProtectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -530,6 +552,10 @@ func (client *ReplicationProtectionContainersClient) BeginSwitchProtection(ctx c
 // Generated from API version 2023-06-01
 func (client *ReplicationProtectionContainersClient) switchProtection(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, options *ReplicationProtectionContainersClientBeginSwitchProtectionOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationProtectionContainersClient.BeginSwitchProtection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.switchProtectionCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput, options)
 	if err != nil {
 		return nil, err

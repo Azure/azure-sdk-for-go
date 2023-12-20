@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/checkNameAvailabilityAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/checkNameAvailabilityAvailable.json
 func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/checkNameAvailabilityUnavailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/checkNameAvailabilityUnavailable.json
 func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailabl
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/linkNotificationHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/linkNotificationHub.json
 func ExampleServicesClient_LinkNotificationHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleServicesClient_LinkNotificationHub() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/listBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/listBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/listByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/update.json
 func ExampleServicesClient_Update_updateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,6 +195,9 @@ func ExampleServicesClient_Update_updateResource() {
 	res, err := clientFactory.NewServicesClient().Update(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResourceUpdate{
 		Tags: map[string]*string{
 			"newTag": to.Ptr("newVal"),
+		},
+		Identity: &armcommunication.ManagedServiceIdentity{
+			Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeSystemAssigned),
 		},
 	}, nil)
 	if err != nil {
@@ -212,7 +215,9 @@ func ExampleServicesClient_Update_updateResource() {
 	// 		"newTag": to.Ptr("newVal"),
 	// 	},
 	// 	Identity: &armcommunication.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeNone),
+	// 		Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 		TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 	},
 	// 	Properties: &armcommunication.ServiceProperties{
 	// 		DataLocation: to.Ptr("United States"),
@@ -223,7 +228,7 @@ func ExampleServicesClient_Update_updateResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithSystemAndUserIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/updateWithSystemAndUserIdentity.json
 func ExampleServicesClient_Update_updateResourceToAddSystemAndUserManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +284,7 @@ func ExampleServicesClient_Update_updateResourceToAddSystemAndUserManagedIdentit
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithSystemAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/updateWithSystemAssignedIdentity.json
 func ExampleServicesClient_Update_updateResourceToAddASystemAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +331,7 @@ func ExampleServicesClient_Update_updateResourceToAddASystemAssignedManagedIdent
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateWithUserAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/updateWithUserAssignedIdentity.json
 func ExampleServicesClient_Update_updateResourceToAddAUserAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +385,7 @@ func ExampleServicesClient_Update_updateResourceToAddAUserAssignedManagedIdentit
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/updateRemoveSystemIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/updateRemoveSystemIdentity.json
 func ExampleServicesClient_Update_updateResourceToRemoveIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,9 +397,6 @@ func ExampleServicesClient_Update_updateResourceToRemoveIdentity() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewServicesClient().Update(ctx, "MyResourceGroup", "MyCommunicationResource", armcommunication.ServiceResourceUpdate{
-		Tags: map[string]*string{
-			"newTag": to.Ptr("newVal"),
-		},
 		Identity: &armcommunication.ManagedServiceIdentity{
 			Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeNone),
 		},
@@ -410,8 +412,8 @@ func ExampleServicesClient_Update_updateResourceToRemoveIdentity() {
 	// 	Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 	ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
 	// 	Location: to.Ptr("Global"),
-	// 	Tags: map[string]*string{
-	// 		"newTag": to.Ptr("newVal"),
+	// 	Identity: &armcommunication.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeNone),
 	// 	},
 	// 	Properties: &armcommunication.ServiceProperties{
 	// 		DataLocation: to.Ptr("United States"),
@@ -421,7 +423,7 @@ func ExampleServicesClient_Update_updateResourceToRemoveIdentity() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/get.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,11 +446,6 @@ func ExampleServicesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 	ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
 	// 	Location: to.Ptr("Global"),
-	// 	Identity: &armcommunication.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeSystemAssigned),
-	// 		PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 		TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 	},
 	// 	Properties: &armcommunication.ServiceProperties{
 	// 		DataLocation: to.Ptr("United States"),
 	// 		HostName: to.Ptr("mycommunicationservice.comms.azure.net"),
@@ -458,7 +455,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/createOrUpdate.json
 func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,9 +487,6 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResource() {
 	// 	Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 	// 	ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/CommunicationServices/MyCommunicationResource"),
 	// 	Location: to.Ptr("Global"),
-	// 	Identity: &armcommunication.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armcommunication.ManagedServiceIdentityTypeNone),
-	// 	},
 	// 	Properties: &armcommunication.ServiceProperties{
 	// 		DataLocation: to.Ptr("United States"),
 	// 		HostName: to.Ptr("mycommunicationresource.communications.azure.com"),
@@ -501,7 +495,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResource() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/createOrUpdateWithSystemAssignedIdentity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/createOrUpdateWithSystemAssignedIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResourceWithManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,7 +543,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResourceWithManaged
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/delete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -570,7 +564,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/listKeys.json
 func ExampleServicesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -594,7 +588,7 @@ func ExampleServicesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d7b535d1273b18623ca0d63a6ebb0456dab95ba/specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/regenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/communicationServices/regenerateKey.json
 func ExampleServicesClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

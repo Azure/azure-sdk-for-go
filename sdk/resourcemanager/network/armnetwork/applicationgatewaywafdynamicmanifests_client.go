@@ -33,7 +33,7 @@ type ApplicationGatewayWafDynamicManifestsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewayWafDynamicManifestsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationGatewayWafDynamicManifestsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewApplicationGatewayWafDynamicManifestsClient(subscriptionID string, crede
 
 // NewGetPager - Gets the regional application gateway waf manifest.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - location - The region where the nrp are located at.
 //   - options - ApplicationGatewayWafDynamicManifestsClientGetOptions contains the optional parameters for the ApplicationGatewayWafDynamicManifestsClient.NewGetPager
 //     method.
@@ -57,22 +57,15 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) NewGetPager(location 
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGatewayWafDynamicManifestsClientGetResponse) (ApplicationGatewayWafDynamicManifestsClientGetResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGatewayWafDynamicManifestsClient.NewGetPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationGatewayWafDynamicManifestsClientGetResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getHandleResponse(resp)
 		},
@@ -96,7 +89,7 @@ func (client *ApplicationGatewayWafDynamicManifestsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

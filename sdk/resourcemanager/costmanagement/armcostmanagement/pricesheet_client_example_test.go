@@ -41,7 +41,7 @@ func ExamplePriceSheetClient_BeginDownload() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DownloadURL = armcostmanagement.DownloadURL{
 	// 	DownloadURL: to.Ptr("https://myaccount.blob.core.windows.net/?restype=service&comp=properties&sv=2015-04-05&ss=bf&srt=s&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&spr=https&sig=G%2TEST%4B"),
-	// 	ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T17:32:28Z"); return t}()),
+	// 	ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-30T17:32:28.000Z"); return t}()),
 	// }
 }
 
@@ -69,6 +69,6 @@ func ExamplePriceSheetClient_BeginDownloadByBillingProfile() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DownloadURL = armcostmanagement.DownloadURL{
 	// 	DownloadURL: to.Ptr("https://myaccount.blob.core.windows.net/?restype=service&comp=properties&sv=2015-04-05&ss=bf&srt=s&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&spr=https&sig=G%2TEST%4B"),
-	// 	ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-21T17:32:28Z"); return t}()),
+	// 	ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-07-21T17:32:28.000Z"); return t}()),
 	// }
 }

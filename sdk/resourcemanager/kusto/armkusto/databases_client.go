@@ -33,7 +33,7 @@ type DatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabasesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - DatabasesClientAddPrincipalsOptions contains the optional parameters for the DatabasesClient.AddPrincipals method.
 func (client *DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd DatabasePrincipalListRequest, options *DatabasesClientAddPrincipalsOptions) (DatabasesClientAddPrincipalsResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.AddPrincipals"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.addPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd, options)
 	if err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
@@ -124,6 +128,10 @@ func (client *DatabasesClient) addPrincipalsHandleResponse(resp *http.Response) 
 //     method.
 func (client *DatabasesClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest, options *DatabasesClientCheckNameAvailabilityOptions) (DatabasesClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
@@ -194,10 +202,14 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -207,6 +219,10 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // Generated from API version 2023-08-15
 func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -272,10 +288,14 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -285,6 +305,10 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-15
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -340,6 +364,10 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
 func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, options *DatabasesClientGetOptions) (DatabasesClientGetResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
 	if err != nil {
 		return DatabasesClientGetResponse{}, err
@@ -408,25 +436,20 @@ func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, c
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListByClusterResponse) (DatabasesClientListByClusterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListByClusterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
+			}, nil)
 			if err != nil {
 				return DatabasesClientListByClusterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabasesClientListByClusterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabasesClientListByClusterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByClusterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -485,6 +508,7 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListPrincipalsResponse) (DatabasesClientListPrincipalsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListPrincipalsPager")
 			req, err := client.listPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
 			if err != nil {
 				return DatabasesClientListPrincipalsResponse{}, err
@@ -498,6 +522,7 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 			}
 			return client.listPrincipalsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -552,6 +577,10 @@ func (client *DatabasesClient) listPrincipalsHandleResponse(resp *http.Response)
 //     method.
 func (client *DatabasesClient) RemovePrincipals(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToRemove DatabasePrincipalListRequest, options *DatabasesClientRemovePrincipalsOptions) (DatabasesClientRemovePrincipalsResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.RemovePrincipals"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.removePrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove, options)
 	if err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
@@ -625,10 +654,14 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -638,6 +671,10 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-08-15
 func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseClassification, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err

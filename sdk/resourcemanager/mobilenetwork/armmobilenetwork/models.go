@@ -444,6 +444,15 @@ type ErrorResponse struct {
 	Error *ErrorDetail
 }
 
+// EventHubConfiguration - Configuration for sending packet core events to Azure Event Hub.
+type EventHubConfiguration struct {
+	// REQUIRED; Resource ID of Azure Event Hub to send packet core events to.
+	ID *string
+
+	// The duration (in seconds) between UE usage reports.
+	ReportingInterval *int32
+}
+
 // HTTPSServerCertificate - HTTPS server certificate configuration.
 type HTTPSServerCertificate struct {
 	// REQUIRED; The certificate URL, unversioned. For example: https://contosovault.vault.azure.net/certificates/ingress.
@@ -557,6 +566,12 @@ type MobileNetwork struct {
 	Type *string
 }
 
+// NASRerouteConfiguration - Configuration enabling NAS reroute.
+type NASRerouteConfiguration struct {
+	// REQUIRED; The macro network's MME group ID. This is where unknown UEs are sent to via NAS reroute.
+	MacroMmeGroupID *int32
+}
+
 // NaptConfiguration - The network address and port translation settings to use for the attached data network.
 type NaptConfiguration struct {
 	// Whether NAPT is enabled for connections to this attached data network.
@@ -660,6 +675,9 @@ type PacketCapturePropertiesFormat struct {
 	// READ-ONLY; The start time of the packet capture session.
 	CaptureStartTime *time.Time
 
+	// READ-ONLY; The list of output files of a packet capture session.
+	OutputFiles []*string
+
 	// READ-ONLY; The provisioning state of the packet capture session resource.
 	ProvisioningState *ProvisioningState
 
@@ -731,17 +749,29 @@ type PacketCoreControlPlanePropertiesFormat struct {
 	// as the packet core control plane.
 	Sites []*SiteResourceID
 
+	// The virtual IP address(es) for the control plane on the access network in a High Availability (HA) system. In an HA deployment
+	// the access network router should be configured to anycast traffic for
+	// this address to the control plane access interfaces on the active and standby nodes. In non-HA system this list should
+	// be omitted or empty.
+	ControlPlaneAccessVirtualIPv4Addresses []*string
+
 	// The core network technology generation (5G core or EPC / 4G core).
 	CoreNetworkTechnology *CoreNetworkType
 
 	// Configuration for uploading packet core diagnostics
 	DiagnosticsUpload *DiagnosticsUploadConfiguration
 
+	// Configuration for sending packet core events to an Azure Event Hub.
+	EventHub *EventHubConfiguration
+
 	// The installation state of the packet core control plane resource.
 	Installation *Installation
 
 	// Settings to allow interoperability with third party components e.g. RANs and UEs.
 	InteropSettings any
+
+	// Signaling configuration for the packet core.
+	Signaling *SignalingConfiguration
 
 	// The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU
 	// set on the user plane access link is calculated to be 60 bytes greater than this
@@ -842,6 +872,12 @@ type PacketCoreDataPlanePropertiesFormat struct {
 	// REQUIRED; The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
 	// is the S1-U interface.
 	UserPlaneAccessInterface *InterfaceProperties
+
+	// The virtual IP address(es) for the user plane on the access network in a High Availability (HA) system. In an HA deployment
+	// the access network router should be configured to forward traffic for this
+	// address to the control plane access interface on the active or standby node. In non-HA system this list should be omitted
+	// or empty.
+	UserPlaneAccessVirtualIPv4Addresses []*string
 
 	// READ-ONLY; The provisioning state of the packet core data plane resource.
 	ProvisioningState *ProvisioningState
@@ -1152,6 +1188,12 @@ type ServicePropertiesFormat struct {
 type ServiceResourceID struct {
 	// REQUIRED; Service resource ID.
 	ID *string
+}
+
+// SignalingConfiguration - Signaling configuration for the packet core.
+type SignalingConfiguration struct {
+	// Configuration enabling 4G NAS reroute.
+	NasReroute *NASRerouteConfiguration
 }
 
 // Sim - SIM resource.

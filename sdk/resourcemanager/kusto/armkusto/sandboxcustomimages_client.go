@@ -32,7 +32,7 @@ type SandboxCustomImagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSandboxCustomImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SandboxCustomImagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".SandboxCustomImagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSandboxCustomImagesClient(subscriptionID string, credential azcore.Token
 //     method.
 func (client *SandboxCustomImagesClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName SandboxCustomImagesCheckNameRequest, options *SandboxCustomImagesClientCheckNameAvailabilityOptions) (SandboxCustomImagesClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "SandboxCustomImagesClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
 		return SandboxCustomImagesClientCheckNameAvailabilityResponse{}, err
@@ -124,10 +128,14 @@ func (client *SandboxCustomImagesClient) BeginCreateOrUpdate(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SandboxCustomImagesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SandboxCustomImagesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -137,6 +145,10 @@ func (client *SandboxCustomImagesClient) BeginCreateOrUpdate(ctx context.Context
 // Generated from API version 2023-08-15
 func (client *SandboxCustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SandboxCustomImagesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -200,10 +212,14 @@ func (client *SandboxCustomImagesClient) BeginDelete(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SandboxCustomImagesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SandboxCustomImagesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -213,6 +229,10 @@ func (client *SandboxCustomImagesClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2023-08-15
 func (client *SandboxCustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SandboxCustomImagesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
 	if err != nil {
 		return nil, err
@@ -268,6 +288,10 @@ func (client *SandboxCustomImagesClient) deleteCreateRequest(ctx context.Context
 //   - options - SandboxCustomImagesClientGetOptions contains the optional parameters for the SandboxCustomImagesClient.Get method.
 func (client *SandboxCustomImagesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, options *SandboxCustomImagesClientGetOptions) (SandboxCustomImagesClientGetResponse, error) {
 	var err error
+	const operationName = "SandboxCustomImagesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, options)
 	if err != nil {
 		return SandboxCustomImagesClientGetResponse{}, err
@@ -336,6 +360,7 @@ func (client *SandboxCustomImagesClient) NewListByClusterPager(resourceGroupName
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *SandboxCustomImagesClientListByClusterResponse) (SandboxCustomImagesClientListByClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SandboxCustomImagesClient.NewListByClusterPager")
 			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return SandboxCustomImagesClientListByClusterResponse{}, err
@@ -349,6 +374,7 @@ func (client *SandboxCustomImagesClient) NewListByClusterPager(resourceGroupName
 			}
 			return client.listByClusterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -403,10 +429,14 @@ func (client *SandboxCustomImagesClient) BeginUpdate(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[SandboxCustomImagesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SandboxCustomImagesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SandboxCustomImagesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SandboxCustomImagesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -416,6 +446,10 @@ func (client *SandboxCustomImagesClient) BeginUpdate(ctx context.Context, resour
 // Generated from API version 2023-08-15
 func (client *SandboxCustomImagesClient) update(ctx context.Context, resourceGroupName string, clusterName string, sandboxCustomImageName string, parameters SandboxCustomImage, options *SandboxCustomImagesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SandboxCustomImagesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, sandboxCustomImageName, parameters, options)
 	if err != nil {
 		return nil, err

@@ -98,7 +98,7 @@ func (l *LogProfilesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if l.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
@@ -108,11 +108,11 @@ func (l *LogProfilesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	logProfileNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
+	logProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), logProfileNameUnescaped, body, nil)
+	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), logProfileNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -131,17 +131,17 @@ func (l *LogProfilesServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if l.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	logProfileNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
+	logProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.Delete(req.Context(), logProfileNameUnescaped, nil)
+	respr, errRespr := l.srv.Delete(req.Context(), logProfileNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -160,17 +160,17 @@ func (l *LogProfilesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if l.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	logProfileNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
+	logProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.Get(req.Context(), logProfileNameUnescaped, nil)
+	respr, errRespr := l.srv.Get(req.Context(), logProfileNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -191,7 +191,7 @@ func (l *LogProfilesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := l.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/logprofiles`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -219,7 +219,7 @@ func (l *LogProfilesServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	if l.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/logprofiles/(?P<logProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
@@ -229,11 +229,11 @@ func (l *LogProfilesServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	logProfileNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
+	logProfileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logProfileName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.Update(req.Context(), logProfileNameUnescaped, body, nil)
+	respr, errRespr := l.srv.Update(req.Context(), logProfileNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

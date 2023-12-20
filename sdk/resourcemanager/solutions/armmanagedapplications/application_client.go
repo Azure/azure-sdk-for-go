@@ -27,7 +27,7 @@ type ApplicationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,25 +48,20 @@ func (client *ApplicationClient) NewListOperationsPager(options *ApplicationClie
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationClientListOperationsResponse) (ApplicationClientListOperationsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOperationsCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationClient.NewListOperationsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOperationsCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ApplicationClientListOperationsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationClientListOperationsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationClientListOperationsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOperationsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

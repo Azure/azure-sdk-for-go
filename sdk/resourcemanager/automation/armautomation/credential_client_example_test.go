@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCredentialExisting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCredentialExisting.json
 func ExampleCredentialClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleCredentialClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCredential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getCredential.json
 func ExampleCredentialClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,14 +58,14 @@ func ExampleCredentialClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount18/credentials/myCredential"),
 	// 	Properties: &armautomation.CredentialProperties{
 	// 		Description: to.Ptr("my description goes here"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.27+00:00"); return t}()),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:16.423+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.270Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:16.423Z"); return t}()),
 	// 		UserName: to.Ptr("mylingaiah"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCredential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createOrUpdateCredential.json
 func ExampleCredentialClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,14 +95,14 @@ func ExampleCredentialClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount18/credentials/myCredential"),
 	// 	Properties: &armautomation.CredentialProperties{
 	// 		Description: to.Ptr("my description goes here"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.27+00:00"); return t}()),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:13.567+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.270Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:13.567Z"); return t}()),
 	// 		UserName: to.Ptr("mylingaiah"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCredential_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateCredential_patch.json
 func ExampleCredentialClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,14 +132,14 @@ func ExampleCredentialClient_Update() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount18/credentials/myCredential"),
 	// 	Properties: &armautomation.CredentialProperties{
 	// 		Description: to.Ptr("my description goes here"),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.27+00:00"); return t}()),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:13.567+00:00"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:10.270Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:04:13.567Z"); return t}()),
 	// 		UserName: to.Ptr("mylingaiah"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount.json
 func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAutomationAccountFirst100() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,8 +168,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:38.91+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:45.393+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:38.910Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:45.393Z"); return t}()),
 		// 				UserName: to.Ptr("mylingaiah"),
 		// 			},
 		// 		},
@@ -178,8 +178,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential0"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:51.77+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:51.77+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:51.770Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:51.770Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential0"),
 		// 			},
 		// 		},
@@ -188,8 +188,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential1"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.113+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.113+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.113Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.113Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential1"),
 		// 			},
 		// 		},
@@ -198,8 +198,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential10"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.3+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.3+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.300Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.300Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential10"),
 		// 			},
 		// 		},
@@ -208,8 +208,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential100"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.41+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.41+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.410Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.410Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential100"),
 		// 			},
 		// 		},
@@ -218,8 +218,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential101"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.69+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.69+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.690Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:25.690Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential101"),
 		// 			},
 		// 		},
@@ -228,8 +228,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential102"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.003+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.003+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.003Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.003Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential102"),
 		// 			},
 		// 		},
@@ -238,8 +238,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential103"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.337+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.337+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.337Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.337Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential103"),
 		// 			},
 		// 		},
@@ -248,8 +248,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential104"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:26.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential104"),
 		// 			},
 		// 		},
@@ -258,8 +258,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential105"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.02+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.020Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential105"),
 		// 			},
 		// 		},
@@ -268,8 +268,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential106"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.35+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.35+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.350Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.350Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential106"),
 		// 			},
 		// 		},
@@ -278,8 +278,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential107"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential107"),
 		// 			},
 		// 		},
@@ -288,8 +288,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential108"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.99+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.99+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.990Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:27.990Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential108"),
 		// 			},
 		// 		},
@@ -298,8 +298,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential109"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.3+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.3+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.300Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.300Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential109"),
 		// 			},
 		// 		},
@@ -308,8 +308,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential11"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:55.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential11"),
 		// 			},
 		// 		},
@@ -318,8 +318,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential110"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.63+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.63+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.630Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.630Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential110"),
 		// 			},
 		// 		},
@@ -328,8 +328,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential111"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.943+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.943+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.943Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:28.943Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential111"),
 		// 			},
 		// 		},
@@ -338,8 +338,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential112"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.253+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.253+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.253Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.253Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential112"),
 		// 			},
 		// 		},
@@ -348,8 +348,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential113"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential113"),
 		// 			},
 		// 		},
@@ -358,8 +358,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential114"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.88+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:29.880Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential114"),
 		// 			},
 		// 		},
@@ -368,8 +368,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential115"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.207+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.207+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.207Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.207Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential115"),
 		// 			},
 		// 		},
@@ -378,8 +378,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential116"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.52+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.52+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.520Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.520Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential116"),
 		// 			},
 		// 		},
@@ -388,8 +388,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential117"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.833+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.833+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.833Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:30.833Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential117"),
 		// 			},
 		// 		},
@@ -398,8 +398,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential118"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.24+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.24+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.240Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.240Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential118"),
 		// 			},
 		// 		},
@@ -408,8 +408,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential119"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.6+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.600Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.600Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential119"),
 		// 			},
 		// 		},
@@ -418,8 +418,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential12"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.02+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.020Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential12"),
 		// 			},
 		// 		},
@@ -428,8 +428,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential120"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.943+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.943+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.943Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:31.943Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential120"),
 		// 			},
 		// 		},
@@ -438,8 +438,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential121"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.333Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.333Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential121"),
 		// 			},
 		// 		},
@@ -448,8 +448,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential122"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential122"),
 		// 			},
 		// 		},
@@ -458,8 +458,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential123"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.957+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.957+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.957Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:32.957Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential123"),
 		// 			},
 		// 		},
@@ -468,8 +468,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential124"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.270Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential124"),
 		// 			},
 		// 		},
@@ -478,8 +478,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential125"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.6+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.600Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.600Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential125"),
 		// 			},
 		// 		},
@@ -488,8 +488,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential126"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.957+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.957+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.957Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:33.957Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential126"),
 		// 			},
 		// 		},
@@ -498,8 +498,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential127"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.287+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.287+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.287Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.287Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential127"),
 		// 			},
 		// 		},
@@ -508,8 +508,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential128"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.613+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.613+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.613Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.613Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential128"),
 		// 			},
 		// 		},
@@ -518,8 +518,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential129"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.973+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.973+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.973Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:34.973Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential129"),
 		// 			},
 		// 		},
@@ -528,8 +528,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential13"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.393+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.393+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.393Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.393Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential13"),
 		// 			},
 		// 		},
@@ -538,8 +538,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential130"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.363+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.363+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.363Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.363Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential130"),
 		// 			},
 		// 		},
@@ -548,8 +548,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential131"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.707+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.707+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.707Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:35.707Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential131"),
 		// 			},
 		// 		},
@@ -558,8 +558,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential132"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential132"),
 		// 			},
 		// 		},
@@ -568,8 +568,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential133"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.38+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.38+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.380Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.380Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential133"),
 		// 			},
 		// 		},
@@ -578,8 +578,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential134"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.74+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.74+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.740Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:36.740Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential134"),
 		// 			},
 		// 		},
@@ -588,8 +588,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential135"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.05+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.05+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.050Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.050Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential135"),
 		// 			},
 		// 		},
@@ -598,8 +598,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential136"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.41+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.41+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.410Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.410Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential136"),
 		// 			},
 		// 		},
@@ -608,8 +608,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential137"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.723+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.723+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.723Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:37.723Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential137"),
 		// 			},
 		// 		},
@@ -618,8 +618,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential138"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential138"),
 		// 			},
 		// 		},
@@ -628,8 +628,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential139"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.35+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.35+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.350Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.350Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential139"),
 		// 			},
 		// 		},
@@ -638,8 +638,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential14"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.723+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.723+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.723Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:56.723Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential14"),
 		// 			},
 		// 		},
@@ -648,8 +648,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential140"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.71+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.71+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.710Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:38.710Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential140"),
 		// 			},
 		// 		},
@@ -658,8 +658,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential141"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential141"),
 		// 			},
 		// 		},
@@ -668,8 +668,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential142"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.35+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.35+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.350Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.350Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential142"),
 		// 			},
 		// 		},
@@ -678,8 +678,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential143"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential143"),
 		// 			},
 		// 		},
@@ -688,8 +688,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential144"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.99+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.99+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.990Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:39.990Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential144"),
 		// 			},
 		// 		},
@@ -698,8 +698,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential145"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.317+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.317+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.317Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.317Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential145"),
 		// 			},
 		// 		},
@@ -708,8 +708,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential146"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.63+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.63+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.630Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.630Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential146"),
 		// 			},
 		// 		},
@@ -718,8 +718,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential147"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.943+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.943+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.943Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:40.943Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential147"),
 		// 			},
 		// 		},
@@ -728,8 +728,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential148"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.270Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential148"),
 		// 			},
 		// 		},
@@ -738,8 +738,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential149"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.6+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.600Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.600Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential149"),
 		// 			},
 		// 		},
@@ -748,8 +748,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential15"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.033+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.033+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.033Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.033Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential15"),
 		// 			},
 		// 		},
@@ -758,8 +758,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential150"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.91+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.91+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.910Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:41.910Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential150"),
 		// 			},
 		// 		},
@@ -768,8 +768,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential151"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.24+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.24+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.240Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.240Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential151"),
 		// 			},
 		// 		},
@@ -778,8 +778,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential152"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential152"),
 		// 			},
 		// 		},
@@ -788,8 +788,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential153"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.88+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:42.880Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential153"),
 		// 			},
 		// 		},
@@ -798,8 +798,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential154"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.193+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.193+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.193Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.193Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential154"),
 		// 			},
 		// 		},
@@ -808,8 +808,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential155"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.52+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.52+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.520Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.520Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential155"),
 		// 			},
 		// 		},
@@ -818,8 +818,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential156"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.833+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.833+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.833Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:43.833Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential156"),
 		// 			},
 		// 		},
@@ -828,8 +828,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential157"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.147+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.147+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.147Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.147Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential157"),
 		// 			},
 		// 		},
@@ -838,8 +838,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential158"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.473+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.473+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.473Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.473Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential158"),
 		// 			},
 		// 		},
@@ -848,8 +848,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential159"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.787+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.787+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.787Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:44.787Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential159"),
 		// 			},
 		// 		},
@@ -858,8 +858,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential16"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.363+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.363+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.363Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.363Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential16"),
 		// 			},
 		// 		},
@@ -868,8 +868,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential160"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.1+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.1+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.100Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.100Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential160"),
 		// 			},
 		// 		},
@@ -878,8 +878,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential161"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.427+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.427+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.427Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.427Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential161"),
 		// 			},
 		// 		},
@@ -888,8 +888,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential162"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.74+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.74+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.740Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:45.740Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential162"),
 		// 			},
 		// 		},
@@ -898,8 +898,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential163"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.067+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.067+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.067Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.067Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential163"),
 		// 			},
 		// 		},
@@ -908,8 +908,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential164"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.38+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.38+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.380Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.380Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential164"),
 		// 			},
 		// 		},
@@ -918,8 +918,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential165"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.71+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.71+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.710Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:46.710Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential165"),
 		// 			},
 		// 		},
@@ -928,8 +928,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential166"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential166"),
 		// 			},
 		// 		},
@@ -938,8 +938,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential167"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.35+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.35+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.350Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.350Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential167"),
 		// 			},
 		// 		},
@@ -948,8 +948,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential168"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential168"),
 		// 			},
 		// 		},
@@ -958,8 +958,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential169"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.99+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.99+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.990Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:47.990Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential169"),
 		// 			},
 		// 		},
@@ -968,8 +968,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential17"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:57.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential17"),
 		// 			},
 		// 		},
@@ -978,8 +978,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential170"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.287+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.287+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.287Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.287Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential170"),
 		// 			},
 		// 		},
@@ -988,8 +988,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential171"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.613+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.613+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.613Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.613Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential171"),
 		// 			},
 		// 		},
@@ -998,8 +998,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential172"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.927+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.927+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.927Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:48.927Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential172"),
 		// 			},
 		// 		},
@@ -1008,8 +1008,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential173"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.257+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.257+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.257Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.257Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential173"),
 		// 			},
 		// 		},
@@ -1018,8 +1018,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential174"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential174"),
 		// 			},
 		// 		},
@@ -1028,8 +1028,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential175"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.88+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:49.880Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential175"),
 		// 			},
 		// 		},
@@ -1038,8 +1038,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential176"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.21+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.21+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.210Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.210Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential176"),
 		// 			},
 		// 		},
@@ -1048,8 +1048,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential177"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.537+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.537+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.537Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.537Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential177"),
 		// 			},
 		// 		},
@@ -1058,8 +1058,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential178"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.863+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.863+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.863Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:50.863Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential178"),
 		// 			},
 		// 		},
@@ -1068,8 +1068,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential179"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.193+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.193+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.193Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.193Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential179"),
 		// 			},
 		// 		},
@@ -1078,8 +1078,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential18"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.003+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.003+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.003Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.003Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential18"),
 		// 			},
 		// 		},
@@ -1088,8 +1088,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential180"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.6+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.600Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.600Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential180"),
 		// 			},
 		// 		},
@@ -1098,8 +1098,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential181"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.91+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.91+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.910Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:51.910Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential181"),
 		// 			},
 		// 		},
@@ -1108,8 +1108,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential182"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.223+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.223+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.223Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.223Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential182"),
 		// 			},
 		// 		},
@@ -1118,8 +1118,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential183"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.6+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.6+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.600Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.600Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential183"),
 		// 			},
 		// 		},
@@ -1128,8 +1128,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential184"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.927+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.927+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.927Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:52.927Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential184"),
 		// 			},
 		// 		},
@@ -1138,8 +1138,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential185"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.270Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential185"),
 		// 			},
 		// 		},
@@ -1148,8 +1148,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential186"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.583+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.583+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.583Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:53.583Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential186"),
 		// 			},
 		// 		},
@@ -1158,8 +1158,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential187"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential187"),
 		// 			},
 		// 	}},
@@ -1167,7 +1167,7 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount_next100_using_nextLink.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listCredentialsByAutomationAccount_next100_using_nextLink.json
 func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAutomationAccountNext100() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1196,8 +1196,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential188"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.397+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.397+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.397Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.397Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential188"),
 		// 			},
 		// 		},
@@ -1206,8 +1206,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential189"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.71+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.71+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.710Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:54.710Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential189"),
 		// 			},
 		// 		},
@@ -1216,8 +1216,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential19"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.33+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.33+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.330Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.330Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential19"),
 		// 			},
 		// 		},
@@ -1226,8 +1226,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential190"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.037+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.037+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.037Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.037Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential190"),
 		// 			},
 		// 		},
@@ -1236,8 +1236,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential191"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.35+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.35+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.350Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.350Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential191"),
 		// 			},
 		// 		},
@@ -1246,8 +1246,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential192"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.677+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.677+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.677Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:55.677Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential192"),
 		// 			},
 		// 		},
@@ -1256,8 +1256,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential193"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.007+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.007+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.007Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.007Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential193"),
 		// 			},
 		// 		},
@@ -1266,8 +1266,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential194"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.333Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.333Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential194"),
 		// 			},
 		// 		},
@@ -1276,8 +1276,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential195"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:56.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential195"),
 		// 			},
 		// 		},
@@ -1286,8 +1286,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential196"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.007+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.007+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.007Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.007Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential196"),
 		// 			},
 		// 		},
@@ -1296,8 +1296,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential197"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.333+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.333+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.333Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.333Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential197"),
 		// 			},
 		// 		},
@@ -1306,8 +1306,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential198"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential198"),
 		// 			},
 		// 		},
@@ -1316,8 +1316,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential199"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.973+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.973+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.973Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:57.973Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential199"),
 		// 			},
 		// 		},
@@ -1326,8 +1326,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential2"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.44+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.44+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.440Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.440Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential2"),
 		// 			},
 		// 		},
@@ -1336,8 +1336,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential20"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:58.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential20"),
 		// 			},
 		// 		},
@@ -1346,8 +1346,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential200"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:58.303+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:58.303+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:58.303Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:58.303Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential200"),
 		// 			},
 		// 		},
@@ -1356,8 +1356,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential21"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.033+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.033+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.033Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.033Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential21"),
 		// 			},
 		// 		},
@@ -1366,8 +1366,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential22"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.363+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.363+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.363Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.363Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential22"),
 		// 			},
 		// 		},
@@ -1376,8 +1376,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential23"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.707+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.707+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.707Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:59.707Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential23"),
 		// 			},
 		// 		},
@@ -1386,8 +1386,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential24"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.02+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.020Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential24"),
 		// 			},
 		// 		},
@@ -1396,8 +1396,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential25"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.33+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.33+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.330Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.330Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential25"),
 		// 			},
 		// 		},
@@ -1406,8 +1406,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential26"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.707+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.707+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.707Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:00.707Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential26"),
 		// 			},
 		// 		},
@@ -1416,8 +1416,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential27"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.02+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.020Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential27"),
 		// 			},
 		// 		},
@@ -1426,8 +1426,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential28"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.347+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.347+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.347Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.347Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential28"),
 		// 			},
 		// 		},
@@ -1436,8 +1436,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential29"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.847+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.847+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.847Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:01.847Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential29"),
 		// 			},
 		// 		},
@@ -1446,8 +1446,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential3"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.863+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.863+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.863Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:52.863Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential3"),
 		// 			},
 		// 		},
@@ -1456,8 +1456,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential30"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.16+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.16+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.160Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.160Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential30"),
 		// 			},
 		// 		},
@@ -1466,8 +1466,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential31"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.503+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.503+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.503Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.503Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential31"),
 		// 			},
 		// 		},
@@ -1476,8 +1476,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential32"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.88+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:02.880Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential32"),
 		// 			},
 		// 		},
@@ -1486,8 +1486,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential33"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.177+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.177+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.177Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.177Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential33"),
 		// 			},
 		// 		},
@@ -1496,8 +1496,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential34"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.55+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.55+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.550Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.550Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential34"),
 		// 			},
 		// 		},
@@ -1506,8 +1506,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential35"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.893+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.893+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.893Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:03.893Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential35"),
 		// 			},
 		// 		},
@@ -1516,8 +1516,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential36"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.207+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.207+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.207Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.207Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential36"),
 		// 			},
 		// 		},
@@ -1526,8 +1526,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential37"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.55+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.55+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.550Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.550Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential37"),
 		// 			},
 		// 		},
@@ -1536,8 +1536,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential38"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.847+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.847+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.847Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:04.847Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential38"),
 		// 			},
 		// 		},
@@ -1546,8 +1546,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential39"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.177+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.177+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.177Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.177Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential39"),
 		// 			},
 		// 		},
@@ -1556,8 +1556,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential4"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.253+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.253+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.253Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.253Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential4"),
 		// 			},
 		// 		},
@@ -1566,8 +1566,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential40"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.49+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.49+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.490Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.490Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential40"),
 		// 			},
 		// 		},
@@ -1576,8 +1576,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential41"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.83+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.83+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.830Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:05.830Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential41"),
 		// 			},
 		// 		},
@@ -1586,8 +1586,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential42"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.143+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.143+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.143Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.143Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential42"),
 		// 			},
 		// 		},
@@ -1596,8 +1596,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential43"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.457+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.457+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.457Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.457Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential43"),
 		// 			},
 		// 		},
@@ -1606,8 +1606,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential44"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.94+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.94+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.940Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:06.940Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential44"),
 		// 			},
 		// 		},
@@ -1616,8 +1616,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential45"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.3+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.3+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.300Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.300Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential45"),
 		// 			},
 		// 		},
@@ -1626,8 +1626,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential46"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.63+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.63+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.630Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.630Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential46"),
 		// 			},
 		// 		},
@@ -1636,8 +1636,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential47"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.957+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.957+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.957Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:07.957Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential47"),
 		// 			},
 		// 		},
@@ -1646,8 +1646,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential48"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.270Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential48"),
 		// 			},
 		// 		},
@@ -1656,8 +1656,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential49"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.58+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.58+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.580Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:08.580Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential49"),
 		// 			},
 		// 		},
@@ -1666,8 +1666,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential5"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential5"),
 		// 			},
 		// 		},
@@ -1676,8 +1676,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential50"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.02+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.02+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.020Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.020Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential50"),
 		// 			},
 		// 		},
@@ -1686,8 +1686,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential51"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.33+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.33+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.330Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.330Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential51"),
 		// 			},
 		// 		},
@@ -1696,8 +1696,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential52"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.643+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.643+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.643Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.643Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential52"),
 		// 			},
 		// 		},
@@ -1706,8 +1706,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential53"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.973+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.973+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.973Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:09.973Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential53"),
 		// 			},
 		// 		},
@@ -1716,8 +1716,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential54"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.287+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.287+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.287Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.287Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential54"),
 		// 			},
 		// 		},
@@ -1726,8 +1726,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential55"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.66+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.66+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.660Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.660Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential55"),
 		// 			},
 		// 		},
@@ -1736,8 +1736,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential56"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.973+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.973+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.973Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:10.973Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential56"),
 		// 			},
 		// 		},
@@ -1746,8 +1746,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential57"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.33+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.33+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.330Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.330Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential57"),
 		// 			},
 		// 		},
@@ -1756,8 +1756,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential58"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.643+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.643+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.643Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.643Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential58"),
 		// 			},
 		// 		},
@@ -1766,8 +1766,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential59"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.99+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.99+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.990Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:11.990Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential59"),
 		// 			},
 		// 		},
@@ -1776,8 +1776,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential6"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.863+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.863+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.863Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:53.863Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential6"),
 		// 			},
 		// 		},
@@ -1786,8 +1786,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential60"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.3+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.3+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.300Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.300Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential60"),
 		// 			},
 		// 		},
@@ -1796,8 +1796,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential61"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.63+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.63+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.630Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.630Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential61"),
 		// 			},
 		// 		},
@@ -1806,8 +1806,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential62"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.957+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.957+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.957Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:12.957Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential62"),
 		// 			},
 		// 		},
@@ -1816,8 +1816,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential63"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.27+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.27+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.270Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.270Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential63"),
 		// 			},
 		// 		},
@@ -1826,8 +1826,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential64"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.583+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.583+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.583Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.583Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential64"),
 		// 			},
 		// 		},
@@ -1836,8 +1836,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential65"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.893+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.893+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.893Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:13.893Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential65"),
 		// 			},
 		// 		},
@@ -1846,8 +1846,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential66"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.207+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.207+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.207Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.207Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential66"),
 		// 			},
 		// 		},
@@ -1856,8 +1856,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential67"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.537+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.537+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.537Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.537Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential67"),
 		// 			},
 		// 		},
@@ -1866,8 +1866,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential68"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.847+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.847+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.847Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:14.847Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential68"),
 		// 			},
 		// 		},
@@ -1876,8 +1876,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential69"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.19+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.19+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.190Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.190Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential69"),
 		// 			},
 		// 		},
@@ -1886,8 +1886,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential7"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.19+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.19+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.190Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.190Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential7"),
 		// 			},
 		// 		},
@@ -1896,8 +1896,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential70"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.503+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.503+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.503Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.503Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential70"),
 		// 			},
 		// 		},
@@ -1906,8 +1906,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential71"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.91+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.91+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.910Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:15.910Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential71"),
 		// 			},
 		// 		},
@@ -1916,8 +1916,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential72"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.253+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.253+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.253Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.253Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential72"),
 		// 			},
 		// 		},
@@ -1926,8 +1926,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential73"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential73"),
 		// 			},
 		// 		},
@@ -1936,8 +1936,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential74"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.927+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.927+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.927Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:16.927Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential74"),
 		// 			},
 		// 		},
@@ -1946,8 +1946,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential75"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.253+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.253+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.253Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.253Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential75"),
 		// 			},
 		// 		},
@@ -1956,8 +1956,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential76"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.567+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.567+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.567Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.567Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential76"),
 		// 			},
 		// 		},
@@ -1966,8 +1966,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential77"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.88+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.88+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.880Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:17.880Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential77"),
 		// 			},
 		// 		},
@@ -1976,8 +1976,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential78"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.19+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.19+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.190Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.190Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential78"),
 		// 			},
 		// 		},
@@ -1986,8 +1986,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential79"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.52+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.52+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.520Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.520Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential79"),
 		// 			},
 		// 		},
@@ -1996,8 +1996,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential8"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.503+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.503+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.503Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.503Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential8"),
 		// 			},
 		// 		},
@@ -2006,8 +2006,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential80"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.833+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.833+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.833Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:18.833Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential80"),
 		// 			},
 		// 		},
@@ -2016,8 +2016,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential81"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.177+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.177+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.177Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.177Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential81"),
 		// 			},
 		// 		},
@@ -2026,8 +2026,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential82"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.49+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.49+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.490Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.490Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential82"),
 		// 			},
 		// 		},
@@ -2036,8 +2036,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential83"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.833+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.833+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.833Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:19.833Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential83"),
 		// 			},
 		// 		},
@@ -2046,8 +2046,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential84"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.177+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.177+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.177Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.177Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential84"),
 		// 			},
 		// 		},
@@ -2056,8 +2056,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential85"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.503+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.503+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.503Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.503Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential85"),
 		// 			},
 		// 		},
@@ -2066,8 +2066,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential86"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.817+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.817+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.817Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:20.817Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential86"),
 		// 			},
 		// 		},
@@ -2076,8 +2076,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential87"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.143+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.143+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.143Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.143Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential87"),
 		// 			},
 		// 		},
@@ -2086,8 +2086,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential88"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.457+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.457+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.457Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.457Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential88"),
 		// 			},
 		// 		},
@@ -2096,8 +2096,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential89"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.787+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.787+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.787Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:21.787Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential89"),
 		// 			},
 		// 		},
@@ -2106,8 +2106,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential9"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.957+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.957+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.957Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:43:54.957Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential9"),
 		// 			},
 		// 		},
@@ -2116,8 +2116,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential90"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.1+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.1+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.100Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.100Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential90"),
 		// 			},
 		// 		},
@@ -2126,8 +2126,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential91"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.427+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.427+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.427Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.427Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential91"),
 		// 			},
 		// 		},
@@ -2136,8 +2136,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential92"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.77+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.77+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.770Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:22.770Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential92"),
 		// 			},
 		// 		},
@@ -2146,8 +2146,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential93"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.083+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.083+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.083Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.083Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential93"),
 		// 			},
 		// 		},
@@ -2156,8 +2156,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential94"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.41+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.41+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.410Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.410Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential94"),
 		// 			},
 		// 		},
@@ -2166,8 +2166,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential95"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.753+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.753+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.753Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:23.753Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential95"),
 		// 			},
 		// 		},
@@ -2176,8 +2176,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential96"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.1+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.1+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.100Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.100Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential96"),
 		// 			},
 		// 		},
@@ -2186,8 +2186,8 @@ func ExampleCredentialClient_NewListByAutomationAccountPager_listCredentialsByAu
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount20/credentials/myCredential97"),
 		// 			Properties: &armautomation.CredentialProperties{
 		// 				Description: to.Ptr("my description goes here"),
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.427+00:00"); return t}()),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.427+00:00"); return t}()),
+		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.427Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-26T21:44:24.427Z"); return t}()),
 		// 				UserName: to.Ptr("myCredential97"),
 		// 			},
 		// 	}},

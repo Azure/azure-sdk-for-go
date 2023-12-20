@@ -48,10 +48,10 @@ func ExampleAlertsClient_NewListByManagerPager() {
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hManagerForSDKTest4/devices/is2-hlmdhdgu1et/alerts/a1f3a945-74dc-4387-bf17-a4f226374833"),
 		// 			Properties: &armstorsimple1200series.AlertProperties{
 		// 				AlertType: to.Ptr("Cloud Connectivity"),
-		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-02T04:08:12.9140342Z"); return t}()),
-		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-02T04:08:12.9140342Z"); return t}()),
-		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
-		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00Z"); return t}()),
+		// 				AppearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-02T04:08:12.914Z"); return t}()),
+		// 				AppearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-02T04:08:12.914Z"); return t}()),
+		// 				ClearedAtSourceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
+		// 				ClearedAtTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1-01-01T00:00:00.000Z"); return t}()),
 		// 				DetailedInformation: map[string]*string{
 		// 					"first observed": to.Ptr("1/1/0001 12:00:00 AM (UTC)"),
 		// 					"last observed": to.Ptr("8/2/2018 4:08:12 AM (UTC)"),

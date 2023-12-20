@@ -32,7 +32,7 @@ type OperationsResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationsResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 //   - options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
 func (client *OperationsResultsClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsClientGetOptions) (OperationsResultsClientGetResponse, error) {
 	var err error
+	const operationName = "OperationsResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
 		return OperationsResultsClientGetResponse{}, err

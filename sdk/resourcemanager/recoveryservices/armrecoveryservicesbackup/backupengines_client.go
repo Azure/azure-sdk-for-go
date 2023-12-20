@@ -32,7 +32,7 @@ type BackupEnginesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupEnginesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupEnginesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 //   - options - BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
 func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (BackupEnginesClientGetResponse, error) {
 	var err error
+	const operationName = "BackupEnginesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, backupEngineName, options)
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
@@ -126,25 +130,20 @@ func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BackupEnginesClientListResponse) (BackupEnginesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupEnginesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return BackupEnginesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BackupEnginesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BackupEnginesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

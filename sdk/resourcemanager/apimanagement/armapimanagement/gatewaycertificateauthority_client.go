@@ -33,7 +33,7 @@ type GatewayCertificateAuthorityClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGatewayCertificateAuthorityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayCertificateAuthorityClient, error) {
-	cl, err := arm.NewClient(moduleName+".GatewayCertificateAuthorityClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewGatewayCertificateAuthorityClient(subscriptionID string, credential azco
 //     method.
 func (client *GatewayCertificateAuthorityClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, certificateID string, parameters GatewayCertificateAuthorityContract, options *GatewayCertificateAuthorityClientCreateOrUpdateOptions) (GatewayCertificateAuthorityClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GatewayCertificateAuthorityClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, certificateID, parameters, options)
 	if err != nil {
 		return GatewayCertificateAuthorityClientCreateOrUpdateResponse{}, err
@@ -140,6 +144,10 @@ func (client *GatewayCertificateAuthorityClient) createOrUpdateHandleResponse(re
 //     method.
 func (client *GatewayCertificateAuthorityClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, certificateID string, ifMatch string, options *GatewayCertificateAuthorityClientDeleteOptions) (GatewayCertificateAuthorityClientDeleteResponse, error) {
 	var err error
+	const operationName = "GatewayCertificateAuthorityClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, certificateID, ifMatch, options)
 	if err != nil {
 		return GatewayCertificateAuthorityClientDeleteResponse{}, err
@@ -203,6 +211,10 @@ func (client *GatewayCertificateAuthorityClient) deleteCreateRequest(ctx context
 //     method.
 func (client *GatewayCertificateAuthorityClient) Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, certificateID string, options *GatewayCertificateAuthorityClientGetOptions) (GatewayCertificateAuthorityClientGetResponse, error) {
 	var err error
+	const operationName = "GatewayCertificateAuthorityClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, certificateID, options)
 	if err != nil {
 		return GatewayCertificateAuthorityClientGetResponse{}, err
@@ -277,6 +289,10 @@ func (client *GatewayCertificateAuthorityClient) getHandleResponse(resp *http.Re
 //     method.
 func (client *GatewayCertificateAuthorityClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, certificateID string, options *GatewayCertificateAuthorityClientGetEntityTagOptions) (GatewayCertificateAuthorityClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GatewayCertificateAuthorityClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, certificateID, options)
 	if err != nil {
 		return GatewayCertificateAuthorityClientGetEntityTagResponse{}, err
@@ -329,11 +345,10 @@ func (client *GatewayCertificateAuthorityClient) getEntityTagCreateRequest(ctx c
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayCertificateAuthorityClient) getEntityTagHandleResponse(resp *http.Response) (GatewayCertificateAuthorityClientGetEntityTagResponse, error) {
-	result := GatewayCertificateAuthorityClientGetEntityTagResponse{}
+	result := GatewayCertificateAuthorityClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -352,25 +367,20 @@ func (client *GatewayCertificateAuthorityClient) NewListByServicePager(resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GatewayCertificateAuthorityClientListByServiceResponse) (GatewayCertificateAuthorityClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GatewayCertificateAuthorityClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+			}, nil)
 			if err != nil {
 				return GatewayCertificateAuthorityClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GatewayCertificateAuthorityClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GatewayCertificateAuthorityClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

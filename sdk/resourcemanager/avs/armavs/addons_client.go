@@ -32,7 +32,7 @@ type AddonsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAddonsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AddonsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AddonsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AddonsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddonsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AddonsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddonsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // Generated from API version 2023-03-01
 func (client *AddonsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon Addon, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AddonsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, addon, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +142,14 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[AddonsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AddonsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AddonsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AddonsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +159,10 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-03-01
 func (client *AddonsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AddonsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
 	if err != nil {
 		return nil, err
@@ -202,6 +218,10 @@ func (client *AddonsClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - AddonsClientGetOptions contains the optional parameters for the AddonsClient.Get method.
 func (client *AddonsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, options *AddonsClientGetOptions) (AddonsClientGetResponse, error) {
 	var err error
+	const operationName = "AddonsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, addonName, options)
 	if err != nil {
 		return AddonsClientGetResponse{}, err
@@ -269,25 +289,20 @@ func (client *AddonsClient) NewListPager(resourceGroupName string, privateCloudN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AddonsClientListResponse) (AddonsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AddonsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return AddonsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AddonsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AddonsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

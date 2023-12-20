@@ -32,7 +32,7 @@ type HubsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubsClient, error) {
-	cl, err := arm.NewClient(moduleName+".HubsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,13 @@ func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName strin
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HubsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[HubsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HubsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName strin
 // Generated from API version 2023-08-01-preview
 func (client *HubsClient) createOrUpdate(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, options *HubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HubsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, hubName, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -96,6 +103,9 @@ func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubNa
 		return nil, errors.New("parameter hubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hubName}", url.PathEscape(hubName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -135,10 +145,13 @@ func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HubsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[HubsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HubsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -148,6 +161,10 @@ func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resou
 // Generated from API version 2023-08-01-preview
 func (client *HubsClient) deleteOperation(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "HubsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, hubName, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -170,6 +187,9 @@ func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName strin
 		return nil, errors.New("parameter hubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hubName}", url.PathEscape(hubName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -200,6 +220,10 @@ func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName strin
 //   - options - HubsClientGetOptions contains the optional parameters for the HubsClient.Get method.
 func (client *HubsClient) Get(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientGetOptions) (HubsClientGetResponse, error) {
 	var err error
+	const operationName = "HubsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, hubName, resourceGroupName, resourceName, options)
 	if err != nil {
 		return HubsClientGetResponse{}, err
@@ -223,6 +247,9 @@ func (client *HubsClient) getCreateRequest(ctx context.Context, hubName string, 
 		return nil, errors.New("parameter hubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hubName}", url.PathEscape(hubName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -264,31 +291,29 @@ func (client *HubsClient) NewListPager(resourceGroupName string, resourceName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HubsClientListResponse) (HubsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HubsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return HubsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HubsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HubsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *HubsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *HubsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

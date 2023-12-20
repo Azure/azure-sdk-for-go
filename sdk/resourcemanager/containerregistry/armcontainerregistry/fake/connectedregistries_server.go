@@ -115,7 +115,7 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginCreate(req *http.Reque
 	}
 	beginCreate := c.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -125,19 +125,19 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginCreate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		connectedRegistryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+		connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, connectedRegistryNameUnescaped, body, nil)
+		respr, errRespr := c.srv.BeginCreate(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -167,25 +167,25 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginDeactivate(req *http.R
 	}
 	beginDeactivate := c.beginDeactivate.get(req)
 	if beginDeactivate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deactivate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deactivate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		connectedRegistryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+		connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginDeactivate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, connectedRegistryNameUnescaped, nil)
+		respr, errRespr := c.srv.BeginDeactivate(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -215,25 +215,25 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginDelete(req *http.Reque
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		connectedRegistryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+		connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, connectedRegistryNameUnescaped, nil)
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -261,25 +261,25 @@ func (c *ConnectedRegistriesServerTransport) dispatchGet(req *http.Request) (*ht
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 	if err != nil {
 		return nil, err
 	}
-	connectedRegistryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+	connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, connectedRegistryNameUnescaped, nil)
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -300,18 +300,18 @@ func (c *ConnectedRegistriesServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
@@ -326,7 +326,7 @@ func (c *ConnectedRegistriesServerTransport) dispatchNewListPager(req *http.Requ
 				Filter: filterParam,
 			}
 		}
-		resp := c.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, options)
+		resp := c.srv.NewListPager(resourceGroupNameParam, registryNameParam, options)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ConnectedRegistriesClientListResponse, createLink func() string) {
@@ -353,7 +353,7 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginUpdate(req *http.Reque
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectedRegistries/(?P<connectedRegistryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -363,19 +363,19 @@ func (c *ConnectedRegistriesServerTransport) dispatchBeginUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		connectedRegistryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
+		connectedRegistryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedRegistryName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, connectedRegistryNameUnescaped, body, nil)
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, connectedRegistryNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

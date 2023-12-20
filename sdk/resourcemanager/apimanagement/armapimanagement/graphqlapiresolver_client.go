@@ -33,7 +33,7 @@ type GraphQLAPIResolverClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGraphQLAPIResolverClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphQLAPIResolverClient, error) {
-	cl, err := arm.NewClient(moduleName+".GraphQLAPIResolverClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewGraphQLAPIResolverClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *GraphQLAPIResolverClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, parameters ResolverContract, options *GraphQLAPIResolverClientCreateOrUpdateOptions) (GraphQLAPIResolverClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, parameters, options)
 	if err != nil {
 		return GraphQLAPIResolverClientCreateOrUpdateResponse{}, err
@@ -141,6 +145,10 @@ func (client *GraphQLAPIResolverClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *GraphQLAPIResolverClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, ifMatch string, options *GraphQLAPIResolverClientDeleteOptions) (GraphQLAPIResolverClientDeleteResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, ifMatch, options)
 	if err != nil {
 		return GraphQLAPIResolverClientDeleteResponse{}, err
@@ -203,6 +211,10 @@ func (client *GraphQLAPIResolverClient) deleteCreateRequest(ctx context.Context,
 //   - options - GraphQLAPIResolverClientGetOptions contains the optional parameters for the GraphQLAPIResolverClient.Get method.
 func (client *GraphQLAPIResolverClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, options *GraphQLAPIResolverClientGetOptions) (GraphQLAPIResolverClientGetResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, options)
 	if err != nil {
 		return GraphQLAPIResolverClientGetResponse{}, err
@@ -277,6 +289,10 @@ func (client *GraphQLAPIResolverClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *GraphQLAPIResolverClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, options *GraphQLAPIResolverClientGetEntityTagOptions) (GraphQLAPIResolverClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, options)
 	if err != nil {
 		return GraphQLAPIResolverClientGetEntityTagResponse{}, err
@@ -329,11 +345,10 @@ func (client *GraphQLAPIResolverClient) getEntityTagCreateRequest(ctx context.Co
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GraphQLAPIResolverClient) getEntityTagHandleResponse(resp *http.Response) (GraphQLAPIResolverClientGetEntityTagResponse, error) {
-	result := GraphQLAPIResolverClientGetEntityTagResponse{}
+	result := GraphQLAPIResolverClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -352,25 +367,20 @@ func (client *GraphQLAPIResolverClient) NewListByAPIPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GraphQLAPIResolverClientListByAPIResponse) (GraphQLAPIResolverClientListByAPIResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GraphQLAPIResolverClient.NewListByAPIPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return GraphQLAPIResolverClientListByAPIResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GraphQLAPIResolverClientListByAPIResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GraphQLAPIResolverClientListByAPIResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAPIHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -438,6 +448,10 @@ func (client *GraphQLAPIResolverClient) listByAPIHandleResponse(resp *http.Respo
 //     method.
 func (client *GraphQLAPIResolverClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, resolverID string, ifMatch string, parameters ResolverUpdateContract, options *GraphQLAPIResolverClientUpdateOptions) (GraphQLAPIResolverClientUpdateResponse, error) {
 	var err error
+	const operationName = "GraphQLAPIResolverClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, resolverID, ifMatch, parameters, options)
 	if err != nil {
 		return GraphQLAPIResolverClientUpdateResponse{}, err

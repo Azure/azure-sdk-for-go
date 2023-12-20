@@ -30,7 +30,7 @@ type SolutionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSolutionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionClient, error) {
-	cl, err := arm.NewClient(moduleName+".SolutionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +40,14 @@ func NewSolutionClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	return client, nil
 }
 
-// BeginCreate - Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId
-// and requiredInputs’ from discovery solutions. Solutions are a rich, insightful and a
-// centralized self help experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-// Solutions include the following components : Text, Diagnostics ,
-// Troubleshooters, Images , Video tutorials, Tables , custom charts, images , AzureKB, etc, with capabilities to support
-// new solutions types in the future. Each solution type may require one or more
+// BeginCreate - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
+// from discovery solutions. Azure solutions comprise a comprehensive library of
+// self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical troubleshooting
+// issues. These solutions encompass (1.) dynamic and context-aware
+// diagnostics, guided troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+// diagrams and images, and (3.) thoughtfully assembled textual
+// troubleshooting instructions. All these components are seamlessly converged into unified solutions tailored to address
+// a specific support problem area. Each solution type may require one or more
 // ‘requiredParameters’ that are required to execute the individual solution component. In the absence of the ‘requiredParameters’
 // it is likely that some of the solutions might fail execution, and you
 // might see an empty response.
@@ -57,7 +59,8 @@ func NewSolutionClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
 //   - solutionRequestBody - The required request body for this solution resource creation.
 //   - options - SolutionClientBeginCreateOptions contains the optional parameters for the SolutionClient.BeginCreate method.
@@ -69,19 +72,24 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SolutionClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
-// Create - Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-// requiredInputs’ from discovery solutions. Solutions are a rich, insightful and a
-// centralized self help experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-// Solutions include the following components : Text, Diagnostics ,
-// Troubleshooters, Images , Video tutorials, Tables , custom charts, images , AzureKB, etc, with capabilities to support
-// new solutions types in the future. Each solution type may require one or more
+// Create - Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and requiredInputs’
+// from discovery solutions. Azure solutions comprise a comprehensive library of
+// self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical troubleshooting
+// issues. These solutions encompass (1.) dynamic and context-aware
+// diagnostics, guided troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+// diagrams and images, and (3.) thoughtfully assembled textual
+// troubleshooting instructions. All these components are seamlessly converged into unified solutions tailored to address
+// a specific support problem area. Each solution type may require one or more
 // ‘requiredParameters’ that are required to execute the individual solution component. In the absence of the ‘requiredParameters’
 // it is likely that some of the solutions might fail execution, and you
 // might see an empty response.
@@ -95,6 +103,10 @@ func (client *SolutionClient) BeginCreate(ctx context.Context, scope string, sol
 // Generated from API version 2023-09-01-preview
 func (client *SolutionClient) create(ctx context.Context, scope string, solutionResourceName string, solutionRequestBody SolutionResource, options *SolutionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SolutionClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, solutionResourceName, solutionRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -136,11 +148,16 @@ func (client *SolutionClient) createCreateRequest(ctx context.Context, scope str
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
 //   - options - SolutionClientGetOptions contains the optional parameters for the SolutionClient.Get method.
 func (client *SolutionClient) Get(ctx context.Context, scope string, solutionResourceName string, options *SolutionClientGetOptions) (SolutionClientGetResponse, error) {
 	var err error
+	const operationName = "SolutionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, solutionResourceName, options)
 	if err != nil {
 		return SolutionClientGetResponse{}, err
@@ -189,7 +206,8 @@ func (client *SolutionClient) getHandleResponse(resp *http.Response) (SolutionCl
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - solutionResourceName - Solution resource Name.
 //   - solutionPatchRequestBody - The required request body for updating a solution resource.
 //   - options - SolutionClientBeginUpdateOptions contains the optional parameters for the SolutionClient.BeginUpdate method.
@@ -201,10 +219,13 @@ func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, sol
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SolutionClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[SolutionClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SolutionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -214,6 +235,10 @@ func (client *SolutionClient) BeginUpdate(ctx context.Context, scope string, sol
 // Generated from API version 2023-09-01-preview
 func (client *SolutionClient) update(ctx context.Context, scope string, solutionResourceName string, solutionPatchRequestBody SolutionPatchRequestBody, options *SolutionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "SolutionClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, scope, solutionResourceName, solutionPatchRequestBody, options)
 	if err != nil {
 		return nil, err

@@ -28,11 +28,11 @@ type LtrBackupOperationsClient struct {
 }
 
 // NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLtrBackupOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LtrBackupOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".LtrBackupOperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,17 @@ func NewLtrBackupOperationsClient(subscriptionID string, credential azcore.Token
 // Get - Gets the result of the give long term retention backup operation for the flexible server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
 //   - options - LtrBackupOperationsClientGetOptions contains the optional parameters for the LtrBackupOperationsClient.Get method.
 func (client *LtrBackupOperationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *LtrBackupOperationsClientGetOptions) (LtrBackupOperationsClientGetResponse, error) {
 	var err error
+	const operationName = "LtrBackupOperationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, backupName, options)
 	if err != nil {
 		return LtrBackupOperationsClientGetResponse{}, err
@@ -93,7 +97,7 @@ func (client *LtrBackupOperationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +114,7 @@ func (client *LtrBackupOperationsClient) getHandleResponse(resp *http.Response) 
 
 // NewListByServerPager - Gets the result of the give long term retention backup operations for the flexible server.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
@@ -121,25 +125,20 @@ func (client *LtrBackupOperationsClient) NewListByServerPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *LtrBackupOperationsClientListByServerResponse) (LtrBackupOperationsClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LtrBackupOperationsClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return LtrBackupOperationsClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LtrBackupOperationsClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LtrBackupOperationsClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -163,7 +162,7 @@ func (client *LtrBackupOperationsClient) listByServerCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

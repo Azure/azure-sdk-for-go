@@ -99,7 +99,7 @@ func (e *ExportPipelinesServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := e.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -109,19 +109,19 @@ func (e *ExportPipelinesServerTransport) dispatchBeginCreate(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		exportPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
+		exportPipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := e.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, exportPipelineNameUnescaped, body, nil)
+		respr, errRespr := e.srv.BeginCreate(req.Context(), resourceGroupNameParam, registryNameParam, exportPipelineNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -151,25 +151,25 @@ func (e *ExportPipelinesServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		exportPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
+		exportPipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, exportPipelineNameUnescaped, nil)
+		respr, errRespr := e.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, exportPipelineNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -197,25 +197,25 @@ func (e *ExportPipelinesServerTransport) dispatchGet(req *http.Request) (*http.R
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines/(?P<exportPipelineName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 	if err != nil {
 		return nil, err
 	}
-	exportPipelineNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
+	exportPipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportPipelineName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, exportPipelineNameUnescaped, nil)
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, exportPipelineNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -236,21 +236,21 @@ func (e *ExportPipelinesServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportPipelines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := e.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+		resp := e.srv.NewListPager(resourceGroupNameParam, registryNameParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ExportPipelinesClientListResponse, createLink func() string) {

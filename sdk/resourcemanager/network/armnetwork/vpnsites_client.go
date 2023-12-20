@@ -33,7 +33,7 @@ type VPNSitesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVPNSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VPNSitesClient, error) {
-	cl, err := arm.NewClient(moduleName+".VPNSitesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewVPNSitesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - vpnSiteName - The name of the VpnSite being created or updated.
 //   - vpnSiteParameters - Parameters supplied to create or update VpnSite.
@@ -61,17 +61,20 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNSitesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VPNSitesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNSitesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VPNSite, options *VPNSitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNSitesClient.BeginCreateOrUpdate"
@@ -113,7 +116,7 @@ func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnSiteParameters); err != nil {
@@ -125,7 +128,7 @@ func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Deletes a VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - vpnSiteName - The name of the VpnSite being deleted.
 //   - options - VPNSitesClientBeginDeleteOptions contains the optional parameters for the VPNSitesClient.BeginDelete method.
@@ -137,17 +140,20 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNSitesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VPNSitesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNSitesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes a VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNSitesClient.BeginDelete"
@@ -189,7 +195,7 @@ func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +204,7 @@ func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Retrieves the details of a VPN site.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - vpnSiteName - The name of the VpnSite being retrieved.
 //   - options - VPNSitesClientGetOptions contains the optional parameters for the VPNSitesClient.Get method.
@@ -244,7 +250,7 @@ func (client *VPNSitesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +267,7 @@ func (client *VPNSitesClient) getHandleResponse(resp *http.Response) (VPNSitesCl
 
 // NewListPager - Lists all the VpnSites in a subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - options - VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.NewListPager method.
 func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *runtime.Pager[VPNSitesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VPNSitesClientListResponse]{
@@ -270,22 +276,15 @@ func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *
 		},
 		Fetcher: func(ctx context.Context, page *VPNSitesClientListResponse) (VPNSitesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return VPNSitesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VPNSitesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VPNSitesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -305,7 +304,7 @@ func (client *VPNSitesClient) listCreateRequest(ctx context.Context, options *VP
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +321,7 @@ func (client *VPNSitesClient) listHandleResponse(resp *http.Response) (VPNSitesC
 
 // NewListByResourceGroupPager - Lists all the vpnSites in a resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - options - VPNSitesClientListByResourceGroupOptions contains the optional parameters for the VPNSitesClient.NewListByResourceGroupPager
 //     method.
@@ -333,22 +332,15 @@ func (client *VPNSitesClient) NewListByResourceGroupPager(resourceGroupName stri
 		},
 		Fetcher: func(ctx context.Context, page *VPNSitesClientListByResourceGroupResponse) (VPNSitesClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return VPNSitesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VPNSitesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VPNSitesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -372,7 +364,7 @@ func (client *VPNSitesClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,7 +382,7 @@ func (client *VPNSitesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // UpdateTags - Updates VpnSite tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the VpnSite.
 //   - vpnSiteName - The name of the VpnSite being updated.
 //   - vpnSiteParameters - Parameters supplied to update VpnSite tags.
@@ -437,7 +429,7 @@ func (client *VPNSitesClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vpnSiteParameters); err != nil {

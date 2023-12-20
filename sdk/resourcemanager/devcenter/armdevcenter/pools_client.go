@@ -33,7 +33,7 @@ type PoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoolsClient, error) {
-	cl, err := arm.NewClient(moduleName+".PoolsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PoolsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // Generated from API version 2023-10-01-preview
 func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, body Pool, options *PoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PoolsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, projectName, poolName, body, options)
 	if err != nil {
 		return nil, err
@@ -139,10 +146,13 @@ func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName st
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PoolsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -152,6 +162,10 @@ func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName st
 // Generated from API version 2023-10-01-preview
 func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, projectName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PoolsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, projectName, poolName, options)
 	if err != nil {
 		return nil, err
@@ -207,6 +221,10 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
 func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, projectName string, poolName string, options *PoolsClientGetOptions) (PoolsClientGetResponse, error) {
 	var err error
+	const operationName = "PoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, projectName, poolName, options)
 	if err != nil {
 		return PoolsClientGetResponse{}, err
@@ -274,25 +292,20 @@ func (client *PoolsClient) NewListByProjectPager(resourceGroupName string, proje
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PoolsClientListByProjectResponse) (PoolsClientListByProjectResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PoolsClient.NewListByProjectPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
 			if err != nil {
 				return PoolsClientListByProjectResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PoolsClientListByProjectResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PoolsClientListByProjectResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProjectHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -351,10 +364,13 @@ func (client *PoolsClient) BeginRunHealthChecks(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientRunHealthChecksResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PoolsClientRunHealthChecksResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientRunHealthChecksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -364,6 +380,10 @@ func (client *PoolsClient) BeginRunHealthChecks(ctx context.Context, resourceGro
 // Generated from API version 2023-10-01-preview
 func (client *PoolsClient) runHealthChecks(ctx context.Context, resourceGroupName string, projectName string, poolName string, options *PoolsClientBeginRunHealthChecksOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PoolsClient.BeginRunHealthChecks"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.runHealthChecksCreateRequest(ctx, resourceGroupName, projectName, poolName, options)
 	if err != nil {
 		return nil, err
@@ -426,10 +446,13 @@ func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName st
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoolsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PoolsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -439,6 +462,10 @@ func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // Generated from API version 2023-10-01-preview
 func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, projectName string, poolName string, body PoolUpdate, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, poolName, body, options)
 	if err != nil {
 		return nil, err

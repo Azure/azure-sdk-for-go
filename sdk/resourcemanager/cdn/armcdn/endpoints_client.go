@@ -32,7 +32,7 @@ type EndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".EndpointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 	if err != nil {
 		return nil, err
@@ -136,10 +144,14 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +162,10 @@ func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return nil, err
@@ -206,6 +222,10 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
 func (client *EndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
@@ -274,25 +294,20 @@ func (client *EndpointsClient) NewListByProfilePager(resourceGroupName string, p
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EndpointsClientListByProfileResponse) (EndpointsClientListByProfileResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return EndpointsClientListByProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EndpointsClientListByProfileResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EndpointsClientListByProfileResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProfileHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -345,25 +360,20 @@ func (client *EndpointsClient) NewListResourceUsagePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EndpointsClientListResourceUsageResponse) (EndpointsClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			}, nil)
 			if err != nil {
 				return EndpointsClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EndpointsClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EndpointsClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -423,10 +433,14 @@ func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientLoadContentResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientLoadContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientLoadContentResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientLoadContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -436,6 +450,10 @@ func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGro
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginLoadContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.loadContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 	if err != nil {
 		return nil, err
@@ -502,10 +520,14 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientPurgeContentResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientPurgeContentResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -515,6 +537,10 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginPurgeContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 	if err != nil {
 		return nil, err
@@ -577,10 +603,14 @@ func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientStartResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -590,6 +620,10 @@ func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return nil, err
@@ -649,10 +683,14 @@ func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientStopResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -662,6 +700,10 @@ func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return nil, err
@@ -725,10 +767,14 @@ func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[EndpointsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[EndpointsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -741,6 +787,10 @@ func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-05-01
 func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "EndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 	if err != nil {
 		return nil, err
@@ -801,6 +851,10 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 //     method.
 func (client *EndpointsClient) ValidateCustomDomain(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, options *EndpointsClientValidateCustomDomainOptions) (EndpointsClientValidateCustomDomainResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.ValidateCustomDomain"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCustomDomainCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainProperties, options)
 	if err != nil {
 		return EndpointsClientValidateCustomDomainResponse{}, err

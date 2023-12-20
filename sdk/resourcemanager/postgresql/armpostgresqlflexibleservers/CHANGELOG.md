@@ -1,5 +1,11 @@
 # Release History
 
+## 4.0.0-beta.4 (2023-12-22)
+### Other Changes
+
+- Operation `ServerThreatProtectionSettingsClient.BeginCreateOrUpdate` increase `202` response.
+
+
 ## 4.0.0-beta.3 (2023-11-24)
 ### Features Added
 

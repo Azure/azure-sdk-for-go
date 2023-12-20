@@ -10,7 +10,7 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
-	moduleVersion = "v4.0.0-beta.3"
+	moduleVersion = "v4.0.0-beta.4"
 )
 
 // ActiveDirectoryAuthEnum - If Enabled, Azure Active Directory authentication is enabled.

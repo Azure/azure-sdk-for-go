@@ -1966,6 +1966,36 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithCPK() {
 	_require.NoError(err)
 }
 
+func (s *RecordedTestSuite) TestDirSetMetadataWithCPKNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetMetadataOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
+	_require.Error(err)
+	_require.ErrorContains(err, "PathDoesNotUseCustomerSpecifiedEncryption")
+}
+
 func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Client, disposition string) {
 	resp, err := dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)

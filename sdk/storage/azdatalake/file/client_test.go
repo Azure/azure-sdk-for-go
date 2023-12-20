@@ -2755,6 +2755,45 @@ func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPK() {
 	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, dResp.EncryptionKeySHA256)
 }
 
+func (s *UnrecordedTestSuite) TestFileUploadDownloadStreamWithCPKNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	var fileSize int64 = 1 * 1024 * 1024
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), &file.CreateOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	gResp2, err := fClient.GetProperties(context.Background(), &file.GetPropertiesOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	_, err = fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{})
+	_require.Error(err)
+	_require.ErrorContains(err, "PathUsesCustomerSpecifiedEncryption")
+}
+
 func (s *UnrecordedTestSuite) TestFileUploadFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

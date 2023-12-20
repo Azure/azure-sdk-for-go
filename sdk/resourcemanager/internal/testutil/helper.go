@@ -10,7 +10,6 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -20,15 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 )
-
-// GetEnv will return the os env variable and fallback to the given string if env variable not exist.
-// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GetEnvVariable instead.
-func GetEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
 
 // CreateResourceGroup will create a resource group with a random generated name: "go-sdk-test-xxx".
 // It will return the created resource group entity,

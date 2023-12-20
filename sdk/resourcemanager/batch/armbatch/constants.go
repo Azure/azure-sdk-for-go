@@ -10,7 +10,7 @@ package armbatch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -59,7 +59,7 @@ func PossibleAllocationStateValues() []AllocationState {
 type AuthenticationMode string
 
 const (
-	// AuthenticationModeAAD - The authentication mode using Azure Active Directory.
+	// AuthenticationModeAAD - The authentication mode using Microsoft Entra ID.
 	AuthenticationModeAAD AuthenticationMode = "AAD"
 	// AuthenticationModeSharedKey - The authentication mode using shared keys.
 	AuthenticationModeSharedKey AuthenticationMode = "SharedKey"
@@ -773,14 +773,16 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// StorageAccountType - The storage account type for use in creating data disks.
+// StorageAccountType - The storage account type for use in creating data disks or OS disk.
 type StorageAccountType string
 
 const (
-	// StorageAccountTypePremiumLRS - The data disk should use premium locally redundant storage.
+	// StorageAccountTypePremiumLRS - The data disk / OS disk should use premium locally redundant storage.
 	StorageAccountTypePremiumLRS StorageAccountType = "Premium_LRS"
-	// StorageAccountTypeStandardLRS - The data disk should use standard locally redundant storage.
+	// StorageAccountTypeStandardLRS - The data disk / OS disk should use standard locally redundant storage.
 	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
+	// StorageAccountTypeStandardSSDLRS - The data disk / OS disk should use standard SSD locally redundant storage.
+	StorageAccountTypeStandardSSDLRS StorageAccountType = "StandardSSD_LRS"
 )
 
 // PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
@@ -788,5 +790,6 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{
 		StorageAccountTypePremiumLRS,
 		StorageAccountTypeStandardLRS,
+		StorageAccountTypeStandardSSDLRS,
 	}
 }

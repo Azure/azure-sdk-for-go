@@ -33,7 +33,7 @@ type TicketsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTicketsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TicketsClient, error) {
-	cl, err := arm.NewClient(moduleName+".TicketsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewTicketsClient(subscriptionID string, credential azcore.TokenCredential, 
 //     method.
 func (client *TicketsClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *TicketsClientCheckNameAvailabilityOptions) (TicketsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "TicketsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, checkNameAvailabilityInput, options)
 	if err != nil {
 		return TicketsClientCheckNameAvailabilityResponse{}, err
@@ -132,10 +136,13 @@ func (client *TicketsClient) BeginCreate(ctx context.Context, supportTicketName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TicketsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TicketsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TicketsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -162,6 +169,10 @@ func (client *TicketsClient) BeginCreate(ctx context.Context, supportTicketName 
 // Generated from API version 2022-09-01-preview
 func (client *TicketsClient) create(ctx context.Context, supportTicketName string, createSupportTicketParameters TicketDetails, options *TicketsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "TicketsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, supportTicketName, createSupportTicketParameters, options)
 	if err != nil {
 		return nil, err
@@ -212,6 +223,10 @@ func (client *TicketsClient) createCreateRequest(ctx context.Context, supportTic
 //   - options - TicketsClientGetOptions contains the optional parameters for the TicketsClient.Get method.
 func (client *TicketsClient) Get(ctx context.Context, supportTicketName string, options *TicketsClientGetOptions) (TicketsClientGetResponse, error) {
 	var err error
+	const operationName = "TicketsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, supportTicketName, options)
 	if err != nil {
 		return TicketsClientGetResponse{}, err
@@ -273,25 +288,20 @@ func (client *TicketsClient) NewListPager(options *TicketsClientListOptions) *ru
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TicketsClientListResponse) (TicketsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TicketsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return TicketsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TicketsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TicketsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -341,6 +351,10 @@ func (client *TicketsClient) listHandleResponse(resp *http.Response) (TicketsCli
 //   - options - TicketsClientUpdateOptions contains the optional parameters for the TicketsClient.Update method.
 func (client *TicketsClient) Update(ctx context.Context, supportTicketName string, updateSupportTicket UpdateSupportTicket, options *TicketsClientUpdateOptions) (TicketsClientUpdateResponse, error) {
 	var err error
+	const operationName = "TicketsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, supportTicketName, updateSupportTicket, options)
 	if err != nil {
 		return TicketsClientUpdateResponse{}, err

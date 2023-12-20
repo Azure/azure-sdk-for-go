@@ -33,7 +33,7 @@ type ManagedInstancesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstancesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedInstancesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *ManagedInstancesClient) BeginCreateOrUpdate(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *ManagedInstancesClient) BeginCreateOrUpdate(ctx context.Context, r
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstance, options *ManagedInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -132,10 +140,14 @@ func (client *ManagedInstancesClient) BeginDelete(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -145,6 +157,10 @@ func (client *ManagedInstancesClient) BeginDelete(ctx context.Context, resourceG
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -200,10 +216,14 @@ func (client *ManagedInstancesClient) BeginFailover(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancesClientFailoverResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -213,6 +233,10 @@ func (client *ManagedInstancesClient) BeginFailover(ctx context.Context, resourc
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) failover(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -266,6 +290,10 @@ func (client *ManagedInstancesClient) failoverCreateRequest(ctx context.Context,
 //   - options - ManagedInstancesClientGetOptions contains the optional parameters for the ManagedInstancesClient.Get method.
 func (client *ManagedInstancesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientGetOptions) (ManagedInstancesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return ManagedInstancesClientGetResponse{}, err
@@ -331,25 +359,20 @@ func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClie
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListResponse) (ManagedInstancesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -397,25 +420,20 @@ func (client *ManagedInstancesClient) NewListByInstancePoolPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListByInstancePoolResponse) (ManagedInstancesClientListByInstancePoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListByInstancePoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancesClientListByInstancePoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListByInstancePoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancesClientListByInstancePoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByInstancePoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -471,25 +489,20 @@ func (client *ManagedInstancesClient) NewListByManagedInstancePager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListByManagedInstanceResponse) (ManagedInstancesClientListByManagedInstanceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListByManagedInstancePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancesClientListByManagedInstanceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListByManagedInstanceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancesClientListByManagedInstanceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByManagedInstanceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -562,25 +575,20 @@ func (client *ManagedInstancesClient) NewListByResourceGroupPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListByResourceGroupResponse) (ManagedInstancesClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -633,25 +641,20 @@ func (client *ManagedInstancesClient) NewListOutboundNetworkDependenciesByManage
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse) (ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listOutboundNetworkDependenciesByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancesClient.NewListOutboundNetworkDependenciesByManagedInstancePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listOutboundNetworkDependenciesByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancesClientListOutboundNetworkDependenciesByManagedInstanceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listOutboundNetworkDependenciesByManagedInstanceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -707,10 +710,13 @@ func (client *ManagedInstancesClient) BeginStart(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -720,6 +726,10 @@ func (client *ManagedInstancesClient) BeginStart(ctx context.Context, resourceGr
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) start(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -777,10 +787,13 @@ func (client *ManagedInstancesClient) BeginStop(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientStopResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -790,6 +803,10 @@ func (client *ManagedInstancesClient) BeginStop(ctx context.Context, resourceGro
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) stop(ctx context.Context, resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
 	if err != nil {
 		return nil, err
@@ -846,10 +863,14 @@ func (client *ManagedInstancesClient) BeginUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -859,6 +880,10 @@ func (client *ManagedInstancesClient) BeginUpdate(ctx context.Context, resourceG
 // Generated from API version 2022-08-01-preview
 func (client *ManagedInstancesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters ManagedInstanceUpdate, options *ManagedInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, parameters, options)
 	if err != nil {
 		return nil, err

@@ -9,8 +9,8 @@
 package armresourcegraph
 
 const (
-	moduleName    = "armresourcegraph"
-	moduleVersion = "v0.8.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph"
+	moduleVersion = "v0.9.0"
 )
 
 // AuthorizationScopeFilter - Defines what level of authorization resources should be returned based on the which subscriptions

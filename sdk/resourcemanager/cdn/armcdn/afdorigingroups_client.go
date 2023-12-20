@@ -32,7 +32,7 @@ type AFDOriginGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAFDOriginGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDOriginGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AFDOriginGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDOriginGroupsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDOriginGroupsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDOriginGroupsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *AFDOriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDOriginGroupsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originGroup, options)
 	if err != nil {
 		return nil, err
@@ -141,10 +148,13 @@ func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDOriginGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDOriginGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDOriginGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -154,6 +164,10 @@ func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *AFDOriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDOriginGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
 	if err != nil {
 		return nil, err
@@ -210,6 +224,10 @@ func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, re
 //   - options - AFDOriginGroupsClientGetOptions contains the optional parameters for the AFDOriginGroupsClient.Get method.
 func (client *AFDOriginGroupsClient) Get(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsClientGetOptions) (AFDOriginGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "AFDOriginGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
 	if err != nil {
 		return AFDOriginGroupsClientGetResponse{}, err
@@ -279,25 +297,20 @@ func (client *AFDOriginGroupsClient) NewListByProfilePager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDOriginGroupsClientListByProfileResponse) (AFDOriginGroupsClientListByProfileResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDOriginGroupsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return AFDOriginGroupsClientListByProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDOriginGroupsClientListByProfileResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDOriginGroupsClientListByProfileResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProfileHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -351,25 +364,20 @@ func (client *AFDOriginGroupsClient) NewListResourceUsagePager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDOriginGroupsClientListResourceUsageResponse) (AFDOriginGroupsClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDOriginGroupsClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
+			}, nil)
 			if err != nil {
 				return AFDOriginGroupsClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDOriginGroupsClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDOriginGroupsClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -431,10 +439,13 @@ func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDOriginGroupsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDOriginGroupsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDOriginGroupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -444,6 +455,10 @@ func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 // Generated from API version 2023-05-01
 func (client *AFDOriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDOriginGroupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, options)
 	if err != nil {
 		return nil, err

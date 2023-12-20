@@ -32,7 +32,7 @@ type MonitorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MonitorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *MonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *MonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-04-27
 func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, options *MonitorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MonitorsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, resource, options)
 	if err != nil {
 		return nil, err
@@ -132,10 +139,13 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitorsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -145,6 +155,10 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-04-27
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MonitorsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return nil, err
@@ -195,6 +209,10 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
 func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetOptions) (MonitorsClientGetResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
@@ -255,6 +273,10 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 //     method.
 func (client *MonitorsClient) GetMarketplaceSaaSResourceDetails(ctx context.Context, request MarketplaceSaaSResourceDetailsRequest, options *MonitorsClientGetMarketplaceSaaSResourceDetailsOptions) (MonitorsClientGetMarketplaceSaaSResourceDetailsResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.GetMarketplaceSaaSResourceDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getMarketplaceSaaSResourceDetailsCreateRequest(ctx, request, options)
 	if err != nil {
 		return MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{}, err
@@ -311,6 +333,10 @@ func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsHandleResponse(re
 //     method.
 func (client *MonitorsClient) GetMetricStatus(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetMetricStatusOptions) (MonitorsClientGetMetricStatusResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.GetMetricStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getMetricStatusCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetMetricStatusResponse{}, err
@@ -371,6 +397,10 @@ func (client *MonitorsClient) getMetricStatusHandleResponse(resp *http.Response)
 //   - options - MonitorsClientGetSSODetailsOptions contains the optional parameters for the MonitorsClient.GetSSODetails method.
 func (client *MonitorsClient) GetSSODetails(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetSSODetailsOptions) (MonitorsClientGetSSODetailsResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.GetSSODetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSSODetailsCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetSSODetailsResponse{}, err
@@ -439,6 +469,10 @@ func (client *MonitorsClient) getSSODetailsHandleResponse(resp *http.Response) (
 //     method.
 func (client *MonitorsClient) GetVMHostPayload(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetVMHostPayloadOptions) (MonitorsClientGetVMHostPayloadResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.GetVMHostPayload"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVMHostPayloadCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return MonitorsClientGetVMHostPayloadResponse{}, err
@@ -503,25 +537,20 @@ func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListAppServicesResponse) (MonitorsClientListAppServicesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAppServicesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListAppServicesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAppServicesCreateRequest(ctx, resourceGroupName, monitorName, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListAppServicesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListAppServicesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListAppServicesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAppServicesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -572,25 +601,20 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListByResourceGroupResponse) (MonitorsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -636,25 +660,20 @@ func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClie
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListBySubscriptionIDResponse) (MonitorsClientListBySubscriptionIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListBySubscriptionIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionIDCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListBySubscriptionIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListBySubscriptionIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -697,25 +716,20 @@ func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monito
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListHostsResponse) (MonitorsClientListHostsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListHostsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListHostsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListHostsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListHostsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHostsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -768,25 +782,20 @@ func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListLinkableEnvironmentsResponse) (MonitorsClientListLinkableEnvironmentsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listLinkableEnvironmentsCreateRequest(ctx, resourceGroupName, monitorName, request, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListLinkableEnvironmentsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listLinkableEnvironmentsCreateRequest(ctx, resourceGroupName, monitorName, request, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListLinkableEnvironmentsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListLinkableEnvironmentsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListLinkableEnvironmentsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listLinkableEnvironmentsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -841,25 +850,20 @@ func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MonitorsClientListMonitoredResourcesResponse) (MonitorsClientListMonitoredResourcesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MonitorsClient.NewListMonitoredResourcesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, options)
+			}, nil)
 			if err != nil {
 				return MonitorsClientListMonitoredResourcesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MonitorsClientListMonitoredResourcesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MonitorsClientListMonitoredResourcesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listMonitoredResourcesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -908,6 +912,10 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 //   - options - MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
 func (client *MonitorsClient) Update(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResourceUpdate, options *MonitorsClientUpdateOptions) (MonitorsClientUpdateResponse, error) {
 	var err error
+	const operationName = "MonitorsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, resource, options)
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err

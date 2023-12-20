@@ -32,7 +32,7 @@ type AvailableClusterPoolVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAvailableClusterPoolVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableClusterPoolVersionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AvailableClusterPoolVersionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,31 +55,29 @@ func (client *AvailableClusterPoolVersionsClient) NewListByLocationPager(locatio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailableClusterPoolVersionsClientListByLocationResponse) (AvailableClusterPoolVersionsClientListByLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailableClusterPoolVersionsClient.NewListByLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return AvailableClusterPoolVersionsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailableClusterPoolVersionsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailableClusterPoolVersionsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
 func (client *AvailableClusterPoolVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, options *AvailableClusterPoolVersionsClientListByLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/availableClusterPoolVersions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

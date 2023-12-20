@@ -33,7 +33,7 @@ type CatalogsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCatalogsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CatalogsClient, error) {
-	cl, err := arm.NewClient(moduleName+".CatalogsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *CatalogsClient) BeginConnect(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientConnectResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientConnectResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientConnectResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *CatalogsClient) BeginConnect(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-10-01-preview
 func (client *CatalogsClient) connect(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginConnectOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CatalogsClient.BeginConnect"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.connectCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return nil, err
@@ -136,10 +143,13 @@ func (client *CatalogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -149,6 +159,10 @@ func (client *CatalogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-10-01-preview
 func (client *CatalogsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body Catalog, options *CatalogsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CatalogsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
 		return nil, err
@@ -213,10 +227,13 @@ func (client *CatalogsClient) BeginDelete(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -226,6 +243,10 @@ func (client *CatalogsClient) BeginDelete(ctx context.Context, resourceGroupName
 // Generated from API version 2023-10-01-preview
 func (client *CatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CatalogsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return nil, err
@@ -281,6 +302,10 @@ func (client *CatalogsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - CatalogsClientGetOptions contains the optional parameters for the CatalogsClient.Get method.
 func (client *CatalogsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientGetOptions) (CatalogsClientGetResponse, error) {
 	var err error
+	const operationName = "CatalogsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return CatalogsClientGetResponse{}, err
@@ -347,6 +372,10 @@ func (client *CatalogsClient) getHandleResponse(resp *http.Response) (CatalogsCl
 //     method.
 func (client *CatalogsClient) GetSyncErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientGetSyncErrorDetailsOptions) (CatalogsClientGetSyncErrorDetailsResponse, error) {
 	var err error
+	const operationName = "CatalogsClient.GetSyncErrorDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSyncErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return CatalogsClientGetSyncErrorDetailsResponse{}, err
@@ -415,25 +444,20 @@ func (client *CatalogsClient) NewListByDevCenterPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CatalogsClientListByDevCenterResponse) (CatalogsClientListByDevCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CatalogsClient.NewListByDevCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
+			}, nil)
 			if err != nil {
 				return CatalogsClientListByDevCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CatalogsClientListByDevCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CatalogsClientListByDevCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDevCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -491,10 +515,13 @@ func (client *CatalogsClient) BeginSync(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientSyncResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientSyncResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientSyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -504,6 +531,10 @@ func (client *CatalogsClient) BeginSync(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-10-01-preview
 func (client *CatalogsClient) syncOperation(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CatalogsClientBeginSyncOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CatalogsClient.BeginSync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.syncCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
 	if err != nil {
 		return nil, err
@@ -566,10 +597,13 @@ func (client *CatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CatalogsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CatalogsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CatalogsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -579,6 +613,10 @@ func (client *CatalogsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-10-01-preview
 func (client *CatalogsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, body CatalogUpdate, options *CatalogsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CatalogsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, body, options)
 	if err != nil {
 		return nil, err

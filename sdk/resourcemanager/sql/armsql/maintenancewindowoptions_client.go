@@ -32,7 +32,7 @@ type MaintenanceWindowOptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceWindowOptionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MaintenanceWindowOptionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewMaintenanceWindowOptionsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *MaintenanceWindowOptionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, maintenanceWindowOptionsName string, options *MaintenanceWindowOptionsClientGetOptions) (MaintenanceWindowOptionsClientGetResponse, error) {
 	var err error
+	const operationName = "MaintenanceWindowOptionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, maintenanceWindowOptionsName, options)
 	if err != nil {
 		return MaintenanceWindowOptionsClientGetResponse{}, err

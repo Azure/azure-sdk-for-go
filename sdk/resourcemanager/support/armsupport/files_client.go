@@ -32,7 +32,7 @@ type FilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FilesClient, error) {
-	cl, err := arm.NewClient(moduleName+".FilesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - FilesClientCreateOptions contains the optional parameters for the FilesClient.Create method.
 func (client *FilesClient) Create(ctx context.Context, fileWorkspaceName string, fileName string, createFileParameters FileDetails, options *FilesClientCreateOptions) (FilesClientCreateResponse, error) {
 	var err error
+	const operationName = "FilesClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, fileWorkspaceName, fileName, createFileParameters, options)
 	if err != nil {
 		return FilesClientCreateResponse{}, err
@@ -116,6 +120,10 @@ func (client *FilesClient) createHandleResponse(resp *http.Response) (FilesClien
 //   - options - FilesClientGetOptions contains the optional parameters for the FilesClient.Get method.
 func (client *FilesClient) Get(ctx context.Context, fileWorkspaceName string, fileName string, options *FilesClientGetOptions) (FilesClientGetResponse, error) {
 	var err error
+	const operationName = "FilesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, fileWorkspaceName, fileName, options)
 	if err != nil {
 		return FilesClientGetResponse{}, err
@@ -178,25 +186,20 @@ func (client *FilesClient) NewListPager(fileWorkspaceName string, options *Files
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FilesClientListResponse) (FilesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, fileWorkspaceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FilesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, fileWorkspaceName, options)
+			}, nil)
 			if err != nil {
 				return FilesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FilesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FilesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -241,6 +244,10 @@ func (client *FilesClient) listHandleResponse(resp *http.Response) (FilesClientL
 //   - options - FilesClientUploadOptions contains the optional parameters for the FilesClient.Upload method.
 func (client *FilesClient) Upload(ctx context.Context, fileWorkspaceName string, fileName string, uploadFile UploadFile, options *FilesClientUploadOptions) (FilesClientUploadResponse, error) {
 	var err error
+	const operationName = "FilesClient.Upload"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.uploadCreateRequest(ctx, fileWorkspaceName, fileName, uploadFile, options)
 	if err != nil {
 		return FilesClientUploadResponse{}, err

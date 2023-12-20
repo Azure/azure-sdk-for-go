@@ -32,7 +32,7 @@ type SignUpSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSignUpSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SignUpSettingsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SignUpSettingsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSignUpSettingsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings, options *SignUpSettingsClientCreateOrUpdateOptions) (SignUpSettingsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SignUpSettingsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return SignUpSettingsClientCreateOrUpdateResponse{}, err
@@ -120,6 +124,10 @@ func (client *SignUpSettingsClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - SignUpSettingsClientGetOptions contains the optional parameters for the SignUpSettingsClient.Get method.
 func (client *SignUpSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *SignUpSettingsClientGetOptions) (SignUpSettingsClientGetResponse, error) {
 	var err error
+	const operationName = "SignUpSettingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return SignUpSettingsClientGetResponse{}, err
@@ -183,6 +191,10 @@ func (client *SignUpSettingsClient) getHandleResponse(resp *http.Response) (Sign
 //     method.
 func (client *SignUpSettingsClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, options *SignUpSettingsClientGetEntityTagOptions) (SignUpSettingsClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "SignUpSettingsClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return SignUpSettingsClientGetEntityTagResponse{}, err
@@ -227,11 +239,10 @@ func (client *SignUpSettingsClient) getEntityTagCreateRequest(ctx context.Contex
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *SignUpSettingsClient) getEntityTagHandleResponse(resp *http.Response) (SignUpSettingsClientGetEntityTagResponse, error) {
-	result := SignUpSettingsClientGetEntityTagResponse{}
+	result := SignUpSettingsClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -247,6 +258,10 @@ func (client *SignUpSettingsClient) getEntityTagHandleResponse(resp *http.Respon
 //   - options - SignUpSettingsClientUpdateOptions contains the optional parameters for the SignUpSettingsClient.Update method.
 func (client *SignUpSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string, parameters PortalSignupSettings, options *SignUpSettingsClientUpdateOptions) (SignUpSettingsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SignUpSettingsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, ifMatch, parameters, options)
 	if err != nil {
 		return SignUpSettingsClientUpdateResponse{}, err

@@ -32,7 +32,7 @@ type CreatorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreatorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".CreatorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - CreatorsClientCreateOrUpdateOptions contains the optional parameters for the CreatorsClient.CreateOrUpdate method.
 func (client *CreatorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorResource Creator, options *CreatorsClientCreateOrUpdateOptions) (CreatorsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CreatorsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, creatorName, creatorResource, options)
 	if err != nil {
 		return CreatorsClientCreateOrUpdateResponse{}, err
@@ -123,6 +127,10 @@ func (client *CreatorsClient) createOrUpdateHandleResponse(resp *http.Response) 
 //   - options - CreatorsClientDeleteOptions contains the optional parameters for the CreatorsClient.Delete method.
 func (client *CreatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientDeleteOptions) (CreatorsClientDeleteResponse, error) {
 	var err error
+	const operationName = "CreatorsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, creatorName, options)
 	if err != nil {
 		return CreatorsClientDeleteResponse{}, err
@@ -178,6 +186,10 @@ func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - CreatorsClientGetOptions contains the optional parameters for the CreatorsClient.Get method.
 func (client *CreatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, creatorName string, options *CreatorsClientGetOptions) (CreatorsClientGetResponse, error) {
 	var err error
+	const operationName = "CreatorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, creatorName, options)
 	if err != nil {
 		return CreatorsClientGetResponse{}, err
@@ -246,25 +258,20 @@ func (client *CreatorsClient) NewListByAccountPager(resourceGroupName string, ac
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CreatorsClientListByAccountResponse) (CreatorsClientListByAccountResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CreatorsClient.NewListByAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
 			if err != nil {
 				return CreatorsClientListByAccountResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CreatorsClientListByAccountResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CreatorsClientListByAccountResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAccountHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -314,6 +321,10 @@ func (client *CreatorsClient) listByAccountHandleResponse(resp *http.Response) (
 //   - options - CreatorsClientUpdateOptions contains the optional parameters for the CreatorsClient.Update method.
 func (client *CreatorsClient) Update(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters CreatorUpdateParameters, options *CreatorsClientUpdateOptions) (CreatorsClientUpdateResponse, error) {
 	var err error
+	const operationName = "CreatorsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, creatorName, creatorUpdateParameters, options)
 	if err != nil {
 		return CreatorsClientUpdateResponse{}, err

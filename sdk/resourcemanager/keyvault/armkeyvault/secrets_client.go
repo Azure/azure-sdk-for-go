@@ -34,7 +34,7 @@ type SecretsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecretsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SecretsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - SecretsClientCreateOrUpdateOptions contains the optional parameters for the SecretsClient.CreateOrUpdate method.
 func (client *SecretsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretCreateOrUpdateParameters, options *SecretsClientCreateOrUpdateOptions) (SecretsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SecretsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, secretName, parameters, options)
 	if err != nil {
 		return SecretsClientCreateOrUpdateResponse{}, err
@@ -128,6 +132,10 @@ func (client *SecretsClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - SecretsClientGetOptions contains the optional parameters for the SecretsClient.Get method.
 func (client *SecretsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, secretName string, options *SecretsClientGetOptions) (SecretsClientGetResponse, error) {
 	var err error
+	const operationName = "SecretsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, secretName, options)
 	if err != nil {
 		return SecretsClientGetResponse{}, err
@@ -197,25 +205,20 @@ func (client *SecretsClient) NewListPager(resourceGroupName string, vaultName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecretsClientListResponse) (SecretsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecretsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			}, nil)
 			if err != nil {
 				return SecretsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecretsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SecretsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -269,6 +272,10 @@ func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsCli
 //   - options - SecretsClientUpdateOptions contains the optional parameters for the SecretsClient.Update method.
 func (client *SecretsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, secretName string, parameters SecretPatchParameters, options *SecretsClientUpdateOptions) (SecretsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SecretsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, secretName, parameters, options)
 	if err != nil {
 		return SecretsClientUpdateResponse{}, err

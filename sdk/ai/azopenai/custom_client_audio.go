@@ -41,9 +41,11 @@ type GetAudioTranscriptionResponse struct {
 //   - body - contains parameters to specify audio data to transcribe and control the transcription.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTranscriptionOptions, options *GetAudioTranscriptionOptions) (GetAudioTranscriptionResponse, error) {
-	resp, err := client.getAudioTranscriptionInternal(ctx, body.File, &getAudioTranscriptionInternalOptions{
+	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
+
+	resp, err := client.getAudioTranscriptionInternal(ctx, getDeployment(body), audioStream, &getAudioTranscriptionInternalOptions{
 		Language:       body.Language,
-		Model:          &body.Deployment,
+		Model:          body.DeploymentName,
 		Prompt:         body.Prompt,
 		ResponseFormat: body.ResponseFormat,
 		Temperature:    body.Temperature,
@@ -63,7 +65,7 @@ type GetAudioTranslationOptions struct {
 
 // GetAudioTranslationResponse contains the response from method [Client.GetAudioTranslation].
 type GetAudioTranslationResponse struct {
-	AudioTranscription
+	AudioTranslation
 }
 
 // GetAudioTranslation gets English language transcribed text and associated metadata from provided spoken audio
@@ -74,8 +76,10 @@ type GetAudioTranslationResponse struct {
 //   - body - contains parameters to specify audio data to translate and control the translation.
 //   - options - optional parameters for this method.
 func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTranslationOptions, options *GetAudioTranslationOptions) (GetAudioTranslationResponse, error) {
-	resp, err := client.getAudioTranslationInternal(ctx, body.File, &getAudioTranslationInternalOptions{
-		Model:          &body.Deployment,
+	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
+
+	resp, err := client.getAudioTranslationInternal(ctx, getDeployment(body), audioStream, &getAudioTranslationInternalOptions{
+		Model:          body.DeploymentName,
 		Prompt:         body.Prompt,
 		ResponseFormat: body.ResponseFormat,
 		Temperature:    body.Temperature,
@@ -88,23 +92,21 @@ func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTransla
 	return GetAudioTranslationResponse(resp), nil
 }
 
-func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions](req *policy.Request, file []byte, options T) error {
+func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTranslationInternalOptions](req *policy.Request, file io.ReadSeekCloser, options T) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 
-	writeContent := func(fieldname, filename string, src io.Reader) error {
+	writeContent := func(fieldname, filename string, content io.ReadSeekCloser) error {
 		fd, err := writer.CreateFormFile(fieldname, filename)
 		if err != nil {
 			return err
 		}
-		// copy the data to the form file
-		if _, err = io.Copy(fd, src); err != nil {
-			return err
-		}
-		return nil
+
+		_, err = io.Copy(fd, file)
+		return err
 	}
 
-	if err := writeContent("file", "audio.mp3", bytes.NewReader(file)); err != nil {
+	if err := writeContent("file", "audio.mp3", file); err != nil {
 		return err
 	}
 
@@ -160,13 +162,13 @@ func getAudioTranscriptionInternalHandleResponse(resp *http.Response) (getAudioT
 }
 
 func getAudioTranslationInternalHandleResponse(resp *http.Response) (getAudioTranslationInternalResponse, error) {
-	at, err := deserializeAudioTranscription(resp)
+	at, err := deserializeAudioTranslation(resp)
 
 	if err != nil {
 		return getAudioTranslationInternalResponse{}, err
 	}
 
-	return getAudioTranslationInternalResponse{AudioTranscription: at}, nil
+	return getAudioTranslationInternalResponse{AudioTranslation: at}, nil
 }
 
 // deserializeAudioTranscription handles deserializing the content if it's text/plain
@@ -193,6 +195,35 @@ func deserializeAudioTranscription(resp *http.Response) (AudioTranscription, err
 	var result *AudioTranscription
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return AudioTranscription{}, err
+	}
+
+	return *result, nil
+}
+
+// deserializeAudioTranslation handles deserializing the content if it's text/plain
+// or a JSON object.
+func deserializeAudioTranslation(resp *http.Response) (AudioTranslation, error) {
+	defer func() {
+		_ = resp.Request.Body.Close()
+	}()
+
+	contentType := resp.Header.Get("Content-type")
+
+	if strings.Contains(contentType, "text/plain") {
+		body, err := io.ReadAll(resp.Body)
+
+		if err != nil {
+			return AudioTranslation{}, err
+		}
+
+		return AudioTranslation{
+			Text: to.Ptr(string(body)),
+		}, nil
+	}
+
+	var result *AudioTranslation
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return AudioTranslation{}, err
 	}
 
 	return *result, nil

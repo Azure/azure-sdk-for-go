@@ -28,7 +28,7 @@ type CheckNameAvailabilityClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCheckNameAvailabilityClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
-	cl, err := arm.NewClient(moduleName+".CheckNameAvailabilityClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -42,11 +42,16 @@ func NewCheckNameAvailabilityClient(credential azcore.TokenCredential, options *
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - options - CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post
 //     method.
 func (client *CheckNameAvailabilityClient) Post(ctx context.Context, scope string, options *CheckNameAvailabilityClientPostOptions) (CheckNameAvailabilityClientPostResponse, error) {
 	var err error
+	const operationName = "CheckNameAvailabilityClient.Post"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.postCreateRequest(ctx, scope, options)
 	if err != nil {
 		return CheckNameAvailabilityClientPostResponse{}, err

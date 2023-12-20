@@ -28,11 +28,11 @@ type FlexibleServerClient struct {
 }
 
 // NewFlexibleServerClient creates a new instance of FlexibleServerClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFlexibleServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FlexibleServerClient, error) {
-	cl, err := arm.NewClient(moduleName+".FlexibleServerClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewFlexibleServerClient(subscriptionID string, credential azcore.TokenCrede
 // BeginStartLtrBackup - Start the Long Term Retention Backup operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -60,19 +60,26 @@ func (client *FlexibleServerClient) BeginStartLtrBackup(ctx context.Context, res
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FlexibleServerClientStartLtrBackupResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FlexibleServerClientStartLtrBackupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FlexibleServerClientStartLtrBackupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // StartLtrBackup - Start the Long Term Retention Backup operation
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 func (client *FlexibleServerClient) startLtrBackup(ctx context.Context, resourceGroupName string, serverName string, parameters LtrBackupRequest, options *FlexibleServerClientBeginStartLtrBackupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FlexibleServerClient.BeginStartLtrBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startLtrBackupCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -108,7 +115,7 @@ func (client *FlexibleServerClient) startLtrBackupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,7 +128,7 @@ func (client *FlexibleServerClient) startLtrBackupCreateRequest(ctx context.Cont
 // backup operation to succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Request body for operation
@@ -129,6 +136,10 @@ func (client *FlexibleServerClient) startLtrBackupCreateRequest(ctx context.Cont
 //     method.
 func (client *FlexibleServerClient) TriggerLtrPreBackup(ctx context.Context, resourceGroupName string, serverName string, parameters LtrPreBackupRequest, options *FlexibleServerClientTriggerLtrPreBackupOptions) (FlexibleServerClientTriggerLtrPreBackupResponse, error) {
 	var err error
+	const operationName = "FlexibleServerClient.TriggerLtrPreBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.triggerLtrPreBackupCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return FlexibleServerClientTriggerLtrPreBackupResponse{}, err
@@ -165,7 +176,7 @@ func (client *FlexibleServerClient) triggerLtrPreBackupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

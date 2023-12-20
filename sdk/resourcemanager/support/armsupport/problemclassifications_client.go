@@ -30,7 +30,7 @@ type ProblemClassificationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProblemClassificationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProblemClassificationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProblemClassificationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -50,6 +50,10 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 //     method.
 func (client *ProblemClassificationsClient) Get(ctx context.Context, serviceName string, problemClassificationName string, options *ProblemClassificationsClientGetOptions) (ProblemClassificationsClientGetResponse, error) {
 	var err error
+	const operationName = "ProblemClassificationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, serviceName, problemClassificationName, options)
 	if err != nil {
 		return ProblemClassificationsClientGetResponse{}, err
@@ -111,6 +115,7 @@ func (client *ProblemClassificationsClient) NewListPager(serviceName string, opt
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ProblemClassificationsClientListResponse) (ProblemClassificationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProblemClassificationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, serviceName, options)
 			if err != nil {
 				return ProblemClassificationsClientListResponse{}, err
@@ -124,6 +129,7 @@ func (client *ProblemClassificationsClient) NewListPager(serviceName string, opt
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -33,7 +33,7 @@ type CacheClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCacheClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CacheClient, error) {
-	cl, err := arm.NewClient(moduleName+".CacheClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewCacheClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - CacheClientCreateOrUpdateOptions contains the optional parameters for the CacheClient.CreateOrUpdate method.
 func (client *CacheClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, parameters CacheContract, options *CacheClientCreateOrUpdateOptions) (CacheClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CacheClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, cacheID, parameters, options)
 	if err != nil {
 		return CacheClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *CacheClient) createOrUpdateHandleResponse(resp *http.Response) (Ca
 //   - options - CacheClientDeleteOptions contains the optional parameters for the CacheClient.Delete method.
 func (client *CacheClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, options *CacheClientDeleteOptions) (CacheClientDeleteResponse, error) {
 	var err error
+	const operationName = "CacheClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, cacheID, ifMatch, options)
 	if err != nil {
 		return CacheClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *CacheClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - CacheClientGetOptions contains the optional parameters for the CacheClient.Get method.
 func (client *CacheClient) Get(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetOptions) (CacheClientGetResponse, error) {
 	var err error
+	const operationName = "CacheClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, cacheID, options)
 	if err != nil {
 		return CacheClientGetResponse{}, err
@@ -254,6 +266,10 @@ func (client *CacheClient) getHandleResponse(resp *http.Response) (CacheClientGe
 //   - options - CacheClientGetEntityTagOptions contains the optional parameters for the CacheClient.GetEntityTag method.
 func (client *CacheClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, options *CacheClientGetEntityTagOptions) (CacheClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "CacheClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, cacheID, options)
 	if err != nil {
 		return CacheClientGetEntityTagResponse{}, err
@@ -302,11 +318,10 @@ func (client *CacheClient) getEntityTagCreateRequest(ctx context.Context, resour
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *CacheClient) getEntityTagHandleResponse(resp *http.Response) (CacheClientGetEntityTagResponse, error) {
-	result := CacheClientGetEntityTagResponse{}
+	result := CacheClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -322,25 +337,20 @@ func (client *CacheClient) NewListByServicePager(resourceGroupName string, servi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CacheClientListByServiceResponse) (CacheClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CacheClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return CacheClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CacheClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CacheClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -398,6 +408,10 @@ func (client *CacheClient) listByServiceHandleResponse(resp *http.Response) (Cac
 //   - options - CacheClientUpdateOptions contains the optional parameters for the CacheClient.Update method.
 func (client *CacheClient) Update(ctx context.Context, resourceGroupName string, serviceName string, cacheID string, ifMatch string, parameters CacheUpdateParameters, options *CacheClientUpdateOptions) (CacheClientUpdateResponse, error) {
 	var err error
+	const operationName = "CacheClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, cacheID, ifMatch, parameters, options)
 	if err != nil {
 		return CacheClientUpdateResponse{}, err

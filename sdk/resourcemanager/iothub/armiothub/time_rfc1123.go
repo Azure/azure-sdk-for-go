@@ -18,34 +18,34 @@ import (
 )
 
 const (
-	rfc1123JSON = `"` + time.RFC1123 + `"`
+	dateTimeRFC1123JSON = `"` + time.RFC1123 + `"`
 )
 
-type timeRFC1123 time.Time
+type dateTimeRFC1123 time.Time
 
-func (t timeRFC1123) MarshalJSON() ([]byte, error) {
-	b := []byte(time.Time(t).Format(rfc1123JSON))
+func (t dateTimeRFC1123) MarshalJSON() ([]byte, error) {
+	b := []byte(time.Time(t).Format(dateTimeRFC1123JSON))
 	return b, nil
 }
 
-func (t timeRFC1123) MarshalText() ([]byte, error) {
+func (t dateTimeRFC1123) MarshalText() ([]byte, error) {
 	b := []byte(time.Time(t).Format(time.RFC1123))
 	return b, nil
 }
 
-func (t *timeRFC1123) UnmarshalJSON(data []byte) error {
-	p, err := time.Parse(rfc1123JSON, strings.ToUpper(string(data)))
-	*t = timeRFC1123(p)
+func (t *dateTimeRFC1123) UnmarshalJSON(data []byte) error {
+	p, err := time.Parse(dateTimeRFC1123JSON, strings.ToUpper(string(data)))
+	*t = dateTimeRFC1123(p)
 	return err
 }
 
-func (t *timeRFC1123) UnmarshalText(data []byte) error {
+func (t *dateTimeRFC1123) UnmarshalText(data []byte) error {
 	p, err := time.Parse(time.RFC1123, string(data))
-	*t = timeRFC1123(p)
+	*t = dateTimeRFC1123(p)
 	return err
 }
 
-func populateTimeRFC1123(m map[string]any, k string, t *time.Time) {
+func populateDateTimeRFC1123(m map[string]any, k string, t *time.Time) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
@@ -54,14 +54,14 @@ func populateTimeRFC1123(m map[string]any, k string, t *time.Time) {
 	} else if reflect.ValueOf(t).IsNil() {
 		return
 	}
-	m[k] = (*timeRFC1123)(t)
+	m[k] = (*dateTimeRFC1123)(t)
 }
 
-func unpopulateTimeRFC1123(data json.RawMessage, fn string, t **time.Time) error {
+func unpopulateDateTimeRFC1123(data json.RawMessage, fn string, t **time.Time) error {
 	if data == nil || strings.EqualFold(string(data), "null") {
 		return nil
 	}
-	var aux timeRFC1123
+	var aux dateTimeRFC1123
 	if err := json.Unmarshal(data, &aux); err != nil {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}

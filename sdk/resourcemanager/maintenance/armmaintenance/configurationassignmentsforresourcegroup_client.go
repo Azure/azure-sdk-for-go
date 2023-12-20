@@ -33,7 +33,7 @@ type ConfigurationAssignmentsForResourceGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForResourceGroupClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationAssignmentsForResourceGroupClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewConfigurationAssignmentsForResourceGroupClient(subscriptionID string, cr
 //     ConfigurationAssignmentsForResourceGroupClient.CreateOrUpdate method.
 func (client *ConfigurationAssignmentsForResourceGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateOptions) (ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForResourceGroupClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse{}, err
@@ -119,6 +123,10 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateHand
 //     method.
 func (client *ConfigurationAssignmentsForResourceGroupClient) Delete(ctx context.Context, resourceGroupName string, configurationAssignmentName string, options *ConfigurationAssignmentsForResourceGroupClientDeleteOptions) (ConfigurationAssignmentsForResourceGroupClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForResourceGroupClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) deleteHandleRespon
 //     method.
 func (client *ConfigurationAssignmentsForResourceGroupClient) Get(ctx context.Context, resourceGroupName string, configurationAssignmentName string, options *ConfigurationAssignmentsForResourceGroupClientGetOptions) (ConfigurationAssignmentsForResourceGroupClientGetResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForResourceGroupClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientGetResponse{}, err
@@ -242,6 +254,10 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) getHandleResponse(
 //     method.
 func (client *ConfigurationAssignmentsForResourceGroupClient) Update(ctx context.Context, resourceGroupName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsForResourceGroupClientUpdateOptions) (ConfigurationAssignmentsForResourceGroupClientUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForResourceGroupClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientUpdateResponse{}, err

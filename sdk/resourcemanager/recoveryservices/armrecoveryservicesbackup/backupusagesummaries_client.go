@@ -32,7 +32,7 @@ type BackupUsageSummariesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupUsageSummariesClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupUsageSummariesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,7 @@ func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourc
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *BackupUsageSummariesClientListResponse) (BackupUsageSummariesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupUsageSummariesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
 			if err != nil {
 				return BackupUsageSummariesClientListResponse{}, err
@@ -69,6 +70,7 @@ func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourc
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

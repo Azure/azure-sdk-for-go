@@ -47,8 +47,8 @@ func ExampleIntegrationAccountCertificatesClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/certificates"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/certificates/<integrationAccountCertificateName>"),
 		// 			Properties: &armlogic.IntegrationAccountCertificateProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:33:09.7032076Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:33:09.7022471Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:33:09.703Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:33:09.702Z"); return t}()),
 		// 				Key: &armlogic.KeyVaultKeyReference{
 		// 					KeyName: to.Ptr("<keyName>"),
 		// 					KeyVault: &armlogic.KeyVaultKeyReferenceKeyVault{
@@ -88,8 +88,8 @@ func ExampleIntegrationAccountCertificatesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/certificates"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/IntegrationAccount9472/certificates/testCertificate"),
 	// 	Properties: &armlogic.IntegrationAccountCertificateProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051317Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.0510202Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051Z"); return t}()),
 	// 		Key: &armlogic.KeyVaultKeyReference{
 	// 			KeyName: to.Ptr("<keyName>"),
 	// 			KeyVault: &armlogic.KeyVaultKeyReferenceKeyVault{
@@ -139,8 +139,8 @@ func ExampleIntegrationAccountCertificatesClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/certificates"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/certificates/testCertificate"),
 	// 	Properties: &armlogic.IntegrationAccountCertificateProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051317Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.0510202Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-06T20:42:21.051Z"); return t}()),
 	// 		Key: &armlogic.KeyVaultKeyReference{
 	// 			KeyName: to.Ptr("<keyName>"),
 	// 			KeyVault: &armlogic.KeyVaultKeyReferenceKeyVault{

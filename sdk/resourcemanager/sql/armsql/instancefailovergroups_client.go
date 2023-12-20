@@ -32,7 +32,7 @@ type InstanceFailoverGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstanceFailoverGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".InstanceFailoverGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,14 @@ func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[InstanceFailoverGroupsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstanceFailoverGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InstanceFailoverGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +77,10 @@ func (client *InstanceFailoverGroupsClient) BeginCreateOrUpdate(ctx context.Cont
 // Generated from API version 2022-05-01-preview
 func (client *InstanceFailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, parameters InstanceFailoverGroup, options *InstanceFailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InstanceFailoverGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -137,10 +145,14 @@ func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[InstanceFailoverGroupsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstanceFailoverGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InstanceFailoverGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +162,10 @@ func (client *InstanceFailoverGroupsClient) BeginDelete(ctx context.Context, res
 // Generated from API version 2022-05-01-preview
 func (client *InstanceFailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InstanceFailoverGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -210,10 +226,14 @@ func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[InstanceFailoverGroupsClientFailoverResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstanceFailoverGroupsClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InstanceFailoverGroupsClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -223,6 +243,10 @@ func (client *InstanceFailoverGroupsClient) BeginFailover(ctx context.Context, r
 // Generated from API version 2022-05-01-preview
 func (client *InstanceFailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InstanceFailoverGroupsClient.BeginFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -285,10 +309,14 @@ func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InstanceFailoverGroupsClientForceFailoverAllowDataLossResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -299,6 +327,10 @@ func (client *InstanceFailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx 
 // Generated from API version 2022-05-01-preview
 func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	var err error
+	const operationName = "InstanceFailoverGroupsClient.BeginForceFailoverAllowDataLoss"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.forceFailoverAllowDataLossCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return nil, err
@@ -356,6 +388,10 @@ func (client *InstanceFailoverGroupsClient) forceFailoverAllowDataLossCreateRequ
 //     method.
 func (client *InstanceFailoverGroupsClient) Get(ctx context.Context, resourceGroupName string, locationName string, failoverGroupName string, options *InstanceFailoverGroupsClientGetOptions) (InstanceFailoverGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "InstanceFailoverGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, locationName, failoverGroupName, options)
 	if err != nil {
 		return InstanceFailoverGroupsClientGetResponse{}, err
@@ -425,25 +461,20 @@ func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroup
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *InstanceFailoverGroupsClientListByLocationResponse) (InstanceFailoverGroupsClientListByLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InstanceFailoverGroupsClient.NewListByLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			}, nil)
 			if err != nil {
 				return InstanceFailoverGroupsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return InstanceFailoverGroupsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return InstanceFailoverGroupsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

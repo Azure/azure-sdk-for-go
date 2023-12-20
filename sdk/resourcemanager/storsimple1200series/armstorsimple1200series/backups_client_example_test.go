@@ -47,7 +47,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 			Type: to.Ptr("Microsoft.StorSimple/managers/devices/backups"),
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI/backups/315c3461-96ad-41bf-af0b-3a8be5113203"),
 		// 			Properties: &armstorsimple1200series.BackupProperties{
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T14:34:52.4149035Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T14:34:52.414Z"); return t}()),
 		// 				DeviceID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI"),
 		// 				Elements: []*armstorsimple1200series.BackupElement{
 		// 					{
@@ -70,7 +70,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 							SizeInBytes: to.Ptr[int64](536870912000),
 		// 						},
 		// 				}},
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 				InitiatedBy: to.Ptr(armstorsimple1200series.InitiatedByManual),
 		// 				SizeInBytes: to.Ptr[int64](1073741824000),
 		// 				TargetID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI/iscsiServers/HSDK-UGU4PITWNI"),
@@ -82,7 +82,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 			Type: to.Ptr("Microsoft.StorSimple/managers/devices/backups"),
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI/backups/cce3a13c-b37e-4db1-bb78-444cc85be33d"),
 		// 			Properties: &armstorsimple1200series.BackupProperties{
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T14:02:13.0677276Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T14:02:13.067Z"); return t}()),
 		// 				DeviceID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI"),
 		// 				Elements: []*armstorsimple1200series.BackupElement{
 		// 					{
@@ -115,7 +115,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 							SizeInBytes: to.Ptr[int64](536870912000),
 		// 						},
 		// 				}},
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 				InitiatedBy: to.Ptr(armstorsimple1200series.InitiatedByManual),
 		// 				SizeInBytes: to.Ptr[int64](1610612736000),
 		// 				TargetID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-UGU4PITWNI/iscsiServers/HSDK-UGU4PITWNI"),
@@ -127,7 +127,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 			Type: to.Ptr("Microsoft.StorSimple/managers/devices/backups"),
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0/backups/899222aa-1340-4090-a8b1-7436e2b859d3"),
 		// 			Properties: &armstorsimple1200series.BackupProperties{
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T14:34:24.3980414Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T14:34:24.398Z"); return t}()),
 		// 				DeviceID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0"),
 		// 				Elements: []*armstorsimple1200series.BackupElement{
 		// 					{
@@ -160,7 +160,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 							SizeInBytes: to.Ptr[int64](536870912000),
 		// 						},
 		// 				}},
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 				InitiatedBy: to.Ptr(armstorsimple1200series.InitiatedByManual),
 		// 				SizeInBytes: to.Ptr[int64](1610612736000),
 		// 				TargetID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0/fileServers/HSDK-DMNJB2PET0"),
@@ -172,7 +172,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 			Type: to.Ptr("Microsoft.StorSimple/managers/devices/backups"),
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0/backups/a4ec37c8-7e5e-4483-88ec-9b37fdd686ff"),
 		// 			Properties: &armstorsimple1200series.BackupProperties{
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T13:40:04.5908358Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-12T13:40:04.590Z"); return t}()),
 		// 				DeviceID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0"),
 		// 				Elements: []*armstorsimple1200series.BackupElement{
 		// 					{
@@ -205,7 +205,7 @@ func ExampleBackupsClient_NewListByManagerPager() {
 		// 							SizeInBytes: to.Ptr[int64](536870912000),
 		// 						},
 		// 				}},
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 				InitiatedBy: to.Ptr(armstorsimple1200series.InitiatedByManual),
 		// 				SizeInBytes: to.Ptr[int64](1610612736000),
 		// 				TargetID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/HSDK-DMNJB2PET0/fileServers/HSDK-DMNJB2PET0"),
@@ -247,7 +247,7 @@ func ExampleBackupsClient_NewListByDevicePager() {
 		// 			Type: to.Ptr("Microsoft.StorSimple/managers/devices/backups"),
 		// 			ID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/hsdk-4xy4fi2ivg/backups/58d33025-e837-41cc-b15f-7c85ced64aab"),
 		// 			Properties: &armstorsimple1200series.BackupProperties{
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T16:19:09.6532352Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-09T16:19:09.653Z"); return t}()),
 		// 				DeviceID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/hsdk-4xy4fi2ivg"),
 		// 				Elements: []*armstorsimple1200series.BackupElement{
 		// 					{
@@ -270,7 +270,7 @@ func ExampleBackupsClient_NewListByDevicePager() {
 		// 							SizeInBytes: to.Ptr[int64](536870912000),
 		// 						},
 		// 				}},
-		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.999Z"); return t}()),
 		// 				InitiatedBy: to.Ptr(armstorsimple1200series.InitiatedByManual),
 		// 				SizeInBytes: to.Ptr[int64](1073741824000),
 		// 				TargetID: to.Ptr("/subscriptions/9eb689cd-7243-43b4-b6f6-5c65cb296641/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.StorSimple/managers/hAzureSDKOperations/devices/hsdk-4xy4fi2ivg/fileServers/HSDK-4XY4FI2IVG"),

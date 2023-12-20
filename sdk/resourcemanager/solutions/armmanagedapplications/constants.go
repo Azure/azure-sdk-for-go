@@ -9,8 +9,8 @@
 package armmanagedapplications
 
 const (
-	moduleName    = "armmanagedapplications"
-	moduleVersion = "v2.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications"
+	moduleVersion = "v2.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

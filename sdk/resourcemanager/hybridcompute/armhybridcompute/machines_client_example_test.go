@@ -13,12 +13,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +45,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			VMID:                       to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		},
-	}, nil)
+	}, &armhybridcompute.MachinesClientCreateOrUpdateOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -66,6 +68,23 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 			"cloudprovider": to.Ptr("N/A"),
 	// 			"manufacturer": to.Ptr("Microsoft Corporation"),
 	// 			"model": to.Ptr("Virtual Machine"),
+	// 		},
+	// 		LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+	// 			EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+	// 				EsuKeys: []*armhybridcompute.EsuKey{
+	// 					{
+	// 						LicenseStatus: to.Ptr("licenseStatus1"),
+	// 						SKU: to.Ptr("skuNumber1"),
+	// 					},
+	// 					{
+	// 						LicenseStatus: to.Ptr("licenseStatus2"),
+	// 						SKU: to.Ptr("skuNumber2"),
+	// 				}},
+	// 				EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+	// 				EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+	// 				ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+	// 				LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+	// 			},
 	// 		},
 	// 		LocationData: &armhybridcompute.LocationData{
 	// 			Name: to.Ptr("Redmond"),
@@ -91,7 +110,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,6 +165,23 @@ func ExampleMachinesClient_Update() {
 	// 	},
 	// 	Properties: &armhybridcompute.MachineProperties{
 	// 		ClientPublicKey: to.Ptr("string"),
+	// 		LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+	// 			EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+	// 				EsuKeys: []*armhybridcompute.EsuKey{
+	// 					{
+	// 						LicenseStatus: to.Ptr("licenseStatus1"),
+	// 						SKU: to.Ptr("skuNumber1"),
+	// 					},
+	// 					{
+	// 						LicenseStatus: to.Ptr("licenseStatus2"),
+	// 						SKU: to.Ptr("skuNumber2"),
+	// 				}},
+	// 				EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+	// 				EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+	// 				ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+	// 				LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+	// 			},
+	// 		},
 	// 		LocationData: &armhybridcompute.LocationData{
 	// 			Name: to.Ptr("Redmond"),
 	// 		},
@@ -171,7 +207,7 @@ func ExampleMachinesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_Delete.json
 func ExampleMachinesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,8 +224,8 @@ func ExampleMachinesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_Get.json
-func ExampleMachinesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_Get.json
+func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -218,6 +254,7 @@ func ExampleMachinesClient_Get() {
 	// 	},
 	// 	Properties: &armhybridcompute.MachineProperties{
 	// 		AgentConfiguration: &armhybridcompute.AgentConfiguration{
+	// 			ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
 	// 			ExtensionsEnabled: to.Ptr("true"),
 	// 			GuestConfigurationEnabled: to.Ptr("true"),
 	// 			IncomingConnectionsPorts: []*string{
@@ -234,12 +271,52 @@ func ExampleMachinesClient_Get() {
 	// 					"manufacturer": to.Ptr("Microsoft Corporation"),
 	// 					"model": to.Ptr("Virtual Machine"),
 	// 				},
+	// 				LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+	// 						EsuKeys: []*armhybridcompute.EsuKey{
+	// 							{
+	// 								LicenseStatus: to.Ptr("licenseStatus1"),
+	// 								SKU: to.Ptr("skuNumber1"),
+	// 							},
+	// 							{
+	// 								LicenseStatus: to.Ptr("licenseStatus2"),
+	// 								SKU: to.Ptr("skuNumber2"),
+	// 						}},
+	// 						EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+	// 						EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+	// 						ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+	// 						LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+	// 					},
+	// 				},
 	// 				LocationData: &armhybridcompute.LocationData{
 	// 					Name: to.Ptr("Redmond"),
 	// 					City: to.Ptr("redmond"),
 	// 					CountryOrRegion: to.Ptr("usa"),
 	// 				},
 	// 				MssqlDiscovered: to.Ptr("false"),
+	// 				NetworkProfile: &armhybridcompute.NetworkProfile{
+	// 					NetworkInterfaces: []*armhybridcompute.NetworkInterface{
+	// 						{
+	// 							IPAddresses: []*armhybridcompute.IPAddress{
+	// 								{
+	// 									Address: to.Ptr("192.168.12.345"),
+	// 									IPAddressVersion: to.Ptr("IPv4"),
+	// 									Subnet: &armhybridcompute.Subnet{
+	// 										AddressPrefix: to.Ptr("192.168.12.0/24"),
+	// 									},
+	// 							}},
+	// 						},
+	// 						{
+	// 							IPAddresses: []*armhybridcompute.IPAddress{
+	// 								{
+	// 									Address: to.Ptr("1001:0:34aa:5000:1234:aaaa:bbbb:cccc"),
+	// 									IPAddressVersion: to.Ptr("IPv6"),
+	// 									Subnet: &armhybridcompute.Subnet{
+	// 										AddressPrefix: to.Ptr("1001:0:34aa:5000::/64"),
+	// 									},
+	// 							}},
+	// 					}},
+	// 				},
 	// 				OSProfile: &armhybridcompute.OSProfile{
 	// 					LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
 	// 						PatchSettings: &armhybridcompute.PatchSettings{
@@ -265,10 +342,245 @@ func ExampleMachinesClient_Get() {
 	// 				},
 	// 				VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 	// 			},
+	// 			Resources: []*armhybridcompute.MachineExtension{
+	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_Get_LicenseProfileInstanceView.json
+func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMachinesClient().Get(ctx, "myResourceGroup", "myMachine", &armhybridcompute.MachinesClientGetOptions{Expand: to.Ptr(armhybridcompute.InstanceViewTypesInstanceView)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Machine = armhybridcompute.Machine{
+	// 	Name: to.Ptr("myMachine"),
+	// 	Type: to.Ptr("Microsoft.HybridCompute/machines"),
+	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Identity: &armhybridcompute.Identity{
+	// 		Type: to.Ptr("SystemAssigned"),
+	// 		PrincipalID: to.Ptr("string"),
+	// 		TenantID: to.Ptr("string"),
+	// 	},
+	// 	Properties: &armhybridcompute.MachineProperties{
+	// 		AgentConfiguration: &armhybridcompute.AgentConfiguration{
+	// 			ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
+	// 			ExtensionsEnabled: to.Ptr("true"),
+	// 			GuestConfigurationEnabled: to.Ptr("true"),
+	// 			IncomingConnectionsPorts: []*string{
+	// 				to.Ptr("22"),
+	// 				to.Ptr("23")},
+	// 				ProxyBypass: []*string{
+	// 					to.Ptr("proxy1"),
+	// 					to.Ptr("proxy2")},
+	// 					ProxyURL: to.Ptr("https://test.test"),
+	// 				},
+	// 				ClientPublicKey: to.Ptr("string"),
+	// 				DetectedProperties: map[string]*string{
+	// 					"cloudprovider": to.Ptr("N/A"),
+	// 					"manufacturer": to.Ptr("Microsoft Corporation"),
+	// 					"model": to.Ptr("Virtual Machine"),
+	// 				},
+	// 				LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+	// 					EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+	// 						EsuKeys: []*armhybridcompute.EsuKey{
+	// 							{
+	// 								LicenseStatus: to.Ptr("licenseStatus1"),
+	// 								SKU: to.Ptr("skuNumber1"),
+	// 							},
+	// 							{
+	// 								LicenseStatus: to.Ptr("licenseStatus2"),
+	// 								SKU: to.Ptr("skuNumber2"),
+	// 						}},
+	// 						EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+	// 						EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+	// 						ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+	// 						AssignedLicense: &armhybridcompute.License{
+	// 							Name: to.Ptr("{licenseName}"),
+	// 							Type: to.Ptr("Microsoft.HybridCompute/licenses"),
+	// 							ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 							Location: to.Ptr("eastus2euap"),
+	// 							Properties: &armhybridcompute.LicenseProperties{
+	// 								LicenseDetails: &armhybridcompute.LicenseDetails{
+	// 									Type: to.Ptr(armhybridcompute.LicenseCoreTypePCore),
+	// 									AssignedLicenses: to.Ptr[int32](8),
+	// 									Edition: to.Ptr(armhybridcompute.LicenseEditionDatacenter),
+	// 									ImmutableID: to.Ptr("<generated Guid>"),
+	// 									Processors: to.Ptr[int32](6),
+	// 									State: to.Ptr(armhybridcompute.LicenseStateActivated),
+	// 									Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
+	// 								},
+	// 								LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
+	// 								TenantID: to.Ptr("{tenandId}"),
+	// 							},
+	// 						},
+	// 						LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+	// 					},
+	// 				},
+	// 				LocationData: &armhybridcompute.LocationData{
+	// 					Name: to.Ptr("Redmond"),
+	// 					City: to.Ptr("redmond"),
+	// 					CountryOrRegion: to.Ptr("usa"),
+	// 				},
+	// 				MssqlDiscovered: to.Ptr("false"),
+	// 				NetworkProfile: &armhybridcompute.NetworkProfile{
+	// 					NetworkInterfaces: []*armhybridcompute.NetworkInterface{
+	// 						{
+	// 							IPAddresses: []*armhybridcompute.IPAddress{
+	// 								{
+	// 									Address: to.Ptr("192.168.12.345"),
+	// 									IPAddressVersion: to.Ptr("IPv4"),
+	// 									Subnet: &armhybridcompute.Subnet{
+	// 										AddressPrefix: to.Ptr("192.168.12.0/24"),
+	// 									},
+	// 							}},
+	// 						},
+	// 						{
+	// 							IPAddresses: []*armhybridcompute.IPAddress{
+	// 								{
+	// 									Address: to.Ptr("1001:0:34aa:5000:1234:aaaa:bbbb:cccc"),
+	// 									IPAddressVersion: to.Ptr("IPv6"),
+	// 									Subnet: &armhybridcompute.Subnet{
+	// 										AddressPrefix: to.Ptr("1001:0:34aa:5000::/64"),
+	// 									},
+	// 							}},
+	// 					}},
+	// 				},
+	// 				OSProfile: &armhybridcompute.OSProfile{
+	// 					LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
+	// 						PatchSettings: &armhybridcompute.PatchSettings{
+	// 						},
+	// 					},
+	// 					WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
+	// 						PatchSettings: &armhybridcompute.PatchSettings{
+	// 						},
+	// 					},
+	// 				},
+	// 				ParentClusterResourceID: to.Ptr("{AzureStackHCIResourceId}"),
+	// 				PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 				ProvisioningState: to.Ptr("Succeeded"),
+	// 				ServiceStatuses: &armhybridcompute.ServiceStatuses{
+	// 					ExtensionService: &armhybridcompute.ServiceStatus{
+	// 						StartupType: to.Ptr("Automatic"),
+	// 						Status: to.Ptr("Running"),
+	// 					},
+	// 					GuestConfigurationService: &armhybridcompute.ServiceStatus{
+	// 						StartupType: to.Ptr("Automatic"),
+	// 						Status: to.Ptr("Running"),
+	// 					},
+	// 				},
+	// 				VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
+	// 			},
+	// 			Resources: []*armhybridcompute.MachineExtension{
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machine_AssessPatches.json
+func ExampleMachinesClient_BeginAssessPatches() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMachinesClient().BeginAssessPatches(ctx, "myResourceGroupName", "myMachineName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MachineAssessPatchesResult = armhybridcompute.MachineAssessPatchesResult{
+	// 	AssessmentActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
+	// 	AvailablePatchCountByClassification: &armhybridcompute.AvailablePatchCountByClassification{
+	// 		Critical: to.Ptr[int32](0),
+	// 		Definition: to.Ptr[int32](0),
+	// 		FeaturePack: to.Ptr[int32](0),
+	// 		Security: to.Ptr[int32](0),
+	// 		ServicePack: to.Ptr[int32](0),
+	// 		Tools: to.Ptr[int32](0),
+	// 		UpdateRollup: to.Ptr[int32](1),
+	// 		Updates: to.Ptr[int32](1),
+	// 	},
+	// 	LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.974Z"); return t}()),
+	// 	OSType: to.Ptr(armhybridcompute.OsTypeWindows),
+	// 	RebootPending: to.Ptr(true),
+	// 	StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:20.934Z"); return t}()),
+	// 	StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
+	// 	Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machine_InstallPatches.json
+func ExampleMachinesClient_BeginInstallPatches() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhybridcompute.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMachinesClient().BeginInstallPatches(ctx, "myResourceGroupName", "myMachineName", armhybridcompute.MachineInstallPatchesParameters{
+		MaximumDuration: to.Ptr("PT4H"),
+		RebootSetting:   to.Ptr(armhybridcompute.VMGuestPatchRebootSettingIfRequired),
+		WindowsParameters: &armhybridcompute.WindowsParameters{
+			ClassificationsToInclude: []*armhybridcompute.VMGuestPatchClassificationWindows{
+				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsCritical),
+				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsSecurity)},
+			MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T02:36:43.053Z"); return t }()),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MachineInstallPatchesResult = armhybridcompute.MachineInstallPatchesResult{
+	// 	ExcludedPatchCount: to.Ptr[int32](0),
+	// 	FailedPatchCount: to.Ptr[int32](0),
+	// 	InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
+	// 	InstalledPatchCount: to.Ptr[int32](3),
+	// 	LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.974Z"); return t}()),
+	// 	MaintenanceWindowExceeded: to.Ptr(false),
+	// 	NotSelectedPatchCount: to.Ptr[int32](0),
+	// 	OSType: to.Ptr(armhybridcompute.OsTypeWindows),
+	// 	PendingPatchCount: to.Ptr[int32](2),
+	// 	RebootStatus: to.Ptr(armhybridcompute.VMGuestPatchRebootStatusCompleted),
+	// 	StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:06.974Z"); return t}()),
+	// 	StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
+	// 	Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +591,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMachinesClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	pager := clientFactory.NewMachinesClient().NewListByResourceGroupPager("myResourceGroup", &armhybridcompute.MachinesClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -304,63 +616,44 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armhybridcompute.MachineProperties{
 		// 				AgentConfiguration: &armhybridcompute.AgentConfiguration{
+		// 					ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
+		// 					ExtensionsEnabled: to.Ptr("true"),
+		// 					GuestConfigurationEnabled: to.Ptr("true"),
 		// 					IncomingConnectionsPorts: []*string{
 		// 						to.Ptr("22"),
 		// 						to.Ptr("23")},
-		// 						ProxyURL: to.Ptr("https://test.test"),
-		// 					},
-		// 					ClientPublicKey: to.Ptr("string"),
-		// 					DetectedProperties: map[string]*string{
-		// 						"cloudprovider": to.Ptr("N/A"),
-		// 						"manufacturer": to.Ptr("Microsoft Corporation"),
-		// 						"model": to.Ptr("Virtual Machine"),
-		// 					},
-		// 					LocationData: &armhybridcompute.LocationData{
-		// 						Name: to.Ptr("Redmond"),
-		// 					},
-		// 					MssqlDiscovered: to.Ptr("false"),
-		// 					OSProfile: &armhybridcompute.OSProfile{
-		// 						LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
-		// 							PatchSettings: &armhybridcompute.PatchSettings{
-		// 							},
-		// 						},
-		// 						WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
-		// 							PatchSettings: &armhybridcompute.PatchSettings{
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myMachine2"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
-		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
-		// 				},
-		// 				Properties: &armhybridcompute.MachineProperties{
-		// 					AgentConfiguration: &armhybridcompute.AgentConfiguration{
-		// 						IncomingConnectionsPorts: []*string{
-		// 							to.Ptr("22"),
-		// 							to.Ptr("23")},
+		// 						ProxyBypass: []*string{
+		// 							to.Ptr("proxy1"),
+		// 							to.Ptr("proxy2")},
 		// 							ProxyURL: to.Ptr("https://test.test"),
 		// 						},
 		// 						ClientPublicKey: to.Ptr("string"),
 		// 						DetectedProperties: map[string]*string{
 		// 							"cloudprovider": to.Ptr("N/A"),
 		// 							"manufacturer": to.Ptr("Microsoft Corporation"),
-		// 							"model": to.Ptr("Surfacebook"),
+		// 							"model": to.Ptr("Virtual Machine"),
+		// 						},
+		// 						LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+		// 							EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+		// 								EsuKeys: []*armhybridcompute.EsuKey{
+		// 									{
+		// 										LicenseStatus: to.Ptr("licenseStatus1"),
+		// 										SKU: to.Ptr("skuNumber1"),
+		// 									},
+		// 									{
+		// 										LicenseStatus: to.Ptr("licenseStatus2"),
+		// 										SKU: to.Ptr("skuNumber2"),
+		// 								}},
+		// 								EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+		// 								EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+		// 								ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+		// 								LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+		// 							},
 		// 						},
 		// 						LocationData: &armhybridcompute.LocationData{
 		// 							Name: to.Ptr("Redmond"),
 		// 						},
-		// 						MssqlDiscovered: to.Ptr("true"),
+		// 						MssqlDiscovered: to.Ptr("false"),
 		// 						OSProfile: &armhybridcompute.OSProfile{
 		// 							LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
 		// 								PatchSettings: &armhybridcompute.PatchSettings{
@@ -371,17 +664,82 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						ParentClusterResourceID: to.Ptr("{AzureStackHCIResourceId}"),
 		// 						PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 						ProvisioningState: to.Ptr("Succeeded"),
-		// 						VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
+		// 						VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("myMachine2"),
+		// 					Type: to.Ptr("Microsoft.HybridCompute/machines"),
+		// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 					Location: to.Ptr("westus2"),
+		// 					Identity: &armhybridcompute.Identity{
+		// 						Type: to.Ptr("SystemAssigned"),
+		// 						PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
+		// 						TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					},
+		// 					Properties: &armhybridcompute.MachineProperties{
+		// 						AgentConfiguration: &armhybridcompute.AgentConfiguration{
+		// 							ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
+		// 							ExtensionsEnabled: to.Ptr("true"),
+		// 							GuestConfigurationEnabled: to.Ptr("true"),
+		// 							IncomingConnectionsPorts: []*string{
+		// 								to.Ptr("22"),
+		// 								to.Ptr("23")},
+		// 								ProxyBypass: []*string{
+		// 									to.Ptr("proxy1"),
+		// 									to.Ptr("proxy2")},
+		// 									ProxyURL: to.Ptr("https://test.test"),
+		// 								},
+		// 								ClientPublicKey: to.Ptr("string"),
+		// 								DetectedProperties: map[string]*string{
+		// 									"cloudprovider": to.Ptr("N/A"),
+		// 									"manufacturer": to.Ptr("Microsoft Corporation"),
+		// 									"model": to.Ptr("Surfacebook"),
+		// 								},
+		// 								LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+		// 									EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+		// 										EsuKeys: []*armhybridcompute.EsuKey{
+		// 											{
+		// 												LicenseStatus: to.Ptr("licenseStatus1"),
+		// 												SKU: to.Ptr("skuNumber1"),
+		// 											},
+		// 											{
+		// 												LicenseStatus: to.Ptr("licenseStatus2"),
+		// 												SKU: to.Ptr("skuNumber2"),
+		// 										}},
+		// 										EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+		// 										EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+		// 										ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+		// 										LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+		// 									},
+		// 								},
+		// 								LocationData: &armhybridcompute.LocationData{
+		// 									Name: to.Ptr("Redmond"),
+		// 								},
+		// 								MssqlDiscovered: to.Ptr("true"),
+		// 								OSProfile: &armhybridcompute.OSProfile{
+		// 									LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
+		// 										PatchSettings: &armhybridcompute.PatchSettings{
+		// 										},
+		// 									},
+		// 									WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
+		// 										PatchSettings: &armhybridcompute.PatchSettings{
+		// 										},
+		// 									},
+		// 								},
+		// 								ParentClusterResourceID: to.Ptr("{AzureStackHCIResourceId}"),
+		// 								PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 								ProvisioningState: to.Ptr("Succeeded"),
+		// 								VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
+		// 							},
+		// 					}},
+		// 				}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/Machines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,63 +775,44 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armhybridcompute.MachineProperties{
 		// 				AgentConfiguration: &armhybridcompute.AgentConfiguration{
+		// 					ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
+		// 					ExtensionsEnabled: to.Ptr("true"),
+		// 					GuestConfigurationEnabled: to.Ptr("true"),
 		// 					IncomingConnectionsPorts: []*string{
 		// 						to.Ptr("22"),
 		// 						to.Ptr("23")},
-		// 						ProxyURL: to.Ptr("https://test.test"),
-		// 					},
-		// 					ClientPublicKey: to.Ptr("string"),
-		// 					DetectedProperties: map[string]*string{
-		// 						"cloudprovider": to.Ptr("N/A"),
-		// 						"manufacturer": to.Ptr("Microsoft Corporation"),
-		// 						"model": to.Ptr("Virtual Machine"),
-		// 					},
-		// 					LocationData: &armhybridcompute.LocationData{
-		// 						Name: to.Ptr("Redmond"),
-		// 					},
-		// 					MssqlDiscovered: to.Ptr("false"),
-		// 					OSProfile: &armhybridcompute.OSProfile{
-		// 						LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
-		// 							PatchSettings: &armhybridcompute.PatchSettings{
-		// 							},
-		// 						},
-		// 						WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
-		// 							PatchSettings: &armhybridcompute.PatchSettings{
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myMachine2"),
-		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
-		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
-		// 				},
-		// 				Properties: &armhybridcompute.MachineProperties{
-		// 					AgentConfiguration: &armhybridcompute.AgentConfiguration{
-		// 						IncomingConnectionsPorts: []*string{
-		// 							to.Ptr("22"),
-		// 							to.Ptr("23")},
+		// 						ProxyBypass: []*string{
+		// 							to.Ptr("proxy1"),
+		// 							to.Ptr("proxy2")},
 		// 							ProxyURL: to.Ptr("https://test.test"),
 		// 						},
 		// 						ClientPublicKey: to.Ptr("string"),
 		// 						DetectedProperties: map[string]*string{
 		// 							"cloudprovider": to.Ptr("N/A"),
 		// 							"manufacturer": to.Ptr("Microsoft Corporation"),
-		// 							"model": to.Ptr("Surfacebook"),
+		// 							"model": to.Ptr("Virtual Machine"),
+		// 						},
+		// 						LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+		// 							EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+		// 								EsuKeys: []*armhybridcompute.EsuKey{
+		// 									{
+		// 										LicenseStatus: to.Ptr("licenseStatus1"),
+		// 										SKU: to.Ptr("skuNumber1"),
+		// 									},
+		// 									{
+		// 										LicenseStatus: to.Ptr("licenseStatus2"),
+		// 										SKU: to.Ptr("skuNumber2"),
+		// 								}},
+		// 								EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+		// 								EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+		// 								ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+		// 								LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+		// 							},
 		// 						},
 		// 						LocationData: &armhybridcompute.LocationData{
 		// 							Name: to.Ptr("Redmond"),
 		// 						},
-		// 						MssqlDiscovered: to.Ptr("true"),
+		// 						MssqlDiscovered: to.Ptr("false"),
 		// 						OSProfile: &armhybridcompute.OSProfile{
 		// 							LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
 		// 								PatchSettings: &armhybridcompute.PatchSettings{
@@ -484,11 +823,76 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						ParentClusterResourceID: to.Ptr("{AzureStackHCIResourceId}"),
+		// 						PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 						ProvisioningState: to.Ptr("Succeeded"),
-		// 						VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
+		// 						VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 					},
-		// 			}},
-		// 		}
+		// 				},
+		// 				{
+		// 					Name: to.Ptr("myMachine2"),
+		// 					Type: to.Ptr("Microsoft.HybridCompute/machines"),
+		// 					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 					Location: to.Ptr("westus2"),
+		// 					Identity: &armhybridcompute.Identity{
+		// 						Type: to.Ptr("SystemAssigned"),
+		// 						PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
+		// 						TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					},
+		// 					Properties: &armhybridcompute.MachineProperties{
+		// 						AgentConfiguration: &armhybridcompute.AgentConfiguration{
+		// 							ConfigMode: to.Ptr(armhybridcompute.AgentConfigurationModeFull),
+		// 							ExtensionsEnabled: to.Ptr("true"),
+		// 							GuestConfigurationEnabled: to.Ptr("true"),
+		// 							IncomingConnectionsPorts: []*string{
+		// 								to.Ptr("22"),
+		// 								to.Ptr("23")},
+		// 								ProxyBypass: []*string{
+		// 									to.Ptr("proxy1"),
+		// 									to.Ptr("proxy2")},
+		// 									ProxyURL: to.Ptr("https://test.test"),
+		// 								},
+		// 								ClientPublicKey: to.Ptr("string"),
+		// 								DetectedProperties: map[string]*string{
+		// 									"cloudprovider": to.Ptr("N/A"),
+		// 									"manufacturer": to.Ptr("Microsoft Corporation"),
+		// 									"model": to.Ptr("Surfacebook"),
+		// 								},
+		// 								LicenseProfile: &armhybridcompute.LicenseProfileMachineInstanceView{
+		// 									EsuProfile: &armhybridcompute.LicenseProfileMachineInstanceViewEsuProperties{
+		// 										EsuKeys: []*armhybridcompute.EsuKey{
+		// 											{
+		// 												LicenseStatus: to.Ptr("licenseStatus1"),
+		// 												SKU: to.Ptr("skuNumber1"),
+		// 											},
+		// 											{
+		// 												LicenseStatus: to.Ptr("licenseStatus2"),
+		// 												SKU: to.Ptr("skuNumber2"),
+		// 										}},
+		// 										EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
+		// 										EsuKeyState: to.Ptr(armhybridcompute.EsuKeyStateInactive),
+		// 										ServerType: to.Ptr(armhybridcompute.EsuServerTypeStandard),
+		// 										LicenseAssignmentState: to.Ptr(armhybridcompute.LicenseAssignmentStateAssigned),
+		// 									},
+		// 								},
+		// 								LocationData: &armhybridcompute.LocationData{
+		// 									Name: to.Ptr("Redmond"),
+		// 								},
+		// 								MssqlDiscovered: to.Ptr("true"),
+		// 								OSProfile: &armhybridcompute.OSProfile{
+		// 									LinuxConfiguration: &armhybridcompute.OSProfileLinuxConfiguration{
+		// 										PatchSettings: &armhybridcompute.PatchSettings{
+		// 										},
+		// 									},
+		// 									WindowsConfiguration: &armhybridcompute.OSProfileWindowsConfiguration{
+		// 										PatchSettings: &armhybridcompute.PatchSettings{
+		// 										},
+		// 									},
+		// 								},
+		// 								ParentClusterResourceID: to.Ptr("{AzureStackHCIResourceId}"),
+		// 								ProvisioningState: to.Ptr("Succeeded"),
+		// 								VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
+		// 							},
+		// 					}},
+		// 				}
 	}
 }

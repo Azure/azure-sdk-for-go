@@ -8,16 +8,18 @@
 
 package azopenai
 
-// beginAzureBatchImageGenerationOptions contains the optional parameters for the Client.beginAzureBatchImageGeneration
+// GetAudioTranscriptionAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranscriptionAsPlainText
 // method.
-type beginAzureBatchImageGenerationOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
+type GetAudioTranscriptionAsPlainTextOptions struct {
+	// placeholder for future optional parameters
 }
 
 // getAudioTranscriptionInternalOptions contains the optional parameters for the Client.getAudioTranscriptionInternal
 // method.
 type getAudioTranscriptionInternalOptions struct {
+	// The optional filename or descriptive identifier to associate with with the audio data.
+	Filename *string
+
 	// The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code such
 	// as 'en' or 'fr'. Providing this known input language is optional but may improve
 	// the accuracy and/or latency of transcription.
@@ -39,8 +41,17 @@ type getAudioTranscriptionInternalOptions struct {
 	Temperature *float32
 }
 
+// GetAudioTranslationAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranslationAsPlainText
+// method.
+type GetAudioTranslationAsPlainTextOptions struct {
+	// placeholder for future optional parameters
+}
+
 // getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal method.
 type getAudioTranslationInternalOptions struct {
+	// The optional filename or descriptive identifier to associate with with the audio data.
+	Filename *string
+
 	// The model to use for this translation request.
 	Model *string
 
@@ -75,5 +86,10 @@ type GetCompletionsOptions struct {
 
 // GetEmbeddingsOptions contains the optional parameters for the Client.GetEmbeddings method.
 type GetEmbeddingsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetImageGenerationsOptions contains the optional parameters for the Client.GetImageGenerations method.
+type GetImageGenerationsOptions struct {
 	// placeholder for future optional parameters
 }

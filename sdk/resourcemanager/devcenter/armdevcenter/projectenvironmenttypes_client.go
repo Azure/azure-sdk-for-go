@@ -33,7 +33,7 @@ type ProjectEnvironmentTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProjectEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectEnvironmentTypesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProjectEnvironmentTypesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewProjectEnvironmentTypesClient(subscriptionID string, credential azcore.T
 //     method.
 func (client *ProjectEnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, body ProjectEnvironmentType, options *ProjectEnvironmentTypesClientCreateOrUpdateOptions) (ProjectEnvironmentTypesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProjectEnvironmentTypesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, projectName, environmentTypeName, body, options)
 	if err != nil {
 		return ProjectEnvironmentTypesClientCreateOrUpdateResponse{}, err
@@ -125,6 +129,10 @@ func (client *ProjectEnvironmentTypesClient) createOrUpdateHandleResponse(resp *
 //     method.
 func (client *ProjectEnvironmentTypesClient) Delete(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, options *ProjectEnvironmentTypesClientDeleteOptions) (ProjectEnvironmentTypesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProjectEnvironmentTypesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, projectName, environmentTypeName, options)
 	if err != nil {
 		return ProjectEnvironmentTypesClientDeleteResponse{}, err
@@ -181,6 +189,10 @@ func (client *ProjectEnvironmentTypesClient) deleteCreateRequest(ctx context.Con
 //     method.
 func (client *ProjectEnvironmentTypesClient) Get(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, options *ProjectEnvironmentTypesClientGetOptions) (ProjectEnvironmentTypesClientGetResponse, error) {
 	var err error
+	const operationName = "ProjectEnvironmentTypesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, projectName, environmentTypeName, options)
 	if err != nil {
 		return ProjectEnvironmentTypesClientGetResponse{}, err
@@ -249,25 +261,20 @@ func (client *ProjectEnvironmentTypesClient) NewListPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProjectEnvironmentTypesClientListResponse) (ProjectEnvironmentTypesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, projectName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProjectEnvironmentTypesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
 			if err != nil {
 				return ProjectEnvironmentTypesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProjectEnvironmentTypesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProjectEnvironmentTypesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -321,6 +328,10 @@ func (client *ProjectEnvironmentTypesClient) listHandleResponse(resp *http.Respo
 //     method.
 func (client *ProjectEnvironmentTypesClient) Update(ctx context.Context, resourceGroupName string, projectName string, environmentTypeName string, body ProjectEnvironmentTypeUpdate, options *ProjectEnvironmentTypesClientUpdateOptions) (ProjectEnvironmentTypesClientUpdateResponse, error) {
 	var err error
+	const operationName = "ProjectEnvironmentTypesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, environmentTypeName, body, options)
 	if err != nil {
 		return ProjectEnvironmentTypesClientUpdateResponse{}, err

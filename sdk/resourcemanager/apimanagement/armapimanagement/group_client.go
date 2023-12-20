@@ -33,7 +33,7 @@ type GroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupClient, error) {
-	cl, err := arm.NewClient(moduleName+".GroupClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewGroupClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - GroupClientCreateOrUpdateOptions contains the optional parameters for the GroupClient.CreateOrUpdate method.
 func (client *GroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupCreateParameters, options *GroupClientCreateOrUpdateOptions) (GroupClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GroupClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, groupID, parameters, options)
 	if err != nil {
 		return GroupClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *GroupClient) createOrUpdateHandleResponse(resp *http.Response) (Gr
 //   - options - GroupClientDeleteOptions contains the optional parameters for the GroupClient.Delete method.
 func (client *GroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string, options *GroupClientDeleteOptions) (GroupClientDeleteResponse, error) {
 	var err error
+	const operationName = "GroupClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, groupID, ifMatch, options)
 	if err != nil {
 		return GroupClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *GroupClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - GroupClientGetOptions contains the optional parameters for the GroupClient.Get method.
 func (client *GroupClient) Get(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupClientGetOptions) (GroupClientGetResponse, error) {
 	var err error
+	const operationName = "GroupClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
 	if err != nil {
 		return GroupClientGetResponse{}, err
@@ -254,6 +266,10 @@ func (client *GroupClient) getHandleResponse(resp *http.Response) (GroupClientGe
 //   - options - GroupClientGetEntityTagOptions contains the optional parameters for the GroupClient.GetEntityTag method.
 func (client *GroupClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupClientGetEntityTagOptions) (GroupClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GroupClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
 	if err != nil {
 		return GroupClientGetEntityTagResponse{}, err
@@ -302,11 +318,10 @@ func (client *GroupClient) getEntityTagCreateRequest(ctx context.Context, resour
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GroupClient) getEntityTagHandleResponse(resp *http.Response) (GroupClientGetEntityTagResponse, error) {
-	result := GroupClientGetEntityTagResponse{}
+	result := GroupClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -322,25 +337,20 @@ func (client *GroupClient) NewListByServicePager(resourceGroupName string, servi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GroupClientListByServiceResponse) (GroupClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return GroupClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GroupClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GroupClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -401,6 +411,10 @@ func (client *GroupClient) listByServiceHandleResponse(resp *http.Response) (Gro
 //   - options - GroupClientUpdateOptions contains the optional parameters for the GroupClient.Update method.
 func (client *GroupClient) Update(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string, parameters GroupUpdateParameters, options *GroupClientUpdateOptions) (GroupClientUpdateResponse, error) {
 	var err error
+	const operationName = "GroupClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, groupID, ifMatch, parameters, options)
 	if err != nil {
 		return GroupClientUpdateResponse{}, err

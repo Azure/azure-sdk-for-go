@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteDscNode.json
 func ExampleDscNodeClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleDscNodeClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/getDscNode.json
 func ExampleDscNodeClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,18 +64,18 @@ func ExampleDscNodeClient_Get() {
 	// 				Version: to.Ptr("2.75.0.0"),
 	// 		}},
 	// 		IP: to.Ptr("ip"),
-	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 	// 		NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 	// 			Name: to.Ptr("SetupServer.localhost"),
 	// 		},
 	// 		NodeID: to.Ptr("nodeId"),
-	// 		RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+	// 		RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 	// 		Status: to.Ptr("Pending"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateDscNode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/updateDscNode.json
 func ExampleDscNodeClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,18 +111,18 @@ func ExampleDscNodeClient_Update() {
 	// 				Version: to.Ptr("2.75.0.0"),
 	// 		}},
 	// 		IP: to.Ptr("ip"),
-	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+	// 		LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 	// 		NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 	// 			Name: to.Ptr("SetupServer.localhost"),
 	// 		},
 	// 		NodeID: to.Ptr("nodeId"),
-	// 		RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+	// 		RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 	// 		Status: to.Ptr("Pending"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listAllDscNodesByAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listAllDscNodesByAutomationAccount.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listDscNodesByAutomationAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,12 +161,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listDscNodesByAutomati
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("nodeId"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Pending"),
 		// 			},
 		// 		},
@@ -181,12 +181,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listDscNodesByAutomati
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("nodeId2"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Pending"),
 		// 			},
 		// 	}},
@@ -194,7 +194,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listDscNodesByAutomati
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationNotAssignedFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationNotAssignedFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWhereNodeConfigurationsAreNotAssignedFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,12 +234,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr(""),
 		// 				},
 		// 				NodeID: to.Ptr("477F9596-92F3-479A-82F2-9EE149F2C6B0"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -254,12 +254,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr(""),
 		// 				},
 		// 				NodeID: to.Ptr("E5D5D0B5-400D-48F7-A791-612945DAC5EB"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 	}},
@@ -267,7 +267,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationCustomFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNodeConfigurationCustomFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWithNodeConfigurationCustomFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,12 +307,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr(""),
 		// 				},
 		// 				NodeID: to.Ptr("477F9596-92F3-479A-82F2-9EE149F2C6B0"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -327,12 +327,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("E5D5D0B5-400D-48F7-A791-612945DAC5EB"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -347,12 +347,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupClient.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("Node34"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -367,12 +367,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupClient.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("Node35"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("NotCompliant"),
 		// 			},
 		// 	}},
@@ -380,7 +380,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNameFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNameFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWithNameFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -420,12 +420,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("708D250A-2169-4B54-89FF-76F5F71C252A"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -440,12 +440,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("3B4BB31A-5132-4669-A15F-A17E234D1634"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Failed"),
 		// 			},
 		// 	}},
@@ -453,7 +453,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNoFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithNoFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWithNoFilters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,12 +493,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("FCC20208-E781-41C4-A757-17AA0429B3A4"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Pending"),
 		// 			},
 		// 		},
@@ -513,12 +513,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("A63C781C-0C50-4825-B295-B7F8ECFD0DBC"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Pending"),
 		// 			},
 		// 	}},
@@ -526,7 +526,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithStatusFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithStatusFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWithNodeStatusFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,12 +566,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("01D64CDE-85DD-4C9B-B8F1-2F725348FDEC"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -586,12 +586,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("E13076D7-A959-4067-B02F-4F014AAD22D7"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -606,12 +606,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("4289B441-B9A0-4309-93FC-0C5100CFBE46"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -626,12 +626,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.75.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("CBD2212B-8F4C-4049-98E7-1DBCBED7343B"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("NotCompliant"),
 		// 			},
 		// 	}},
@@ -639,7 +639,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithVersionFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithVersionFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAutomationAccountWithVersionFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -674,12 +674,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/nodes/Node62"),
 		// 			Properties: &armautomation.DscNodeProperties{
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("01D64CDE-85DD-4C9B-B8F1-2F725348FDEC"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -694,12 +694,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.70.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("E13076D7-A959-4067-B02F-4F014AAD22D7"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -714,12 +714,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 						Version: to.Ptr("2.70.0.0"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("4289B441-B9A0-4309-93FC-0C5100CFBE46"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 		},
@@ -729,12 +729,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/nodes/Node65"),
 		// 			Properties: &armautomation.DscNodeProperties{
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("CBD2212B-8F4C-4049-98E7-1DBCBED7343B"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("NotCompliant"),
 		// 			},
 		// 	}},
@@ -742,7 +742,7 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesByAut
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithCompositeFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/listPagedDscNodesByAutomationAccountWithCompositeFilter.json
 func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesWithFiltersSeparatedByAnd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,12 +782,12 @@ func ExampleDscNodeClient_NewListByAutomationAccountPager_listPagedDscNodesWithF
 		// 						Version: to.Ptr("2.70.0.1"),
 		// 				}},
 		// 				IP: to.Ptr("ip"),
-		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.0963773+00:00"); return t}()),
+		// 				LastSeen: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-22T22:25:39.096Z"); return t}()),
 		// 				NodeConfiguration: &armautomation.DscNodeConfigurationAssociationProperty{
 		// 					Name: to.Ptr("SetupSqlServer.localhost"),
 		// 				},
 		// 				NodeID: to.Ptr("01D64CDE-85DD-4C9B-B8F1-2F725348FDEC"),
-		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.5393083+00:00"); return t}()),
+		// 				RegistrationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-10T00:51:12.539Z"); return t}()),
 		// 				Status: to.Ptr("Compliant"),
 		// 			},
 		// 	}},

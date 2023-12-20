@@ -32,7 +32,7 @@ type ManagedDatabaseQueriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseQueriesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseQueriesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewManagedDatabaseQueriesClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ManagedDatabaseQueriesClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientGetOptions) (ManagedDatabaseQueriesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseQueriesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
 	if err != nil {
 		return ManagedDatabaseQueriesClientGetResponse{}, err
@@ -129,25 +133,20 @@ func (client *ManagedDatabaseQueriesClient) NewListByQueryPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseQueriesClientListByQueryResponse) (ManagedDatabaseQueriesClientListByQueryResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseQueriesClient.NewListByQueryPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseQueriesClientListByQueryResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseQueriesClientListByQueryResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseQueriesClientListByQueryResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByQueryHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

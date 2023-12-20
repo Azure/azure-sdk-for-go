@@ -37,9 +37,9 @@ func ExampleAlertRuleIncidentsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Incident = armmonitor.Incident{
 	// 	Name: to.Ptr("Website_started"),
-	// 	ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.9792776Z"); return t}()),
+	// 	ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.979Z"); return t}()),
 	// 	IsActive: to.Ptr(true),
-	// 	ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.9792776Z"); return t}()),
+	// 	ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.979Z"); return t}()),
 	// 	RuleName: to.Ptr("myRuleName"),
 	// }
 }
@@ -70,9 +70,9 @@ func ExampleAlertRuleIncidentsClient_NewListByAlertRulePager() {
 		// 	Value: []*armmonitor.Incident{
 		// 		{
 		// 			Name: to.Ptr("Website_started"),
-		// 			ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.9792776Z"); return t}()),
+		// 			ActivatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T15:45:26.979Z"); return t}()),
 		// 			IsActive: to.Ptr(true),
-		// 			ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.9792776Z"); return t}()),
+		// 			ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-13T22:14:28.979Z"); return t}()),
 		// 			RuleName: to.Ptr("myRuleName"),
 		// 	}},
 		// }

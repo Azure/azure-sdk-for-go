@@ -33,7 +33,7 @@ type UserSessionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUserSessionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UserSessionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".UserSessionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewUserSessionsClient(subscriptionID string, credential azcore.TokenCredent
 //   - options - UserSessionsClientDeleteOptions contains the optional parameters for the UserSessionsClient.Delete method.
 func (client *UserSessionsClient) Delete(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDeleteOptions) (UserSessionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "UserSessionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
 		return UserSessionsClientDeleteResponse{}, err
@@ -118,6 +122,10 @@ func (client *UserSessionsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - UserSessionsClientDisconnectOptions contains the optional parameters for the UserSessionsClient.Disconnect method.
 func (client *UserSessionsClient) Disconnect(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientDisconnectOptions) (UserSessionsClientDisconnectResponse, error) {
 	var err error
+	const operationName = "UserSessionsClient.Disconnect"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.disconnectCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
 		return UserSessionsClientDisconnectResponse{}, err
@@ -178,6 +186,10 @@ func (client *UserSessionsClient) disconnectCreateRequest(ctx context.Context, r
 //   - options - UserSessionsClientGetOptions contains the optional parameters for the UserSessionsClient.Get method.
 func (client *UserSessionsClient) Get(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientGetOptions) (UserSessionsClientGetResponse, error) {
 	var err error
+	const operationName = "UserSessionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
 		return UserSessionsClientGetResponse{}, err
@@ -250,25 +262,20 @@ func (client *UserSessionsClient) NewListPager(resourceGroupName string, hostPoo
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UserSessionsClientListResponse) (UserSessionsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UserSessionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, options)
+			}, nil)
 			if err != nil {
 				return UserSessionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return UserSessionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return UserSessionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -333,25 +340,20 @@ func (client *UserSessionsClient) NewListByHostPoolPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UserSessionsClientListByHostPoolResponse) (UserSessionsClientListByHostPoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UserSessionsClient.NewListByHostPoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByHostPoolCreateRequest(ctx, resourceGroupName, hostPoolName, options)
+			}, nil)
 			if err != nil {
 				return UserSessionsClientListByHostPoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return UserSessionsClientListByHostPoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return UserSessionsClientListByHostPoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByHostPoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -414,6 +416,10 @@ func (client *UserSessionsClient) listByHostPoolHandleResponse(resp *http.Respon
 //     method.
 func (client *UserSessionsClient) SendMessage(ctx context.Context, resourceGroupName string, hostPoolName string, sessionHostName string, userSessionID string, options *UserSessionsClientSendMessageOptions) (UserSessionsClientSendMessageResponse, error) {
 	var err error
+	const operationName = "UserSessionsClient.SendMessage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.sendMessageCreateRequest(ctx, resourceGroupName, hostPoolName, sessionHostName, userSessionID, options)
 	if err != nil {
 		return UserSessionsClientSendMessageResponse{}, err

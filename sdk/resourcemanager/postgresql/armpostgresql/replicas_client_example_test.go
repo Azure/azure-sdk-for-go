@@ -48,7 +48,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.269Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica1.postgres.database.azure.com"),
 		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 		// 				ReplicaCapacity: to.Ptr[int32](0),
@@ -76,7 +76,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.269Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica2.postgres.database.azure.com"),
 		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 		// 				ReplicaCapacity: to.Ptr[int32](0),
@@ -104,7 +104,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.269Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica3.postgres.database.azure.com"),
 		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 		// 				ReplicaCapacity: to.Ptr[int32](0),
@@ -132,7 +132,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.269Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica4.postgres.database.azure.com"),
 		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 		// 				ReplicaCapacity: to.Ptr[int32](0),
@@ -160,7 +160,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 			Location: to.Ptr("westcentralus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("postgres"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.2695756+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-12T00:05:03.269Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("testserver-replica5.postgres.database.azure.com"),
 		// 				MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 		// 				ReplicaCapacity: to.Ptr[int32](0),

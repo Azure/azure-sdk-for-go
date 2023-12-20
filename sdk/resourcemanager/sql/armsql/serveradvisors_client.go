@@ -32,7 +32,7 @@ type ServerAdvisorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServerAdvisorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServerAdvisorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCrede
 //   - options - ServerAdvisorsClientGetOptions contains the optional parameters for the ServerAdvisorsClient.Get method.
 func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, advisorName string, options *ServerAdvisorsClientGetOptions) (ServerAdvisorsClientGetResponse, error) {
 	var err error
+	const operationName = "ServerAdvisorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, advisorName, options)
 	if err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
@@ -120,6 +124,10 @@ func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (Serv
 //     method.
 func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdvisorsClientListByServerOptions) (ServerAdvisorsClientListByServerResponse, error) {
 	var err error
+	const operationName = "ServerAdvisorsClient.ListByServer"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
@@ -186,6 +194,10 @@ func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Respon
 //   - options - ServerAdvisorsClientUpdateOptions contains the optional parameters for the ServerAdvisorsClient.Update method.
 func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, advisorName string, parameters Advisor, options *ServerAdvisorsClientUpdateOptions) (ServerAdvisorsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ServerAdvisorsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, advisorName, parameters, options)
 	if err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/PipelineRunList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/PipelineRunList.json
 func ExamplePipelineRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 					Progress: &armcontainerregistry.ProgressProperties{
 		// 						Percentage: to.Ptr("20"),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.926Z"); return t}()),
 		// 					Status: to.Ptr("Running"),
 		// 					Target: &armcontainerregistry.ExportPipelineTargetProperties{
 		// 						Type: to.Ptr("AzureStorageBlob"),
@@ -88,7 +88,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 								KeyVaultURI: to.Ptr("https://myvault.vault.azure.net/secrets/acrimportsas"),
 		// 								URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
 		// 							},
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-03T17:23:21.9261521+00:00"); return t}()),
+		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-03T17:23:21.926Z"); return t}()),
 		// 							Status: to.Ptr("Succeeded"),
 		// 						},
 		// 						Request: &armcontainerregistry.PipelineRunRequest{
@@ -100,7 +100,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/PipelineRunGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/PipelineRunGet.json
 func ExamplePipelineRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePipelineRunsClient_Get() {
 	// 			Progress: &armcontainerregistry.ProgressProperties{
 	// 				Percentage: to.Ptr("20"),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.926Z"); return t}()),
 	// 			Status: to.Ptr("Running"),
 	// 			Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 				Type: to.Ptr("AzureStorageBlob"),
@@ -147,7 +147,7 @@ func ExamplePipelineRunsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/PipelineRunCreate_Export.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/PipelineRunCreate_Export.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// 			Progress: &armcontainerregistry.ProgressProperties{
 	// 				Percentage: to.Ptr("20"),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.926Z"); return t}()),
 	// 			Status: to.Ptr("Running"),
 	// 			Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 				Type: to.Ptr("AzureStorageBlob"),
@@ -211,7 +211,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/PipelineRunCreate_Import.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/PipelineRunCreate_Import.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// 					KeyVaultURI: to.Ptr("https://myvault.vault.azure.net/secrets/acrimportsas"),
 	// 					URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.926Z"); return t}()),
 	// 				Status: to.Ptr("Succeeded"),
 	// 			},
 	// 			Request: &armcontainerregistry.PipelineRunRequest{
@@ -274,7 +274,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/PipelineRunDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-11-01-preview/examples/PipelineRunDelete.json
 func ExamplePipelineRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

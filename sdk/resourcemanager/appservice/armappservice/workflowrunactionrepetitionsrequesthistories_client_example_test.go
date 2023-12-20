@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
 func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 		// 			Type: to.Ptr("/workflows/runs/actions/requestHistories"),
 		// 			ID: to.Ptr("/workflows/test-workflow/runs/08586611142736787787412824395CU21/actions/HTTP_Webhook/requestHistories/08586611142732800686"),
 		// 			Properties: &armappservice.RequestHistoryProperties{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.1863033Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.186Z"); return t}()),
 		// 				Response: &armappservice.Response{
 		// 					BodyLink: &armappservice.ContentLink{
 		// 						ContentHash: &armappservice.ContentHash{
@@ -67,7 +67,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 		// 					},
 		// 					StatusCode: to.Ptr[int32](302),
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.9206732Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.920Z"); return t}()),
 		// 				Request: &armappservice.Request{
 		// 					Method: to.Ptr("GET"),
 		// 					Headers: map[string]any{
@@ -98,7 +98,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitionsRequestHistories_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionRepetitionsRequestHistories_Get.json
 func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 	// 	Type: to.Ptr("/workflows/runs/actions/requestHistories"),
 	// 	ID: to.Ptr("/workflows/test-workflow/runs/08586611142736787787412824395CU21/actions/HTTP_Webhook/requestHistories/08586611142732800686"),
 	// 	Properties: &armappservice.RequestHistoryProperties{
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.1863033Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:52.186Z"); return t}()),
 	// 		Response: &armappservice.Response{
 	// 			BodyLink: &armappservice.ContentLink{
 	// 				ContentHash: &armappservice.ContentHash{
@@ -142,7 +142,7 @@ func ExampleWorkflowRunActionRepetitionsRequestHistoriesClient_Get() {
 	// 			},
 	// 			StatusCode: to.Ptr[int32](302),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.9206732Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-25T18:36:51.920Z"); return t}()),
 	// 		Request: &armappservice.Request{
 	// 			Method: to.Ptr("GET"),
 	// 			Headers: map[string]any{

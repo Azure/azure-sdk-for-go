@@ -32,7 +32,7 @@ type MoveCollectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMoveCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MoveCollectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MoveCollectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,13 @@ func (client *MoveCollectionsClient) BeginBulkRemove(ctx context.Context, resour
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientBulkRemoveResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientBulkRemoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientBulkRemoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *MoveCollectionsClient) BeginBulkRemove(ctx context.Context, resour
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) bulkRemove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginBulkRemoveOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginBulkRemove"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.bulkRemoveCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -140,10 +147,13 @@ func (client *MoveCollectionsClient) BeginCommit(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientCommitResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientCommitResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientCommitResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -156,6 +166,10 @@ func (client *MoveCollectionsClient) BeginCommit(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) commit(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginCommitOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginCommit"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.commitCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -212,6 +226,10 @@ func (client *MoveCollectionsClient) commitCreateRequest(ctx context.Context, re
 //   - options - MoveCollectionsClientCreateOptions contains the optional parameters for the MoveCollectionsClient.Create method.
 func (client *MoveCollectionsClient) Create(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientCreateOptions) (MoveCollectionsClientCreateResponse, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return MoveCollectionsClientCreateResponse{}, err
@@ -285,10 +303,13 @@ func (client *MoveCollectionsClient) BeginDelete(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -298,6 +319,10 @@ func (client *MoveCollectionsClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -358,10 +383,13 @@ func (client *MoveCollectionsClient) BeginDiscard(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientDiscardResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientDiscardResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientDiscardResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -374,6 +402,10 @@ func (client *MoveCollectionsClient) BeginDiscard(ctx context.Context, resourceG
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) discard(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginDiscardOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginDiscard"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.discardCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -430,6 +462,10 @@ func (client *MoveCollectionsClient) discardCreateRequest(ctx context.Context, r
 //   - options - MoveCollectionsClientGetOptions contains the optional parameters for the MoveCollectionsClient.Get method.
 func (client *MoveCollectionsClient) Get(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientGetOptions) (MoveCollectionsClientGetResponse, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return MoveCollectionsClientGetResponse{}, err
@@ -500,10 +536,13 @@ func (client *MoveCollectionsClient) BeginInitiateMove(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientInitiateMoveResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientInitiateMoveResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientInitiateMoveResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -516,6 +555,10 @@ func (client *MoveCollectionsClient) BeginInitiateMove(ctx context.Context, reso
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) initiateMove(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginInitiateMoveOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginInitiateMove"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.initiateMoveCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -575,25 +618,20 @@ func (client *MoveCollectionsClient) NewListMoveCollectionsByResourceGroupPager(
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MoveCollectionsClientListMoveCollectionsByResourceGroupResponse) (MoveCollectionsClientListMoveCollectionsByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listMoveCollectionsByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MoveCollectionsClient.NewListMoveCollectionsByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listMoveCollectionsByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MoveCollectionsClientListMoveCollectionsByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listMoveCollectionsByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -639,25 +677,20 @@ func (client *MoveCollectionsClient) NewListMoveCollectionsBySubscriptionPager(o
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MoveCollectionsClientListMoveCollectionsBySubscriptionResponse) (MoveCollectionsClientListMoveCollectionsBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listMoveCollectionsBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MoveCollectionsClient.NewListMoveCollectionsBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listMoveCollectionsBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MoveCollectionsClientListMoveCollectionsBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listMoveCollectionsBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -699,6 +732,10 @@ func (client *MoveCollectionsClient) listMoveCollectionsBySubscriptionHandleResp
 //     method.
 func (client *MoveCollectionsClient) ListRequiredFor(ctx context.Context, resourceGroupName string, moveCollectionName string, sourceID string, options *MoveCollectionsClientListRequiredForOptions) (MoveCollectionsClientListRequiredForResponse, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.ListRequiredFor"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listRequiredForCreateRequest(ctx, resourceGroupName, moveCollectionName, sourceID, options)
 	if err != nil {
 		return MoveCollectionsClientListRequiredForResponse{}, err
@@ -770,10 +807,13 @@ func (client *MoveCollectionsClient) BeginPrepare(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientPrepareResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientPrepareResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientPrepareResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -786,6 +826,10 @@ func (client *MoveCollectionsClient) BeginPrepare(ctx context.Context, resourceG
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) prepare(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginPrepareOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginPrepare"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.prepareCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -849,10 +893,13 @@ func (client *MoveCollectionsClient) BeginResolveDependencies(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MoveCollectionsClientResolveDependenciesResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[MoveCollectionsClientResolveDependenciesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MoveCollectionsClientResolveDependenciesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -862,6 +909,10 @@ func (client *MoveCollectionsClient) BeginResolveDependencies(ctx context.Contex
 // Generated from API version 2023-08-01
 func (client *MoveCollectionsClient) resolveDependencies(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientBeginResolveDependenciesOptions) (*http.Response, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.BeginResolveDependencies"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resolveDependenciesCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return nil, err
@@ -912,6 +963,10 @@ func (client *MoveCollectionsClient) resolveDependenciesCreateRequest(ctx contex
 //   - options - MoveCollectionsClientUpdateOptions contains the optional parameters for the MoveCollectionsClient.Update method.
 func (client *MoveCollectionsClient) Update(ctx context.Context, resourceGroupName string, moveCollectionName string, options *MoveCollectionsClientUpdateOptions) (MoveCollectionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "MoveCollectionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, moveCollectionName, options)
 	if err != nil {
 		return MoveCollectionsClientUpdateResponse{}, err

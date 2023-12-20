@@ -33,7 +33,7 @@ type ConfigurationAssignmentsForSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForSubscriptionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConfigurationAssignmentsForSubscriptionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, cr
 //     ConfigurationAssignmentsForSubscriptionsClient.CreateOrUpdate method.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateOptions) (ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForSubscriptionsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
@@ -113,6 +117,10 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateHand
 //     method.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context.Context, configurationAssignmentName string, options *ConfigurationAssignmentsForSubscriptionsClientDeleteOptions) (ConfigurationAssignmentsForSubscriptionsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForSubscriptionsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
@@ -169,6 +177,10 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteHandleRespon
 //     method.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Context, configurationAssignmentName string, options *ConfigurationAssignmentsForSubscriptionsClientGetOptions) (ConfigurationAssignmentsForSubscriptionsClientGetResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForSubscriptionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, configurationAssignmentName, options)
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
@@ -226,6 +238,10 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) getHandleResponse(
 //     method.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, options *ConfigurationAssignmentsForSubscriptionsClientUpdateOptions) (ConfigurationAssignmentsForSubscriptionsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ConfigurationAssignmentsForSubscriptionsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, configurationAssignmentName, configurationAssignment, options)
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err

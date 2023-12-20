@@ -32,7 +32,7 @@ type BackupResourceVaultConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupResourceVaultConfigsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupResourceVaultConfigsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcor
 //     method.
 func (client *BackupResourceVaultConfigsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, options *BackupResourceVaultConfigsClientGetOptions) (BackupResourceVaultConfigsClientGetResponse, error) {
 	var err error
+	const operationName = "BackupResourceVaultConfigsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, options)
 	if err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
@@ -115,6 +119,10 @@ func (client *BackupResourceVaultConfigsClient) getHandleResponse(resp *http.Res
 //     method.
 func (client *BackupResourceVaultConfigsClient) Put(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceVaultConfigResource, options *BackupResourceVaultConfigsClientPutOptions) (BackupResourceVaultConfigsClientPutResponse, error) {
 	var err error
+	const operationName = "BackupResourceVaultConfigsClient.Put"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.putCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
@@ -180,6 +188,10 @@ func (client *BackupResourceVaultConfigsClient) putHandleResponse(resp *http.Res
 //     method.
 func (client *BackupResourceVaultConfigsClient) Update(ctx context.Context, vaultName string, resourceGroupName string, parameters BackupResourceVaultConfigResource, options *BackupResourceVaultConfigsClientUpdateOptions) (BackupResourceVaultConfigsClientUpdateResponse, error) {
 	var err error
+	const operationName = "BackupResourceVaultConfigsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, vaultName, resourceGroupName, parameters, options)
 	if err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err

@@ -32,7 +32,7 @@ type ManagedDatabaseRecommendedSensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseRecommendedSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseRecommendedSensitivityLabelsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseRecommendedSensitivityLabelsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewManagedDatabaseRecommendedSensitivityLabelsClient(subscriptionID string,
 //     method.
 func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters RecommendedSensitivityLabelUpdateList, options *ManagedDatabaseRecommendedSensitivityLabelsClientUpdateOptions) (ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseRecommendedSensitivityLabelsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, parameters, options)
 	if err != nil {
 		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, err

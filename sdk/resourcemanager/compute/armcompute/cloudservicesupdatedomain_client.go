@@ -34,7 +34,7 @@ type CloudServicesUpdateDomainClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServicesUpdateDomainClient, error) {
-	cl, err := arm.NewClient(moduleName+".CloudServicesUpdateDomainClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -196,10 +196,14 @@ func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudServicesUpdateDomainClientWalkUpdateDomainResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CloudServicesUpdateDomainClientWalkUpdateDomainResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudServicesUpdateDomainClientWalkUpdateDomainResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 

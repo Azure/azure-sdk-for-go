@@ -32,7 +32,7 @@ type OperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *OperationsClient) GetOperationResult(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *OperationsClientGetOperationResultOptions) (OperationsClientGetOperationResultResponse, error) {
 	var err error
+	const operationName = "OperationsClient.GetOperationResult"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getOperationResultCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
@@ -118,25 +122,20 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return OperationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return OperationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OperationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -173,6 +172,10 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 //     method.
 func (client *OperationsClient) OperationStatusGet(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *OperationsClientOperationStatusGetOptions) (OperationsClientOperationStatusGetResponse, error) {
 	var err error
+	const operationName = "OperationsClient.OperationStatusGet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.operationStatusGetCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err

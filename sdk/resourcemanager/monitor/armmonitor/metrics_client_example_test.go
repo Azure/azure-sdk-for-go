@@ -70,55 +70,55 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](413),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -133,55 +133,55 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](133),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -196,55 +196,55 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](78),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -259,55 +259,55 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -322,55 +322,55 @@ func ExampleMetricsClient_ListAtSubscriptionScope_getSubscriptionLevelMetricData
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -486,12 +486,9 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 			MetricNamespace:     to.Ptr("microsoft.compute/virtualmachines"),
 			OrderBy:             to.Ptr("count desc"),
 			RollUpBy:            to.Ptr("LUN"),
-			Timespan: to.Ptr(func() time.Time {
-				t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z/2021-06-12T01:00:00Z")
-				return t
-			}()),
-			Top:                to.Ptr[int32](10),
-			ValidateDimensions: to.Ptr(false),
+			Timespan:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "NaN-NaN-NaNTNaN:NaN:NaN.NaNZ"); return t }()),
+			Top:                 to.Ptr[int32](10),
+			ValidateDimensions:  to.Ptr(false),
 		},
 	})
 	if err != nil {
@@ -521,55 +518,55 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](413),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -584,55 +581,55 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](133),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -647,55 +644,55 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](78),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -710,55 +707,55 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -773,55 +770,55 @@ func ExampleMetricsClient_ListAtSubscriptionScopePost_postRequestForSubscription
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-10T19:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T01:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T07:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T13:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Count: to.Ptr[float64](72),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-11T19:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -889,31 +886,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](7),
 	// 							Maximum: to.Ptr[float64](7),
 	// 							Minimum: to.Ptr[float64](7),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](7),
 	// 							Maximum: to.Ptr[float64](7),
 	// 							Minimum: to.Ptr[float64](7),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](7),
 	// 							Maximum: to.Ptr[float64](7),
 	// 							Minimum: to.Ptr[float64](7),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](7),
 	// 							Maximum: to.Ptr[float64](7),
 	// 							Minimum: to.Ptr[float64](7),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](7),
 	// 							Maximum: to.Ptr[float64](7),
 	// 							Minimum: to.Ptr[float64](7),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -930,31 +927,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](2),
 	// 							Maximum: to.Ptr[float64](2),
 	// 							Minimum: to.Ptr[float64](2),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](2),
 	// 							Maximum: to.Ptr[float64](2),
 	// 							Minimum: to.Ptr[float64](2),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](2),
 	// 							Maximum: to.Ptr[float64](2),
 	// 							Minimum: to.Ptr[float64](2),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](2),
 	// 							Maximum: to.Ptr[float64](2),
 	// 							Minimum: to.Ptr[float64](2),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](2),
 	// 							Maximum: to.Ptr[float64](2),
 	// 							Minimum: to.Ptr[float64](2),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -971,31 +968,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1012,31 +1009,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1053,31 +1050,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1106,31 +1103,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](621492),
 	// 							Maximum: to.Ptr[float64](621492),
 	// 							Minimum: to.Ptr[float64](621492),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](621492),
 	// 							Maximum: to.Ptr[float64](621492),
 	// 							Minimum: to.Ptr[float64](621492),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](621492),
 	// 							Maximum: to.Ptr[float64](621492),
 	// 							Minimum: to.Ptr[float64](621492),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](621492),
 	// 							Maximum: to.Ptr[float64](621492),
 	// 							Minimum: to.Ptr[float64](621492),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](621492),
 	// 							Maximum: to.Ptr[float64](621492),
 	// 							Minimum: to.Ptr[float64](621492),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1147,31 +1144,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](4733),
 	// 							Maximum: to.Ptr[float64](4733),
 	// 							Minimum: to.Ptr[float64](4733),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](4733),
 	// 							Maximum: to.Ptr[float64](4733),
 	// 							Minimum: to.Ptr[float64](4733),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](4733),
 	// 							Maximum: to.Ptr[float64](4733),
 	// 							Minimum: to.Ptr[float64](4733),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](4733),
 	// 							Maximum: to.Ptr[float64](4733),
 	// 							Minimum: to.Ptr[float64](4733),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](4733),
 	// 							Maximum: to.Ptr[float64](4733),
 	// 							Minimum: to.Ptr[float64](4733),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1188,31 +1185,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1229,31 +1226,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1270,31 +1267,31 @@ func ExampleMetricsClient_List_getMetricForData() {
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T09:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T10:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T11:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T12:00:00.000Z"); return t}()),
 	// 						},
 	// 						{
 	// 							Average: to.Ptr[float64](0),
 	// 							Maximum: to.Ptr[float64](0),
 	// 							Minimum: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-20T13:00:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 						{
@@ -1472,7 +1469,7 @@ func ExampleMetricsClient_List_getMetricWithError() {
 	// 					Data: []*armmonitor.MetricValue{
 	// 						{
 	// 							Average: to.Ptr[float64](0),
-	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-07T21:51:00Z"); return t}()),
+	// 							TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-07T21:51:00.000Z"); return t}()),
 	// 					}},
 	// 					Metadatavalues: []*armmonitor.MetadataValue{
 	// 					},

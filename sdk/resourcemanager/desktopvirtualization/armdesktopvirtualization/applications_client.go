@@ -33,7 +33,7 @@ type ApplicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *ApplicationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationName string, application Application, options *ApplicationsClientCreateOrUpdateOptions) (ApplicationsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationName, application, options)
 	if err != nil {
 		return ApplicationsClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *ApplicationsClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - ApplicationsClientDeleteOptions contains the optional parameters for the ApplicationsClient.Delete method.
 func (client *ApplicationsClient) Delete(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationName string, options *ApplicationsClientDeleteOptions) (ApplicationsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationName, options)
 	if err != nil {
 		return ApplicationsClientDeleteResponse{}, err
@@ -179,6 +187,10 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
 func (client *ApplicationsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationName string, options *ApplicationsClientGetOptions) (ApplicationsClientGetResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationName, options)
 	if err != nil {
 		return ApplicationsClientGetResponse{}, err
@@ -246,25 +258,20 @@ func (client *ApplicationsClient) NewListPager(resourceGroupName string, applica
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationsClientListResponse) (ApplicationsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
+			}, nil)
 			if err != nil {
 				return ApplicationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -322,6 +329,10 @@ func (client *ApplicationsClient) listHandleResponse(resp *http.Response) (Appli
 //   - options - ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
 func (client *ApplicationsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationName string, options *ApplicationsClientUpdateOptions) (ApplicationsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationName, options)
 	if err != nil {
 		return ApplicationsClientUpdateResponse{}, err

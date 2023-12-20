@@ -23,11 +23,11 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,66 +37,115 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAccountBackupsClient creates a new instance of AccountBackupsClient.
+func (c *ClientFactory) NewAccountBackupsClient() *AccountBackupsClient {
+	subClient, _ := NewAccountBackupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewAccountsClient creates a new instance of AccountsClient.
 func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	subClient, _ := NewAccountsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewBackupPoliciesClient creates a new instance of BackupPoliciesClient.
 func (c *ClientFactory) NewBackupPoliciesClient() *BackupPoliciesClient {
 	subClient, _ := NewBackupPoliciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewBackupVaultsClient creates a new instance of BackupVaultsClient.
+func (c *ClientFactory) NewBackupVaultsClient() *BackupVaultsClient {
+	subClient, _ := NewBackupVaultsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewBackupsClient creates a new instance of BackupsClient.
 func (c *ClientFactory) NewBackupsClient() *BackupsClient {
 	subClient, _ := NewBackupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewBackupsUnderAccountClient creates a new instance of BackupsUnderAccountClient.
+func (c *ClientFactory) NewBackupsUnderAccountClient() *BackupsUnderAccountClient {
+	subClient, _ := NewBackupsUnderAccountClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewBackupsUnderBackupVaultClient creates a new instance of BackupsUnderBackupVaultClient.
+func (c *ClientFactory) NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVaultClient {
+	subClient, _ := NewBackupsUnderBackupVaultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewBackupsUnderVolumeClient creates a new instance of BackupsUnderVolumeClient.
+func (c *ClientFactory) NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient {
+	subClient, _ := NewBackupsUnderVolumeClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPoolsClient creates a new instance of PoolsClient.
 func (c *ClientFactory) NewPoolsClient() *PoolsClient {
 	subClient, _ := NewPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewResourceClient creates a new instance of ResourceClient.
 func (c *ClientFactory) NewResourceClient() *ResourceClient {
 	subClient, _ := NewResourceClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient.
 func (c *ClientFactory) NewResourceQuotaLimitsClient() *ResourceQuotaLimitsClient {
 	subClient, _ := NewResourceQuotaLimitsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewResourceRegionInfosClient creates a new instance of ResourceRegionInfosClient.
+func (c *ClientFactory) NewResourceRegionInfosClient() *ResourceRegionInfosClient {
+	subClient, _ := NewResourceRegionInfosClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewSnapshotPoliciesClient creates a new instance of SnapshotPoliciesClient.
 func (c *ClientFactory) NewSnapshotPoliciesClient() *SnapshotPoliciesClient {
 	subClient, _ := NewSnapshotPoliciesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	subClient, _ := NewSnapshotsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSubvolumesClient creates a new instance of SubvolumesClient.
 func (c *ClientFactory) NewSubvolumesClient() *SubvolumesClient {
 	subClient, _ := NewSubvolumesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVolumeGroupsClient creates a new instance of VolumeGroupsClient.
 func (c *ClientFactory) NewVolumeGroupsClient() *VolumeGroupsClient {
 	subClient, _ := NewVolumeGroupsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVolumeQuotaRulesClient creates a new instance of VolumeQuotaRulesClient.
 func (c *ClientFactory) NewVolumeQuotaRulesClient() *VolumeQuotaRulesClient {
 	subClient, _ := NewVolumeQuotaRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVolumesClient creates a new instance of VolumesClient.
 func (c *ClientFactory) NewVolumesClient() *VolumesClient {
 	subClient, _ := NewVolumesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -63,7 +63,7 @@ func ExampleVirtualMachinesClient_NewListPager() {
 		// 				ComputeID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{labName}-{vmName}-{randomSuffix}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
 		// 				CreatedByUser: to.Ptr(""),
 		// 				CreatedByUserID: to.Ptr(""),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T16:53:02.4830866-07:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T23:53:02.483Z"); return t}()),
 		// 				DataDiskParameters: []*armdevtestlabs.DataDiskProperties{
 		// 				},
 		// 				DisallowPublicIPAddress: to.Ptr(true),
@@ -128,7 +128,7 @@ func ExampleVirtualMachinesClient_Get() {
 	// 		ComputeID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{labName}-{vmName}-{randomSuffix}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
 	// 		CreatedByUser: to.Ptr(""),
 	// 		CreatedByUserID: to.Ptr(""),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T16:53:02.4830866-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T23:53:02.483Z"); return t}()),
 	// 		DataDiskParameters: []*armdevtestlabs.DataDiskProperties{
 	// 		},
 	// 		DisallowPublicIPAddress: to.Ptr(true),
@@ -216,7 +216,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		CreatedByUser: to.Ptr(""),
 	// 		CreatedByUserID: to.Ptr(""),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T16:53:02.4830866-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T23:53:02.483Z"); return t}()),
 	// 		DataDiskParameters: []*armdevtestlabs.DataDiskProperties{
 	// 		},
 	// 		DisallowPublicIPAddress: to.Ptr(true),
@@ -299,7 +299,7 @@ func ExampleVirtualMachinesClient_Update() {
 	// 		ComputeID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{labName}-{vmName}-{randomSuffix}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
 	// 		CreatedByUser: to.Ptr(""),
 	// 		CreatedByUserID: to.Ptr(""),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T16:53:02.4830866-07:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-01T23:53:02.483Z"); return t}()),
 	// 		DataDiskParameters: []*armdevtestlabs.DataDiskProperties{
 	// 		},
 	// 		DisallowPublicIPAddress: to.Ptr(true),
@@ -473,7 +473,7 @@ func ExampleVirtualMachinesClient_ListApplicableSchedules() {
 	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/schedules/myAutoShutdownSchedule"),
 	// 			Location: to.Ptr("{location}"),
 	// 			Properties: &armdevtestlabs.ScheduleProperties{
-	// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-29T21:48:14.1369355+00:00"); return t}()),
+	// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-29T21:48:14.136Z"); return t}()),
 	// 				DailyRecurrence: &armdevtestlabs.DayDetails{
 	// 					Time: to.Ptr("1900"),
 	// 				},
@@ -508,7 +508,7 @@ func ExampleVirtualMachinesClient_ListApplicableSchedules() {
 	// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/schedules/myAutoStartSchedule"),
 	// 				Location: to.Ptr("{location}"),
 	// 				Properties: &armdevtestlabs.ScheduleProperties{
-	// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-29T21:46:37.0473976+00:00"); return t}()),
+	// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-29T21:46:37.047Z"); return t}()),
 	// 					DailyRecurrence: &armdevtestlabs.DayDetails{
 	// 						Time: to.Ptr("0900"),
 	// 					},

@@ -51,10 +51,10 @@ func ExampleWorkflowRunsClient_NewListPager() {
 		// 				Correlation: &armlogic.Correlation{
 		// 					ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.5779999Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.577Z"); return t}()),
 		// 				Outputs: map[string]*armlogic.WorkflowOutputParameter{
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044Z"); return t}()),
 		// 				Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 		// 				Trigger: &armlogic.WorkflowRunTrigger{
 		// 					Name: to.Ptr("Recurrence"),
@@ -62,12 +62,12 @@ func ExampleWorkflowRunsClient_NewListPager() {
 		// 					Correlation: &armlogic.Correlation{
 		// 						ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 					},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
+		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 		// 					Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 		// 				},
-		// 				WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+		// 				WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044Z"); return t}()),
 		// 				Workflow: &armlogic.ResourceReference{
 		// 					Name: to.Ptr("08586676754160363885"),
 		// 					Type: to.Ptr("Microsoft.Logic/workflows/versions"),
@@ -105,10 +105,10 @@ func ExampleWorkflowRunsClient_Get() {
 	// 		Correlation: &armlogic.Correlation{
 	// 			ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.5779999Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.577Z"); return t}()),
 	// 		Outputs: map[string]*armlogic.WorkflowOutputParameter{
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044Z"); return t}()),
 	// 		Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 	// 		Trigger: &armlogic.WorkflowRunTrigger{
 	// 			Name: to.Ptr("Recurrence"),
@@ -116,12 +116,12 @@ func ExampleWorkflowRunsClient_Get() {
 	// 			Correlation: &armlogic.Correlation{
 	// 				ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 			},
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 	// 			Status: to.Ptr(armlogic.WorkflowStatusSucceeded),
 	// 		},
-	// 		WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+	// 		WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044Z"); return t}()),
 	// 		Workflow: &armlogic.ResourceReference{
 	// 			Name: to.Ptr("08586676754160363885"),
 	// 			Type: to.Ptr("Microsoft.Logic/workflows/versions"),

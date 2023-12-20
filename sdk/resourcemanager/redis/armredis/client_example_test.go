@@ -64,7 +64,7 @@ func ExampleClient_NewListUpgradeNotificationsPager() {
 		// 	Value: []*armredis.UpgradeNotification{
 		// 		{
 		// 			Name: to.Ptr("notification1"),
-		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T23:20:50.52Z"); return t}()),
+		// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-16T23:20:50.520Z"); return t}()),
 		// 			UpsellNotification: map[string]*string{
 		// 			},
 		// 	}},

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateList.json
 func ExampleCertificateClient_NewListByBatchAccountPager_listCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleCertificateClient_NewListByBatchAccountPager_listCertificates() {
 		// 				Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 		// 				ThumbprintAlgorithm: to.Ptr("sha1"),
 		// 				ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 		// 				PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 		// 			},
 		// 	}},
@@ -63,7 +63,7 @@ func ExampleCertificateClient_NewListByBatchAccountPager_listCertificates() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateListWithFilter.json
 func ExampleCertificateClient_NewListByBatchAccountPager_listCertificatesFilterAndSelect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleCertificateClient_NewListByBatchAccountPager_listCertificatesFilterA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_Full.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_Full.json
 func ExampleCertificateClient_Create_createCertificateFull() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,13 +152,13 @@ func ExampleCertificateClient_Create_createCertificateFull() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_MinimalCer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_MinimalCer.json
 func ExampleCertificateClient_Create_createCertificateMinimalCer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,13 +193,13 @@ func ExampleCertificateClient_Create_createCertificateMinimalCer() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_Minimal.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_Minimal.json
 func ExampleCertificateClient_Create_createCertificateMinimalPfx() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,13 +234,13 @@ func ExampleCertificateClient_Create_createCertificateMinimalPfx() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateUpdate.json
 func ExampleCertificateClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,13 +273,13 @@ func ExampleCertificateClient_Update() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateDelete.json
 func ExampleCertificateClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleCertificateClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateGet.json
 func ExampleCertificateClient_Get_getCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,13 +328,13 @@ func ExampleCertificateClient_Get_getCertificate() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGetWithDeletionError.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateGetWithDeletionError.json
 func ExampleCertificateClient_Get_getCertificateWithDeletionError() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,15 +372,15 @@ func ExampleCertificateClient_Get_getCertificateWithDeletionError() {
 	// 			}},
 	// 		},
 	// 		PreviousProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateDeleting),
-	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:15:25.5625498Z"); return t}()),
+	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:15:25.562Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCancelDeletion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCancelDeletion.json
 func ExampleCertificateClient_CancelDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,9 +408,9 @@ func ExampleCertificateClient_CancelDeletion() {
 	// 		Thumbprint: to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
 	// 		ThumbprintAlgorithm: to.Ptr("sha1"),
 	// 		PreviousProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateFailed),
-	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:22:54.3299195Z"); return t}()),
+	// 		PreviousProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T00:22:54.329Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.CertificateProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.4420202Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-21T01:47:38.442Z"); return t}()),
 	// 		PublicData: to.Ptr("MIICrjCCAZagAwI..."),
 	// 	},
 	// }

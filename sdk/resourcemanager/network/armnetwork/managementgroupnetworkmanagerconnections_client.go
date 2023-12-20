@@ -31,7 +31,7 @@ type ManagementGroupNetworkManagerConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagementGroupNetworkManagerConnectionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementGroupNetworkManagerConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagementGroupNetworkManagerConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func NewManagementGroupNetworkManagerConnectionsClient(credential azcore.TokenCr
 // CreateOrUpdate - Create a network manager connection on this management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - managementGroupID - The management group Id which uniquely identify the Microsoft Azure management group.
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - parameters - Network manager connection to be created/updated.
@@ -88,7 +88,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -109,7 +109,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateHand
 // Delete - Delete specified pending connection created by this management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - managementGroupID - The management group Id which uniquely identify the Microsoft Azure management group.
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - options - ManagementGroupNetworkManagerConnectionsClientDeleteOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.Delete
@@ -151,7 +151,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,7 +160,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) deleteCreateReques
 // Get - Get a specified connection created by this management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - managementGroupID - The management group Id which uniquely identify the Microsoft Azure management group.
 //   - networkManagerConnectionName - Name for the network manager connection.
 //   - options - ManagementGroupNetworkManagerConnectionsClientGetOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.Get
@@ -203,7 +203,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +220,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) getHandleResponse(
 
 // NewListPager - List all network manager connections created by this management group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - managementGroupID - The management group Id which uniquely identify the Microsoft Azure management group.
 //   - options - ManagementGroupNetworkManagerConnectionsClientListOptions contains the optional parameters for the ManagementGroupNetworkManagerConnectionsClient.NewListPager
 //     method.
@@ -231,22 +231,15 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) NewListPager(manag
 		},
 		Fetcher: func(ctx context.Context, page *ManagementGroupNetworkManagerConnectionsClientListResponse) (ManagementGroupNetworkManagerConnectionsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementGroupNetworkManagerConnectionsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, managementGroupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, managementGroupID, options)
+			}, nil)
 			if err != nil {
 				return ManagementGroupNetworkManagerConnectionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementGroupNetworkManagerConnectionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagementGroupNetworkManagerConnectionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -266,7 +259,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) listCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

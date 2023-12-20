@@ -70,17 +70,17 @@ func (v *VMInsightsServerTransport) dispatchGetOnboardingStatus(req *http.Reques
 	if v.srv.GetOnboardingStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOnboardingStatus not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default`
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/vmInsightsOnboardingStatuses/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.GetOnboardingStatus(req.Context(), resourceURIUnescaped, nil)
+	respr, errRespr := v.srv.GetOnboardingStatus(req.Context(), resourceURIParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -68,7 +68,7 @@ func ExampleServersClient_BeginCreate_createADatabaseAsAPointInTimeRestore() {
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T21:08:24.637+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T21:08:24.637Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("targetserver.postgres.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armpostgresql.StorageProfile{
@@ -143,7 +143,7 @@ func ExampleServersClient_BeginCreate_createANewServer() {
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armpostgresql.StorageProfile{
@@ -204,7 +204,7 @@ func ExampleServersClient_BeginCreate_createAReplicaServer() {
 	// 	Location: to.Ptr("westcentralus"),
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("postgres"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-20T00:17:56.677+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-20T00:17:56.677Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("testserver-replica1.postgres.database.azure.com"),
 	// 		MasterServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup_WestCentralUS/providers/Microsoft.DBforPostgreSQL/servers/testserver-master"),
 	// 		ReplicaCapacity: to.Ptr[int32](0),
@@ -274,7 +274,7 @@ func ExampleServersClient_BeginCreate_createAServerAsAGeoRestore() {
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("targetserver.postgres.database.azure.com"),
 	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 	// 		StorageProfile: &armpostgresql.StorageProfile{
@@ -332,7 +332,7 @@ func ExampleServersClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("cloudsa"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
 	// 		MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
 	// 		SSLEnforcement: to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
@@ -399,7 +399,7 @@ func ExampleServersClient_Get() {
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armpostgresql.ServerProperties{
 	// 		AdministratorLogin: to.Ptr("testuser"),
-	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:00:58.9243541+00:00"); return t}()),
+	// 		EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:00:58.924Z"); return t}()),
 	// 		FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
 	// 		MasterServerID: to.Ptr(""),
 	// 		MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
@@ -469,7 +469,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.1498475+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.149Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
 		// 				},
@@ -497,7 +497,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.1498475+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.149Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc2.postgres.database.azure.com"),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
 		// 					{
@@ -541,7 +541,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
 		// 				},
@@ -597,7 +597,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.1498475+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-04T21:01:55.149Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc1.postgres.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS11),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
@@ -626,7 +626,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.1498475+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-07T21:01:55.149Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc2.postgres.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
@@ -668,7 +668,7 @@ func ExampleServersClient_NewListPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("testuser"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T00:11:08.55+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T00:11:08.550Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc3.postgres.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS10),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{
@@ -713,7 +713,7 @@ func ExampleServersClient_NewListPager() {
 		// 			},
 		// 			Properties: &armpostgresql.ServerProperties{
 		// 				AdministratorLogin: to.Ptr("cloudsa"),
-		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637+00:00"); return t}()),
+		// 				EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T21:08:24.637Z"); return t}()),
 		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc4.postgres.database.azure.com"),
 		// 				MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS10),
 		// 				PrivateEndpointConnections: []*armpostgresql.ServerPrivateEndpointConnection{

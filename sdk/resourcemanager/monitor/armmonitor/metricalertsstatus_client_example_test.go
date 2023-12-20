@@ -46,7 +46,7 @@ func ExampleMetricAlertsStatusClient_List() {
 	// 					"resourceId": to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"),
 	// 				},
 	// 				Status: to.Ptr("Healthy"),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-17T20:17:25.6293237Z"); return t}()),
+	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-17T20:17:25.629Z"); return t}()),
 	// 			},
 	// 	}},
 	// }
@@ -81,7 +81,7 @@ func ExampleMetricAlertsStatusClient_ListByName() {
 	// 					"resourceId": to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"),
 	// 				},
 	// 				Status: to.Ptr("Healthy"),
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-17T20:17:25.6293237Z"); return t}()),
+	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-17T20:17:25.629Z"); return t}()),
 	// 			},
 	// 	}},
 	// }

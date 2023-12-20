@@ -1,6 +1,6 @@
 # Azure Container Service Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4)
 
 The `armcontainerservice` module provides operations for working with Azure Container Service.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Container Service module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4
 ```
 
 ## Authorization
@@ -61,29 +61,11 @@ client := clientFactory.NewSnapshotsClient()
 ```
 
 ## Fakes
-The `fake` package provides implementations for fake servers that can be used for testing.
-To create a fake server, declare an instance of the required fake server type(s).
-```go
-myFakeManagedClustersServer := fake.ManagedClustersServer{}
-```
-Next, provide func implementations for the methods you wish to fake.
-The named return variables can be used to simplify return value construction.
-```go
-myFakeManagedClustersServer.Get = func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClustersClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedClustersClientGetResponse], errResp azfake.ErrorResponder) {
-	// TODO: resp.SetResponse(/* your fake armcontainerservice.ManagedClustersClientGetResponse response */)
-	return
-}
-```
-You connect the fake server to a client instance during construction through the optional transport.
-Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
-```go
-import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-client, err := armcontainerservice.NewManagedClustersClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
-	ClientOptions: azcore.ClientOptions{
-		Transport: fake.NewManagedClustersServerTransport(&myFakeManagedClustersServer),
-	},
-})
-```
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## More sample code
 

@@ -32,7 +32,7 @@ type JobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 //   - options - JobsClientExportOptions contains the optional parameters for the JobsClient.Export method.
 func (client *JobsClient) Export(ctx context.Context, vaultName string, resourceGroupName string, options *JobsClientExportOptions) (JobsClientExportResponse, error) {
 	var err error
+	const operationName = "JobsClient.Export"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportCreateRequest(ctx, vaultName, resourceGroupName, options)
 	if err != nil {
 		return JobsClientExportResponse{}, err

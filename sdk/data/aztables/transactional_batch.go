@@ -69,7 +69,7 @@ type SubmitTransactionOptions struct {
 // All transactionActions must be for entities with the same PartitionKey. There can only be one transaction action
 // for a RowKey, a duplicated row key will return an error. A storage account will return a 202 Accepted response
 // when a transaction fails, the multipart data will have 4XX responses for the batch request that failed. For
-// more information about error responses see https://docs.microsoft.com/en-us/rest/api/storageservices/performing-entity-group-transactions#sample-error-response
+// more information about error responses see https://learn.microsoft.com/rest/api/storageservices/performing-entity-group-transactions#sample-error-response
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.SubmitTransaction", t.client.Tracer(), nil)
@@ -229,7 +229,7 @@ func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *Tr
 		return err
 	}
 	var req *policy.Request
-	var entity map[string]interface{}
+	var entity map[string]any
 	err = json.Unmarshal(transactionAction.Entity, &entity)
 	if err != nil {
 		return err

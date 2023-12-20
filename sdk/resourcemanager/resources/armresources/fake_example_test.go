@@ -45,7 +45,7 @@ func ExampleServer() {
 	}
 
 	// now create the corresponding client, connecting the fake server via the client options
-	client, err := armresources.NewClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armresources.NewClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewServerTransport(&fakeServer),
 		},

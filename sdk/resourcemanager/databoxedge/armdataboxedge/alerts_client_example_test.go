@@ -47,7 +47,7 @@ func ExampleAlertsClient_NewListByDataBoxEdgeDevicePager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/alerts/83eccd0b-134b-40b0-ad62-b5f124d03790"),
 		// 			Properties: &armdataboxedge.AlertProperties{
 		// 				AlertType: to.Ptr("PasswordChangedEvent"),
-		// 				AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:29:15.2325577Z"); return t}()),
+		// 				AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:29:15.232Z"); return t}()),
 		// 				DetailedInformation: map[string]*string{
 		// 				},
 		// 				ErrorDetails: &armdataboxedge.AlertErrorDetails{
@@ -66,7 +66,7 @@ func ExampleAlertsClient_NewListByDataBoxEdgeDevicePager() {
 		// 			ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/alerts/159a00c7-8543-4343-9435-263ac87df3bb"),
 		// 			Properties: &armdataboxedge.AlertProperties{
 		// 				AlertType: to.Ptr("UpdateScanFailedEvent"),
-		// 				AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t}()),
+		// 				AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.427Z"); return t}()),
 		// 				DetailedInformation: map[string]*string{
 		// 				},
 		// 				ErrorDetails: &armdataboxedge.AlertErrorDetails{
@@ -107,7 +107,7 @@ func ExampleAlertsClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/alerts/159a00c7-8543-4343-9435-263ac87df3bb"),
 	// 	Properties: &armdataboxedge.AlertProperties{
 	// 		AlertType: to.Ptr("UpdateScanFailedEvent"),
-	// 		AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t}()),
+	// 		AppearedAtDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.427Z"); return t}()),
 	// 		DetailedInformation: map[string]*string{
 	// 		},
 	// 		ErrorDetails: &armdataboxedge.AlertErrorDetails{

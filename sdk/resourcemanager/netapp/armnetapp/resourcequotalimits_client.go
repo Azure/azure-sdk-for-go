@@ -28,7 +28,7 @@ type ResourceQuotaLimitsClient struct {
 }
 
 // NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceQuotaLimitsClient, error) {
@@ -46,8 +46,8 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 // Get - Get the default and current subscription quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - quotaLimitName - The name of the Quota Limit
 //   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
 func (client *ResourceQuotaLimitsClient) Get(ctx context.Context, location string, quotaLimitName string, options *ResourceQuotaLimitsClientGetOptions) (ResourceQuotaLimitsClientGetResponse, error) {
@@ -92,7 +92,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,8 +109,8 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Get the default and current limits for quotas
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager
 //     method.
 func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
@@ -153,7 +153,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

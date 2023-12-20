@@ -8,6 +8,23 @@
 
 package armnetapp
 
+// AccountBackupsClientDeleteResponse contains the response from method AccountBackupsClient.BeginDelete.
+type AccountBackupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AccountBackupsClientGetResponse contains the response from method AccountBackupsClient.Get.
+type AccountBackupsClientGetResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// AccountBackupsClientListByNetAppAccountResponse contains the response from method AccountBackupsClient.NewListByNetAppAccountPager.
+type AccountBackupsClientListByNetAppAccountResponse struct {
+	// List of Backups
+	BackupsList
+}
+
 // AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.BeginCreateOrUpdate.
 type AccountsClientCreateOrUpdateResponse struct {
 	// NetApp account resource
@@ -35,6 +52,11 @@ type AccountsClientListBySubscriptionResponse struct {
 type AccountsClientListResponse struct {
 	// List of NetApp account resources
 	AccountList
+}
+
+// AccountsClientMigrateEncryptionKeyResponse contains the response from method AccountsClient.BeginMigrateEncryptionKey.
+type AccountsClientMigrateEncryptionKeyResponse struct {
+	// placeholder for future response values
 }
 
 // AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.BeginRenewCredentials.
@@ -77,10 +99,89 @@ type BackupPoliciesClientUpdateResponse struct {
 	BackupPolicy
 }
 
+// BackupVaultsClientCreateOrUpdateResponse contains the response from method BackupVaultsClient.BeginCreateOrUpdate.
+type BackupVaultsClientCreateOrUpdateResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupVaultsClientDeleteResponse contains the response from method BackupVaultsClient.BeginDelete.
+type BackupVaultsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BackupVaultsClientGetResponse contains the response from method BackupVaultsClient.Get.
+type BackupVaultsClientGetResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupVaultsClientListByNetAppAccountResponse contains the response from method BackupVaultsClient.NewListByNetAppAccountPager.
+type BackupVaultsClientListByNetAppAccountResponse struct {
+	// List of Backup Vaults
+	BackupVaultsList
+}
+
+// BackupVaultsClientUpdateResponse contains the response from method BackupVaultsClient.BeginUpdate.
+type BackupVaultsClientUpdateResponse struct {
+	// Backup Vault information
+	BackupVault
+}
+
+// BackupsClientCreateResponse contains the response from method BackupsClient.BeginCreate.
+type BackupsClientCreateResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// BackupsClientDeleteResponse contains the response from method BackupsClient.BeginDelete.
+type BackupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsClientGetLatestStatusResponse contains the response from method BackupsClient.GetLatestStatus.
+type BackupsClientGetLatestStatusResponse struct {
+	// Backup status
+	BackupStatus
+}
+
+// BackupsClientGetResponse contains the response from method BackupsClient.Get.
+type BackupsClientGetResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
 // BackupsClientGetVolumeRestoreStatusResponse contains the response from method BackupsClient.GetVolumeRestoreStatus.
 type BackupsClientGetVolumeRestoreStatusResponse struct {
 	// Restore status
 	RestoreStatus
+}
+
+// BackupsClientListByVaultResponse contains the response from method BackupsClient.NewListByVaultPager.
+type BackupsClientListByVaultResponse struct {
+	// List of Backups
+	BackupsList
+}
+
+// BackupsClientUpdateResponse contains the response from method BackupsClient.BeginUpdate.
+type BackupsClientUpdateResponse struct {
+	// Backup under a Backup Vault
+	Backup
+}
+
+// BackupsUnderAccountClientMigrateBackupsResponse contains the response from method BackupsUnderAccountClient.BeginMigrateBackups.
+type BackupsUnderAccountClientMigrateBackupsResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsUnderBackupVaultClientRestoreFilesResponse contains the response from method BackupsUnderBackupVaultClient.BeginRestoreFiles.
+type BackupsUnderBackupVaultClientRestoreFilesResponse struct {
+	// placeholder for future response values
+}
+
+// BackupsUnderVolumeClientMigrateBackupsResponse contains the response from method BackupsUnderVolumeClient.BeginMigrateBackups.
+type BackupsUnderVolumeClientMigrateBackupsResponse struct {
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -165,6 +266,18 @@ type ResourceQuotaLimitsClientGetResponse struct {
 type ResourceQuotaLimitsClientListResponse struct {
 	// List of Subscription Quota Items
 	SubscriptionQuotaItemList
+}
+
+// ResourceRegionInfosClientGetResponse contains the response from method ResourceRegionInfosClient.Get.
+type ResourceRegionInfosClientGetResponse struct {
+	// Information regarding regionInfo Item.
+	RegionInfoResource
+}
+
+// ResourceRegionInfosClientListResponse contains the response from method ResourceRegionInfosClient.NewListPager.
+type ResourceRegionInfosClientListResponse struct {
+	// List of regionInfo resources
+	RegionInfosList
 }
 
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.
@@ -432,6 +545,11 @@ type VolumesClientRevertRelocationResponse struct {
 
 // VolumesClientRevertResponse contains the response from method VolumesClient.BeginRevert.
 type VolumesClientRevertResponse struct {
+	// placeholder for future response values
+}
+
+// VolumesClientSplitCloneFromParentResponse contains the response from method VolumesClient.BeginSplitCloneFromParent.
+type VolumesClientSplitCloneFromParentResponse struct {
 	// placeholder for future response values
 }
 

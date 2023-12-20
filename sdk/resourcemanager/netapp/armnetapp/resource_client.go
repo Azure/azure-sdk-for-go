@@ -28,7 +28,7 @@ type ResourceClient struct {
 }
 
 // NewResourceClient creates a new instance of ResourceClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
@@ -46,8 +46,8 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckFilePathAvailability - Check if a file path is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - body - File path availability request.
 //   - options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
 //     method.
@@ -89,7 +89,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -110,8 +110,8 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 // CheckNameAvailability - Check if a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - body - Name availability request.
 //   - options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
 //     method.
@@ -153,7 +153,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -174,8 +174,8 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // CheckQuotaAvailability - Check if a quota is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - body - Quota availability request.
 //   - options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
 //     method.
@@ -217,7 +217,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -238,8 +238,8 @@ func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Re
 // QueryNetworkSiblingSet - Get details of the specified network sibling set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - body - Network sibling set to query.
 //   - options - ResourceClientQueryNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.QueryNetworkSiblingSet
 //     method.
@@ -281,7 +281,7 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -302,8 +302,8 @@ func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Re
 // QueryRegionInfo - Provides storage to network proximity and logical zone mapping information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - options - ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo
 //     method.
 func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (ResourceClientQueryRegionInfoResponse, error) {
@@ -344,7 +344,7 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -362,8 +362,8 @@ func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response)
 // BeginUpdateNetworkSiblingSet - Update the network features of the specified network sibling set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
-//   - location - The name of Azure region.
+// Generated from API version 2023-05-01-preview
+//   - location - The name of the Azure region.
 //   - body - Update for the specified network sibling set.
 //   - options - ResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.BeginUpdateNetworkSiblingSet
 //     method.
@@ -388,7 +388,7 @@ func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, 
 // UpdateNetworkSiblingSet - Update the network features of the specified network sibling set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-05-01-preview
 func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceClient.BeginUpdateNetworkSiblingSet"
@@ -426,7 +426,7 @@ func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

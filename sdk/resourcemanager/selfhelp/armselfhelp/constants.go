@@ -10,7 +10,7 @@ package armselfhelp
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -117,6 +117,8 @@ const (
 	DiagnosticProvisioningStateFailed DiagnosticProvisioningState = "Failed"
 	// DiagnosticProvisioningStatePartialComplete - Some Diagnostics are still running or failed.
 	DiagnosticProvisioningStatePartialComplete DiagnosticProvisioningState = "PartialComplete"
+	// DiagnosticProvisioningStateRunning - All Diagnostics are still running.
+	DiagnosticProvisioningStateRunning DiagnosticProvisioningState = "Running"
 	// DiagnosticProvisioningStateSucceeded - All Diagnostics in the Batch succeeded.
 	DiagnosticProvisioningStateSucceeded DiagnosticProvisioningState = "Succeeded"
 )
@@ -127,6 +129,7 @@ func PossibleDiagnosticProvisioningStateValues() []DiagnosticProvisioningState {
 		DiagnosticProvisioningStateCanceled,
 		DiagnosticProvisioningStateFailed,
 		DiagnosticProvisioningStatePartialComplete,
+		DiagnosticProvisioningStateRunning,
 		DiagnosticProvisioningStateSucceeded,
 	}
 }
@@ -135,9 +138,13 @@ func PossibleDiagnosticProvisioningStateValues() []DiagnosticProvisioningState {
 type ExecutionStatus string
 
 const (
-	ExecutionStatusFailed  ExecutionStatus = "Failed"
+	// ExecutionStatusFailed - Step execution failed
+	ExecutionStatusFailed ExecutionStatus = "Failed"
+	// ExecutionStatusRunning - Step execution running
 	ExecutionStatusRunning ExecutionStatus = "Running"
+	// ExecutionStatusSuccess - Step execution succeeded.
 	ExecutionStatusSuccess ExecutionStatus = "Success"
+	// ExecutionStatusWarning - Step execution warning
 	ExecutionStatusWarning ExecutionStatus = "Warning"
 )
 
@@ -227,7 +234,7 @@ func PossibleQuestionContentTypeValues() []QuestionContentType {
 	}
 }
 
-// QuestionType - Text Input. Will be a single line input.
+// QuestionType - Type of Question
 type QuestionType string
 
 const (
@@ -271,8 +278,15 @@ func PossibleResultTypeValues() []ResultType {
 type SolutionProvisioningState string
 
 const (
-	SolutionProvisioningStateCanceled  SolutionProvisioningState = "Canceled"
-	SolutionProvisioningStateFailed    SolutionProvisioningState = "Failed"
+	// SolutionProvisioningStateCanceled - When Solutions request gets canceled.
+	SolutionProvisioningStateCanceled SolutionProvisioningState = "Canceled"
+	// SolutionProvisioningStateFailed - All Solutions failed to run.
+	SolutionProvisioningStateFailed SolutionProvisioningState = "Failed"
+	// SolutionProvisioningStatePartialComplete - Some Solutions are still running or failed.
+	SolutionProvisioningStatePartialComplete SolutionProvisioningState = "PartialComplete"
+	// SolutionProvisioningStateRunning - All Solutions are still running.
+	SolutionProvisioningStateRunning SolutionProvisioningState = "Running"
+	// SolutionProvisioningStateSucceeded - All Solutions in the Batch succeeded.
 	SolutionProvisioningStateSucceeded SolutionProvisioningState = "Succeeded"
 )
 
@@ -281,6 +295,8 @@ func PossibleSolutionProvisioningStateValues() []SolutionProvisioningState {
 	return []SolutionProvisioningState{
 		SolutionProvisioningStateCanceled,
 		SolutionProvisioningStateFailed,
+		SolutionProvisioningStatePartialComplete,
+		SolutionProvisioningStateRunning,
 		SolutionProvisioningStateSucceeded,
 	}
 }

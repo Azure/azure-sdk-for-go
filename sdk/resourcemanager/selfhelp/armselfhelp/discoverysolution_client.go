@@ -41,16 +41,16 @@ func NewDiscoverySolutionClient(credential azcore.TokenCredential, options *arm.
 // NewListPager - Lists the relevant Azure diagnostics and solutions using problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
 // AND resourceUri or
 // resourceType. Discovery Solutions is the initial entry point within Help API, which identifies relevant Azure diagnostics
-// and solutions. We will do our best to return the most effective solutions
-// based on the type of inputs, in the request URL
-// Mandatory input : problemClassificationId (Use the problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
+// and solutions.
+// Required Input : problemClassificationId (Use the problemClassification API [https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP])
 // Optional input: resourceUri OR
 // resource Type
 // Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
 // and Solutions API.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - options - DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager
 //     method.
 func (client *DiscoverySolutionClient) NewListPager(scope string, options *DiscoverySolutionClientListOptions) *runtime.Pager[DiscoverySolutionClientListResponse] {

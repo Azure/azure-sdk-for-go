@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -32,6 +32,10 @@ type ManagementServer struct {
 	// BeginDeleteBastionShareableLink is the fake for method ManagementClient.BeginDeleteBastionShareableLink
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDeleteBastionShareableLink func(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest armnetwork.BastionShareableLinkListRequest, options *armnetwork.ManagementClientBeginDeleteBastionShareableLinkOptions) (resp azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteBastionShareableLinkByToken is the fake for method ManagementClient.BeginDeleteBastionShareableLinkByToken
+	// HTTP status codes to indicate success: http.StatusAccepted
+	BeginDeleteBastionShareableLinkByToken func(ctx context.Context, resourceGroupName string, bastionHostName string, bslTokenRequest armnetwork.BastionShareableLinkTokenListRequest, options *armnetwork.ManagementClientBeginDeleteBastionShareableLinkByTokenOptions) (resp azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse], errResp azfake.ErrorResponder)
 
 	// NewDisconnectActiveSessionsPager is the fake for method ManagementClient.NewDisconnectActiveSessionsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -83,9 +87,10 @@ type ManagementServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransport {
 	return &ManagementServerTransport{
-		srv:                              srv,
-		beginDeleteBastionShareableLink:  newTracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse]](),
-		newDisconnectActiveSessionsPager: newTracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]](),
+		srv:                                    srv,
+		beginDeleteBastionShareableLink:        newTracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse]](),
+		beginDeleteBastionShareableLinkByToken: newTracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse]](),
+		newDisconnectActiveSessionsPager:       newTracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]](),
 		beginGeneratevirtualwanvpnserverconfigurationvpnprofile: newTracker[azfake.PollerResponder[armnetwork.ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]](),
 		beginGetActiveSessions:          newTracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]]](),
 		newGetBastionShareableLinkPager: newTracker[azfake.PagerResponder[armnetwork.ManagementClientGetBastionShareableLinkResponse]](),
@@ -98,6 +103,7 @@ func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransp
 type ManagementServerTransport struct {
 	srv                                                     *ManagementServer
 	beginDeleteBastionShareableLink                         *tracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkResponse]]
+	beginDeleteBastionShareableLinkByToken                  *tracker[azfake.PollerResponder[armnetwork.ManagementClientDeleteBastionShareableLinkByTokenResponse]]
 	newDisconnectActiveSessionsPager                        *tracker[azfake.PagerResponder[armnetwork.ManagementClientDisconnectActiveSessionsResponse]]
 	beginGeneratevirtualwanvpnserverconfigurationvpnprofile *tracker[azfake.PollerResponder[armnetwork.ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]]
 	beginGetActiveSessions                                  *tracker[azfake.PollerResponder[azfake.PagerResponder[armnetwork.ManagementClientGetActiveSessionsResponse]]]
@@ -121,6 +127,8 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 		resp, err = m.dispatchCheckDNSNameAvailability(req)
 	case "ManagementClient.BeginDeleteBastionShareableLink":
 		resp, err = m.dispatchBeginDeleteBastionShareableLink(req)
+	case "ManagementClient.BeginDeleteBastionShareableLinkByToken":
+		resp, err = m.dispatchBeginDeleteBastionShareableLinkByToken(req)
 	case "ManagementClient.NewDisconnectActiveSessionsPager":
 		resp, err = m.dispatchNewDisconnectActiveSessionsPager(req)
 	case "ManagementClient.ExpressRouteProviderPort":
@@ -231,6 +239,54 @@ func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLink(req 
 	}
 	if !server.PollerResponderMore(beginDeleteBastionShareableLink) {
 		m.beginDeleteBastionShareableLink.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *ManagementServerTransport) dispatchBeginDeleteBastionShareableLinkByToken(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginDeleteBastionShareableLinkByToken == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteBastionShareableLinkByToken not implemented")}
+	}
+	beginDeleteBastionShareableLinkByToken := m.beginDeleteBastionShareableLinkByToken.get(req)
+	if beginDeleteBastionShareableLinkByToken == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteShareableLinksByToken`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.BastionShareableLinkTokenListRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		bastionHostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginDeleteBastionShareableLinkByToken(req.Context(), resourceGroupNameParam, bastionHostNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteBastionShareableLinkByToken = &respr
+		m.beginDeleteBastionShareableLinkByToken.add(req, beginDeleteBastionShareableLinkByToken)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteBastionShareableLinkByToken, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+		m.beginDeleteBastionShareableLinkByToken.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteBastionShareableLinkByToken) {
+		m.beginDeleteBastionShareableLinkByToken.remove(req)
 	}
 
 	return resp, nil

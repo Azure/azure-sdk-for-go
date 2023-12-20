@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerDelete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerGet.json
 func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreate.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateWithZones.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateWithZones.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFrontendIpInZone1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -768,7 +768,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFronte
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateGatewayLoadBalancerConsumer.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -987,7 +987,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1067,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 				}},
 		},
 		SKU: &armnetwork.LoadBalancerSKU{
-			Name: to.Ptr(armnetwork.LoadBalancerSKUName("Premium")),
+			Name: to.Ptr(armnetwork.LoadBalancerSKUNameGateway),
 		},
 	}, nil)
 	if err != nil {
@@ -1192,12 +1192,12 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
 	// 	},
 	// 	SKU: &armnetwork.LoadBalancerSKU{
-	// 		Name: to.Ptr(armnetwork.LoadBalancerSKUNameStandard),
+	// 		Name: to.Ptr(armnetwork.LoadBalancerSKUNameGateway),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1271,7 +1271,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 				}},
 		},
 		SKU: &armnetwork.LoadBalancerSKU{
-			Name: to.Ptr(armnetwork.LoadBalancerSKUName("Premium")),
+			Name: to.Ptr(armnetwork.LoadBalancerSKUNameGateway),
 		},
 	}, nil)
 	if err != nil {
@@ -1413,12 +1413,12 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
 	// 	},
 	// 	SKU: &armnetwork.LoadBalancerSKU{
-	// 		Name: to.Ptr(armnetwork.LoadBalancerSKUNameStandard),
+	// 		Name: to.Ptr(armnetwork.LoadBalancerSKUNameGateway),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateGlobalTier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateGlobalTier.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1614,7 +1614,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobal
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateStandardSku.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateStandardSku.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStandardSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1827,7 +1827,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStanda
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateWithSyncModePropertyOnPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateWithSyncModePropertyOnPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithSyncModePropertyOnPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2049,7 +2049,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithSyncMo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateWithInboundNatPool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateWithInboundNatPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboundNatPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2177,7 +2177,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboun
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerCreateWithOutboundRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerCreateWithOutboundRules.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutboundRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2433,7 +2433,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutbou
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerUpdateTags.json
 func ExampleLoadBalancersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2566,7 +2566,7 @@ func ExampleLoadBalancersClient_UpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerListAll.json
 func ExampleLoadBalancersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2739,7 +2739,7 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerList.json
 func ExampleLoadBalancersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2912,7 +2912,7 @@ func ExampleLoadBalancersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/LoadBalancersSwapPublicIpAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancersSwapPublicIpAddresses.json
 func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2951,7 +2951,7 @@ func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/QueryInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/QueryInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2986,7 +2986,7 @@ func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/MigrateLoadBalancerToIPBased.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/MigrateLoadBalancerToIPBased.json
 func ExampleLoadBalancersClient_MigrateToIPBased() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

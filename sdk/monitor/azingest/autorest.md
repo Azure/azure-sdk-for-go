@@ -6,7 +6,6 @@ description: Azure Monitor Ingestion Go Client
 generated-metadata: false
 
 clear-output-folder: false
-export-clients: true
 go: true
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/f07297ce913bfc911470a86436e73c9aceec0587/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
 license-header: MICROSOFT_MIT_NO_VERSION
@@ -15,7 +14,8 @@ openapi-type: "data-plane"
 output-folder: ../azingest
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.61"
+inject-spans: true
 version: "^3.0.0"
 rawjson-as-bytes: true
 
@@ -46,6 +46,7 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
@@ -57,4 +58,10 @@ directive:
   - from: swagger-document
     where: $.paths./dataCollectionRules/{ruleId}/streams/{stream}.post
     transform: $["description"] = "Ingestion API used to directly ingest data using Data Collection Rules. Maximum size of of API call is 1 MB."
+
+  # fix up body param to keep back-compat
+  - from: swagger-document
+    where: $.paths..parameters..[?(@.name=='body')]
+    transform: |
+      $['schema'] = { "type": "object" }
 ```

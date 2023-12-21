@@ -325,6 +325,12 @@ func (c *ClientFactory) NewJobExecutionsClient() *JobExecutionsClient {
 	return subClient
 }
 
+// NewJobPrivateEndpointsClient creates a new instance of JobPrivateEndpointsClient.
+func (c *ClientFactory) NewJobPrivateEndpointsClient() *JobPrivateEndpointsClient {
+	subClient, _ := NewJobPrivateEndpointsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewJobStepExecutionsClient creates a new instance of JobStepExecutionsClient.
 func (c *ClientFactory) NewJobStepExecutionsClient() *JobStepExecutionsClient {
 	subClient, _ := NewJobStepExecutionsClient(c.subscriptionID, c.credential, c.options)

@@ -44,10 +44,186 @@ func NewLongTermRetentionBackupsClient(subscriptionID string, credential azcore.
 	return client, nil
 }
 
+// BeginChangeAccessTier - Change a long term retention backup access tier.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+//   - options - LongTermRetentionBackupsClientBeginChangeAccessTierOptions contains the optional parameters for the LongTermRetentionBackupsClient.BeginChangeAccessTier
+//     method.
+func (client *LongTermRetentionBackupsClient) BeginChangeAccessTier(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*runtime.Poller[LongTermRetentionBackupsClientChangeAccessTierResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.changeAccessTier(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientChangeAccessTierResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientChangeAccessTierResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ChangeAccessTier - Change a long term retention backup access tier.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+func (client *LongTermRetentionBackupsClient) changeAccessTier(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginChangeAccessTier"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.changeAccessTierCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// changeAccessTierCreateRequest creates the ChangeAccessTier request.
+func (client *LongTermRetentionBackupsClient) changeAccessTierCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier"
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginChangeAccessTierByResourceGroup - Change a long term retention backup access tier.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - options - LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions contains the optional parameters for
+//     the LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup method.
+func (client *LongTermRetentionBackupsClient) BeginChangeAccessTierByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.changeAccessTierByResourceGroup(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ChangeAccessTierByResourceGroup - Change a long term retention backup access tier.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-05-01-preview
+func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.changeAccessTierByResourceGroupCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// changeAccessTierByResourceGroupCreateRequest creates the ChangeAccessTierByResourceGroup request.
+func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters ChangeLongTermRetentionBackupAccessTierParameters, options *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/changeAccessTier"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if longTermRetentionServerName == "" {
+		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+	if longTermRetentionDatabaseName == "" {
+		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+	if backupName == "" {
+		return nil, errors.New("parameter backupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{backupName}", url.PathEscape(backupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginCopy - Copy an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database.
 //   - longTermRetentionServerName - The name of the server
 //   - longTermRetentionDatabaseName - The name of the database
@@ -75,7 +251,7 @@ func (client *LongTermRetentionBackupsClient) BeginCopy(ctx context.Context, loc
 // Copy - Copy an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginCopy"
@@ -125,7 +301,7 @@ func (client *LongTermRetentionBackupsClient) copyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -137,7 +313,7 @@ func (client *LongTermRetentionBackupsClient) copyCreateRequest(ctx context.Cont
 // BeginCopyByResourceGroup - Copy an existing long term retention backup to a different server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database.
@@ -167,7 +343,7 @@ func (client *LongTermRetentionBackupsClient) BeginCopyByResourceGroup(ctx conte
 // CopyByResourceGroup - Copy an existing long term retention backup to a different server.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters CopyLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginCopyByResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginCopyByResourceGroup"
@@ -221,7 +397,7 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -233,7 +409,7 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroupCreateRequest(c
 // BeginDelete - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database
 //   - longTermRetentionServerName - The name of the server
 //   - longTermRetentionDatabaseName - The name of the database
@@ -260,7 +436,7 @@ func (client *LongTermRetentionBackupsClient) BeginDelete(ctx context.Context, l
 // Delete - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginDelete"
@@ -310,15 +486,16 @@ func (client *LongTermRetentionBackupsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database
@@ -347,7 +524,7 @@ func (client *LongTermRetentionBackupsClient) BeginDeleteByResourceGroup(ctx con
 // DeleteByResourceGroup - Deletes a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, options *LongTermRetentionBackupsClientBeginDeleteByResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginDeleteByResourceGroup"
@@ -401,15 +578,16 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database.
 //   - longTermRetentionServerName - The name of the server
 //   - longTermRetentionDatabaseName - The name of the database
@@ -466,7 +644,7 @@ func (client *LongTermRetentionBackupsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -484,7 +662,7 @@ func (client *LongTermRetentionBackupsClient) getHandleResponse(resp *http.Respo
 // GetByResourceGroup - Gets a long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database.
@@ -547,7 +725,7 @@ func (client *LongTermRetentionBackupsClient) getByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -564,7 +742,7 @@ func (client *LongTermRetentionBackupsClient) getByResourceGroupHandleResponse(r
 
 // NewListByDatabasePager - Lists all long term retention backups for a database.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database
 //   - longTermRetentionServerName - The name of the server
 //   - longTermRetentionDatabaseName - The name of the database
@@ -623,7 +801,7 @@ func (client *LongTermRetentionBackupsClient) listByDatabaseCreateRequest(ctx co
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -640,7 +818,7 @@ func (client *LongTermRetentionBackupsClient) listByDatabaseHandleResponse(resp 
 
 // NewListByLocationPager - Lists the long term retention backups for a given location.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database
 //   - options - LongTermRetentionBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByLocationPager
 //     method.
@@ -689,7 +867,7 @@ func (client *LongTermRetentionBackupsClient) listByLocationCreateRequest(ctx co
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -704,9 +882,10 @@ func (client *LongTermRetentionBackupsClient) listByLocationHandleResponse(resp 
 	return result, nil
 }
 
-// NewListByResourceGroupDatabasePager - Lists all long term retention backups for a database.
+// NewListByResourceGroupDatabasePager - Lists all long term retention backups for a database based on a particular resource
+// group.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database
@@ -771,7 +950,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseCreateR
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -786,9 +965,9 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseHandleR
 	return result, nil
 }
 
-// NewListByResourceGroupLocationPager - Lists the long term retention backups for a given location.
+// NewListByResourceGroupLocationPager - Lists the long term retention backups for a given location based on resource group.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database
@@ -843,7 +1022,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationCreateR
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -858,9 +1037,9 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationHandleR
 	return result, nil
 }
 
-// NewListByResourceGroupServerPager - Lists the long term retention backups for a given server.
+// NewListByResourceGroupServerPager - Lists the long term retention backups for a given server based on resource groups.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database
@@ -920,7 +1099,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupServerCreateReq
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -937,7 +1116,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupServerHandleRes
 
 // NewListByServerPager - Lists the long term retention backups for a given server.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database
 //   - longTermRetentionServerName - The name of the server
 //   - options - LongTermRetentionBackupsClientListByServerOptions contains the optional parameters for the LongTermRetentionBackupsClient.NewListByServerPager
@@ -991,7 +1170,7 @@ func (client *LongTermRetentionBackupsClient) listByServerCreateRequest(ctx cont
 	if options != nil && options.DatabaseState != nil {
 		reqQP.Set("databaseState", string(*options.DatabaseState))
 	}
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1009,7 +1188,7 @@ func (client *LongTermRetentionBackupsClient) listByServerHandleResponse(resp *h
 // BeginUpdate - Updates an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - locationName - The location of the database.
 //   - longTermRetentionServerName - The name of the server
 //   - longTermRetentionDatabaseName - The name of the database
@@ -1037,7 +1216,7 @@ func (client *LongTermRetentionBackupsClient) BeginUpdate(ctx context.Context, l
 // Update - Updates an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginUpdate"
@@ -1087,7 +1266,7 @@ func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1099,7 +1278,7 @@ func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Co
 // BeginUpdateByResourceGroup - Updates an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - locationName - The location of the database.
@@ -1129,7 +1308,7 @@ func (client *LongTermRetentionBackupsClient) BeginUpdateByResourceGroup(ctx con
 // UpdateByResourceGroup - Updates an existing long term retention backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-05-01-preview
+// Generated from API version 2023-05-01-preview
 func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, backupName string, parameters UpdateLongTermRetentionBackupParameters, options *LongTermRetentionBackupsClientBeginUpdateByResourceGroupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LongTermRetentionBackupsClient.BeginUpdateByResourceGroup"
@@ -1183,7 +1362,7 @@ func (client *LongTermRetentionBackupsClient) updateByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01-preview")
+	reqQP.Set("api-version", "2023-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

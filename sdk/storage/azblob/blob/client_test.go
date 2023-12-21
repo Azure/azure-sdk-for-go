@@ -3682,7 +3682,7 @@ func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	_require.NotZero(bAccInfo)
 }
 
-func (s *BlobRecordedTestsSuite) TestBlockBlobClientDefaultAudience() {
+func (s *BlobRecordedTestsSuite) TestBlobClientDefaultAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3714,7 +3714,7 @@ func (s *BlobRecordedTestsSuite) TestBlockBlobClientDefaultAudience() {
 	_require.NoError(err)
 }
 
-func (s *BlobRecordedTestsSuite) TestBlockBlobClientCustomAudience() {
+func (s *BlobRecordedTestsSuite) TestBlobClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

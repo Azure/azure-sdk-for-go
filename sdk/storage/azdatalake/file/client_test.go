@@ -920,6 +920,7 @@ func (s *RecordedTestSuite) TestFileSetExpiry() {
 
 	res, err := fClient.GetProperties(context.Background(), nil)
 	_require.Nil(res.ExpiresOn)
+	_require.NoError(err)
 
 	_, err = fClient.SetExpiry(
 		context.Background(),

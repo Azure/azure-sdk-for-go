@@ -3459,3 +3459,55 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerSASUsingAccessPolicy() {
 	_, err = bbClient.Delete(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *ContainerRecordedTestsSuite) TestContainerClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	options := &container.ClientOptions{
+		Audience: to.Ptr("https://storage.azure.com/"),
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	containerClientAudience, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, options)
+	_require.NoError(err)
+
+	_, err = containerClientAudience.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClientAudience)
+
+	_, err = containerClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	options := &container.ClientOptions{
+		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	containerClientAudience, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, options)
+	_require.NoError(err)
+
+	_, err = containerClientAudience.Create(context.Background(), nil)
+	_require.NoError(err)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClientAudience)
+
+	_, err = containerClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}

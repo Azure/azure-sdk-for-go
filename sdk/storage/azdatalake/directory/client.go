@@ -295,7 +295,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		newPathURL = strings.Split(newPathURL, "?")[0] + "?" + newDestQuery
 	}
 	newBlobURL, _ := shared.GetURLs(newPathURL)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newSrcPath)
+	lac, mac, smac, createOpts, cpkOpts := path.FormatRenameOptions(options, newSrcPath)
 
 	if d.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
@@ -310,7 +310,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
-	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
 	//return RenameResponse{
 	//	Response:           resp,
 	//	NewDirectoryClient: newDirClient,

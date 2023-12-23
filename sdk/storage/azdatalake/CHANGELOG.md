@@ -3,6 +3,8 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
+* Encryption Scope For SAS
+* CPK for Datalake
 
 ### Breaking Changes
 

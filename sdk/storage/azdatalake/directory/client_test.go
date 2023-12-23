@@ -147,6 +147,31 @@ func (s *RecordedTestSuite) TestCreateDirAndDelete() {
 	_require.NotNil(resp)
 }
 
+func (s *RecordedTestSuite) TestCreateDirUsingCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	dirOpts := &directory.CreateOptions{CPKInfo: &testcommon.TestCPKByValue}
+	resp, err := dirClient.Create(context.Background(), dirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_require.Equal(true, *(resp.IsServerEncrypted))
+	_require.Equal(testcommon.TestCPKByValue.EncryptionKeySHA256, resp.EncryptionKeySHA256)
+}
+
 func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1912,6 +1937,65 @@ func (s *RecordedTestSuite) TestDirSetMetadataWithAccessConditions() {
 	_require.NoError(err)
 }
 
+func (s *RecordedTestSuite) TestDirSetMetadataWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), &directory.CreateOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetMetadataOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestDirSetMetadataWithCPKNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	opts := &directory.SetMetadataOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, opts)
+	_require.Error(err)
+	_require.ErrorContains(err, "PathDoesNotUseCustomerSpecifiedEncryption")
+}
+
 func validatePropertiesSet(_require *require.Assertions, dirClient *directory.Client, disposition string) {
 	resp, err := dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -2243,6 +2327,38 @@ func (s *RecordedTestSuite) TestDirRenameNoOptions() {
 	//_require.Contains(resp1.NewDirectoryClient.DFSURL(), "newName")
 }
 
+func (s *RecordedTestSuite) TestDirRenameRequestWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	createOpts := &directory.CreateOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+
+	resp, err := dirClient.Create(context.Background(), createOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	renameFileOpts := &directory.RenameOptions{
+		CPKInfo: &testcommon.TestCPKByValue,
+	}
+
+	_, err = dirClient.Rename(context.Background(), "newName", renameFileOpts)
+	_require.NoError(err)
+}
+
 func (s *RecordedTestSuite) TestRenameDirWithNilAccessConditions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -2546,6 +2662,35 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
 	_require.Equal("directory", respFromCtxService.Header.Get("x-ms-resource-type"))
+}
+
+func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	dirOpts := &directory.CreateOptions{CPKInfo: &testcommon.TestCPKByValue}
+	resp, err := dirClient.Create(context.Background(), dirOpts)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	getPropertiesOpts := &directory.GetPropertiesOptions{CPKInfo: &testcommon.TestCPKByValue}
+	response, err := dirClient.GetProperties(context.Background(), getPropertiesOpts)
+	_require.NoError(err)
+	_require.NotNil(response)
+	_require.Equal(*(resp.IsServerEncrypted), true)
+	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
 }
 
 func (s *UnrecordedTestSuite) TestDirCreateDeleteUsingOAuth() {

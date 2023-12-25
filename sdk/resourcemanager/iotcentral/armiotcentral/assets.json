@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/iotcentral/armiotcentral",
+  "Tag": "go/resourcemanager/iotcentral/armiotcentral_9600a1e8b1"
+}

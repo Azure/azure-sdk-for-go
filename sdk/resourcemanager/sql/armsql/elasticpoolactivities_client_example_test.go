@@ -58,7 +58,7 @@ func ExampleElasticPoolActivitiesClient_NewListByElasticPoolPager() {
 		// 				RequestedStorageLimitInGB: to.Ptr[int64](9),
 		// 				RequestedStorageLimitInMB: to.Ptr[int32](10000),
 		// 				ServerName: to.Ptr("sqlcrudtest-6574"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T02:03:06.16Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T02:03:06.160Z"); return t}()),
 		// 				State: to.Ptr("COMPLETED"),
 		// 			},
 		// 	}},

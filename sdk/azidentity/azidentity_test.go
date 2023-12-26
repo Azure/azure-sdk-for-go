@@ -418,11 +418,11 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				ctor: func(azcore.ClientOptions) (azcore.TokenCredential, error) {
 					o := AzureCLICredentialOptions{
 						AdditionallyAllowedTenants: test.allowed,
-						tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+						tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
 							if tenant != test.expected {
 								t.Errorf(`unexpected tenantID "%s"`, tenant)
 							}
-							return mockAzTokenProviderSuccess(ctx, scopes, tenant)
+							return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
 						},
 					}
 					return NewAzureCLICredential(&o)
@@ -617,18 +617,15 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
 			t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credName, test.desc), func(t *testing.T) {
 				typeName := fmt.Sprintf("%T", &AzureCLICredential{})
-				mockSuccess := mockAzTokenProviderSuccess
 				if credName == credNameAzureDeveloperCLI {
 					typeName = fmt.Sprintf("%T", &AzureDeveloperCLICredential{})
-					mockSuccess = mockAzdTokenProviderSuccess
 				}
 				called := false
-				validateTenant := func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+				verifyTenant := func(tenant string) {
 					called = true
 					if tenant != test.expected {
 						t.Fatalf("unexpected tenant %q", tenant)
 					}
-					return mockSuccess(ctx, scopes, tenant)
 				}
 
 				// mock IMDS failure because managed identity precedes CLI in the chain
@@ -650,9 +647,15 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					}
 					switch c := source.(type) {
 					case *AzureCLICredential:
-						c.opts.tokenProvider = validateTenant
+						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+							verifyTenant(tenant)
+							return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+						}
 					case *AzureDeveloperCLICredential:
-						c.opts.tokenProvider = validateTenant
+						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+							verifyTenant(tenant)
+							return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+						}
 					}
 					if _, err := c.GetToken(context.Background(), tro); err != nil {
 						if test.err {
@@ -832,6 +835,13 @@ func TestCLIArgumentValidation(t *testing.T) {
 			}
 		})
 	}
+	t.Run(credNameAzureCLI+"/subscription", func(t *testing.T) {
+		for _, r := range invalidRunes {
+			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{Subscription: string(r)}); err == nil {
+				t.Errorf("expected an error for a subscription containing %q", r)
+			}
+		}
+	})
 }
 
 func TestResolveTenant(t *testing.T) {

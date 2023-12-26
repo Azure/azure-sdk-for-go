@@ -9,8 +9,8 @@
 package armkusto
 
 const (
-	moduleName    = "armkusto"
-	moduleVersion = "v2.1.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
+	moduleVersion = "v2.2.0"
 )
 
 // AzureSKUName - SKU name.

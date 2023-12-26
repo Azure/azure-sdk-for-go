@@ -33,7 +33,7 @@ type APIReleaseClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIReleaseClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIReleaseClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewAPIReleaseClient(subscriptionID string, credential azcore.TokenCredentia
 //     method.
 func (client *APIReleaseClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, parameters APIReleaseContract, options *APIReleaseClientCreateOrUpdateOptions) (APIReleaseClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIReleaseClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, parameters, options)
 	if err != nil {
 		return APIReleaseClientCreateOrUpdateResponse{}, err
@@ -138,6 +142,10 @@ func (client *APIReleaseClient) createOrUpdateHandleResponse(resp *http.Response
 //   - options - APIReleaseClientDeleteOptions contains the optional parameters for the APIReleaseClient.Delete method.
 func (client *APIReleaseClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, options *APIReleaseClientDeleteOptions) (APIReleaseClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIReleaseClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, ifMatch, options)
 	if err != nil {
 		return APIReleaseClientDeleteResponse{}, err
@@ -199,6 +207,10 @@ func (client *APIReleaseClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - APIReleaseClientGetOptions contains the optional parameters for the APIReleaseClient.Get method.
 func (client *APIReleaseClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetOptions) (APIReleaseClientGetResponse, error) {
 	var err error
+	const operationName = "APIReleaseClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, options)
 	if err != nil {
 		return APIReleaseClientGetResponse{}, err
@@ -271,6 +283,10 @@ func (client *APIReleaseClient) getHandleResponse(resp *http.Response) (APIRelea
 //   - options - APIReleaseClientGetEntityTagOptions contains the optional parameters for the APIReleaseClient.GetEntityTag method.
 func (client *APIReleaseClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, options *APIReleaseClientGetEntityTagOptions) (APIReleaseClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIReleaseClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, options)
 	if err != nil {
 		return APIReleaseClientGetEntityTagResponse{}, err
@@ -323,11 +339,10 @@ func (client *APIReleaseClient) getEntityTagCreateRequest(ctx context.Context, r
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIReleaseClient) getEntityTagHandleResponse(resp *http.Response) (APIReleaseClientGetEntityTagResponse, error) {
-	result := APIReleaseClientGetEntityTagResponse{}
+	result := APIReleaseClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -347,25 +362,20 @@ func (client *APIReleaseClient) NewListByServicePager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIReleaseClientListByServiceResponse) (APIReleaseClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIReleaseClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APIReleaseClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIReleaseClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIReleaseClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -431,6 +441,10 @@ func (client *APIReleaseClient) listByServiceHandleResponse(resp *http.Response)
 //   - options - APIReleaseClientUpdateOptions contains the optional parameters for the APIReleaseClient.Update method.
 func (client *APIReleaseClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, releaseID string, ifMatch string, parameters APIReleaseContract, options *APIReleaseClientUpdateOptions) (APIReleaseClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIReleaseClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, releaseID, ifMatch, parameters, options)
 	if err != nil {
 		return APIReleaseClientUpdateResponse{}, err

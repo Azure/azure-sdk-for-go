@@ -32,7 +32,7 @@ type ConnectedEnvironmentsStoragesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewConnectedEnvironmentsStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedEnvironmentsStoragesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ConnectedEnvironmentsStoragesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewConnectedEnvironmentsStoragesClient(subscriptionID string, credential az
 //     method.
 func (client *ConnectedEnvironmentsStoragesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, storageEnvelope ConnectedEnvironmentStorage, options *ConnectedEnvironmentsStoragesClientCreateOrUpdateOptions) (ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsStoragesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, storageName, storageEnvelope, options)
 	if err != nil {
 		return ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *ConnectedEnvironmentsStoragesClient) createOrUpdateHandleResponse(
 //     method.
 func (client *ConnectedEnvironmentsStoragesClient) Delete(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, options *ConnectedEnvironmentsStoragesClientDeleteOptions) (ConnectedEnvironmentsStoragesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsStoragesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, storageName, options)
 	if err != nil {
 		return ConnectedEnvironmentsStoragesClientDeleteResponse{}, err
@@ -180,6 +188,10 @@ func (client *ConnectedEnvironmentsStoragesClient) deleteCreateRequest(ctx conte
 //     method.
 func (client *ConnectedEnvironmentsStoragesClient) Get(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, storageName string, options *ConnectedEnvironmentsStoragesClientGetOptions) (ConnectedEnvironmentsStoragesClientGetResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsStoragesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, storageName, options)
 	if err != nil {
 		return ConnectedEnvironmentsStoragesClientGetResponse{}, err
@@ -245,6 +257,10 @@ func (client *ConnectedEnvironmentsStoragesClient) getHandleResponse(resp *http.
 //     method.
 func (client *ConnectedEnvironmentsStoragesClient) List(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsStoragesClientListOptions) (ConnectedEnvironmentsStoragesClientListResponse, error) {
 	var err error
+	const operationName = "ConnectedEnvironmentsStoragesClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
 	if err != nil {
 		return ConnectedEnvironmentsStoragesClientListResponse{}, err

@@ -32,7 +32,7 @@ type AFDEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDEndpointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AFDEndpointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,13 @@ func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDEndpointsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -77,6 +80,10 @@ func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 	if err != nil {
 		return nil, err
@@ -144,10 +151,13 @@ func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDEndpointsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -158,6 +168,10 @@ func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return nil, err
@@ -215,6 +229,10 @@ func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - AFDEndpointsClientGetOptions contains the optional parameters for the AFDEndpointsClient.Get method.
 func (client *AFDEndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientGetOptions) (AFDEndpointsClientGetResponse, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return AFDEndpointsClientGetResponse{}, err
@@ -284,25 +302,20 @@ func (client *AFDEndpointsClient) NewListByProfilePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDEndpointsClientListByProfileResponse) (AFDEndpointsClientListByProfileResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDEndpointsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return AFDEndpointsClientListByProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDEndpointsClientListByProfileResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDEndpointsClientListByProfileResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProfileHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -356,25 +369,20 @@ func (client *AFDEndpointsClient) NewListResourceUsagePager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDEndpointsClientListResourceUsageResponse) (AFDEndpointsClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDEndpointsClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
+			}, nil)
 			if err != nil {
 				return AFDEndpointsClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDEndpointsClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDEndpointsClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -438,10 +446,13 @@ func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientPurgeContentResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDEndpointsClientPurgeContentResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientPurgeContentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -451,6 +462,10 @@ func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourc
 // Generated from API version 2023-05-01
 func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.BeginPurgeContent"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contents, options)
 	if err != nil {
 		return nil, err
@@ -521,10 +536,13 @@ func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDEndpointsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDEndpointsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDEndpointsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -537,6 +555,10 @@ func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 	if err != nil {
 		return nil, err
@@ -599,6 +621,10 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 //     method.
 func (client *AFDEndpointsClient) ValidateCustomDomain(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, options *AFDEndpointsClientValidateCustomDomainOptions) (AFDEndpointsClientValidateCustomDomainResponse, error) {
 	var err error
+	const operationName = "AFDEndpointsClient.ValidateCustomDomain"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCustomDomainCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainProperties, options)
 	if err != nil {
 		return AFDEndpointsClientValidateCustomDomainResponse{}, err

@@ -33,7 +33,7 @@ type ExpressRoutePortAuthorizationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewExpressRoutePortAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRoutePortAuthorizationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ExpressRoutePortAuthorizationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewExpressRoutePortAuthorizationsClient(subscriptionID string, credential a
 // BeginCreateOrUpdate - Creates or updates an authorization in the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRoutePortName - The name of the express route port.
 //   - authorizationName - The name of the authorization.
@@ -62,17 +62,20 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginCreateOrUpdate(ctx cont
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates an authorization in the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ExpressRoutePortAuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, authorizationParameters ExpressRoutePortAuthorization, options *ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRoutePortAuthorizationsClient.BeginCreateOrUpdate"
@@ -118,7 +121,7 @@ func (client *ExpressRoutePortAuthorizationsClient) createOrUpdateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authorizationParameters); err != nil {
@@ -130,7 +133,7 @@ func (client *ExpressRoutePortAuthorizationsClient) createOrUpdateCreateRequest(
 // BeginDelete - Deletes the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRoutePortName - The name of the express route port.
 //   - authorizationName - The name of the authorization.
@@ -144,17 +147,20 @@ func (client *ExpressRoutePortAuthorizationsClient) BeginDelete(ctx context.Cont
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpressRoutePortAuthorizationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ExpressRoutePortAuthorizationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpressRoutePortAuthorizationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ExpressRoutePortAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *ExpressRoutePortAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRoutePortAuthorizationsClient.BeginDelete"
@@ -200,7 +206,7 @@ func (client *ExpressRoutePortAuthorizationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +215,7 @@ func (client *ExpressRoutePortAuthorizationsClient) deleteCreateRequest(ctx cont
 // Get - Gets the specified authorization from the specified express route port.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRoutePortName - The name of the express route port.
 //   - authorizationName - The name of the authorization.
@@ -261,7 +267,7 @@ func (client *ExpressRoutePortAuthorizationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +284,7 @@ func (client *ExpressRoutePortAuthorizationsClient) getHandleResponse(resp *http
 
 // NewListPager - Gets all authorizations in an express route port.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - expressRoutePortName - The name of the express route port.
 //   - options - ExpressRoutePortAuthorizationsClientListOptions contains the optional parameters for the ExpressRoutePortAuthorizationsClient.NewListPager
@@ -290,22 +296,15 @@ func (client *ExpressRoutePortAuthorizationsClient) NewListPager(resourceGroupNa
 		},
 		Fetcher: func(ctx context.Context, page *ExpressRoutePortAuthorizationsClientListResponse) (ExpressRoutePortAuthorizationsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExpressRoutePortAuthorizationsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, expressRoutePortName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, expressRoutePortName, options)
+			}, nil)
 			if err != nil {
 				return ExpressRoutePortAuthorizationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ExpressRoutePortAuthorizationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ExpressRoutePortAuthorizationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -333,7 +332,7 @@ func (client *ExpressRoutePortAuthorizationsClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

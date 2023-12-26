@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,36 +37,43 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAccessConnectorsClient creates a new instance of AccessConnectorsClient.
 func (c *ClientFactory) NewAccessConnectorsClient() *AccessConnectorsClient {
 	subClient, _ := NewAccessConnectorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewOutboundNetworkDependenciesEndpointsClient creates a new instance of OutboundNetworkDependenciesEndpointsClient.
 func (c *ClientFactory) NewOutboundNetworkDependenciesEndpointsClient() *OutboundNetworkDependenciesEndpointsClient {
 	subClient, _ := NewOutboundNetworkDependenciesEndpointsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewVNetPeeringClient creates a new instance of VNetPeeringClient.
 func (c *ClientFactory) NewVNetPeeringClient() *VNetPeeringClient {
 	subClient, _ := NewVNetPeeringClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewWorkspacesClient creates a new instance of WorkspacesClient.
 func (c *ClientFactory) NewWorkspacesClient() *WorkspacesClient {
 	subClient, _ := NewWorkspacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

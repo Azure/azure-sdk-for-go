@@ -33,7 +33,7 @@ type NamedValueClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNamedValueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamedValueClient, error) {
-	cl, err := arm.NewClient(moduleName+".NamedValueClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *NamedValueClient) BeginCreateOrUpdate(ctx context.Context, resourc
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamedValueClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NamedValueClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamedValueClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *NamedValueClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // Generated from API version 2022-08-01
 func (client *NamedValueClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, parameters NamedValueCreateContract, options *NamedValueClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NamedValueClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -138,6 +145,10 @@ func (client *NamedValueClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - NamedValueClientDeleteOptions contains the optional parameters for the NamedValueClient.Delete method.
 func (client *NamedValueClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, ifMatch string, options *NamedValueClientDeleteOptions) (NamedValueClientDeleteResponse, error) {
 	var err error
+	const operationName = "NamedValueClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, ifMatch, options)
 	if err != nil {
 		return NamedValueClientDeleteResponse{}, err
@@ -194,6 +205,10 @@ func (client *NamedValueClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - NamedValueClientGetOptions contains the optional parameters for the NamedValueClient.Get method.
 func (client *NamedValueClient) Get(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, options *NamedValueClientGetOptions) (NamedValueClientGetResponse, error) {
 	var err error
+	const operationName = "NamedValueClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, options)
 	if err != nil {
 		return NamedValueClientGetResponse{}, err
@@ -261,6 +276,10 @@ func (client *NamedValueClient) getHandleResponse(resp *http.Response) (NamedVal
 //   - options - NamedValueClientGetEntityTagOptions contains the optional parameters for the NamedValueClient.GetEntityTag method.
 func (client *NamedValueClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, options *NamedValueClientGetEntityTagOptions) (NamedValueClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "NamedValueClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, options)
 	if err != nil {
 		return NamedValueClientGetEntityTagResponse{}, err
@@ -309,11 +328,10 @@ func (client *NamedValueClient) getEntityTagCreateRequest(ctx context.Context, r
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *NamedValueClient) getEntityTagHandleResponse(resp *http.Response) (NamedValueClientGetEntityTagResponse, error) {
-	result := NamedValueClientGetEntityTagResponse{}
+	result := NamedValueClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -330,25 +348,20 @@ func (client *NamedValueClient) NewListByServicePager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *NamedValueClientListByServiceResponse) (NamedValueClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NamedValueClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return NamedValueClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NamedValueClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NamedValueClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -409,6 +422,10 @@ func (client *NamedValueClient) listByServiceHandleResponse(resp *http.Response)
 //   - options - NamedValueClientListValueOptions contains the optional parameters for the NamedValueClient.ListValue method.
 func (client *NamedValueClient) ListValue(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, options *NamedValueClientListValueOptions) (NamedValueClientListValueResponse, error) {
 	var err error
+	const operationName = "NamedValueClient.ListValue"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listValueCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, options)
 	if err != nil {
 		return NamedValueClientListValueResponse{}, err
@@ -484,10 +501,13 @@ func (client *NamedValueClient) BeginRefreshSecret(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamedValueClientRefreshSecretResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NamedValueClientRefreshSecretResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamedValueClientRefreshSecretResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -497,6 +517,10 @@ func (client *NamedValueClient) BeginRefreshSecret(ctx context.Context, resource
 // Generated from API version 2022-08-01
 func (client *NamedValueClient) refreshSecret(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, options *NamedValueClientBeginRefreshSecretOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NamedValueClient.BeginRefreshSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshSecretCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, options)
 	if err != nil {
 		return nil, err
@@ -561,10 +585,13 @@ func (client *NamedValueClient) BeginUpdate(ctx context.Context, resourceGroupNa
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamedValueClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[NamedValueClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamedValueClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -574,6 +601,10 @@ func (client *NamedValueClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Generated from API version 2022-08-01
 func (client *NamedValueClient) update(ctx context.Context, resourceGroupName string, serviceName string, namedValueID string, ifMatch string, parameters NamedValueUpdateParameters, options *NamedValueClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "NamedValueClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, namedValueID, ifMatch, parameters, options)
 	if err != nil {
 		return nil, err

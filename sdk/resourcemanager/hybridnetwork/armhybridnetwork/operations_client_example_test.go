@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridnetwork/armhybridnetwork/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/GetOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/db9788dde7a0c2c0d82e4fdf5f7b4de3843937e3/specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/GetOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,10 +39,10 @@ func ExampleOperationsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.OperationList = armhybridnetwork.OperationList{
+		// page.OperationListResult = armhybridnetwork.OperationListResult{
 		// 	Value: []*armhybridnetwork.Operation{
 		// 		{
-		// 			Name: to.Ptr("Microsoft.HybridNetwork/nfs/read"),
+		// 			Name: to.Ptr("Microsoft.HybridNetwork/NetworkFunctions/read"),
 		// 			Display: &armhybridnetwork.OperationDisplay{
 		// 				Description: to.Ptr("Gets Nf"),
 		// 				Operation: to.Ptr("Get Nf"),

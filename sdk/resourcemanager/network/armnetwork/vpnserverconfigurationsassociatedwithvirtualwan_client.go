@@ -33,7 +33,7 @@ type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVPNServerConfigurationsAssociatedWithVirtualWanClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VPNServerConfigurationsAssociatedWithVirtualWanClient, error) {
-	cl, err := arm.NewClient(moduleName+".VPNServerConfigurationsAssociatedWithVirtualWanClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewVPNServerConfigurationsAssociatedWithVirtualWanClient(subscriptionID str
 // BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name.
 //   - virtualWANName - The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
 //   - options - VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions contains the optional parameters for the
@@ -60,17 +60,20 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperation(ctx context.Context, resourceGroupName string, virtualWANName string, options *VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNServerConfigurationsAssociatedWithVirtualWanClient.BeginList"
@@ -112,7 +115,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

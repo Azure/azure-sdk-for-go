@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-10-02-preview/examples/TrustedAccessRoleBindings_List.json
 func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 		// 		{
 		// 			Name: to.Ptr("binding1"),
 		// 			Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-		// 			ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 		// 			Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 		// 				Roles: []*string{
 		// 					to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -57,7 +57,7 @@ func ExampleTrustedAccessRoleBindingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-10-02-preview/examples/TrustedAccessRoleBindings_Get.json
 func ExampleTrustedAccessRoleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// res.TrustedAccessRoleBinding = armcontainerservice.TrustedAccessRoleBinding{
 	// 	Name: to.Ptr("binding1"),
 	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-	// 	ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 	// 	Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 	// 		Roles: []*string{
 	// 			to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -88,7 +88,7 @@ func ExampleTrustedAccessRoleBindingsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-10-02-preview/examples/TrustedAccessRoleBindings_CreateOrUpdate.json
 func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	// res.TrustedAccessRoleBinding = armcontainerservice.TrustedAccessRoleBinding{
 	// 	Name: to.Ptr("binding1"),
 	// 	Type: to.Ptr("Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings"),
-	// 	ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/trustedAccessRoleBindings/binding1"),
 	// 	Properties: &armcontainerservice.TrustedAccessRoleBindingProperties{
 	// 		Roles: []*string{
 	// 			to.Ptr("Microsoft.MachineLearningServices/workspaces/reader"),
@@ -130,7 +130,7 @@ func ExampleTrustedAccessRoleBindingsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/89260be1a92c914b7b48af8e8f75938d5e76851d/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-08-02-preview/examples/TrustedAccessRoleBindings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2023-10-02-preview/examples/TrustedAccessRoleBindings_Delete.json
 func ExampleTrustedAccessRoleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

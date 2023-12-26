@@ -32,7 +32,7 @@ type ProtectedItemOperationStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectedItemOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemOperationStatusClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectedItemOperationStatusClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProtectedItemOperationStatusClient(subscriptionID string, credential azc
 //     method.
 func (client *ProtectedItemOperationStatusClient) Get(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, operationID string, options *ProtectedItemOperationStatusClientGetOptions) (ProtectedItemOperationStatusClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectedItemOperationStatusClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, protectedItemName, operationID, options)
 	if err != nil {
 		return ProtectedItemOperationStatusClientGetResponse{}, err
@@ -74,6 +78,9 @@ func (client *ProtectedItemOperationStatusClient) Get(ctx context.Context, resou
 // getCreateRequest creates the Get request.
 func (client *ProtectedItemOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, operationID string, options *ProtectedItemOperationStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/operations/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -33,7 +33,7 @@ type AuthorizationProviderClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAuthorizationProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationProviderClient, error) {
-	cl, err := arm.NewClient(moduleName+".AuthorizationProviderClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAuthorizationProviderClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *AuthorizationProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, parameters AuthorizationProviderContract, options *AuthorizationProviderClientCreateOrUpdateOptions) (AuthorizationProviderClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AuthorizationProviderClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, parameters, options)
 	if err != nil {
 		return AuthorizationProviderClientCreateOrUpdateResponse{}, err
@@ -133,6 +137,10 @@ func (client *AuthorizationProviderClient) createOrUpdateHandleResponse(resp *ht
 //     method.
 func (client *AuthorizationProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, ifMatch string, options *AuthorizationProviderClientDeleteOptions) (AuthorizationProviderClientDeleteResponse, error) {
 	var err error
+	const operationName = "AuthorizationProviderClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, ifMatch, options)
 	if err != nil {
 		return AuthorizationProviderClientDeleteResponse{}, err
@@ -190,6 +198,10 @@ func (client *AuthorizationProviderClient) deleteCreateRequest(ctx context.Conte
 //     method.
 func (client *AuthorizationProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationProviderClientGetOptions) (AuthorizationProviderClientGetResponse, error) {
 	var err error
+	const operationName = "AuthorizationProviderClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, options)
 	if err != nil {
 		return AuthorizationProviderClientGetResponse{}, err
@@ -261,25 +273,20 @@ func (client *AuthorizationProviderClient) NewListByServicePager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AuthorizationProviderClientListByServiceResponse) (AuthorizationProviderClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AuthorizationProviderClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return AuthorizationProviderClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AuthorizationProviderClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AuthorizationProviderClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

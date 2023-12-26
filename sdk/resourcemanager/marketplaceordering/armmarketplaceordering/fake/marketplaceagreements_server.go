@@ -100,25 +100,25 @@ func (m *MarketplaceAgreementsServerTransport) dispatchCancel(req *http.Request)
 	if m.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	publisherIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
+	publisherIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
 	if err != nil {
 		return nil, err
 	}
-	offerIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
+	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
 	}
-	planIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
+	planIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Cancel(req.Context(), publisherIDUnescaped, offerIDUnescaped, planIDUnescaped, nil)
+	respr, errRespr := m.srv.Cancel(req.Context(), publisherIDParam, offerIDParam, planIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -137,7 +137,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchCreate(req *http.Request)
 	if m.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/offerTypes/(?P<offerType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agreements/current`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/offerTypes/(?P<offerType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agreements/current`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
@@ -147,23 +147,29 @@ func (m *MarketplaceAgreementsServerTransport) dispatchCreate(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	offerTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerType")])
+	offerTypeParam, err := parseWithCast(matches[regex.SubexpIndex("offerType")], func(v string) (armmarketplaceordering.OfferType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armmarketplaceordering.OfferType(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	publisherIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
+	publisherIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
 	if err != nil {
 		return nil, err
 	}
-	offerIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
+	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
 	}
-	planIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
+	planIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Create(req.Context(), armmarketplaceordering.OfferType(offerTypeUnescaped), publisherIDUnescaped, offerIDUnescaped, planIDUnescaped, body, nil)
+	respr, errRespr := m.srv.Create(req.Context(), offerTypeParam, publisherIDParam, offerIDParam, planIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -182,29 +188,35 @@ func (m *MarketplaceAgreementsServerTransport) dispatchGet(req *http.Request) (*
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/offerTypes/(?P<offerType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agreements/current`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/offerTypes/(?P<offerType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agreements/current`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	offerTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerType")])
+	offerTypeParam, err := parseWithCast(matches[regex.SubexpIndex("offerType")], func(v string) (armmarketplaceordering.OfferType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armmarketplaceordering.OfferType(p), nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	publisherIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
+	publisherIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
 	if err != nil {
 		return nil, err
 	}
-	offerIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
+	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
 	}
-	planIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
+	planIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Get(req.Context(), armmarketplaceordering.OfferType(offerTypeUnescaped), publisherIDUnescaped, offerIDUnescaped, planIDUnescaped, nil)
+	respr, errRespr := m.srv.Get(req.Context(), offerTypeParam, publisherIDParam, offerIDParam, planIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -223,25 +235,25 @@ func (m *MarketplaceAgreementsServerTransport) dispatchGetAgreement(req *http.Re
 	if m.srv.GetAgreement == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAgreement not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	publisherIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
+	publisherIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
 	if err != nil {
 		return nil, err
 	}
-	offerIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
+	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
 	}
-	planIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
+	planIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.GetAgreement(req.Context(), publisherIDUnescaped, offerIDUnescaped, planIDUnescaped, nil)
+	respr, errRespr := m.srv.GetAgreement(req.Context(), publisherIDParam, offerIDParam, planIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -260,7 +272,7 @@ func (m *MarketplaceAgreementsServerTransport) dispatchList(req *http.Request) (
 	if m.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/agreements`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/agreements`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
@@ -285,25 +297,25 @@ func (m *MarketplaceAgreementsServerTransport) dispatchSign(req *http.Request) (
 	if m.srv.Sign == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Sign not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sign`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MarketplaceOrdering/agreements/(?P<publisherId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plans/(?P<planId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sign`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	publisherIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
+	publisherIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherId")])
 	if err != nil {
 		return nil, err
 	}
-	offerIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
+	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
 	}
-	planIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
+	planIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("planId")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := m.srv.Sign(req.Context(), publisherIDUnescaped, offerIDUnescaped, planIDUnescaped, nil)
+	respr, errRespr := m.srv.Sign(req.Context(), publisherIDParam, offerIDParam, planIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

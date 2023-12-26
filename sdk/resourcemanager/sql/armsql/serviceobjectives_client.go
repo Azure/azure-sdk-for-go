@@ -32,7 +32,7 @@ type ServiceObjectivesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceObjectivesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServiceObjectivesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewServiceObjectivesClient(subscriptionID string, credential azcore.TokenCr
 //   - options - ServiceObjectivesClientGetOptions contains the optional parameters for the ServiceObjectivesClient.Get method.
 func (client *ServiceObjectivesClient) Get(ctx context.Context, resourceGroupName string, serverName string, serviceObjectiveName string, options *ServiceObjectivesClientGetOptions) (ServiceObjectivesClientGetResponse, error) {
 	var err error
+	const operationName = "ServiceObjectivesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, serviceObjectiveName, options)
 	if err != nil {
 		return ServiceObjectivesClientGetResponse{}, err
@@ -123,6 +127,7 @@ func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName st
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ServiceObjectivesClientListByServerResponse) (ServiceObjectivesClientListByServerResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceObjectivesClient.NewListByServerPager")
 			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			if err != nil {
 				return ServiceObjectivesClientListByServerResponse{}, err
@@ -136,6 +141,7 @@ func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName st
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

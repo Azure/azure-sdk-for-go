@@ -99,7 +99,7 @@ func (t *TrustedAccessRoleBindingsServerTransport) dispatchBeginCreateOrUpdate(r
 	}
 	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -109,19 +109,19 @@ func (t *TrustedAccessRoleBindingsServerTransport) dispatchBeginCreateOrUpdate(r
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
 		}
-		trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
+		trustedAccessRoleBindingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, body, nil)
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, trustedAccessRoleBindingNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -151,25 +151,25 @@ func (t *TrustedAccessRoleBindingsServerTransport) dispatchBeginDelete(req *http
 	}
 	beginDelete := t.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
 		}
-		trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
+		trustedAccessRoleBindingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, nil)
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, trustedAccessRoleBindingNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -197,25 +197,25 @@ func (t *TrustedAccessRoleBindingsServerTransport) dispatchGet(req *http.Request
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings/(?P<trustedAccessRoleBindingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
 	}
-	trustedAccessRoleBindingNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
+	trustedAccessRoleBindingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("trustedAccessRoleBindingName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameUnescaped, resourceNameUnescaped, trustedAccessRoleBindingNameUnescaped, nil)
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, resourceNameParam, trustedAccessRoleBindingNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -236,21 +236,21 @@ func (t *TrustedAccessRoleBindingsServerTransport) dispatchNewListPager(req *htt
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/trustedAccessRoleBindings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		resourceNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := t.srv.NewListPager(resourceGroupNameUnescaped, resourceNameUnescaped, nil)
+		resp := t.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
 		newListPager = &resp
 		t.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.TrustedAccessRoleBindingsClientListResponse, createLink func() string) {

@@ -30,7 +30,7 @@ type PostgreSQLManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPostgreSQLManagementClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PostgreSQLManagementClient, error) {
-	cl, err := arm.NewClient(moduleName+".PostgreSQLManagementClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func NewPostgreSQLManagementClient(credential azcore.TokenCredential, options *a
 // CheckMigrationNameAvailability - This method checks whether a proposed migration name is valid and available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-01-preview
+// Generated from API version 2023-06-01-preview
 //   - subscriptionID - The subscription ID of the target database server.
 //   - resourceGroupName - The resource group name of the target database server.
 //   - targetDbServerName - The name of the target database server.
@@ -52,6 +52,10 @@ func NewPostgreSQLManagementClient(credential azcore.TokenCredential, options *a
 //     method.
 func (client *PostgreSQLManagementClient) CheckMigrationNameAvailability(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, parameters MigrationNameAvailabilityResource, options *PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions) (PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "PostgreSQLManagementClient.CheckMigrationNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkMigrationNameAvailabilityCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, parameters, options)
 	if err != nil {
 		return PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse{}, err
@@ -88,7 +92,7 @@ func (client *PostgreSQLManagementClient) checkMigrationNameAvailabilityCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-01-preview")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -104,8 +104,8 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 			Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 	// 			SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
 	// 			SourceSyncedCommitID: to.Ptr("master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 	// 			Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 	// 				{
 	// 					Name: to.Ptr("srs-fluxconfig"),
@@ -114,7 +114,7 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Fetched revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("GitOperationSucceed"),
 	// 							Status: to.Ptr("True"),
@@ -138,7 +138,7 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -158,7 +158,7 @@ func ExampleFluxConfigurationsClient_Get() {
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -330,8 +330,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 			Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 	// 			SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
 	// 			SourceSyncedCommitID: to.Ptr("master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 	// 			Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 	// 				{
 	// 					Name: to.Ptr("srs-fluxconfig"),
@@ -340,7 +340,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Fetched revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("GitOperationSucceed"),
 	// 							Status: to.Ptr("True"),
@@ -360,7 +360,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -380,7 +380,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -492,8 +492,8 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 			Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 	// 			SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeBucket),
 	// 			SourceSyncedCommitID: to.Ptr("0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+	// 			SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+	// 			StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 	// 			Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 	// 				{
 	// 					Name: to.Ptr("srs-fluxconfig"),
@@ -502,7 +502,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T07:17:30+00:00"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T07:17:30.000Z"); return t}()),
 	// 							Message: to.Ptr("stored artifact for revision '55396be14f18fa2b977c1f22becef26a94d1d9a7ccb1e19d12f9cac52d757a84'"),
 	// 							Reason: to.Ptr("Succeeded"),
 	// 							Status: to.Ptr("True"),
@@ -522,7 +522,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: 0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -542,7 +542,7 @@ func ExampleFluxConfigurationsClient_BeginCreateOrUpdate_createFluxConfiguration
 	// 					StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 						{
 	// 							Type: to.Ptr("Ready"),
-	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 							LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 							Message: to.Ptr("'Applied revision: 0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 							Reason: to.Ptr("ReconciliationSucceeded"),
 	// 							Status: to.Ptr("True"),
@@ -634,8 +634,8 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	// 		Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 	// 		SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
 	// 		SourceSyncedCommitID: to.Ptr("master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-	// 		SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-	// 		StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+	// 		SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+	// 		StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 	// 		Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 	// 			{
 	// 				Name: to.Ptr("srs-fluxconfig"),
@@ -644,7 +644,7 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	// 				StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 					{
 	// 						Type: to.Ptr("Ready"),
-	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 						Message: to.Ptr("'Fetched revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 						Reason: to.Ptr("GitOperationSucceed"),
 	// 						Status: to.Ptr("True"),
@@ -664,7 +664,7 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	// 				StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 					{
 	// 						Type: to.Ptr("Ready"),
-	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 						Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 						Reason: to.Ptr("ReconciliationSucceeded"),
 	// 						Status: to.Ptr("True"),
@@ -684,7 +684,7 @@ func ExampleFluxConfigurationsClient_BeginUpdate() {
 	// 				StatusConditions: []*armkubernetesconfiguration.ObjectStatusConditionDefinition{
 	// 					{
 	// 						Type: to.Ptr("Ready"),
-	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40Z"); return t}()),
+	// 						LastTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:12:40.000Z"); return t}()),
 	// 						Message: to.Ptr("'Applied revision: master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590'"),
 	// 						Reason: to.Ptr("ReconciliationSucceeded"),
 	// 						Status: to.Ptr("True"),
@@ -808,8 +808,8 @@ func ExampleFluxConfigurationsClient_NewListPager() {
 		// 					Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 		// 					SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
 		// 					SourceSyncedCommitID: to.Ptr("master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-		// 					SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-		// 					StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+		// 					SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+		// 					StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 		// 					Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 		// 						{
 		// 							Name: to.Ptr("srs-fluxconfig"),
@@ -878,8 +878,8 @@ func ExampleFluxConfigurationsClient_NewListPager() {
 		// 						Scope: to.Ptr(armkubernetesconfiguration.ScopeTypeCluster),
 		// 						SourceKind: to.Ptr(armkubernetesconfiguration.SourceKindTypeGitRepository),
 		// 						SourceSyncedCommitID: to.Ptr("master/0ba6f0d30760d567de0bac86c8c4eec13ce1a590"),
-		// 						SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
-		// 						StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12Z"); return t}()),
+		// 						SourceUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
+		// 						StatusUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-19T18:17:12.000Z"); return t}()),
 		// 						Statuses: []*armkubernetesconfiguration.ObjectStatusDefinition{
 		// 							{
 		// 								Name: to.Ptr("srs-fluxconfig"),

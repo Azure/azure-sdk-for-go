@@ -32,7 +32,7 @@ type SupportedOperatingSystemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SupportedOperatingSystemsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SupportedOperatingSystemsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore
 //     method.
 func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, options *SupportedOperatingSystemsClientGetOptions) (SupportedOperatingSystemsClientGetResponse, error) {
 	var err error
+	const operationName = "SupportedOperatingSystemsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, options)
 	if err != nil {
 		return SupportedOperatingSystemsClientGetResponse{}, err

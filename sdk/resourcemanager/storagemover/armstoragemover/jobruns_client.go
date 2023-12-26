@@ -32,7 +32,7 @@ type JobRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobRunsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobRunsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewJobRunsClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - JobRunsClientGetOptions contains the optional parameters for the JobRunsClient.Get method.
 func (client *JobRunsClient) Get(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, jobRunName string, options *JobRunsClientGetOptions) (JobRunsClientGetResponse, error) {
 	var err error
+	const operationName = "JobRunsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName, options)
 	if err != nil {
 		return JobRunsClientGetResponse{}, err
@@ -132,25 +136,20 @@ func (client *JobRunsClient) NewListPager(resourceGroupName string, storageMover
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobRunsClientListResponse) (JobRunsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobRunsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
+			}, nil)
 			if err != nil {
 				return JobRunsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobRunsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobRunsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

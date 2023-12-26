@@ -9,8 +9,8 @@
 package armmobilenetwork
 
 const (
-	moduleName    = "armmobilenetwork"
-	moduleVersion = "v3.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
+	moduleVersion = "v3.1.0"
 )
 
 // AuthenticationType - How to authenticate users who access local diagnostics APIs.
@@ -159,24 +159,51 @@ func PossibleDiagnosticsPackageStatusValues() []DiagnosticsPackageStatus {
 	}
 }
 
-// InstallationReason - The reason for the installation state of the packet core.
+// InstallationReason - The reason or list of reasons why a packet core has not been installed or requires a reinstall.
 type InstallationReason string
 
 const (
-	// InstallationReasonNoAttachedDataNetworks - The packet core has no attached data networks.
+	// InstallationReasonControlPlaneAccessInterfaceHasChanged - A reinstall is required as the packet core is running with out-of-date
+	// control plane access interface information.
+	InstallationReasonControlPlaneAccessInterfaceHasChanged InstallationReason = "ControlPlaneAccessInterfaceHasChanged"
+	// InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged - A reinstall is required as the packet core is running
+	// with out-of-date control plane access network virtual IP address.
+	InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged InstallationReason = "ControlPlaneAccessVirtualIpv4AddressesHasChanged"
+	// InstallationReasonNoAttachedDataNetworks - The packet core has not been installed as the packet core has no attached data
+	// networks.
 	InstallationReasonNoAttachedDataNetworks InstallationReason = "NoAttachedDataNetworks"
-	// InstallationReasonNoPacketCoreDataPlane - There is no configured data plane for this packet core.
+	// InstallationReasonNoPacketCoreDataPlane - The packet core has not been installed as there is no configured data plane for
+	// this packet core.
 	InstallationReasonNoPacketCoreDataPlane InstallationReason = "NoPacketCoreDataPlane"
-	// InstallationReasonNoSlices - The mobile network does not have any applicable configured slices.
+	// InstallationReasonNoSlices - The packet core has not been installed as the mobile network does not have any applicable
+	// configured slices.
 	InstallationReasonNoSlices InstallationReason = "NoSlices"
+	// InstallationReasonPublicLandMobileNetworkIdentifierHasChanged - A reinstall is required as the packet core is running with
+	// out-of-date PLMN ID.
+	InstallationReasonPublicLandMobileNetworkIdentifierHasChanged InstallationReason = "PublicLandMobileNetworkIdentifierHasChanged"
+	// InstallationReasonUserPlaneAccessInterfaceHasChanged - A reinstall is required as the packet core is running with out-of-date
+	// user plane core interface.
+	InstallationReasonUserPlaneAccessInterfaceHasChanged InstallationReason = "UserPlaneAccessInterfaceHasChanged"
+	// InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged - A reinstall is required as the packet core is running
+	// with out-of-date user plane access network virtual IP address.
+	InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged InstallationReason = "UserPlaneAccessVirtualIpv4AddressesHasChanged"
+	// InstallationReasonUserPlaneDataInterfaceHasChanged - A reinstall is required as the packet core is running with out-of-date
+	// user plane access interface.
+	InstallationReasonUserPlaneDataInterfaceHasChanged InstallationReason = "UserPlaneDataInterfaceHasChanged"
 )
 
 // PossibleInstallationReasonValues returns the possible values for the InstallationReason const type.
 func PossibleInstallationReasonValues() []InstallationReason {
 	return []InstallationReason{
+		InstallationReasonControlPlaneAccessInterfaceHasChanged,
+		InstallationReasonControlPlaneAccessVirtualIPv4AddressesHasChanged,
 		InstallationReasonNoAttachedDataNetworks,
 		InstallationReasonNoPacketCoreDataPlane,
 		InstallationReasonNoSlices,
+		InstallationReasonPublicLandMobileNetworkIdentifierHasChanged,
+		InstallationReasonUserPlaneAccessInterfaceHasChanged,
+		InstallationReasonUserPlaneAccessVirtualIPv4AddressesHasChanged,
+		InstallationReasonUserPlaneDataInterfaceHasChanged,
 	}
 }
 

@@ -1360,9 +1360,9 @@ func ExampleResourceClient_NewListJobsPager() {
 		// 	Value: []*armiothub.JobResponse{
 		// 		{
 		// 			Type: to.Ptr(armiothub.JobTypeUnknown),
-		// 			EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+		// 			EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 		// 			JobID: to.Ptr("test"),
-		// 			StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+		// 			StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 		// 			Status: to.Ptr(armiothub.JobStatusUnknown),
 		// 	}},
 		// }
@@ -1389,9 +1389,9 @@ func ExampleResourceClient_GetJob() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.JobResponse = armiothub.JobResponse{
 	// 	Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	JobID: to.Ptr("test"),
-	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	Status: to.Ptr(armiothub.JobStatusUnknown),
 	// }
 }
@@ -1461,8 +1461,8 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 		{
 		// 			EndpointID: to.Ptr("id1"),
 		// 			HealthStatus: to.Ptr(armiothub.EndpointHealthStatusHealthy),
-		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2022 18:04:32 GMT"); return t}()),
-		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2022 18:04:32 GMT"); return t}()),
+		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2022-09-13T18:04:32.000Z"); return t}()),
+		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2022-09-13T18:04:32.000Z"); return t}()),
 		// 		},
 		// 		{
 		// 			EndpointID: to.Ptr("id2"),
@@ -1472,9 +1472,9 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 			EndpointID: to.Ptr("id3"),
 		// 			HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnhealthy),
 		// 			LastKnownError: to.Ptr("NotFound"),
-		// 			LastKnownErrorTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2022 18:04:32 GMT"); return t}()),
-		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2022 18:04:32 GMT"); return t}()),
-		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2022 18:04:32 GMT"); return t}()),
+		// 			LastKnownErrorTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2022-09-13T18:04:32.000Z"); return t}()),
+		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2022-09-13T18:04:32.000Z"); return t}()),
+		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2022-09-13T18:04:32.000Z"); return t}()),
 		// 	}},
 		// }
 	}
@@ -1714,9 +1714,9 @@ func ExampleResourceClient_ExportDevices() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.JobResponse = armiothub.JobResponse{
 	// 	Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	JobID: to.Ptr("test"),
-	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	Status: to.Ptr(armiothub.JobStatusUnknown),
 	// }
 }
@@ -1744,9 +1744,9 @@ func ExampleResourceClient_ImportDevices() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.JobResponse = armiothub.JobResponse{
 	// 	Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	JobID: to.Ptr("test"),
-	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 15 Jun 2017 19:20:58 GMT"); return t}()),
+	// 	StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2017-06-15T19:20:58.000Z"); return t}()),
 	// 	Status: to.Ptr(armiothub.JobStatusUnknown),
 	// }
 }

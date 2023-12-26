@@ -33,7 +33,7 @@ type NotificationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNotificationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationClient, error) {
-	cl, err := arm.NewClient(moduleName+".NotificationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewNotificationClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *NotificationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationClientCreateOrUpdateOptions) (NotificationClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "NotificationClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, notificationName, options)
 	if err != nil {
 		return NotificationClientCreateOrUpdateResponse{}, err
@@ -123,6 +127,10 @@ func (client *NotificationClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - NotificationClientGetOptions contains the optional parameters for the NotificationClient.Get method.
 func (client *NotificationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationClientGetOptions) (NotificationClientGetResponse, error) {
 	var err error
+	const operationName = "NotificationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, notificationName, options)
 	if err != nil {
 		return NotificationClientGetResponse{}, err
@@ -191,25 +199,20 @@ func (client *NotificationClient) NewListByServicePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *NotificationClientListByServiceResponse) (NotificationClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NotificationClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return NotificationClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return NotificationClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return NotificationClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

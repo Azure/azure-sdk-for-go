@@ -280,10 +280,10 @@ func ExampleIscsiDisksClient_NewListMetricsPager() {
 		// 					Name: to.Ptr("Disk"),
 		// 					Value: to.Ptr("TieredIscsiDiskForSDKTest"),
 		// 			}},
-		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00Z"); return t}()),
+		// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-11T18:30:00.000Z"); return t}()),
 		// 			PrimaryAggregation: to.Ptr(armstorsimple1200series.MetricAggregationTypeAverage),
 		// 			ResourceID: to.Ptr("https://pod01-cis2.sea.storsimple.windowsazure.com/managers/4239154091695873374/devices/HSDK-WSJQERQW3F/iscsiservers/HSDK-WSJQERQW3F/disks/TieredIscsiDiskForSDKTest"),
-		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:30:00Z"); return t}()),
+		// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:30:00.000Z"); return t}()),
 		// 			TimeGrain: to.Ptr("1.00:00:00"),
 		// 			Unit: to.Ptr(armstorsimple1200series.MetricUnitBytes),
 		// 			Values: []*armstorsimple1200series.MetricData{

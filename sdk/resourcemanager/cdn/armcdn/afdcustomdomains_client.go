@@ -32,7 +32,7 @@ type AFDCustomDomainsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAFDCustomDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDCustomDomainsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AFDCustomDomainsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDCustomDomainsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDCustomDomainsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDCustomDomainsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *AFDCustomDomainsClient) BeginCreate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *AFDCustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomain AFDDomain, options *AFDCustomDomainsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDCustomDomainsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, customDomainName, customDomain, options)
 	if err != nil {
 		return nil, err
@@ -142,10 +149,13 @@ func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDCustomDomainsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDCustomDomainsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDCustomDomainsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -156,6 +166,10 @@ func (client *AFDCustomDomainsClient) BeginDelete(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *AFDCustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDCustomDomainsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -213,6 +227,10 @@ func (client *AFDCustomDomainsClient) deleteCreateRequest(ctx context.Context, r
 //   - options - AFDCustomDomainsClientGetOptions contains the optional parameters for the AFDCustomDomainsClient.Get method.
 func (client *AFDCustomDomainsClient) Get(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientGetOptions) (AFDCustomDomainsClientGetResponse, error) {
 	var err error
+	const operationName = "AFDCustomDomainsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
 		return AFDCustomDomainsClientGetResponse{}, err
@@ -282,25 +300,20 @@ func (client *AFDCustomDomainsClient) NewListByProfilePager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDCustomDomainsClientListByProfileResponse) (AFDCustomDomainsClientListByProfileResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDCustomDomainsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return AFDCustomDomainsClientListByProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDCustomDomainsClientListByProfileResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDCustomDomainsClientListByProfileResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProfileHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -357,10 +370,13 @@ func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Co
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDCustomDomainsClientRefreshValidationTokenResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDCustomDomainsClientRefreshValidationTokenResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDCustomDomainsClientRefreshValidationTokenResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -370,6 +386,10 @@ func (client *AFDCustomDomainsClient) BeginRefreshValidationToken(ctx context.Co
 // Generated from API version 2023-05-01
 func (client *AFDCustomDomainsClient) refreshValidationToken(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, options *AFDCustomDomainsClientBeginRefreshValidationTokenOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDCustomDomainsClient.BeginRefreshValidationToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.refreshValidationTokenCreateRequest(ctx, resourceGroupName, profileName, customDomainName, options)
 	if err != nil {
 		return nil, err
@@ -434,10 +454,13 @@ func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDCustomDomainsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDCustomDomainsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDCustomDomainsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -447,6 +470,10 @@ func (client *AFDCustomDomainsClient) BeginUpdate(ctx context.Context, resourceG
 // Generated from API version 2023-05-01
 func (client *AFDCustomDomainsClient) update(ctx context.Context, resourceGroupName string, profileName string, customDomainName string, customDomainUpdateProperties AFDDomainUpdateParameters, options *AFDCustomDomainsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDCustomDomainsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, customDomainName, customDomainUpdateProperties, options)
 	if err != nil {
 		return nil, err

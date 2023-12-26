@@ -7,10 +7,8 @@
 package azopenai_test
 
 import (
-	"bytes"
 	"context"
 	"encoding/base64"
-	"image/png"
 	"net/http"
 	"testing"
 	"time"
@@ -26,8 +24,8 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		t.Skipf("Ignoring poller-based test")
 	}
 
-	client := newTestClient(t, azureOpenAI.Endpoint)
-	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
+	client := newTestClient(t, azureOpenAI.DallE.Endpoint)
+	testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL)
 }
 
 func TestImageGeneration_OpenAI(t *testing.T) {
@@ -36,7 +34,7 @@ func TestImageGeneration_OpenAI(t *testing.T) {
 	}
 
 	client := newOpenAIClientForTest(t)
-	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatURL)
+	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL)
 }
 
 func TestImageGeneration_AzureOpenAI_WithError(t *testing.T) {
@@ -63,17 +61,20 @@ func TestImageGeneration_OpenAI_Base64(t *testing.T) {
 	}
 
 	client := newOpenAIClientForTest(t)
-	testImageGeneration(t, client, azopenai.ImageGenerationResponseFormatB64JSON)
+	testImageGeneration(t, client, openAI.DallE.Model, azopenai.ImageGenerationResponseFormatBase64)
 }
 
-func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat azopenai.ImageGenerationResponseFormat) {
+func testImageGeneration(t *testing.T, client *azopenai.Client, model string, responseFormat azopenai.ImageGenerationResponseFormat) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	resp, err := client.CreateImage(ctx, azopenai.ImageGenerationOptions{
-		Prompt:         to.Ptr("a cat"),
-		Size:           to.Ptr(azopenai.ImageSize256x256),
+	resp, err := client.GetImageGenerations(ctx, azopenai.ImageGenerationOptions{
+		// saw this prompt in a thread about trying to _prevent_ Dall-E3 from rewriting your
+		// propmt. When this is revised you'll see the text in the
+		Prompt:         to.Ptr("acrylic painting of a sunflower with bees"),
+		Size:           to.Ptr(azopenai.ImageSizeSize1024X1792),
 		ResponseFormat: &responseFormat,
+		DeploymentName: &model,
 	}, nil)
 	require.NoError(t, err)
 
@@ -83,17 +84,12 @@ func testImageGeneration(t *testing.T, client *azopenai.Client, responseFormat a
 			headResp, err := http.DefaultClient.Head(*resp.Data[0].URL)
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, headResp.StatusCode)
-		case azopenai.ImageGenerationResponseFormatB64JSON:
-			pngBytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
+			require.NotEmpty(t, resp.Data[0].RevisedPrompt)
+		case azopenai.ImageGenerationResponseFormatBase64:
+			imgBytes, err := base64.StdEncoding.DecodeString(*resp.Data[0].Base64Data)
 			require.NoError(t, err)
-			require.NotEmpty(t, pngBytes)
-
-			// the bytes here should just be a valid PNG
-			buff := bytes.NewBuffer(pngBytes)
-
-			// just check that it's a valid PNG
-			_, err = png.Decode(buff)
-			require.NoError(t, err)
+			require.NotEmpty(t, imgBytes)
+			require.NotEmpty(t, resp.Data[0].RevisedPrompt)
 		}
 	}
 }
@@ -102,10 +98,11 @@ func testImageGenerationFailure(t *testing.T, bogusClient *azopenai.Client) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	resp, err := bogusClient.CreateImage(ctx, azopenai.ImageGenerationOptions{
+	resp, err := bogusClient.GetImageGenerations(ctx, azopenai.ImageGenerationOptions{
 		Prompt:         to.Ptr("a cat"),
-		Size:           to.Ptr(azopenai.ImageSize256x256),
+		Size:           to.Ptr(azopenai.ImageSizeSize256X256),
 		ResponseFormat: to.Ptr(azopenai.ImageGenerationResponseFormatURL),
+		DeploymentName: to.Ptr("ignored"),
 	}, nil)
 	require.Empty(t, resp)
 

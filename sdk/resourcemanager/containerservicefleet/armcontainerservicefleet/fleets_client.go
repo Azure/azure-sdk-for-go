@@ -32,7 +32,7 @@ type FleetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetsClient, error) {
-	cl, err := arm.NewClient(moduleName+".FleetsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *FleetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *FleetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 // Generated from API version 2023-10-15
 func (client *FleetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, resource Fleet, options *FleetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, fleetName, resource, options)
 	if err != nil {
 		return nil, err
@@ -138,10 +145,13 @@ func (client *FleetsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -151,6 +161,10 @@ func (client *FleetsClient) BeginDelete(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-10-15
 func (client *FleetsClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return nil, err
@@ -204,6 +218,10 @@ func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 //   - options - FleetsClientGetOptions contains the optional parameters for the FleetsClient.Get method.
 func (client *FleetsClient) Get(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientGetOptions) (FleetsClientGetResponse, error) {
 	var err error
+	const operationName = "FleetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return FleetsClientGetResponse{}, err
@@ -267,25 +285,20 @@ func (client *FleetsClient) NewListByResourceGroupPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FleetsClientListByResourceGroupResponse) (FleetsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return FleetsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FleetsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FleetsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -331,25 +344,20 @@ func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientList
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FleetsClientListBySubscriptionResponse) (FleetsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return FleetsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FleetsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FleetsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -389,6 +397,10 @@ func (client *FleetsClient) listBySubscriptionHandleResponse(resp *http.Response
 //   - options - FleetsClientListCredentialsOptions contains the optional parameters for the FleetsClient.ListCredentials method.
 func (client *FleetsClient) ListCredentials(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientListCredentialsOptions) (FleetsClientListCredentialsResponse, error) {
 	var err error
+	const operationName = "FleetsClient.ListCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return FleetsClientListCredentialsResponse{}, err
@@ -456,10 +468,13 @@ func (client *FleetsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -469,6 +484,10 @@ func (client *FleetsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 // Generated from API version 2023-10-15
 func (client *FleetsClient) update(ctx context.Context, resourceGroupName string, fleetName string, properties FleetPatch, options *FleetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, properties, options)
 	if err != nil {
 		return nil, err

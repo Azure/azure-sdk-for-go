@@ -1,5 +1,96 @@
 # Release History
 
+## 4.0.0-beta.4 (2023-12-22)
+### Other Changes
+
+- Operation `ServerThreatProtectionSettingsClient.BeginCreateOrUpdate` increase `202` response.
+
+
+## 4.0.0-beta.3 (2023-11-24)
+### Features Added
+
+- New value `MigrationStateCleaningUp`, `MigrationStateValidationFailed` added to enum type `MigrationState`
+- New value `MigrationSubStateCancelingRequestedDBMigrations`, `MigrationSubStateValidationInProgress` added to enum type `MigrationSubState`
+- New value `ServerVersionSixteen` added to enum type `ServerVersion`
+- New enum type `MigrationDbState` with values `MigrationDbStateCanceled`, `MigrationDbStateCanceling`, `MigrationDbStateFailed`, `MigrationDbStateInProgress`, `MigrationDbStateSucceeded`, `MigrationDbStateWaitingForCutoverTrigger`
+- New enum type `MigrationOption` with values `MigrationOptionMigrate`, `MigrationOptionValidate`, `MigrationOptionValidateAndMigrate`
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCreating`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `ReadReplicaPromoteMode` with values `ReadReplicaPromoteModeStandalone`, `ReadReplicaPromoteModeSwitchover`
+- New enum type `ReplicationPromoteOption` with values `ReplicationPromoteOptionForced`, `ReplicationPromoteOptionPlanned`
+- New enum type `ReplicationState` with values `ReplicationStateActive`, `ReplicationStateBroken`, `ReplicationStateCatchup`, `ReplicationStateProvisioning`, `ReplicationStateReconfiguring`, `ReplicationStateUpdating`
+- New enum type `SSLMode` with values `SSLModePrefer`, `SSLModeRequire`, `SSLModeVerifyCA`, `SSLModeVerifyFull`
+- New enum type `SourceType` with values `SourceTypeAWS`, `SourceTypeAzureVM`, `SourceTypeGCP`, `SourceTypeOnPremises`, `SourceTypePostgreSQLSingleServer`
+- New enum type `StorageType` with values `StorageTypePremiumLRS`, `StorageTypePremiumV2LRS`
+- New enum type `ThreatProtectionName` with values `ThreatProtectionNameDefault`
+- New enum type `ThreatProtectionState` with values `ThreatProtectionStateDisabled`, `ThreatProtectionStateEnabled`
+- New enum type `ValidationState` with values `ValidationStateFailed`, `ValidationStateSucceeded`, `ValidationStateWarning`
+- New enum type `VirtualEndpointType` with values `VirtualEndpointTypeReadWrite`
+- New function `*ClientFactory.NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*ClientFactory.NewQuotaUsagesClient() *QuotaUsagesClient`
+- New function `*ClientFactory.NewServerThreatProtectionSettingsClient() *ServerThreatProtectionSettingsClient`
+- New function `*ClientFactory.NewVirtualEndpointsClient() *VirtualEndpointsClient`
+- New function `NewPrivateEndpointConnectionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionClient, error)`
+- New function `*PrivateEndpointConnectionClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionClient.BeginUpdate(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionClientUpdateResponse], error)`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.NewListByServerPager(string, string, *PrivateEndpointConnectionsClientListByServerOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServerResponse]`
+- New function `NewPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.Get(context.Context, string, string, string, *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClient.NewListByServerPager(string, string, *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse]`
+- New function `NewQuotaUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*QuotaUsagesClient, error)`
+- New function `*QuotaUsagesClient.NewListPager(string, *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse]`
+- New function `NewServerThreatProtectionSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ServerThreatProtectionSettingsClient, error)`
+- New function `*ServerThreatProtectionSettingsClient.BeginCreateOrUpdate(context.Context, string, string, ThreatProtectionName, ServerThreatProtectionSettingsModel, *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerThreatProtectionSettingsClientCreateOrUpdateResponse], error)`
+- New function `*ServerThreatProtectionSettingsClient.Get(context.Context, string, string, ThreatProtectionName, *ServerThreatProtectionSettingsClientGetOptions) (ServerThreatProtectionSettingsClientGetResponse, error)`
+- New function `*ServerThreatProtectionSettingsClient.NewListByServerPager(string, string, *ServerThreatProtectionSettingsClientListByServerOptions) *runtime.Pager[ServerThreatProtectionSettingsClientListByServerResponse]`
+- New function `NewVirtualEndpointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VirtualEndpointsClient, error)`
+- New function `*VirtualEndpointsClient.BeginCreate(context.Context, string, string, string, VirtualEndpointResource, *VirtualEndpointsClientBeginCreateOptions) (*runtime.Poller[VirtualEndpointsClientCreateResponse], error)`
+- New function `*VirtualEndpointsClient.BeginDelete(context.Context, string, string, string, *VirtualEndpointsClientBeginDeleteOptions) (*runtime.Poller[VirtualEndpointsClientDeleteResponse], error)`
+- New function `*VirtualEndpointsClient.Get(context.Context, string, string, string, *VirtualEndpointsClientGetOptions) (VirtualEndpointsClientGetResponse, error)`
+- New function `*VirtualEndpointsClient.NewListByServerPager(string, string, *VirtualEndpointsClientListByServerOptions) *runtime.Pager[VirtualEndpointsClientListByServerResponse]`
+- New function `*VirtualEndpointsClient.BeginUpdate(context.Context, string, string, string, VirtualEndpointResourceForPatch, *VirtualEndpointsClientBeginUpdateOptions) (*runtime.Poller[VirtualEndpointsClientUpdateResponse], error)`
+- New struct `DbLevelValidationStatus`
+- New struct `DbMigrationStatus`
+- New struct `NameProperty`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `QuotaUsage`
+- New struct `QuotaUsagesListResult`
+- New struct `Replica`
+- New struct `ServerThreatProtectionListResult`
+- New struct `ServerThreatProtectionProperties`
+- New struct `ServerThreatProtectionSettingsModel`
+- New struct `ValidationDetails`
+- New struct `ValidationMessage`
+- New struct `ValidationSummaryItem`
+- New struct `VirtualEndpointResource`
+- New struct `VirtualEndpointResourceForPatch`
+- New struct `VirtualEndpointResourceProperties`
+- New struct `VirtualEndpointsListResult`
+- New field `MigrationOption`, `SSLMode`, `SourceType` in struct `MigrationResourceProperties`
+- New field `DbDetails`, `ValidationDetails` in struct `MigrationSubStateDetails`
+- New field `PrivateEndpointConnections`, `Replica` in struct `ServerProperties`
+- New field `Replica` in struct `ServerPropertiesForUpdate`
+- New field `Throughput`, `Type` in struct `Storage`
+- New field `MaximumStorageSizeMb`, `SupportedMaximumIops`, `SupportedMaximumThroughput`, `SupportedThroughput` in struct `StorageMbCapability`
+
+
+## 3.1.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 4.0.0-beta.2 (2023-10-27)
 ### Breaking Changes
 

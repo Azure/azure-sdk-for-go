@@ -49,7 +49,7 @@ func ExampleManagedClustersServer() {
 		},
 	}
 
-	client, err := armcontainerservice.NewManagedClustersClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
+	client, err := armcontainerservice.NewManagedClustersClient("subscriptionID", &azfake.TokenCredential{}, &arm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: fake.NewManagedClustersServerTransport(&fakeManagedClustersServer),
 		},

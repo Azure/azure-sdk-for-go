@@ -69,22 +69,24 @@ func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Requ
 			resourceAddress = strings.ToLower(resourceAddress)
 		}
 
-		value = c.buildCanonicalizedAuthHeader(req.Raw().Method, resourceTypePath, resourceAddress, req.Raw().Header.Get(headerXmsDate), "master", "1.0")
+		isDatabaseAccount := opValues.resourceType == resourceTypeDatabaseAccount
+
+		value = c.buildCanonicalizedAuthHeader(isDatabaseAccount, req.Raw().Method, resourceTypePath, resourceAddress, req.Raw().Header.Get(headerXmsDate), "master", "1.0")
 	}
 
 	return value, nil
 }
 
 // where date is like time.RFC1123 but hard-codes GMT as the time zone
-func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resourceAddress, xmsDate, tokenType, version string) string {
-	if method == "" || resourceType == "" {
+func (c *KeyCredential) buildCanonicalizedAuthHeader(isDatabaseAccount bool, method, resourceTypePath, resourceAddress, xmsDate, tokenType, version string) string {
+	if method == "" || (resourceTypePath == "" && !isDatabaseAccount) {
 		return ""
 	}
 
 	resourceAddress, _ = url.PathUnescape(resourceAddress)
 
 	// https://docs.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources#constructkeytoken
-	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceType), "\n", resourceAddress, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
+	stringToSign := join(strings.ToLower(method), "\n", strings.ToLower(resourceTypePath), "\n", resourceAddress, "\n", strings.ToLower(xmsDate), "\n", "", "\n")
 	signature := c.computeHMACSHA256(stringToSign)
 
 	return url.QueryEscape(join("type=" + tokenType + "&ver=" + version + "&sig=" + signature))

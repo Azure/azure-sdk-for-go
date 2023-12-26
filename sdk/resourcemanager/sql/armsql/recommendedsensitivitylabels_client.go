@@ -32,7 +32,7 @@ type RecommendedSensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRecommendedSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendedSensitivityLabelsClient, error) {
-	cl, err := arm.NewClient(moduleName+".RecommendedSensitivityLabelsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewRecommendedSensitivityLabelsClient(subscriptionID string, credential azc
 //     method.
 func (client *RecommendedSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters RecommendedSensitivityLabelUpdateList, options *RecommendedSensitivityLabelsClientUpdateOptions) (RecommendedSensitivityLabelsClientUpdateResponse, error) {
 	var err error
+	const operationName = "RecommendedSensitivityLabelsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return RecommendedSensitivityLabelsClientUpdateResponse{}, err

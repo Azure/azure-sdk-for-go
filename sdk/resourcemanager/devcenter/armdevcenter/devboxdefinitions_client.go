@@ -33,7 +33,7 @@ type DevBoxDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDevBoxDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevBoxDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DevBoxDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *DevBoxDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DevBoxDefinitionsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DevBoxDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DevBoxDefinitionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *DevBoxDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, 
 // Generated from API version 2023-10-01-preview
 func (client *DevBoxDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinition, options *DevBoxDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DevBoxDefinitionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
 	if err != nil {
 		return nil, err
@@ -140,10 +147,13 @@ func (client *DevBoxDefinitionsClient) BeginDelete(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DevBoxDefinitionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DevBoxDefinitionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DevBoxDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -153,6 +163,10 @@ func (client *DevBoxDefinitionsClient) BeginDelete(ctx context.Context, resource
 // Generated from API version 2023-10-01-preview
 func (client *DevBoxDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *DevBoxDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DevBoxDefinitionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, options)
 	if err != nil {
 		return nil, err
@@ -208,6 +222,10 @@ func (client *DevBoxDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 //   - options - DevBoxDefinitionsClientGetOptions contains the optional parameters for the DevBoxDefinitionsClient.Get method.
 func (client *DevBoxDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, options *DevBoxDefinitionsClientGetOptions) (DevBoxDefinitionsClientGetResponse, error) {
 	var err error
+	const operationName = "DevBoxDefinitionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, options)
 	if err != nil {
 		return DevBoxDefinitionsClientGetResponse{}, err
@@ -274,6 +292,10 @@ func (client *DevBoxDefinitionsClient) getHandleResponse(resp *http.Response) (D
 //     method.
 func (client *DevBoxDefinitionsClient) GetByProject(ctx context.Context, resourceGroupName string, projectName string, devBoxDefinitionName string, options *DevBoxDefinitionsClientGetByProjectOptions) (DevBoxDefinitionsClientGetByProjectResponse, error) {
 	var err error
+	const operationName = "DevBoxDefinitionsClient.GetByProject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByProjectCreateRequest(ctx, resourceGroupName, projectName, devBoxDefinitionName, options)
 	if err != nil {
 		return DevBoxDefinitionsClientGetByProjectResponse{}, err
@@ -342,25 +364,20 @@ func (client *DevBoxDefinitionsClient) NewListByDevCenterPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DevBoxDefinitionsClientListByDevCenterResponse) (DevBoxDefinitionsClientListByDevCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DevBoxDefinitionsClient.NewListByDevCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
+			}, nil)
 			if err != nil {
 				return DevBoxDefinitionsClientListByDevCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DevBoxDefinitionsClientListByDevCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DevBoxDefinitionsClientListByDevCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDevCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -415,25 +432,20 @@ func (client *DevBoxDefinitionsClient) NewListByProjectPager(resourceGroupName s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DevBoxDefinitionsClientListByProjectResponse) (DevBoxDefinitionsClientListByProjectResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DevBoxDefinitionsClient.NewListByProjectPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
 			if err != nil {
 				return DevBoxDefinitionsClientListByProjectResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DevBoxDefinitionsClientListByProjectResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DevBoxDefinitionsClientListByProjectResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProjectHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -493,10 +505,13 @@ func (client *DevBoxDefinitionsClient) BeginUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DevBoxDefinitionsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DevBoxDefinitionsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DevBoxDefinitionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -506,6 +521,10 @@ func (client *DevBoxDefinitionsClient) BeginUpdate(ctx context.Context, resource
 // Generated from API version 2023-10-01-preview
 func (client *DevBoxDefinitionsClient) update(ctx context.Context, resourceGroupName string, devCenterName string, devBoxDefinitionName string, body DevBoxDefinitionUpdate, options *DevBoxDefinitionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DevBoxDefinitionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, devBoxDefinitionName, body, options)
 	if err != nil {
 		return nil, err

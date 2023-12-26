@@ -45,10 +45,10 @@ func ExampleReportsClient_GetLatencyScorecards() {
 	// 	Properties: &armfrontdoor.LatencyScorecardProperties{
 	// 		Description: to.Ptr("This scorecard is the latency scorecard, aggregated over a day"),
 	// 		Country: to.Ptr("USA"),
-	// 		EndDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28Z"); return t}()),
+	// 		EndDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28.000Z"); return t}()),
 	// 		EndpointA: to.Ptr("https://endpointA.com"),
 	// 		EndpointB: to.Ptr("https://endpoingB.com"),
-	// 		StartDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28Z"); return t}()),
+	// 		StartDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28.000Z"); return t}()),
 	// 	},
 	// }
 }
@@ -64,7 +64,7 @@ func ExampleReportsClient_GetTimeseries() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewReportsClient().GetTimeseries(ctx, "MyResourceGroup", "MyProfile", "MyExperiment", func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28Z"); return t }(), armfrontdoor.TimeseriesAggregationIntervalHourly, armfrontdoor.TimeseriesTypeMeasurementCounts, &armfrontdoor.ReportsClientGetTimeseriesOptions{Endpoint: nil,
+	res, err := clientFactory.NewReportsClient().GetTimeseries(ctx, "MyResourceGroup", "MyProfile", "MyExperiment", func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28.000Z"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28.000Z"); return t }(), armfrontdoor.TimeseriesAggregationIntervalHourly, armfrontdoor.TimeseriesTypeMeasurementCounts, &armfrontdoor.ReportsClientGetTimeseriesOptions{Endpoint: nil,
 		Country: nil,
 	})
 	if err != nil {

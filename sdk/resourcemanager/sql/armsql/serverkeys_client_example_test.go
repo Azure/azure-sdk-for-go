@@ -50,7 +50,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 			Location: to.Ptr("Japan East"),
 		// 			Properties: &armsql.ServerKeyProperties{
 		// 				AutoRotationEnabled: to.Ptr(false),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 		// 				Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 		// 			},
 		// 		},
@@ -62,7 +62,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 			Location: to.Ptr("Japan East"),
 		// 			Properties: &armsql.ServerKeyProperties{
 		// 				AutoRotationEnabled: to.Ptr(false),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 		// 				Thumbprint: to.Ptr("AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBB"),
 		// 			},
 		// 		},
@@ -105,7 +105,7 @@ func ExampleServerKeysClient_Get() {
 	// 	Location: to.Ptr("Japan East"),
 	// 	Properties: &armsql.ServerKeyProperties{
 	// 		AutoRotationEnabled: to.Ptr(false),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 	// 		Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 	},
 	// }
@@ -146,7 +146,7 @@ func ExampleServerKeysClient_BeginCreateOrUpdate() {
 	// 	Location: to.Ptr("Japan East"),
 	// 	Properties: &armsql.ServerKeyProperties{
 	// 		AutoRotationEnabled: to.Ptr(false),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 	// 		Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 	},
 	// }

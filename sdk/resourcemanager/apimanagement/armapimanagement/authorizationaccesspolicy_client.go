@@ -33,7 +33,7 @@ type AuthorizationAccessPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAuthorizationAccessPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationAccessPolicyClient, error) {
-	cl, err := arm.NewClient(moduleName+".AuthorizationAccessPolicyClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewAuthorizationAccessPolicyClient(subscriptionID string, credential azcore
 //     method.
 func (client *AuthorizationAccessPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, authorizationAccessPolicyID string, parameters AuthorizationAccessPolicyContract, options *AuthorizationAccessPolicyClientCreateOrUpdateOptions) (AuthorizationAccessPolicyClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AuthorizationAccessPolicyClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, authorizationAccessPolicyID, parameters, options)
 	if err != nil {
 		return AuthorizationAccessPolicyClientCreateOrUpdateResponse{}, err
@@ -145,6 +149,10 @@ func (client *AuthorizationAccessPolicyClient) createOrUpdateHandleResponse(resp
 //     method.
 func (client *AuthorizationAccessPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, authorizationAccessPolicyID string, ifMatch string, options *AuthorizationAccessPolicyClientDeleteOptions) (AuthorizationAccessPolicyClientDeleteResponse, error) {
 	var err error
+	const operationName = "AuthorizationAccessPolicyClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, authorizationAccessPolicyID, ifMatch, options)
 	if err != nil {
 		return AuthorizationAccessPolicyClientDeleteResponse{}, err
@@ -212,6 +220,10 @@ func (client *AuthorizationAccessPolicyClient) deleteCreateRequest(ctx context.C
 //     method.
 func (client *AuthorizationAccessPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, authorizationID string, authorizationAccessPolicyID string, options *AuthorizationAccessPolicyClientGetOptions) (AuthorizationAccessPolicyClientGetResponse, error) {
 	var err error
+	const operationName = "AuthorizationAccessPolicyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, authorizationAccessPolicyID, options)
 	if err != nil {
 		return AuthorizationAccessPolicyClientGetResponse{}, err
@@ -293,25 +305,20 @@ func (client *AuthorizationAccessPolicyClient) NewListByAuthorizationPager(resou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AuthorizationAccessPolicyClientListByAuthorizationResponse) (AuthorizationAccessPolicyClientListByAuthorizationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAuthorizationCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AuthorizationAccessPolicyClient.NewListByAuthorizationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAuthorizationCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, authorizationID, options)
+			}, nil)
 			if err != nil {
 				return AuthorizationAccessPolicyClientListByAuthorizationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AuthorizationAccessPolicyClientListByAuthorizationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AuthorizationAccessPolicyClientListByAuthorizationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAuthorizationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

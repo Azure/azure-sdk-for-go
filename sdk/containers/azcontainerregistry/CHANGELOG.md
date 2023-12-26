@@ -3,10 +3,7 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+* Add `ConfigMediaType` and `MediaType` properties to `ManifestAttributes`
 
 ### Other Changes
 * Refine some logics and comments

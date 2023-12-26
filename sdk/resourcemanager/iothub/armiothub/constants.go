@@ -9,8 +9,8 @@
 package armiothub
 
 const (
-	moduleName    = "armiothub"
-	moduleVersion = "v1.2.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
+	moduleVersion = "v1.3.0"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.

@@ -81,9 +81,9 @@ func ExampleModelsClient_NewListPager() {
 		// 						UsageName: to.Ptr("OpenAI.Provisioned.Class1"),
 		// 				}},
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00.000Z"); return t}()),
 		// 					CreatedBy: to.Ptr("Microsoft"),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00.000Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 				},
 		// 			},

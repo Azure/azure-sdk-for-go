@@ -30,7 +30,7 @@ type ChatTranscriptsNoSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewChatTranscriptsNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ChatTranscriptsNoSubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".ChatTranscriptsNoSubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -50,6 +50,10 @@ func NewChatTranscriptsNoSubscriptionClient(credential azcore.TokenCredential, o
 //     method.
 func (client *ChatTranscriptsNoSubscriptionClient) Get(ctx context.Context, supportTicketName string, chatTranscriptName string, options *ChatTranscriptsNoSubscriptionClientGetOptions) (ChatTranscriptsNoSubscriptionClientGetResponse, error) {
 	var err error
+	const operationName = "ChatTranscriptsNoSubscriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, supportTicketName, chatTranscriptName, options)
 	if err != nil {
 		return ChatTranscriptsNoSubscriptionClientGetResponse{}, err

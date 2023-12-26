@@ -33,7 +33,7 @@ type APIDiagnosticClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIDiagnosticClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIDiagnosticClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIDiagnosticClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewAPIDiagnosticClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, parameters DiagnosticContract, options *APIDiagnosticClientCreateOrUpdateOptions) (APIDiagnosticClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIDiagnosticClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, parameters, options)
 	if err != nil {
 		return APIDiagnosticClientCreateOrUpdateResponse{}, err
@@ -138,6 +142,10 @@ func (client *APIDiagnosticClient) createOrUpdateHandleResponse(resp *http.Respo
 //   - options - APIDiagnosticClientDeleteOptions contains the optional parameters for the APIDiagnosticClient.Delete method.
 func (client *APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, options *APIDiagnosticClientDeleteOptions) (APIDiagnosticClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIDiagnosticClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, ifMatch, options)
 	if err != nil {
 		return APIDiagnosticClientDeleteResponse{}, err
@@ -199,6 +207,10 @@ func (client *APIDiagnosticClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - APIDiagnosticClientGetOptions contains the optional parameters for the APIDiagnosticClient.Get method.
 func (client *APIDiagnosticClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetOptions) (APIDiagnosticClientGetResponse, error) {
 	var err error
+	const operationName = "APIDiagnosticClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, options)
 	if err != nil {
 		return APIDiagnosticClientGetResponse{}, err
@@ -272,6 +284,10 @@ func (client *APIDiagnosticClient) getHandleResponse(resp *http.Response) (APIDi
 //     method.
 func (client *APIDiagnosticClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, options *APIDiagnosticClientGetEntityTagOptions) (APIDiagnosticClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIDiagnosticClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, options)
 	if err != nil {
 		return APIDiagnosticClientGetEntityTagResponse{}, err
@@ -324,11 +340,10 @@ func (client *APIDiagnosticClient) getEntityTagCreateRequest(ctx context.Context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIDiagnosticClient) getEntityTagHandleResponse(resp *http.Response) (APIDiagnosticClientGetEntityTagResponse, error) {
-	result := APIDiagnosticClientGetEntityTagResponse{}
+	result := APIDiagnosticClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -346,25 +361,20 @@ func (client *APIDiagnosticClient) NewListByServicePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIDiagnosticClientListByServiceResponse) (APIDiagnosticClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIDiagnosticClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APIDiagnosticClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIDiagnosticClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIDiagnosticClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -430,6 +440,10 @@ func (client *APIDiagnosticClient) listByServiceHandleResponse(resp *http.Respon
 //   - options - APIDiagnosticClientUpdateOptions contains the optional parameters for the APIDiagnosticClient.Update method.
 func (client *APIDiagnosticClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, diagnosticID string, ifMatch string, parameters DiagnosticContract, options *APIDiagnosticClientUpdateOptions) (APIDiagnosticClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIDiagnosticClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, diagnosticID, ifMatch, parameters, options)
 	if err != nil {
 		return APIDiagnosticClientUpdateResponse{}, err

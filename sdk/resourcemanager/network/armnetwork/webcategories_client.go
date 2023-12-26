@@ -33,7 +33,7 @@ type WebCategoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWebCategoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebCategoriesClient, error) {
-	cl, err := arm.NewClient(moduleName+".WebCategoriesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewWebCategoriesClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets the specified Azure Web Category.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - name - The name of the azureWebCategory.
 //   - options - WebCategoriesClientGetOptions contains the optional parameters for the WebCategoriesClient.Get method.
 func (client *WebCategoriesClient) Get(ctx context.Context, name string, options *WebCategoriesClientGetOptions) (WebCategoriesClientGetResponse, error) {
@@ -88,7 +88,7 @@ func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -108,7 +108,7 @@ func (client *WebCategoriesClient) getHandleResponse(resp *http.Response) (WebCa
 
 // NewListBySubscriptionPager - Gets all the Azure Web Categories in a subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - options - WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.NewListBySubscriptionPager
 //     method.
 func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse] {
@@ -118,22 +118,15 @@ func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCatego
 		},
 		Fetcher: func(ctx context.Context, page *WebCategoriesClientListBySubscriptionResponse) (WebCategoriesClientListBySubscriptionResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WebCategoriesClient.NewListBySubscriptionPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return WebCategoriesClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WebCategoriesClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WebCategoriesClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
@@ -153,7 +146,7 @@ func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

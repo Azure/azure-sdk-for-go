@@ -33,7 +33,7 @@ type JobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 //   - options - JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
 func (client *JobsClient) Create(ctx context.Context, jobName string, resourceGroupName string, body PutJobParameters, options *JobsClientCreateOptions) (JobsClientCreateResponse, error) {
 	var err error
+	const operationName = "JobsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, jobName, resourceGroupName, body, options)
 	if err != nil {
 		return JobsClientCreateResponse{}, err
@@ -123,6 +127,10 @@ func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsClientC
 //   - options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
 func (client *JobsClient) Delete(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientDeleteOptions) (JobsClientDeleteResponse, error) {
 	var err error
+	const operationName = "JobsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, jobName, resourceGroupName, options)
 	if err != nil {
 		return JobsClientDeleteResponse{}, err
@@ -176,6 +184,10 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName strin
 //   - options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
 func (client *JobsClient) Get(ctx context.Context, jobName string, resourceGroupName string, options *JobsClientGetOptions) (JobsClientGetResponse, error) {
 	var err error
+	const operationName = "JobsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, jobName, resourceGroupName, options)
 	if err != nil {
 		return JobsClientGetResponse{}, err
@@ -242,25 +254,20 @@ func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobsClientListByResourceGroupResponse) (JobsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return JobsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -315,25 +322,20 @@ func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySu
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobsClientListBySubscriptionResponse) (JobsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return JobsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -385,6 +387,10 @@ func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 //   - options - JobsClientUpdateOptions contains the optional parameters for the JobsClient.Update method.
 func (client *JobsClient) Update(ctx context.Context, jobName string, resourceGroupName string, body UpdateJobParameters, options *JobsClientUpdateOptions) (JobsClientUpdateResponse, error) {
 	var err error
+	const operationName = "JobsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, jobName, resourceGroupName, body, options)
 	if err != nil {
 		return JobsClientUpdateResponse{}, err

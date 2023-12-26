@@ -197,12 +197,6 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 
 	if hasAzureExtensions(body) {
 		req, err = client.getChatCompletionsWithAzureExtensionsCreateRequest(ctx, body, &GetChatCompletionsWithAzureExtensionsOptions{})
-
-		if err == nil {
-			reqQP := req.Raw().URL.Query()
-			reqQP.Set("api-version", "2023-08-01-preview")
-			req.Raw().URL.RawQuery = reqQP.Encode()
-		}
 	} else {
 		req, err = client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
 	}
@@ -277,25 +271,59 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions](v T) string {
+func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
+	var p *string
+
 	switch a := any(v).(type) {
+	case AudioTranscriptionOptions:
+		p = a.DeploymentName
+	case AudioTranslationOptions:
+		p = a.DeploymentName
 	case ChatCompletionsOptions:
-		return a.Deployment
+		p = a.DeploymentName
 	case CompletionsOptions:
-		return a.Deployment
+		p = a.DeploymentName
 	case EmbeddingsOptions:
-		return a.Deployment
-	case ImageGenerationOptions:
-		return ""
+		p = a.DeploymentName
 	case *getAudioTranscriptionInternalOptions:
-		return *a.Model
+		p = a.Model
 	case *getAudioTranslationInternalOptions:
-		return *a.Model
-	default:
-		return ""
+		p = a.Model
+	case ImageGenerationOptions:
+		p = a.DeploymentName
 	}
+
+	if p != nil {
+		return *p
+	}
+
+	return ""
 }
 
 func hasAzureExtensions(body ChatCompletionsOptions) bool {
-	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions.Extensions) > 0
+	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions) > 0
+}
+
+// ChatRequestUserMessageContent contains the user prompt - either as a single string
+// or as a []ChatCompletionRequestMessageContentPart, enabling images and text as input.
+//
+// NOTE: This should be created using [azopenai.NewChatRequestUserMessageContent]
+type ChatRequestUserMessageContent struct {
+	value any
+}
+
+// NewChatRequestUserMessageContent creates a [azopenai.ChatRequestUserMessageContent].
+func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) ChatRequestUserMessageContent {
+	switch actualV := any(v).(type) {
+	case string:
+		return ChatRequestUserMessageContent{value: &actualV}
+	case []ChatCompletionRequestMessageContentPartClassification:
+		return ChatRequestUserMessageContent{value: actualV}
+	}
+	return ChatRequestUserMessageContent{}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
 }

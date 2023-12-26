@@ -32,7 +32,7 @@ type SyncSetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSyncSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SyncSetsClient, error) {
-	cl, err := arm.NewClient(moduleName+".SyncSetsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewSyncSetsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - SyncSetsClientCreateOrUpdateOptions contains the optional parameters for the SyncSetsClient.CreateOrUpdate method.
 func (client *SyncSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncSet, options *SyncSetsClientCreateOrUpdateOptions) (SyncSetsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "SyncSetsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncSetsClientCreateOrUpdateResponse{}, err
@@ -122,6 +126,10 @@ func (client *SyncSetsClient) createOrUpdateHandleResponse(resp *http.Response) 
 //   - options - SyncSetsClientDeleteOptions contains the optional parameters for the SyncSetsClient.Delete method.
 func (client *SyncSetsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncSetsClientDeleteOptions) (SyncSetsClientDeleteResponse, error) {
 	var err error
+	const operationName = "SyncSetsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncSetsClientDeleteResponse{}, err
@@ -177,6 +185,10 @@ func (client *SyncSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - SyncSetsClientGetOptions contains the optional parameters for the SyncSetsClient.Get method.
 func (client *SyncSetsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *SyncSetsClientGetOptions) (SyncSetsClientGetResponse, error) {
 	var err error
+	const operationName = "SyncSetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return SyncSetsClientGetResponse{}, err
@@ -244,25 +256,20 @@ func (client *SyncSetsClient) NewListPager(resourceGroupName string, resourceNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SyncSetsClientListResponse) (SyncSetsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SyncSetsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return SyncSetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SyncSetsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SyncSetsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -312,6 +319,10 @@ func (client *SyncSetsClient) listHandleResponse(resp *http.Response) (SyncSetsC
 //   - options - SyncSetsClientUpdateOptions contains the optional parameters for the SyncSetsClient.Update method.
 func (client *SyncSetsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters SyncSetUpdate, options *SyncSetsClientUpdateOptions) (SyncSetsClientUpdateResponse, error) {
 	var err error
+	const operationName = "SyncSetsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return SyncSetsClientUpdateResponse{}, err

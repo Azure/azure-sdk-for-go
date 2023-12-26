@@ -32,7 +32,7 @@ type AFDProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AFDProfilesClient, error) {
-	cl, err := arm.NewClient(moduleName+".AFDProfilesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewAFDProfilesClient(subscriptionID string, credential azcore.TokenCredenti
 //     method.
 func (client *AFDProfilesClient) CheckEndpointNameAvailability(ctx context.Context, resourceGroupName string, profileName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, options *AFDProfilesClientCheckEndpointNameAvailabilityOptions) (AFDProfilesClientCheckEndpointNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "AFDProfilesClient.CheckEndpointNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkEndpointNameAvailabilityCreateRequest(ctx, resourceGroupName, profileName, checkEndpointNameAvailabilityInput, options)
 	if err != nil {
 		return AFDProfilesClientCheckEndpointNameAvailabilityResponse{}, err
@@ -122,6 +126,10 @@ func (client *AFDProfilesClient) checkEndpointNameAvailabilityHandleResponse(res
 //     method.
 func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput CheckHostNameAvailabilityInput, options *AFDProfilesClientCheckHostNameAvailabilityOptions) (AFDProfilesClientCheckHostNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "AFDProfilesClient.CheckHostNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkHostNameAvailabilityCreateRequest(ctx, resourceGroupName, profileName, checkHostNameAvailabilityInput, options)
 	if err != nil {
 		return AFDProfilesClientCheckHostNameAvailabilityResponse{}, err
@@ -190,25 +198,20 @@ func (client *AFDProfilesClient) NewListResourceUsagePager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AFDProfilesClientListResourceUsageResponse) (AFDProfilesClientListResourceUsageResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AFDProfilesClient.NewListResourceUsagePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
+			}, nil)
 			if err != nil {
 				return AFDProfilesClientListResourceUsageResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AFDProfilesClientListResourceUsageResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AFDProfilesClientListResourceUsageResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listResourceUsageHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -264,10 +267,13 @@ func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AFDProfilesClientUpgradeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AFDProfilesClientUpgradeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AFDProfilesClientUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -277,6 +283,10 @@ func (client *AFDProfilesClient) BeginUpgrade(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters ProfileUpgradeParameters, options *AFDProfilesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AFDProfilesClient.BeginUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.upgradeCreateRequest(ctx, resourceGroupName, profileName, profileUpgradeParameters, options)
 	if err != nil {
 		return nil, err
@@ -332,6 +342,10 @@ func (client *AFDProfilesClient) upgradeCreateRequest(ctx context.Context, resou
 //     method.
 func (client *AFDProfilesClient) ValidateSecret(ctx context.Context, resourceGroupName string, profileName string, validateSecretInput ValidateSecretInput, options *AFDProfilesClientValidateSecretOptions) (AFDProfilesClientValidateSecretResponse, error) {
 	var err error
+	const operationName = "AFDProfilesClient.ValidateSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateSecretCreateRequest(ctx, resourceGroupName, profileName, validateSecretInput, options)
 	if err != nil {
 		return AFDProfilesClientValidateSecretResponse{}, err

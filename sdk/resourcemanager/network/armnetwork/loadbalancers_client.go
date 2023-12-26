@@ -33,7 +33,7 @@ type LoadBalancersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancersClient, error) {
-	cl, err := arm.NewClient(moduleName+".LoadBalancersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Creates or updates a load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - parameters - Parameters supplied to the create or update load balancer operation.
@@ -61,17 +61,20 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LoadBalancersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LoadBalancersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LoadBalancersClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginCreateOrUpdate"
@@ -113,7 +116,7 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,7 +128,7 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 // BeginDelete - Deletes the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancersClientBeginDeleteOptions contains the optional parameters for the LoadBalancersClient.BeginDelete
@@ -138,17 +141,20 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LoadBalancersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LoadBalancersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginDelete"
@@ -190,7 +196,7 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +205,7 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancersClientGetOptions contains the optional parameters for the LoadBalancersClient.Get method.
@@ -245,7 +251,7 @@ func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -265,7 +271,7 @@ func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadB
 
 // NewListPager - Gets all the load balancers in a resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - options - LoadBalancersClientListOptions contains the optional parameters for the LoadBalancersClient.NewListPager method.
 func (client *LoadBalancersClient) NewListPager(resourceGroupName string, options *LoadBalancersClientListOptions) *runtime.Pager[LoadBalancersClientListResponse] {
@@ -275,22 +281,15 @@ func (client *LoadBalancersClient) NewListPager(resourceGroupName string, option
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancersClientListResponse) (LoadBalancersClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancersClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return LoadBalancersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LoadBalancersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LoadBalancersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -314,7 +313,7 @@ func (client *LoadBalancersClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +330,7 @@ func (client *LoadBalancersClient) listHandleResponse(resp *http.Response) (Load
 
 // NewListAllPager - Gets all the load balancers in a subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - options - LoadBalancersClientListAllOptions contains the optional parameters for the LoadBalancersClient.NewListAllPager
 //     method.
 func (client *LoadBalancersClient) NewListAllPager(options *LoadBalancersClientListAllOptions) *runtime.Pager[LoadBalancersClientListAllResponse] {
@@ -341,22 +340,15 @@ func (client *LoadBalancersClient) NewListAllPager(options *LoadBalancersClientL
 		},
 		Fetcher: func(ctx context.Context, page *LoadBalancersClientListAllResponse) (LoadBalancersClientListAllResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancersClient.NewListAllPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAllCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAllCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return LoadBalancersClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return LoadBalancersClientListAllResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return LoadBalancersClientListAllResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAllHandleResponse(resp)
 		},
@@ -376,7 +368,7 @@ func (client *LoadBalancersClient) listAllCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -394,7 +386,7 @@ func (client *LoadBalancersClient) listAllHandleResponse(resp *http.Response) (L
 // BeginListInboundNatRulePortMappings - List of inbound NAT rule port mappings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - groupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - backendPoolName - The name of the load balancer backend address pool.
@@ -409,17 +401,20 @@ func (client *LoadBalancersClient) BeginListInboundNatRulePortMappings(ctx conte
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientListInboundNatRulePortMappingsResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LoadBalancersClientListInboundNatRulePortMappingsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LoadBalancersClientListInboundNatRulePortMappingsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // ListInboundNatRulePortMappings - List of inbound NAT rule port mappings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LoadBalancersClient) listInboundNatRulePortMappings(ctx context.Context, groupName string, loadBalancerName string, backendPoolName string, parameters QueryInboundNatRulePortMappingRequest, options *LoadBalancersClientBeginListInboundNatRulePortMappingsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginListInboundNatRulePortMappings"
@@ -465,7 +460,7 @@ func (client *LoadBalancersClient) listInboundNatRulePortMappingsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -477,7 +472,7 @@ func (client *LoadBalancersClient) listInboundNatRulePortMappingsCreateRequest(c
 // MigrateToIPBased - Migrate load balancer to IP Based
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - groupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - options - LoadBalancersClientMigrateToIPBasedOptions contains the optional parameters for the LoadBalancersClient.MigrateToIPBased
@@ -524,7 +519,7 @@ func (client *LoadBalancersClient) migrateToIPBasedCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -548,7 +543,7 @@ func (client *LoadBalancersClient) migrateToIPBasedHandleResponse(resp *http.Res
 // BeginSwapPublicIPAddresses - Swaps VIPs between two load balancers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - location - The region where load balancers are located at.
 //   - parameters - Parameters that define which VIPs should be swapped.
 //   - options - LoadBalancersClientBeginSwapPublicIPAddressesOptions contains the optional parameters for the LoadBalancersClient.BeginSwapPublicIPAddresses
@@ -561,17 +556,20 @@ func (client *LoadBalancersClient) BeginSwapPublicIPAddresses(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientSwapPublicIPAddressesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[LoadBalancersClientSwapPublicIPAddressesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LoadBalancersClientSwapPublicIPAddressesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // SwapPublicIPAddresses - Swaps VIPs between two load balancers.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *LoadBalancersClient) swapPublicIPAddresses(ctx context.Context, location string, parameters LoadBalancerVipSwapRequest, options *LoadBalancersClientBeginSwapPublicIPAddressesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LoadBalancersClient.BeginSwapPublicIPAddresses"
@@ -609,7 +607,7 @@ func (client *LoadBalancersClient) swapPublicIPAddressesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -621,7 +619,7 @@ func (client *LoadBalancersClient) swapPublicIPAddressesCreateRequest(ctx contex
 // UpdateTags - Updates a load balancer tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - loadBalancerName - The name of the load balancer.
 //   - parameters - Parameters supplied to update load balancer tags.
@@ -669,7 +667,7 @@ func (client *LoadBalancersClient) updateTagsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

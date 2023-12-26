@@ -25,7 +25,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -35,31 +35,37 @@ func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOpti
 	}, nil
 }
 
+// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
 	subClient, _ := NewCheckNameAvailabilityClient(c.credential, c.options)
 	return subClient
 }
 
+// NewDiagnosticsClient creates a new instance of DiagnosticsClient.
 func (c *ClientFactory) NewDiagnosticsClient() *DiagnosticsClient {
 	subClient, _ := NewDiagnosticsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewDiscoverySolutionClient creates a new instance of DiscoverySolutionClient.
 func (c *ClientFactory) NewDiscoverySolutionClient() *DiscoverySolutionClient {
 	subClient, _ := NewDiscoverySolutionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewSolutionClient creates a new instance of SolutionClient.
 func (c *ClientFactory) NewSolutionClient() *SolutionClient {
 	subClient, _ := NewSolutionClient(c.credential, c.options)
 	return subClient
 }
 
+// NewTroubleshootersClient creates a new instance of TroubleshootersClient.
 func (c *ClientFactory) NewTroubleshootersClient() *TroubleshootersClient {
 	subClient, _ := NewTroubleshootersClient(c.credential, c.options)
 	return subClient

@@ -33,7 +33,7 @@ type GatewayHostnameConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayHostnameConfigurationClient, error) {
-	cl, err := arm.NewClient(moduleName+".GatewayHostnameConfigurationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewGatewayHostnameConfigurationClient(subscriptionID string, credential azc
 //     method.
 func (client *GatewayHostnameConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, parameters GatewayHostnameConfigurationContract, options *GatewayHostnameConfigurationClientCreateOrUpdateOptions) (GatewayHostnameConfigurationClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GatewayHostnameConfigurationClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, parameters, options)
 	if err != nil {
 		return GatewayHostnameConfigurationClientCreateOrUpdateResponse{}, err
@@ -140,6 +144,10 @@ func (client *GatewayHostnameConfigurationClient) createOrUpdateHandleResponse(r
 //     method.
 func (client *GatewayHostnameConfigurationClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, ifMatch string, options *GatewayHostnameConfigurationClientDeleteOptions) (GatewayHostnameConfigurationClientDeleteResponse, error) {
 	var err error
+	const operationName = "GatewayHostnameConfigurationClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, ifMatch, options)
 	if err != nil {
 		return GatewayHostnameConfigurationClientDeleteResponse{}, err
@@ -203,6 +211,10 @@ func (client *GatewayHostnameConfigurationClient) deleteCreateRequest(ctx contex
 //     method.
 func (client *GatewayHostnameConfigurationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetOptions) (GatewayHostnameConfigurationClientGetResponse, error) {
 	var err error
+	const operationName = "GatewayHostnameConfigurationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, options)
 	if err != nil {
 		return GatewayHostnameConfigurationClientGetResponse{}, err
@@ -277,6 +289,10 @@ func (client *GatewayHostnameConfigurationClient) getHandleResponse(resp *http.R
 //     method.
 func (client *GatewayHostnameConfigurationClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, hcID string, options *GatewayHostnameConfigurationClientGetEntityTagOptions) (GatewayHostnameConfigurationClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GatewayHostnameConfigurationClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, hcID, options)
 	if err != nil {
 		return GatewayHostnameConfigurationClientGetEntityTagResponse{}, err
@@ -329,11 +345,10 @@ func (client *GatewayHostnameConfigurationClient) getEntityTagCreateRequest(ctx 
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayHostnameConfigurationClient) getEntityTagHandleResponse(resp *http.Response) (GatewayHostnameConfigurationClientGetEntityTagResponse, error) {
-	result := GatewayHostnameConfigurationClientGetEntityTagResponse{}
+	result := GatewayHostnameConfigurationClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -352,25 +367,20 @@ func (client *GatewayHostnameConfigurationClient) NewListByServicePager(resource
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GatewayHostnameConfigurationClientListByServiceResponse) (GatewayHostnameConfigurationClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GatewayHostnameConfigurationClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
+			}, nil)
 			if err != nil {
 				return GatewayHostnameConfigurationClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GatewayHostnameConfigurationClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GatewayHostnameConfigurationClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

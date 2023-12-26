@@ -33,7 +33,7 @@ type ImagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ImagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewImagesClient(subscriptionID string, credential azcore.TokenCredential, o
 //   - options - ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
 func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, options *ImagesClientGetOptions) (ImagesClientGetResponse, error) {
 	var err error
+	const operationName = "ImagesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, options)
 	if err != nil {
 		return ImagesClientGetResponse{}, err
@@ -127,25 +131,20 @@ func (client *ImagesClient) NewListByDevCenterPager(resourceGroupName string, de
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImagesClientListByDevCenterResponse) (ImagesClientListByDevCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.NewListByDevCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
+			}, nil)
 			if err != nil {
 				return ImagesClientListByDevCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ImagesClientListByDevCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ImagesClientListByDevCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDevCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -201,25 +200,20 @@ func (client *ImagesClient) NewListByGalleryPager(resourceGroupName string, devC
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ImagesClientListByGalleryResponse) (ImagesClientListByGalleryResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByGalleryCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ImagesClient.NewListByGalleryPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByGalleryCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, options)
+			}, nil)
 			if err != nil {
 				return ImagesClientListByGalleryResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ImagesClientListByGalleryResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ImagesClientListByGalleryResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByGalleryHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

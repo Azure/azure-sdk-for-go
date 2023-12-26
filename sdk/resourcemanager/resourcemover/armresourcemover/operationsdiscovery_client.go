@@ -27,7 +27,7 @@ type OperationsDiscoveryClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsDiscoveryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsDiscoveryClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationsDiscoveryClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -44,6 +44,10 @@ func NewOperationsDiscoveryClient(credential azcore.TokenCredential, options *ar
 //   - options - OperationsDiscoveryClientGetOptions contains the optional parameters for the OperationsDiscoveryClient.Get method.
 func (client *OperationsDiscoveryClient) Get(ctx context.Context, options *OperationsDiscoveryClientGetOptions) (OperationsDiscoveryClientGetResponse, error) {
 	var err error
+	const operationName = "OperationsDiscoveryClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return OperationsDiscoveryClientGetResponse{}, err

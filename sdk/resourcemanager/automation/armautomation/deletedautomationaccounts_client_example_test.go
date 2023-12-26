@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/automation/resource-manager/Microsoft.Automation/stable/2022-01-31/examples/getDeletedAutomationAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/432872fac1d0f8edcae98a0e8504afc0ee302710/specification/automation/resource-manager/Microsoft.Automation/stable/2022-01-31/examples/getDeletedAutomationAccount.json
 func ExampleDeletedAutomationAccountsClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleDeletedAutomationAccountsClient_ListBySubscription() {
 	// 			Properties: &armautomation.DeletedAutomationAccountProperties{
 	// 				AutomationAccountID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
 	// 				AutomationAccountResourceID: to.Ptr("/subscriptions/subid/resourceGroups/msitest/providers/Microsoft.Automation/automationAccounts/myAutomationAccount"),
-	// 				DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 				DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55.000Z"); return t}()),
 	// 				Location: to.Ptr("westus"),
 	// 			},
 	// 	}},

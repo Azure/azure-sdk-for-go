@@ -27,9 +27,10 @@ type DiagnosticsClientGetOptions struct {
 
 // DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager method.
 type DiscoverySolutionClientListOptions struct {
-	// 'ProblemClassificationId' or 'Id' is a mandatory filter to get solutions ids. It also supports optional 'ResourceType'
-	// and 'SolutionType' filters. The filter supports only 'and', 'or' and 'eq'
-	// operators. Example: $filter=ProblemClassificationId eq '1ddda5b4-cf6c-4d4f-91ad-bc38ab0e811e'
+	// 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional 'ResourceType' and 'SolutionType'
+	// filters. The $filter
+	// [https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter] supports only 'and', 'or' and 'eq' operators. Example:
+	// $filter=ProblemClassificationId eq '1ddda5b4-cf6c-4d4f-91ad-bc38ab0e811e'
 	Filter *string
 
 	// Skiptoken is only used if a previous operation returned a partial result.

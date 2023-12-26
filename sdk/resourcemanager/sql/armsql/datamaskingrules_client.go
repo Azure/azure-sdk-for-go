@@ -32,7 +32,7 @@ type DataMaskingRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataMaskingRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DataMaskingRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *DataMaskingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, dataMaskingRuleName string, parameters DataMaskingRule, options *DataMaskingRulesClientCreateOrUpdateOptions) (DataMaskingRulesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "DataMaskingRulesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, dataMaskingRuleName, parameters, options)
 	if err != nil {
 		return DataMaskingRulesClientCreateOrUpdateResponse{}, err
@@ -135,6 +139,7 @@ func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName s
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DataMaskingRulesClientListByDatabaseResponse) (DataMaskingRulesClientListByDatabaseResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataMaskingRulesClient.NewListByDatabasePager")
 			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 			if err != nil {
 				return DataMaskingRulesClientListByDatabaseResponse{}, err
@@ -148,6 +153,7 @@ func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName s
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

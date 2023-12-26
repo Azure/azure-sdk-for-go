@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,111 +37,133 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAttachedNetworksClient creates a new instance of AttachedNetworksClient.
 func (c *ClientFactory) NewAttachedNetworksClient() *AttachedNetworksClient {
 	subClient, _ := NewAttachedNetworksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCatalogDevBoxDefinitionsClient creates a new instance of CatalogDevBoxDefinitionsClient.
 func (c *ClientFactory) NewCatalogDevBoxDefinitionsClient() *CatalogDevBoxDefinitionsClient {
 	subClient, _ := NewCatalogDevBoxDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCatalogsClient creates a new instance of CatalogsClient.
 func (c *ClientFactory) NewCatalogsClient() *CatalogsClient {
 	subClient, _ := NewCatalogsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
 func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
 	subClient, _ := NewCheckNameAvailabilityClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewCustomizationTasksClient creates a new instance of CustomizationTasksClient.
 func (c *ClientFactory) NewCustomizationTasksClient() *CustomizationTasksClient {
 	subClient, _ := NewCustomizationTasksClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDevBoxDefinitionsClient creates a new instance of DevBoxDefinitionsClient.
 func (c *ClientFactory) NewDevBoxDefinitionsClient() *DevBoxDefinitionsClient {
 	subClient, _ := NewDevBoxDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewDevCentersClient creates a new instance of DevCentersClient.
 func (c *ClientFactory) NewDevCentersClient() *DevCentersClient {
 	subClient, _ := NewDevCentersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEnvironmentDefinitionsClient creates a new instance of EnvironmentDefinitionsClient.
 func (c *ClientFactory) NewEnvironmentDefinitionsClient() *EnvironmentDefinitionsClient {
 	subClient, _ := NewEnvironmentDefinitionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewEnvironmentTypesClient creates a new instance of EnvironmentTypesClient.
 func (c *ClientFactory) NewEnvironmentTypesClient() *EnvironmentTypesClient {
 	subClient, _ := NewEnvironmentTypesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewGalleriesClient creates a new instance of GalleriesClient.
 func (c *ClientFactory) NewGalleriesClient() *GalleriesClient {
 	subClient, _ := NewGalleriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewImageVersionsClient creates a new instance of ImageVersionsClient.
 func (c *ClientFactory) NewImageVersionsClient() *ImageVersionsClient {
 	subClient, _ := NewImageVersionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewImagesClient creates a new instance of ImagesClient.
 func (c *ClientFactory) NewImagesClient() *ImagesClient {
 	subClient, _ := NewImagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewNetworkConnectionsClient creates a new instance of NetworkConnectionsClient.
 func (c *ClientFactory) NewNetworkConnectionsClient() *NetworkConnectionsClient {
 	subClient, _ := NewNetworkConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationStatusesClient creates a new instance of OperationStatusesClient.
 func (c *ClientFactory) NewOperationStatusesClient() *OperationStatusesClient {
 	subClient, _ := NewOperationStatusesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPoolsClient creates a new instance of PoolsClient.
 func (c *ClientFactory) NewPoolsClient() *PoolsClient {
 	subClient, _ := NewPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProjectAllowedEnvironmentTypesClient creates a new instance of ProjectAllowedEnvironmentTypesClient.
 func (c *ClientFactory) NewProjectAllowedEnvironmentTypesClient() *ProjectAllowedEnvironmentTypesClient {
 	subClient, _ := NewProjectAllowedEnvironmentTypesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProjectEnvironmentTypesClient creates a new instance of ProjectEnvironmentTypesClient.
 func (c *ClientFactory) NewProjectEnvironmentTypesClient() *ProjectEnvironmentTypesClient {
 	subClient, _ := NewProjectEnvironmentTypesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewProjectsClient creates a new instance of ProjectsClient.
 func (c *ClientFactory) NewProjectsClient() *ProjectsClient {
 	subClient, _ := NewProjectsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSKUsClient creates a new instance of SKUsClient.
 func (c *ClientFactory) NewSKUsClient() *SKUsClient {
 	subClient, _ := NewSKUsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSchedulesClient creates a new instance of SchedulesClient.
 func (c *ClientFactory) NewSchedulesClient() *SchedulesClient {
 	subClient, _ := NewSchedulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	subClient, _ := NewUsagesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

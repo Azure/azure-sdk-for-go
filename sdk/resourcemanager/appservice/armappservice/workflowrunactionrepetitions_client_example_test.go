@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionRepetitions_List.json
 func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,8 +51,8 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 					ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					ActionTrackingID: to.Ptr("0d8152bb-e198-44a9-bde8-5138eea16dd4"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.2264835Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.217991Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.226Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.217Z"); return t}()),
 		// 				Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 				InputsLink: &armappservice.ContentLink{
 		// 					ContentHash: &armappservice.ContentHash{
@@ -90,8 +90,8 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 					ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					ActionTrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.1015421Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.0929911Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.101Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.092Z"); return t}()),
 		// 				Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 				InputsLink: &armappservice.ContentLink{
 		// 					ContentHash: &armappservice.ContentHash{
@@ -123,7 +123,7 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionRepetitions_Get.json
 func ExampleWorkflowRunActionRepetitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,8 +151,8 @@ func ExampleWorkflowRunActionRepetitionsClient_Get() {
 	// 			ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 	// 			ActionTrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.1015421Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.0929911Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.101Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.092Z"); return t}()),
 	// 		Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 		InputsLink: &armappservice.ContentLink{
 	// 			ContentHash: &armappservice.ContentHash{
@@ -182,7 +182,7 @@ func ExampleWorkflowRunActionRepetitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionRepetitions_ListExpressionTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionRepetitions_ListExpressionTraces.json
 func ExampleWorkflowRunActionRepetitionsClient_NewListExpressionTracesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

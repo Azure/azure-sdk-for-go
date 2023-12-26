@@ -32,7 +32,7 @@ type AvailabilityStatusesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailabilityStatusesClient, error) {
-	cl, err := arm.NewClient(moduleName+".AvailabilityStatusesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAvailabilityStatusesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *AvailabilityStatusesClient) GetByResource(ctx context.Context, resourceURI string, options *AvailabilityStatusesClientGetByResourceOptions) (AvailabilityStatusesClientGetByResourceResponse, error) {
 	var err error
+	const operationName = "AvailabilityStatusesClient.GetByResource"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByResourceCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return AvailabilityStatusesClientGetByResourceResponse{}, err
@@ -118,25 +122,20 @@ func (client *AvailabilityStatusesClient) NewListPager(resourceURI string, optio
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListResponse) (AvailabilityStatusesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceURI, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilityStatusesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceURI, options)
+			}, nil)
 			if err != nil {
 				return AvailabilityStatusesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilityStatusesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailabilityStatusesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -182,25 +181,20 @@ func (client *AvailabilityStatusesClient) NewListByResourceGroupPager(resourceGr
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListByResourceGroupResponse) (AvailabilityStatusesClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilityStatusesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AvailabilityStatusesClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilityStatusesClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailabilityStatusesClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -252,25 +246,20 @@ func (client *AvailabilityStatusesClient) NewListBySubscriptionIDPager(options *
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AvailabilityStatusesClientListBySubscriptionIDResponse) (AvailabilityStatusesClientListBySubscriptionIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionIDCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilityStatusesClient.NewListBySubscriptionIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionIDCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailabilityStatusesClientListBySubscriptionIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -29,7 +29,7 @@ type EndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".EndpointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -50,6 +50,10 @@ func NewEndpointsClient(credential azcore.TokenCredential, options *arm.ClientOp
 //     method.
 func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientCreateOrUpdateOptions) (EndpointsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, endpointName, endpointResource, options)
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
@@ -103,6 +107,10 @@ func (client *EndpointsClient) createOrUpdateHandleResponse(resp *http.Response)
 //   - options - EndpointsClientDeleteOptions contains the optional parameters for the EndpointsClient.Delete method.
 func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientDeleteOptions) (EndpointsClientDeleteResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
 		return EndpointsClientDeleteResponse{}, err
@@ -143,6 +151,10 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
 func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
@@ -195,25 +207,20 @@ func (client *EndpointsClient) NewListPager(resourceURI string, options *Endpoin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EndpointsClientListResponse) (EndpointsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceURI, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EndpointsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceURI, options)
+			}, nil)
 			if err != nil {
 				return EndpointsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EndpointsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EndpointsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -251,6 +258,10 @@ func (client *EndpointsClient) listHandleResponse(resp *http.Response) (Endpoint
 //     method.
 func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (EndpointsClientListCredentialsResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.ListCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
 		return EndpointsClientListCredentialsResponse{}, err
@@ -311,6 +322,10 @@ func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response
 //     method.
 func (client *EndpointsClient) ListIngressGatewayCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (EndpointsClientListIngressGatewayCredentialsResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.ListIngressGatewayCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listIngressGatewayCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
 	if err != nil {
 		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
@@ -372,6 +387,10 @@ func (client *EndpointsClient) listIngressGatewayCredentialsHandleResponse(resp 
 //     method.
 func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, options *EndpointsClientListManagedProxyDetailsOptions) (EndpointsClientListManagedProxyDetailsResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.ListManagedProxyDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listManagedProxyDetailsCreateRequest(ctx, resourceURI, endpointName, managedProxyRequest, options)
 	if err != nil {
 		return EndpointsClientListManagedProxyDetailsResponse{}, err
@@ -426,6 +445,10 @@ func (client *EndpointsClient) listManagedProxyDetailsHandleResponse(resp *http.
 //   - options - EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
 func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, endpointName string, endpointResource EndpointResource, options *EndpointsClientUpdateOptions) (EndpointsClientUpdateResponse, error) {
 	var err error
+	const operationName = "EndpointsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceURI, endpointName, endpointResource, options)
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err

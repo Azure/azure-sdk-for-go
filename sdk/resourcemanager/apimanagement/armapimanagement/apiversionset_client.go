@@ -33,7 +33,7 @@ type APIVersionSetClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIVersionSetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIVersionSetClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIVersionSetClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAPIVersionSetClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *APIVersionSetClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, parameters APIVersionSetContract, options *APIVersionSetClientCreateOrUpdateOptions) (APIVersionSetClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIVersionSetClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, versionSetID, parameters, options)
 	if err != nil {
 		return APIVersionSetClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *APIVersionSetClient) createOrUpdateHandleResponse(resp *http.Respo
 //   - options - APIVersionSetClientDeleteOptions contains the optional parameters for the APIVersionSetClient.Delete method.
 func (client *APIVersionSetClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, ifMatch string, options *APIVersionSetClientDeleteOptions) (APIVersionSetClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIVersionSetClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, versionSetID, ifMatch, options)
 	if err != nil {
 		return APIVersionSetClientDeleteResponse{}, err
@@ -188,6 +196,10 @@ func (client *APIVersionSetClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - APIVersionSetClientGetOptions contains the optional parameters for the APIVersionSetClient.Get method.
 func (client *APIVersionSetClient) Get(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, options *APIVersionSetClientGetOptions) (APIVersionSetClientGetResponse, error) {
 	var err error
+	const operationName = "APIVersionSetClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, versionSetID, options)
 	if err != nil {
 		return APIVersionSetClientGetResponse{}, err
@@ -256,6 +268,10 @@ func (client *APIVersionSetClient) getHandleResponse(resp *http.Response) (APIVe
 //     method.
 func (client *APIVersionSetClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, options *APIVersionSetClientGetEntityTagOptions) (APIVersionSetClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIVersionSetClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, versionSetID, options)
 	if err != nil {
 		return APIVersionSetClientGetEntityTagResponse{}, err
@@ -304,11 +320,10 @@ func (client *APIVersionSetClient) getEntityTagCreateRequest(ctx context.Context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIVersionSetClient) getEntityTagHandleResponse(resp *http.Response) (APIVersionSetClientGetEntityTagResponse, error) {
-	result := APIVersionSetClientGetEntityTagResponse{}
+	result := APIVersionSetClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -325,25 +340,20 @@ func (client *APIVersionSetClient) NewListByServicePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APIVersionSetClientListByServiceResponse) (APIVersionSetClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIVersionSetClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return APIVersionSetClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APIVersionSetClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APIVersionSetClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -404,6 +414,10 @@ func (client *APIVersionSetClient) listByServiceHandleResponse(resp *http.Respon
 //   - options - APIVersionSetClientUpdateOptions contains the optional parameters for the APIVersionSetClient.Update method.
 func (client *APIVersionSetClient) Update(ctx context.Context, resourceGroupName string, serviceName string, versionSetID string, ifMatch string, parameters APIVersionSetUpdateParameters, options *APIVersionSetClientUpdateOptions) (APIVersionSetClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIVersionSetClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, versionSetID, ifMatch, parameters, options)
 	if err != nil {
 		return APIVersionSetClientUpdateResponse{}, err

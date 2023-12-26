@@ -48,7 +48,7 @@ func ExampleFilesNoSubscriptionClient_NewListPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
 		// 				ChunkSize: to.Ptr[float32](41423),
-		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
 		// 				FileSize: to.Ptr[float32](41423),
 		// 				NumberOfChunks: to.Ptr[float32](1),
 		// 			},
@@ -59,7 +59,7 @@ func ExampleFilesNoSubscriptionClient_NewListPager() {
 		// 			ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 			Properties: &armsupport.FileDetailsProperties{
 		// 				ChunkSize: to.Ptr[float32](41423),
-		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+		// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
 		// 				FileSize: to.Ptr[float32](41423),
 		// 				NumberOfChunks: to.Ptr[float32](1),
 		// 			},
@@ -92,7 +92,7 @@ func ExampleFilesNoSubscriptionClient_Get() {
 	// 	ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
 	// 	Properties: &armsupport.FileDetailsProperties{
 	// 		ChunkSize: to.Ptr[float32](41423),
-	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+	// 		CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19.000Z"); return t}()),
 	// 		FileSize: to.Ptr[float32](41423),
 	// 		NumberOfChunks: to.Ptr[float32](1),
 	// 	},

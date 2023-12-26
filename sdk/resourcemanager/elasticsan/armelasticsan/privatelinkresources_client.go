@@ -32,7 +32,7 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateLinkResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *PrivateLinkResourcesClient) ListByElasticSan(ctx context.Context, resourceGroupName string, elasticSanName string, options *PrivateLinkResourcesClientListByElasticSanOptions) (PrivateLinkResourcesClientListByElasticSanResponse, error) {
 	var err error
+	const operationName = "PrivateLinkResourcesClient.ListByElasticSan"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByElasticSanCreateRequest(ctx, resourceGroupName, elasticSanName, options)
 	if err != nil {
 		return PrivateLinkResourcesClientListByElasticSanResponse{}, err

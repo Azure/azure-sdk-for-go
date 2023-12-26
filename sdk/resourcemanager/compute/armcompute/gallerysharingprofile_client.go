@@ -33,7 +33,7 @@ type GallerySharingProfileClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGallerySharingProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GallerySharingProfileClient, error) {
-	cl, err := arm.NewClient(moduleName+".GallerySharingProfileClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewGallerySharingProfileClient(subscriptionID string, credential azcore.Tok
 // BeginUpdate - Update sharing profile of a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-03
+// Generated from API version 2022-08-03
 //   - resourceGroupName - The name of the resource group.
 //   - galleryName - The name of the Shared Image Gallery.
 //   - sharingUpdate - Parameters supplied to the update gallery sharing profile.
@@ -59,17 +59,21 @@ func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[GallerySharingProfileClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GallerySharingProfileClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GallerySharingProfileClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GallerySharingProfileClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Update - Update sharing profile of a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-03-03
+// Generated from API version 2022-08-03
 func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GallerySharingProfileClient.BeginUpdate"
@@ -111,7 +115,7 @@ func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-03")
+	reqQP.Set("api-version", "2022-08-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sharingUpdate); err != nil {

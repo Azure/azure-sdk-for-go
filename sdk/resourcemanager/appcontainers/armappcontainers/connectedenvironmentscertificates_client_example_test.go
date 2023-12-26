@@ -48,8 +48,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 		// 			Location: to.Ptr("East US"),
 		// 			Properties: &armappcontainers.CertificateProperties{
-		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 				IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
+		// 				IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00.000Z"); return t}()),
 		// 				Issuer: to.Ptr("Issuer Name"),
 		// 				ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 				SubjectAlternativeNames: []*string{
@@ -65,8 +65,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
+		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00.000Z"); return t}()),
 		// 					Issuer: to.Ptr("Issuer Name"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 					SubjectAlternativeNames: []*string{
@@ -104,8 +104,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
+	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00.000Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 		SubjectAlternativeNames: []*string{
@@ -147,8 +147,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_CreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/connectedEnvironments/testcontainerenv/certificate-firendly-name"),
 	// 	Location: to.Ptr("East US"),
 	// 	Properties: &armappcontainers.CertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
+	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00.000Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 		SubjectAlternativeNames: []*string{
@@ -209,8 +209,8 @@ func ExampleConnectedEnvironmentsCertificatesClient_Update() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armappcontainers.CertificateProperties{
-	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 		ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00.000Z"); return t}()),
+	// 		IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00.000Z"); return t}()),
 	// 		Issuer: to.Ptr("Issuer Name"),
 	// 		ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 		SubjectAlternativeNames: []*string{

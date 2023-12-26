@@ -8,7 +8,6 @@ package directory_test
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -70,70 +69,6 @@ type RecordedTestSuite struct {
 
 type UnrecordedTestSuite struct {
 	suite.Suite
-}
-
-func (s *RecordedTestSuite) TestDirNewSubdirectoryClient() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
-	_require.Greater(len(accountName), 0)
-
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
-	_require.NoError(err)
-
-	fsName := testcommon.GenerateFileSystemName(testName)
-	fsClient := svcClient.NewFileSystemClient(fsName)
-
-	_, err = fsClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient) // clean up
-
-	dirName := testcommon.GenerateDirName(testName)
-	dirClient := fsClient.NewDirectoryClient(dirName)
-
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	subdirName := "subdir"
-	subdirClient, err := dirClient.NewSubdirectoryClient(subdirName)
-	_require.NoError(err)
-
-	correctDirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/%s/%s/%s", accountName, fsName, dirName, subdirName)
-	_require.Equal(correctDirURL, subdirClient.DFSURL())
-
-	perm := "r-xr-x---"
-
-	_, err = subdirClient.Create(context.Background(), &directory.CreateOptions{
-		Permissions: &perm,
-	})
-	_require.NoError(err)
-
-	resp, err := subdirClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(resp.Permissions)
-	_require.Equal(perm, *resp.Permissions)
-
-	// Create a file under the new directory just to make sure we're not secretly targeting the parent
-	fileName := "asdf.txt"
-	subdirFileClient, err := subdirClient.NewFileClient(fileName)
-	_require.NoError(err)
-
-	_, err = subdirFileClient.Create(context.Background(), nil)
-	_require.NoError(err)
-
-	fileContents := []byte("foobar")
-	err = subdirFileClient.UploadBuffer(context.Background(), fileContents, nil)
-	_require.NoError(err)
-
-	// check for the file at the parent directory
-	dirFileClient, err := dirClient.NewFileClient(fileName)
-	_require.NoError(err)
-
-	_, err = dirFileClient.GetProperties(context.Background(), nil)
-	_require.Error(err) // we should get back a 404
-	_require.True(datalakeerror.HasCode(err, datalakeerror.PathNotFound))
 }
 
 func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
@@ -264,6 +199,70 @@ func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
 
 	_, err = fileClient.Create(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := svcClient.NewFileSystemClient(fsName)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient := fsClient.NewDirectoryClient(dirName)
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	subdirName := testcommon.GenerateSubDirName(testName)
+	subdirClient, err := dirClient.NewSubdirectoryClient(subdirName)
+	_require.NoError(err)
+
+	perm := "r-xr-x---"
+
+	_, err = subdirClient.Create(context.Background(), &directory.CreateOptions{
+		Permissions: &perm,
+		CPKInfo:     &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
+
+	resp, err := subdirClient.GetProperties(context.Background(), &directory.GetPropertiesOptions{CPKInfo: &testcommon.TestCPKByValue})
+	_require.NoError(err)
+	_require.NotNil(resp.Permissions)
+	_require.Equal(perm, *resp.Permissions)
+	_require.Equal(*(resp.IsServerEncrypted), true)
+	_require.Equal(resp.EncryptionKeySHA256, testcommon.TestCPKByValue.EncryptionKeySHA256)
+
+	// Create a file under the new directory just to make sure we're not secretly targeting the parent
+	fileName := testcommon.GenerateFileName("newFile")
+	subdirFileClient, err := subdirClient.NewFileClient(fileName)
+	_require.NoError(err)
+
+	_, err = subdirFileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileContents := []byte(testcommon.DefaultData)
+	err = subdirFileClient.UploadBuffer(context.Background(), fileContents, nil)
+	_require.NoError(err)
+
+	// check for the file at the parent directory
+	dirFileClient, err := dirClient.NewFileClient(fileName)
+	_require.NoError(err)
+
+	_, err = dirFileClient.GetProperties(context.Background(), nil)
+	_require.Error(err) // we should get back a 404
+	_require.True(datalakeerror.HasCode(err, datalakeerror.PathNotFound))
 }
 
 func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {

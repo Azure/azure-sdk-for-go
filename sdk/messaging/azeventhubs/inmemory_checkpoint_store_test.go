@@ -187,6 +187,17 @@ func (cps *testCheckpointStore) ExpireOwnership(o Ownership) {
 	cps.ownerships[key] = oldO
 }
 
+func (cps *testCheckpointStore) ReqlinquishOwnership(o Ownership) {
+	key := strings.Join([]string{o.FullyQualifiedNamespace, o.EventHubName, o.ConsumerGroup, o.PartitionID}, "/")
+
+	cps.ownershipMu.Lock()
+	defer cps.ownershipMu.Unlock()
+
+	oldO := cps.ownerships[key]
+	oldO.OwnerID = ""
+	cps.ownerships[key] = oldO
+}
+
 func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwnership []Ownership, options *ClaimOwnershipOptions) ([]Ownership, error) {
 	var owned []Ownership
 

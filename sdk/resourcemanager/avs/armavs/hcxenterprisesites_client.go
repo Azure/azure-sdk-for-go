@@ -32,7 +32,7 @@ type HcxEnterpriseSitesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HcxEnterpriseSitesClient, error) {
-	cl, err := arm.NewClient(moduleName+".HcxEnterpriseSitesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewHcxEnterpriseSitesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite HcxEnterpriseSite, options *HcxEnterpriseSitesClientCreateOrUpdateOptions) (HcxEnterpriseSitesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "HcxEnterpriseSitesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, hcxEnterpriseSite, options)
 	if err != nil {
 		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *HcxEnterpriseSitesClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientDeleteOptions) (HcxEnterpriseSitesClientDeleteResponse, error) {
 	var err error
+	const operationName = "HcxEnterpriseSitesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, options)
 	if err != nil {
 		return HcxEnterpriseSitesClientDeleteResponse{}, err
@@ -179,6 +187,10 @@ func (client *HcxEnterpriseSitesClient) deleteCreateRequest(ctx context.Context,
 //   - options - HcxEnterpriseSitesClientGetOptions contains the optional parameters for the HcxEnterpriseSitesClient.Get method.
 func (client *HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, options *HcxEnterpriseSitesClientGetOptions) (HcxEnterpriseSitesClientGetResponse, error) {
 	var err error
+	const operationName = "HcxEnterpriseSitesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, hcxEnterpriseSiteName, options)
 	if err != nil {
 		return HcxEnterpriseSitesClientGetResponse{}, err
@@ -247,25 +259,20 @@ func (client *HcxEnterpriseSitesClient) NewListPager(resourceGroupName string, p
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HcxEnterpriseSitesClientListResponse) (HcxEnterpriseSitesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HcxEnterpriseSitesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return HcxEnterpriseSitesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HcxEnterpriseSitesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HcxEnterpriseSitesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

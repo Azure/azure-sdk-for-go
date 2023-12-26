@@ -8,6 +8,24 @@
 
 package generated
 
+// CompositionType - The composition type describes how the key-values within the snapshot are composed. The 'key' composition
+// type ensures there are no two key-values containing the same key. The 'key_label' composition
+// type ensures there are no two key-values containing the same key and label.
+type CompositionType string
+
+const (
+	CompositionTypeKey      CompositionType = "key"
+	CompositionTypeKeyLabel CompositionType = "key_label"
+)
+
+// PossibleCompositionTypeValues returns the possible values for the CompositionType const type.
+func PossibleCompositionTypeValues() []CompositionType {
+	return []CompositionType{
+		CompositionTypeKey,
+		CompositionTypeKeyLabel,
+	}
+}
+
 type LabelFields string
 
 const (
@@ -45,5 +63,80 @@ func PossibleSettingFieldsValues() []SettingFields {
 		SettingFieldsLocked,
 		SettingFieldsTags,
 		SettingFieldsValue,
+	}
+}
+
+type SnapshotFields string
+
+const (
+	SnapshotFieldsCompositionType SnapshotFields = "composition_type"
+	SnapshotFieldsCreated         SnapshotFields = "created"
+	SnapshotFieldsEtag            SnapshotFields = "etag"
+	SnapshotFieldsExpires         SnapshotFields = "expires"
+	SnapshotFieldsFilters         SnapshotFields = "filters"
+	SnapshotFieldsItemsCount      SnapshotFields = "items_count"
+	SnapshotFieldsName            SnapshotFields = "name"
+	SnapshotFieldsRetentionPeriod SnapshotFields = "retention_period"
+	SnapshotFieldsSize            SnapshotFields = "size"
+	SnapshotFieldsStatus          SnapshotFields = "status"
+	SnapshotFieldsTags            SnapshotFields = "tags"
+)
+
+// PossibleSnapshotFieldsValues returns the possible values for the SnapshotFields const type.
+func PossibleSnapshotFieldsValues() []SnapshotFields {
+	return []SnapshotFields{
+		SnapshotFieldsCompositionType,
+		SnapshotFieldsCreated,
+		SnapshotFieldsEtag,
+		SnapshotFieldsExpires,
+		SnapshotFieldsFilters,
+		SnapshotFieldsItemsCount,
+		SnapshotFieldsName,
+		SnapshotFieldsRetentionPeriod,
+		SnapshotFieldsSize,
+		SnapshotFieldsStatus,
+		SnapshotFieldsTags,
+	}
+}
+
+// SnapshotStatus - The current status of the snapshot.
+type SnapshotStatus string
+
+const (
+	SnapshotStatusArchived     SnapshotStatus = "archived"
+	SnapshotStatusFailed       SnapshotStatus = "failed"
+	SnapshotStatusProvisioning SnapshotStatus = "provisioning"
+	SnapshotStatusReady        SnapshotStatus = "ready"
+)
+
+// PossibleSnapshotStatusValues returns the possible values for the SnapshotStatus const type.
+func PossibleSnapshotStatusValues() []SnapshotStatus {
+	return []SnapshotStatus{
+		SnapshotStatusArchived,
+		SnapshotStatusFailed,
+		SnapshotStatusProvisioning,
+		SnapshotStatusReady,
+	}
+}
+
+// State - The current status of the operation
+type State string
+
+const (
+	StateCanceled   State = "Canceled"
+	StateFailed     State = "Failed"
+	StateNotStarted State = "NotStarted"
+	StateRunning    State = "Running"
+	StateSucceeded  State = "Succeeded"
+)
+
+// PossibleStateValues returns the possible values for the State const type.
+func PossibleStateValues() []State {
+	return []State{
+		StateCanceled,
+		StateFailed,
+		StateNotStarted,
+		StateRunning,
+		StateSucceeded,
 	}
 }

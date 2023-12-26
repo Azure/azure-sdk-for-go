@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_List.json
 func ExampleOpenShiftClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,10 +47,10 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftClusters"),
 		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.RedHatOpenShift/OpenShiftClusters/resourceName"),
 		// 			SystemData: &armredhatopenshift.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
 		// 			},
@@ -84,6 +84,7 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 		// 				},
 		// 				NetworkProfile: &armredhatopenshift.NetworkProfile{
 		// 					PodCidr: to.Ptr("10.128.0.0/14"),
+		// 					PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 		// 					ServiceCidr: to.Ptr("172.30.0.0/16"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armredhatopenshift.ProvisioningStateSucceeded),
@@ -98,13 +99,35 @@ func ExampleOpenShiftClustersClient_NewListPager() {
 		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
 		// 						VMSize: to.Ptr("Standard_D2s_v3"),
 		// 				}},
+		// 				WorkerProfilesStatus: []*armredhatopenshift.WorkerProfile{
+		// 					{
+		// 						Name: to.Ptr("worker1"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("worker2"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("worker3"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				}},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListByResourceGroup.json
 func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,10 +156,10 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftClusters"),
 		// 			ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.RedHatOpenShift/OpenShiftClusters/resourceName"),
 		// 			SystemData: &armredhatopenshift.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
 		// 			},
@@ -170,6 +193,7 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				NetworkProfile: &armredhatopenshift.NetworkProfile{
 		// 					PodCidr: to.Ptr("10.128.0.0/14"),
+		// 					PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 		// 					ServiceCidr: to.Ptr("172.30.0.0/16"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armredhatopenshift.ProvisioningStateSucceeded),
@@ -184,13 +208,35 @@ func ExampleOpenShiftClustersClient_NewListByResourceGroupPager() {
 		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
 		// 						VMSize: to.Ptr("Standard_D2s_v3"),
 		// 				}},
+		// 				WorkerProfilesStatus: []*armredhatopenshift.WorkerProfile{
+		// 					{
+		// 						Name: to.Ptr("worker1"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("worker2"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 					{
+		// 						Name: to.Ptr("worker3"),
+		// 						Count: to.Ptr[int32](1),
+		// 						DiskSizeGB: to.Ptr[int32](128),
+		// 						SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				}},
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Get.json
 func ExampleOpenShiftClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,10 +259,10 @@ func ExampleOpenShiftClustersClient_Get() {
 	// 	Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftClusters"),
 	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.RedHatOpenShift/OpenShiftClusters/resourceName"),
 	// 	SystemData: &armredhatopenshift.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
 	// 	},
@@ -250,6 +296,7 @@ func ExampleOpenShiftClustersClient_Get() {
 	// 		},
 	// 		NetworkProfile: &armredhatopenshift.NetworkProfile{
 	// 			PodCidr: to.Ptr("10.128.0.0/14"),
+	// 			PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 	// 			ServiceCidr: to.Ptr("172.30.0.0/16"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armredhatopenshift.ProvisioningStateSucceeded),
@@ -264,11 +311,33 @@ func ExampleOpenShiftClustersClient_Get() {
 	// 				SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
 	// 				VMSize: to.Ptr("Standard_D2s_v3"),
 	// 		}},
+	// 		WorkerProfilesStatus: []*armredhatopenshift.WorkerProfile{
+	// 			{
+	// 				Name: to.Ptr("worker1"),
+	// 				Count: to.Ptr[int32](1),
+	// 				DiskSizeGB: to.Ptr[int32](128),
+	// 				SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+	// 				VMSize: to.Ptr("Standard_D2s_v3"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("worker2"),
+	// 				Count: to.Ptr[int32](1),
+	// 				DiskSizeGB: to.Ptr[int32](128),
+	// 				SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+	// 				VMSize: to.Ptr("Standard_D2s_v3"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("worker3"),
+	// 				Count: to.Ptr[int32](1),
+	// 				DiskSizeGB: to.Ptr[int32](128),
+	// 				SubnetID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker"),
+	// 				VMSize: to.Ptr("Standard_D2s_v3"),
+	// 		}},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_CreateOrUpdate.json
 func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,8 +375,9 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 				VMSize:           to.Ptr("Standard_D8s_v3"),
 			},
 			NetworkProfile: &armredhatopenshift.NetworkProfile{
-				PodCidr:     to.Ptr("10.128.0.0/14"),
-				ServiceCidr: to.Ptr("172.30.0.0/16"),
+				PodCidr:          to.Ptr("10.128.0.0/14"),
+				PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
+				ServiceCidr:      to.Ptr("172.30.0.0/16"),
 			},
 			ServicePrincipalProfile: &armredhatopenshift.ServicePrincipalProfile{
 				ClientID:     to.Ptr("clientId"),
@@ -338,10 +408,10 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftClusters"),
 	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.RedHatOpenShift/OpenShiftClusters/resourceName"),
 	// 	SystemData: &armredhatopenshift.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
 	// 	},
@@ -375,6 +445,7 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		NetworkProfile: &armredhatopenshift.NetworkProfile{
 	// 			PodCidr: to.Ptr("10.128.0.0/14"),
+	// 			PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 	// 			ServiceCidr: to.Ptr("172.30.0.0/16"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armredhatopenshift.ProvisioningStateSucceeded),
@@ -393,7 +464,7 @@ func ExampleOpenShiftClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Delete.json
 func ExampleOpenShiftClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +485,7 @@ func ExampleOpenShiftClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_Update.json
 func ExampleOpenShiftClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,8 +519,9 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 				VMSize:           to.Ptr("Standard_D8s_v3"),
 			},
 			NetworkProfile: &armredhatopenshift.NetworkProfile{
-				PodCidr:     to.Ptr("10.128.0.0/14"),
-				ServiceCidr: to.Ptr("172.30.0.0/16"),
+				PodCidr:          to.Ptr("10.128.0.0/14"),
+				PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
+				ServiceCidr:      to.Ptr("172.30.0.0/16"),
 			},
 			ServicePrincipalProfile: &armredhatopenshift.ServicePrincipalProfile{
 				ClientID:     to.Ptr("clientId"),
@@ -483,10 +555,10 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	// 	Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftClusters"),
 	// 	ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.RedHatOpenShift/OpenShiftClusters/resourceName"),
 	// 	SystemData: &armredhatopenshift.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.1075056Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armredhatopenshift.CreatedByTypeApplication),
 	// 	},
@@ -520,6 +592,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	// 		},
 	// 		NetworkProfile: &armredhatopenshift.NetworkProfile{
 	// 			PodCidr: to.Ptr("10.128.0.0/14"),
+	// 			PreconfiguredNSG: to.Ptr(armredhatopenshift.PreconfiguredNSGDisabled),
 	// 			ServiceCidr: to.Ptr("172.30.0.0/16"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armredhatopenshift.ProvisioningStateSucceeded),
@@ -538,7 +611,7 @@ func ExampleOpenShiftClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_ListAdminCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListAdminCredentials.json
 func ExampleOpenShiftClustersClient_ListAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,7 +634,7 @@ func ExampleOpenShiftClustersClient_ListAdminCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4cd95123fb961c68740565a1efcaa5e43bd35802/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-04-01/examples/OpenShiftClusters_ListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bce66ff64f0e9edc9ea6119d00324058413e81ed/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/stable/2023-09-04/examples/OpenShiftClusters_ListCredentials.json
 func ExampleOpenShiftClustersClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

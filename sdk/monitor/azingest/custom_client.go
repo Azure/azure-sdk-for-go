@@ -9,7 +9,11 @@ package azingest
 // this file contains handwritten additions to the generated code
 
 import (
+	"errors"
+	"reflect"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -24,9 +28,16 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	if reflect.ValueOf(options.Cloud).IsZero() {
+		options.Cloud = cloud.AzurePublic
+	}
+	c, ok := options.Cloud.Services[ServiceNameIngestion]
+	if !ok || c.Audience == "" {
+		return nil, errors.New("provided Cloud field is missing Azure Monitor Ingestion configuration")
+	}
 
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://monitor.azure.com/" + "/.default"}, nil)
-	azcoreClient, err := azcore.NewClient("azingest.Client", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{c.Audience + "/.default"}, nil)
+	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

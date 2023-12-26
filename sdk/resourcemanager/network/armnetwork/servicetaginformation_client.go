@@ -34,7 +34,7 @@ type ServiceTagInformationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServiceTagInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceTagInformationClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServiceTagInformationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 
 // NewListPager - Gets a list of service tag information resources with pagination.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-06-01
 //   - location - The location that will be used as a reference for cloud (not as a filter based on location, you will get the
 //     list of service tags with prefix details across all regions but limited to the cloud that
 //     your subscription belongs to).
@@ -59,25 +59,20 @@ func (client *ServiceTagInformationClient) NewListPager(location string, options
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ServiceTagInformationClientListResponse) (ServiceTagInformationClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceTagInformationClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return ServiceTagInformationClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServiceTagInformationClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceTagInformationClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -97,7 +92,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.NoAddressPrefixes != nil {
 		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
 	}

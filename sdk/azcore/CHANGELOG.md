@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.4 (Unreleased)
+## 1.9.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,72 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.1 (2023-12-11)
+
+### Bugs Fixed
+
+* The `retry-after-ms` and `x-ms-retry-after-ms` headers weren't being checked during retries.
+
+### Other Changes
+
+* Update dependencies.
+
+## 1.9.0 (2023-11-06)
+
+### Breaking Changes
+> These changes affect only code written against previous beta versions of `v1.7.0` and `v1.8.0`
+* The function `NewTokenCredential` has been removed from the `fake` package. Use a literal `&fake.TokenCredential{}` instead.
+* The field `TracingNamespace` in `runtime.PipelineOptions` has been replaced by `TracingOptions`.
+
+### Bugs Fixed
+
+* Fixed an issue that could cause some allowed HTTP header values to not show up in logs.
+* Include error text instead of error type in traces when the transport returns an error.
+* Fixed an issue that could cause an HTTP/2 request to hang when the TCP connection becomes unresponsive.
+* Block key and SAS authentication for non TLS protected endpoints.
+* Passing a `nil` credential value will no longer cause a panic. Instead, the authentication is skipped.
+* Calling `Error` on a zero-value `azcore.ResponseError` will no longer panic.
+* Fixed an issue in `fake.PagerResponder[T]` that would cause a trailing error to be omitted when iterating over pages.
+* Context values created by `azcore` will no longer flow across disjoint HTTP requests.
+
+### Other Changes
+
+* Skip generating trace info for no-op tracers.
+* The `clientName` paramater in client constructors has been renamed to `moduleName`.
+
+## 1.9.0-beta.1 (2023-10-05)
+
+### Other Changes
+
+* The beta features for tracing and fakes have been reinstated.
+
+## 1.8.0 (2023-10-05)
+
+### Features Added
+
+* This includes the following features from `v1.8.0-beta.N` releases.
+  * Claims and CAE for authentication.
+  * New `messaging` package.
+  * Various helpers in the `runtime` package.
+  * Deprecation of `runtime.With*` funcs and their replacements in the `policy` package.
+* Added types `KeyCredential` and `SASCredential` to the `azcore` package.
+  * Includes their respective constructor functions.
+* Added types `KeyCredentialPolicy` and `SASCredentialPolicy` to the `azcore/runtime` package.
+  * Includes their respective constructor functions and options types.
+
+### Breaking Changes
+> These changes affect only code written against beta versions of `v1.8.0`
+* The beta features for tracing and fakes have been omitted for this release.
+
+### Bugs Fixed
+
+* Fixed an issue that could cause some ARM RPs to not be automatically registered.
+* Block bearer token authentication for non TLS protected endpoints.
+
+### Other Changes
+
+* Updated dependencies.
 
 ## 1.8.0-beta.3 (2023-09-07)
 

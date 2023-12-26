@@ -9,8 +9,8 @@
 package armcontainerservicefleet
 
 const (
-	moduleName    = "armcontainerservicefleet"
-	moduleVersion = "v0.2.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -104,6 +104,27 @@ func PossibleFleetProvisioningStateValues() []FleetProvisioningState {
 		FleetProvisioningStateFailed,
 		FleetProvisioningStateSucceeded,
 		FleetProvisioningStateUpdating,
+	}
+}
+
+// FleetUpdateStrategyProvisioningState - The provisioning state of the UpdateStrategy resource.
+type FleetUpdateStrategyProvisioningState string
+
+const (
+	// FleetUpdateStrategyProvisioningStateCanceled - Resource creation was canceled.
+	FleetUpdateStrategyProvisioningStateCanceled FleetUpdateStrategyProvisioningState = "Canceled"
+	// FleetUpdateStrategyProvisioningStateFailed - Resource creation failed.
+	FleetUpdateStrategyProvisioningStateFailed FleetUpdateStrategyProvisioningState = "Failed"
+	// FleetUpdateStrategyProvisioningStateSucceeded - Resource has been created.
+	FleetUpdateStrategyProvisioningStateSucceeded FleetUpdateStrategyProvisioningState = "Succeeded"
+)
+
+// PossibleFleetUpdateStrategyProvisioningStateValues returns the possible values for the FleetUpdateStrategyProvisioningState const type.
+func PossibleFleetUpdateStrategyProvisioningStateValues() []FleetUpdateStrategyProvisioningState {
+	return []FleetUpdateStrategyProvisioningState{
+		FleetUpdateStrategyProvisioningStateCanceled,
+		FleetUpdateStrategyProvisioningStateFailed,
+		FleetUpdateStrategyProvisioningStateSucceeded,
 	}
 }
 

@@ -33,7 +33,7 @@ type UsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".UsagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,25 +58,20 @@ func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *UsagesClientListByInstancePoolResponse) (UsagesClientListByInstancePoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsagesClient.NewListByInstancePoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
+			}, nil)
 			if err != nil {
 				return UsagesClientListByInstancePoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return UsagesClientListByInstancePoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return UsagesClientListByInstancePoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByInstancePoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

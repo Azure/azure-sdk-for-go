@@ -37,13 +37,13 @@ func ExampleAssetTrackOperationStatusesClient_Get_getStatusOfAsynchronousOperati
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AssetTrackOperationStatus = armmediaservices.AssetTrackOperationStatus{
 	// 	Name: to.Ptr("86835197-3b47-402e-b313-70b82eaba296"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:30Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:30.000Z"); return t}()),
 	// 	Error: &armmediaservices.ErrorDetail{
 	// 		Code: to.Ptr("ClientError"),
 	// 		Message: to.Ptr("Error while parsing WEBVTT file and creating CMFT header."),
 	// 	},
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/assets/ClimbingMountRainer/tracks/text1/operationStatuses/86835197-3b47-402e-b313-70b82eaba296"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00.000Z"); return t}()),
 	// 	Status: to.Ptr("Failed"),
 	// }
 }
@@ -68,9 +68,9 @@ func ExampleAssetTrackOperationStatusesClient_Get_getStatusOfAsynchronousOperati
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.AssetTrackOperationStatus = armmediaservices.AssetTrackOperationStatus{
 	// 	Name: to.Ptr("e78f8d40-7aaa-4f2f-8ae6-73987e7c5a08"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:30Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:30.000Z"); return t}()),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/assets/ClimbingMountRainer/tracks/text1/operationStatuses/e78f8d40-7aaa-4f2f-8ae6-73987e7c5a08"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00.000Z"); return t}()),
 	// 	Status: to.Ptr("Succeeded"),
 	// }
 }
@@ -96,7 +96,7 @@ func ExampleAssetTrackOperationStatusesClient_Get_getStatusOfAsynchronousOperati
 	// res.AssetTrackOperationStatus = armmediaservices.AssetTrackOperationStatus{
 	// 	Name: to.Ptr("5827d9a1-1fb4-4e54-ac40-8eeed9b862c8"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Media/mediaservices/contosomedia/assets/ClimbingMountRainer/tracks/text1/operationStatuses/5827d9a1-1fb4-4e54-ac40-8eeed9b862c8"),
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00.000Z"); return t}()),
 	// 	Status: to.Ptr("InProgress"),
 	// }
 }

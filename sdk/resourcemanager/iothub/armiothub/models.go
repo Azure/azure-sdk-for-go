@@ -11,7 +11,7 @@ package armiothub
 import "time"
 
 type ArmIdentity struct {
-	// The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created
+	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
 	// identity and a set of user assigned identities. The type 'None' will remove any
 	// identities from the service.
 	Type *ResourceIdentityType
@@ -211,15 +211,6 @@ type DescriptionListResult struct {
 
 	// READ-ONLY; The next link.
 	NextLink *string
-}
-
-// EncryptionPropertiesDescription - The encryption properties for the IoT hub.
-type EncryptionPropertiesDescription struct {
-	// The source of the key.
-	KeySource *string
-
-	// The properties of the KeyVault key.
-	KeyVaultProperties []*KeyVaultKeyProperties
 }
 
 // EndpointHealthData - The health data for an endpoint
@@ -512,15 +503,6 @@ type JobResponseListResult struct {
 	NextLink *string
 }
 
-// KeyVaultKeyProperties - The properties of the KeyVault key.
-type KeyVaultKeyProperties struct {
-	// Managed identity properties of KeyVault Key.
-	Identity *ManagedIdentity
-
-	// The identifier of the key.
-	KeyIdentifier *string
-}
-
 // LocationDescription - Public representation of one of the locations where a resource is provisioned.
 type LocationDescription struct {
 	// The name of the Azure region
@@ -703,9 +685,6 @@ type Properties struct {
 	// IoT hub comments.
 	Comments *string
 
-	// The device streams properties of iothub.
-	DeviceStreams *PropertiesDeviceStreams
-
 	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
 	DisableDeviceSAS *bool
 
@@ -721,9 +700,6 @@ type Properties struct {
 	// If True, file upload notifications are enabled.
 	EnableFileUploadNotifications *bool
 
-	// The encryption properties for the IoT hub.
-	Encryption *EncryptionPropertiesDescription
-
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
 	// in the dictionary while making create or update calls for the IoT hub.
 	EventHubEndpoints map[string]*EventHubProperties
@@ -733,9 +709,6 @@ type Properties struct {
 
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule
-
-	// This property specifies the IP Version the hub is currently utilizing.
-	IPVersion *IPVersion
 
 	// The messaging endpoint properties for the file upload notification queue.
 	MessagingEndpoints map[string]*MessagingEndpointProperties
@@ -755,9 +728,6 @@ type Properties struct {
 
 	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
 	RestrictOutboundNetworkAccess *bool
-
-	// This property store root certificate related information
-	RootCertificate *RootCertificateProperties
 
 	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 	Routing *RoutingProperties
@@ -779,12 +749,6 @@ type Properties struct {
 
 	// READ-ONLY; The hub state.
 	State *string
-}
-
-// PropertiesDeviceStreams - The device streams properties of iothub.
-type PropertiesDeviceStreams struct {
-	// List of Device Streams Endpoints.
-	StreamingEndpoints []*string
 }
 
 // QuotaMetricInfo - Quota metrics properties.
@@ -836,15 +800,6 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string
-}
-
-// RootCertificateProperties - This property store root certificate related information
-type RootCertificateProperties struct {
-	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
-	EnableRootCertificateV2 *bool
-
-	// READ-ONLY; the last update time to root certificate flag.
-	LastUpdatedTimeUTC *time.Time
 }
 
 // RouteCompilationError - Compilation error when evaluating route
@@ -918,9 +873,6 @@ type RoutingCosmosDBSQLAPIProperties struct {
 	// Method used to authenticate against the cosmos DB sql container endpoint
 	AuthenticationType *AuthenticationType
 
-	// Id of the cosmos DB sql container endpoint
-	ID *string
-
 	// Managed identity properties of routing cosmos DB container endpoint.
 	Identity *ManagedIdentity
 
@@ -944,6 +896,9 @@ type RoutingCosmosDBSQLAPIProperties struct {
 
 	// The subscription identifier of the cosmos DB account.
 	SubscriptionID *string
+
+	// READ-ONLY; Id of the cosmos DB sql container endpoint
+	ID *string
 }
 
 // RoutingEndpoints - The properties related to the custom endpoints to which your IoT hub routes messages based on the routing
@@ -1023,9 +978,8 @@ type RoutingProperties struct {
 	Enrichments []*EnrichmentProperties
 
 	// The properties of the route that is used as a fall-back route when none of the conditions specified in the 'routes' section
-	// are met. This is an optional parameter. When this property is not set, the
-	// messages which do not meet any of the conditions specified in the 'routes' section get routed to the built-in eventhub
-	// endpoint.
+	// are met. This is an optional parameter. When this property is not present in
+	// the template, the fallback route is disabled by default.
 	FallbackRoute *FallbackRouteProperties
 
 	// The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints. A maximum

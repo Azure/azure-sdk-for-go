@@ -35,7 +35,7 @@
           "200": {
             "description": "Success",
             "schema": {
-                "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/e01d8afe9be7633ed36db014af16d47fec01f737/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/1.0/appconfiguration.json#/definitions/KeyListResult"
+              "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/1d5799e57a1bbe66a86afc246d363d8163625b45/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json#/definitions/KeyListResult"
             },
             "headers": {
                 "Sync-Token": {
@@ -47,7 +47,7 @@
           "default": {
             "description": "Error response describing why the operation failed",
             "schema": {
-                "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/e01d8afe9be7633ed36db014af16d47fec01f737/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/1.0/appconfiguration.json#/definitions/Error"
+              "$ref": "https://github.com/Azure/azure-rest-api-specs/blob/1d5799e57a1bbe66a86afc246d363d8163625b45/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json#/definitions/Error"
             }
           }
         }

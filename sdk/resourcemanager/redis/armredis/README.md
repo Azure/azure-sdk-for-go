@@ -1,6 +1,6 @@
 # Azure Cache for Redis Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3)
 
 The `armredis` module provides operations for working with Azure Cache for Redis.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Cache for Redis module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3
 ```
 
 ## Authorization
@@ -59,6 +59,13 @@ A client groups a set of related APIs, providing access to its functionality.  C
 ```go
 client := clientFactory.NewClient()
 ```
+
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## More sample code
 

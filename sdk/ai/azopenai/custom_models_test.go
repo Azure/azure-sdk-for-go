@@ -56,11 +56,13 @@ func TestParseResponseError(t *testing.T) {
 	contentFilterResults := contentFilterErr.ContentFilterResults
 
 	// this comment was considered violent, so it was filtered.
-	require.Equal(t, &ContentFilterResultsViolence{
+	require.Equal(t, &ContentFilterResult{
 		Filtered: to.Ptr(true),
 		Severity: to.Ptr(ContentFilterSeverityMedium)}, contentFilterResults.Violence)
 
-	require.Equal(t, &ContentFilterResultsHate{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Hate)
-	require.Equal(t, &ContentFilterResultsSelfHarm{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.SelfHarm)
-	require.Equal(t, &ContentFilterResultsSexual{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Sexual)
+	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Hate)
+	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.SelfHarm)
+	require.Equal(t, &ContentFilterResult{Filtered: to.Ptr(false), Severity: to.Ptr(ContentFilterSeveritySafe)}, contentFilterResults.Sexual)
+
+	require.NotNil(t, contentFilterResults)
 }

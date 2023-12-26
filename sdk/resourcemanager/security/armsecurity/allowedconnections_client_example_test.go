@@ -47,7 +47,7 @@ func ExampleAllowedConnectionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Security/locations/allowedConnections"),
 		// 			ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 		// 			Properties: &armsecurity.AllowedConnectionsResourceProperties{
-		// 				CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+		// 				CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.351Z"); return t}()),
 		// 				ConnectableResources: []*armsecurity.ConnectableResource{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),
@@ -122,7 +122,7 @@ func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 		// 			Type: to.Ptr("Microsoft.Security/locations/allowedConnections"),
 		// 			ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 		// 			Properties: &armsecurity.AllowedConnectionsResourceProperties{
-		// 				CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+		// 				CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.351Z"); return t}()),
 		// 				ConnectableResources: []*armsecurity.ConnectableResource{
 		// 					{
 		// 						ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),
@@ -191,7 +191,7 @@ func ExampleAllowedConnectionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Security/locations/allowedConnections"),
 	// 	ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 	// 	Properties: &armsecurity.AllowedConnectionsResourceProperties{
-	// 		CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+	// 		CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.351Z"); return t}()),
 	// 		ConnectableResources: []*armsecurity.ConnectableResource{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),

@@ -257,7 +257,7 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 		},
 	} {
 		t.Run(test.desc, func(t *testing.T) {
-			srv, close := mock.NewServer()
+			srv, close := mock.NewTLSServer()
 			defer close()
 			srv.SetResponse(mock.WithHeader(shared.HeaderWWWAuthenticate, test.challenge), mock.WithStatusCode(http.StatusUnauthorized))
 			calls := 0
@@ -285,4 +285,17 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestBearerTokenPolicyRequiresHTTPS(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	b := NewBearerTokenPolicy(mockCredential{}, nil)
+	pl := newTestPipeline(&azpolicy.ClientOptions{Transport: srv, PerRetryPolicies: []azpolicy.Policy{b}})
+	req, err := runtime.NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var nre errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nre)
 }

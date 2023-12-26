@@ -11,18 +11,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
 func IdleFastReconnect(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("IdleFastReconnect", nil)
+	defer sc.End()
 
 	topicName := fmt.Sprintf("topic-%s", sc.Nano)
 
-	startEvent := appinsights.NewEventTelemetry("Start")
-	startEvent.Properties["Topic"] = topicName
-	sc.Track(startEvent)
-	defer sc.End()
+	sc.Start(topicName, nil)
 
 	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"subscriptionA"}, nil)
 	defer cleanup()
@@ -39,7 +36,7 @@ func IdleFastReconnect(remainingArgs []string) {
 		panic(err)
 	}
 
-	sender, err := client.NewSender(topicName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, topicName, nil)
 
 	if err != nil {
 		panic(err)
@@ -57,7 +54,7 @@ func IdleFastReconnect(remainingArgs []string) {
 	}
 
 	// start up a receiver too
-	receiver, err := client.NewReceiverForSubscription(topicName, "subscriptionA", nil)
+	receiver, err := shared.NewTrackingReceiverForSubscription(sc.TC, client, topicName, "subscriptionA", nil)
 
 	if err != nil {
 		panic(err)

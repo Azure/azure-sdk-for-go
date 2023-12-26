@@ -998,6 +998,9 @@ type ApplicationGatewayListenerPropertiesFormat struct {
 	// Frontend port resource of an application gateway.
 	FrontendPort *SubResource
 
+	// List of Server Name Indications(SNI) for TLS Multi-site Listener that allows special wildcard characters as well.
+	HostNames []*string
+
 	// Protocol of the listener.
 	Protocol *ApplicationGatewayProtocol
 
@@ -3010,12 +3013,21 @@ type BastionHostPropertiesFormat struct {
 
 	// IP configuration of the Bastion Host resource.
 	IPConfigurations []*BastionHostIPConfiguration
+	NetworkACLs      *BastionHostPropertiesFormatNetworkACLs
 
 	// The scale units for the Bastion Host resource.
 	ScaleUnits *int32
 
+	// Reference to an existing virtual network required for Developer Bastion Host only.
+	VirtualNetwork *SubResource
+
 	// READ-ONLY; The provisioning state of the bastion host resource.
 	ProvisioningState *ProvisioningState
+}
+
+type BastionHostPropertiesFormatNetworkACLs struct {
+	// Sets the IP ACL rules for Developer Bastion Host.
+	IPRules []*IPRule
 }
 
 // BastionSessionDeleteResult - Response for DisconnectActiveSessions.
@@ -3054,7 +3066,7 @@ type BastionShareableLink struct {
 	Message *string
 }
 
-// BastionShareableLinkListRequest - Post request for all the Bastion Shareable Link endpoints.
+// BastionShareableLinkListRequest - Post request for Create/Delete/Get Bastion Shareable Link endpoints.
 type BastionShareableLinkListRequest struct {
 	// List of VM references.
 	VMs []*BastionShareableLink
@@ -3067,6 +3079,12 @@ type BastionShareableLinkListResult struct {
 
 	// List of Bastion Shareable Links for the request.
 	Value []*BastionShareableLink
+}
+
+// BastionShareableLinkTokenListRequest - Post request for Delete Bastion Shareable Link By Token endpoint.
+type BastionShareableLinkTokenListRequest struct {
+	// List of Bastion Shareable Link Token.
+	Tokens []*string
 }
 
 // BgpConnection - Virtual Appliance Site resource.
@@ -5918,8 +5936,13 @@ type FirewallPolicyIntrusionDetection struct {
 	// Intrusion detection configuration properties.
 	Configuration *FirewallPolicyIntrusionDetectionConfiguration
 
-	// Intrusion detection general state.
+	// Intrusion detection general state. When attached to a parent policy, the firewall's effective IDPS mode is the stricter
+	// mode of the two.
 	Mode *FirewallPolicyIntrusionDetectionStateType
+
+	// IDPS profile name. When attached to a parent policy, the firewall's effective profile is the profile name of the parent
+	// policy.
+	Profile *FirewallPolicyIntrusionDetectionProfileType
 }
 
 // FirewallPolicyIntrusionDetectionBypassTrafficSpecifications - Intrusion detection bypass traffic specification.
@@ -6078,6 +6101,9 @@ type FirewallPolicyPropertiesFormat struct {
 
 	// READ-ONLY; List of references to FirewallPolicyRuleCollectionGroups.
 	RuleCollectionGroups []*SubResource
+
+	// READ-ONLY; A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB. (ex 0.5MB)
+	Size *string
 }
 
 // FirewallPolicyRule - Properties of a rule.
@@ -6158,6 +6184,9 @@ type FirewallPolicyRuleCollectionGroupProperties struct {
 
 	// READ-ONLY; The provisioning state of the firewall policy rule collection group resource.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; A read-only string that represents the size of the FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB)
+	Size *string
 }
 
 // FirewallPolicySKU - SKU of Firewall policy.
@@ -6935,6 +6964,11 @@ type IPPrefixesList struct {
 	IPPrefixes []*string
 }
 
+type IPRule struct {
+	// Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+	AddressPrefix *string
+}
+
 // IPSecPolicy - An IPSec Policy configuration for a virtual network gateway connection.
 type IPSecPolicy struct {
 	// REQUIRED; The DH Group used in IKE Phase 1 for initial SA.
@@ -7482,6 +7516,12 @@ type InterfaceTapConfigurationPropertiesFormat struct {
 
 	// READ-ONLY; The provisioning state of the network interface tap configuration resource.
 	ProvisioningState *ProvisioningState
+}
+
+// InternetIngressPublicIPsProperties - Resource Uri of Public Ip for Standard Load Balancer Frontend End.
+type InternetIngressPublicIPsProperties struct {
+	// Resource Uri of Public Ip
+	ID *string
 }
 
 // ListHubRouteTablesResult - List of RouteTables and a URL nextLink to get the next set of results.
@@ -9587,15 +9627,6 @@ type PropagatedRouteTable struct {
 	Labels []*string
 }
 
-// PropagatedRouteTableNfv - Nfv version of the list of RouteTables to advertise the routes to.
-type PropagatedRouteTableNfv struct {
-	// The list of resource ids of all the RouteTables.
-	IDs []*RoutingConfigurationNfvSubResource
-
-	// The list of labels.
-	Labels []*string
-}
-
 // ProtocolConfiguration - Configuration of the protocol.
 type ProtocolConfiguration struct {
 	// HTTP configuration of the connectivity check.
@@ -10257,28 +10288,6 @@ type RoutingConfiguration struct {
 
 	// List of routes that control routing from VirtualHub into a virtual network connection.
 	VnetRoutes *VnetRoute
-}
-
-// RoutingConfigurationNfv - NFV version of Routing Configuration indicating the associated and propagated route tables for
-// this connection.
-type RoutingConfigurationNfv struct {
-	// The resource id RouteTable associated with this RoutingConfiguration.
-	AssociatedRouteTable *RoutingConfigurationNfvSubResource
-
-	// The resource id of the RouteMap associated with this RoutingConfiguration for inbound learned routes.
-	InboundRouteMap *RoutingConfigurationNfvSubResource
-
-	// The resource id of the RouteMap associated with this RoutingConfiguration for outbound advertised routes.
-	OutboundRouteMap *RoutingConfigurationNfvSubResource
-
-	// The list of RouteTables to advertise the routes to.
-	PropagatedRouteTables *PropagatedRouteTableNfv
-}
-
-// RoutingConfigurationNfvSubResource - Reference to RouteTableV3 associated with the connection.
-type RoutingConfigurationNfvSubResource struct {
-	// Resource ID.
-	ResourceURI *string
 }
 
 // RoutingIntent - The routing intent child resource of a Virtual hub.
@@ -11005,7 +11014,7 @@ type SingleQueryResult struct {
 	// Describes the list of destination ports related to this signature
 	DestinationPorts []*string
 
-	// Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional
+	// Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 - InternalOutbound
 	Direction *FirewallPolicyIDPSSignatureDirection
 
 	// Describes the groups the signature belongs to
@@ -11023,7 +11032,7 @@ type SingleQueryResult struct {
 	// Describes the protocol the signatures is being enforced in
 	Protocol *string
 
-	// Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
+	// Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low
 	Severity *FirewallPolicyIDPSSignatureSeverity
 
 	// The ID of the signature
@@ -11150,6 +11159,11 @@ type SubnetPropertiesFormat struct {
 
 	// Application gateway IP configurations of virtual network resource.
 	ApplicationGatewayIPConfigurations []*ApplicationGatewayIPConfiguration
+
+	// Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be
+	// set at the time of subnet creation and cannot be updated for an existing
+	// subnet.
+	DefaultOutboundAccess *bool
 
 	// An array of references to the delegations on the subnet.
 	Delegations []*Delegation
@@ -12406,7 +12420,7 @@ type VirtualApplianceConnectionProperties struct {
 	Name *string
 
 	// The Routing Configuration indicating the associated and propagated route tables on this connection.
-	RoutingConfiguration *RoutingConfigurationNfv
+	RoutingConfiguration *RoutingConfiguration
 
 	// Unique identifier for the connection.
 	TunnelIdentifier *int64
@@ -12455,6 +12469,9 @@ type VirtualAppliancePropertiesFormat struct {
 
 	// The delegation for the Virtual Appliance
 	Delegation *DelegationProperties
+
+	// List of Resource Uri of Public IPs for Internet Ingress Scenario.
+	InternetIngressPublicIPs []*InternetIngressPublicIPsProperties
 
 	// Network Virtual Appliance SKU.
 	NvaSKU *VirtualApplianceSKUProperties
@@ -12871,6 +12888,20 @@ type VirtualNetworkGateway struct {
 	Type *string
 }
 
+type VirtualNetworkGatewayAutoScaleBounds struct {
+	// Maximum Scale Units for Autoscale configuration
+	Max *int32
+
+	// Minimum scale Units for Autoscale configuration
+	Min *int32
+}
+
+// VirtualNetworkGatewayAutoScaleConfiguration - Virtual Network Gateway Autoscale Configuration details
+type VirtualNetworkGatewayAutoScaleConfiguration struct {
+	// The bounds of the autoscale configuration
+	Bounds *VirtualNetworkGatewayAutoScaleBounds
+}
+
 // VirtualNetworkGatewayConnection - A common class for general resource information.
 type VirtualNetworkGatewayConnection struct {
 	// REQUIRED; Properties of the virtual network gateway connection.
@@ -13236,6 +13267,9 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 
 	// Configures this gateway to accept traffic from remote Virtual WAN networks.
 	AllowVirtualWanTraffic *bool
+
+	// Autoscale configuration for virutal network gateway
+	AutoScaleConfiguration *VirtualNetworkGatewayAutoScaleConfiguration
 
 	// Virtual network gateway's BGP speaker settings.
 	BgpSettings *BgpSettings

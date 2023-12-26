@@ -24,13 +24,13 @@ type TestContext struct {
 	Client *azservicebus.Client
 }
 
-func MustGenerateMessages(sc *StressContext, sender *azservicebus.Sender, messageLimit int, numExtraBytes int, stats *Stats) {
+func MustGenerateMessages(sc *StressContext, sender *TrackingSender, messageLimit int, numExtraBytes int) {
 	ctx, cancel := context.WithCancel(sc.Context)
 	defer cancel()
 
 	log.Printf("Sending %d messages", messageLimit)
 
-	streamingBatch, err := NewStreamingMessageBatch(ctx, &senderWrapper{inner: sender}, stats)
+	streamingBatch, err := NewStreamingMessageBatch(ctx, &senderWrapper{inner: sender})
 	sc.PanicOnError("failed to create streaming batch", err)
 
 	extraBytes := make([]byte, numExtraBytes)
@@ -240,4 +240,28 @@ func NewCtrlCContext() (context.Context, context.CancelFunc) {
 	}()
 
 	return ctx, cancel
+}
+
+type baggageKey int
+
+func UpdateBaggage(ctx context.Context, baggage map[string]string) map[string]string {
+	if baggage == nil {
+		baggage = map[string]string{}
+	}
+
+	values, ok := ctx.Value(baggageKey(0)).(map[string]string)
+
+	if !ok || values == nil {
+		return baggage
+	}
+
+	for k, v := range values {
+		baggage[k] = v
+	}
+
+	return baggage
+}
+
+func WithBaggage(ctx context.Context, baggage map[string]string) context.Context {
+	return context.WithValue(ctx, baggageKey(0), baggage)
 }

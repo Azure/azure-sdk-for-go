@@ -15,6 +15,8 @@ import (
 
 func RapidOpenCloseTest(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("RapidOpenCloseTest", nil)
+	defer sc.End()
+
 	queueName := fmt.Sprintf("rapid_open_close-%X", time.Now().UnixNano())
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)
@@ -31,7 +33,7 @@ func RapidOpenCloseTest(remainingArgs []string) {
 			}()
 
 			for i := 0; i < 1000; i++ {
-				sender, err := client.NewSender(queueName, nil)
+				sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 				sc.PanicOnError("failed to create sender", err)
 
 				err = sender.SendMessage(context.Background(), &azservicebus.Message{
@@ -42,7 +44,7 @@ func RapidOpenCloseTest(remainingArgs []string) {
 				err = sender.Close(sc.Context)
 				sc.PanicOnError("failed to close client", err)
 
-				receiver, err := client.NewReceiverForQueue(queueName, nil)
+				receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, nil)
 				sc.NoError(err)
 
 				messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01-legacy/examples/ElasticPoolDatabaseActivityList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01-legacy/examples/ElasticPoolDatabaseActivityList.json
 func ExampleElasticPoolDatabaseActivitiesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,11 +51,11 @@ func ExampleElasticPoolDatabaseActivitiesClient_NewListByElasticPoolPager() {
 		// 				CurrentElasticPoolName: to.Ptr("7537"),
 		// 				CurrentServiceObjective: to.Ptr("ElasticPool"),
 		// 				DatabaseName: to.Ptr("2396"),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:08:02.95Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:08:02.950Z"); return t}()),
 		// 				Operation: to.Ptr("UPDATE"),
 		// 				PercentComplete: to.Ptr[int32](100),
 		// 				ServerName: to.Ptr("sqlcrudtest-603"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:07:12.57Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:07:12.570Z"); return t}()),
 		// 				State: to.Ptr("COMPLETED"),
 		// 			},
 		// 		},
@@ -69,11 +69,11 @@ func ExampleElasticPoolDatabaseActivitiesClient_NewListByElasticPoolPager() {
 		// 				CurrentElasticPoolName: to.Ptr("7537"),
 		// 				CurrentServiceObjective: to.Ptr("ElasticPool"),
 		// 				DatabaseName: to.Ptr("2396"),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:06:49.19Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:06:49.190Z"); return t}()),
 		// 				Operation: to.Ptr("CREATE"),
 		// 				PercentComplete: to.Ptr[int32](100),
 		// 				ServerName: to.Ptr("sqlcrudtest-603"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:06:11.19Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-23T03:06:11.190Z"); return t}()),
 		// 				State: to.Ptr("COMPLETED"),
 		// 			},
 		// 	}},

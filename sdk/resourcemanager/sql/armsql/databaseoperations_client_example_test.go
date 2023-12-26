@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CancelDatabaseOperation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/CancelDatabaseOperation.json
 func ExampleDatabaseOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleDatabaseOperationsClient_Cancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListDatabaseOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListDatabaseOperations.json
 func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 		// 				OperationFriendlyName: to.Ptr("ALTER DATABASE"),
 		// 				PercentComplete: to.Ptr[int32](100),
 		// 				ServerName: to.Ptr("sqlcrudtest-4645"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T09:10:08.1Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T09:10:08.100Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateSucceeded),
 		// 			},
 		// 		},
@@ -82,7 +82,7 @@ func ExampleDatabaseOperationsClient_NewListByDatabasePager() {
 		// 				OperationFriendlyName: to.Ptr("ALTER DATABASE"),
 		// 				PercentComplete: to.Ptr[int32](19),
 		// 				ServerName: to.Ptr("sqlcrudtest-4645"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T10:10:08.1Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-01T10:10:08.100Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 			},
 		// 	}},

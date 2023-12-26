@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/CommunityGallery_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/CommunityGallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,6 +56,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -76,7 +77,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Create_WithSharingProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Create_WithSharingProfile.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSharingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,6 +109,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -122,7 +124,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSoftDeletionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,6 +156,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -168,7 +171,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,6 +200,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -208,7 +212,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Update.json
 func ExampleGalleriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +251,7 @@ func ExampleGalleriesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/CommunityGallery_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/CommunityGallery_Get.json
 func ExampleGalleriesClient_Get_getACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,6 +273,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/communityGalleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -281,7 +286,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	// 				CommunityGalleryEnabled: to.Ptr(true),
 	// 				Eula: to.Ptr("eula"),
 	// 				PublicNames: []*string{
-	// 					to.Ptr("GalelryPublicName")},
+	// 					to.Ptr("GalleryPublicName")},
 	// 					PublisherContact: to.Ptr("pir@microsoft.com"),
 	// 					PublisherURI: to.Ptr("uri"),
 	// 				},
@@ -300,7 +305,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
 func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,6 +327,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		SharingProfile: &armcompute.SharingProfile{
@@ -343,7 +349,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
 func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,6 +371,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		SharingProfile: &armcompute.SharingProfile{
@@ -386,7 +393,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Get.json
 func ExampleGalleriesClient_Get_getAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,6 +415,7 @@ func ExampleGalleriesClient_Get_getAGallery() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Gallery = armcompute.Gallery{
 	// 	Name: to.Ptr("myGalleryName"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryProperties{
 	// 		Description: to.Ptr("This is the gallery description."),
@@ -419,7 +427,7 @@ func ExampleGalleriesClient_Get_getAGallery() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_Delete.json
 func ExampleGalleriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +448,7 @@ func ExampleGalleriesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_ListByResourceGroup.json
 func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +488,7 @@ func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/Gallery_ListBySubscription.json
 func ExampleGalleriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

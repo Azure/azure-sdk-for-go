@@ -8,12 +8,9 @@ package testutil
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"strconv"
-	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -22,19 +19,7 @@ import (
 const recordingRandomSeedVariableName = "recordingRandomSeed"
 
 var (
-	recordingSeed         int64
-	recordingRandomSource rand.Source
-)
-
-const (
-	alphanumericBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-)
-
-// Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
-const (
-	letterIdxBits = 6                    // 6 bits to represent a letter index
-	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
-	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	recordingSeed int64
 )
 
 type recordingPolicy struct {
@@ -100,17 +85,18 @@ func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 // StartRecording starts the recording with the path to store recording file.
 // It will return a delegate function to stop recording.
 func StartRecording(t *testing.T, pathToPackage string) func() {
+	option := &recording.RecordingOptions{UseHTTPS: true}
 	// sanitizer for any uuid string, e.g., subscriptionID
-	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, nil)
+	err := recording.AddGeneralRegexSanitizer("00000000-0000-0000-0000-000000000000", `[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}`, option)
 	if err != nil {
 		t.Fatalf("Failed to add uuid sanitizer: %v", err)
 	}
 	// consolidate resource group name for recording and playback
-	err = recording.AddGeneralRegexSanitizer("go-sdk-test-rg", `go-sdk-test-\d+`, nil)
+	err = recording.AddGeneralRegexSanitizer("go-sdk-test-rg", `go-sdk-test-\d+`, option)
 	if err != nil {
 		t.Fatalf("Failed to add resource group name sanitizer: %v", err)
 	}
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, option)
 	if err != nil {
 		t.Fatalf("Failed to start recording: %v", err)
 	}
@@ -123,57 +109,4 @@ func StopRecording(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to stop recording: %v", err)
 	}
-}
-
-func initRandomSource(t *testing.T) {
-	if recordingRandomSource != nil {
-		return
-	}
-
-	var seed int64
-	var err error
-
-	variables := recording.GetVariables(t)
-	seedString, ok := variables[recordingRandomSeedVariableName]
-	if ok {
-		seed, err = strconv.ParseInt(seedString.(string), 10, 64)
-	}
-
-	// We did not have a random seed already stored; create a new one
-	if !ok || err != nil || recording.GetRecordMode() == "live" {
-		seed = time.Now().Unix()
-		val := strconv.FormatInt(seed, 10)
-		variables[recordingRandomSeedVariableName] = &val
-	}
-
-	// create a Source with the seed
-	recordingRandomSource = rand.NewSource(seed)
-	recordingSeed = seed
-}
-
-// GenerateAlphaNumericID will generate a random alpha numeric ID.
-// When handling live request, the random seed is generated.
-// Otherwise, the random seed is stable and will be stored in recording file.
-// The length parameter is the random part length, not include the prefix part.
-// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GenerateAlphaNumericID instead.
-func GenerateAlphaNumericID(t *testing.T, prefix string, length int) string {
-	initRandomSource(t)
-	sb := strings.Builder{}
-	sb.Grow(length)
-	sb.WriteString(prefix)
-	i := length - 1
-	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
-	for cache, remain := recordingRandomSource.Int63(), letterIdxMax; i >= 0; {
-		if remain == 0 {
-			cache, remain = recordingRandomSource.Int63(), letterIdxMax
-		}
-		if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
-			sb.WriteByte(alphanumericBytes[idx])
-			i--
-		}
-		cache >>= letterIdxBits
-		remain--
-	}
-	str := sb.String()
-	return str
 }

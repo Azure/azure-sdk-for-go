@@ -9,8 +9,8 @@
 package armredhatopenshift
 
 const (
-	moduleName    = "armredhatopenshift"
-	moduleVersion = "v1.3.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
+	moduleVersion = "v1.5.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -78,6 +78,22 @@ func PossibleOutboundTypeValues() []OutboundType {
 	return []OutboundType{
 		OutboundTypeLoadbalancer,
 		OutboundTypeUserDefinedRouting,
+	}
+}
+
+// PreconfiguredNSG - PreconfiguredNSG represents whether customers want to use their own NSG attached to the subnets
+type PreconfiguredNSG string
+
+const (
+	PreconfiguredNSGDisabled PreconfiguredNSG = "Disabled"
+	PreconfiguredNSGEnabled  PreconfiguredNSG = "Enabled"
+)
+
+// PossiblePreconfiguredNSGValues returns the possible values for the PreconfiguredNSG const type.
+func PossiblePreconfiguredNSGValues() []PreconfiguredNSG {
+	return []PreconfiguredNSG{
+		PreconfiguredNSGDisabled,
+		PreconfiguredNSGEnabled,
 	}
 }
 

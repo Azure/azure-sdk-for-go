@@ -10,25 +10,6 @@ package armcontainerservicefleet
 
 import "time"
 
-// APIServerAccessProfile - Access profile for the Fleet hub API server.
-type APIServerAccessProfile struct {
-	// Whether to create the Fleet hub as a private cluster or not.
-	EnablePrivateCluster *bool
-
-	// Whether to enable apiserver vnet integration for the Fleet hub or not.
-	EnableVnetIntegration *bool
-
-	// The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new Fleet with BYO vnet.
-	SubnetID *string
-}
-
-// AgentProfile - Agent profile for the Fleet hub.
-type AgentProfile struct {
-	// The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet will be
-	// generated and used.
-	SubnetID *string
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -102,24 +83,6 @@ type FleetCredentialResult struct {
 type FleetCredentialResults struct {
 	// READ-ONLY; Array of base64-encoded Kubernetes configuration files.
 	Kubeconfigs []*FleetCredentialResult
-}
-
-// FleetHubProfile - The FleetHubProfile configures the fleet hub.
-type FleetHubProfile struct {
-	// The access profile for the Fleet hub API server.
-	APIServerAccessProfile *APIServerAccessProfile
-
-	// The agent profile for the Fleet hub.
-	AgentProfile *AgentProfile
-
-	// DNS prefix used to create the FQDN for the Fleet hub.
-	DNSPrefix *string
-
-	// READ-ONLY; The FQDN of the Fleet hub.
-	Fqdn *string
-
-	// READ-ONLY; The Kubernetes version of the Fleet hub.
-	KubernetesVersion *string
 }
 
 // FleetListResult - The response of a Fleet list operation.
@@ -200,11 +163,50 @@ type FleetPatch struct {
 
 // FleetProperties - Fleet properties.
 type FleetProperties struct {
-	// The FleetHubProfile configures the Fleet's hub.
-	HubProfile *FleetHubProfile
-
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *FleetProvisioningState
+}
+
+// FleetUpdateStrategy - Defines a multi-stage process to perform update operations across members of a Fleet.
+type FleetUpdateStrategy struct {
+	// The resource-specific properties for this resource.
+	Properties *FleetUpdateStrategyProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource.
+	// HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range
+	// (section 14.27) header fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FleetUpdateStrategyListResult - The response of a FleetUpdateStrategy list operation.
+type FleetUpdateStrategyListResult struct {
+	// REQUIRED; The FleetUpdateStrategy items on this page
+	Value []*FleetUpdateStrategy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FleetUpdateStrategyProperties - The properties of the UpdateStrategy.
+type FleetUpdateStrategyProperties struct {
+	// REQUIRED; Defines the update sequence of the clusters.
+	Strategy *UpdateRunStrategy
+
+	// READ-ONLY; The provisioning state of the UpdateStrategy resource.
+	ProvisioningState *FleetUpdateStrategyProvisioningState
 }
 
 // ManagedClusterUpdate - The update to be applied to the ManagedClusters.
@@ -354,8 +356,7 @@ type SystemData struct {
 
 // UpdateGroup - A group to be updated.
 type UpdateGroup struct {
-	// REQUIRED; The name of the Fleet member group to update. It should match the name of an existing FleetMember group. A group
-	// can only appear once across all UpdateStages in the UpdateRun.
+	// REQUIRED; Name of the group. It must match a group name of an existing fleet member.
 	Name *string
 }
 
@@ -371,7 +372,7 @@ type UpdateGroupStatus struct {
 	Status *UpdateStatus
 }
 
-// UpdateRun - An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+// UpdateRun - A multi-stage process to perform update operations across members of a Fleet.
 type UpdateRun struct {
 	// The resource-specific properties for this resource.
 	Properties *UpdateRunProperties
@@ -415,6 +416,19 @@ type UpdateRunProperties struct {
 	// targeting all members. The strategy of the UpdateRun can be modified until the run is started.
 	Strategy *UpdateRunStrategy
 
+	// The resource id of the FleetUpdateStrategy resource to reference.
+	// When creating a new run, there are three ways to define a strategy for the run:
+	// 1. Define a new strategy in place: Set the "strategy" field.
+	// 2. Use an existing strategy: Set the "updateStrategyId" field. (since 2023-08-15-preview)
+	// 3. Use the default strategy to update all the members one by one: Leave both "updateStrategyId" and "strategy" unset. (since
+	// 2023-08-15-preview)
+	// Setting both "updateStrategyId" and "strategy" is invalid.
+	// UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and store it in
+	// the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy
+	// resource do not propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before launching the
+	// UpdateRun.
+	UpdateStrategyID *string
+
 	// READ-ONLY; The provisioning state of the UpdateRun resource.
 	ProvisioningState *UpdateRunProvisioningState
 
@@ -435,16 +449,17 @@ type UpdateRunStatus struct {
 	Status *UpdateStatus
 }
 
-// UpdateRunStrategy - The UpdateRunStrategy configures the sequence of Stages and Groups in which the clusters will be updated.
+// UpdateRunStrategy - Defines the update sequence of the clusters via stages and groups.
+// Stages within a run are executed sequentially one after another. Groups within a stage are executed in parallel. Member
+// clusters within a group are updated sequentially one after another.
+// A valid strategy contains no duplicate groups within or across stages.
 type UpdateRunStrategy struct {
-	// REQUIRED; The list of stages that compose this update run.
+	// REQUIRED; The list of stages that compose this update run. Min size: 1.
 	Stages []*UpdateStage
 }
 
-// UpdateStage - Contains the groups to be updated by an UpdateRun. Update order:
-// * Sequential between stages: Stages run sequentially. The previous stage must complete before the next one starts.
-// * Parallel within a stage: Groups within a stage run in parallel.
-// * Sequential within a group: Clusters within a group are updated sequentially.
+// UpdateStage - Defines a stage which contains the groups to update and the steps to take (e.g., wait for a time period)
+// before starting the next stage.
 type UpdateStage struct {
 	// REQUIRED; The name of the stage. Must be unique within the UpdateRun.
 	Name *string
@@ -452,8 +467,7 @@ type UpdateStage struct {
 	// The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if unspecified.
 	AfterStageWaitInSeconds *int32
 
-	// A list of group names that compose the stage. The groups will be updated in parallel. Each group name can only appear once
-	// in the UpdateRun.
+	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
 }
 

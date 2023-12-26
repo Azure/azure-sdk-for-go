@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGallery_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/sharedGalleryExamples/SharedGallery_List.json
 func ExampleSharedGalleriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,12 +47,17 @@ func ExampleSharedGalleriesClient_NewListPager() {
 		// 			Identifier: &armcompute.SharedGalleryIdentifier{
 		// 				UniqueID: to.Ptr("/SharedGalleries/galleryUniqueName"),
 		// 			},
+		// 			Properties: &armcompute.SharedGalleryProperties{
+		// 				ArtifactTags: map[string]*string{
+		// 					"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
+		// 				},
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGallery_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/sharedGalleryExamples/SharedGallery_Get.json
 func ExampleSharedGalleriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,6 +80,11 @@ func ExampleSharedGalleriesClient_Get() {
 	// 	Location: to.Ptr("myLocation"),
 	// 	Identifier: &armcompute.SharedGalleryIdentifier{
 	// 		UniqueID: to.Ptr("/SharedGalleries/galleryUniqueName"),
+	// 	},
+	// 	Properties: &armcompute.SharedGalleryProperties{
+	// 		ArtifactTags: map[string]*string{
+	// 			"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
+	// 		},
 	// 	},
 	// }
 }

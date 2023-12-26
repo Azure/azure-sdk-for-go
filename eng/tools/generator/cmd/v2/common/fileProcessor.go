@@ -4,6 +4,7 @@
 package common
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -362,12 +363,7 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 
 	oldChangelog := string(b)
 	newChangelog := "# Release History\n\n"
-	var matchResults [][]int
-	if version.Prerelease() == "" {
-		matchResults = changelogPosWithoutPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
-	} else {
-		matchResults = changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
-	}
+	matchResults := changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
 	additionalChangelog := changelog.ToCompactMarkdown()
 	if releaseDate == "" {
 		releaseDate = time.Now().Format("2006-01-02")
@@ -497,13 +493,20 @@ func AddTagSet(path, tag string) error {
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-func isGenerateFake(path string) bool {
-	b, _ := os.ReadFile(filepath.Join(path, "autorest.md"))
-	if strings.Contains(string(b), "generate-fakes: true") {
-		return true
+func GetTag(path string) (string, error) {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
 	}
 
-	return false
+	lines := strings.Split(string(b), "\n")
+	for _, line := range lines {
+		if strings.Contains(line, "tag:") {
+			return strings.TrimSpace(string([]byte(line)[len("tag:"):])), nil
+		}
+	}
+
+	return "", nil
 }
 
 func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVersion, subPath string, suffixes ...string) error {
@@ -555,7 +558,7 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 				return err
 			}
 
-			newFile := strings.ReplaceAll(string(b), oldModule, newModule)
+			newFile := strings.ReplaceAll(string(b), fmt.Sprintf("\"%s\"", oldModule), fmt.Sprintf("\"%s\"", newModule))
 			if newFile != string(b) {
 				if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
 					return err
@@ -589,4 +592,40 @@ func existSuffixFile(path, suffix string) bool {
 	}
 
 	return existed
+}
+
+func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) error {
+	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
+	if err != nil {
+		return err
+	}
+
+	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+
+	readmeModule := module
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	if match.Match(readmeFile) {
+		readmeModule = match.FindString(string(readmeFile))
+	}
+
+	newModule := module
+	current, err := semver.NewVersion(currentVersion)
+	if err != nil {
+		return err
+	}
+	if current.Major() > 1 {
+		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
+	}
+
+	if newModule == readmeModule {
+		return nil
+	}
+
+	newReadmeFile := bytes.ReplaceAll(readmeFile, []byte(readmeModule), []byte(newModule))
+	err = os.WriteFile(filepath.Join(path, "README.md"), newReadmeFile, 0666)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

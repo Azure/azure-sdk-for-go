@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
@@ -22,7 +23,7 @@ func ExampleNewClientWithSharedKeyCredential() {
 		return
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, sharedKey, nil)
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -56,7 +57,9 @@ func ExampleClient_PublishCloudEvents() {
 	var eventsToSend []messaging.CloudEvent
 
 	for _, payload := range payloads {
-		event, err := messaging.NewCloudEvent("source", "eventType", payload, nil)
+		event, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
+			DataContentType: to.Ptr("application/octet-stream"),
+		})
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
@@ -106,9 +109,7 @@ func ExampleClient_ReceiveCloudEvents() {
 		fmt.Fprintf(os.Stderr, "Event ID:%s, data: %#v, lockToken: %s\n", rd.Event.ID, data, *lockToken)
 
 		// This will complete the message, deleting it from the subscription.
-		resp, err := client.AcknowledgeCloudEvents(context.TODO(), topic, subscription, azeventgrid.AcknowledgeOptions{
-			LockTokens: []string{*lockToken},
-		}, nil)
+		resp, err := client.AcknowledgeCloudEvents(context.TODO(), topic, subscription, []string{*lockToken}, nil)
 
 		if err != nil {
 			//  TODO: Update the following line with your application specific error handling logic
@@ -131,7 +132,7 @@ func getEventGridClient() *azeventgrid.Client {
 		return nil
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, sharedKey, nil)
+	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

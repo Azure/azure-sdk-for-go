@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -27,7 +28,7 @@ type TracingProviderOptions struct {
 //   - opts - optional configuration. pass nil to accept the default values
 func NewTracingProvider(tracerProvider trace.TracerProvider, opts *TracingProviderOptions) tracing.Provider {
 	return tracing.NewProvider(func(namespace, version string) tracing.Tracer {
-		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version), trace.WithSchemaURL("https://opentelemetry.io/schemas/1.17.0"))
+		tracer := tracerProvider.Tracer(namespace, trace.WithInstrumentationVersion(version), trace.WithSchemaURL(semconv.SchemaURL))
 
 		return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 			kind := tracing.SpanKindInternal

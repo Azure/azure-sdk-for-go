@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
 func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabri
 		// 					FabricFriendlyName: to.Ptr("cloud1"),
 		// 					FabricType: to.Ptr("HyperVSite"),
 		// 					FriendlyName: to.Ptr("CP-B3L40406-12.ntdev.corp.microsoft.com"),
-		// 					LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:06:38.2728455Z"); return t}()),
+		// 					LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:06:38.272Z"); return t}()),
 		// 					ProtectedItemCount: to.Ptr[int32](2),
 		// 					ProviderVersion: to.Ptr("5.1.2250.0"),
 		// 					ProviderVersionState: to.Ptr("Latest"),
@@ -64,7 +64,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListByReplicationFabri
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Get.json
 func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	// 			FabricFriendlyName: to.Ptr("cloud1"),
 	// 			FabricType: to.Ptr("HyperVSite"),
 	// 			FriendlyName: to.Ptr("CP-B3L40406-12.ntdev.corp.microsoft.com"),
-	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:16:04.9405768Z"); return t}()),
+	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:16:04.940Z"); return t}()),
 	// 			ProtectedItemCount: to.Ptr[int32](2),
 	// 			ProviderVersion: to.Ptr("5.1.2250.0"),
 	// 			ProviderVersionState: to.Ptr("Latest"),
@@ -102,7 +102,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Create.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	// 			FabricFriendlyName: to.Ptr("vmwarefabric1"),
 	// 			FabricType: to.Ptr("VMwareV2"),
 	// 			FriendlyName: to.Ptr("vmwareprovider1"),
-	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:16:04.9405768Z"); return t}()),
+	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:16:04.940Z"); return t}()),
 	// 			ProtectedItemCount: to.Ptr[int32](2),
 	// 			ProviderVersion: to.Ptr("5.1.3688.0"),
 	// 			ProviderVersionState: to.Ptr("Latest"),
@@ -162,7 +162,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Purge.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginPurge() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	// 			FabricFriendlyName: to.Ptr("cloud1"),
 	// 			FabricType: to.Ptr("HyperVSite"),
 	// 			FriendlyName: to.Ptr("CP-B3L40406-12.ntdev.corp.microsoft.com"),
-	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:48:36.6528303Z"); return t}()),
+	// 			LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:48:36.652Z"); return t}()),
 	// 			ProtectedItemCount: to.Ptr[int32](2),
 	// 			ProviderVersion: to.Ptr("5.1.2250.0"),
 	// 			ProviderVersionState: to.Ptr("Latest"),
@@ -225,7 +225,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginRefreshProvider() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Delete.json
 func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_List.json
 func ExampleReplicationRecoveryServicesProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleReplicationRecoveryServicesProvidersClient_NewListPager() {
 		// 					FabricFriendlyName: to.Ptr("cloud1"),
 		// 					FabricType: to.Ptr("HyperVSite"),
 		// 					FriendlyName: to.Ptr("CP-B3L40406-12.ntdev.corp.microsoft.com"),
-		// 					LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:06:38.2728455Z"); return t}()),
+		// 					LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:06:38.272Z"); return t}()),
 		// 					ProtectedItemCount: to.Ptr[int32](2),
 		// 					ProviderVersion: to.Ptr("5.1.2250.0"),
 		// 					ProviderVersionState: to.Ptr("Latest"),

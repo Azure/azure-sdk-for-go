@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/17aa6a1314de5aafef059d9aa2229901df506e75/specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Usages_ListByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Usages_ListByLocation.json
 func ExampleUsagesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,7 @@ func ExampleUsagesClient_NewListByLocationPager() {
 		// 				Value: to.Ptr("devcenters"),
 		// 			},
 		// 			CurrentValue: to.Ptr[int64](2),
+		// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/Microsoft.DevCenter/locations/westus/quotas/devcenters"),
 		// 			Limit: to.Ptr[int64](8),
 		// 			Unit: to.Ptr(armdevcenter.UsageUnitCount),
 		// 		},
@@ -54,6 +55,7 @@ func ExampleUsagesClient_NewListByLocationPager() {
 		// 				Value: to.Ptr("projects"),
 		// 			},
 		// 			CurrentValue: to.Ptr[int64](5),
+		// 			ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/Microsoft.DevCenter/locations/westus/quotas/projects"),
 		// 			Limit: to.Ptr[int64](30),
 		// 			Unit: to.Ptr(armdevcenter.UsageUnitCount),
 		// 	}},

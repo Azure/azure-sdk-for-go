@@ -38,7 +38,7 @@ func ExampleRateCardClient_Get() {
 	// res.ResourceRateCardInfo = armcommerce.ResourceRateCardInfo{
 	// 	Meters: []*armcommerce.MeterInfo{
 	// 		{
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-01T00:00:00Z"); return t}()),
+	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-01T00:00:00.000Z"); return t}()),
 	// 			IncludedQuantity: to.Ptr[float32](0),
 	// 			MeterCategory: to.Ptr("Test Category"),
 	// 			MeterID: to.Ptr("1d7518e5-bc2f-4a93-9057-1b3047856645"),

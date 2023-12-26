@@ -24,18 +24,21 @@ stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/azcosmos'
+    UsePipelineProxy: false
 - stage: Emulator
   displayName: 'Cosmos Emulator'
+  variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
   jobs:
   - job: DownloadAndRunCosmosEmulator
     displayName: Download and run Cosmos Emulator
 
     strategy:
       matrix:
-        Windows_Go118:
+        Windows_Go120:
           pool.name: azsdk-pool-mms-win-2022-general
           image.name: MMS2022
-          go.version: '1.18'
+          go.version: '1.21.1'
     pool:
       name: $(pool.name)
       vmImage: $(image.name)

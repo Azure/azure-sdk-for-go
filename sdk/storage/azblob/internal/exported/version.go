@@ -8,5 +8,5 @@ package exported
 
 const (
 	ModuleName    = "azblob"
-	ModuleVersion = "v1.1.1"
+	ModuleVersion = "v1.2.2"
 )

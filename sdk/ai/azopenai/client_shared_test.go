@@ -4,18 +4,22 @@
 package azopenai_test
 
 import (
+	"bytes"
 	"crypto/tls"
+	"errors"
 	"fmt"
+	"io"
+	"mime"
 	"net/http"
 	"os"
 	"regexp"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/joho/godotenv"
@@ -23,70 +27,160 @@ import (
 )
 
 var (
-	azureOpenAI       testVars
-	azureOpenAICanary testVars
-	openAI            testVars
+	azureOpenAI testVars
+	openAI      testVars
 )
 
-type testVars struct {
-	Endpoint        string // env: AOAI_ENDPOINT, OPENAI_ENDPOINT
-	APIKey          string // env: AOAI_API_KEY, OPENAI_API_KEY
-	Completions     string // env: AOAI_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_COMPLETIONS_MODEL
-	ChatCompletions string // env: AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT, OPENAI_CHAT_COMPLETIONS_MODEL
-	Embeddings      string // env: AOAI_EMBEDDINGS_MODEL_DEPLOYMENT, OPENAI_EMBEDDINGS_MODEL
-	Azure           bool
-
-	Cognitive azopenai.AzureCognitiveSearchChatExtensionConfiguration
+type endpoint struct {
+	URL    string
+	APIKey string
+	Azure  bool
 }
 
-func newTestVars(prefix string, isCanary bool) testVars {
-	getRequired := func(name string) string {
-		v := os.Getenv(name)
+type testVars struct {
+	Endpoint                       endpoint
+	Completions                    string
+	ChatCompletions                string
+	ChatCompletionsLegacyFunctions string
+	Embeddings                     string
+	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	Whisper                        endpointWithModel
+	DallE                          endpointWithModel
+	Vision                         endpointWithModel
 
-		if v == "" {
-			panic(fmt.Sprintf("Env variable %s is missing", name))
+	ChatCompletionsRAI endpointWithModel // at the moment this is Azure only
+
+	// "own your data" - bringing in Azure resources as part of a chat completions
+	// request.
+	ChatCompletionsOYD endpointWithModel
+}
+
+type endpointWithModel struct {
+	Endpoint endpoint
+	Model    string
+}
+
+type testClientOption func(opt *azopenai.ClientOptions)
+
+func withForgivingRetryOption() testClientOption {
+	return func(opt *azopenai.ClientOptions) {
+		opt.Retry = policy.RetryOptions{
+			MaxRetries: 10,
+		}
+	}
+}
+
+// newTestClient creates a client enabled for HTTP recording, if needed.
+// See [newRecordingTransporter] for sanitization code.
+func newTestClient(t *testing.T, ep endpoint, options ...testClientOption) *azopenai.Client {
+	clientOptions := newClientOptionsForTest(t)
+
+	for _, opt := range options {
+		opt(clientOptions)
+	}
+
+	if ep.Azure {
+		cred := azcore.NewKeyCredential(ep.APIKey)
+
+		client, err := azopenai.NewClientWithKeyCredential(ep.URL, cred, clientOptions)
+		require.NoError(t, err)
+
+		return client
+	} else {
+		if ep.APIKey == "" {
+			t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
 		}
 
-		return v
+		cred := azcore.NewKeyCredential(ep.APIKey)
+
+		client, err := azopenai.NewClientForOpenAI(ep.URL, cred, clientOptions)
+		require.NoError(t, err)
+
+		return client
+	}
+}
+
+// getEndpointWithModel retrieves details for an endpoint and a model.
+// - res - the resource type for a particular endpoint. Ex: "DALLE".
+//
+// For example, if azure is true we'll load these environment values based on res:
+//   - AOAI_DALLE_ENDPOINT
+//   - AOAI_DALLE_API_KEY
+//   - AOAI_DALLE_MODEL
+//
+// if azure is false we'll load these environment values based on res:
+//   - OPENAI_ENDPOINT
+//   - OPENAI_API_KEY
+//   - OPENAI_DALLE_MODEL
+func getEndpointWithModel(res string, isAzure bool) endpointWithModel {
+	var ep endpointWithModel
+	if isAzure {
+		// during development resources are often shifted between different
+		// internal Azure OpenAI resources.
+		ep = endpointWithModel{
+			Endpoint: endpoint{
+				URL:    getRequired("AOAI_" + res + "_ENDPOINT"),
+				APIKey: getRequired("AOAI_" + res + "_API_KEY"),
+				Azure:  true,
+			},
+			Model: getRequired("AOAI_" + res + "_MODEL"),
+		}
+	} else {
+		ep = endpointWithModel{
+			Endpoint: endpoint{
+				URL:    getRequired("OPENAI_ENDPOINT"),
+				APIKey: getRequired("OPENAI_API_KEY"),
+				Azure:  false,
+			},
+			Model: getRequired("OPENAI_" + res + "_MODEL"),
+		}
 	}
 
+	if !strings.HasSuffix(ep.Endpoint.URL, "/") {
+		// (this just makes recording replacement easier)
+		ep.Endpoint.URL += "/"
+	}
+
+	return ep
+}
+
+func newTestVars(prefix string) testVars {
 	azure := prefix == "AOAI"
 
-	canarySuffix := ""
-	deplSuffix := ""
-
-	if azure {
-		deplSuffix += "_DEPLOYMENT"
-	}
-
-	if isCanary {
-		canarySuffix += "_CANARY"
-	}
-
 	tv := testVars{
-		Endpoint: getRequired(prefix + "_ENDPOINT" + canarySuffix),
-		APIKey:   getRequired(prefix + "_API_KEY" + canarySuffix),
-
-		Completions: getRequired(prefix + "_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
-
-		// ex: gpt-4-0613
-		ChatCompletions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL" + deplSuffix + canarySuffix),
-
-		// ex: embedding
-		Embeddings: getRequired(prefix + "_EMBEDDINGS_MODEL" + deplSuffix + canarySuffix),
-
-		Azure: azure,
+		Endpoint: endpoint{
+			URL:    getRequired(prefix + "_ENDPOINT"),
+			APIKey: getRequired(prefix + "_API_KEY"),
+			Azure:  azure,
+		},
+		Completions:                    getRequired(prefix + "_COMPLETIONS_MODEL"),
+		ChatCompletions:                getRequired(prefix + "_CHAT_COMPLETIONS_MODEL"),
+		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
+		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
 
 		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
-			IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
-			Key:       to.Ptr(getRequired("COGNITIVE_SEARCH_API_KEY")),
+			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+				Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
+				IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
+				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
+					Key: to.Ptr(getRequired("COGNITIVE_SEARCH_API_KEY")),
+				},
+			},
 		},
+
+		DallE:   getEndpointWithModel("DALLE", azure),
+		Whisper: getEndpointWithModel("WHISPER", azure),
+		Vision:  getEndpointWithModel("VISION", azure),
 	}
 
-	if tv.Endpoint != "" && !strings.HasSuffix(tv.Endpoint, "/") {
+	if azure {
+		tv.ChatCompletionsRAI = getEndpointWithModel("CHAT_COMPLETIONS_RAI", azure)
+		tv.ChatCompletionsOYD = getEndpointWithModel("OYD", azure)
+	}
+
+	if tv.Endpoint.URL != "" && !strings.HasSuffix(tv.Endpoint.URL, "/") {
 		// (this just makes recording replacement easier)
-		tv.Endpoint += "/"
+		tv.Endpoint.URL += "/"
 	}
 
 	return tv
@@ -99,85 +193,148 @@ const fakeCognitiveIndexName = "index"
 
 func initEnvVars() {
 	if recording.GetRecordMode() == recording.PlaybackMode {
-		azureOpenAI.Azure = true
-		azureOpenAI.Endpoint = fakeEndpoint
-		azureOpenAI.APIKey = fakeAPIKey
-		openAI.APIKey = fakeAPIKey
-		openAI.Endpoint = fakeEndpoint
+		// Setup our variables so our requests are consistent with what we recorded.
+		// Endpoints are sanitized using the recording policy
+		azureOpenAI.Endpoint = endpoint{
+			URL:    fakeEndpoint,
+			APIKey: fakeAPIKey,
+			Azure:  true,
+		}
 
-		azureOpenAICanary.Azure = true
-		azureOpenAICanary.Endpoint = fakeEndpoint
-		azureOpenAICanary.APIKey = fakeAPIKey
-		azureOpenAICanary.Completions = ""
-		azureOpenAICanary.ChatCompletions = "gpt-4"
+		azureOpenAI.Whisper = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "whisper-deployment",
+		}
+
+		azureOpenAI.ChatCompletionsRAI = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "gpt-4",
+		}
+
+		azureOpenAI.ChatCompletionsOYD = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "gpt-4",
+		}
+
+		azureOpenAI.DallE = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "dall-e-3",
+		}
+
+		azureOpenAI.Vision = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "gpt-4-vision-preview",
+		}
+
+		openAI.Endpoint = endpoint{
+			APIKey: fakeAPIKey,
+			URL:    fakeEndpoint,
+		}
+
+		openAI.Whisper = endpointWithModel{
+			Endpoint: endpoint{
+				APIKey: fakeAPIKey,
+				URL:    fakeEndpoint,
+			},
+			Model: "whisper-1",
+		}
+
+		openAI.DallE = endpointWithModel{
+			Endpoint: openAI.Endpoint,
+			Model:    "dall-e-3",
+		}
+
+		openAI.Vision = azureOpenAI.Vision
 
 		azureOpenAI.Completions = "text-davinci-003"
 		openAI.Completions = "text-davinci-003"
 
-		azureOpenAI.ChatCompletions = "gpt-4-0613"
+		azureOpenAI.ChatCompletions = "gpt-35-turbo-0613"
+		azureOpenAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"
 		openAI.ChatCompletions = "gpt-4-0613"
+		openAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"
 
 		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "text-embedding-ada-002"
 
 		azureOpenAI.Cognitive = azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Endpoint:  to.Ptr(fakeCognitiveEndpoint),
-			IndexName: to.Ptr(fakeCognitiveIndexName),
-			Key:       to.Ptr(fakeAPIKey),
+			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+				Endpoint:  to.Ptr(fakeCognitiveEndpoint),
+				IndexName: to.Ptr(fakeCognitiveIndexName),
+				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
+					Key: to.Ptr(fakeAPIKey),
+				},
+			},
 		}
 	} else {
 		if err := godotenv.Load(); err != nil {
 			fmt.Printf("Failed to load .env file: %s\n", err)
 		}
 
-		azureOpenAI = newTestVars("AOAI", false)
-		azureOpenAICanary = newTestVars("AOAI", true)
-		openAI = newTestVars("OPENAI", false)
+		azureOpenAI = newTestVars("AOAI")
+		openAI = newTestVars("OPENAI")
 	}
 }
 
+type MultipartRecordingPolicy struct {
+}
+
+func (mrp MultipartRecordingPolicy) Do(req *http.Request) (*http.Response, error) {
+	return nil, nil
+}
+
+// newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
+// involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	err = recording.Start(t, "sdk/ai/azopenai/testdata", nil)
+	err = recording.Start(t, RecordingDirectory, nil)
 	require.NoError(t, err)
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		err = recording.AddHeaderRegexSanitizer("Api-Key", fakeAPIKey, "", nil)
 		require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", ".*", nil)
+		err = recording.AddHeaderRegexSanitizer("User-Agent", "fake-user-agent", "", nil)
 		require.NoError(t, err)
 
-		// "RequestUri": "https://openai-shared.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAI.Endpoint), nil)
-		require.NoError(t, err)
+		endpoints := []string{
+			azureOpenAI.Endpoint.URL,
+			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
+			azureOpenAI.Whisper.Endpoint.URL,
+			azureOpenAI.DallE.Endpoint.URL,
+			azureOpenAI.Vision.Endpoint.URL,
+			azureOpenAI.ChatCompletionsOYD.Endpoint.URL,
+			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
+		}
 
-		err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(azureOpenAICanary.Endpoint), nil)
-		require.NoError(t, err)
+		for _, ep := range endpoints {
+			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(ep), nil)
+			require.NoError(t, err)
+		}
 
 		err = recording.AddURISanitizer("/openai/operations/images/00000000-AAAA-BBBB-CCCC-DDDDDDDDDDDD", "/openai/operations/images/[A-Za-z-0-9]+", nil)
 		require.NoError(t, err)
 
-		if openAI.Endpoint != "" {
-			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint), nil)
+		if openAI.Endpoint.URL != "" {
+			err = recording.AddURISanitizer(fakeEndpoint, regexp.QuoteMeta(openAI.Endpoint.URL), nil)
 			require.NoError(t, err)
 		}
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"endpoint": "%s"`, fakeCognitiveEndpoint),
-			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Endpoint), nil)
+			fmt.Sprintf(`"endpoint":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Endpoint), nil)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"indexName": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.IndexName), nil)
+			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
 			fmt.Sprintf(`"key": "%s"`, fakeAPIKey),
-			fmt.Sprintf(`"key":\s*"%s"`, *azureOpenAI.Cognitive.Key), nil)
+			fmt.Sprintf(`"key":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.Authentication.(*azopenai.OnYourDataAPIKeyAuthenticationOptions).Key), nil)
 		require.NoError(t, err)
 	}
 
@@ -189,14 +346,22 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	return transport
 }
 
+// newClientOptionsForTest creates options that enable a few optional things:
+//   - If we're recording then it injects the recording transporter
+//   - If `SSLKEYLOGFILE` is set in the environment it'll automatically setup
+//     the HTTP policy so it writes the keylog for that client to a file. You can
+//     use this with WireShark to decrypt and view a network trace.
 func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	co := &azopenai.ClientOptions{}
+
+	// Useful when debugging responses.
+	co.Logging.IncludeBody = true
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		keyLogPath := os.Getenv("SSLKEYLOGFILE")
 
 		if keyLogPath == "" {
-			return nil
+			return co
 		}
 
 		keyLogWriter, err := os.OpenFile(keyLogPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
@@ -213,69 +378,38 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 
 		co.Transport = &http.Client{Transport: tp}
 	} else {
+		co.PerRetryPolicies = append(co.PerRetryPolicies, &mimeTypeRecordingPolicy{})
 		co.Transport = newRecordingTransporter(t)
 	}
 
 	return co
 }
 
-// newAzureOpenAIClientForTest can create a client pointing to the "canary" endpoint (basically - leading fixes or features)
-// or the current deployed endpoint.
 func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential(tv.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(tv.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	return client
+	return newTestClient(t, tv.Endpoint)
 }
 
 func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	if openAI.APIKey == "" {
-		t.Skipf("OPENAI_API_KEY not defined, skipping OpenAI public endpoint test")
-	}
-
-	cred, err := azopenai.NewKeyCredential(openAI.APIKey)
-	require.NoError(t, err)
-
-	// we get rate limited quite a bit.
-	options := newClientOptionsForTest(t)
-
-	if options == nil {
-		options = &azopenai.ClientOptions{}
-	}
-
-	options.Retry = policy.RetryOptions{
-		MaxRetries:    60,
-		RetryDelay:    time.Second,
-		MaxRetryDelay: time.Second,
-	}
-
-	chatClient, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, options)
-	require.NoError(t, err)
-
-	return chatClient
+	return newTestClient(t, openAI.Endpoint)
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return
 // a failure.
 func newBogusAzureOpenAIClient(t *testing.T) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential("bogus-api-key")
+	cred := azcore.NewKeyCredential("bogus-api-key")
+
+	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
 	return client
 }
 
 // newBogusOpenAIClient creates a client that uses an invalid key, which will cause OpenAI to return
 // a failure.
 func newBogusOpenAIClient(t *testing.T) *azopenai.Client {
-	cred, err := azopenai.NewKeyCredential("bogus-api-key")
-	require.NoError(t, err)
+	cred := azcore.NewKeyCredential("bogus-api-key")
 
-	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint, cred, newClientOptionsForTest(t))
+	client, err := azopenai.NewClientForOpenAI(openAI.Endpoint.URL, cred, newClientOptionsForTest(t))
 	require.NoError(t, err)
 	return client
 }
@@ -288,4 +422,67 @@ func assertResponseIsError(t *testing.T, err error) {
 
 	// we sometimes get rate limited but (for this kind of test) it's actually okay
 	require.Truef(t, respErr.StatusCode == http.StatusUnauthorized || respErr.StatusCode == http.StatusTooManyRequests, "An acceptable error comes back (actual: %d)", respErr.StatusCode)
+}
+
+func getRequired(name string) string {
+	v := os.Getenv(name)
+
+	if v == "" {
+		panic(fmt.Sprintf("Env variable %s is missing", name))
+	}
+
+	return v
+}
+
+func skipNowIfThrottled(t *testing.T, err error) {
+	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
+		t.Skipf("OpenAI resource overloaded, skipping this test")
+	}
+}
+
+type mimeTypeRecordingPolicy struct{}
+
+// Do changes out the boundary for a multipart message. This makes it simpler to write
+// recordings.
+func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		// this is strictly to make the IDs in the multipart body stable for test recordings.
+		return req.Next()
+	}
+
+	// we'll fix up the multipart to make it more predictable for test recordings.
+	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
+	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
+
+	if err != nil || mediaType != "multipart/form-data" {
+		// we'll just assume our policy doesn't apply here.
+		return req.Next()
+	}
+
+	origBoundary := params["boundary"]
+
+	if origBoundary == "" {
+		return nil, errors.New("Invalid use of this policy - no boundary was passed as part of the multipart mime type")
+	}
+
+	params["boundary"] = "boundary-for-recordings"
+
+	// now let's update the body itself - we'll just do a simple string replacement. The entire purpose of the boundary string is to provide a
+	// separator, which is distinct from the content.
+	body := req.Body()
+	defer body.Close()
+
+	origBody, err := io.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	newBody := bytes.ReplaceAll(origBody, []byte(origBoundary), []byte("boundary-for-recordings"))
+
+	if err := req.SetBody(streaming.NopCloser(bytes.NewReader(newBody)), mime.FormatMediaType(mediaType, params)); err != nil {
+		return nil, err
+	}
+
+	return req.Next()
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolList.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 		// 			Properties: &armbatch.PoolProperties{
 		// 				AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-		// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 				ApplicationLicenses: []*string{
 		// 					to.Ptr("app-license0"),
 		// 					to.Ptr("app-license1")},
@@ -69,7 +69,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 							Visibility: []*armbatch.CertificateVisibility{
 		// 								to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
 		// 						}},
-		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 						CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 						CurrentDedicatedNodes: to.Ptr[int32](0),
 		// 						CurrentLowPriorityNodes: to.Ptr[int32](0),
 		// 						DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -79,7 +79,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 							},
 		// 						},
 		// 						InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-		// 						LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 						LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 						Metadata: []*armbatch.MetadataItem{
 		// 							{
 		// 								Name: to.Ptr("metadata-1"),
@@ -118,7 +118,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 									SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 		// 								},
 		// 								ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-		// 								ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 								ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 								ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 		// 									Errors: []*armbatch.ResizeError{
 		// 										{
@@ -127,7 +127,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 		// 									}},
 		// 									NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 		// 									ResizeTimeout: to.Ptr("PT8M"),
-		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 									TargetDedicatedNodes: to.Ptr[int32](6),
 		// 									TargetLowPriorityNodes: to.Ptr[int32](28),
 		// 								},
@@ -180,7 +180,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolListWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolListWithFilter.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 		// 				AllocationState: to.Ptr(armbatch.AllocationStateSteady),
 		// 				CurrentDedicatedNodes: to.Ptr[int32](0),
 		// 				CurrentLowPriorityNodes: to.Ptr[int32](2),
-		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -228,14 +228,14 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 		// 				AllocationState: to.Ptr(armbatch.AllocationStateResizing),
 		// 				CurrentDedicatedNodes: to.Ptr[int32](4),
 		// 				CurrentLowPriorityNodes: to.Ptr[int32](0),
-		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-26T10:22:55.9407275Z"); return t}()),
+		// 				ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-26T10:22:55.940Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_SharedImageGallery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_SharedImageGallery.json
 func ExamplePoolClient_Create_createPoolCustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,8 +274,8 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -287,9 +287,9 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			FixedScale: &armbatch.FixedScaleSettings{
 	// 				TargetDedicatedNodes: to.Ptr[int32](0),
@@ -305,7 +305,7 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_CloudServiceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_CloudServiceConfiguration.json
 func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ApplicationLicenses: []*string{
 	// 			to.Ptr("app-license0"),
 	// 			to.Ptr("app-license1")},
@@ -440,7 +440,7 @@ func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	// 					Visibility: []*armbatch.CertificateVisibility{
 	// 						to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
 	// 				}},
-	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 				CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 				CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 				DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -450,7 +450,7 @@ func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	// 					},
 	// 				},
 	// 				InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 				Metadata: []*armbatch.MetadataItem{
 	// 					{
 	// 						Name: to.Ptr("metadata-1"),
@@ -470,7 +470,7 @@ func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	// 						SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 					},
 	// 					ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 					ScaleSettings: &armbatch.ScaleSettings{
 	// 						FixedScale: &armbatch.FixedScaleSettings{
 	// 							NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
@@ -519,7 +519,7 @@ func ExamplePoolClient_Create_createPoolFullCloudServiceConfiguration() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_VirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,8 +625,8 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -666,7 +666,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 				EndpointConfiguration: &armbatch.PoolEndpointConfiguration{
 	// 					InboundNatPools: []*armbatch.InboundNatPool{
@@ -696,7 +696,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 						},
 	// 					},
 	// 					ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 					ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 					ScaleSettings: &armbatch.ScaleSettings{
 	// 						AutoScale: &armbatch.AutoScaleSettings{
 	// 							EvaluationInterval: to.Ptr("PT5M"),
@@ -712,7 +712,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
 func ExamplePoolClient_Create_createPoolMinimalCloudServiceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -753,8 +753,8 @@ func ExamplePoolClient_Create_createPoolMinimalCloudServiceConfiguration() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -764,13 +764,13 @@ func ExamplePoolClient_Create_createPoolMinimalCloudServiceConfiguration() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](3),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -789,7 +789,7 @@ func ExamplePoolClient_Create_createPoolMinimalCloudServiceConfiguration() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,8 +837,8 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -853,9 +853,9 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			AutoScale: &armbatch.AutoScaleSettings{
 	// 				EvaluationInterval: to.Ptr("PT5M"),
@@ -871,7 +871,7 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_NoPublicIPAddresses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_NoPublicIPAddresses.json
 func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,8 +916,8 @@ func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -929,7 +929,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 			PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
 	// 				Provision: to.Ptr(armbatch.IPAddressProvisioningTypeNoPublicIPAddresses),
@@ -937,7 +937,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	// 			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			FixedScale: &armbatch.FixedScaleSettings{
 	// 				TargetDedicatedNodes: to.Ptr[int32](0),
@@ -953,7 +953,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIp() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_PublicIPs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_PublicIPs.json
 func ExamplePoolClient_Create_createPoolPublicIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,8 +1000,8 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1013,7 +1013,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 			PublicIPAddressConfiguration: &armbatch.PublicIPAddressConfiguration{
 	// 				IPAddressIDs: []*string{
@@ -1023,7 +1023,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 				SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
 	// 					TargetDedicatedNodes: to.Ptr[int32](0),
@@ -1039,7 +1039,207 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_UserAssignedIdentities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_ResourceTags.json
+func ExamplePoolClient_Create_createPoolResourceTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
+		Properties: &armbatch.PoolProperties{
+			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+					ImageReference: &armbatch.ImageReference{
+						Offer:     to.Ptr("UbuntuServer"),
+						Publisher: to.Ptr("Canonical"),
+						SKU:       to.Ptr("18_04-lts-gen2"),
+						Version:   to.Ptr("latest"),
+					},
+					NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
+				},
+			},
+			ResourceTags: map[string]*string{
+				"TagName1": to.Ptr("TagValue1"),
+				"TagName2": to.Ptr("TagValue2"),
+			},
+			ScaleSettings: &armbatch.ScaleSettings{
+				FixedScale: &armbatch.FixedScaleSettings{
+					TargetDedicatedNodes:   to.Ptr[int32](1),
+					TargetLowPriorityNodes: to.Ptr[int32](0),
+				},
+			},
+			VMSize: to.Ptr("Standard_d4s_v3"),
+		},
+	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("UbuntuServer"),
+	// 					Publisher: to.Ptr("Canonical"),
+	// 					SKU: to.Ptr("18_04-lts-gen2"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-27T07:33:13.062Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ResourceTags: map[string]*string{
+	// 			"TagName1": to.Ptr("TagValue1"),
+	// 			"TagName2": to.Ptr("TagValue2"),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_SecurityProfile.json
+func ExamplePoolClient_Create_createPoolSecurityProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
+		Properties: &armbatch.PoolProperties{
+			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+					ImageReference: &armbatch.ImageReference{
+						Offer:     to.Ptr("UbuntuServer"),
+						Publisher: to.Ptr("Canonical"),
+						SKU:       to.Ptr("18_04-lts-gen2"),
+						Version:   to.Ptr("latest"),
+					},
+					NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
+					SecurityProfile: &armbatch.SecurityProfile{
+						EncryptionAtHost: to.Ptr(true),
+						SecurityType:     to.Ptr("trustedLaunch"),
+						UefiSettings: &armbatch.UefiSettings{
+							VTpmEnabled: to.Ptr(false),
+						},
+					},
+				},
+			},
+			ScaleSettings: &armbatch.ScaleSettings{
+				FixedScale: &armbatch.FixedScaleSettings{
+					TargetDedicatedNodes:   to.Ptr[int32](1),
+					TargetLowPriorityNodes: to.Ptr[int32](0),
+				},
+			},
+			VMSize: to.Ptr("Standard_d4s_v3"),
+		},
+	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("UbuntuServer"),
+	// 					Publisher: to.Ptr("Canonical"),
+	// 					SKU: to.Ptr("18_04-lts-gen2"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
+	// 				SecurityProfile: &armbatch.SecurityProfile{
+	// 					EncryptionAtHost: to.Ptr(true),
+	// 					SecurityType: to.Ptr("trustedLaunch"),
+	// 					UefiSettings: &armbatch.UefiSettings{
+	// 						VTpmEnabled: to.Ptr(false),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_UserAssignedIdentities.json
 func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1107,8 +1307,8 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// 	},
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1123,9 +1323,9 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-01T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			AutoScale: &armbatch.AutoScaleSettings{
 	// 				EvaluationInterval: to.Ptr("PT5M"),
@@ -1141,7 +1341,7 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1202,8 +1402,8 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1230,9 +1430,9 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			AutoScale: &armbatch.AutoScaleSettings{
 	// 				EvaluationInterval: to.Ptr("PT5M"),
@@ -1249,7 +1449,212 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_AcceleratedNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
+func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOsDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
+		Properties: &armbatch.PoolProperties{
+			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+					ImageReference: &armbatch.ImageReference{
+						Offer:     to.Ptr("windowsserver"),
+						Publisher: to.Ptr("microsoftwindowsserver"),
+						SKU:       to.Ptr("2022-datacenter-smalldisk"),
+					},
+					NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+					OSDisk: &armbatch.OSDisk{
+						Caching:    to.Ptr(armbatch.CachingTypeReadWrite),
+						DiskSizeGB: to.Ptr[int32](100),
+						ManagedDisk: &armbatch.ManagedDisk{
+							StorageAccountType: to.Ptr(armbatch.StorageAccountTypeStandardSSDLRS),
+						},
+						WriteAcceleratorEnabled: to.Ptr(false),
+					},
+				},
+			},
+			ScaleSettings: &armbatch.ScaleSettings{
+				FixedScale: &armbatch.FixedScaleSettings{
+					TargetDedicatedNodes:   to.Ptr[int32](1),
+					TargetLowPriorityNodes: to.Ptr[int32](0),
+				},
+			},
+			VMSize: to.Ptr("Standard_d2s_v3"),
+		},
+	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB51F396992B8D\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("windowsserver"),
+	// 					Publisher: to.Ptr("microsoftwindowsserver"),
+	// 					SKU: to.Ptr("2022-datacenter-smalldisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+	// 				OSDisk: &armbatch.OSDisk{
+	// 					Caching: to.Ptr(armbatch.CachingTypeReadWrite),
+	// 					DiskSizeGB: to.Ptr[int32](100),
+	// 					ManagedDisk: &armbatch.ManagedDisk{
+	// 						StorageAccountType: to.Ptr(armbatch.StorageAccountTypeStandardSSDLRS),
+	// 					},
+	// 					WriteAcceleratorEnabled: to.Ptr(false),
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D2_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
+func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifactReference() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Create(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
+		Properties: &armbatch.PoolProperties{
+			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+				VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+					ImageReference: &armbatch.ImageReference{
+						Offer:     to.Ptr("WindowsServer"),
+						Publisher: to.Ptr("MicrosoftWindowsServer"),
+						SKU:       to.Ptr("2019-datacenter-smalldisk"),
+						Version:   to.Ptr("latest"),
+					},
+					NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+					ServiceArtifactReference: &armbatch.ServiceArtifactReference{
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/vmArtifactsProfile"),
+					},
+					WindowsConfiguration: &armbatch.WindowsConfiguration{
+						EnableAutomaticUpdates: to.Ptr(false),
+					},
+				},
+			},
+			ScaleSettings: &armbatch.ScaleSettings{
+				FixedScale: &armbatch.FixedScaleSettings{
+					TargetDedicatedNodes:   to.Ptr[int32](2),
+					TargetLowPriorityNodes: to.Ptr[int32](0),
+				},
+			},
+			VMSize: to.Ptr("Standard_d4s_v3"),
+		},
+	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("mypool41"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB51F396992B8D\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					SKU: to.Ptr("2019-datacenter-smalldisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+	// 				ServiceArtifactReference: &armbatch.ServiceArtifactReference{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/vmArtifactsProfile"),
+	// 				},
+	// 				WindowsConfiguration: &armbatch.WindowsConfiguration{
+	// 					EnableAutomaticUpdates: to.Ptr(false),
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](2),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](2),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_AcceleratedNetworking.json
 func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1301,8 +1706,8 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T03:00:34.0646502Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T03:00:34.064Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.859Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
@@ -1318,18 +1723,18 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.859Z"); return t}()),
 	// 		NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 			DynamicVNetAssignmentScope: to.Ptr(armbatch.DynamicVNetAssignmentScopeNone),
 	// 			EnableAcceleratedNetworking: to.Ptr(true),
 	// 			SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.859Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.8592226Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-27T02:59:41.859Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](1),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -1348,7 +1753,7 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_EnableAutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_EnableAutoScale.json
 func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1381,12 +1786,12 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		AutoScaleRun: &armbatch.AutoScaleRun{
-	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 		},
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1396,13 +1801,13 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](34),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -1420,7 +1825,7 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_OtherProperties.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_OtherProperties.json
 func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1468,7 +1873,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		ApplicationPackages: []*armbatch.ApplicationPackageReference{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
@@ -1478,7 +1883,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 				Version: to.Ptr("1.0"),
 	// 		}},
 	// 		AutoScaleRun: &armbatch.AutoScaleRun{
-	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 		},
 	// 		Certificates: []*armbatch.CertificateReference{
@@ -1491,7 +1896,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 					to.Ptr(armbatch.CertificateVisibilityTask),
 	// 					to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
 	// 			}},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 			CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 			DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1501,18 +1906,18 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 				},
 	// 			},
 	// 			InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			Metadata: []*armbatch.MetadataItem{
 	// 				{
 	// 					Name: to.Ptr("key1"),
 	// 					Value: to.Ptr("value1"),
 	// 			}},
 	// 			ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 				NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 				ResizeTimeout: to.Ptr("PT8M"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 				TargetDedicatedNodes: to.Ptr[int32](8),
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
@@ -1533,7 +1938,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_RemoveStartTask.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_RemoveStartTask.json
 func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1562,12 +1967,12 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		AutoScaleRun: &armbatch.AutoScaleRun{
-	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 		},
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1577,13 +1982,13 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](34),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -1601,7 +2006,7 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_ResizePool.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_ResizePool.json
 func ExamplePoolClient_Update_updatePoolResizePool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1637,12 +2042,12 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		AutoScaleRun: &armbatch.AutoScaleRun{
-	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			EvaluationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			Results: to.Ptr("$TargetDedicatedNodes=34;NodeDeallocationOption=requeue"),
 	// 		},
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](12),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1652,13 +2057,13 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 			ResizeTimeout: to.Ptr("PT8M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-29T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](8),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -1678,7 +2083,7 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolDelete.json
 func ExamplePoolClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1699,7 +2104,7 @@ func ExamplePoolClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet.json
 func ExamplePoolClient_Get_getPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1724,7 +2129,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ApplicationLicenses: []*string{
 	// 			to.Ptr("app-license0"),
 	// 			to.Ptr("app-license1")},
@@ -1741,7 +2146,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 					Visibility: []*armbatch.CertificateVisibility{
 	// 						to.Ptr(armbatch.CertificateVisibilityRemoteUser)},
 	// 				}},
-	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 				CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 				CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 				DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -1751,7 +2156,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 					},
 	// 				},
 	// 				InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 				Metadata: []*armbatch.MetadataItem{
 	// 					{
 	// 						Name: to.Ptr("metadata-1"),
@@ -1791,11 +2196,11 @@ func ExamplePoolClient_Get_getPool() {
 	// 							SubnetID: to.Ptr("/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123"),
 	// 						},
 	// 						ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 						ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 						ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 						ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 							NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 							ResizeTimeout: to.Ptr("PT8M"),
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 							TargetDedicatedNodes: to.Ptr[int32](6),
 	// 							TargetLowPriorityNodes: to.Ptr[int32](28),
 	// 						},
@@ -1846,7 +2251,7 @@ func ExamplePoolClient_Get_getPool() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_AcceleratedNetworking.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_AcceleratedNetworking.json
 func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1871,8 +2276,8 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:33:40.82831Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:33:40.828Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.869Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](1),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
@@ -1888,17 +2293,17 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.869Z"); return t}()),
 	// 		NetworkConfiguration: &armbatch.NetworkConfiguration{
 	// 			DynamicVNetAssignmentScope: to.Ptr(armbatch.DynamicVNetAssignmentScopeNone),
 	// 			EnableAcceleratedNetworking: to.Ptr(true),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.869Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT15M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.8696419Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-28T02:32:32.869Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](1),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{
@@ -1917,7 +2322,81 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_SecurityProfile.json
+func ExamplePoolClient_Get_getPoolSecurityProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Get(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:04:57.341Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](1),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("UbuntuServer"),
+	// 					Publisher: to.Ptr("Canonical"),
+	// 					SKU: to.Ptr("18_04-lts-gen2"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.ubuntu 18.04"),
+	// 				SecurityProfile: &armbatch.SecurityProfile{
+	// 					EncryptionAtHost: to.Ptr(true),
+	// 					SecurityType: to.Ptr("trustedLaunch"),
+	// 					UefiSettings: &armbatch.UefiSettings{
+	// 						VTpmEnabled: to.Ptr(false),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-14T07:03:58.323Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1942,8 +2421,8 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
@@ -1971,13 +2450,13 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateEnabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
 	// 			ResizeTimeout: to.Ptr("PT8M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](6),
 	// 			TargetLowPriorityNodes: to.Ptr[int32](28),
 	// 		},
@@ -1998,7 +2477,155 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDisableAutoScale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
+func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOsDisk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Get(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:13:22.488Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](1),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("windowsserver"),
+	// 					Publisher: to.Ptr("microsoftwindowsserver"),
+	// 					SKU: to.Ptr("2022-datacenter-smalldisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+	// 				OSDisk: &armbatch.OSDisk{
+	// 					Caching: to.Ptr(armbatch.CachingTypeReadWrite),
+	// 					DiskSizeGB: to.Ptr[int32](100),
+	// 					ManagedDisk: &armbatch.ManagedDisk{
+	// 						StorageAccountType: to.Ptr(armbatch.StorageAccountTypeStandardSSDLRS),
+	// 					},
+	// 					WriteAcceleratorEnabled: to.Ptr(false),
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-24T02:12:27.752Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](1),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](1),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D2_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
+func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactReference() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolClient().Get(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Pool = armbatch.Pool{
+	// 	Name: to.Ptr("testpool"),
+	// 	Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
+	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
+	// 	Properties: &armbatch.PoolProperties{
+	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:45:42.088Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		CurrentDedicatedNodes: to.Ptr[int32](2),
+	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
+	// 		CurrentNodeCommunicationMode: to.Ptr(armbatch.NodeCommunicationModeClassic),
+	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
+	// 			VirtualMachineConfiguration: &armbatch.VirtualMachineConfiguration{
+	// 				ImageReference: &armbatch.ImageReference{
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					SKU: to.Ptr("2019-datacenter-smalldisk"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				NodeAgentSKUID: to.Ptr("batch.node.windows amd64"),
+	// 				ServiceArtifactReference: &armbatch.ServiceArtifactReference{
+	// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/vmArtifactsProfile"),
+	// 				},
+	// 				WindowsConfiguration: &armbatch.WindowsConfiguration{
+	// 					EnableAutomaticUpdates: to.Ptr(false),
+	// 				},
+	// 			},
+	// 		},
+	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
+	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
+	// 			ResizeTimeout: to.Ptr("PT15M"),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-11T07:44:44.858Z"); return t}()),
+	// 			TargetDedicatedNodes: to.Ptr[int32](2),
+	// 		},
+	// 		ScaleSettings: &armbatch.ScaleSettings{
+	// 			FixedScale: &armbatch.FixedScaleSettings{
+	// 				ResizeTimeout: to.Ptr("PT15M"),
+	// 				TargetDedicatedNodes: to.Ptr[int32](2),
+	// 				TargetLowPriorityNodes: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		TaskSchedulingPolicy: &armbatch.TaskSchedulingPolicy{
+	// 			NodeFillType: to.Ptr(armbatch.ComputeNodeFillTypeSpread),
+	// 		},
+	// 		TaskSlotsPerNode: to.Ptr[int32](1),
+	// 		VMSize: to.Ptr("STANDARD_D4S_V3"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolDisableAutoScale.json
 func ExamplePoolClient_DisableAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2023,8 +2650,8 @@ func ExamplePoolClient_DisableAutoScale() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateResizing),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2039,9 +2666,9 @@ func ExamplePoolClient_DisableAutoScale() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ScaleSettings: &armbatch.ScaleSettings{
 	// 			FixedScale: &armbatch.FixedScaleSettings{
 	// 				ResizeTimeout: to.Ptr("PT15M"),
@@ -2058,7 +2685,7 @@ func ExamplePoolClient_DisableAutoScale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolStopResize.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolStopResize.json
 func ExamplePoolClient_StopResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2083,8 +2710,8 @@ func ExamplePoolClient_StopResize() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 	Properties: &armbatch.PoolProperties{
 	// 		AllocationState: to.Ptr(armbatch.AllocationStateSteady),
-	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
+	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		CurrentDedicatedNodes: to.Ptr[int32](0),
 	// 		CurrentLowPriorityNodes: to.Ptr[int32](0),
 	// 		DeploymentConfiguration: &armbatch.DeploymentConfiguration{
@@ -2099,13 +2726,13 @@ func ExamplePoolClient_StopResize() {
 	// 			},
 	// 		},
 	// 		InterNodeCommunication: to.Ptr(armbatch.InterNodeCommunicationStateDisabled),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armbatch.PoolProvisioningStateSucceeded),
-	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 		ProvisioningStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 		ResizeOperationStatus: &armbatch.ResizeOperationStatus{
 	// 			NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionRequeue),
 	// 			ResizeTimeout: to.Ptr("PT10M"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.9407275Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-28T10:22:55.940Z"); return t}()),
 	// 			TargetDedicatedNodes: to.Ptr[int32](1),
 	// 		},
 	// 		ScaleSettings: &armbatch.ScaleSettings{

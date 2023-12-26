@@ -7,6 +7,6 @@
 package azsecrets
 
 const (
-	moduleName = "azsecrets"
-	version    = "v1.0.2"
+	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
+	version    = "v1.1.0-beta.2"
 )

@@ -23,11 +23,11 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,42 +37,80 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAgentPoolsClient creates a new instance of AgentPoolsClient.
 func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	subClient, _ := NewAgentPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewMachinesClient creates a new instance of MachinesClient.
+func (c *ClientFactory) NewMachinesClient() *MachinesClient {
+	subClient, _ := NewMachinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient.
 func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient {
 	subClient, _ := NewMaintenanceConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewManagedClusterSnapshotsClient creates a new instance of ManagedClusterSnapshotsClient.
+func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
+	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewManagedClustersClient creates a new instance of ManagedClustersClient.
 func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
 	subClient, _ := NewManagedClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationStatusResultClient creates a new instance of OperationStatusResultClient.
+func (c *ClientFactory) NewOperationStatusResultClient() *OperationStatusResultClient {
+	subClient, _ := NewOperationStatusResultClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
 func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
 	subClient, _ := NewPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewResolvePrivateLinkServiceIDClient creates a new instance of ResolvePrivateLinkServiceIDClient.
 func (c *ClientFactory) NewResolvePrivateLinkServiceIDClient() *ResolvePrivateLinkServiceIDClient {
 	subClient, _ := NewResolvePrivateLinkServiceIDClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	subClient, _ := NewSnapshotsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewTrustedAccessRoleBindingsClient creates a new instance of TrustedAccessRoleBindingsClient.
+func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient {
+	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient.
+func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
+	subClient, _ := NewTrustedAccessRolesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

@@ -38,7 +38,12 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	azcoreClient, err := azcore.NewClient("rbac.Client", ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(ainternal.ModuleName, ainternal.Version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+		Tracing: runtime.TracingOptions{
+			Namespace: "Microsoft.KeyVault",
+		},
+	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

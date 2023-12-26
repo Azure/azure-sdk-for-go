@@ -32,7 +32,7 @@ type FleetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetsClient, error) {
-	cl, err := arm.NewClient(moduleName+".FleetsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreateOrUpdate - Creates or updates a Fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - resource - Resource create parameters.
@@ -60,19 +60,26 @@ func (client *FleetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 func (client *FleetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, resource Fleet, options *FleetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, fleetName, resource, options)
 	if err != nil {
 		return nil, err
@@ -108,7 +115,7 @@ func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -126,7 +133,7 @@ func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 // BeginDelete - Delete a Fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetsClientBeginDeleteOptions contains the optional parameters for the FleetsClient.BeginDelete method.
@@ -138,19 +145,26 @@ func (client *FleetsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Delete a Fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 func (client *FleetsClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return nil, err
@@ -186,7 +200,7 @@ func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -198,12 +212,16 @@ func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // Get - Gets a Fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetsClientGetOptions contains the optional parameters for the FleetsClient.Get method.
 func (client *FleetsClient) Get(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientGetOptions) (FleetsClientGetResponse, error) {
 	var err error
+	const operationName = "FleetsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return FleetsClientGetResponse{}, err
@@ -240,7 +258,7 @@ func (client *FleetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +275,7 @@ func (client *FleetsClient) getHandleResponse(resp *http.Response) (FleetsClient
 
 // NewListByResourceGroupPager - Lists fleets in the specified subscription and resource group.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FleetsClientListByResourceGroupOptions contains the optional parameters for the FleetsClient.NewListByResourceGroupPager
 //     method.
@@ -267,25 +285,20 @@ func (client *FleetsClient) NewListByResourceGroupPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FleetsClientListByResourceGroupResponse) (FleetsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return FleetsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FleetsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FleetsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -305,7 +318,7 @@ func (client *FleetsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +335,7 @@ func (client *FleetsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - Lists fleets in the specified subscription.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - options - FleetsClientListBySubscriptionOptions contains the optional parameters for the FleetsClient.NewListBySubscriptionPager
 //     method.
 func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientListBySubscriptionOptions) *runtime.Pager[FleetsClientListBySubscriptionResponse] {
@@ -331,25 +344,20 @@ func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientList
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FleetsClientListBySubscriptionResponse) (FleetsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return FleetsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FleetsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FleetsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -365,7 +373,7 @@ func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,12 +391,16 @@ func (client *FleetsClient) listBySubscriptionHandleResponse(resp *http.Response
 // ListCredentials - Lists the user credentials of a Fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetsClientListCredentialsOptions contains the optional parameters for the FleetsClient.ListCredentials method.
 func (client *FleetsClient) ListCredentials(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientListCredentialsOptions) (FleetsClientListCredentialsResponse, error) {
 	var err error
+	const operationName = "FleetsClient.ListCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, fleetName, options)
 	if err != nil {
 		return FleetsClientListCredentialsResponse{}, err
@@ -425,7 +437,7 @@ func (client *FleetsClient) listCredentialsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -443,7 +455,7 @@ func (client *FleetsClient) listCredentialsHandleResponse(resp *http.Response) (
 // BeginUpdate - Update a Fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - properties - The resource properties to be updated.
@@ -456,19 +468,26 @@ func (client *FleetsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FleetsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Update - Update a Fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-15-preview
+// Generated from API version 2023-10-15
 func (client *FleetsClient) update(ctx context.Context, resourceGroupName string, fleetName string, properties FleetPatch, options *FleetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "FleetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, properties, options)
 	if err != nil {
 		return nil, err
@@ -504,7 +523,7 @@ func (client *FleetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-15-preview")
+	reqQP.Set("api-version", "2023-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

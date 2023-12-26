@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -57,9 +58,9 @@ func TestSASServiceClient(t *testing.T) {
 	sasUrl, err := serviceClient.GetAccountSASURL(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
-	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
+	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl, tracing.Provider{})
 	require.NoError(t, err)
 	defer require.NoError(t, recording.Stop(t, nil))
 
@@ -104,9 +105,9 @@ func TestSASClient(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
-	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
+	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl, tracing.Provider{})
 	require.NoError(t, err)
 	defer require.NoError(t, recording.Stop(t, nil))
 
@@ -159,9 +160,9 @@ func TestSASClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl, tracing.Provider{})
 	require.NoError(t, err)
 	defer require.NoError(t, recording.Stop(t, nil))
 
@@ -229,9 +230,9 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASURL(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.Start(t, pathToPackage, nil)
+	err = recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl, tracing.Provider{})
 	require.NoError(t, err)
 	defer require.NoError(t, recording.Stop(t, nil))
 

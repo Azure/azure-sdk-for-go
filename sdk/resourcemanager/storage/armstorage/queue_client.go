@@ -32,7 +32,7 @@ type QueueClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueueClient, error) {
-	cl, err := arm.NewClient(moduleName+".QueueClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewQueueClient(subscriptionID string, credential azcore.TokenCredential, op
 //   - options - QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
 func (client *QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue, options *QueueClientCreateOptions) (QueueClientCreateResponse, error) {
 	var err error
+	const operationName = "QueueClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return QueueClientCreateResponse{}, err
@@ -128,6 +132,10 @@ func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClien
 //   - options - QueueClientDeleteOptions contains the optional parameters for the QueueClient.Delete method.
 func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueClientDeleteOptions) (QueueClientDeleteResponse, error) {
 	var err error
+	const operationName = "QueueClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return QueueClientDeleteResponse{}, err
@@ -186,6 +194,10 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 //   - options - QueueClientGetOptions contains the optional parameters for the QueueClient.Get method.
 func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueClientGetOptions) (QueueClientGetResponse, error) {
 	var err error
+	const operationName = "QueueClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return QueueClientGetResponse{}, err
@@ -254,25 +266,20 @@ func (client *QueueClient) NewListPager(resourceGroupName string, accountName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *QueueClientListResponse) (QueueClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "QueueClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
 			if err != nil {
 				return QueueClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return QueueClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return QueueClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -331,6 +338,10 @@ func (client *QueueClient) listHandleResponse(resp *http.Response) (QueueClientL
 //   - options - QueueClientUpdateOptions contains the optional parameters for the QueueClient.Update method.
 func (client *QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue Queue, options *QueueClientUpdateOptions) (QueueClientUpdateResponse, error) {
 	var err error
+	const operationName = "QueueClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return QueueClientUpdateResponse{}, err

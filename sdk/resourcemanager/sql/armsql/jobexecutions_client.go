@@ -34,7 +34,7 @@ type JobExecutionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobExecutionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobExecutionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCreden
 //   - options - JobExecutionsClientCancelOptions contains the optional parameters for the JobExecutionsClient.Cancel method.
 func (client *JobExecutionsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientCancelOptions) (JobExecutionsClientCancelResponse, error) {
 	var err error
+	const operationName = "JobExecutionsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
 	if err != nil {
 		return JobExecutionsClientCancelResponse{}, err
@@ -92,6 +96,9 @@ func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -124,10 +131,14 @@ func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[JobExecutionsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobExecutionsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -137,6 +148,10 @@ func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGrou
 // Generated from API version 2020-11-01-preview
 func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobExecutionsClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
 	if err != nil {
 		return nil, err
@@ -204,10 +219,14 @@ func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[JobExecutionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobExecutionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[JobExecutionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobExecutionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -217,6 +236,10 @@ func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2020-11-01-preview
 func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "JobExecutionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
 	if err != nil {
 		return nil, err
@@ -251,6 +274,9 @@ func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -280,6 +306,10 @@ func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Conte
 //   - options - JobExecutionsClientGetOptions contains the optional parameters for the JobExecutionsClient.Get method.
 func (client *JobExecutionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientGetOptions) (JobExecutionsClientGetResponse, error) {
 	var err error
+	const operationName = "JobExecutionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
 	if err != nil {
 		return JobExecutionsClientGetResponse{}, err
@@ -315,6 +345,9 @@ func (client *JobExecutionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter jobName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -355,25 +388,20 @@ func (client *JobExecutionsClient) NewListByAgentPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobExecutionsClientListByAgentResponse) (JobExecutionsClientListByAgentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobExecutionsClient.NewListByAgentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			}, nil)
 			if err != nil {
 				return JobExecutionsClientListByAgentResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobExecutionsClientListByAgentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobExecutionsClientListByAgentResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAgentHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -453,25 +481,20 @@ func (client *JobExecutionsClient) NewListByJobPager(resourceGroupName string, s
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobExecutionsClientListByJobResponse) (JobExecutionsClientListByJobResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobExecutionsClient.NewListByJobPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+			}, nil)
 			if err != nil {
 				return JobExecutionsClientListByJobResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobExecutionsClientListByJobResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobExecutionsClientListByJobResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByJobHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

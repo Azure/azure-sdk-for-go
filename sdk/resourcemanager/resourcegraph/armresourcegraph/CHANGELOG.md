@@ -1,5 +1,17 @@
 # Release History
 
+## 0.9.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 0.8.2 (2023-10-09)
+
+### Other Changes
+
+- Updated to latest `azcore` beta.
+
 ## 0.8.1 (2023-07-19)
 
 ### Bug Fixes

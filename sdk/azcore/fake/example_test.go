@@ -10,7 +10,6 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 )
 
@@ -30,14 +29,8 @@ type WidgetListResponse struct {
 	Widgets []Widget
 }
 
-func ExampleNewTokenCredential() {
-	// create a fake azcore.TokenCredential
-	// the fake is used as the client credential during testing with fakes.
-	var _ azcore.TokenCredential = fake.NewTokenCredential()
-}
-
 func ExampleTokenCredential_SetError() {
-	cred := fake.NewTokenCredential()
+	cred := fake.TokenCredential{}
 
 	// set an error to be returned during authentication
 	cred.SetError(errors.New("failed to authenticate"))

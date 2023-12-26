@@ -1,5 +1,55 @@
 # Release History
 
+## 5.0.0 (2023-12-22)
+### Breaking Changes
+
+- Type of `VirtualApplianceConnectionProperties.RoutingConfiguration` has been changed from `*RoutingConfigurationNfv` to `*RoutingConfiguration`
+- Struct `PropagatedRouteTableNfv` has been removed
+- Struct `RoutingConfigurationNfv` has been removed
+- Struct `RoutingConfigurationNfvSubResource` has been removed
+
+### Features Added
+
+- New value `ActionTypeJSChallenge` added to enum type `ActionType`
+- New value `BastionHostSKUNameDeveloper` added to enum type `BastionHostSKUName`
+- New value `FirewallPolicyIDPSSignatureDirectionFour`, `FirewallPolicyIDPSSignatureDirectionThree` added to enum type `FirewallPolicyIDPSSignatureDirection`
+- New value `VirtualNetworkGatewaySKUNameErGwScale` added to enum type `VirtualNetworkGatewaySKUName`
+- New value `VirtualNetworkGatewaySKUTierErGwScale` added to enum type `VirtualNetworkGatewaySKUTier`
+- New value `WebApplicationFirewallActionJSChallenge` added to enum type `WebApplicationFirewallAction`
+- New enum type `FirewallPolicyIntrusionDetectionProfileType` with values `FirewallPolicyIntrusionDetectionProfileTypeAdvanced`, `FirewallPolicyIntrusionDetectionProfileTypeBasic`, `FirewallPolicyIntrusionDetectionProfileTypeExtended`, `FirewallPolicyIntrusionDetectionProfileTypeStandard`
+- New function `*ManagementClient.BeginDeleteBastionShareableLinkByToken(context.Context, string, string, BastionShareableLinkTokenListRequest, *ManagementClientBeginDeleteBastionShareableLinkByTokenOptions) (*runtime.Poller[ManagementClientDeleteBastionShareableLinkByTokenResponse], error)`
+- New struct `BastionShareableLinkTokenListRequest`
+- New struct `InternetIngressPublicIPsProperties`
+- New field `HostNames` in struct `ApplicationGatewayListenerPropertiesFormat`
+- New field `Profile` in struct `FirewallPolicyIntrusionDetection`
+- New field `InternetIngressPublicIPs` in struct `VirtualAppliancePropertiesFormat`
+
+
+## 4.3.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 4.3.0-beta.1 (2023-10-09)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+## 4.2.0 (2023-09-22)
+### Features Added
+
+- New struct `BastionHostPropertiesFormatNetworkACLs`
+- New struct `IPRule`
+- New struct `VirtualNetworkGatewayAutoScaleBounds`
+- New struct `VirtualNetworkGatewayAutoScaleConfiguration`
+- New field `NetworkACLs`, `VirtualNetwork` in struct `BastionHostPropertiesFormat`
+- New field `Size` in struct `FirewallPolicyPropertiesFormat`
+- New field `Size` in struct `FirewallPolicyRuleCollectionGroupProperties`
+- New field `DefaultOutboundAccess` in struct `SubnetPropertiesFormat`
+- New field `AutoScaleConfiguration` in struct `VirtualNetworkGatewayPropertiesFormat`
+
+
 ## 4.1.0 (2023-08-25)
 ### Features Added
 

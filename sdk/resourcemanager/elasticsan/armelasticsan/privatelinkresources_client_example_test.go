@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
 func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesListByElasticSanMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,29 +38,29 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	// res.PrivateLinkResourceListResult = armelasticsan.PrivateLinkResourceListResult{
 	// 	Value: []*armelasticsan.PrivateLinkResource{
 	// 		{
-	// 			Name: to.Ptr("{privateEndpointConnectionName}"),
-	// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
-	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+	// 			Name: to.Ptr("ggbyptukibs"),
+	// 			Type: to.Ptr("qrfsowhtanlj"),
+	// 			ID: to.Ptr("iidc"),
 	// 			SystemData: &armelasticsan.SystemData{
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 				CreatedBy: to.Ptr("zloujisrarsox"),
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 				CreatedBy: to.Ptr("bgurjvijz"),
 	// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 				LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
+	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 				LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 			},
 	// 			Properties: &armelasticsan.PrivateLinkResourceProperties{
-	// 				GroupID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}"),
+	// 				GroupID: to.Ptr("mbouakfumvbeqnevmgxpk"),
 	// 				RequiredMembers: []*string{
-	// 					to.Ptr("{volumeGroupName}")},
+	// 					to.Ptr("wujfilzifgumbvxbdhazmzf")},
 	// 					RequiredZoneNames: []*string{
-	// 						to.Ptr("lsknuvjjtgsrocmoq")},
+	// 						to.Ptr("hzxhgoqxxiaf")},
 	// 					},
 	// 			}},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
 func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesListByElasticSanMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,26 +79,5 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PrivateLinkResourceListResult = armelasticsan.PrivateLinkResourceListResult{
-	// 	Value: []*armelasticsan.PrivateLinkResource{
-	// 		{
-	// 			Name: to.Ptr("{privateEndpointConnectionName}"),
-	// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
-	// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
-	// 			SystemData: &armelasticsan.SystemData{
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 				CreatedBy: to.Ptr("zloujisrarsox"),
-	// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-04T05:52:15.371Z"); return t}()),
-	// 				LastModifiedBy: to.Ptr("lmdztjjcmdfzam"),
-	// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			},
-	// 			Properties: &armelasticsan.PrivateLinkResourceProperties{
-	// 				GroupID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}"),
-	// 				RequiredMembers: []*string{
-	// 					to.Ptr("{volumeGroupName}")},
-	// 					RequiredZoneNames: []*string{
-	// 						to.Ptr("lsknuvjjtgsrocmoq")},
-	// 					},
-	// 			}},
-	// 		}
+	// }
 }

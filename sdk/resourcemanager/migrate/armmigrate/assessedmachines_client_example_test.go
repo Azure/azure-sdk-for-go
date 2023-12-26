@@ -50,7 +50,7 @@ func ExampleAssessedMachinesClient_NewListByAssessmentPager() {
 		// 				Description: to.Ptr("Microsoft Azure Migration Image on Windows Server 2016"),
 		// 				BootType: to.Ptr(armmigrate.MachineBootTypeBIOS),
 		// 				ConfidenceRatingInPercentage: to.Ptr[float64](0),
-		// 				CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+		// 				CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 		// 				DatacenterMachineArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourcegroups/abgoyal-westeurope/providers/microsoft.offazure/vmwaresites/portalvcenterbc2fsite/machines/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3_52e1f68c-bea5-19ff-d0ad-6a94b79a286f"),
 		// 				DatacenterManagementServerArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourceGroups/abgoyal-westEurope/providers/Microsoft.OffAzure/VMwareSites/PortalvCenterbc2fsite/vcenters/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3"),
 		// 				DatacenterManagementServerName: to.Ptr("IDCLAB-A360.fareast.corp.microsoft.com"),
@@ -105,7 +105,7 @@ func ExampleAssessedMachinesClient_NewListByAssessmentPager() {
 		// 				Suitability: to.Ptr(armmigrate.CloudSuitabilitySuitable),
 		// 				SuitabilityDetail: to.Ptr(armmigrate.AzureVMSuitabilityDetail("PercentageOfCoresUtilizedMissing, PercentageOfMemoryUtilizedMissing")),
 		// 				SuitabilityExplanation: to.Ptr(armmigrate.AzureVMSuitabilityExplanationNotApplicable),
-		// 				UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+		// 				UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -117,7 +117,7 @@ func ExampleAssessedMachinesClient_NewListByAssessmentPager() {
 		// 				Description: to.Ptr("Microsoft Azure Migration Image on Windows Server 2016"),
 		// 				BootType: to.Ptr(armmigrate.MachineBootTypeBIOS),
 		// 				ConfidenceRatingInPercentage: to.Ptr[float64](0),
-		// 				CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+		// 				CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 		// 				DatacenterMachineArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourcegroups/abgoyal-westeurope/providers/microsoft.offazure/vmwaresites/portalvcenterbc2fsite/machines/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3_50296915-8b4b-5c82-79a1-adf3966acb6b"),
 		// 				DatacenterManagementServerArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourceGroups/abgoyal-westEurope/providers/Microsoft.OffAzure/VMwareSites/PortalvCenterbc2fsite/vcenters/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3"),
 		// 				DatacenterManagementServerName: to.Ptr("IDCLAB-A360.fareast.corp.microsoft.com"),
@@ -172,7 +172,7 @@ func ExampleAssessedMachinesClient_NewListByAssessmentPager() {
 		// 				Suitability: to.Ptr(armmigrate.CloudSuitabilitySuitable),
 		// 				SuitabilityDetail: to.Ptr(armmigrate.AzureVMSuitabilityDetail("PercentageOfCoresUtilizedMissing, PercentageOfMemoryUtilizedMissing")),
 		// 				SuitabilityExplanation: to.Ptr(armmigrate.AzureVMSuitabilityExplanationNotApplicable),
-		// 				UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+		// 				UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -206,7 +206,7 @@ func ExampleAssessedMachinesClient_Get() {
 	// 		Description: to.Ptr("Microsoft Azure Migration Image on Windows Server 2016"),
 	// 		BootType: to.Ptr(armmigrate.MachineBootTypeBIOS),
 	// 		ConfidenceRatingInPercentage: to.Ptr[float64](0),
-	// 		CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+	// 		CreatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 	// 		DatacenterMachineArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourcegroups/abgoyal-westeurope/providers/microsoft.offazure/vmwaresites/portalvcenterbc2fsite/machines/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3_52e1f68c-bea5-19ff-d0ad-6a94b79a286f"),
 	// 		DatacenterManagementServerArmID: to.Ptr("/subscriptions/6393a73f-8d55-47ef-b6dd-179b3e0c7910/resourceGroups/abgoyal-westEurope/providers/Microsoft.OffAzure/VMwareSites/PortalvCenterbc2fsite/vcenters/idclab-a360-fareast-corp-micros-86617dcf-effe-59ad-8c3a-cdd3ea7300d3"),
 	// 		DatacenterManagementServerName: to.Ptr("IDCLAB-A360.fareast.corp.microsoft.com"),
@@ -261,7 +261,7 @@ func ExampleAssessedMachinesClient_Get() {
 	// 		Suitability: to.Ptr(armmigrate.CloudSuitabilitySuitable),
 	// 		SuitabilityDetail: to.Ptr(armmigrate.AzureVMSuitabilityDetail("PercentageOfCoresUtilizedMissing, PercentageOfMemoryUtilizedMissing")),
 	// 		SuitabilityExplanation: to.Ptr(armmigrate.AzureVMSuitabilityExplanationNotApplicable),
-	// 		UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.7789159Z"); return t}()),
+	// 		UpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T10:52:15.778Z"); return t}()),
 	// 	},
 	// }
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_List.json
 func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Get.json
 func ExampleReplicationRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Create.json
 func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Delete.json
 func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Update.json
 func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +415,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/5276a7bc-12a3-43a1-bc53-9bf80e0be87b"),
 	// 				ScenarioName: to.Ptr("CancelFailover"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-24T08:52:42.1587592Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-24T08:52:42.158Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -423,8 +423,8 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	// 			FriendlyName: to.Ptr("RPtest1"),
 	// 			Groups: []*armrecoveryservicessiterecovery.RecoveryPlanGroup{
 	// 			},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-24T07:33:49.1372448Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1601-01-01T00:00:00.0000000Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-24T07:33:49.137Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1601-01-01T00:00:00.000Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("cloud1"),
@@ -435,7 +435,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
 func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +469,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/5276a7bc-12a3-43a1-bc53-9bf80e0be87b"),
 	// 				ScenarioName: to.Ptr("CommitFailover"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:52:42.1587592Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:52:42.158Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -518,8 +518,8 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	// 					StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{
 	// 					},
 	// 			}},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.1372448Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.8354747Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.137Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.835Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
@@ -530,7 +530,7 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +573,7 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/d4821a53-90da-4fcb-bc11-a280d13e3350"),
 	// 				ScenarioName: to.Ptr("PlannedFailover"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:34:02.6176524Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:34:02.617Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -622,8 +622,8 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	// 					StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{
 	// 					},
 	// 			}},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.1372448Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.8354747Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.137Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.835Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
@@ -634,7 +634,7 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Reprotect.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Reprotect.json
 func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -668,7 +668,7 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/edf01dfb-b649-4802-91e4-3d55ce3bebf0"),
 	// 				ScenarioName: to.Ptr("ReverseReplication"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:52:16.9818841Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T09:52:16.981Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -717,8 +717,8 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	// 					StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{
 	// 					},
 	// 			}},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:58:35.9062813Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.8354747Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:58:35.906Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.835Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
@@ -729,7 +729,7 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_TestFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_TestFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +771,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/d40bfb40-aaaa-4c0d-87d3-41b15439a84b"),
 	// 				ScenarioName: to.Ptr("TestFailover"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:58.8191916Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:58.819Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Suspended"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("WaitingForStopTestFailover"),
@@ -830,7 +830,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
 func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -868,7 +868,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/4ae8eaa8-a384-42cb-9768-152cb5b8a1ff"),
 	// 				ScenarioName: to.Ptr("TestFailoverCleanup"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:10:52.8424747Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:10:52.842Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -917,8 +917,8 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	// 					StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{
 	// 					},
 	// 			}},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.1372448Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.8354747Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:33:49.137Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.835Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),
@@ -929,7 +929,7 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
 func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -973,7 +973,7 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	// 			CurrentScenario: &armrecoveryservicessiterecovery.CurrentScenarioDetails{
 	// 				JobID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/60b84068-9adb-4867-a49d-88be40bff14b"),
 	// 				ScenarioName: to.Ptr("UnplannedFailover"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T10:03:03.2206946Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T10:03:03.220Z"); return t}()),
 	// 			},
 	// 			CurrentScenarioStatus: to.Ptr("Succeeded"),
 	// 			CurrentScenarioStatusDescription: to.Ptr("Completed"),
@@ -1022,8 +1022,8 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	// 					StartGroupActions: []*armrecoveryservicessiterecovery.RecoveryPlanAction{
 	// 					},
 	// 			}},
-	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:58:35.9062813Z"); return t}()),
-	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.8354747Z"); return t}()),
+	// 			LastPlannedFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T08:58:35.906Z"); return t}()),
+	// 			LastTestFailoverTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T07:00:27.835Z"); return t}()),
 	// 			PrimaryFabricFriendlyName: to.Ptr("cloud1"),
 	// 			PrimaryFabricID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1"),
 	// 			RecoveryFabricFriendlyName: to.Ptr("Microsoft Azure"),

@@ -32,7 +32,7 @@ type TableServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTableServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".TableServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewTableServicesClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesClientGetServicePropertiesOptions) (TableServicesClientGetServicePropertiesResponse, error) {
 	var err error
+	const operationName = "TableServicesClient.GetServiceProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
@@ -117,6 +121,10 @@ func (client *TableServicesClient) getServicePropertiesHandleResponse(resp *http
 //   - options - TableServicesClientListOptions contains the optional parameters for the TableServicesClient.List method.
 func (client *TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesClientListOptions) (TableServicesClientListResponse, error) {
 	var err error
+	const operationName = "TableServicesClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return TableServicesClientListResponse{}, err
@@ -182,6 +190,10 @@ func (client *TableServicesClient) listHandleResponse(resp *http.Response) (Tabl
 //     method.
 func (client *TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesClientSetServicePropertiesOptions) (TableServicesClientSetServicePropertiesResponse, error) {
 	var err error
+	const operationName = "TableServicesClient.SetServiceProperties"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoOperationResultsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOperationResultsGet.json
 func ExampleOperationsResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleOperationsResultsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.OperationResult = armkusto.OperationResult{
 	// 	Name: to.Ptr("30972f1b-b61d-4fd8-bd34-3dcfa24670f3"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:42.7025301Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:42.702Z"); return t}()),
 	// 	Error: &armkusto.OperationResultErrorProperties{
 	// 		Code: to.Ptr("CannotAlterFollowerDatabase"),
 	// 		Message: to.Ptr("[BadRequest] Cannot alter leader cluster 'test' for resource name 'adc'."),
@@ -48,7 +48,7 @@ func ExampleOperationsResultsClient_Get() {
 	// 		OperationKind: to.Ptr("FollowerDatabaseCreate"),
 	// 		OperationState: to.Ptr("BadInput"),
 	// 	},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:39.6554616Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:39.655Z"); return t}()),
 	// 	Status: to.Ptr(armkusto.StatusFailed),
 	// }
 }

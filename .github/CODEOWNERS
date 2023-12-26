@@ -3,14 +3,14 @@
 
 #############
 # SDK (track2)
-############# 
+#############
 
 # Catch all for non-code project files and unowned files | folders
 /**                           @rickwinter @jhendrixMSFT
 /sdk/                         @rickwinter @chlowell @richardpark-msft
 
 # Samples
-/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
+/sdk/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Core
 /sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
@@ -19,7 +19,7 @@
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
 
 # PRLable: %OpenAI
-/sdk/ai                       @richardpark-msft @jhendrixMSFT 
+/sdk/ai                       @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
@@ -52,7 +52,7 @@
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft
+/sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
 # PRLabel: %Open Telemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
@@ -376,31 +376,13 @@
 #/<NotInRepo>/          @kpiteira
 
 # ServiceLabel: %Monitor
-#/<NotInRepo>/          @SameergMS @dadunl
-
-# ServiceLabel: %Monitor - Autoscale
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - ActivityLogs
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Metrics
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Diagnostic Settings
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Alerts
-#/<NotInRepo>/          @AzmonAlerts
-
-# ServiceLabel: %Monitor - ActionGroups
-#/<NotInRepo>/          @AzmonActionG
-
-# ServiceLabel: %Monitor - LogAnalytics
-#/<NotInRepo>/          @AzmonLogA
+#/<NotInRepo>/          @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
 
 # ServiceLabel: %Monitor - ApplicationInsights
 #/<NotInRepo>/          @azmonapplicationinsights
+
+# ServiceLabel: %Monitor - Exporter
+#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar
 
 # ServiceLabel: %MySQL
 #/<NotInRepo>/          @ambhatna @savjani
@@ -614,6 +596,3 @@
 
 # ServiceLabel: %Consumption - RIandShowBack
 #/<NotInRepo>/          @ccmshowbackdevs
-
-# ServiceLabel: %Monitor - Exporter
-#/<NotInRepo>/          @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar

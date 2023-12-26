@@ -1,5 +1,19 @@
 # Release History
 
+## 1.5.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.4.0 (2023-10-27)
+### Features Added
+
+- New enum type `PreconfiguredNSG` with values `PreconfiguredNSGDisabled`, `PreconfiguredNSGEnabled`
+- New field `PreconfiguredNSG` in struct `NetworkProfile`
+- New field `WorkerProfilesStatus` in struct `OpenShiftClusterProperties`
+
+
 ## 1.3.0 (2023-08-25)
 ### Features Added
 

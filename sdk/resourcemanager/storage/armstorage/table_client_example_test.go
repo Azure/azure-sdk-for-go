@@ -64,17 +64,17 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 			SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.000Z"); return t }()),
 						Permission: to.Ptr("raud"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.000Z"); return t }()),
 					},
 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 				},
 				{
 					AccessPolicy: &armstorage.TableAccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.000Z"); return t }()),
 						Permission: to.Ptr("rad"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.000Z"); return t }()),
 					},
 					ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 				}},
@@ -95,17 +95,17 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	// 		SignedIdentifiers: []*armstorage.TableSignedIdentifier{
 	// 			{
 	// 				AccessPolicy: &armstorage.TableAccessPolicy{
-	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.000Z"); return t}()),
 	// 					Permission: to.Ptr("raud"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.000Z"); return t}()),
 	// 				},
 	// 				ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 	// 			},
 	// 			{
 	// 				AccessPolicy: &armstorage.TableAccessPolicy{
-	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.0000000Z"); return t}()),
+	// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T08:49:37.000Z"); return t}()),
 	// 					Permission: to.Ptr("rad"),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.0000000Z"); return t}()),
+	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-17T08:49:37.000Z"); return t}()),
 	// 				},
 	// 				ID: to.Ptr("PTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODklMTI"),
 	// 		}},

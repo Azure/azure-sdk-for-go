@@ -9,8 +9,8 @@
 package armcontainerregistry
 
 const (
-	moduleName    = "armcontainerregistry"
-	moduleVersion = "v1.1.0-beta.3"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	moduleVersion = "v1.3.0-beta.1"
 )
 
 // Action - The action of IP ACL rule.
@@ -376,6 +376,22 @@ func PossibleLogLevelValues() []LogLevel {
 	}
 }
 
+// MetadataSearch - Determines whether registry artifacts are indexed for metadata search.
+type MetadataSearch string
+
+const (
+	MetadataSearchDisabled MetadataSearch = "Disabled"
+	MetadataSearchEnabled  MetadataSearch = "Enabled"
+)
+
+// PossibleMetadataSearchValues returns the possible values for the MetadataSearch const type.
+func PossibleMetadataSearchValues() []MetadataSearch {
+	return []MetadataSearch{
+		MetadataSearchDisabled,
+		MetadataSearchEnabled,
+	}
+}
+
 // NetworkRuleBypassOptions - Whether to allow trusted Azure services to access a network restricted registry.
 type NetworkRuleBypassOptions string
 
@@ -405,6 +421,20 @@ func PossibleOSValues() []OS {
 	return []OS{
 		OSLinux,
 		OSWindows,
+	}
+}
+
+// PackageSourceType - The type of package source for a archive.
+type PackageSourceType string
+
+const (
+	PackageSourceTypeRemote PackageSourceType = "remote"
+)
+
+// PossiblePackageSourceTypeValues returns the possible values for the PackageSourceType const type.
+func PossiblePackageSourceTypeValues() []PackageSourceType {
+	return []PackageSourceType{
+		PackageSourceTypeRemote,
 	}
 }
 

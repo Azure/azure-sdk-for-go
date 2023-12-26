@@ -16,17 +16,6 @@ type ActivationProperties struct {
 	Status *ActivationStatus
 }
 
-// ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
-type ActiveDirectoryObject struct {
-	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
-	// registry.
-	ObjectID *string
-
-	// The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of
-	// a container registry.
-	TenantID *string
-}
-
 // Actor - The agent that initiated the event. For most situations, this could be from the authorization context of the request.
 type Actor struct {
 	// The subject or username associated with the request context that generated the event.
@@ -109,6 +98,108 @@ type AgentPoolUpdateParameters struct {
 type AgentProperties struct {
 	// The CPU configuration in terms of number of cores required for the run.
 	CPU *int32
+}
+
+// Archive - An object that represents a archive for a container registry.
+type Archive struct {
+	// The properties of the archive.
+	Properties *ArchiveProperties
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ArchiveListResult - The result of a request to list archives for a container registry.
+type ArchiveListResult struct {
+	// The URI that can be used to request the next list of archives.
+	NextLink *string
+
+	// The list of archives. Since this list may be incomplete, the nextLink field should be used to request the next list of
+	// distributions.
+	Value []*Archive
+}
+
+// ArchivePackageSourceProperties - The properties of the archive package source.
+type ArchivePackageSourceProperties struct {
+	// The type of package source for a archive.
+	Type *PackageSourceType
+
+	// The external repository url.
+	URL *string
+}
+
+// ArchiveProperties - The properties of a archive.
+type ArchiveProperties struct {
+	// The package source of the archive.
+	PackageSource *ArchivePackageSourceProperties
+
+	// The published version of the archive.
+	PublishedVersion         *string
+	RepositoryEndpointPrefix *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY
+	RepositoryEndpoint *string
+}
+
+// ArchiveUpdateParameters - The parameters for updating a archive.
+type ArchiveUpdateParameters struct {
+	// The properties of the connected registry update parameters.
+	Properties *ArchiveUpdateProperties
+}
+
+// ArchiveUpdateProperties - The properties of a archive.
+type ArchiveUpdateProperties struct {
+	// The published version of the archive.
+	PublishedVersion *string
+}
+
+// ArchiveVersion - An object that represents an export pipeline for a container registry.
+type ArchiveVersion struct {
+	// The properties of the archive.
+	Properties *ArchiveVersionProperties
+
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The name of the resource.
+	Name *string
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ArchiveVersionListResult - The result of a request to list export pipelines for a container registry.
+type ArchiveVersionListResult struct {
+	// The URI that can be used to request the next list of pipeline runs.
+	NextLink *string
+
+	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
+	// list of export pipelines.
+	Value []*ArchiveVersion
+}
+
+// ArchiveVersionProperties - The properties of an export pipeline.
+type ArchiveVersionProperties struct {
+	// The detailed error message for the archive version in the case of failure.
+	ArchiveVersionErrorMessage *string
+
+	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
+	ProvisioningState *ProvisioningState
 }
 
 // Argument - The properties of a run argument.
@@ -752,27 +843,6 @@ type EncryptionProperty struct {
 	Status *EncryptionStatus
 }
 
-// ErrorResponse - An error response from the Azure Container Registry service.
-type ErrorResponse struct {
-	// Azure container registry build API error body.
-	Error *ErrorResponseBody
-}
-
-// ErrorResponseBody - An error response from the Azure Container Registry service.
-type ErrorResponseBody struct {
-	// REQUIRED; error code.
-	Code *string
-
-	// REQUIRED; error message.
-	Message *string
-
-	// an array of additional nested error response info objects, as described by this contract.
-	Details []*InnerErrorDescription
-
-	// target of the particular error.
-	Target *string
-}
-
 // Event - The event for a webhook.
 type Event struct {
 	// The event request message sent to the service URI.
@@ -1074,12 +1144,6 @@ type IPRule struct {
 
 // IdentityProperties - Managed identity for the resource.
 type IdentityProperties struct {
-	// The principal ID of resource identity.
-	PrincipalID *string
-
-	// The tenant ID of resource.
-	TenantID *string
-
 	// The identity type.
 	Type *ResourceIdentityType
 
@@ -1087,6 +1151,12 @@ type IdentityProperties struct {
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // ImageDescriptor - Properties for a registry image.
@@ -1217,18 +1287,6 @@ type ImportSourceCredentials struct {
 
 	// The username to authenticate with the source registry.
 	Username *string
-}
-
-// InnerErrorDescription - inner error.
-type InnerErrorDescription struct {
-	// REQUIRED; error code.
-	Code *string
-
-	// REQUIRED; error message.
-	Message *string
-
-	// target of the particular error.
-	Target *string
 }
 
 type KeyVaultProperties struct {
@@ -1384,15 +1442,6 @@ type OverrideTaskStepProperties struct {
 
 	// The collection of overridable values that can be passed when running a Task.
 	Values []*SetValue
-}
-
-// PackageType - The properties of a package type.
-type PackageType struct {
-	// The name of the package type.
-	Name *string
-
-	// READ-ONLY; The endpoint of the package type.
-	Endpoint *string
 }
 
 // ParentProperties - The properties of the connected registry parent.
@@ -1681,22 +1730,6 @@ type ProgressProperties struct {
 	Percentage *string
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
-// and tags.
-type ProxyResource struct {
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
 // QuarantinePolicy - The quarantine policy for a container registry.
 type QuarantinePolicy struct {
 	// The value that indicates whether the policy is enabled or not.
@@ -1803,6 +1836,9 @@ type RegistryProperties struct {
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
 
+	// Determines whether registry artifacts are indexed for metadata search.
+	MetadataSearch *MetadataSearch
+
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions
 
@@ -1850,6 +1886,9 @@ type RegistryPropertiesUpdateParameters struct {
 
 	// The encryption settings of container registry.
 	Encryption *EncryptionProperty
+
+	// Determines whether registry artifacts are indexed for metadata search.
+	MetadataSearch *MetadataSearch
 
 	// Whether to allow trusted Azure services to access a network restricted registry.
 	NetworkRuleBypassOptions *NetworkRuleBypassOptions
@@ -1984,27 +2023,6 @@ type Request struct {
 
 	// The user agent header of the request.
 	Useragent *string
-}
-
-// Resource - An Azure resource.
-type Resource struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
-	Location *string
-
-	// The tags of the resource.
-	Tags map[string]*string
-
-	// READ-ONLY; The resource ID.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource.
-	Type *string
 }
 
 // RetentionPolicy - The retention policy for a container registry.
@@ -2423,12 +2441,6 @@ type StatusDetailProperties struct {
 
 	// READ-ONLY; The component of the connected registry corresponding to the status.
 	Type *string
-}
-
-// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
-type StorageAccountProperties struct {
-	// REQUIRED; The resource ID of the storage account.
-	ID *string
 }
 
 // SyncProperties - The sync properties of the connected registry with its parent.
@@ -2955,10 +2967,10 @@ type TrustPolicy struct {
 }
 
 type UserIdentityProperties struct {
-	// The client id of user assigned identity.
+	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
 
-	// The principal id of user assigned identity.
+	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
 }
 

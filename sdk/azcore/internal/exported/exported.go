@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sync/atomic"
 	"time"
 )
 
@@ -109,4 +110,66 @@ func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
 	default:
 		return fmt.Errorf("unrecognized byte array format: %d", format)
 	}
+}
+
+// KeyCredential contains an authentication key used to authenticate to an Azure service.
+// Exported as azcore.KeyCredential.
+type KeyCredential struct {
+	cred *keyCredential
+}
+
+// NewKeyCredential creates a new instance of [KeyCredential] with the specified values.
+//   - key is the authentication key
+func NewKeyCredential(key string) *KeyCredential {
+	return &KeyCredential{cred: newKeyCredential(key)}
+}
+
+// Update replaces the existing key with the specified value.
+func (k *KeyCredential) Update(key string) {
+	k.cred.Update(key)
+}
+
+// SASCredential contains a shared access signature used to authenticate to an Azure service.
+// Exported as azcore.SASCredential.
+type SASCredential struct {
+	cred *keyCredential
+}
+
+// NewSASCredential creates a new instance of [SASCredential] with the specified values.
+//   - sas is the shared access signature
+func NewSASCredential(sas string) *SASCredential {
+	return &SASCredential{cred: newKeyCredential(sas)}
+}
+
+// Update replaces the existing shared access signature with the specified value.
+func (k *SASCredential) Update(sas string) {
+	k.cred.Update(sas)
+}
+
+// KeyCredentialGet returns the key for cred.
+func KeyCredentialGet(cred *KeyCredential) string {
+	return cred.cred.Get()
+}
+
+// SASCredentialGet returns the shared access sig for cred.
+func SASCredentialGet(cred *SASCredential) string {
+	return cred.cred.Get()
+}
+
+type keyCredential struct {
+	key atomic.Value // string
+}
+
+func newKeyCredential(key string) *keyCredential {
+	keyCred := keyCredential{}
+	keyCred.key.Store(key)
+	return &keyCred
+}
+
+func (k *keyCredential) Get() string {
+	return k.key.Load().(string)
+}
+
+func (k *keyCredential) Update(key string) {
+	k.key.Store(key)
 }

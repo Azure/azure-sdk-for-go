@@ -156,6 +156,34 @@ func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {
 	})
 }
 
+func TestManagedIdentityCredential_AzureMLLive(t *testing.T) {
+	switch recording.GetRecordMode() {
+	case recording.LiveMode:
+		t.Skip("this test doesn't run in live mode because it can't pass in CI")
+	case recording.PlaybackMode:
+		t.Setenv(defaultIdentityClientID, fakeClientID)
+		t.Setenv(msiEndpoint, fakeMIEndpoint)
+		t.Setenv(msiSecret, redacted)
+	case recording.RecordingMode:
+		missing := []string{}
+		for _, v := range []string{defaultIdentityClientID, msiEndpoint, msiSecret} {
+			if len(os.Getenv(v)) == 0 {
+				missing = append(missing, v)
+			}
+		}
+		if len(missing) > 0 {
+			t.Skip("no value for " + strings.Join(missing, ", "))
+		}
+	}
+	opts, stop := initRecording(t)
+	defer stop()
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: opts})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testGetTokenSuccess(t, cred)
+}
+
 func TestManagedIdentityCredential_CloudShell(t *testing.T) {
 	validateReq := func(req *http.Request) *http.Response {
 		err := req.ParseForm()
@@ -499,6 +527,39 @@ func TestManagedIdentityCredential_IMDSResourceIDLive(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+}
+
+func TestManagedIdentityCredential_IMDSRetries(t *testing.T) {
+	sts := mockSTS{}
+	cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				MaxRetries:    1,
+				MaxRetryDelay: time.Nanosecond,
+			},
+			Transport: &sts,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cred.mic.msiType != msiTypeIMDS {
+		t.SkipNow()
+	}
+	for _, code := range []int{404, 410, 429, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511} {
+		reqs := 0
+		sts.tokenRequestCallback = func(r *http.Request) *http.Response {
+			reqs++
+			return &http.Response{Body: http.NoBody, Request: r, StatusCode: code}
+		}
+		_, err = cred.GetToken(context.Background(), testTRO)
+		if err == nil {
+			t.Fatal("expected an error")
+		}
+		if reqs != 2 {
+			t.Errorf("expected 1 retry after %d response, got %d", code, reqs-1)
+		}
+	}
 }
 
 func TestManagedIdentityCredential_ServiceFabric(t *testing.T) {

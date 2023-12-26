@@ -1,5 +1,7 @@
 # Azure Service Fabric Mesh Module for Go
 
+Please note, this package has been deprecated. The service backing this library is retired on April 28th, 2021. For more details on the Azure Service Fabric Mesh retirement, please visit: https://azure.microsoft.com/updates/azure-service-fabric-mesh-preview-retirement/.
+
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmesh/armservicefabricmesh)
 
 The `armservicefabricmesh` module provides operations for working with Azure Service Fabric Mesh.

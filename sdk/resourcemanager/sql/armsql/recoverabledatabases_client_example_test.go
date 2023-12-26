@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseList.json
 func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverableDatabases/recoverabledatabasetest-1235"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Standard"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("S0"),
 		// 			},
 		// 		},
@@ -58,7 +58,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverableDatabases/recoverabledatabasetest-9231"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Premium"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T03:20:31.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T03:20:31.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("P1"),
 		// 			},
 		// 		},
@@ -68,7 +68,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-1234/providers/Microsoft.Sql/servers/recoverabledatabasetest-7177/recoverabledatabases/recoverabledatabasetest-0342"),
 		// 			Properties: &armsql.RecoverableDatabaseProperties{
 		// 				Edition: to.Ptr("Basic"),
-		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T02:06:18.78Z"); return t}()),
+		// 				LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T02:06:18.780Z"); return t}()),
 		// 				ServiceLevelObjective: to.Ptr("Basic"),
 		// 			},
 		// 	}},
@@ -76,7 +76,7 @@ func ExampleRecoverableDatabasesClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseGet.json
 func ExampleRecoverableDatabasesClient_Get_getARecoverableDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,13 +102,13 @@ func ExampleRecoverableDatabasesClient_Get_getARecoverableDatabase() {
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/recoverabledatabasetest-6852/providers/Microsoft.Sql/servers/recoverabledatabasetest-2080/recoverableDatabases/recoverabledatabasetest-9187"),
 	// 	Properties: &armsql.RecoverableDatabaseProperties{
 	// 		Edition: to.Ptr("Basic"),
-	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 	// 		ServiceLevelObjective: to.Ptr("Basic"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseGetWithExpandEqualsKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/RecoverableDatabaseGetWithExpandEqualsKeys.json
 func ExampleRecoverableDatabasesClient_Get_getsARecoverableDatabaseWithExpandEqualsKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleRecoverableDatabasesClient_Get_getsARecoverableDatabaseWithExpandEqu
 	// 			"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": &armsql.DatabaseKey{
 	// 			},
 	// 		},
-	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.78Z"); return t}()),
+	// 		LastAvailableBackupDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-26T01:06:29.780Z"); return t}()),
 	// 		ServiceLevelObjective: to.Ptr("Basic"),
 	// 	},
 	// }

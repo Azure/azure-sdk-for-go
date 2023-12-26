@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -100,6 +101,10 @@ type Processor struct {
 
 	runCalled chan struct{}
 	lb        *processorLoadBalancer
+
+	// claimedOwnerships is set to whatever our current ownerships are. The underlying
+	// value is a []Ownership.
+	currentOwnerships *atomic.Value
 }
 
 type consumerClientForProcessor interface {
@@ -154,6 +159,9 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 		return nil, fmt.Errorf("invalid load balancing strategy '%s'", strategy)
 	}
 
+	currentOwnerships := &atomic.Value{}
+	currentOwnerships.Store([]Ownership{})
+
 	return &Processor{
 		ownershipUpdateInterval: updateInterval,
 		consumerClient:          consumerClient,
@@ -167,6 +175,8 @@ func newProcessorImpl(consumerClient consumerClientForProcessor, checkpointStore
 		consumerClientDetails: consumerClient.getDetails(),
 		runCalled:             make(chan struct{}),
 		lb:                    newProcessorLoadBalancer(checkpointStore, consumerClient.getDetails(), strategy, partitionDurationExpiration),
+		currentOwnerships:     currentOwnerships,
+
 		// `nextClients` will be initialized when the user calls Run() since it needs to query the #
 		// of partitions on the Event Hub.
 	}, nil
@@ -224,7 +234,11 @@ func (p *Processor) Run(ctx context.Context) error {
 
 func (p *Processor) runImpl(ctx context.Context) error {
 	consumers := &sync.Map{}
-	defer closeConsumers(ctx, consumers)
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		p.closeConsumers(ctx, consumers)
+	}()
 
 	// size the channel to the # of partitions. We can never exceed this size since
 	// we'll never reclaim a partition that we already have ownership of.
@@ -292,6 +306,12 @@ func (p *Processor) dispatch(ctx context.Context, eventHubProperties EventHubPro
 
 	wg := sync.WaitGroup{}
 
+	// store off the set of ownerships we claimed this round - when the processor
+	// shuts down we'll clear them (if we still own them).
+	tmpOwnerships := make([]Ownership, len(ownerships))
+	copy(tmpOwnerships, ownerships)
+	p.currentOwnerships.Store(tmpOwnerships)
+
 	for _, ownership := range ownerships {
 		wg.Add(1)
 
@@ -323,6 +343,8 @@ func (p *Processor) addPartitionClient(ctx context.Context, ownership Ownership,
 		},
 	}
 
+	// RP: I don't want to accidentally end up doing this logic because the user was closing it as we
+	// were doing our next load balance.
 	if _, alreadyExists := consumers.LoadOrStore(ownership.PartitionID, processorPartClient); alreadyExists {
 		return nil
 	}
@@ -407,7 +429,7 @@ func (p *Processor) getCheckpointsMap(ctx context.Context) (map[string]Checkpoin
 	return m, nil
 }
 
-func closeConsumers(ctx context.Context, consumersMap *sync.Map) {
+func (p *Processor) closeConsumers(ctx context.Context, consumersMap *sync.Map) {
 	consumersMap.Range(func(key, value any) bool {
 		client := value.(*ProcessorPartitionClient)
 
@@ -417,4 +439,20 @@ func closeConsumers(ctx context.Context, consumersMap *sync.Map) {
 
 		return true
 	})
+
+	currentOwnerships := p.currentOwnerships.Load().([]Ownership)
+
+	for i := 0; i < len(currentOwnerships); i++ {
+		currentOwnerships[i].OwnerID = relinquishedOwnershipID
+	}
+
+	_, err := p.checkpointStore.ClaimOwnership(ctx, currentOwnerships, nil)
+
+	if err != nil {
+		azlog.Writef(EventConsumer, "Failed to relinquish ownerships. New processors will have to wait for ownerships to expire: %s", err.Error())
+	}
 }
+
+// relinquishedOwnershipID indicates that a partition is immediately available, similar to
+// how we treat an ownership that is expired as available.
+const relinquishedOwnershipID = ""

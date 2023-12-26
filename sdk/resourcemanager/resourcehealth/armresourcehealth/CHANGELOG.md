@@ -1,5 +1,27 @@
 # Release History
 
+## 1.4.0-beta.1 (2023-11-30)
+### Features Added
+
+- New enum type `EventSubTypeValues` with values `EventSubTypeValuesRetirement`
+- New field `MaintenanceEndTime`, `MaintenanceStartTime`, `ResourceGroup`, `ResourceName`, `Status` in struct `EventImpactedResourceProperties`
+- New field `ArgQuery`, `EventSubType`, `MaintenanceID`, `MaintenanceType` in struct `EventProperties`
+
+
+## 1.3.0 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.3.0-beta.1 (2023-10-27)
+### Features Added
+
+- New enum type `EventSubTypeValues` with values `EventSubTypeValuesRetirement`
+- New field `MaintenanceEndTime`, `MaintenanceStartTime`, `ResourceGroup`, `ResourceName`, `Status` in struct `EventImpactedResourceProperties`
+- New field `ArgQuery`, `EventSubType`, `MaintenanceID`, `MaintenanceType` in struct `EventProperties`
+
+
 ## 1.2.0 (2023-05-26)
 ### Features Added
 

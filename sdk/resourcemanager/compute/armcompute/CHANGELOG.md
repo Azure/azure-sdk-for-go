@@ -1,9 +1,96 @@
 # Release History
 
-## 5.2.0-beta.1 (2023-07-28)
-
+## 5.4.0 (2023-12-22)
 ### Features Added
+
+- New value `ConfidentialVMEncryptionTypeNonPersistedTPM` added to enum type `ConfidentialVMEncryptionType`
+- New value `ReplicationStatusTypesUefiSettings` added to enum type `ReplicationStatusTypes`
+- New value `SecurityEncryptionTypesNonPersistedTPM` added to enum type `SecurityEncryptionTypes`
+- New enum type `Mode` with values `ModeAudit`, `ModeEnforce`
+- New enum type `SSHEncryptionTypes` with values `SSHEncryptionTypesEd25519`, `SSHEncryptionTypesRSA`
+- New enum type `UefiKeyType` with values `UefiKeyTypeSHA256`, `UefiKeyTypeX509`
+- New enum type `UefiSignatureTemplateName` with values `UefiSignatureTemplateNameMicrosoftUefiCertificateAuthorityTemplate`, `UefiSignatureTemplateNameMicrosoftWindowsTemplate`, `UefiSignatureTemplateNameNoSignatureTemplate`
+- New function `*DedicatedHostsClient.BeginRedeploy(context.Context, string, string, string, *DedicatedHostsClientBeginRedeployOptions) (*runtime.Poller[DedicatedHostsClientRedeployResponse], error)`
+- New function `*VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade(context.Context, string, string, string, *VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions) (*runtime.Poller[VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse], error)`
+- New function `*VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks(context.Context, string, string, string, AttachDetachDataDisksRequest, *VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions) (*runtime.Poller[VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse], error)`
+- New function `*VirtualMachineScaleSetsClient.BeginApproveRollingUpgrade(context.Context, string, string, *VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions) (*runtime.Poller[VirtualMachineScaleSetsClientApproveRollingUpgradeResponse], error)`
+- New function `*VirtualMachinesClient.BeginAttachDetachDataDisks(context.Context, string, string, AttachDetachDataDisksRequest, *VirtualMachinesClientBeginAttachDetachDataDisksOptions) (*runtime.Poller[VirtualMachinesClientAttachDetachDataDisksResponse], error)`
+- New struct `AttachDetachDataDisksRequest`
+- New struct `CommunityGalleryMetadata`
+- New struct `CommunityGalleryProperties`
+- New struct `DataDisksToAttach`
+- New struct `DataDisksToDetach`
+- New struct `EncryptionIdentity`
+- New struct `GalleryImageVersionUefiSettings`
+- New struct `ImageVersionSecurityProfile`
+- New struct `ProxyAgentSettings`
+- New struct `ResiliencyPolicy`
+- New struct `ResilientVMCreationPolicy`
+- New struct `ResilientVMDeletionPolicy`
+- New struct `ResourceSharingProfile`
+- New struct `SSHGenerateKeyPairInputParameters`
+- New struct `SharedGalleryProperties`
+- New struct `UefiKey`
+- New struct `UefiKeySignatures`
+- New field `OSRollingUpgradeDeferral` in struct `AutomaticOSUpgradePolicy`
+- New field `SharedSubscriptionIDs` in struct `CapacityReservationGroupInstanceView`
+- New field `SharingProfile` in struct `CapacityReservationGroupProperties`
+- New field `Properties` in struct `CommunityGallery`
+- New field `ArtifactTags`, `Disclaimer` in struct `CommunityGalleryImageProperties`
+- New field `ArtifactTags`, `Disclaimer` in struct `CommunityGalleryImageVersionProperties`
+- New field `SecurityProfile` in struct `GalleryImageVersionProperties`
+- New field `DiskControllerType` in struct `RestorePointSourceVMStorageProfile`
+- New field `Parameters` in struct `SSHPublicKeysClientGenerateKeyPairOptions`
+- New field `EncryptionIdentity`, `ProxyAgentSettings` in struct `SecurityProfile`
+- New field `Properties` in struct `SharedGallery`
+- New field `ArtifactTags` in struct `SharedGalleryImageProperties`
+- New field `ArtifactTags` in struct `SharedGalleryImageVersionProperties`
+- New field `Etag`, `ManagedBy` in struct `VirtualMachine`
+- New field `IsVMInStandbyPool` in struct `VirtualMachineInstanceView`
+- New field `Etag` in struct `VirtualMachineScaleSet`
+- New field `ResiliencyPolicy` in struct `VirtualMachineScaleSetProperties`
+- New field `ResiliencyPolicy` in struct `VirtualMachineScaleSetUpdateProperties`
+- New field `Etag` in struct `VirtualMachineScaleSetVM`
+- New field `TimeCreated` in struct `VirtualMachineScaleSetVMProfile`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachineScaleSetVMsClientBeginUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachineScaleSetsClientBeginUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachinesClientBeginCreateOrUpdateOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `VirtualMachinesClientBeginUpdateOptions`
+
+
+## 5.3.0 (2023-11-24)
+### Features Added
+
 - Support for test fakes and OpenTelemetry trace spans.
+
+
+## 5.3.0-beta.2 (2023-10-30)
+
+### Other Changes
+
+- Updated with latest code generator to fix a few issues in fakes.
+
+## 5.3.0-beta.1 (2023-10-09)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+## 5.2.0 (2023-09-22)
+### Features Added
+
+- New value `DiskCreateOptionCopyFromSanSnapshot` added to enum type `DiskCreateOption`
+- New enum type `DomainNameLabelScopeTypes` with values `DomainNameLabelScopeTypesNoReuse`, `DomainNameLabelScopeTypesResourceGroupReuse`, `DomainNameLabelScopeTypesSubscriptionReuse`, `DomainNameLabelScopeTypesTenantReuse`
+- New enum type `NetworkInterfaceAuxiliaryMode` with values `NetworkInterfaceAuxiliaryModeAcceleratedConnections`, `NetworkInterfaceAuxiliaryModeFloating`, `NetworkInterfaceAuxiliaryModeNone`
+- New enum type `NetworkInterfaceAuxiliarySKU` with values `NetworkInterfaceAuxiliarySKUA1`, `NetworkInterfaceAuxiliarySKUA2`, `NetworkInterfaceAuxiliarySKUA4`, `NetworkInterfaceAuxiliarySKUA8`, `NetworkInterfaceAuxiliarySKUNone`
+- New field `ElasticSanResourceID` in struct `CreationData`
+- New field `LastOwnershipUpdateTime` in struct `DiskProperties`
+- New field `AuxiliaryMode`, `AuxiliarySKU` in struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New field `DomainNameLabelScope` in struct `VirtualMachinePublicIPAddressDNSSettingsConfiguration`
+- New field `AuxiliaryMode`, `AuxiliarySKU` in struct `VirtualMachineScaleSetNetworkConfigurationProperties`
+- New field `DomainNameLabelScope` in struct `VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings`
+- New field `AuxiliaryMode`, `AuxiliarySKU` in struct `VirtualMachineScaleSetUpdateNetworkConfigurationProperties`
+- New field `TimeCreated` in struct `VirtualMachineScaleSetVMProperties`
 
 
 ## 5.1.0 (2023-07-28)

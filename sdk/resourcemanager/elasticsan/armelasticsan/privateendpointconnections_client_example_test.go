@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,11 +32,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "privateendpointconnectionname", armelasticsan.PrivateEndpointConnection{
 		Properties: &armelasticsan.PrivateEndpointConnectionProperties{
 			GroupIDs: []*string{
-				to.Ptr("sytxzqlcoapcaywthgwvwcw")},
+				to.Ptr("jdwrzpemdjrpiwzvy")},
 			PrivateEndpoint: &armelasticsan.PrivateEndpoint{},
 			PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
-				Description:     to.Ptr("Auto-Approved"),
-				ActionsRequired: to.Ptr("None"),
+				Description:     to.Ptr("dxl"),
+				ActionsRequired: to.Ptr("jhjdpwvyzipggtn"),
 				Status:          to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
 			},
 		},
@@ -56,11 +56,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		CreatedBy: to.Ptr("bgurjvijz"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.PrivateEndpointConnectionProperties{
@@ -79,7 +79,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Create_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,11 +92,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	}
 	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "privateendpointconnectionname", armelasticsan.PrivateEndpointConnection{
 		Properties: &armelasticsan.PrivateEndpointConnectionProperties{
-			PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
-				Description:     to.Ptr("Auto-Approved"),
-				ActionsRequired: to.Ptr("None"),
-				Status:          to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
-			},
+			PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{},
 		},
 	}, nil)
 	if err != nil {
@@ -114,11 +110,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		CreatedBy: to.Ptr("bgurjvijz"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.PrivateEndpointConnectionProperties{
@@ -137,7 +133,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,11 +156,11 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMa
 	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		CreatedBy: to.Ptr("bgurjvijz"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.PrivateEndpointConnectionProperties{
@@ -183,7 +179,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMa
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,11 +202,11 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMi
 	// 	Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	SystemData: &armelasticsan.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		CreatedBy: to.Ptr("bgurjvijz"),
 	// 		CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 		LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 	},
 	// 	Properties: &armelasticsan.PrivateEndpointConnectionProperties{
@@ -229,7 +225,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMi
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +246,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +267,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_List_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,26 +292,26 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 		// page.PrivateEndpointConnectionListResult = armelasticsan.PrivateEndpointConnectionListResult{
 		// 	Value: []*armelasticsan.PrivateEndpointConnection{
 		// 		{
-		// 			Name: to.Ptr("{privateEndpointConnectionName}"),
-		// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
+		// 			Name: to.Ptr("vyzqckpcwufpvalbspekxikt"),
+		// 			Type: to.Ptr("ldolsnjwzutewucdfessitnxqb"),
+		// 			ID: to.Ptr("ynin"),
 		// 			SystemData: &armelasticsan.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+		// 				CreatedBy: to.Ptr("bgurjvijz"),
 		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 		// 			},
 		// 			Properties: &armelasticsan.PrivateEndpointConnectionProperties{
 		// 				GroupIDs: []*string{
-		// 					to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
+		// 					to.Ptr("jdwrzpemdjrpiwzvy")},
 		// 					PrivateEndpoint: &armelasticsan.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
+		// 						ID: to.Ptr("gktekmqchmjqxhfvywq"),
 		// 					},
 		// 					PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Auto-Approved"),
-		// 						ActionsRequired: to.Ptr("None"),
+		// 						Description: to.Ptr("dxl"),
+		// 						ActionsRequired: to.Ptr("jhjdpwvyzipggtn"),
 		// 						Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
@@ -325,7 +321,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_List_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,33 +344,6 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.PrivateEndpointConnectionListResult = armelasticsan.PrivateEndpointConnectionListResult{
-		// 	Value: []*armelasticsan.PrivateEndpointConnection{
-		// 		{
-		// 			Name: to.Ptr("{privateEndpointConnectionName}"),
-		// 			Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
-		// 			ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
-		// 			SystemData: &armelasticsan.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-		// 				CreatedBy: to.Ptr("otfifnrahdshqombvtg"),
-		// 				CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-03T09:59:45.919Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("jnaxavnlhrboshtidtib"),
-		// 				LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-		// 			},
-		// 			Properties: &armelasticsan.PrivateEndpointConnectionProperties{
-		// 				GroupIDs: []*string{
-		// 					to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}")},
-		// 					PrivateEndpoint: &armelasticsan.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"),
-		// 					},
-		// 					PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Auto-Approved"),
-		// 						ActionsRequired: to.Ptr("None"),
-		// 						Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-		// 				},
-		// 		}},
-		// 	}
+		// }
 	}
 }

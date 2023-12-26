@@ -5,14 +5,14 @@
 %% 2. Run command: mmdc -i DefaultAzureCredentialAuthFlow.md -o DefaultAzureCredentialAuthFlow.svg
 
 flowchart LR;
-    A(Environment):::deployed ==> B(Workload Identity):::deployed ==> C(Managed Identity):::deployed ==> D(Azure CLI):::developer;
+    A(Environment):::deployed ==> B(Workload Identity):::deployed ==> C(Managed Identity):::deployed ==> D(Azure CLI):::developer ==> E(Azure Developer CLI):::developer;
 
     subgraph CREDENTIAL TYPES;
         direction LR;
         Deployed(Deployed service):::deployed --- Developer(Developer):::developer;
 
         %% Hide links between boxes in the legend by setting width to 0. The integers after "linkStyle" represent link indices.
-        linkStyle 3 stroke-width:0px;
+        linkStyle 4 stroke-width:0px;
     end;
 
     %% Define styles for credential type boxes
@@ -24,4 +24,5 @@ flowchart LR;
     click B "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#WorkloadIdentityCredential" _blank;
     click C "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ManagedIdentityCredential" _blank;
     click D "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureCLICredential" _blank;
+    click E "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AzureDeveloperCLICredential" _blank;
 ```

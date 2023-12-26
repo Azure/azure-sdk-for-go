@@ -7,7 +7,6 @@ package publisher
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
@@ -45,20 +44,17 @@ func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options 
 	}, nil
 }
 
-// NewClientWithSharedKeyCredential creates a [Client] using a shared key.
-func NewClientWithSharedKeyCredential(endpoint string, key string, options *ClientOptions) (*Client, error) {
+// NewClientWithSharedKeyCredential creates a [Client] using a shared key credential.
+func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	const sasKeyHeader = "aeg-sas-key"
 
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			// TODO: Java has a specific policy for this kind of authentication.
-			// AzureKeyCredentialPolicy
-			&skpolicy{HeaderName: sasKeyHeader, Key: key},
+			runtime.NewKeyCredentialPolicy(keyCred, sasKeyHeader, nil),
 		},
 	}, &options.ClientOptions)
 
@@ -72,20 +68,17 @@ func NewClientWithSharedKeyCredential(endpoint string, key string, options *Clie
 	}, nil
 }
 
-// NewClientWithSharedKeyCredential creates a [Client] using a shared key.
-func NewClientWithSAS(endpoint string, sas string, options *ClientOptions) (*Client, error) {
+// NewClientWithSAS creates a [Client] using a shared access signature credential.
+func NewClientWithSAS(endpoint string, sasCred *azcore.SASCredential, options *ClientOptions) (*Client, error) {
 	const sasTokenHeader = "aeg-sas-token"
 
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
 	azc, err := azcore.NewClient(internal.ModuleName+".PublisherClient", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			// TODO: Java has a specific policy for this kind of authentication.
-			// AzureKeyCredentialPolicy
-			&skpolicy{HeaderName: sasTokenHeader, Key: sas},
+			runtime.NewSASCredentialPolicy(sasCred, sasTokenHeader, nil),
 		},
 	}, &options.ClientOptions)
 
@@ -97,17 +90,6 @@ func NewClientWithSAS(endpoint string, sas string, options *ClientOptions) (*Cli
 		internal: azc,
 		endpoint: endpoint,
 	}, nil
-}
-
-// TODO: remove in favor of a common policy instead?
-type skpolicy struct {
-	Key        string
-	HeaderName string
-}
-
-func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Add(p.HeaderName, p.Key)
-	return req.Next()
 }
 
 // PublishCloudEvents - Publishes a batch of events to an Azure Event Grid topic.

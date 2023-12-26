@@ -163,3 +163,25 @@ func TestFuncParameterChange(t *testing.T) {
 	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
+
+func TestNonExportedFilter(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/non-export")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/non-export")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := autorest.GetChangelogForPackage(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	common.FilterChangelog(changelog, common.NonExportedFilter)
+
+	excepted := "### Breaking Changes\n\n- Function `*Public.PublicMethod` has been removed\n\n### Features Added\n\n- New function `*Public.NewPublicMethos() `\n"
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}

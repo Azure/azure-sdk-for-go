@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultList.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllManagedDatabaseMoveOperationsForSpecifiedSubscriptionResourceGroupAndLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllMa
 		// 				SourceDatabaseName: to.Ptr("db1"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.72Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.720Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateSucceeded),
 		// 				TargetDatabaseName: to.Ptr("db1"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -75,7 +75,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllMa
 		// 				SourceDatabaseName: to.Ptr("db1"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.72Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.720Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 				TargetDatabaseName: to.Ptr("db1"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -94,7 +94,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllMa
 		// 				SourceDatabaseName: to.Ptr("db2"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T13:37:19.71Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T13:37:19.710Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 				TargetDatabaseName: to.Ptr("db2"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -105,7 +105,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsAllMa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultListMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultListMax.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLatestManagedDatabaseMoveOperationsForEachDatabaseUnderSpecifiedSubscriptionResourceGroupAndLocationFilteredByOperationType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 		// 				SourceDatabaseName: to.Ptr("db1"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.72Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.720Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 				TargetDatabaseName: to.Ptr("db1"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -154,7 +154,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultListLastOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultListLastOperations.json
 func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLatestManagedDatabaseMoveOperationsForEachDatabaseUnderSpecifiedSubscriptionResourceGroupAndLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 		// 				SourceDatabaseName: to.Ptr("db1"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.72Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.720Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 				TargetDatabaseName: to.Ptr("db1"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -211,7 +211,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 		// 				SourceDatabaseName: to.Ptr("db2"),
 		// 				SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 		// 				SourceManagedInstanceName: to.Ptr("mi1"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T13:37:19.71Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T13:37:19.710Z"); return t}()),
 		// 				State: to.Ptr(armsql.ManagementOperationStateInProgress),
 		// 				TargetDatabaseName: to.Ptr("db2"),
 		// 				TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),
@@ -222,7 +222,7 @@ func ExampleManagedDatabaseMoveOperationsClient_NewListByLocationPager_getsTheLa
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseMoveOperationResultGet.json
 func ExampleManagedDatabaseMoveOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleManagedDatabaseMoveOperationsClient_Get() {
 	// 		SourceDatabaseName: to.Ptr("db1"),
 	// 		SourceManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.Sql/managedInstances/mi1"),
 	// 		SourceManagedInstanceName: to.Ptr("mi1"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.72Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-24T12:54:29.720Z"); return t}()),
 	// 		State: to.Ptr(armsql.ManagementOperationStateInProgress),
 	// 		TargetDatabaseName: to.Ptr("db1"),
 	// 		TargetManagedInstanceID: to.Ptr("subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg2/providers/Microsoft.Sql/managedInstances/mi2"),

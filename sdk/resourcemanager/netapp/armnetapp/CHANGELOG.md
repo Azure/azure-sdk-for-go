@@ -1,5 +1,120 @@
 # Release History
 
+## 6.0.0-beta.1 (2023-12-22)
+### Breaking Changes
+
+- Field `DeploymentSpecID` of struct `VolumeGroupMetaData` has been removed
+
+### Features Added
+
+- New enum type `BackupType` with values `BackupTypeManual`, `BackupTypeScheduled`
+- New function `NewAccountBackupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AccountBackupsClient, error)`
+- New function `*AccountBackupsClient.BeginDelete(context.Context, string, string, string, *AccountBackupsClientBeginDeleteOptions) (*runtime.Poller[AccountBackupsClientDeleteResponse], error)`
+- New function `*AccountBackupsClient.Get(context.Context, string, string, string, *AccountBackupsClientGetOptions) (AccountBackupsClientGetResponse, error)`
+- New function `*AccountBackupsClient.NewListByNetAppAccountPager(string, string, *AccountBackupsClientListByNetAppAccountOptions) *runtime.Pager[AccountBackupsClientListByNetAppAccountResponse]`
+- New function `*AccountsClient.BeginMigrateEncryptionKey(context.Context, string, string, *AccountsClientBeginMigrateEncryptionKeyOptions) (*runtime.Poller[AccountsClientMigrateEncryptionKeyResponse], error)`
+- New function `NewBackupVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupVaultsClient, error)`
+- New function `*BackupVaultsClient.BeginCreateOrUpdate(context.Context, string, string, string, BackupVault, *BackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error)`
+- New function `*BackupVaultsClient.BeginDelete(context.Context, string, string, string, *BackupVaultsClientBeginDeleteOptions) (*runtime.Poller[BackupVaultsClientDeleteResponse], error)`
+- New function `*BackupVaultsClient.Get(context.Context, string, string, string, *BackupVaultsClientGetOptions) (BackupVaultsClientGetResponse, error)`
+- New function `*BackupVaultsClient.NewListByNetAppAccountPager(string, string, *BackupVaultsClientListByNetAppAccountOptions) *runtime.Pager[BackupVaultsClientListByNetAppAccountResponse]`
+- New function `*BackupVaultsClient.BeginUpdate(context.Context, string, string, string, BackupVaultPatch, *BackupVaultsClientBeginUpdateOptions) (*runtime.Poller[BackupVaultsClientUpdateResponse], error)`
+- New function `*BackupsClient.BeginCreate(context.Context, string, string, string, string, Backup, *BackupsClientBeginCreateOptions) (*runtime.Poller[BackupsClientCreateResponse], error)`
+- New function `*BackupsClient.BeginDelete(context.Context, string, string, string, string, *BackupsClientBeginDeleteOptions) (*runtime.Poller[BackupsClientDeleteResponse], error)`
+- New function `*BackupsClient.Get(context.Context, string, string, string, string, *BackupsClientGetOptions) (BackupsClientGetResponse, error)`
+- New function `*BackupsClient.GetLatestStatus(context.Context, string, string, string, string, *BackupsClientGetLatestStatusOptions) (BackupsClientGetLatestStatusResponse, error)`
+- New function `*BackupsClient.NewListByVaultPager(string, string, string, *BackupsClientListByVaultOptions) *runtime.Pager[BackupsClientListByVaultResponse]`
+- New function `*BackupsClient.BeginUpdate(context.Context, string, string, string, string, BackupPatch, *BackupsClientBeginUpdateOptions) (*runtime.Poller[BackupsClientUpdateResponse], error)`
+- New function `NewBackupsUnderAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderAccountClient, error)`
+- New function `*BackupsUnderAccountClient.BeginMigrateBackups(context.Context, string, string, BackupsMigrationRequest, *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderAccountClientMigrateBackupsResponse], error)`
+- New function `NewBackupsUnderBackupVaultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderBackupVaultClient, error)`
+- New function `*BackupsUnderBackupVaultClient.BeginRestoreFiles(context.Context, string, string, string, string, BackupRestoreFiles, *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*runtime.Poller[BackupsUnderBackupVaultClientRestoreFilesResponse], error)`
+- New function `NewBackupsUnderVolumeClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsUnderVolumeClient, error)`
+- New function `*BackupsUnderVolumeClient.BeginMigrateBackups(context.Context, string, string, string, string, BackupsMigrationRequest, *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*runtime.Poller[BackupsUnderVolumeClientMigrateBackupsResponse], error)`
+- New function `*ClientFactory.NewAccountBackupsClient() *AccountBackupsClient`
+- New function `*ClientFactory.NewBackupVaultsClient() *BackupVaultsClient`
+- New function `*ClientFactory.NewBackupsUnderAccountClient() *BackupsUnderAccountClient`
+- New function `*ClientFactory.NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVaultClient`
+- New function `*ClientFactory.NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient`
+- New function `*ClientFactory.NewResourceRegionInfosClient() *ResourceRegionInfosClient`
+- New function `NewResourceRegionInfosClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceRegionInfosClient, error)`
+- New function `*ResourceRegionInfosClient.Get(context.Context, string, *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error)`
+- New function `*ResourceRegionInfosClient.NewListPager(string, *ResourceRegionInfosClientListOptions) *runtime.Pager[ResourceRegionInfosClientListResponse]`
+- New function `*VolumesClient.BeginSplitCloneFromParent(context.Context, string, string, string, string, *VolumesClientBeginSplitCloneFromParentOptions) (*runtime.Poller[VolumesClientSplitCloneFromParentResponse], error)`
+- New struct `Backup`
+- New struct `BackupPatch`
+- New struct `BackupPatchProperties`
+- New struct `BackupProperties`
+- New struct `BackupRestoreFiles`
+- New struct `BackupStatus`
+- New struct `BackupVault`
+- New struct `BackupVaultPatch`
+- New struct `BackupVaultProperties`
+- New struct `BackupVaultsList`
+- New struct `BackupsList`
+- New struct `BackupsMigrationRequest`
+- New struct `EncryptionMigrationRequest`
+- New struct `RegionInfoResource`
+- New struct `RegionInfosList`
+- New struct `RemotePath`
+- New struct `VolumeBackupProperties`
+- New field `IsMultiAdEnabled`, `NfsV4IDDomain` in struct `AccountProperties`
+- New field `RemotePath` in struct `ReplicationObject`
+- New field `Backup` in struct `VolumePatchPropertiesDataProtection`
+- New field `InheritedSizeInBytes` in struct `VolumeProperties`
+- New field `Backup` in struct `VolumePropertiesDataProtection`
+
+
+## 5.1.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 5.0.0 (2023-10-27)
+### Breaking Changes
+
+- Enum `BackupType` has been removed
+- Function `NewAccountBackupsClient` has been removed
+- Function `*AccountBackupsClient.BeginDelete` has been removed
+- Function `*AccountBackupsClient.Get` has been removed
+- Function `*AccountBackupsClient.NewListPager` has been removed
+- Function `*BackupsClient.BeginCreate` has been removed
+- Function `*BackupsClient.BeginDelete` has been removed
+- Function `*BackupsClient.Get` has been removed
+- Function `*BackupsClient.GetStatus` has been removed
+- Function `*BackupsClient.NewListPager` has been removed
+- Function `*BackupsClient.BeginRestoreFiles` has been removed
+- Function `*BackupsClient.BeginUpdate` has been removed
+- Function `*ClientFactory.NewAccountBackupsClient` has been removed
+- Struct `Backup` has been removed
+- Struct `BackupPatch` has been removed
+- Struct `BackupProperties` has been removed
+- Struct `BackupRestoreFiles` has been removed
+- Struct `BackupStatus` has been removed
+- Struct `BackupsList` has been removed
+- Struct `VolumeBackupProperties` has been removed
+- Field `Backup` of struct `VolumePatchPropertiesDataProtection` has been removed
+- Field `Backup` of struct `VolumePropertiesDataProtection` has been removed
+
+### Features Added
+
+- New value `ApplicationTypeORACLE` added to enum type `ApplicationType`
+- New value `NetworkFeaturesBasicStandard`, `NetworkFeaturesStandardBasic` added to enum type `NetworkFeatures`
+- New enum type `CoolAccessRetrievalPolicy` with values `CoolAccessRetrievalPolicyDefault`, `CoolAccessRetrievalPolicyNever`, `CoolAccessRetrievalPolicyOnRead`
+- New enum type `NetworkSiblingSetProvisioningState` with values `NetworkSiblingSetProvisioningStateCanceled`, `NetworkSiblingSetProvisioningStateFailed`, `NetworkSiblingSetProvisioningStateSucceeded`, `NetworkSiblingSetProvisioningStateUpdating`
+- New function `*ResourceClient.QueryNetworkSiblingSet(context.Context, string, QueryNetworkSiblingSetRequest, *ResourceClientQueryNetworkSiblingSetOptions) (ResourceClientQueryNetworkSiblingSetResponse, error)`
+- New function `*ResourceClient.BeginUpdateNetworkSiblingSet(context.Context, string, UpdateNetworkSiblingSetRequest, *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[ResourceClientUpdateNetworkSiblingSetResponse], error)`
+- New function `*VolumesClient.BeginPopulateAvailabilityZone(context.Context, string, string, string, string, *VolumesClientBeginPopulateAvailabilityZoneOptions) (*runtime.Poller[VolumesClientPopulateAvailabilityZoneResponse], error)`
+- New struct `NetworkSiblingSet`
+- New struct `NicInfo`
+- New struct `QueryNetworkSiblingSetRequest`
+- New struct `UpdateNetworkSiblingSetRequest`
+- New field `Zones` in struct `VolumeGroupVolumeProperties`
+- New field `CoolAccessRetrievalPolicy`, `SmbAccessBasedEnumeration`, `SmbNonBrowsable` in struct `VolumePatchProperties`
+- New field `CoolAccessRetrievalPolicy` in struct `VolumeProperties`
+
+
 ## 4.1.0 (2023-07-28)
 ### Features Added
 

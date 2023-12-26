@@ -32,7 +32,7 @@ type ResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,12 +46,16 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckNameAvailability - Check if an IoT hub name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - operationInputs - Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
 //   - options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
 //     method.
 func (client *ResourceClient) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs, options *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, operationInputs, options)
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
@@ -80,7 +84,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, operationInputs); err != nil {
@@ -101,7 +105,7 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // CreateEventHubConsumerGroup - Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - eventHubEndpointName - The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -111,6 +115,10 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 //     method.
 func (client *ResourceClient) CreateEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, consumerGroupBody EventHubConsumerGroupBodyDescription, options *ResourceClientCreateEventHubConsumerGroupOptions) (ResourceClientCreateEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.CreateEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, options)
 	if err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
@@ -155,7 +163,7 @@ func (client *ResourceClient) createEventHubConsumerGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, consumerGroupBody); err != nil {
@@ -175,10 +183,11 @@ func (client *ResourceClient) createEventHubConsumerGroupHandleResponse(resp *ht
 
 // BeginCreateOrUpdate - Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve
 // the IoT hub metadata and security metadata, and then combine them with the modified values in a new
-// body to update the IoT hub.
+// body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback
+// to default, which may lead to unexpected behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - iotHubDescription - The IoT hub metadata and security metadata.
@@ -190,21 +199,30 @@ func (client *ResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the
 // IoT hub metadata and security metadata, and then combine them with the modified values in a new
-// body to update the IoT hub.
+// body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback
+// to default, which may lead to unexpected behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, iotHubDescription, options)
 	if err != nil {
 		return nil, err
@@ -240,7 +258,7 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -255,7 +273,7 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientBeginDeleteOptions contains the optional parameters for the ResourceClient.BeginDelete method.
@@ -265,19 +283,27 @@ func (client *ResourceClient) BeginDelete(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Delete an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -313,7 +339,7 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +348,7 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceG
 // DeleteEventHubConsumerGroup - Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - eventHubEndpointName - The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -331,6 +357,10 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceG
 //     method.
 func (client *ResourceClient) DeleteEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientDeleteEventHubConsumerGroupOptions) (ResourceClientDeleteEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.DeleteEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
 	if err != nil {
 		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
@@ -374,7 +404,7 @@ func (client *ResourceClient) deleteEventHubConsumerGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,13 +415,17 @@ func (client *ResourceClient) deleteEventHubConsumerGroupCreateRequest(ctx conte
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - exportDevicesParameters - The parameters that specify the export devices operation.
 //   - options - ResourceClientExportDevicesOptions contains the optional parameters for the ResourceClient.ExportDevices method.
 func (client *ResourceClient) ExportDevices(ctx context.Context, resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest, options *ResourceClientExportDevicesOptions) (ResourceClientExportDevicesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.ExportDevices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportDevicesCreateRequest(ctx, resourceGroupName, resourceName, exportDevicesParameters, options)
 	if err != nil {
 		return ResourceClientExportDevicesResponse{}, err
@@ -428,7 +462,7 @@ func (client *ResourceClient) exportDevicesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, exportDevicesParameters); err != nil {
@@ -449,12 +483,16 @@ func (client *ResourceClient) exportDevicesHandleResponse(resp *http.Response) (
 // Get - Get the non-security related metadata of an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetOptions contains the optional parameters for the ResourceClient.Get method.
 func (client *ResourceClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetOptions) (ResourceClientGetResponse, error) {
 	var err error
+	const operationName = "ResourceClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ResourceClientGetResponse{}, err
@@ -491,7 +529,7 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -508,7 +546,7 @@ func (client *ResourceClient) getHandleResponse(resp *http.Response) (ResourceCl
 
 // NewGetEndpointHealthPager - Get the health for routing endpoints.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - options - ResourceClientGetEndpointHealthOptions contains the optional parameters for the ResourceClient.NewGetEndpointHealthPager
 //     method.
 func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string, iotHubName string, options *ResourceClientGetEndpointHealthOptions) *runtime.Pager[ResourceClientGetEndpointHealthResponse] {
@@ -517,25 +555,20 @@ func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetEndpointHealthResponse) (ResourceClientGetEndpointHealthResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetEndpointHealthPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetEndpointHealthResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetEndpointHealthResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetEndpointHealthResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getEndpointHealthHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -559,7 +592,7 @@ func (client *ResourceClient) getEndpointHealthCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -577,7 +610,7 @@ func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Respons
 // GetEventHubConsumerGroup - Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - eventHubEndpointName - The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -586,6 +619,10 @@ func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Respons
 //     method.
 func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientGetEventHubConsumerGroupOptions) (ResourceClientGetEventHubConsumerGroupResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
 	if err != nil {
 		return ResourceClientGetEventHubConsumerGroupResponse{}, err
@@ -630,7 +667,7 @@ func (client *ResourceClient) getEventHubConsumerGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -648,13 +685,17 @@ func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.
 // GetJob - Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - jobID - The job identifier.
 //   - options - ResourceClientGetJobOptions contains the optional parameters for the ResourceClient.GetJob method.
 func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName string, resourceName string, jobID string, options *ResourceClientGetJobOptions) (ResourceClientGetJobResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getJobCreateRequest(ctx, resourceGroupName, resourceName, jobID, options)
 	if err != nil {
 		return ResourceClientGetJobResponse{}, err
@@ -695,7 +736,7 @@ func (client *ResourceClient) getJobCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -713,7 +754,7 @@ func (client *ResourceClient) getJobHandleResponse(resp *http.Response) (Resourc
 // GetKeysForKeyName - Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - keyName - The name of the shared access policy.
@@ -721,6 +762,10 @@ func (client *ResourceClient) getJobHandleResponse(resp *http.Response) (Resourc
 //     method.
 func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGroupName string, resourceName string, keyName string, options *ResourceClientGetKeysForKeyNameOptions) (ResourceClientGetKeysForKeyNameResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetKeysForKeyName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getKeysForKeyNameCreateRequest(ctx, resourceGroupName, resourceName, keyName, options)
 	if err != nil {
 		return ResourceClientGetKeysForKeyNameResponse{}, err
@@ -761,7 +806,7 @@ func (client *ResourceClient) getKeysForKeyNameCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -778,7 +823,7 @@ func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Respons
 
 // NewGetQuotaMetricsPager - Get the quota metrics for an IoT hub.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetQuotaMetricsOptions contains the optional parameters for the ResourceClient.NewGetQuotaMetricsPager
@@ -789,25 +834,20 @@ func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetQuotaMetricsResponse) (ResourceClientGetQuotaMetricsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetQuotaMetricsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetQuotaMetricsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetQuotaMetricsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetQuotaMetricsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getQuotaMetricsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -831,7 +871,7 @@ func (client *ResourceClient) getQuotaMetricsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -849,12 +889,16 @@ func (client *ResourceClient) getQuotaMetricsHandleResponse(resp *http.Response)
 // GetStats - Get the statistics from an IoT hub.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetStatsOptions contains the optional parameters for the ResourceClient.GetStats method.
 func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetStatsOptions) (ResourceClientGetStatsResponse, error) {
 	var err error
+	const operationName = "ResourceClient.GetStats"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getStatsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ResourceClientGetStatsResponse{}, err
@@ -891,7 +935,7 @@ func (client *ResourceClient) getStatsCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -908,7 +952,7 @@ func (client *ResourceClient) getStatsHandleResponse(resp *http.Response) (Resou
 
 // NewGetValidSKUsPager - Get the list of valid SKUs for an IoT hub.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientGetValidSKUsOptions contains the optional parameters for the ResourceClient.NewGetValidSKUsPager
@@ -919,25 +963,20 @@ func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, res
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientGetValidSKUsResponse) (ResourceClientGetValidSKUsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewGetValidSKUsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientGetValidSKUsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientGetValidSKUsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientGetValidSKUsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.getValidSKUsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -961,7 +1000,7 @@ func (client *ResourceClient) getValidSKUsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -981,13 +1020,17 @@ func (client *ResourceClient) getValidSKUsHandleResponse(resp *http.Response) (R
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - importDevicesParameters - The parameters that specify the import devices operation.
 //   - options - ResourceClientImportDevicesOptions contains the optional parameters for the ResourceClient.ImportDevices method.
 func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, options *ResourceClientImportDevicesOptions) (ResourceClientImportDevicesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.ImportDevices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.importDevicesCreateRequest(ctx, resourceGroupName, resourceName, importDevicesParameters, options)
 	if err != nil {
 		return ResourceClientImportDevicesResponse{}, err
@@ -1024,7 +1067,7 @@ func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, importDevicesParameters); err != nil {
@@ -1044,7 +1087,7 @@ func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Get all the IoT hubs in a resource group.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - options - ResourceClientListByResourceGroupOptions contains the optional parameters for the ResourceClient.NewListByResourceGroupPager
 //     method.
@@ -1054,25 +1097,20 @@ func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListByResourceGroupResponse) (ResourceClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1092,7 +1130,7 @@ func (client *ResourceClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1109,7 +1147,7 @@ func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Get all the IoT hubs in a subscription.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - options - ResourceClientListBySubscriptionOptions contains the optional parameters for the ResourceClient.NewListBySubscriptionPager
 //     method.
 func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClientListBySubscriptionOptions) *runtime.Pager[ResourceClientListBySubscriptionResponse] {
@@ -1118,25 +1156,20 @@ func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClient
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListBySubscriptionResponse) (ResourceClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1152,7 +1185,7 @@ func (client *ResourceClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1170,7 +1203,7 @@ func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Respon
 // NewListEventHubConsumerGroupsPager - Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint
 // in an IoT hub.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - eventHubEndpointName - The name of the Event Hub-compatible endpoint.
@@ -1182,25 +1215,20 @@ func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListEventHubConsumerGroupsResponse) (ResourceClientListEventHubConsumerGroupsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListEventHubConsumerGroupsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListEventHubConsumerGroupsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListEventHubConsumerGroupsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListEventHubConsumerGroupsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listEventHubConsumerGroupsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1228,7 +1256,7 @@ func (client *ResourceClient) listEventHubConsumerGroupsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1245,7 +1273,7 @@ func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *htt
 
 // NewListJobsPager - Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientListJobsOptions contains the optional parameters for the ResourceClient.NewListJobsPager method.
@@ -1255,25 +1283,20 @@ func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListJobsResponse) (ResourceClientListJobsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListJobsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListJobsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListJobsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListJobsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listJobsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1297,7 +1320,7 @@ func (client *ResourceClient) listJobsCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1314,7 +1337,7 @@ func (client *ResourceClient) listJobsHandleResponse(resp *http.Response) (Resou
 
 // NewListKeysPager - Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - ResourceClientListKeysOptions contains the optional parameters for the ResourceClient.NewListKeysPager method.
@@ -1324,25 +1347,20 @@ func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ResourceClientListKeysResponse) (ResourceClientListKeysResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceClient.NewListKeysPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return ResourceClientListKeysResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceClientListKeysResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ResourceClientListKeysResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listKeysHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1366,7 +1384,7 @@ func (client *ResourceClient) listKeysCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1384,13 +1402,17 @@ func (client *ResourceClient) listKeysHandleResponse(resp *http.Response) (Resou
 // TestAllRoutes - Test all routes configured in this Iot Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - iotHubName - IotHub to be tested
 //   - resourceGroupName - resource group which Iot Hub belongs to
 //   - input - Input for testing all routes
 //   - options - ResourceClientTestAllRoutesOptions contains the optional parameters for the ResourceClient.TestAllRoutes method.
 func (client *ResourceClient) TestAllRoutes(ctx context.Context, iotHubName string, resourceGroupName string, input TestAllRoutesInput, options *ResourceClientTestAllRoutesOptions) (ResourceClientTestAllRoutesResponse, error) {
 	var err error
+	const operationName = "ResourceClient.TestAllRoutes"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.testAllRoutesCreateRequest(ctx, iotHubName, resourceGroupName, input, options)
 	if err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
@@ -1427,7 +1449,7 @@ func (client *ResourceClient) testAllRoutesCreateRequest(ctx context.Context, io
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -1448,13 +1470,17 @@ func (client *ResourceClient) testAllRoutesHandleResponse(resp *http.Response) (
 // TestRoute - Test the new route for this Iot Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - iotHubName - IotHub to be tested
 //   - resourceGroupName - resource group which Iot Hub belongs to
 //   - input - Route that needs to be tested
 //   - options - ResourceClientTestRouteOptions contains the optional parameters for the ResourceClient.TestRoute method.
 func (client *ResourceClient) TestRoute(ctx context.Context, iotHubName string, resourceGroupName string, input TestRouteInput, options *ResourceClientTestRouteOptions) (ResourceClientTestRouteResponse, error) {
 	var err error
+	const operationName = "ResourceClient.TestRoute"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.testRouteCreateRequest(ctx, iotHubName, resourceGroupName, input, options)
 	if err != nil {
 		return ResourceClientTestRouteResponse{}, err
@@ -1491,7 +1517,7 @@ func (client *ResourceClient) testRouteCreateRequest(ctx context.Context, iotHub
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -1512,7 +1538,7 @@ func (client *ResourceClient) testRouteHandleResponse(resp *http.Response) (Reso
 // BeginUpdate - Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - Resource group identifier.
 //   - resourceName - Name of iot hub to update.
 //   - iotHubTags - Updated tag information to set into the iot hub instance.
@@ -1523,19 +1549,27 @@ func (client *ResourceClient) BeginUpdate(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ResourceClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ResourceClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Update - Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 func (client *ResourceClient) update(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ResourceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, iotHubTags, options)
 	if err != nil {
 		return nil, err
@@ -1571,7 +1605,7 @@ func (client *ResourceClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, iotHubTags); err != nil {

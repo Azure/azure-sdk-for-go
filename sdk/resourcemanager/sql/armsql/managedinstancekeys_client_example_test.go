@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyList.json
 func ExampleManagedInstanceKeysClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleManagedInstanceKeysClient_NewListByInstancePager() {
 		// 			Kind: to.Ptr("azurekeyvault"),
 		// 			Properties: &armsql.ManagedInstanceKeyProperties{
 		// 				AutoRotationEnabled: to.Ptr(false),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 		// 				Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 		// 			},
 		// 		},
@@ -60,7 +60,7 @@ func ExampleManagedInstanceKeysClient_NewListByInstancePager() {
 		// 			Kind: to.Ptr("azurekeyvault"),
 		// 			Properties: &armsql.ManagedInstanceKeyProperties{
 		// 				AutoRotationEnabled: to.Ptr(false),
-		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00Z"); return t}()),
+		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-15T00:00:00.000Z"); return t}()),
 		// 				Thumbprint: to.Ptr("AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBB"),
 		// 			},
 		// 		},
@@ -76,7 +76,7 @@ func ExampleManagedInstanceKeysClient_NewListByInstancePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyGet.json
 func ExampleManagedInstanceKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,13 +101,13 @@ func ExampleManagedInstanceKeysClient_Get() {
 	// 	Kind: to.Ptr("azurekeyvault"),
 	// 	Properties: &armsql.ManagedInstanceKeyProperties{
 	// 		AutoRotationEnabled: to.Ptr(false),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-01T00:00:00Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-01T00:00:00.000Z"); return t}()),
 	// 		Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyCreateOrUpdate.json
 func ExampleManagedInstanceKeysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,13 +141,13 @@ func ExampleManagedInstanceKeysClient_BeginCreateOrUpdate() {
 	// 	Kind: to.Ptr("azurekeyvault"),
 	// 	Properties: &armsql.ManagedInstanceKeyProperties{
 	// 		AutoRotationEnabled: to.Ptr(false),
-	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-01T00:00:00Z"); return t}()),
+	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-01T00:00:00.000Z"); return t}()),
 	// 		Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedInstanceKeyDelete.json
 func ExampleManagedInstanceKeysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

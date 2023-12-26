@@ -1,5 +1,57 @@
 # Release History
 
+## 0.5.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 0.4.0 (2023-10-27)
+### Breaking Changes
+
+- Type of `SourceCreationData.CreateSource` has been changed from `*string` to `*VolumeCreateOption`
+- Type of `VirtualNetworkRule.Action` has been changed from `*string` to `*Action`
+- Enum `State` has been removed
+- Field `SourceURI` of struct `SourceCreationData` has been removed
+- Field `State` of struct `VirtualNetworkRule` has been removed
+
+### Features Added
+
+- New value `EncryptionTypeEncryptionAtRestWithCustomerManagedKey` added to enum type `EncryptionType`
+- New enum type `Action` with values `ActionAllow`
+- New enum type `IdentityType` with values `IdentityTypeNone`, `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New enum type `VolumeCreateOption` with values `VolumeCreateOptionDisk`, `VolumeCreateOptionDiskRestorePoint`, `VolumeCreateOptionDiskSnapshot`, `VolumeCreateOptionNone`, `VolumeCreateOptionVolumeSnapshot`
+- New enum type `XMSDeleteSnapshots` with values `XMSDeleteSnapshotsFalse`, `XMSDeleteSnapshotsTrue`
+- New enum type `XMSForceDelete` with values `XMSForceDeleteFalse`, `XMSForceDeleteTrue`
+- New function `*ClientFactory.NewVolumeSnapshotsClient() *VolumeSnapshotsClient`
+- New function `NewVolumeSnapshotsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*VolumeSnapshotsClient, error)`
+- New function `*VolumeSnapshotsClient.BeginCreate(context.Context, string, string, string, string, Snapshot, *VolumeSnapshotsClientBeginCreateOptions) (*runtime.Poller[VolumeSnapshotsClientCreateResponse], error)`
+- New function `*VolumeSnapshotsClient.BeginDelete(context.Context, string, string, string, string, *VolumeSnapshotsClientBeginDeleteOptions) (*runtime.Poller[VolumeSnapshotsClientDeleteResponse], error)`
+- New function `*VolumeSnapshotsClient.Get(context.Context, string, string, string, string, *VolumeSnapshotsClientGetOptions) (VolumeSnapshotsClientGetResponse, error)`
+- New function `*VolumeSnapshotsClient.NewListByVolumeGroupPager(string, string, string, *VolumeSnapshotsClientListByVolumeGroupOptions) *runtime.Pager[VolumeSnapshotsClientListByVolumeGroupResponse]`
+- New struct `EncryptionIdentity`
+- New struct `EncryptionProperties`
+- New struct `Identity`
+- New struct `KeyVaultProperties`
+- New struct `ManagedByInfo`
+- New struct `Snapshot`
+- New struct `SnapshotCreationData`
+- New struct `SnapshotList`
+- New struct `SnapshotProperties`
+- New struct `UserAssignedIdentity`
+- New field `PublicNetworkAccess` in struct `Properties`
+- New field `SourceID` in struct `SourceCreationData`
+- New field `PublicNetworkAccess` in struct `UpdateProperties`
+- New field `Identity` in struct `VolumeGroup`
+- New field `EncryptionProperties` in struct `VolumeGroupProperties`
+- New field `Identity` in struct `VolumeGroupUpdate`
+- New field `EncryptionProperties` in struct `VolumeGroupUpdateProperties`
+- New field `ManagedBy`, `ProvisioningState` in struct `VolumeProperties`
+- New field `ManagedBy` in struct `VolumeUpdateProperties`
+- New field `XMSDeleteSnapshots`, `XMSForceDelete` in struct `VolumesClientBeginDeleteOptions`
+
+
 ## 0.3.0 (2023-07-28)
 ### Breaking Changes
 

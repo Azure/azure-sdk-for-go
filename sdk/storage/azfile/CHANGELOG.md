@@ -1,6 +1,7 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+
+## 1.1.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +10,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 1.1.1 (2023-11-15)
+
+### Bugs Fixed
+
+* Fixed a bug where Optional fields which were mandatory earlier create a failure when passed an older service version
+* Made SourceContentCRC64 header as optional. Changed the type from uint64 to a generic interface implementation. 
+  These changes impact: `file.UploadRangeFromURL()`
+
+### Other Changes
+
+* Updated azcore version to `1.9.0` and azidentity version to `1.4.0`.
+
+## 1.1.0 (2023-10-11)
+
+### Features Added
+
+* Updated service version to `2022-11-02`.
+
+### Bugs Fixed
+
+* Fixed a bug where the `x-ms-file-attributes` header could be set to contain invalid trailing or leading | characters.
 
 ## 1.1.0-beta.1 (2023-09-12)
 

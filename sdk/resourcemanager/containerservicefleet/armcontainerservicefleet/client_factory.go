@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,21 +37,31 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewFleetMembersClient creates a new instance of FleetMembersClient.
 func (c *ClientFactory) NewFleetMembersClient() *FleetMembersClient {
 	subClient, _ := NewFleetMembersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewFleetUpdateStrategiesClient creates a new instance of FleetUpdateStrategiesClient.
+func (c *ClientFactory) NewFleetUpdateStrategiesClient() *FleetUpdateStrategiesClient {
+	subClient, _ := NewFleetUpdateStrategiesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewFleetsClient creates a new instance of FleetsClient.
 func (c *ClientFactory) NewFleetsClient() *FleetsClient {
 	subClient, _ := NewFleetsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewUpdateRunsClient creates a new instance of UpdateRunsClient.
 func (c *ClientFactory) NewUpdateRunsClient() *UpdateRunsClient {
 	subClient, _ := NewUpdateRunsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -186,7 +186,7 @@ type ReceiveMessagesOptions struct {
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
 // This function will block until at least one message is received or until the ctx is cancelled.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()
 	isReceiving := r.receiving
@@ -216,7 +216,7 @@ type ReceiveDeferredMessagesOptions struct {
 }
 
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
@@ -251,12 +251,14 @@ type PeekMessagesOptions struct {
 //
 // The Receiver stores the last peeked sequence number internally, and will use it as the
 // start location for the next PeekMessages() call. You can override this behavior by passing an
-// explicit sequence number in PeekMessagesOptions.FromSequenceNumber.
+// explicit sequence number in [azservicebus.PeekMessagesOptions.FromSequenceNumber].
 //
-// Messages that are peeked do not have lock tokens, so settlement methods
-// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
-// will not work with them.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// Messages that are peeked are not locked, so settlement methods like [Receiver.CompleteMessage],
+// [Receiver.AbandonMessage], [Receiver.DeferMessage] or [Receiver.DeadLetterMessage] will not work with them.
+//
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
+//
+// For more information about peeking/message-browsing see https://aka.ms/azsdk/servicebus/message-browsing
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
@@ -298,7 +300,7 @@ type RenewMessageLockOptions struct {
 }
 
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.RawAMQPMessage.linkName, []amqp.UUID{
@@ -328,7 +330,7 @@ func (r *Receiver) Close(ctx context.Context) error {
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
 // This function can only be used when the Receiver has been opened with ReceiveModePeekLock.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return r.settler.CompleteMessage(ctx, message, options)
 }
@@ -337,7 +339,7 @@ func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage
 // This will increment its delivery count, and potentially cause it to be dead-lettered
 // depending on your queue or subscription's configuration.
 // This function can only be used when the Receiver has been opened with `ReceiveModePeekLock`.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
 	return r.settler.AbandonMessage(ctx, message, options)
 }
@@ -345,7 +347,7 @@ func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage,
 // DeferMessage will cause a message to be deferred. Deferred messages can be received using
 // `Receiver.ReceiveDeferredMessages`.
 // This function can only be used when the Receiver has been opened with `ReceiveModePeekLock`.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
 	return r.settler.DeferMessage(ctx, message, options)
 }
@@ -354,7 +356,7 @@ func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, o
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiverForQueue()`
 // or `Client.NewReceiverForSubscription()` using the `ReceiverOptions.SubQueue` option.
 // This function can only be used when the Receiver has been opened with `ReceiveModePeekLock`.
-// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
+// If the operation fails it can return an [*azservicebus.Error] type if the failure is actionable.
 func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return r.settler.DeadLetterMessage(ctx, message, options)
 }

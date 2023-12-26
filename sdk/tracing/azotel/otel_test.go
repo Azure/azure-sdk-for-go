@@ -28,8 +28,10 @@ func TestNewTracingProvider(t *testing.T) {
 
 	otelTP := tracesdk.NewTracerProvider(tracesdk.WithBatcher(exporter))
 
-	client, err := azcore.NewClient("azotel.TestClient", internal.Version, azruntime.PipelineOptions{
-		TracingNamespace: "TestNewTracingProvider",
+	client, err := azcore.NewClient("azotel", internal.Version, azruntime.PipelineOptions{
+		Tracing: azruntime.TracingOptions{
+			Namespace: "TestNewTracingProvider",
+		},
 	}, &azcore.ClientOptions{
 		TracingProvider: NewTracingProvider(otelTP, nil),
 	})
@@ -71,7 +73,7 @@ func TestConvertSpan(t *testing.T) {
 	assert.EqualValues(t, eventName, ts.eventName)
 	require.Len(t, ts.eventOptions, 1)
 
-	span.End(nil)
+	span.End()
 	assert.True(t, ts.endCalled)
 
 	attr := tracing.Attribute{

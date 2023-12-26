@@ -1,5 +1,21 @@
 # Release History
 
+## 2.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.1.0 (2023-09-22)
+### Features Added
+
+- New struct `PostBuildDefinition`
+- New struct `SubstituteFromDefinition`
+- New field `ReconciliationWaitDuration`, `WaitForReconciliation` in struct `FluxConfigurationProperties`
+- New field `PostBuild`, `Wait` in struct `KustomizationDefinition`
+- New field `PostBuild`, `Wait` in struct `KustomizationPatchDefinition`
+
+
 ## 2.0.0 (2023-05-26)
 ### Breaking Changes
 

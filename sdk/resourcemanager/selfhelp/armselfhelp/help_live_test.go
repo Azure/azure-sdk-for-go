@@ -15,9 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -39,9 +39,9 @@ func (testsuite *HelpTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 	testsuite.diagnosticsResourceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "diagnosticna", 18, false)
-	testsuite.location = testutil.GetEnv("LOCATION", "eastus")
-	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
-	testsuite.subscriptionId = testutil.GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
@@ -124,15 +124,15 @@ func (testsuite *HelpTestSuite) TestDiagnostics() {
 	virtualNetworkId = deploymentExtend.Properties.Outputs.(map[string]interface{})["virtualNetworkId"].(map[string]interface{})["value"].(string)
 
 	// From step Diagnostics_CheckNameAvailability
-	fmt.Println("Call operation: Diagnostics_CheckNameAvailability")
+	// fmt.Println("Call operation: Diagnostics_CheckNameAvailability")
 	diagnosticsClient, err := armselfhelp.NewDiagnosticsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = diagnosticsClient.CheckNameAvailability(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
-		Name: to.Ptr(testsuite.diagnosticsResourceName),
-		Type: to.Ptr("Microsoft.Help/diagnostics"),
-	},
-	})
-	testsuite.Require().NoError(err)
+	// _, err = diagnosticsClient.CheckNameAvailability(testsuite.ctx, "subscriptions/"+testsuite.subscriptionId, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	// 	Name: to.Ptr(testsuite.diagnosticsResourceName),
+	// 	Type: to.Ptr("Microsoft.Help/diagnostics"),
+	// },
+	// })
+	// testsuite.Require().NoError(err)
 
 	// From step Diagnostics_Create
 	fmt.Println("Call operation: Diagnostics_Create")

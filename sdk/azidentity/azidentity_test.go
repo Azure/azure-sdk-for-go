@@ -14,16 +14,22 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/cache"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/stretchr/testify/require"
 )
 
 // constants used throughout this package
@@ -75,6 +81,195 @@ func validateX5C(t *testing.T, certs []*x509.Certificate) func(*http.Request) *h
 func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 	for k, v := range vars {
 		t.Setenv(k, v)
+	}
+}
+
+type tokenRequestCountingPolicy struct {
+	count int
+}
+
+func (t *tokenRequestCountingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if strings.HasSuffix(req.Raw().URL.Path, "/oauth2/v2.0/token") {
+		t.count++
+	}
+	return req.Next()
+}
+
+func TestUserAuthentication(t *testing.T) {
+	type authenticater interface {
+		azcore.TokenCredential
+		Authenticate(context.Context, *policy.TokenRequestOptions) (AuthenticationRecord, error)
+	}
+	for _, credential := range []struct {
+		name                    string
+		interactive, recordable bool
+		new                     func(*TokenCachePersistenceOptions, azcore.ClientOptions, AuthenticationRecord, bool) (authenticater, error)
+	}{
+		{
+			name: credNameBrowser,
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+					AuthenticationRecord:           ar,
+					ClientOptions:                  co,
+					DisableAutomaticAuthentication: disableAutoAuth,
+					TokenCachePersistenceOptions:   tcpo,
+				})
+			},
+			interactive: true,
+		},
+		{
+			name: credNameDeviceCode,
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				o := DeviceCodeCredentialOptions{
+					AuthenticationRecord:           ar,
+					ClientOptions:                  co,
+					DisableAutomaticAuthentication: disableAutoAuth,
+					TokenCachePersistenceOptions:   tcpo,
+				}
+				if recording.GetRecordMode() == recording.PlaybackMode {
+					o.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
+				}
+				return NewDeviceCodeCredential(&o)
+			},
+			interactive: true,
+			recordable:  true,
+		},
+		{
+			name: credNameUserPassword,
+			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+				opts := UsernamePasswordCredentialOptions{
+					AuthenticationRecord:         ar,
+					ClientOptions:                co,
+					TokenCachePersistenceOptions: tcpo,
+				}
+				return NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
+			},
+			recordable: true,
+		},
+	} {
+		t.Run("AuthenticateDefaultScope/"+credential.name, func(t *testing.T) {
+			if credential.name == credNameBrowser {
+				t.Skip("the mock STS used in this test can't complete the interactive auth flow")
+			}
+			t.Setenv(azureAuthorityHost, "")
+			customCloud := cloud.Configuration{
+				ActiveDirectoryAuthorityHost: fmt.Sprintf("%s/%s", testHost, fakeTenantID),
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					cloud.ResourceManager: {Audience: "https://localhost"},
+				},
+			}
+			for _, cc := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic, customCloud} {
+				sts := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
+					require.Contains(t, r.FormValue("scope"), cc.Services[cloud.ResourceManager].Audience+defaultSuffix)
+					return nil
+				}}
+
+				co := azcore.ClientOptions{Cloud: cc, Transport: &sts}
+				cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
+				require.NoError(t, err)
+				_, err = cred.Authenticate(context.Background(), nil)
+				require.NoError(t, err)
+
+				os.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
+				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
+				require.NoError(t, err)
+				_, err = cred.Authenticate(context.Background(), nil)
+				if cc.ActiveDirectoryAuthorityHost == customCloud.ActiveDirectoryAuthorityHost {
+					// Authenticate should return an error because it can't map an unknown host to a default scope
+					require.ErrorIs(t, err, errScopeRequired)
+				} else {
+					require.NoError(t, err)
+				}
+			}
+		})
+
+		t.Run("Authenticate_Live_"+credential.name, func(t *testing.T) {
+			switch recording.GetRecordMode() {
+			case recording.LiveMode:
+				if credential.interactive && !runManualTests {
+					t.Skipf("set %s to run this test", azidentityRunManualTests)
+				}
+			case recording.PlaybackMode, recording.RecordingMode:
+				if !credential.recordable {
+					t.Skip("this test can't be recorded")
+				}
+			}
+			co, stop := initRecording(t)
+			defer stop()
+			counter := tokenRequestCountingPolicy{}
+			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
+
+			cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
+			require.NoError(t, err)
+			ar, err := cred.Authenticate(context.Background(), &testTRO)
+			require.NoError(t, err)
+
+			// some fields of the returned AuthenticationRecord should have specific values
+			require.Equal(t, ar.ClientID, developerSignOnClientID)
+			require.Equal(t, ar.Version, supportedAuthRecordVersions[0])
+			// all others should have nonempty values
+			v := reflect.Indirect(reflect.ValueOf(&ar))
+			for _, f := range reflect.VisibleFields(reflect.TypeOf(ar)) {
+				s := v.FieldByIndex(f.Index).Addr().Interface().(*string)
+				require.NotEmpty(t, *s)
+			}
+			require.Equal(t, 1, counter.count)
+		})
+
+		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
+			switch recording.GetRecordMode() {
+			case recording.LiveMode:
+				if credential.interactive && !runManualTests {
+					t.Skipf("set %s to run this test", azidentityRunManualTests)
+				}
+			case recording.PlaybackMode, recording.RecordingMode:
+				if !credential.recordable {
+					t.Skip("this test can't be recorded")
+				}
+			}
+			if runtime.GOOS != "windows" {
+				t.Skip("this test runs only on Windows")
+			}
+			p, err := internal.CacheFilePath(t.Name())
+			require.NoError(t, err)
+			os.Remove(p)
+			co, stop := initRecording(t)
+			defer stop()
+			counter := tokenRequestCountingPolicy{}
+			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
+			tcpo := TokenCachePersistenceOptions{Name: t.Name()}
+
+			cred, err := credential.new(&tcpo, co, AuthenticationRecord{}, true)
+			require.NoError(t, err)
+			record, err := cred.Authenticate(context.Background(), &testTRO)
+			require.NoError(t, err)
+			defer os.Remove(p)
+			tk, err := cred.GetToken(context.Background(), testTRO)
+			require.NoError(t, err)
+			require.Equal(t, 1, counter.count)
+
+			cred2, err := credential.new(&tcpo, co, record, true)
+			require.NoError(t, err)
+			tk2, err := cred2.GetToken(context.Background(), testTRO)
+			require.NoError(t, err)
+			require.Equal(t, tk.Token, tk2.Token)
+		})
+
+		if credential.interactive {
+			t.Run("DisableAutomaticAuthentication/"+credential.name, func(t *testing.T) {
+				cred, err := credential.new(nil, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
+				require.NoError(t, err)
+				_, err = cred.GetToken(context.Background(), testTRO)
+				require.ErrorIs(t, err, ErrAuthenticationRequired)
+				if credential.name != credNameBrowser || runManualTests {
+					_, err = cred.Authenticate(context.Background(), &testTRO)
+					require.NoError(t, err)
+					// silent auth should succeed this time
+					_, err = cred.GetToken(context.Background(), testTRO)
+					require.NoError(t, err)
+				}
+			})
+		}
 	}
 }
 
@@ -223,14 +418,29 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				ctor: func(azcore.ClientOptions) (azcore.TokenCredential, error) {
 					o := AzureCLICredentialOptions{
 						AdditionallyAllowedTenants: test.allowed,
-						tokenProvider: func(ctx context.Context, resource, tenantID string) ([]byte, error) {
-							if tenantID != test.expected {
-								t.Errorf(`unexpected tenantID "%s"`, tenantID)
+						tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+							if tenant != test.expected {
+								t.Errorf(`unexpected tenantID "%s"`, tenant)
 							}
-							return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+							return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
 						},
 					}
 					return NewAzureCLICredential(&o)
+				},
+			},
+			{
+				name: credNameAzureDeveloperCLI,
+				ctor: func(azcore.ClientOptions) (azcore.TokenCredential, error) {
+					o := AzureDeveloperCLICredentialOptions{
+						AdditionallyAllowedTenants: test.allowed,
+						tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+							if tenant != test.expected {
+								t.Errorf("unexpected tenantID %q", tenant)
+							}
+							return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+						},
+					}
+					return NewAzureDeveloperCLICredential(&o)
 				},
 			},
 			{
@@ -404,44 +614,64 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 			})
 		}
-		t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credNameAzureCLI, test.desc), func(t *testing.T) {
-			// mock IMDS failure because managed identity precedes CLI in the chain
-			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.SetResponse(mock.WithStatusCode(400))
-			o := DefaultAzureCredentialOptions{
-				AdditionallyAllowedTenants: test.allowed,
-				ClientOptions:              policy.ClientOptions{Transport: srv},
-			}
-			c, err := NewDefaultAzureCredential(&o)
-			if err != nil {
-				t.Fatal(err)
-			}
-			called := false
-			for _, source := range c.chain.sources {
-				if cli, ok := source.(*AzureCLICredential); ok {
-					cli.opts.tokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
-						called = true
-						if tenantID != test.expected {
-							t.Fatalf(`unexpected tenantID "%s"`, tenantID)
+		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
+			t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credName, test.desc), func(t *testing.T) {
+				typeName := fmt.Sprintf("%T", &AzureCLICredential{})
+				if credName == credNameAzureDeveloperCLI {
+					typeName = fmt.Sprintf("%T", &AzureDeveloperCLICredential{})
+				}
+				called := false
+				verifyTenant := func(tenant string) {
+					called = true
+					if tenant != test.expected {
+						t.Fatalf("unexpected tenant %q", tenant)
+					}
+				}
+
+				// mock IMDS failure because managed identity precedes CLI in the chain
+				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+				defer close()
+				srv.SetResponse(mock.WithStatusCode(400))
+				o := DefaultAzureCredentialOptions{
+					AdditionallyAllowedTenants: test.allowed,
+					ClientOptions:              policy.ClientOptions{Transport: srv},
+				}
+
+				c, err := NewDefaultAzureCredential(&o)
+				if err != nil {
+					t.Fatal(err)
+				}
+				for _, source := range c.chain.sources {
+					if fmt.Sprintf("%T", source) != typeName {
+						continue
+					}
+					switch c := source.(type) {
+					case *AzureCLICredential:
+						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+							verifyTenant(tenant)
+							return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
 						}
-						return mockCLITokenProviderSuccess(ctx, resource, tenantID)
+					case *AzureDeveloperCLICredential:
+						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+							verifyTenant(tenant)
+							return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+						}
+					}
+					if _, err := c.GetToken(context.Background(), tro); err != nil {
+						if test.err {
+							return
+						}
+						t.Fatal(err)
+					} else if test.err {
+						t.Fatal("expected an error")
+					}
+					if !called {
+						t.Fatalf("%s wasn't invoked", credName)
 					}
 					break
 				}
-			}
-			if _, err := c.GetToken(context.Background(), tro); err != nil {
-				if test.err {
-					return
-				}
-				t.Fatal(err)
-			} else if test.err {
-				t.Fatal("expected an error")
-			}
-			if !called {
-				t.Fatal("AzureCLICredential wasn't invoked")
-			}
-		})
+			})
+		}
 	}
 }
 
@@ -557,6 +787,63 @@ func TestClaims(t *testing.T) {
 	}
 }
 
+func TestCLIArgumentValidation(t *testing.T) {
+	invalidRunes := "|';&"
+	for _, test := range []struct {
+		ctor func() (azcore.TokenCredential, error)
+		name string
+	}{
+		{
+			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzureCLICredential(nil)
+			},
+			name: credNameAzureCLI,
+		},
+		{
+			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzureDeveloperCLICredential(nil)
+			},
+			name: credNameAzureDeveloperCLI,
+		},
+	} {
+		t.Run(fmt.Sprintf("%s/scope", test.name), func(t *testing.T) {
+			cred, err := test.ctor()
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, r := range invalidRunes {
+				_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{
+					Scopes: []string{liveTestScope + string(r)},
+				})
+				if err == nil {
+					t.Fatalf("expected an error for a scope containing %q", r)
+				}
+			}
+		})
+		t.Run(fmt.Sprintf("%s/tenant", test.name), func(t *testing.T) {
+			cred, err := test.ctor()
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, r := range invalidRunes {
+				_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{
+					TenantID: fakeTenantID + string(r),
+				})
+				if err == nil {
+					t.Fatalf("expected an error for a tenant containing %q", r)
+				}
+			}
+		})
+	}
+	t.Run(credNameAzureCLI+"/subscription", func(t *testing.T) {
+		for _, r := range invalidRunes {
+			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{Subscription: string(r)}); err == nil {
+				t.Errorf("expected an error for a subscription containing %q", r)
+			}
+		}
+	})
+}
+
 func TestResolveTenant(t *testing.T) {
 	credName := "testcred"
 	defaultTenant := "default-tenant"
@@ -607,6 +894,110 @@ func TestResolveTenant(t *testing.T) {
 				t.Fatalf(`expected "%s", got "%s"`, test.expected, tenant)
 			}
 		})
+	}
+}
+
+func TestTokenCachePersistenceOptions(t *testing.T) {
+	af := filepath.Join(t.TempDir(), t.Name()+credNameWorkloadIdentity)
+	if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {
+		t.Fatal(err)
+	}
+	before := internal.NewCache
+	t.Cleanup(func() { internal.NewCache = before })
+	for _, test := range []struct {
+		desc    string
+		options *TokenCachePersistenceOptions
+		err     error
+	}{
+		{
+			desc: "nil options",
+		},
+		{
+			desc:    "default options",
+			options: &TokenCachePersistenceOptions{},
+		},
+		{
+			desc:    "all options set",
+			options: &TokenCachePersistenceOptions{AllowUnencryptedStorage: true, Name: "name"},
+		},
+	} {
+		internal.NewCache = func(o *internal.TokenCachePersistenceOptions, _ bool) (cache.ExportReplace, error) {
+			if (test.options == nil) != (o == nil) {
+				t.Fatalf("expected %v, got %v", test.options, o)
+			}
+			if test.options != nil {
+				if test.options.AllowUnencryptedStorage != o.AllowUnencryptedStorage {
+					t.Fatalf("expected AllowUnencryptedStorage %v, got %v", test.options.AllowUnencryptedStorage, o.AllowUnencryptedStorage)
+				}
+				if test.options.Name != o.Name {
+					t.Fatalf("expected Name %q, got %q", test.options.Name, o.Name)
+				}
+			}
+			return nil, nil
+		}
+		for _, subtest := range []struct {
+			ctor func(azcore.ClientOptions, *TokenCachePersistenceOptions) (azcore.TokenCredential, error)
+			env  map[string]string
+			name string
+		}{
+			{
+				name: credNameAssertion,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientAssertionCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
+				},
+			},
+			{
+				name: credNameCert,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientCertificateCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientCertificateCredential(fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, &o)
+				},
+			},
+			{
+				name: credNameDeviceCode,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := DeviceCodeCredentialOptions{
+						ClientOptions:                co,
+						TokenCachePersistenceOptions: tco,
+						UserPrompt:                   func(context.Context, DeviceCodeMessage) error { return nil },
+					}
+					return NewDeviceCodeCredential(&o)
+				},
+			},
+			{
+				name: credNameSecret,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientSecretCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &o)
+				},
+			},
+			{
+				name: credNameUserPassword,
+				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := UsernamePasswordCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+					return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
+				},
+			},
+		} {
+			t.Run(fmt.Sprintf("%s/%s", subtest.name, test.desc), func(t *testing.T) {
+				for k, v := range subtest.env {
+					t.Setenv(k, v)
+				}
+				c, err := subtest.ctor(policy.ClientOptions{Transport: &mockSTS{}}, test.options)
+				if err != nil {
+					t.Fatal(err)
+				}
+				_, err = c.GetToken(context.Background(), testTRO)
+				if err != nil {
+					if !errors.Is(err, test.err) {
+						t.Fatalf("expected %v, got %v", test.err, err)
+					}
+				} else if test.err != nil {
+					t.Fatal("expected an error")
+				}
+			})
+		}
 	}
 }
 

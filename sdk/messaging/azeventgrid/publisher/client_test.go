@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -45,13 +46,13 @@ func TestPublishEvent(t *testing.T) {
 
 	t.Run("sas", func(t *testing.T) {
 		sas := generateSAS(vars.EG.Endpoint, vars.EG.Key)
-		client, err := publisher.NewClientWithSAS(vars.EG.Endpoint, sas, newClientOptionsForTest(t, vars.EG))
+		client, err := publisher.NewClientWithSAS(vars.EG.Endpoint, azcore.NewSASCredential(sas), newClientOptionsForTest(t, vars.EG))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
-		client, err := publisher.NewClientWithSharedKeyCredential(vars.EG.Endpoint, vars.EG.Key, newClientOptionsForTest(t, vars.EG))
+		client, err := publisher.NewClientWithSharedKeyCredential(vars.EG.Endpoint, azcore.NewKeyCredential(vars.EG.Key), newClientOptionsForTest(t, vars.EG))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -83,13 +84,13 @@ func TestPublishCloudEvent(t *testing.T) {
 
 	t.Run("sas", func(t *testing.T) {
 		sas := generateSAS(vars.CE.Endpoint, vars.CE.Key)
-		client, err := publisher.NewClientWithSAS(vars.CE.Endpoint, sas, newClientOptionsForTest(t, vars.CE))
+		client, err := publisher.NewClientWithSAS(vars.CE.Endpoint, azcore.NewSASCredential(sas), newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
-		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, vars.CE.Key, newClientOptionsForTest(t, vars.CE))
+		client, err := publisher.NewClientWithSharedKeyCredential(vars.CE.Endpoint, azcore.NewKeyCredential(vars.CE.Key), newClientOptionsForTest(t, vars.CE))
 		require.NoError(t, err)
 		testPublish(t, client)
 	})

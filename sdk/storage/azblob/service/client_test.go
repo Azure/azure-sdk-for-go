@@ -46,6 +46,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *ServiceRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *ServiceRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *ServiceRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -64,6 +72,7 @@ func (s *ServiceUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 type ServiceRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type ServiceUnrecordedTestsSuite struct {
@@ -1169,7 +1178,7 @@ func batchSetup(containerName string, svcClient *service.Client, bb *service.Bat
 		}
 		cntClients = append(cntClients, cntClient)
 
-		bbName := fmt.Sprintf("blockblob%v", i*2)
+		bbName := fmt.Sprintf("block/blob%v", i*2)
 		bbClient := cntClient.NewBlockBlobClient(bbName)
 		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(testcommon.BlockBlobDefaultData)), nil)
 		if err != nil {

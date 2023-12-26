@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_List.json
 func ExampleReplicationJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,12 +48,12 @@ func ExampleReplicationJobsClient_NewListPager() {
 		// 			Properties: &armrecoveryservicessiterecovery.JobProperties{
 		// 				AllowedActions: []*string{
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T12:46:11Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T12:46:11.000Z"); return t}()),
 		// 				Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 		// 				},
 		// 				FriendlyName: to.Ptr("Create replication policy"),
 		// 				ScenarioName: to.Ptr("AddProtectionProfile"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T12:46:04.641851Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T12:46:04.641Z"); return t}()),
 		// 				State: to.Ptr("Succeeded"),
 		// 				StateDescription: to.Ptr("Completed"),
 		// 				TargetInstanceType: to.Ptr("ProtectionProfile"),
@@ -69,12 +69,12 @@ func ExampleReplicationJobsClient_NewListPager() {
 		// 			Properties: &armrecoveryservicessiterecovery.JobProperties{
 		// 				AllowedActions: []*string{
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T14:07:21Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T14:07:21.000Z"); return t}()),
 		// 				Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 		// 				},
 		// 				FriendlyName: to.Ptr("Register the Azure Site Recovery Provider"),
 		// 				ScenarioName: to.Ptr("RegisterDra"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T14:07:19.2784338Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T14:07:19.278Z"); return t}()),
 		// 				State: to.Ptr("Succeeded"),
 		// 				StateDescription: to.Ptr("Completed"),
 		// 				TargetInstanceType: to.Ptr("Server"),
@@ -90,12 +90,12 @@ func ExampleReplicationJobsClient_NewListPager() {
 		// 			Properties: &armrecoveryservicessiterecovery.JobProperties{
 		// 				AllowedActions: []*string{
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T05:56:16Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T05:56:16.000Z"); return t}()),
 		// 				Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 		// 				},
 		// 				FriendlyName: to.Ptr("Create a site"),
 		// 				ScenarioName: to.Ptr("CreateSite"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T05:56:14.569095Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-02T05:56:14.569Z"); return t}()),
 		// 				State: to.Ptr("Succeeded"),
 		// 				StateDescription: to.Ptr("Completed"),
 		// 				TargetInstanceType: to.Ptr("Server"),
@@ -109,7 +109,7 @@ func ExampleReplicationJobsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Get.json
 func ExampleReplicationJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,12 +144,12 @@ func ExampleReplicationJobsClient_Get() {
 	// 			},
 	// 			InstanceType: to.Ptr("AsrJobDetails"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57.000Z"); return t}()),
 	// 		Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 	// 		},
 	// 		FriendlyName: to.Ptr("Delete a recovery plan"),
 	// 		ScenarioName: to.Ptr("DeleteRecoveryPlan"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:56.800358Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:56.800Z"); return t}()),
 	// 		State: to.Ptr("Succeeded"),
 	// 		StateDescription: to.Ptr("Completed"),
 	// 		TargetInstanceType: to.Ptr("RecoveryPlan"),
@@ -163,11 +163,11 @@ func ExampleReplicationJobsClient_Get() {
 	// 				CustomDetails: &armrecoveryservicessiterecovery.ManualActionTaskDetails{
 	// 					InstanceType: to.Ptr("ManualActionTaskDetails"),
 	// 				},
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57.318574Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57.318Z"); return t}()),
 	// 				Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 	// 				},
 	// 				FriendlyName: to.Ptr("Delete a recovery plan task"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57.3029434Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-27T11:25:57.302Z"); return t}()),
 	// 				State: to.Ptr("Succeeded"),
 	// 				StateDescription: to.Ptr("Completed"),
 	// 				TaskID: to.Ptr("763326a2-01c9-4257-b2a1-0aac56465014"),
@@ -177,7 +177,7 @@ func ExampleReplicationJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Cancel.json
 func ExampleReplicationJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	// 		},
 	// 		FriendlyName: to.Ptr("Planned failover"),
 	// 		ScenarioName: to.Ptr("PlannedFailover"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T06:16:06.3235186Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T06:16:06.323Z"); return t}()),
 	// 		State: to.Ptr("Cancelling"),
 	// 		StateDescription: to.Ptr("Cancelling"),
 	// 		TargetInstanceType: to.Ptr("ProtectionEntity"),
@@ -242,7 +242,7 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Restart.json
 func ExampleReplicationJobsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,12 +276,12 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	// 			},
 	// 			InstanceType: to.Ptr("AsrJobDetails"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:14Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:14.000Z"); return t}()),
 	// 		Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 	// 		},
 	// 		FriendlyName: to.Ptr("Restart job"),
 	// 		ScenarioName: to.Ptr("RestartJob"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:12.1320757Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:12.132Z"); return t}()),
 	// 		State: to.Ptr("Succeeded"),
 	// 		StateDescription: to.Ptr("Completed"),
 	// 		TargetInstanceType: to.Ptr("ProtectionEntity"),
@@ -295,11 +295,11 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	// 				CustomDetails: &armrecoveryservicessiterecovery.ManualActionTaskDetails{
 	// 					InstanceType: to.Ptr("ManualActionTaskDetails"),
 	// 				},
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:13.6458467Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:13.645Z"); return t}()),
 	// 				Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 	// 				},
 	// 				FriendlyName: to.Ptr("Restarting job"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:13.5677237Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-03T10:45:13.567Z"); return t}()),
 	// 				State: to.Ptr("Succeeded"),
 	// 				StateDescription: to.Ptr("Completed"),
 	// 				TaskID: to.Ptr("RemediateWfTask"),
@@ -309,7 +309,7 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Resume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Resume.json
 func ExampleReplicationJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleReplicationJobsClient_BeginResume() {
 	// 			},
 	// 			FriendlyName: to.Ptr("Test failover"),
 	// 			ScenarioName: to.Ptr("TestFailover"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-25T09:57:57.0357829Z"); return t}()),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-25T09:57:57.035Z"); return t}()),
 	// 			State: to.Ptr("Suspended"),
 	// 			StateDescription: to.Ptr("WaitingForStopTestFailover"),
 	// 			TargetInstanceType: to.Ptr("ProtectionEntity"),
@@ -394,7 +394,7 @@ func ExampleReplicationJobsClient_BeginResume() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Export.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Export.json
 func ExampleReplicationJobsClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,11 +435,11 @@ func ExampleReplicationJobsClient_BeginExport() {
 	// 			BlobURI: to.Ptr("<blobUri>"),
 	// 			SasToken: to.Ptr("<sasToken>"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-04T14:33:43Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-04T14:33:43.000Z"); return t}()),
 	// 		Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
 	// 		},
 	// 		ScenarioName: to.Ptr("ExportJobs"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-04T14:33:42.2765562Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-04T14:33:42.276Z"); return t}()),
 	// 		State: to.Ptr("Succeeded"),
 	// 		StateDescription: to.Ptr("Completed"),
 	// 		TargetInstanceType: to.Ptr("Other"),

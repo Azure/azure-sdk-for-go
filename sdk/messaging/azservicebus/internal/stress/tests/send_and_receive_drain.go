@@ -13,46 +13,51 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/stress/shared"
 )
 
 func SendAndReceiveDrain(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("SendAndReceiveDrainTest", nil)
-
-	sc.TrackEvent("Start")
-	defer sc.End()
-
-	queueName := strings.ToLower(fmt.Sprintf("queue-%X", time.Now().UnixNano()))
-
-	log.Printf("Creating queue")
-
 	// set a long lock duration to make it obvious when a message is being lost in our
 	// internal buffer or somewhere along the way.
 	// This mimics the scenario mentioned in this issue filed by a customer:
 	// https://github.com/Azure/azure-sdk-for-go/issues/17853
-	lockDuration := "PT5M"
+	const lockDuration = "PT5M"
+
+	const numToSend = 2000
+	const msgPadding = 4096
+
+	sc := shared.MustCreateStressContext("SendAndReceiveDrainTest", nil)
+	defer sc.End()
+
+	queueName := strings.ToLower(fmt.Sprintf("queue-%X", time.Now().UnixNano()))
+	sc.Start(queueName, map[string]string{
+		"LockDuration":   lockDuration,
+		"NumToSend":      fmt.Sprintf("%d", numToSend),
+		"MessagePadding": fmt.Sprintf("%d", msgPadding),
+	})
+
+	log.Printf("Creating queue")
 
 	adminClient := shared.MustCreateAutoDeletingQueue(sc, queueName, &admin.QueueProperties{
-		LockDuration: &lockDuration,
+		LockDuration: to.Ptr(lockDuration),
 	})
 
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	sender, err := client.NewSender(queueName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
-	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, nil)
 	sc.PanicOnError("Failed to create receiver", err)
 
 	for i := 0; i < 1000; i++ {
 		log.Printf("=====> Round [%d] <====", i)
 
-		const numToSend = 2000
-		const bodyLen = 4096
-		shared.MustGenerateMessages(sc, sender, numToSend, bodyLen, nil)
+		shared.MustGenerateMessages(sc, sender, numToSend, msgPadding)
 
 		receivedIds := sync.Map{}
 		var totalCompleted int64
@@ -86,8 +91,8 @@ func SendAndReceiveDrain(remainingArgs []string) {
 				go func(m *azservicebus.ReceivedMessage) {
 					defer wg.Done()
 
-					if len(m.Body) != bodyLen {
-						sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", bodyLen, len(m.Body)))
+					if len(m.Body) != msgPadding {
+						sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", msgPadding, len(m.Body)))
 					}
 
 					if err := receiver.CompleteMessage(sc.Context, m, nil); err != nil {

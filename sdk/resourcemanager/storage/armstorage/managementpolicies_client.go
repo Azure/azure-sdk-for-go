@@ -32,7 +32,7 @@ type ManagementPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagementPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewManagementPoliciesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesClientCreateOrUpdateOptions) (ManagementPoliciesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ManagementPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
 		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
@@ -126,6 +130,10 @@ func (client *ManagementPoliciesClient) createOrUpdateHandleResponse(resp *http.
 //     method.
 func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientDeleteOptions) (ManagementPoliciesClientDeleteResponse, error) {
 	var err error
+	const operationName = "ManagementPoliciesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return ManagementPoliciesClientDeleteResponse{}, err
@@ -181,6 +189,10 @@ func (client *ManagementPoliciesClient) deleteCreateRequest(ctx context.Context,
 //   - options - ManagementPoliciesClientGetOptions contains the optional parameters for the ManagementPoliciesClient.Get method.
 func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesClientGetOptions) (ManagementPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "ManagementPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return ManagementPoliciesClientGetResponse{}, err

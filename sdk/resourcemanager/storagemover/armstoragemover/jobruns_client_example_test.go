@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/JobRuns_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/JobRuns_List.json
 func ExampleJobRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.107Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -63,7 +63,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.107Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
@@ -89,7 +89,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.107Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -98,7 +98,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.107Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
@@ -124,7 +124,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				BytesScanned: to.Ptr[int64](49951162777600),
 		// 				BytesTransferred: to.Ptr[int64](1995116277760),
 		// 				BytesUnsupported: to.Ptr[int64](495116277760),
-		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 				ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.107Z"); return t}()),
 		// 				ItemsExcluded: to.Ptr[int64](50),
 		// 				ItemsFailed: to.Ptr[int64](3),
 		// 				ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -133,7 +133,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 				ItemsUnsupported: to.Ptr[int64](27),
 		// 				JobDefinitionProperties: map[string]any{
 		// 				},
-		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 				LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.107Z"); return t}()),
 		// 				ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 				SourceName: to.Ptr("sourceEndpoint"),
 		// 				SourceProperties: map[string]any{
@@ -150,7 +150,7 @@ func ExampleJobRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/storagemover/resource-manager/Microsoft.StorageMover/preview/2023-07-01-preview/examples/JobRuns_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/JobRuns_Get.json
 func ExampleJobRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleJobRunsClient_Get() {
 	// 		BytesScanned: to.Ptr[int64](49951162777600),
 	// 		BytesTransferred: to.Ptr[int64](1995116277760),
 	// 		BytesUnsupported: to.Ptr[int64](495116277760),
-	// 		ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+	// 		ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.107Z"); return t}()),
 	// 		ItemsExcluded: to.Ptr[int64](50),
 	// 		ItemsFailed: to.Ptr[int64](3),
 	// 		ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -190,7 +190,7 @@ func ExampleJobRunsClient_Get() {
 	// 		ItemsUnsupported: to.Ptr[int64](27),
 	// 		JobDefinitionProperties: map[string]any{
 	// 		},
-	// 		LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+	// 		LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.107Z"); return t}()),
 	// 		ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 	// 		SourceName: to.Ptr("sourceEndpoint"),
 	// 		SourceProperties: map[string]any{

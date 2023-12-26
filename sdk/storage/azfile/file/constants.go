@@ -7,6 +7,7 @@
 package file
 
 import (
+	"encoding/binary"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
@@ -70,6 +71,25 @@ const (
 func PossibleRangeWriteTypeValues() []RangeWriteType {
 	return generated.PossibleFileRangeWriteTypeValues()
 }
+
+// SourceContentValidationType abstracts mechanisms used to validate source content
+type SourceContentValidationType interface {
+	apply(generated.SourceContentSetter) error
+	notPubliclyImplementable()
+}
+
+// SourceContentValidationTypeCRC64 is a SourceContentValidationType used to provide a precomputed CRC64.
+type SourceContentValidationTypeCRC64 uint64
+
+// Apply implements the SourceContentValidationType interface for type SourceContentValidationTypeCRC64.
+func (s SourceContentValidationTypeCRC64) apply(cfg generated.SourceContentSetter) error {
+	buf := make([]byte, 8)
+	binary.LittleEndian.PutUint64(buf, uint64(s))
+	cfg.SetSourceContentCRC64(buf)
+	return nil
+}
+
+func (SourceContentValidationTypeCRC64) notPubliclyImplementable() {}
 
 // TransferValidationType abstracts the various mechanisms used to verify a transfer.
 type TransferValidationType = exported.TransferValidationType

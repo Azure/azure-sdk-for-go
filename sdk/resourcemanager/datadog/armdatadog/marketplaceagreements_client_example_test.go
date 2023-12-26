@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MarketplaceAgreements_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c280892951a9e45c059132c05aace25a9c752d48/specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_List.json
 func ExampleMarketplaceAgreementsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 				PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 		// 				Product: to.Ptr("offid1"),
 		// 				Publisher: to.Ptr("pubid1"),
-		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t}()),
+		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.121Z"); return t}()),
 		// 				Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 			},
 		// 		},
@@ -67,7 +67,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 		// 				PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink2"),
 		// 				Product: to.Ptr("offid2"),
 		// 				Publisher: to.Ptr("pubid2"),
-		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-14T11:33:07.12132Z"); return t}()),
+		// 				RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-14T11:33:07.121Z"); return t}()),
 		// 				Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 		// 			},
 		// 	}},
@@ -75,7 +75,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MarketplaceAgreements_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c280892951a9e45c059132c05aace25a9c752d48/specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_Create.json
 func ExampleMarketplaceAgreementsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleMarketplaceAgreementsClient_CreateOrUpdate() {
 	// 		PrivacyPolicyLink: to.Ptr("test.privacyPolicyLink1"),
 	// 		Product: to.Ptr("offid1"),
 	// 		Publisher: to.Ptr("pubid1"),
-	// 		RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.12132Z"); return t}()),
+	// 		RetrieveDatetime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T11:33:07.121Z"); return t}()),
 	// 		Signature: to.Ptr("ASDFSDAFWEFASDGWERLWER"),
 	// 	},
 	// }

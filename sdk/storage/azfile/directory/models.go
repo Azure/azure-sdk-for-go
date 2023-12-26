@@ -7,9 +7,11 @@
 package directory
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"reflect"
 )
 
@@ -39,12 +41,17 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() *generated.DirectoryClientCreateOptions {
 	if o == nil {
-		return nil
+		return &generated.DirectoryClientCreateOptions{
+			FileAttributes:    to.Ptr(shared.FileAttributesDirectory),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+		}
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, to.Ptr(shared.FileAttributesDirectory), to.Ptr(shared.DefaultCurrentTimeString), true)
 
-	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.DirectoryClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -97,9 +104,9 @@ func (o *RenameOptions) format() (*generated.DirectoryClientRenameOptions, *gene
 		return nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, nil, nil, true)
 
-	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions, nil)
 
 	renameOpts := &generated.DirectoryClientRenameOptions{
 		FilePermission:    permission,
@@ -149,12 +156,17 @@ type SetPropertiesOptions struct {
 
 func (o *SetPropertiesOptions) format() *generated.DirectoryClientSetPropertiesOptions {
 	if o == nil {
-		return nil
+		return &generated.DirectoryClientSetPropertiesOptions{
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
+		}
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, true)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.FileSMBProperties, to.Ptr(shared.DefaultPreserveString), to.Ptr(shared.DefaultPreserveString), true)
 
-	permission, permissionKey := exported.FormatPermissions(o.FilePermissions)
+	permission, permissionKey := exported.FormatPermissions(o.FilePermissions, to.Ptr(shared.DefaultPreserveString))
 
 	setPropertiesOptions := &generated.DirectoryClientSetPropertiesOptions{
 		FileAttributes:    fileAttributes,

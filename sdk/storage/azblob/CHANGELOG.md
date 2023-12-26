@@ -1,6 +1,40 @@
 # Release History
 
-## 1.1.1 (Unreleased)
+## 1.2.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.1 (2023-12-13)
+
+### Features Added
+
+* Exposed GetSASURL from specialized clients
+
+### Bugs Fixed
+
+* Fixed case in Blob Batch API when blob path has / in it. Fixes [#21649](https://github.com/Azure/azure-sdk-for-go/issues/21649).
+* Fixed SharedKeyMissingError when using client.BlobClient().GetSASURL() method
+* Fixed an issue that would cause metadata keys with empty values to be omitted when enumerating blobs.
+* Fixed an issue where passing empty map to set blob tags API was causing panic. Fixes [#21869](https://github.com/Azure/azure-sdk-for-go/issues/21869).
+* Fixed an issue where downloaded file has incorrect size when not a multiple of block size. Fixes [#21995](https://github.com/Azure/azure-sdk-for-go/issues/21995).
+* Fixed case where `io.ErrUnexpectedEOF` was treated as expected error in `UploadStream`. Fixes [#21837](https://github.com/Azure/azure-sdk-for-go/issues/21837).
+
+### Other Changes
+
+* Updated the version of `azcore` to `1.9.1` and `azidentity` to `1.4.0`.
+
+## 1.2.0 (2023-10-11)
+
+### Bugs Fixed
+* Fixed null pointer exception when `SetImmutabilityPolicyOptions` is passed as `nil`.
+
+## 1.2.0-beta.1 (2023-09-18)
 
 ### Features Added
 * Added support for service version 2020-12-06, 2021-02-12, 2021-04-10, 2021-06-08, 2021-08-06 , 2021-10-04, 2021-12-02, 2022-11-02, 2023-01-03, 2023-05-03, and 2023-08-03

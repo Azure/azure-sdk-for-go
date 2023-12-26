@@ -5,14 +5,15 @@ clear-output-folder: false
 export-clients: true
 go: true
 input-file: 
-    - https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/backuprestore.json
+    - https://github.com/Azure/azure-rest-api-specs/blob/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/backuprestore.json
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 output-folder: ../backup
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.59"
+inject-spans: true
 version: "^3.0.0"
 
 directive:
@@ -56,11 +57,6 @@ directive:
     transform: >
         delete $["/restore/{jobId}/pending"];
 
-  # delete generated client constructor
-  - from: client.go
-    where: $
-    transform: return $.replace(/(?:\/\/.*\s)+func NewClient.+\{\s(?:.+\s)+\}\s/, "");
-
   # delete unused error models
   - from: models.go
     where: $
@@ -84,7 +80,9 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
+      - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 
@@ -98,4 +96,9 @@ directive:
   - from: swagger-document
     where: $.definitions.SelectiveKeyRestoreOperationParameters
     transform: $["description"] = "Parameters for the selective restore operation"
+
+  # fix up span names
+  - from: client.go
+    where: $
+    transform: return $.replace(/StartSpan\(ctx, "Client/g, "StartSpan(ctx, \"backup.Client");
 ```

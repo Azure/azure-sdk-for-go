@@ -43,7 +43,12 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	azcoreClient, err := azcore.NewClient("backup.Client", ainternal.Version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(ainternal.ModuleName, ainternal.Version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy},
+		Tracing: runtime.TracingOptions{
+			Namespace: "Microsoft.KeyVault",
+		},
+	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -92,6 +97,7 @@ func (client *Client) beginFullRestore(ctx context.Context, restoreBlobDetails R
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FullRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
+			Tracer:        client.internal.Tracer(),
 		})
 	} else {
 		handler, err := pollers.NewRestorePoller[FullRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)
@@ -117,6 +123,7 @@ func (client *Client) beginSelectiveKeyRestore(ctx context.Context, keyName stri
 		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SelectiveKeyRestoreResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Handler:       handler,
+			Tracer:        client.internal.Tracer(),
 		})
 	} else {
 		handler, err := pollers.NewRestorePoller[SelectiveKeyRestoreResponse](client.internal.Pipeline(), nil, runtime.FinalStateViaAzureAsyncOp)

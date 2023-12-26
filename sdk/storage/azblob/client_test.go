@@ -35,6 +35,7 @@ var ctx = context.Background()
 
 type AZBlobRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type AZBlobUnrecordedTestsSuite struct {
@@ -53,6 +54,14 @@ func Test(t *testing.T) {
 	} else if recordMode == recording.RecordingMode {
 		suite.Run(t, &AZBlobRecordedTestsSuite{})
 	}
+}
+
+func (s *AZBlobRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *AZBlobRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
 }
 
 func (s *AZBlobRecordedTestsSuite) BeforeTest(suite string, test string) {

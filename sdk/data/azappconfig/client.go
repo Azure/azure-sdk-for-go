@@ -9,14 +9,15 @@ package azappconfig
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano
@@ -24,7 +25,7 @@ const timeFormat = time.RFC3339Nano
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
 	appConfigClient *generated.AzureAppConfigurationClient
-	syncTokenPolicy *syncTokenPolicy
+	cache           *synctoken.Cache
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -46,12 +47,12 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	endpoint, credential, secret, err := parseConnectionString(connectionString)
+	endpoint, credential, secret, err := auth.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
 
-	return newClient(endpoint, newHmacAuthenticationPolicy(credential, secret), options)
+	return newClient(endpoint, auth.NewHMACPolicy(credential, secret), options)
 }
 
 func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions) (*Client, error) {
@@ -59,10 +60,12 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 		options = &ClientOptions{}
 	}
 
-	syncTokenPolicy := newSyncTokenPolicy()
-
-	client, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, syncTokenPolicy},
+	cache := synctoken.NewCache()
+	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
+		Tracing: runtime.TracingOptions{
+			Namespace: "Microsoft.AppConfig",
+		},
 	}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -70,13 +73,15 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	return &Client{
 		appConfigClient: generated.NewAzureAppConfigurationClient(endpoint, client),
-		syncTokenPolicy: syncTokenPolicy,
+		cache:           cache,
 	}, nil
 }
 
-// UpdateSyncToken sets an external synchronization token to ensure service requests receive up-to-date values.
-func (c *Client) UpdateSyncToken(token string) {
-	c.syncTokenPolicy.addToken(token)
+// SetSyncToken is used to set a sync token from an external source.
+// SyncTokens are required to be in the format "<id>=<value>;sn=<sn>".
+// Multiple SyncTokens must be comma delimited.
+func (c *Client) SetSyncToken(syncToken SyncToken) error {
+	return c.cache.Set(syncToken)
 }
 
 // AddSetting creates a configuration setting only if the setting does not already exist in the configuration store.
@@ -85,6 +90,10 @@ func (c *Client) UpdateSyncToken(token string) {
 //   - value is the value for the setting. pass nil if the setting doesn't have a value
 //   - options contains the optional values. can be nil
 func (c *Client) AddSetting(ctx context.Context, key string, value *string, options *AddSettingOptions) (AddSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.AddSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &AddSettingOptions{}
 	}
@@ -100,12 +109,16 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	return AddSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
 // DeleteSetting deletes a configuration setting from the configuration store.
 func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteSettingOptions) (DeleteSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &DeleteSettingOptions{}
 	}
@@ -119,12 +132,16 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
 // GetSetting retrieves an existing configuration setting from the configuration store.
 func (c *Client) GetSetting(ctx context.Context, key string, options *GetSettingOptions) (GetSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetSettingOptions{}
 	}
@@ -136,38 +153,32 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 		return GetSettingResponse{}, err
 	}
 
-	var lastModified *time.Time
-	if resp.LastModified != nil {
-		tt, err := time.Parse(http.TimeFormat, *resp.LastModified)
-		if err != nil {
-			return GetSettingResponse{}, err
-		}
-		lastModified = &tt
-	}
-
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
-		SyncToken:    resp.SyncToken,
-		LastModified: lastModified,
+		SyncToken:    SyncToken(*resp.SyncToken),
+		LastModified: resp.KeyValue.LastModified,
 	}, nil
 }
 
 // SetReadOnly sets an existing configuration setting to read only or read write state in the configuration store.
 func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, options *SetReadOnlyOptions) (SetReadOnlyResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetReadOnly", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetReadOnlyOptions{}
 	}
 
 	setting := Setting{Key: &key, Label: options.Label}
 
-	var err error
 	if isReadOnly {
 		var resp generated.AzureAppConfigurationClientPutLockResponse
 		resp, err = c.appConfigClient.PutLock(ctx, *setting.Key, setting.toGeneratedPutLockOptions(options.OnlyIfUnchanged))
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	} else {
@@ -176,7 +187,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: resp.SyncToken,
+				SyncToken: SyncToken(*resp.SyncToken),
 			}, nil
 		}
 	}
@@ -190,6 +201,10 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 //   - value is the value for the setting. pass nil if the setting doesn't have a value
 //   - options contains the optional values. can be nil
 func (c *Client) SetSetting(ctx context.Context, key string, value *string, options *SetSettingOptions) (SetSettingResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetSetting", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetSettingOptions{}
 	}
@@ -204,7 +219,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 
 	return SetSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: resp.SyncToken,
+		SyncToken: SyncToken(*resp.SyncToken),
 	}, nil
 }
 
@@ -223,16 +238,15 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 			}
 			var css []Setting
 			for _, cs := range page.Items {
-				if cs != nil {
-					css = append(css, settingFromGenerated(*cs))
-				}
+				css = append(css, settingFromGenerated(cs))
 			}
 
 			return ListRevisionsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
+		Tracer: c.appConfigClient.Tracer(),
 	})
 }
 
@@ -250,15 +264,303 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 			}
 			var css []Setting
 			for _, cs := range page.Items {
-				if cs != nil {
-					css = append(css, settingFromGenerated(*cs))
-				}
+				css = append(css, settingFromGenerated(cs))
 			}
 
 			return ListSettingsPageResponse{
 				Settings:  css,
-				SyncToken: page.SyncToken,
+				SyncToken: SyncToken(*page.SyncToken),
 			}, nil
 		},
+		Tracer: c.appConfigClient.Tracer(),
 	})
+}
+
+// NewListSnapshotsPager - Gets a list of key-value snapshots.
+//
+//   - options - NewListSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
+//     method.
+func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.Pager[ListSnapshotsResponse] {
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
+	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
+
+	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsResponse]{
+		More: func(ListSnapshotsResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListSnapshotsResponse) (ListSnapshotsResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return ListSnapshotsResponse{}, err
+			}
+
+			snapshots := make([]Snapshot, len(page.Items))
+
+			for i := 0; i < len(page.Items); i++ {
+
+				snapshot := page.Items[i]
+
+				convertedETag := azcore.ETag(*snapshot.Etag)
+
+				convertedFilters := make([]KeyValueFilter, len(snapshot.Filters))
+
+				for j := 0; j < len(snapshot.Filters); j++ {
+					convertedFilters[j] = KeyValueFilter{
+						Key:   snapshot.Filters[j].Key,
+						Label: snapshot.Filters[j].Label,
+					}
+				}
+
+				snapshots[i] = Snapshot{
+					Filters:         convertedFilters,
+					CompositionType: snapshot.CompositionType,
+					RetentionPeriod: snapshot.RetentionPeriod,
+					Tags:            snapshot.Tags,
+					Created:         snapshot.Created,
+					ETag:            &convertedETag,
+					Expires:         snapshot.Expires,
+					ItemsCount:      snapshot.ItemsCount,
+					Name:            snapshot.Name,
+					Size:            snapshot.Size,
+					Status:          snapshot.Status,
+				}
+			}
+
+			return ListSnapshotsResponse{
+				Snapshots: snapshots,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// NewListSettingsForSnapshotPager
+//
+// - snapshotName - The name of the snapshot to list configuration settings for
+// - options - ListSettingsForSnapshotOptions contains the optional parameters to retrieve Snapshot configuration settings
+func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *ListSettingsForSnapshotOptions) *runtime.Pager[ListSettingsForSnapshotResponse] {
+	if options == nil {
+		options = &ListSettingsForSnapshotOptions{}
+	}
+
+	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
+		AcceptDatetime: options.AcceptDatetime,
+		After:          options.After,
+		IfMatch:        options.IfMatch,
+		IfNoneMatch:    options.IfNoneMatch,
+		Select:         options.Select,
+		Snapshot:       &snapshotName,
+		Key:            &options.Key,
+		Label:          &options.Label,
+	}
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
+
+	return runtime.NewPager(runtime.PagingHandler[ListSettingsForSnapshotResponse]{
+		More: func(ListSettingsForSnapshotResponse) bool {
+			return ssRespPager.More()
+		},
+		Fetcher: func(ctx context.Context, cur *ListSettingsForSnapshotResponse) (ListSettingsForSnapshotResponse, error) {
+			page, err := ssRespPager.NextPage(ctx)
+			if err != nil {
+				return ListSettingsForSnapshotResponse{}, err
+			}
+
+			settings := make([]Setting, len(page.Items))
+
+			for i := 0; i < len(page.Items); i++ {
+				setting := page.Items[i]
+
+				settings[i] = settingFromGenerated(setting)
+			}
+
+			return ListSettingsForSnapshotResponse{
+				Settings:  settings,
+				SyncToken: SyncToken(*page.SyncToken),
+			}, nil
+		},
+		Tracer: c.appConfigClient.Tracer(),
+	})
+}
+
+// BeginCreateSnapshot creates a snapshot of the configuration store.
+//
+// - snapshotName - The name of the snapshot to create.
+// - keyLabelFilter - The filters to apply on the key-values.
+// - options - CreateSnapshotOptions contains the optional parameters to create a Snapshot
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *CreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
+	filter := []generated.KeyValueFilter{}
+
+	if options == nil {
+		options = &CreateSnapshotOptions{}
+	}
+
+	for _, f := range keyLabelFilter {
+		filter = append(filter, generated.KeyValueFilter{
+			Key:   f.KeyFilter,
+			Label: f.LabelFilter,
+		})
+	}
+
+	if len(filter) == 0 {
+		filter = append(filter, generated.KeyValueFilter{})
+	}
+
+	entity := generated.Snapshot{
+		Filters:         filter,
+		CompositionType: options.CompositionType,
+		RetentionPeriod: options.RetentionPeriod,
+		Tags:            options.Tags,
+		Name:            &snapshotName,
+	}
+
+	opts := generated.AzureAppConfigurationClientBeginCreateSnapshotOptions{
+		ResumeToken: options.ResumeToken,
+	}
+
+	pollerSS, err := generated.NewCreateSnapshotPoller[CreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return pollerSS, nil
+}
+
+// GetSnapshot gets a snapshot
+//
+// - snapshotName - The name of the snapshot to get.
+// - options - GetSnapshotOptions contains the optional parameters to get a snapshot
+func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {
+	if options == nil {
+		options = &GetSnapshotOptions{}
+	}
+
+	opts := (*generated.AzureAppConfigurationClientGetSnapshotOptions)(options)
+
+	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, opts)
+
+	if err != nil {
+		return GetSnapshotResponse{}, err
+	}
+
+	convertedETag := azcore.ETag(*getResp.Etag)
+
+	var convertedFilters []KeyValueFilter
+
+	for _, filter := range getResp.Filters {
+		convertedFilters = append(convertedFilters, KeyValueFilter{
+			Key:   filter.Key,
+			Label: filter.Label,
+		})
+	}
+
+	resp := GetSnapshotResponse{
+		Snapshot: Snapshot{
+			Filters:         convertedFilters,
+			CompositionType: getResp.CompositionType,
+			RetentionPeriod: getResp.RetentionPeriod,
+			Tags:            getResp.Tags,
+			Created:         getResp.Created,
+			ETag:            &convertedETag,
+			Expires:         getResp.Expires,
+			ItemsCount:      getResp.ItemsCount,
+			Name:            getResp.Snapshot.Name,
+			Size:            getResp.Size,
+			Status:          getResp.Snapshot.Status,
+		},
+		SyncToken: SyncToken(*getResp.SyncToken),
+		Link:      getResp.Link,
+	}
+
+	return resp, nil
+}
+
+// ArchiveSnapshot archives a snapshot
+//
+// - snapshotName - The name of the snapshot to archive.
+// - options - ArchiveSnapshotOptions contains the optional parameters to archive a snapshot
+func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
+	if options == nil {
+		options = &ArchiveSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusArchived, &opts)
+
+	if err != nil {
+		return ArchiveSnapshotResponse{}, err
+	}
+
+	return (ArchiveSnapshotResponse)(resp), nil
+}
+
+// RecoverSnapshot recovers a snapshot
+//
+// - snapshotName - The name of the snapshot to recover.
+// - options - RecoverSnapshotOptions contains the optional parameters to recover a snapshot
+func (c *Client) RecoverSnapshot(ctx context.Context, snapshotName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
+	if options == nil {
+		options = &RecoverSnapshotOptions{}
+	}
+
+	opts := updateSnapshotStatusOptions{
+		IfMatch:     options.IfMatch,
+		IfNoneMatch: options.IfNoneMatch,
+	}
+	resp, err := c.updateSnapshotStatus(ctx, snapshotName, generated.SnapshotStatusReady, &opts)
+
+	if err != nil {
+		return RecoverSnapshotResponse{}, err
+	}
+
+	return (RecoverSnapshotResponse)(resp), nil
+}
+
+func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, status SnapshotStatus, options *updateSnapshotStatusOptions) (updateSnapshotStatusResponse, error) {
+	entity := generated.SnapshotUpdateParameters{
+		Status: &status,
+	}
+
+	opts := (*generated.AzureAppConfigurationClientUpdateSnapshotOptions)(options)
+
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, opts)
+
+	if err != nil {
+		return updateSnapshotStatusResponse{}, err
+	}
+
+	convertedETag := azcore.ETag(*updateResp.Etag)
+
+	var convertedFilters []KeyValueFilter
+
+	for _, filter := range updateResp.Filters {
+		convertedFilters = append(convertedFilters, KeyValueFilter{
+			Key:   filter.Key,
+			Label: filter.Label,
+		})
+	}
+
+	resp := updateSnapshotStatusResponse{
+		Snapshot: Snapshot{
+			Filters:         convertedFilters,
+			CompositionType: updateResp.CompositionType,
+			RetentionPeriod: updateResp.RetentionPeriod,
+			Tags:            updateResp.Tags,
+			Created:         updateResp.Created,
+			ETag:            &convertedETag,
+			Expires:         updateResp.Expires,
+			ItemsCount:      updateResp.ItemsCount,
+			Name:            updateResp.Snapshot.Name,
+			Size:            updateResp.Size,
+			Status:          updateResp.Snapshot.Status,
+		},
+		SyncToken: SyncToken(*updateResp.SyncToken),
+		Link:      updateResp.Link,
+	}
+
+	return resp, nil
 }

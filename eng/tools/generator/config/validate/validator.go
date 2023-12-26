@@ -57,7 +57,12 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 					armServices[arm] = append(armServices[arm], packageInfos[0])
 				}
 
-				if subService != "" && len(packageInfos) > 0 {
+				if subService != "" && len(packageInfos) == 1 {
+					packageInfos[0].RequestLink = request.RequestLink
+					packageInfos[0].ReleaseDate = request.TargetDate
+					packageInfos[0].Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
+					armServices[arm] = append(armServices[arm], packageInfos[0])
+				} else if subService != "" && len(packageInfos) > 1 {
 					for _, packageInfo := range packageInfos {
 						if strings.Contains(packageInfo.Config, subService) {
 							packageInfo.RequestLink = request.RequestLink

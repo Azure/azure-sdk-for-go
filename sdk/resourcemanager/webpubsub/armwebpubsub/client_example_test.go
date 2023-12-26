@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_ListBySubscription.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,10 +75,10 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 			Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
 		// 			SystemData: &armwebpubsub.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 		// 			},
@@ -107,6 +107,19 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				NetworkACLs: &armwebpubsub.NetworkACLs{
 		// 					DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+		// 					IPRules: []*armwebpubsub.IPRule{
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("123.456.789.123/24"),
+		// 						},
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("123.456.789.123"),
+		// 						},
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("AppService"),
+		// 					}},
 		// 					PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 		// 						{
 		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
@@ -124,10 +137,10 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 								Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 								SystemData: &armwebpubsub.SystemData{
-		// 									CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 									CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 									CreatedBy: to.Ptr("string"),
 		// 									CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 									LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 									LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 									LastModifiedBy: to.Ptr("string"),
 		// 									LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 		// 								},
@@ -145,6 +158,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 						PublicNetworkAccess: to.Ptr("Enabled"),
 		// 						PublicPort: to.Ptr[int32](443),
+		// 						RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 						ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
 		// 							Categories: []*armwebpubsub.ResourceLogCategory{
 		// 								{
@@ -152,6 +166,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 									Enabled: to.Ptr("true"),
 		// 							}},
 		// 						},
+		// 						ResourceStopped: to.Ptr("false"),
 		// 						ServerPort: to.Ptr[int32](443),
 		// 						TLS: &armwebpubsub.TLSSettings{
 		// 							ClientCertEnabled: to.Ptr(true),
@@ -169,7 +184,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_ListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,10 +213,10 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
 		// 			SystemData: &armwebpubsub.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 		// 			},
@@ -230,6 +245,19 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				NetworkACLs: &armwebpubsub.NetworkACLs{
 		// 					DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+		// 					IPRules: []*armwebpubsub.IPRule{
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("123.456.789.123/24"),
+		// 						},
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("123.456.789.123"),
+		// 						},
+		// 						{
+		// 							Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							Value: to.Ptr("AppService"),
+		// 					}},
 		// 					PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 		// 						{
 		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
@@ -247,10 +275,10 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 								Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 								SystemData: &armwebpubsub.SystemData{
-		// 									CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 									CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 									CreatedBy: to.Ptr("string"),
 		// 									CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 									LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 									LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 									LastModifiedBy: to.Ptr("string"),
 		// 									LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 		// 								},
@@ -268,6 +296,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 						PublicNetworkAccess: to.Ptr("Enabled"),
 		// 						PublicPort: to.Ptr[int32](443),
+		// 						RegionEndpointEnabled: to.Ptr("Enabled"),
 		// 						ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
 		// 							Categories: []*armwebpubsub.ResourceLogCategory{
 		// 								{
@@ -275,6 +304,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 									Enabled: to.Ptr("true"),
 		// 							}},
 		// 						},
+		// 						ResourceStopped: to.Ptr("false"),
 		// 						ServerPort: to.Ptr[int32](443),
 		// 						TLS: &armwebpubsub.TLSSettings{
 		// 							ClientCertEnabled: to.Ptr(true),
@@ -292,7 +322,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,10 +345,10 @@ func ExampleClient_Get() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -347,6 +377,19 @@ func ExampleClient_Get() {
 	// 		},
 	// 		NetworkACLs: &armwebpubsub.NetworkACLs{
 	// 			DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 			IPRules: []*armwebpubsub.IPRule{
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123/24"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("AppService"),
+	// 			}},
 	// 			PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 	// 				{
 	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
@@ -364,10 +407,10 @@ func ExampleClient_Get() {
 	// 						Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 						SystemData: &armwebpubsub.SystemData{
-	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							CreatedBy: to.Ptr("string"),
 	// 							CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							LastModifiedBy: to.Ptr("string"),
 	// 							LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 						},
@@ -385,6 +428,7 @@ func ExampleClient_Get() {
 	// 				ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 				PublicNetworkAccess: to.Ptr("Enabled"),
 	// 				PublicPort: to.Ptr[int32](443),
+	// 				RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 				ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
 	// 					Categories: []*armwebpubsub.ResourceLogCategory{
 	// 						{
@@ -392,6 +436,7 @@ func ExampleClient_Get() {
 	// 							Enabled: to.Ptr("true"),
 	// 					}},
 	// 				},
+	// 				ResourceStopped: to.Ptr("false"),
 	// 				ServerPort: to.Ptr[int32](443),
 	// 				TLS: &armwebpubsub.TLSSettings{
 	// 					ClientCertEnabled: to.Ptr(true),
@@ -407,7 +452,7 @@ func ExampleClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,10 +522,10 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -509,6 +554,19 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		NetworkACLs: &armwebpubsub.NetworkACLs{
 	// 			DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 			IPRules: []*armwebpubsub.IPRule{
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123/24"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("AppService"),
+	// 			}},
 	// 			PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 	// 				{
 	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
@@ -526,10 +584,10 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 						Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 						SystemData: &armwebpubsub.SystemData{
-	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							CreatedBy: to.Ptr("string"),
 	// 							CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							LastModifiedBy: to.Ptr("string"),
 	// 							LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 						},
@@ -547,6 +605,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 				ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 				PublicNetworkAccess: to.Ptr("Enabled"),
 	// 				PublicPort: to.Ptr[int32](443),
+	// 				RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 				ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
 	// 					Categories: []*armwebpubsub.ResourceLogCategory{
 	// 						{
@@ -554,6 +613,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 							Enabled: to.Ptr("true"),
 	// 					}},
 	// 				},
+	// 				ResourceStopped: to.Ptr("false"),
 	// 				ServerPort: to.Ptr[int32](443),
 	// 				TLS: &armwebpubsub.TLSSettings{
 	// 					ClientCertEnabled: to.Ptr(true),
@@ -569,7 +629,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +650,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,10 +720,10 @@ func ExampleClient_BeginUpdate() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -692,6 +752,19 @@ func ExampleClient_BeginUpdate() {
 	// 		},
 	// 		NetworkACLs: &armwebpubsub.NetworkACLs{
 	// 			DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 			IPRules: []*armwebpubsub.IPRule{
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123/24"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("123.456.789.123"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					Value: to.Ptr("AppService"),
+	// 			}},
 	// 			PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 	// 				{
 	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
@@ -709,10 +782,10 @@ func ExampleClient_BeginUpdate() {
 	// 						Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 						SystemData: &armwebpubsub.SystemData{
-	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							CreatedBy: to.Ptr("string"),
 	// 							CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 							LastModifiedBy: to.Ptr("string"),
 	// 							LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 						},
@@ -730,6 +803,7 @@ func ExampleClient_BeginUpdate() {
 	// 				ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 				PublicNetworkAccess: to.Ptr("Enabled"),
 	// 				PublicPort: to.Ptr[int32](443),
+	// 				RegionEndpointEnabled: to.Ptr("Enabled"),
 	// 				ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
 	// 					Categories: []*armwebpubsub.ResourceLogCategory{
 	// 						{
@@ -737,6 +811,7 @@ func ExampleClient_BeginUpdate() {
 	// 							Enabled: to.Ptr("true"),
 	// 					}},
 	// 				},
+	// 				ResourceStopped: to.Ptr("false"),
 	// 				ServerPort: to.Ptr[int32](443),
 	// 				TLS: &armwebpubsub.TLSSettings{
 	// 					ClientCertEnabled: to.Ptr(true),
@@ -752,7 +827,7 @@ func ExampleClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -774,7 +849,7 @@ func ExampleClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +877,7 @@ func ExampleClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListReplicaSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_ListReplicaSkus.json
 func ExampleClient_ListReplicaSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +981,7 @@ func ExampleClient_ListReplicaSKUs() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -927,7 +1002,7 @@ func ExampleClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_ListSkus.json
 func ExampleClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

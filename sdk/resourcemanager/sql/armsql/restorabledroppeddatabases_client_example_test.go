@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListRestorableDroppedDatabasesByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/ListRestorableDroppedDatabasesByServer.json
 func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 		// 				BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
 		// 				DatabaseName: to.Ptr("testdb"),
-		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.690Z"); return t}()),
 		// 				MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 			},
 		// 			SKU: &armsql.SKU{
@@ -68,7 +68,7 @@ func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 		// 				BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 				CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-07T04:41:33.937Z"); return t}()),
 		// 				DatabaseName: to.Ptr("testdb2"),
-		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+		// 				DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.690Z"); return t}()),
 		// 				MaxSizeBytes: to.Ptr[int64](268435456000),
 		// 			},
 		// 			SKU: &armsql.SKU{
@@ -80,7 +80,7 @@ func ExampleRestorableDroppedDatabasesClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
 func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseWithExpandEqualsKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseW
 	// 		BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
 	// 		DatabaseName: to.Ptr("testdb"),
-	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.690Z"); return t}()),
 	// 		Keys: map[string]*armsql.DatabaseKey{
 	// 			"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion": &armsql.DatabaseKey{
 	// 			},
@@ -125,7 +125,7 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabaseW
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabase.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-08-01-preview/examples/GetRestorableDroppedDatabase.json
 func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleRestorableDroppedDatabasesClient_Get_getsARestorableDroppedDatabase(
 	// 		BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 		CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-07T04:41:33.937Z"); return t}()),
 	// 		DatabaseName: to.Ptr("testdb"),
-	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.69Z"); return t}()),
+	// 		DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T02:49:47.690Z"); return t}()),
 	// 		MaxSizeBytes: to.Ptr[int64](268435456000),
 	// 	},
 	// 	SKU: &armsql.SKU{

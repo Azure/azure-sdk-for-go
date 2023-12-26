@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net"
 	"net/http"
@@ -100,7 +101,22 @@ func TestHTTPTracePolicy(t *testing.T) {
 	require.Error(t, err)
 	require.ErrorIs(t, err, net.ErrClosed)
 	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
-	require.EqualValues(t, "poll.errNetClosing", spanStatusStr)
+	require.EqualValues(t, "use of closed network connection", spanStatusStr)
+
+	const urlErrText = "the endpoint is invalid"
+	req, err = exported.NewRequest(context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	srv.AppendError(&url.Error{
+		Op:  http.MethodGet,
+		URL: srv.URL(),
+		Err: errors.New(urlErrText),
+	})
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var urlErr *url.Error
+	require.False(t, errors.As(err, &urlErr))
+	require.EqualValues(t, tracing.SpanStatusError, spanStatus)
+	require.EqualValues(t, urlErrText, spanStatusStr)
 }
 
 func TestStartSpan(t *testing.T) {
@@ -189,7 +205,6 @@ func TestStartSpansDontNest(t *testing.T) {
 
 	barMethod := func(ctx context.Context) {
 		ourCtx, endSpan := StartSpan(ctx, "BarMethod", tr, nil)
-		require.Same(t, ctx, ourCtx)
 		defer endSpan(nil)
 		req, err := exported.NewRequest(ourCtx, http.MethodGet, srv.URL()+"/bar")
 		require.NoError(t, err)

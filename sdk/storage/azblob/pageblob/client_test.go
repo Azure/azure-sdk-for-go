@@ -13,9 +13,12 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
+	"os"
 	"testing"
 	"time"
 
@@ -47,6 +50,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *PageBlobRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *PageBlobRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *PageBlobRecordedTestsSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -65,6 +76,7 @@ func (s *PageBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 type PageBlobRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type PageBlobUnrecordedTestsSuite struct {
@@ -2304,6 +2316,48 @@ func (s *PageBlobRecordedTestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegO
 	_require.Error(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.InvalidInput)
+}
+
+func (s *PageBlobUnrecordedTestsSuite) TestGetSASURLPageBlobClient() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
+	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	// Creating service client with credentials
+	serviceClient, err := service.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, serviceClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Creating page blob client with credentials
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.BlobPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+	}
+	expiry := time.Now().Add(5 * time.Minute)
+
+	sasUrl, err := pbClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	// Get new blob client with sasUrl and attempt GetProperties
+	newClient, err := blob.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+
+	_, err = newClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
 }
 
 func setupGetPageRangesTest(t *testing.T, _require *require.Assertions, testName string) (containerClient *container.Client, pbClient *pageblob.Client) {

@@ -29,11 +29,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	fakeAttestationUrl = "https://fakeattestation"
-	fakeMHSMURL        = "https://fakemhsm.local"
-	fakeVaultURL       = "https://fakevault.local"
-)
+const recordingDirectory = "sdk/security/keyvault/azkeys/testdata"
+const fakeAttestationUrl = "https://fakeattestation"
+const fakeMHSMURL = "https://fakemhsm.local"
+const fakeVaultURL = "https://fakevault.local"
 
 var (
 	keysToPurge = struct {
@@ -49,6 +48,27 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	var proxy *recording.TestProxyInstance
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		var err error
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	attestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
 	mhsmURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
 	vaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
@@ -59,28 +79,19 @@ func TestMain(m *testing.M) {
 		vaultURL = fakeVaultURL
 	}
 	enableHSM = mhsmURL != fakeMHSMURL
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
 		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
 		secret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantId, clientId, secret, nil)
 		if err != nil {
 			panic(err)
 		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 		for _, URI := range []struct{ real, fake string }{
 			{attestationURL, fakeAttestationUrl},
 			{mhsmURL, fakeMHSMURL},
@@ -90,7 +101,9 @@ func TestMain(m *testing.M) {
 			if err != nil {
 				panic(err)
 			}
-			err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, &recording.RecordingOptions{GroupForReplace: "1"})
+			opts := proxy.Options
+			opts.GroupForReplace = "1"
+			err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
 			if err != nil {
 				panic(err)
 			}
@@ -100,7 +113,7 @@ func TestMain(m *testing.M) {
 			}
 		}
 		for _, path := range []string{"$.error.message", "$.key.kid", "$.recoveryId"} {
-			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, vaultURL, nil)
+			err := recording.AddBodyKeySanitizer(path, fakeVaultURL, vaultURL, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -112,7 +125,7 @@ func TestMain(m *testing.M) {
 		// these values aren't secret but we redact them anyway to avoid
 		// alerts from automation scanning for JWTs or "token" values
 		for _, attestation := range []string{"$.target", "$.token"} {
-			err = recording.AddBodyKeySanitizer(attestation, "redacted", "", nil)
+			err := recording.AddBodyKeySanitizer(attestation, "redacted", "", nil)
 			if err != nil {
 				panic(err)
 			}
@@ -120,7 +133,7 @@ func TestMain(m *testing.M) {
 		// we need to replace release policy data because it has the attestation service URL encoded
 		// into it and therefore won't match in playback, when we don't have the URL used while recording
 		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
-		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, "", nil)
+		err := recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, "", nil)
 		if err != nil {
 			panic(err)
 		}
@@ -157,14 +170,15 @@ func TestMain(m *testing.M) {
 			}
 		}
 	}
-	os.Exit(code)
+
+	return code
 }
 
 func startTest(t *testing.T, MHSMtest bool) *azkeys.Client {
 	if recording.GetRecordMode() != recording.PlaybackMode && MHSMtest && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
-	err := recording.Start(t, "sdk/security/keyvault/azkeys/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

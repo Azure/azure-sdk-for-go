@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGalleryImages_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/sharedGalleryExamples/SharedGalleryImages_List.json
 func ExampleSharedGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,6 +48,9 @@ func ExampleSharedGalleryImagesClient_NewListPager() {
 		// 				UniqueID: to.Ptr("/SharedGalleries/galleryUniqueName/Images/myGalleryImageName"),
 		// 			},
 		// 			Properties: &armcompute.SharedGalleryImageProperties{
+		// 				ArtifactTags: map[string]*string{
+		// 					"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
+		// 				},
 		// 				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
 		// 				Identifier: &armcompute.GalleryImageIdentifier{
 		// 					Offer: to.Ptr("myOfferName"),
@@ -62,7 +65,7 @@ func ExampleSharedGalleryImagesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/sharedGalleryExamples/SharedGalleryImage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/sharedGalleryExamples/SharedGalleryImage_Get.json
 func ExampleSharedGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,6 +90,9 @@ func ExampleSharedGalleryImagesClient_Get() {
 	// 		UniqueID: to.Ptr("/SharedGalleries/galleryUniqueName/Images/myGalleryImageName"),
 	// 	},
 	// 	Properties: &armcompute.SharedGalleryImageProperties{
+	// 		ArtifactTags: map[string]*string{
+	// 			"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
+	// 		},
 	// 		Eula: to.Ptr("https://www.microsoft.com/en-us/"),
 	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
 	// 		Identifier: &armcompute.GalleryImageIdentifier{
@@ -96,7 +102,6 @@ func ExampleSharedGalleryImagesClient_Get() {
 	// 		},
 	// 		OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
 	// 		OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 		PrivacyStatementURI: to.Ptr("https://www.microsoft.com/en-us/"),
 	// 	},
 	// }
 }

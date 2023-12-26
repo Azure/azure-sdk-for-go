@@ -61,6 +61,12 @@ func TestPayloadBytesModifier(t *testing.T) {
 	require.EqualValues(t, newPayload, string(b))
 }
 
+func TestPayloadNilBody(t *testing.T) {
+	b, err := Payload(&http.Response{}, nil)
+	require.NoError(t, err)
+	require.Nil(t, b)
+}
+
 func TestNopClosingBytesReader(t *testing.T) {
 	const val1 = "the data"
 	ncbr := &nopClosingBytesReader{s: []byte(val1)}

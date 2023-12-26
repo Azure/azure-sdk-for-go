@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityForSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CheckNameAvailabilityForSupportTicketCommunication.json
 func ExampleCommunicationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-24T20:18:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-24T20:18:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("this is a test message"),
 		// 			},
@@ -93,7 +93,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-29T10:53:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-29T10:53:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("test"),
 		// 			},
@@ -102,7 +102,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAfterASpecificDateForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T20:18:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T20:18:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("this is a test message"),
 		// 			},
@@ -149,7 +149,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T10:53:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-12T10:53:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("test"),
 		// 			},
@@ -158,7 +158,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAft
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListWebCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListWebCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 		// 				Body: to.Ptr("this is a test message"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("this is a test message"),
 		// 			},
@@ -205,7 +205,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 		// 				Body: to.Ptr("test"),
 		// 				CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 		// 				CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T10:53:19Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-11T10:53:19.000Z"); return t}()),
 		// 				Sender: to.Ptr("user@contoso.com"),
 		// 				Subject: to.Ptr("test"),
 		// 			},
@@ -214,7 +214,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetCommunicationDetailsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,14 +240,14 @@ func ExampleCommunicationsClient_Get() {
 	// 		Body: to.Ptr("this is a test message"),
 	// 		CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 	// 		CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19.000Z"); return t}()),
 	// 		Sender: to.Ptr("user@contoso.com"),
 	// 		Subject: to.Ptr("this is a test message"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSupportTicketCommunication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSupportTicketCommunication.json
 func ExampleCommunicationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleCommunicationsClient_BeginCreate() {
 	// 		Body: to.Ptr("This is a test message from a customer!"),
 	// 		CommunicationDirection: to.Ptr(armsupport.CommunicationDirectionOutbound),
 	// 		CommunicationType: to.Ptr(armsupport.CommunicationTypeWeb),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-10T20:18:19.000Z"); return t}()),
 	// 		Sender: to.Ptr("user@contoso.com"),
 	// 		Subject: to.Ptr("This is a test message from a customer!"),
 	// 	},

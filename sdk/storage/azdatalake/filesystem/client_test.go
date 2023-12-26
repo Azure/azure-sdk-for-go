@@ -39,6 +39,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *RecordedTestSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *RecordedTestSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *RecordedTestSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -57,6 +65,7 @@ func (s *UnrecordedTestSuite) AfterTest(suite string, test string) {
 
 type RecordedTestSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type UnrecordedTestSuite struct {
@@ -1808,4 +1817,29 @@ func (s *UnrecordedTestSuite) TestSASFileSystemCreateAndDeleteDirectory() {
 
 	_, err = dClient.Delete(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *UnrecordedTestSuite) TestFSCreateDeleteUsingOAuth() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsURL := "https://" + accountName + ".dfs.core.windows.net/" + filesystemName
+
+	fsClient, err := filesystem.NewClient(fsURL, cred, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
 }

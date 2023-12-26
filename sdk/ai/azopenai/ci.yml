@@ -25,39 +25,22 @@ pr:
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
+      # We need to allow for longer retry times with tests that run against the public endpoint
+      # which throttles under load. Note, I left a little wiggle room since the TimeoutInMinutes
+      # controls the overall pipeline and TestRunTime configures the individual `go test -timeout` parameter.
+      TimeoutInMinutes: 35
+      TestRunTime: 30m
       ServiceDirectory: "ai/azopenai"
       RunLiveTests: true
+      UsePipelineProxy: false
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-openai-test-resources) # TestSecrets-openai
       EnvVars:
-        AZURE_TEST_RUN_LIVE: 'true' # use when utilizing the New-TestResources Script
-
-        # these come from our keyvault (TestSecrets-openai)
-        AZURE_CLIENT_ID: $(openai-client-id)
-        AZURE_CLIENT_SECRET: $(openai-client-secret)
-        AZURE_TENANT_ID: $(openai-tenant-id)
-
-        # Azure OpenAI
-        AOAI_ENDPOINT: $(AOAI-ENDPOINT)
-        AOAI_API_KEY: $(AOAI-API-KEY)
-        AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT: $(AOAI-CHAT-COMPLETIONS-MODEL-DEPLOYMENT)
-        AOAI_COMPLETIONS_MODEL_DEPLOYMENT: $(AOAI-COMPLETIONS-MODEL-DEPLOYMENT)
-        AOAI_EMBEDDINGS_MODEL_DEPLOYMENT: $(AOAI-EMBEDDINGS-MODEL-DEPLOYMENT)
-
-        # Azure OpenAI "Canary"
-        AOAI_COMPLETIONS_MODEL_DEPLOYMENT_CANARY: $(AOAI-COMPLETIONS-MODEL-DEPLOYMENT-CANARY)
-        AOAI_API_KEY_CANARY: $(AOAI-API-KEY-CANARY)        
-        AOAI_EMBEDDINGS_MODEL_DEPLOYMENT_CANARY: $(AOAI-EMBEDDINGS-MODEL-DEPLOYMENT-CANARY)
-        AOAI_CHAT_COMPLETIONS_MODEL_DEPLOYMENT_CANARY: $(AOAI-CHAT-COMPLETIONS-MODEL-DEPLOYMENT-CANARY)
-        AOAI_ENDPOINT_CANARY: $(AOAI-ENDPOINT-CANARY)
-
-        # OpenAI
-        OPENAI_API_KEY: $(OPENAI-API-KEY)
-        OPENAI_ENDPOINT: $(OPENAI-ENDPOINT)
-        OPENAI_EMBEDDINGS_MODEL: $(OPENAI-EMBEDDINGS-MODEL)
-        OPENAI_CHAT_COMPLETIONS_MODEL: $(OPENAI-CHAT-COMPLETIONS-MODEL)
-        OPENAI_COMPLETIONS_MODEL: $(OPENAI-COMPLETIONS-MODEL)
-
-        # used for BYOD scenarios with ChatCompletions
-        COGNITIVE_SEARCH_API_ENDPOINT: $(COGNITIVE-SEARCH-API-ENDPOINT)
-        COGNITIVE_SEARCH_API_INDEX: $(COGNITIVE-SEARCH-API-INDEX)
-        COGNITIVE_SEARCH_API_KEY: $(COGNITIVE-SEARCH-API-KEY)
-
+        AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
+        AZURE_CLIENT_ID: $(AZOPENAI_CLIENT_ID)
+        AZURE_CLIENT_SECRET: $(AZOPENAI_CLIENT_SECRET)
+        AZURE_TENANT_ID: $(AZOPENAI_TENANT_ID)
+        AZURE_SUBSCRIPTION_ID: $(AZOPENAI_SUBSCRIPTION_ID)

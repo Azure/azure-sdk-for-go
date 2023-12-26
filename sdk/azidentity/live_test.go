@@ -57,14 +57,17 @@ var liveUser = struct {
 }
 
 const (
+	recordingDirectory       = "sdk/azidentity/testdata"
 	azidentityRunManualTests = "AZIDENTITY_RUN_MANUAL_TESTS"
 	fakeClientID             = "fake-client-id"
+	fakeMIEndpoint           = "https://fake.local"
 	fakeResourceID           = "/fake/resource/ID"
 	fakeTenantID             = "fake-tenant"
 	fakeUsername             = "fake@user"
 	fakeAdfsAuthority        = "fake.adfs.local"
 	fakeAdfsScope            = "fake.adfs.local/fake-scope/.default"
 	liveTestScope            = "https://management.core.windows.net//.default"
+	redacted                 = "redacted"
 )
 
 var adfsLiveSP = struct {
@@ -95,6 +98,8 @@ var (
 	_, runManualTests = os.LookupEnv(azidentityRunManualTests)
 )
 
+var proxy *recording.TestProxyInstance
+
 func setFakeValues() {
 	liveManagedIdentity.clientID = fakeClientID
 	liveManagedIdentity.resourceID = fakeResourceID
@@ -124,15 +129,14 @@ func TestMain(m *testing.M) {
 
 func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		// Start from a fresh proxy
-		err := recording.ResetProxy(nil)
+		var err error
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
 
-		// At the end of testing we want to reset as to not interfere with other tests.
 		defer func() {
-			err := recording.ResetProxy(nil)
+			err := recording.StopTestProxy(proxy)
 			if err != nil {
 				panic(err)
 			}
@@ -156,6 +160,9 @@ func run(m *testing.M) int {
 			liveUser.username:                               fakeUsername,
 			strings.TrimPrefix(adfsScope, "https://"):       fakeAdfsScope,
 			strings.TrimPrefix(adfsAuthority, "https://"):   fakeAdfsAuthority,
+		}
+		if id := os.Getenv(defaultIdentityClientID); id != "" {
+			pathVars[id] = fakeClientID
 		}
 		for target, replacement := range pathVars {
 			if target != "" {
@@ -182,7 +189,24 @@ func run(m *testing.M) int {
 		if err != nil {
 			panic(err)
 		}
-		// redact secrets returned by AAD
+		// some managed identity requests include a "secret" header. It isn't dangerous
+		// to record the value, however it must be static for matching to work in playback
+		err = recording.AddHeaderRegexSanitizer("secret", redacted, "", nil)
+		if err != nil {
+			panic(err)
+		}
+		if url, ok := os.LookupEnv(msiEndpoint); ok {
+			err = recording.AddURISanitizer(fakeMIEndpoint, url, nil)
+			if err == nil {
+				if clientID, ok := os.LookupEnv(defaultIdentityClientID); ok {
+					err = recording.AddURISanitizer(fakeClientID, clientID, nil)
+				}
+			}
+			if err != nil {
+				panic(err)
+			}
+		}
+		// redact secrets returned by Microsoft Entra ID
 		for _, key := range []string{"access_token", "device_code", "message", "refresh_token", "user_code"} {
 			err = recording.AddBodyKeySanitizer("$."+key, "redacted", "", nil)
 			if err != nil {
@@ -194,7 +218,7 @@ func run(m *testing.M) int {
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {
-	err := recording.Start(t, "sdk/azidentity/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -227,7 +251,7 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 		r.Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
 		r.Header.Set(recording.ModeHeader, mode)
 		r.Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", originalURL.Scheme, originalURL.Host))
-		r.Host = "localhost:5001"
+		r.Host = fmt.Sprintf("localhost:%d", proxy.Options.ProxyPort)
 		r.URL.Host = r.Host
 		r.URL.Scheme = "https"
 	}

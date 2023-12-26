@@ -14,14 +14,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
-
-// NewTokenCredential creates an instance of the TokenCredential type.
-func NewTokenCredential() *TokenCredential {
-	return &TokenCredential{}
-}
 
 // TokenCredential is a fake credential that implements the azcore.TokenCredential interface.
 type TokenCredential struct {
@@ -31,13 +26,13 @@ type TokenCredential struct {
 // SetError sets the specified error to be returned from GetToken().
 // Use this to simulate an error during authentication.
 func (t *TokenCredential) SetError(err error) {
-	t.err = shared.NonRetriableError(err)
+	t.err = errorinfo.NonRetriableError(err)
 }
 
 // GetToken implements the azcore.TokenCredential for the TokenCredential type.
 func (t *TokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if t.err != nil {
-		return azcore.AccessToken{}, shared.NonRetriableError(t.err)
+		return azcore.AccessToken{}, errorinfo.NonRetriableError(t.err)
 	}
 	return azcore.AccessToken{Token: "fake_token", ExpiresOn: time.Now().Add(24 * time.Hour)}, nil
 }
@@ -79,7 +74,9 @@ func (e *ErrorResponder) SetResponseError(httpStatus int, errorCode string) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // PagerResponder represents a sequence of paged responses.
-// Responses are replayed in the order in which they were added.
+// Responses are consumed in the order in which they were added.
+// If no pages or errors have been added, calls to Pager[T].NextPage
+// will return an error.
 type PagerResponder[T any] exported.PagerResponder[T]
 
 // AddPage adds a page to the sequence of respones.
@@ -107,8 +104,10 @@ type AddPageOptions = exported.AddPageOptions
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // PollerResponder represents a sequence of responses for a long-running operation.
-// Any non-terminal responses are replayed in the order in which they were added.
+// Any non-terminal responses are consumed in the order in which they were added.
 // The terminal response, success or error, is always the final response.
+// If no responses or errors have been added, the following method calls on Poller[T]
+// will return an error: PollUntilDone, Poll, Result.
 type PollerResponder[T any] exported.PollerResponder[T]
 
 // AddNonTerminalResponse adds a non-terminal response to the sequence of responses.

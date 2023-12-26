@@ -893,8 +893,16 @@ type DatabaseProperties struct {
 	// The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
 	EncryptionProtector *string
 
+	// The flag to enable or disable auto rotation of database encryption protector AKV key.
+	EncryptionProtectorAutoRotation *bool
+
 	// The Client id used for cross tenant per database CMK scenario
 	FederatedClientID *string
+
+	// Specifies the behavior when monthly free limits are exhausted for the free database.
+	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
 	// to a Hyperscale database within an elastic pool.
@@ -987,6 +995,9 @@ type DatabaseProperties struct {
 	// must contain authentication token for the source tenant. For more details about
 	// “x-ms-authorization-auxiliary” header see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
 	SourceResourceID *string
+
+	// Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
+	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
 	// availability zones.
@@ -1293,8 +1304,16 @@ type DatabaseUpdateProperties struct {
 	// The azure key vault URI of the database if it's configured with per Database Customer Managed Keys.
 	EncryptionProtector *string
 
+	// The flag to enable or disable auto rotation of database encryption protector AKV key.
+	EncryptionProtectorAutoRotation *bool
+
 	// The Client id used for cross tenant per database CMK scenario
 	FederatedClientID *string
+
+	// Specifies the behavior when monthly free limits are exhausted for the free database.
+	// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+	// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+	FreeLimitExhaustionBehavior *FreeLimitExhaustionBehavior
 
 	// The number of secondary replicas associated with the database that are used to provide high availability. Not applicable
 	// to a Hyperscale database within an elastic pool.
@@ -1372,6 +1391,9 @@ type DatabaseUpdateProperties struct {
 
 	// The resource identifier of the source database associated with create operation of this database.
 	SourceDatabaseID *string
+
+	// Whether or not the database uses free monthly limits. Allowed on one database in a subscription.
+	UseFreeLimit *bool
 
 	// Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple
 	// availability zones.
@@ -2525,6 +2547,9 @@ type FailoverGroupProperties struct {
 type FailoverGroupReadOnlyEndpoint struct {
 	// Failover policy of the read-only endpoint for the failover group.
 	FailoverPolicy *ReadOnlyEndpointFailoverPolicy
+
+	// The target partner server where the read-only endpoint points to.
+	TargetServer *string
 }
 
 // FailoverGroupReadWriteEndpoint - Read-write endpoint of the failover group instance.
@@ -2551,6 +2576,9 @@ type FailoverGroupUpdate struct {
 type FailoverGroupUpdateProperties struct {
 	// List of databases in the failover group.
 	Databases []*string
+
+	// List of partner server information for the failover group.
+	PartnerServers []*PartnerInfo
 
 	// Read-only endpoint of the failover group instance.
 	ReadOnlyEndpoint *FailoverGroupReadOnlyEndpoint
@@ -7071,6 +7099,9 @@ type ServerProperties struct {
 
 	// The Client id used for cross tenant CMK scenario
 	FederatedClientID *string
+
+	// Whether or not to enable IPv6 support for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+	IsIPv6Enabled *ServerNetworkAccessFlag
 
 	// A CMK URI of the key to use for encryption.
 	KeyID *string

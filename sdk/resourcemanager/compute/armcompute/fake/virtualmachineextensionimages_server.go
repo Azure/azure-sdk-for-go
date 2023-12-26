@@ -83,29 +83,29 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchGet(req *http.Req
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types/(?P<type>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types/(?P<type>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	publisherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
 	if err != nil {
 		return nil, err
 	}
-	typeParamUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("type")])
+	typeParamParam, err := url.PathUnescape(matches[regex.SubexpIndex("type")])
 	if err != nil {
 		return nil, err
 	}
-	versionUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.Get(req.Context(), locationUnescaped, publisherNameUnescaped, typeParamUnescaped, versionUnescaped, nil)
+	respr, errRespr := v.srv.Get(req.Context(), locationParam, publisherNameParam, typeParamParam, versionParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -124,21 +124,21 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListTypes(req *ht
 	if v.srv.ListTypes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListTypes not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	publisherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.ListTypes(req.Context(), locationUnescaped, publisherNameUnescaped, nil)
+	respr, errRespr := v.srv.ListTypes(req.Context(), locationParam, publisherNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -157,22 +157,22 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 	if v.srv.ListVersions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListVersions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types/(?P<type>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/artifacttypes/vmextension/types/(?P<type>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	publisherNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
+	publisherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publisherName")])
 	if err != nil {
 		return nil, err
 	}
-	typeParamUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("type")])
+	typeParamParam, err := url.PathUnescape(matches[regex.SubexpIndex("type")])
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +208,7 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 			Orderby: orderbyParam,
 		}
 	}
-	respr, errRespr := v.srv.ListVersions(req.Context(), locationUnescaped, publisherNameUnescaped, typeParamUnescaped, options)
+	respr, errRespr := v.srv.ListVersions(req.Context(), locationParam, publisherNameParam, typeParamParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

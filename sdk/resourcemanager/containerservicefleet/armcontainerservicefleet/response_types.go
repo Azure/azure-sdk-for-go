@@ -37,6 +37,29 @@ type FleetMembersClientUpdateResponse struct {
 	FleetMember
 }
 
+// FleetUpdateStrategiesClientCreateOrUpdateResponse contains the response from method FleetUpdateStrategiesClient.BeginCreateOrUpdate.
+type FleetUpdateStrategiesClientCreateOrUpdateResponse struct {
+	// Defines a multi-stage process to perform update operations across members of a Fleet.
+	FleetUpdateStrategy
+}
+
+// FleetUpdateStrategiesClientDeleteResponse contains the response from method FleetUpdateStrategiesClient.BeginDelete.
+type FleetUpdateStrategiesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetUpdateStrategiesClientGetResponse contains the response from method FleetUpdateStrategiesClient.Get.
+type FleetUpdateStrategiesClientGetResponse struct {
+	// Defines a multi-stage process to perform update operations across members of a Fleet.
+	FleetUpdateStrategy
+}
+
+// FleetUpdateStrategiesClientListByFleetResponse contains the response from method FleetUpdateStrategiesClient.NewListByFleetPager.
+type FleetUpdateStrategiesClientListByFleetResponse struct {
+	// The response of a FleetUpdateStrategy list operation.
+	FleetUpdateStrategyListResult
+}
+
 // FleetsClientCreateOrUpdateResponse contains the response from method FleetsClient.BeginCreateOrUpdate.
 type FleetsClientCreateOrUpdateResponse struct {
 	// The Fleet resource.
@@ -86,7 +109,7 @@ type OperationsClientListResponse struct {
 
 // UpdateRunsClientCreateOrUpdateResponse contains the response from method UpdateRunsClient.BeginCreateOrUpdate.
 type UpdateRunsClientCreateOrUpdateResponse struct {
-	// An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+	// A multi-stage process to perform update operations across members of a Fleet.
 	UpdateRun
 }
 
@@ -97,7 +120,7 @@ type UpdateRunsClientDeleteResponse struct {
 
 // UpdateRunsClientGetResponse contains the response from method UpdateRunsClient.Get.
 type UpdateRunsClientGetResponse struct {
-	// An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+	// A multi-stage process to perform update operations across members of a Fleet.
 	UpdateRun
 }
 
@@ -109,12 +132,12 @@ type UpdateRunsClientListByFleetResponse struct {
 
 // UpdateRunsClientStartResponse contains the response from method UpdateRunsClient.BeginStart.
 type UpdateRunsClientStartResponse struct {
-	// An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+	// A multi-stage process to perform update operations across members of a Fleet.
 	UpdateRun
 }
 
 // UpdateRunsClientStopResponse contains the response from method UpdateRunsClient.BeginStop.
 type UpdateRunsClientStopResponse struct {
-	// An UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+	// A multi-stage process to perform update operations across members of a Fleet.
 	UpdateRun
 }

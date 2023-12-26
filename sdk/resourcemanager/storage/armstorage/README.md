@@ -61,33 +61,16 @@ client := clientFactory.NewAccountsClient()
 ```
 
 ## Fakes
-The `fake` package provides implementations for fake servers that can be used for testing.
-To create a fake server, declare an instance of the required fake server type(s).
-```go
-myFakeAccountsServer := fake.AccountsServer{}
-```
-Next, provide func implementations for the methods you wish to fake.
-The named return variables can be used to simplify return value construction.
-```go
-myFakeAccountsServer.GetProperties = func(ctx context.Context, resourceGroupName string, accountName string, options *armstorage.AccountsClientGetPropertiesOptions) (resp azfake.Responder[armstorage.AccountsClientGetPropertiesResponse], errResp azfake.ErrorResponder) {
-	// TODO: resp.SetResponse(/* your fake AccountsClientGetPropertiesResponse response */)
-	return
-}
-```
-You connect the fake server to a client instance during construction through the optional transport.
-Use `NewTokenCredential()` from `azcore/fake` to obtain a fake credential.
-```go
-import azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-client, err := armstorage.NewAccountsClient("subscriptionID", azfake.NewTokenCredential(), &arm.ClientOptions{
-	ClientOptions: azcore.ClientOptions{
-		Transport: fake.NewAccountsServerTransport(&myFakeAccountsServer),
-	},
-})
-```
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## More sample code
 
 - [Blob](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/blob)
+- [Creating a Fake](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/storage/armstorage/fake_example_test.go)
 - [File](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/file)
 - [Management Policy](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/managementpolicy)
 - [Queue](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/storage/queue)

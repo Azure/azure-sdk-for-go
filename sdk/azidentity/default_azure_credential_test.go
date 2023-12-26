@@ -83,44 +83,62 @@ func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_TenantID(t *testing.T) {
+	azBefore := defaultAzTokenProvider
+	t.Cleanup(func() { defaultAzTokenProvider = azBefore })
 	expected := "expected"
 	for _, override := range []bool{false, true} {
 		name := "default tenant"
 		if override {
 			name = "TenantID set"
 		}
-		t.Run(fmt.Sprintf("%s_%s", credNameAzureCLI, name), func(t *testing.T) {
-			realTokenProvider := defaultTokenProvider
-			t.Cleanup(func() { defaultTokenProvider = realTokenProvider })
-			called := false
-			defaultTokenProvider = func(ctx context.Context, resource, tenantID string) ([]byte, error) {
-				called = true
-				if (override && tenantID != expected) || (!override && tenantID != "") {
-					t.Fatalf("unexpected tenantID %q", tenantID)
+		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
+			t.Run(fmt.Sprintf("%s_%s", credName, name), func(t *testing.T) {
+				called := false
+				verifyTenant := func(tenantID string) {
+					called = true
+					if (override && tenantID != expected) || (!override && tenantID != "") {
+						t.Fatalf("unexpected tenantID %q", tenantID)
+					}
 				}
-				return mockCLITokenProviderSuccess(ctx, resource, tenantID)
-			}
-			// mock IMDS failure because managed identity precedes CLI in the chain
-			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.SetResponse(mock.WithStatusCode(400))
-			o := DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}}
-			if override {
-				o.TenantID = expected
-			}
-			cred, err := NewDefaultAzureCredential(&o)
-			if err != nil {
-				t.Fatal(err)
-			}
-			_, err = cred.GetToken(context.Background(), testTRO)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !called {
-				t.Fatal("Azure CLI wasn't invoked")
-			}
-		})
-
+				switch credName {
+				case credNameAzureCLI:
+					defaultAzTokenProvider = func(ctx context.Context, scopes []string, tenantID, subscription string) ([]byte, error) {
+						verifyTenant(tenantID)
+						return mockAzTokenProviderSuccess(ctx, scopes, tenantID, subscription)
+					}
+				case credNameAzureDeveloperCLI:
+					// ensure az returns an error so DefaultAzureCredential tries azd
+					defaultAzTokenProvider = func(context.Context, []string, string, string) ([]byte, error) {
+						return nil, newCredentialUnavailableError(credNameAzureCLI, "it didn't work")
+					}
+					azdBefore := defaultAzdTokenProvider
+					t.Cleanup(func() { defaultAzdTokenProvider = azdBefore })
+					defaultAzdTokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+						verifyTenant(tenant)
+						return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+					}
+				}
+				// mock IMDS failure because managed identity precedes dev tools in the chain
+				srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
+				defer close()
+				srv.SetResponse(mock.WithStatusCode(400))
+				o := DefaultAzureCredentialOptions{ClientOptions: policy.ClientOptions{Transport: srv}}
+				if override {
+					o.TenantID = expected
+				}
+				cred, err := NewDefaultAzureCredential(&o)
+				if err != nil {
+					t.Fatal(err)
+				}
+				_, err = cred.GetToken(context.Background(), testTRO)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !called {
+					t.Fatalf("%s wasn't invoked", credName)
+				}
+			})
+		}
 		t.Run(fmt.Sprintf("%s_%s", credNameWorkloadIdentity, name), func(t *testing.T) {
 			af := filepath.Join(t.TempDir(), "assertions")
 			if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {

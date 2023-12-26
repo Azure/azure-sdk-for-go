@@ -6,7 +6,7 @@ These settings apply only when `--go` is specified on the command line.
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/secrets.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/secrets.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets
 openapi-type: "data-plane"
@@ -14,7 +14,8 @@ output-folder: ../azsecrets
 override-client-name: Client
 security: "AADToken"
 security-scopes: "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.46"
+use: "@autorest/go@4.0.0-preview.59"
+inject-spans: true
 version: "^3.0.0"
 directive:
   # delete unused model
@@ -115,6 +116,7 @@ directive:
   - from:
       - client.go
       - models.go
+      - options.go
       - response_types.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");

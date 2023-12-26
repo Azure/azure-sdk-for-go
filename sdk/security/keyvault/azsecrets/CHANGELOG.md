@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-11-08)
+
+### Other Changes
+* Upgraded service version to `7.5-preview.1`
+* Updated to latest version of `azcore`.
+* Enabled spans for distributed tracing.
 
 ## 1.0.1 (2023-08-22)
 

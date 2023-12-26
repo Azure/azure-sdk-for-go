@@ -8,8 +8,7 @@ package azotel_test
 
 import (
 	"context"
-	"fmt"
-	"os"
+	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -29,8 +28,7 @@ func Example_jaegerExporter() {
 	// create the Jaeger exporter
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint())
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	// create an OTel TracerProvider that uses the Jaeger exporter
@@ -45,8 +43,7 @@ func Example_jaegerExporter() {
 	// create a credential for the Azure SDK client
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	// create an Azure SDK client, connecting the OTel TracerProvider to it
@@ -56,20 +53,17 @@ func Example_jaegerExporter() {
 		},
 	})
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	// make various API calls with the client.  each one will create its own span
 	_, err = client.NewClient().CheckExistenceByID(context.TODO(), "<resource ID>", "<api-version>", nil)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	// shut down the tracing provider to flush all spans to Jaeger
 	if err = otelTP.Shutdown(context.TODO()); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }

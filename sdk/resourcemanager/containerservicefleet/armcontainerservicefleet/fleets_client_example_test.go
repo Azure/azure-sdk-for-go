@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicefleet/armcontainerservicefleet"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListBySub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_ListBySub.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,11 +61,6 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			ETag: to.Ptr("23ujdflewrj3="),
 		// 			Properties: &armcontainerservicefleet.FleetProperties{
-		// 				HubProfile: &armcontainerservicefleet.FleetHubProfile{
-		// 					DNSPrefix: to.Ptr("dnsprefix1"),
-		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 					KubernetesVersion: to.Ptr("1.22.4"),
-		// 				},
 		// 				ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -73,7 +68,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,11 +111,6 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			ETag: to.Ptr("23ujdflewrj3="),
 		// 			Properties: &armcontainerservicefleet.FleetProperties{
-		// 				HubProfile: &armcontainerservicefleet.FleetHubProfile{
-		// 					DNSPrefix: to.Ptr("dnsprefix1"),
-		// 					Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 					KubernetesVersion: to.Ptr("1.22.4"),
-		// 				},
 		// 				ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
 		// 			},
 		// 	}},
@@ -128,7 +118,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,17 +155,12 @@ func ExampleFleetsClient_Get() {
 	// 	},
 	// 	ETag: to.Ptr("23ujdflewrj3="),
 	// 	Properties: &armcontainerservicefleet.FleetProperties{
-	// 		HubProfile: &armcontainerservicefleet.FleetHubProfile{
-	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-	// 			KubernetesVersion: to.Ptr("1.22.4"),
-	// 		},
 	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,11 +177,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 			"archv2": to.Ptr(""),
 			"tier":   to.Ptr("production"),
 		},
-		Properties: &armcontainerservicefleet.FleetProperties{
-			HubProfile: &armcontainerservicefleet.FleetHubProfile{
-				DNSPrefix: to.Ptr("dnsprefix1"),
-			},
-		},
+		Properties: &armcontainerservicefleet.FleetProperties{},
 	}, &armcontainerservicefleet.FleetsClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
 	})
@@ -229,17 +210,12 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	ETag: to.Ptr("23ujdflewrj3="),
 	// 	Properties: &armcontainerservicefleet.FleetProperties{
-	// 		HubProfile: &armcontainerservicefleet.FleetHubProfile{
-	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-	// 			KubernetesVersion: to.Ptr("1.22.4"),
-	// 		},
 	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_PatchTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,17 +261,12 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 	},
 	// 	ETag: to.Ptr("23ujdflewrj3="),
 	// 	Properties: &armcontainerservicefleet.FleetProperties{
-	// 		HubProfile: &armcontainerservicefleet.FleetHubProfile{
-	// 			DNSPrefix: to.Ptr("dnsprefix1"),
-	// 			Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-	// 			KubernetesVersion: to.Ptr("1.22.4"),
-	// 		},
 	// 		ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +287,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a29126ca8200a6c981a4e908e41fe55730df4cad/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListCredentialsResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/678aeba91061a67e9af8b9aaf41f85b8aea06c7c/specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_ListCredentialsResult.json
 func ExampleFleetsClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

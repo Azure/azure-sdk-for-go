@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,20 +42,22 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 		// page.OperationListResult = armelasticsan.OperationListResult{
 		// 	Value: []*armelasticsan.Operation{
 		// 		{
-		// 			Name: to.Ptr("qgcosclgjmglgs"),
+		// 			Name: to.Ptr("zgtqmglizaqlsx"),
+		// 			ActionType: to.Ptr(armelasticsan.ActionTypeInternal),
 		// 			Display: &armelasticsan.OperationDisplay{
-		// 				Description: to.Ptr("fmbdwtvxjilmflxdlmbysmr"),
-		// 				Operation: to.Ptr("ofkypzumjbtezuqujudkqcf"),
-		// 				Provider: to.Ptr("dbdmmszikohrwlvl"),
-		// 				Resource: to.Ptr("adqzzhgl"),
+		// 				Description: to.Ptr("pmkjqzjverubmslnrcadqur"),
+		// 				Operation: to.Ptr("yumtqbnawcvunwda"),
+		// 				Provider: to.Ptr("apbqaoiegbmipkbqdczsuvlak"),
+		// 				Resource: to.Ptr("hjyuuxkj"),
 		// 			},
 		// 			IsDataAction: to.Ptr(true),
+		// 			Origin: to.Ptr(armelasticsan.OriginUser),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,10 +80,6 @@ func ExampleOperationsClient_NewListPager_operationsListMinimumSetGen() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.OperationListResult = armelasticsan.OperationListResult{
-		// 	Value: []*armelasticsan.Operation{
-		// 		{
-		// 			Name: to.Ptr("qgcosclgjmglgs"),
-		// 	}},
 		// }
 	}
 }

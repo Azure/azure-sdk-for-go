@@ -12,12 +12,13 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 func ExampleClient_GetCompletions() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeployment := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -27,12 +28,7 @@ func ExampleClient_GetCompletions() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
@@ -44,10 +40,10 @@ func ExampleClient_GetCompletions() {
 	}
 
 	resp, err := client.GetCompletions(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  modelDeployment,
+		Prompt:         []string{"What is Azure OpenAI, in 20 words or less"},
+		MaxTokens:      to.Ptr(int32(2048)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &modelDeployment,
 	}, nil)
 
 	if err != nil {
@@ -64,7 +60,7 @@ func ExampleClient_GetCompletions() {
 
 func ExampleClient_GetCompletionsStream() {
 	azureOpenAIKey := os.Getenv("AOAI_API_KEY")
-	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL_DEPLOYMENT")
+	modelDeploymentID := os.Getenv("AOAI_COMPLETIONS_MODEL")
 
 	// Ex: "https://<your-azure-openai-host>.openai.azure.com"
 	azureOpenAIEndpoint := os.Getenv("AOAI_ENDPOINT")
@@ -74,12 +70,7 @@ func ExampleClient_GetCompletionsStream() {
 		return
 	}
 
-	keyCredential, err := azopenai.NewKeyCredential(azureOpenAIKey)
-
-	if err != nil {
-		//  TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	keyCredential := azcore.NewKeyCredential(azureOpenAIKey)
 
 	// In Azure OpenAI you must deploy a model before you can use it in your client. For more information
 	// see here: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource
@@ -91,10 +82,10 @@ func ExampleClient_GetCompletionsStream() {
 	}
 
 	resp, err := client.GetCompletionsStream(context.TODO(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI, in 20 words or less?"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  modelDeploymentID,
+		Prompt:         []string{"What is Azure OpenAI, in 20 words or less?"},
+		MaxTokens:      to.Ptr(int32(2048)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &modelDeploymentID,
 	}, nil)
 
 	if err != nil {
@@ -113,7 +104,7 @@ func ExampleClient_GetCompletionsStream() {
 		}
 
 		if err != nil {
-			// TODO: handle error
+			//  TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
 		}
 

@@ -16,8 +16,8 @@ func ExampleNewClient() {
 	// NOTE: If you'd like to authenticate using a Service Bus connection string
 	// look at `NewClientFromConnectionString` instead.
 
-	// For more information about the DefaultAzureCredential:
-	// https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+	// `DefaultAzureCredential` tries several common credential types. For more credential types
+	// see this link: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#readme-credential-types.
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil {

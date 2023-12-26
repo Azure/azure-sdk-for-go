@@ -5,6 +5,7 @@
 * [Module Skeleton](#create-module-skeleton)
 * [Create SDK](#create-your-sdk)
 * [Write Tests](#write-tests)
+* [Write Examples](#write-examples)
 
 ## Installing Go
 
@@ -161,8 +162,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-var pathToPackage = "sdk/data/aztables/testdata"
-
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {
 	transport, err := recording.NewRecordingHTTPClient(t)
 	require.NoError(t, err)
@@ -216,7 +215,7 @@ const (
 
 // Test creating a single table
 func TestCreateTable(t *testing.T) {
-	err := recording.Start(t, pathToPackage, nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	defer func() {
 		err := recording.Stop(t, nil)
@@ -267,15 +266,32 @@ The recording files eventually live in the main repository (`github.com/Azure/az
 To add a scrubber that replaces the URL of your account use the `TestMain()` function to set sanitizers before you begin running tests.
 
 ```go
+const recordingDirectory = "<path to service directory with assets.json file>/testdata"
+
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
 	// Initialize
-	if recording.GetRecordMode() == "record" {
-		// start all tests with a proxy using it's defaults.
-		err := recording.ResetProxy(nil)
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
 			panic(err)
 		}
 
+		// NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
+    // Set sanitizers in record mode
+	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
@@ -283,16 +299,8 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	exitVal := m.Run()
-
-	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
-		// reset the proxy to it's defaults
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
+	return m.Run()
+}
 ```
 
 Note that removing the names of accounts and other values in your recording can have side effects when running your tests in playback. To take care of this, there are additional methods in the `internal/recording` module for reading environment variables and defaulting to the processed recording value. For example, an `aztables` test for the client constructor and "requiring" the account name to be the same as provided could look like this:
@@ -349,6 +357,30 @@ The `FakeCredential` show here implements the `azcore.TokenCredential` interface
 If you have live tests that require Azure resources, you'll need to create a test resources config file for deployment during CI.
 Please see the [test resource][test_resources] documentation for more info.
 
+### Committing/Updating Recordings
+
+The `assets.json` file located in your module directory is used by the Test Framework to figure out how to retrieve session records from the assets repo. In order to push new session records, you need to invoke:
+
+```PowerShell
+test-proxy push -a <path-to-assets.json>
+```
+
+On completion of the push, a newly created tag will be stamped into the `assets.json` file. This new tag must be committed and pushed to your package directory along with any other changes.
+
+## Write Examples
+
+Examples are built into the Go toolchain by way of [testable examples][testable_examples]. By convention, examples are placed in a file named `example_test.go` and
+may be spread across multiple files, grouped by feature (e.g. `example_<feature>_test.go`). Since testable examples are by definition tests, the file(s) must have the `_test.go` suffix.
+
+Examples **should** be succinct allowing for copy/paste usage and **must** be clearly commented so they're easy to understand.
+
+Examples **must** be provided as testable examples, not as markdown blocks in README files (code snippets are ok but should be used sparingly as they tend to rot over time).
+This ensures that examples actually compile (and work!) and remain current as a SDK evolves. It also allows the doc tooling to automatically link API docs to their examples.
+
+Please consult the canonical documentation on [testable examples][testable_examples] for instructions on how to create/name testable examples and enabling testable example execution.
+
+All SDKs **must** include, at minimum, examples for their champion scenarios.
+
 ## Create Pipelines
 
 When you create the first PR for your library you will want to create this PR against a `track2-<package>` library. Submitting PRs to the `main` branch should only be done once your package is close to being released. Treating `track2-<package>` as your main development branch will allow nightly CI and live pipeline runs to pick up issues as soon as they are introduced. After creating this PR add a comment with the following:
@@ -365,7 +397,7 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [go_download]: https://golang.org/dl/
 [require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
-[test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#via-standalone-executable
+[test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
 [directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
 [module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design
@@ -381,3 +413,4 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [autorest_directives]: https://github.com/Azure/autorest/blob/main/docs/generate/directives.md
 [test_resources]: https://github.com/Azure/azure-sdk-tools/tree/main/eng/common/TestResources
 [recording_package]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/internal/recording
+[testable_examples]: https://go.dev/blog/examples

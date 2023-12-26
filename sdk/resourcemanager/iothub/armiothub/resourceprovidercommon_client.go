@@ -32,7 +32,7 @@ type ResourceProviderCommonClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewResourceProviderCommonClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceProviderCommonClient, error) {
-	cl, err := arm.NewClient(moduleName+".ResourceProviderCommonClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,11 +46,15 @@ func NewResourceProviderCommonClient(subscriptionID string, credential azcore.To
 // GetSubscriptionQuota - Get the number of free and paid iot hubs in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - options - ResourceProviderCommonClientGetSubscriptionQuotaOptions contains the optional parameters for the ResourceProviderCommonClient.GetSubscriptionQuota
 //     method.
 func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Context, options *ResourceProviderCommonClientGetSubscriptionQuotaOptions) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
 	var err error
+	const operationName = "ResourceProviderCommonClient.GetSubscriptionQuota"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSubscriptionQuotaCreateRequest(ctx, options)
 	if err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
@@ -79,7 +83,7 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

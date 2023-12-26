@@ -206,7 +206,7 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 	// the policy should propagate the handler's errors, wrapping them to make them nonretriable, if necessary
 	fatalErr := errors.New("something went wrong")
 	var nre errorinfo.NonRetriable
-	for i, e := range []error{fatalErr, shared.NonRetriableError(fatalErr)} {
+	for i, e := range []error{fatalErr, errorinfo.NonRetriableError(fatalErr)} {
 		handler.onReqErr = e
 		_, err = pl.Do(req)
 		require.ErrorAs(t, err, &nre)
@@ -223,4 +223,38 @@ func TestBearerTokenPolicy_AuthZHandlerErrors(t *testing.T) {
 		// the policy should have sent one request, because OnRequest returned nil but OnChallenge returned an error
 		require.Equal(t, i+1, srv.Requests())
 	}
+}
+
+func TestBearerTokenPolicy_RequiresHTTPS(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	b := NewBearerTokenPolicy(mockCredential{}, nil, nil)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	req, err := NewRequest(context.Background(), "GET", srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.Error(t, err)
+	var nre errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nre)
+}
+
+func TestCheckHTTPSForAuth(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://contoso.com")
+	require.NoError(t, err)
+	require.Error(t, checkHTTPSForAuth(req))
+	req, err = NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
+	require.NoError(t, err)
+	require.NoError(t, checkHTTPSForAuth(req))
+}
+
+func TestBearerTokenPolicy_NilCredential(t *testing.T) {
+	policy := NewBearerTokenPolicy(nil, nil, nil)
+	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		require.Zero(t, req.Header.Get(shared.HeaderAuthorization))
+		return &http.Response{}, nil
+	}), policy)
+	req, err := NewRequest(context.Background(), "GET", "http://contoso.com")
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.NoError(t, err)
 }

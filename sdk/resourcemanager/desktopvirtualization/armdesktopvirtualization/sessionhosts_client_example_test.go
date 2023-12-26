@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Get.json
 func ExampleSessionHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,8 +45,8 @@ func ExampleSessionHostsClient_Get() {
 	// 		AllowNewSession: to.Ptr(true),
 	// 		AssignedUser: to.Ptr("user1@microsoft.com"),
 	// 		FriendlyName: to.Ptr("friendly"),
-	// 		LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
-	// 		LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+	// 		LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
+	// 		LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
 	// 		OSVersion: to.Ptr("10.0.17763"),
 	// 		ResourceID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/sessionHost1"),
@@ -54,7 +54,7 @@ func ExampleSessionHostsClient_Get() {
 	// 			{
 	// 				AdditionalFailureDetails: &armdesktopvirtualization.SessionHostHealthCheckFailureDetails{
 	// 					ErrorCode: to.Ptr[int32](0),
-	// 					LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.6236843Z"); return t}()),
+	// 					LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.623Z"); return t}()),
 	// 					Message: to.Ptr("SessionHost healthy: is joined to domain ≤wvdarmtest1.net≥"),
 	// 				},
 	// 				HealthCheckName: to.Ptr(armdesktopvirtualization.HealthCheckNameDomainJoinedCheck),
@@ -62,24 +62,24 @@ func ExampleSessionHostsClient_Get() {
 	// 		}},
 	// 		Sessions: to.Ptr[int32](1),
 	// 		Status: to.Ptr(armdesktopvirtualization.StatusAvailable),
-	// 		StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+	// 		StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 	// 		SxSStackVersion: to.Ptr("rdp-sxs190816002"),
 	// 		UpdateErrorMessage: to.Ptr(""),
 	// 		UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 	// 		VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 	// 	},
 	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Delete.json
 func ExampleSessionHostsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleSessionHostsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_Update.json
 func ExampleSessionHostsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,8 +131,8 @@ func ExampleSessionHostsClient_Update() {
 	// 		AllowNewSession: to.Ptr(true),
 	// 		AssignedUser: to.Ptr("user1@microsoft.com"),
 	// 		FriendlyName: to.Ptr("friendly"),
-	// 		LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-11T19:27:13.6108027Z"); return t}()),
-	// 		LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+	// 		LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-11T19:27:13.610Z"); return t}()),
+	// 		LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 	// 		ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
 	// 		OSVersion: to.Ptr("10.0.17763"),
 	// 		ResourceID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/sessionHost1"),
@@ -140,7 +140,7 @@ func ExampleSessionHostsClient_Update() {
 	// 			{
 	// 				AdditionalFailureDetails: &armdesktopvirtualization.SessionHostHealthCheckFailureDetails{
 	// 					ErrorCode: to.Ptr[int32](0),
-	// 					LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.6236843Z"); return t}()),
+	// 					LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.623Z"); return t}()),
 	// 					Message: to.Ptr("SessionHost healthy: is joined to domain ≤wvdarmtest1.net≥"),
 	// 				},
 	// 				HealthCheckName: to.Ptr(armdesktopvirtualization.HealthCheckNameDomainJoinedCheck),
@@ -148,24 +148,24 @@ func ExampleSessionHostsClient_Update() {
 	// 		}},
 	// 		Sessions: to.Ptr[int32](1),
 	// 		Status: to.Ptr(armdesktopvirtualization.StatusAvailable),
-	// 		StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-24T20:00:08.2893033Z"); return t}()),
+	// 		StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-24T20:00:08.289Z"); return t}()),
 	// 		SxSStackVersion: to.Ptr("rdp-sxs190816002"),
 	// 		UpdateErrorMessage: to.Ptr(""),
 	// 		UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 	// 		VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 	// 	},
 	// 	SystemData: &armdesktopvirtualization.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/SessionHost_List.json
 func ExampleSessionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,8 +201,8 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				AllowNewSession: to.Ptr(true),
 		// 				AssignedUser: to.Ptr("user1@microsoft.com"),
 		// 				FriendlyName: to.Ptr("friendly"),
-		// 				LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
-		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
+		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
 		// 				OSVersion: to.Ptr("10.0.17763"),
 		// 				ResourceID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/sessionHost1"),
@@ -210,7 +210,7 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 					{
 		// 						AdditionalFailureDetails: &armdesktopvirtualization.SessionHostHealthCheckFailureDetails{
 		// 							ErrorCode: to.Ptr[int32](0),
-		// 							LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.6236843Z"); return t}()),
+		// 							LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.623Z"); return t}()),
 		// 							Message: to.Ptr("SessionHost healthy: is joined to domain ≤wvdarmtest1.net≥"),
 		// 						},
 		// 						HealthCheckName: to.Ptr(armdesktopvirtualization.HealthCheckNameDomainJoinedCheck),
@@ -218,17 +218,17 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				}},
 		// 				Sessions: to.Ptr[int32](1),
 		// 				Status: to.Ptr(armdesktopvirtualization.StatusAvailable),
-		// 				StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				SxSStackVersion: to.Ptr("rdp-sxs190816002"),
 		// 				UpdateErrorMessage: to.Ptr(""),
 		// 				UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 		// 				VirtualMachineID: to.Ptr("29491b54-c033-4dec-b09a-18bf0ebafaef"),
 		// 			},
 		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},
@@ -242,8 +242,8 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				AllowNewSession: to.Ptr(true),
 		// 				AssignedUser: to.Ptr("user2@microsoft.com"),
 		// 				FriendlyName: to.Ptr("friendly"),
-		// 				LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
-		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastHeartBeat: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
+		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				ObjectID: to.Ptr("7877fb31-4bde-49fd-9df3-c046e0ec5325"),
 		// 				OSVersion: to.Ptr("10.0.17763"),
 		// 				ResourceID: to.Ptr("/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.Compute/virtualMachines/sessionHost2"),
@@ -251,7 +251,7 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 					{
 		// 						AdditionalFailureDetails: &armdesktopvirtualization.SessionHostHealthCheckFailureDetails{
 		// 							ErrorCode: to.Ptr[int32](0),
-		// 							LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.6236843Z"); return t}()),
+		// 							LastHealthCheckDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-14T02:09:37.623Z"); return t}()),
 		// 							Message: to.Ptr("SessionHost healthy: is joined to domain ≤wvdarmtest1.net≥"),
 		// 						},
 		// 						HealthCheckName: to.Ptr(armdesktopvirtualization.HealthCheckNameDomainJoinedCheck),
@@ -259,17 +259,17 @@ func ExampleSessionHostsClient_NewListPager() {
 		// 				}},
 		// 				Sessions: to.Ptr[int32](1),
 		// 				Status: to.Ptr(armdesktopvirtualization.StatusAvailable),
-		// 				StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				StatusTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				SxSStackVersion: to.Ptr("rdp-sxs190816002"),
 		// 				UpdateErrorMessage: to.Ptr(""),
 		// 				UpdateState: to.Ptr(armdesktopvirtualization.UpdateStateSucceeded),
 		// 				VirtualMachineID: to.Ptr("39491b54-c033-4dec-b09a-18bf0ebafaef"),
 		// 			},
 		// 			SystemData: &armdesktopvirtualization.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armdesktopvirtualization.CreatedByTypeUser),
 		// 			},

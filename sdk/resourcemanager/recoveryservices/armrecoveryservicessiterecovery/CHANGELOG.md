@@ -1,5 +1,40 @@
 # Release History
 
+## 2.2.0 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.1.0 (2023-09-22)
+### Features Added
+
+- New enum type `ChurnOptionSelected` with values `ChurnOptionSelectedHigh`, `ChurnOptionSelectedNormal`
+- New enum type `SecurityType` with values `SecurityTypeConfidentialVM`, `SecurityTypeNone`, `SecurityTypeTrustedLaunch`
+- New struct `A2AFabricSpecificLocationDetails`
+- New struct `ApplianceMonitoringDetails`
+- New struct `ApplianceResourceDetails`
+- New struct `DataStoreUtilizationDetails`
+- New struct `GatewayOperationDetails`
+- New struct `OSUpgradeSupportedVersions`
+- New struct `VMwareCbtSecurityProfileProperties`
+- New field `ChurnOptionSelected` in struct `A2AReplicationDetails`
+- New field `LocationDetails` in struct `AzureFabricSpecificDetails`
+- New field `ExtendedLocationMappings`, `LocationDetails` in struct `FabricQueryParameter`
+- New field `OSUpgradeVersion` in struct `HyperVReplicaAzurePlannedFailoverProviderInput`
+- New field `AllAvailableOSUpgradeConfigurations` in struct `HyperVReplicaAzureReplicationDetails`
+- New field `OSUpgradeVersion` in struct `HyperVReplicaAzureTestFailoverInput`
+- New field `AllAvailableOSUpgradeConfigurations`, `OSName`, `SupportedOSVersions` in struct `InMageAzureV2ReplicationDetails`
+- New field `OSUpgradeVersion` in struct `InMageAzureV2TestFailoverInput`
+- New field `OSUpgradeVersion` in struct `InMageAzureV2UnplannedFailoverInput`
+- New field `ConfidentialVMKeyVaultID`, `TargetVMSecurityProfile` in struct `VMwareCbtEnableMigrationInput`
+- New field `OSUpgradeVersion` in struct `VMwareCbtMigrateInput`
+- New field `ApplianceMonitoringDetails`, `ConfidentialVMKeyVaultID`, `DeltaSyncProgressPercentage`, `DeltaSyncRetryCount`, `GatewayOperationDetails`, `IsCheckSumResyncCycle`, `OSName`, `OperationName`, `SupportedOSVersions`, `TargetVMSecurityProfile` in struct `VMwareCbtMigrationDetails`
+- New field `GatewayOperationDetails` in struct `VMwareCbtProtectedDiskDetails`
+- New field `ExcludedSKUs` in struct `VMwareCbtProtectionContainerMappingDetails`
+- New field `OSUpgradeVersion` in struct `VMwareCbtTestMigrateInput`
+
+
 ## 2.0.1 (2023-04-14)
 ### Bug Fixes
 

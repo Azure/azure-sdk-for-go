@@ -32,7 +32,7 @@ type UsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UsagesClient, error) {
-	cl, err := arm.NewClient(moduleName+".UsagesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,7 @@ func (client *UsagesClient) NewListByLocationPager(location string, options *Usa
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *UsagesClientListByLocationResponse) (UsagesClientListByLocationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UsagesClient.NewListByLocationPager")
 			req, err := client.listByLocationCreateRequest(ctx, location, options)
 			if err != nil {
 				return UsagesClientListByLocationResponse{}, err
@@ -68,6 +69,7 @@ func (client *UsagesClient) NewListByLocationPager(location string, options *Usa
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

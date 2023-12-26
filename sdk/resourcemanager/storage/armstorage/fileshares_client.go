@@ -32,7 +32,7 @@ type FileSharesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileSharesClient, error) {
-	cl, err := arm.NewClient(moduleName+".FileSharesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewFileSharesClient(subscriptionID string, credential azcore.TokenCredentia
 //   - options - FileSharesClientCreateOptions contains the optional parameters for the FileSharesClient.Create method.
 func (client *FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesClientCreateOptions) (FileSharesClientCreateResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return FileSharesClientCreateResponse{}, err
@@ -133,6 +137,10 @@ func (client *FileSharesClient) createHandleResponse(resp *http.Response) (FileS
 //   - options - FileSharesClientDeleteOptions contains the optional parameters for the FileSharesClient.Delete method.
 func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientDeleteOptions) (FileSharesClientDeleteResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientDeleteResponse{}, err
@@ -197,6 +205,10 @@ func (client *FileSharesClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - FileSharesClientGetOptions contains the optional parameters for the FileSharesClient.Get method.
 func (client *FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientGetOptions) (FileSharesClientGetResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientGetResponse{}, err
@@ -272,6 +284,10 @@ func (client *FileSharesClient) getHandleResponse(resp *http.Response) (FileShar
 //   - options - FileSharesClientLeaseOptions contains the optional parameters for the FileSharesClient.Lease method.
 func (client *FileSharesClient) Lease(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesClientLeaseOptions) (FileSharesClientLeaseResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Lease"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return FileSharesClientLeaseResponse{}, err
@@ -352,25 +368,20 @@ func (client *FileSharesClient) NewListPager(resourceGroupName string, accountNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *FileSharesClientListResponse) (FileSharesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FileSharesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
 			if err != nil {
 				return FileSharesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FileSharesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FileSharesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -431,6 +442,10 @@ func (client *FileSharesClient) listHandleResponse(resp *http.Response) (FileSha
 //   - options - FileSharesClientRestoreOptions contains the optional parameters for the FileSharesClient.Restore method.
 func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesClientRestoreOptions) (FileSharesClientRestoreResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Restore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, accountName, shareName, deletedShare, options)
 	if err != nil {
 		return FileSharesClientRestoreResponse{}, err
@@ -494,6 +509,10 @@ func (client *FileSharesClient) restoreCreateRequest(ctx context.Context, resour
 //   - options - FileSharesClientUpdateOptions contains the optional parameters for the FileSharesClient.Update method.
 func (client *FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesClientUpdateOptions) (FileSharesClientUpdateResponse, error) {
 	var err error
+	const operationName = "FileSharesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return FileSharesClientUpdateResponse{}, err

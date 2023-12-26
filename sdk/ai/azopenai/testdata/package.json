@@ -7,10 +7,10 @@
     "build": "tsp compile ./TempTypeSpecFiles/OpenAI.Inference"
   },
   "dependencies": {
-    "@azure-tools/typespec-autorest": "^0.31.0",
-    "@azure-tools/typespec-azure-core": "^0.31.0",
-    "@typespec/compiler": "latest",
-    "@typespec/openapi3": "^0.45.0"
+    "@azure-tools/typespec-autorest": "0.34.0",
+    "@azure-tools/typespec-azure-core": "0.34.0",
+    "@typespec/compiler": "0.48.0",
+    "@typespec/openapi3": "0.48.0"
   },
   "private": true
 }

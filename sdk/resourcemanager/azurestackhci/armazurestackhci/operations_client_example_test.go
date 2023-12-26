@@ -14,11 +14,11 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/ListOperations.json
-func ExampleOperationsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2023-09-01-preview/examples/ListOperations.json
+func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,354 +28,30 @@ func ExampleOperationsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationsClient().List(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewOperationsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.OperationListResult = armazurestackhci.OperationListResult{
+		// 	Value: []*armazurestackhci.Operation{
+		// 		{
+		// 			Name: to.Ptr("Microsoft.AzureStackHCI/galleryImages/read"),
+		// 			Display: &armazurestackhci.OperationDisplay{
+		// 				Description: to.Ptr("List or get the Addresses"),
+		// 				Operation: to.Ptr("List or Get Addresses"),
+		// 				Provider: to.Ptr("Azure Stack HCI"),
+		// 				Resource: to.Ptr("GalleryImages"),
+		// 			},
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr(armazurestackhci.OriginUser),
+		// 	}},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.OperationListResult = armazurestackhci.OperationListResult{
-	// 	Value: []*armazurestackhci.Operation{
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Register/Action"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Registers the subscription for the Azure Stack HCI resource provider and enables the creation of Azure Stack HCI resources."),
-	// 				Operation: to.Ptr("Registers the Azure Stack HCI Resource Provider"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Register"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Unregister/Action"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Unregisters the subscription for the Azure Stack HCI resource provider."),
-	// 				Operation: to.Ptr("Unregisters the Azure Stack HCI Resource Provider"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Unregister"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Operations/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets operations"),
-	// 				Operation: to.Ptr("Gets/List operations resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Operations"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets clusters"),
-	// 				Operation: to.Ptr("Gets/List cluster resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates or updates a cluster"),
-	// 				Operation: to.Ptr("Create/update cluster resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes cluster resource"),
-	// 				Operation: to.Ptr("Deletes cluster resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets arc resource of HCI cluster"),
-	// 				Operation: to.Ptr("Gets/List arc resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Create or updates arc resource of HCI cluster"),
-	// 				Operation: to.Ptr("Create/Update arc resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Delete arc resource of HCI cluster"),
-	// 				Operation: to.Ptr("Delete arc resources"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Extensions/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets extension resource of HCI cluster"),
-	// 				Operation: to.Ptr("Gets/List extension resources of HCI cluster"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Extensions/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Create or update extension resource of HCI cluster"),
-	// 				Operation: to.Ptr("Create/Update extension resources of HCI cluster"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/Clusters/ArcSettings/Extensions/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Delete extension resources of HCI cluster"),
-	// 				Operation: to.Ptr("Delete extension resources of HCI cluster"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("Clusters/ArcSettings/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Restart/Action"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Restarts virtual machine resource"),
-	// 				Operation: to.Ptr("Restarts virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Start/Action"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Starts virtual machine resource"),
-	// 				Operation: to.Ptr("Starts virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Stop/Action"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Stops virtual machine resource"),
-	// 				Operation: to.Ptr("Stops virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes virtual machine resource"),
-	// 				Operation: to.Ptr("Deletes virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates virtual machine resource"),
-	// 				Operation: to.Ptr("Creates/Updates virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists virtual machine resource"),
-	// 				Operation: to.Ptr("Gets/Lists virtual machine resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualNetworks/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes virtual networks resource"),
-	// 				Operation: to.Ptr("Deletes virtual networks resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualNetworks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualNetworks/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates virtual networks resource"),
-	// 				Operation: to.Ptr("Creates/Updates virtual networks resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualNetworks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualNetworks/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists virtual networks resource"),
-	// 				Operation: to.Ptr("Gets/Lists virtual networks resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualNetworks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualHardDisks/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes virtual hard disk resource"),
-	// 				Operation: to.Ptr("Deletes virtual hard disk resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualHardDisks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualHardDisks/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates virtual hard disk resource"),
-	// 				Operation: to.Ptr("Creates/Updates virtual hard disk resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualHardDisks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualHardDisks/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists virtual hard disk resource"),
-	// 				Operation: to.Ptr("Gets/Lists virtual hard disk resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualHardDisks"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/NetworkInterfaces/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes network interfaces resource"),
-	// 				Operation: to.Ptr("Deletes network interfaces resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("NetworkInterfaces"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/NetworkInterfaces/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates network interfaces resource"),
-	// 				Operation: to.Ptr("Creates/Updates network interfaces resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("NetworkInterfaces"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/NetworkInterfaces/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists network interfaces resource"),
-	// 				Operation: to.Ptr("Gets/Lists network interfaces resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("NetworkInterfaces"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/GalleryImages/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes gallery images resource"),
-	// 				Operation: to.Ptr("Deletes gallery images resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("GalleryImages"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/GalleryImages/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates gallery images resource"),
-	// 				Operation: to.Ptr("Creates/Updates gallery images resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("GalleryImages"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/GalleryImages/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists gallery images resource"),
-	// 				Operation: to.Ptr("Gets/Lists gallery images resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("GalleryImages"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/HybridIdentityMetadata/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists virtual machine hybrid identity metadata proxy resource"),
-	// 				Operation: to.Ptr("Gets/Lists virtual machine hybrid identity metadata proxy resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines/HybridIdentityMetadata"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Extensions/Read"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Gets/Lists virtual machine extensions resource"),
-	// 				Operation: to.Ptr("Gets/Lists virtual machine extensions resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Extensions/Write"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Creates/Updates virtual machine extensions resource"),
-	// 				Operation: to.Ptr("Creates/Updates virtual machine extensions resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 		},
-	// 		{
-	// 			Name: to.Ptr("Microsoft.AzureStackHCI/VirtualMachines/Extensions/Delete"),
-	// 			Display: &armazurestackhci.OperationDisplay{
-	// 				Description: to.Ptr("Deletes virtual machine extensions resource"),
-	// 				Operation: to.Ptr("Deletes virtual machine extensions resource"),
-	// 				Provider: to.Ptr("Microsoft.AzureStackHCI"),
-	// 				Resource: to.Ptr("VirtualMachines/Extensions"),
-	// 			},
-	// 			IsDataAction: to.Ptr(false),
-	// 	}},
-	// }
 }

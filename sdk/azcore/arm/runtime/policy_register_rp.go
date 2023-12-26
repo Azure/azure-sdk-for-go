@@ -126,12 +126,13 @@ func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error)
 			u:     r.endpoint,
 			subID: subID,
 		}
-		if _, err = rpOps.Register(req.Raw().Context(), rp); err != nil {
+		if _, err = rpOps.Register(&shared.ContextWithDeniedValues{Context: req.Raw().Context()}, rp); err != nil {
 			logRegistrationExit(err)
 			return resp, err
 		}
+
 		// RP was registered, however we need to wait for the registration to complete
-		pollCtx, pollCancel := context.WithTimeout(req.Raw().Context(), r.options.PollingDuration)
+		pollCtx, pollCancel := context.WithTimeout(&shared.ContextWithDeniedValues{Context: req.Raw().Context()}, r.options.PollingDuration)
 		var lastRegState string
 		for {
 			// get the current registration state
@@ -176,6 +177,7 @@ var unregisteredRPCodes = []string{
 	"MissingSubscriptionRegistration",
 	"MissingRegistrationForResourceProvider",
 	"Subscription Not Registered",
+	"SubscriptionNotRegistered",
 }
 
 func isUnregisteredRPCode(errorCode string) bool {

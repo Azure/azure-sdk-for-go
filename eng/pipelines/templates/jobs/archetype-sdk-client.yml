@@ -74,6 +74,9 @@ parameters:
   - name: ExcludeGoNMinus2
     type: boolean
     default: false
+  - name: UsePipelineProxy
+    type: boolean
+    default: true
 
 
 stages:
@@ -132,7 +135,7 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           Image: $(vm.image)
           GoVersion: $(go.version)
-          TestProxy: true
+          TestProxy: ${{ parameters.UsePipelineProxy }}
           TestRunTime: ${{ parameters.TestRunTime }}
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
@@ -187,6 +190,7 @@ stages:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
                   EnvVars: ${{ parameters.EnvVars }}
                   TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                  TestRunTime: ${{ parameters.TestRunTime }}
                   Location: ${{ parameters.Location }}
                   PreSteps:
                     - ${{ parameters.PreSteps }}

@@ -7,8 +7,8 @@
 package file
 
 import (
-	"encoding/binary"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -54,7 +54,7 @@ type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
 
 // HTTPRange defines a range of bytes within an HTTP resource, starting at offset and
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
-// which has an offset but no zero value count indicates from the offset to the resource's end.
+// which has an offset and zero value count indicates from the offset to the resource's end.
 type HTTPRange = exported.HTTPRange
 
 // ShareFileRangeList - The list of file ranges.
@@ -88,12 +88,17 @@ type CreateOptions struct {
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return &generated.FileClientCreateOptions{
+			FileAttributes:    to.Ptr(shared.FileAttributesNone),
+			FileCreationTime:  to.Ptr(shared.DefaultCurrentTimeString),
+			FileLastWriteTime: to.Ptr(shared.DefaultCurrentTimeString),
+			FilePermission:    to.Ptr(shared.DefaultFilePermissionString),
+		}, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.FileAttributesNone), to.Ptr(shared.DefaultCurrentTimeString), false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultFilePermissionString))
 
 	createOptions := &generated.FileClientCreateOptions{
 		FileAttributes:    fileAttributes,
@@ -154,9 +159,9 @@ func (o *RenameOptions) format() (*generated.FileClientRenameOptions, *generated
 		return nil, nil, nil, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, nil, nil, false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, nil)
 
 	renameOpts := &generated.FileClientRenameOptions{
 		FilePermission:    permission,
@@ -218,12 +223,17 @@ type SetHTTPHeadersOptions struct {
 
 func (o *SetHTTPHeadersOptions) format() (*generated.FileClientSetHTTPHeadersOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil
+		return &generated.FileClientSetHTTPHeadersOptions{
+			FileAttributes:    to.Ptr(shared.DefaultPreserveString),
+			FileCreationTime:  to.Ptr(shared.DefaultPreserveString),
+			FileLastWriteTime: to.Ptr(shared.DefaultPreserveString),
+			FilePermission:    to.Ptr(shared.DefaultPreserveString),
+		}, nil, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, false)
+	fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime := exported.FormatSMBProperties(o.SMBProperties, to.Ptr(shared.DefaultPreserveString), to.Ptr(shared.DefaultPreserveString), false)
 
-	permission, permissionKey := exported.FormatPermissions(o.Permissions)
+	permission, permissionKey := exported.FormatPermissions(o.Permissions, to.Ptr(shared.DefaultPreserveString))
 
 	opts := &generated.FileClientSetHTTPHeadersOptions{
 		FileAttributes:    fileAttributes,
@@ -622,12 +632,15 @@ func (o *ClearRangeOptions) format(contentRange HTTPRange) (string, *generated.L
 type UploadRangeFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
-	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64             uint64
+	// SourceContentValidation contains the validation mechanism used on the range of bytes read from the source.
+	SourceContentValidation        SourceContentValidationType
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	LeaseAccessConditions          *LeaseAccessConditions
 	// LastWrittenMode specifies if the file last write time should be preserved or overwritten.
 	LastWrittenMode *LastWrittenMode
+
+	// Deprecated: Specify the crc64 calculated for the range of bytes that must be read from the copy source.
+	SourceContentCRC64 uint64
 }
 
 func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset int64, count int64) (string, *generated.FileClientUploadRangeFromURLOptions, *generated.SourceModifiedAccessConditions, *generated.LeaseAccessConditions, error) {
@@ -655,9 +668,12 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
 		leaseAccessConditions = o.LeaseAccessConditions
 
-		buf := make([]byte, 8)
-		binary.LittleEndian.PutUint64(buf, o.SourceContentCRC64)
-		opts.SourceContentCRC64 = buf
+		if o.SourceContentValidation != nil {
+			err := o.SourceContentValidation.apply(opts)
+			if err != nil {
+				return "", nil, nil, nil, err
+			}
+		}
 	}
 
 	return destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, nil

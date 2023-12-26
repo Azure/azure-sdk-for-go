@@ -27,6 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const recordingDirectory = "sdk/security/keyvault/azsecrets/testdata"
 const fakeVaultURL = "https://fakevault.local"
 
 var (
@@ -40,6 +41,27 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	var proxy *recording.TestProxyInstance
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		var err error
+		proxy, err = recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	vaultURL = fakeVaultURL
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		if u, ok := os.LookupEnv("AZURE_KEYVAULT_URL"); ok && u != "" {
@@ -48,16 +70,13 @@ func TestMain(m *testing.M) {
 			panic("no value for AZURE_KEYVAULT_URL")
 		}
 	}
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
-	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		credential = &FakeCredential{}
 	} else {
 		tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
 		clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
 		secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
+		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {
 			panic(err)
@@ -68,7 +87,9 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, &recording.RecordingOptions{GroupForReplace: "1"})
+		opts := proxy.Options
+		opts.GroupForReplace = "1"
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "https://local", `resource="(.*)"`, opts)
 		if err != nil {
 			panic(err)
 		}
@@ -76,12 +97,6 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
 	}
 	code := m.Run()
 	if recording.GetRecordMode() != recording.PlaybackMode {
@@ -109,11 +124,12 @@ func TestMain(m *testing.M) {
 			}
 		}
 	}
-	os.Exit(code)
+
+	return code
 }
 
 func startTest(t *testing.T) *azsecrets.Client {
-	err := recording.Start(t, "sdk/security/keyvault/azsecrets/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		err := recording.Stop(t, nil)

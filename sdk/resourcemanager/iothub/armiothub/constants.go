@@ -9,8 +9,8 @@
 package armiothub
 
 const (
-	moduleName    = "armiothub"
-	moduleVersion = "v1.2.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
+	moduleVersion = "v1.3.0"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -165,24 +165,6 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 	return []IPFilterActionType{
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
-	}
-}
-
-// IPVersion - This property specifies the IP Version the hub is currently utilizing.
-type IPVersion string
-
-const (
-	IPVersionIPv4     IPVersion = "ipv4"
-	IPVersionIPv4IPv6 IPVersion = "ipv4ipv6"
-	IPVersionIPv6     IPVersion = "ipv6"
-)
-
-// PossibleIPVersionValues returns the possible values for the IPVersion const type.
-func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{
-		IPVersionIPv4,
-		IPVersionIPv4IPv6,
-		IPVersionIPv6,
 	}
 }
 
@@ -388,7 +370,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both
+// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both
 // an implicitly created identity and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ResourceIdentityType string
@@ -434,9 +416,7 @@ const (
 	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
 	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
 	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
-	RoutingSourceDigitalTwinChangeEvents     RoutingSource = "DigitalTwinChangeEvents"
 	RoutingSourceInvalid                     RoutingSource = "Invalid"
-	RoutingSourceMqttBrokerMessages          RoutingSource = "MqttBrokerMessages"
 	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
 )
 
@@ -447,9 +427,7 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
-		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
-		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
 }

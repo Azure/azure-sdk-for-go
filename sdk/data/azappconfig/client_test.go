@@ -8,12 +8,31 @@ package azappconfig_test
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	"github.com/stretchr/testify/require"
 )
+
+// testId will be used for local testing as a unique identifier. The test proxy will record the base
+// request for snapshots. The deletion time for a snapshot is minimum 1 hour. For quicker
+// local iteration we will use a unique suffix for each test run.
+// to use: switch the testId being used
+//
+//	 Snapshot Name: `// + string(testId)`
+//		KeyValue Prefix: `/*testId +*/`
+
+// Record Mode
+var testId = "120823uid"
+
+// // Local Testing Mode
+// var currTime = time.Now().Unix()
+// var testId = strconv.FormatInt(currTime, 10)[len(strconv.FormatInt(currTime, 10))-6:]
 
 func TestClient(t *testing.T) {
 	const (
@@ -80,9 +99,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *setResp.Value)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	getResp3, err6 := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
 		Label:         to.Ptr(label),
 		OnlyIfChanged: etag,
@@ -115,9 +131,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *setResp2.Value)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	setResp3, err8 := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
 		Label:           to.Ptr(label),
 		OnlyIfUnchanged: etag,
@@ -141,9 +154,6 @@ func TestClient(t *testing.T) {
 	require.True(t, *roResp.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	roResp2, err10 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
 		Label: to.Ptr(label),
 	})
@@ -159,9 +169,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *roResp2.Value)
 	require.False(t, *roResp2.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	roResp3, err11 := client.SetReadOnly(context.Background(), key, true, &azappconfig.SetReadOnlyOptions{
 		Label:           to.Ptr(label),
@@ -188,9 +195,6 @@ func TestClient(t *testing.T) {
 	require.True(t, *roResp4.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
 
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
-
 	roResp5, err13 := client.SetReadOnly(context.Background(), key, false, &azappconfig.SetReadOnlyOptions{
 		Label:           to.Ptr(label),
 		OnlyIfUnchanged: etag,
@@ -215,9 +219,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, value, *roResp6.Value)
 	require.False(t, *roResp6.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	any := "*"
 	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{
@@ -263,9 +264,6 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *delResp.Label)
 	require.Equal(t, value, *delResp.Value)
 	require.NotNil(t, setResp.SyncToken)
-
-	// after changing the setting, update the sync token so we don't get cached, stale data
-	client.UpdateSyncToken(*setResp.SyncToken)
 
 	addResp2, err18 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
 		Label:       to.Ptr(label),
@@ -323,4 +321,340 @@ func TestSettingNilValue(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 	require.EqualValues(t, key, *resp.Key)
+}
+
+func TestSettingWithEscaping(t *testing.T) {
+	const (
+		key         = ".appconfig.featureflag/TestSettingWithEscaping"
+		contentType = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
+	)
+	client := NewClientFromConnectionString(t)
+
+	addResp, err := client.AddSetting(context.Background(), key, nil, &azappconfig.AddSettingOptions{
+		ContentType: to.Ptr(contentType),
+	})
+	require.NoError(t, err)
+	require.NotZero(t, addResp)
+
+	getResp, err := client.GetSetting(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Key)
+	require.EqualValues(t, key, *getResp.Key)
+
+	resp, err := client.DeleteSetting(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
+	require.EqualValues(t, key, *resp.Key)
+}
+
+func TestSnapshotListConfigurationSettings(t *testing.T) {
+	snapshotName := "listConfigurationsSnapshotTest" + string(testId)
+	client := NewClientFromConnectionString(t)
+
+	type VL struct {
+		Value string
+		Label string
+	}
+
+	Settings := []azappconfig.Setting{
+		{
+			Value: to.Ptr("value3"),
+			Label: to.Ptr("label"),
+		},
+		{
+			Value: to.Ptr("Val1"),
+			Label: to.Ptr("Label1"),
+		},
+		{
+			Label: to.Ptr("Label1"),
+		},
+		{
+			Value: to.Ptr("Val1"),
+		},
+		{
+			Label: to.Ptr("Label2"),
+		},
+		{},
+	}
+
+	Keys := []string{
+		"Key",
+		"Key1",
+		"Key2",
+		"KeyNoLabel",
+		"KeyNoVal",
+		"NoValNoLabelKey",
+	}
+
+	require.Equal(t, len(Settings), len(Keys))
+
+	for i, key := range Keys {
+		Settings[i].Key = to.Ptr(testId + key)
+	}
+
+	settingMap := make(map[string][]VL)
+
+	for _, setting := range Settings {
+
+		key := *setting.Key
+		value := setting.Value
+		label := setting.Label
+
+		// Add setting to Map
+		mapV := VL{}
+
+		if value != nil {
+			mapV.Value = *value
+		}
+
+		if label != nil {
+			mapV.Label = *label
+		}
+
+		settingMap[key] = append(settingMap[key], mapV)
+
+		_, err := client.AddSetting(context.Background(), key, value, nil)
+
+		require.NoError(t, err)
+	}
+
+	keyFilter := fmt.Sprintf(testId + "*")
+	sf := []azappconfig.SettingFilter{
+		{
+			KeyFilter: &keyFilter,
+		},
+	}
+
+	_, err := CreateSnapshot(client, snapshotName, sf)
+	require.NoError(t, err)
+
+	respPgr := client.NewListSettingsForSnapshotPager(snapshotName, nil)
+	require.NotEmpty(t, respPgr)
+
+	settingsAdded := 0
+
+	for respPgr.More() {
+		page, err := respPgr.NextPage(context.Background())
+
+		require.NoError(t, err)
+		require.NotEmpty(t, page)
+
+		for _, setting := range page.Settings {
+			require.NotNil(t, setting.Key)
+			found := false
+
+			// Check if setting is in the map
+			for _, configuration := range settingMap[*setting.Key] {
+				if setting.Value != nil {
+					if *setting.Value != configuration.Value {
+						continue
+					}
+				}
+
+				if setting.Label != nil {
+					if *setting.Label != configuration.Label {
+						continue
+					}
+				}
+
+				found = true
+				settingsAdded++
+				break
+			}
+
+			// Check that the key follows the filtering pattern
+			if !found {
+				require.True(t, strings.HasPrefix(*setting.Key, keyFilter[:len(keyFilter)-1]))
+			}
+		}
+	}
+
+	require.Equal(t, len(settingMap), settingsAdded)
+
+	// Cleanup Settings
+	for _, setting := range Settings {
+		_, _ = client.DeleteSetting(context.Background(), *setting.Key, nil)
+	}
+
+	// Cleanup Snapshots
+	_ = CleanupSnapshot(client, snapshotName)
+}
+
+func TestGetSnapshots(t *testing.T) {
+	snapshotName := "getSnapshotsTest" + string(testId)
+
+	const (
+		ssCreateCount = 5
+	)
+
+	client := NewClientFromConnectionString(t)
+
+	for i := 0; i < ssCreateCount; i++ {
+		createSSName := snapshotName + fmt.Sprintf("%d", i)
+
+		_, err := client.GetSnapshot(context.Background(), createSSName, nil)
+
+		if err != nil {
+			_, err = CreateSnapshot(client, createSSName, nil)
+			require.NoError(t, err)
+		}
+	}
+
+	// Get Snapshots
+	ssPgr := client.NewListSnapshotsPager(nil)
+
+	require.NotEmpty(t, ssPgr)
+
+	snapshotCount := 0
+
+	for ssPgr.More() {
+		page, err := ssPgr.NextPage(context.Background())
+
+		require.NoError(t, err)
+		require.NotEmpty(t, page)
+
+		for _, snapshot := range page.Snapshots {
+			if strings.HasPrefix(*snapshot.Name, snapshotName) {
+				snapshotCount++
+			}
+		}
+	}
+
+	require.Equal(t, ssCreateCount, snapshotCount)
+
+	// Cleanup Snapshots
+	for i := 0; i < ssCreateCount; i++ {
+		cleanSSName := snapshotName + fmt.Sprintf("%d", i)
+		_ = CleanupSnapshot(client, cleanSSName)
+	}
+}
+
+func TestSnapshotArchive(t *testing.T) {
+	snapshotName := "archiveSnapshotsTest" + string(testId)
+
+	client := NewClientFromConnectionString(t)
+
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
+	require.NoError(t, err)
+
+	// Snapshot must exist
+	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Status)
+
+	// Archive the snapshot
+	archiveSnapshot, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
+
+	//Best effort snapshot cleanup
+	_ = CleanupSnapshot(client, snapshotName)
+}
+
+func TestSnapshotRecover(t *testing.T) {
+	snapshotName := "recoverSnapshotsTest" + string(testId)
+
+	client := NewClientFromConnectionString(t)
+
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
+	require.NoError(t, err)
+
+	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+
+	_, err = client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+
+	// Check that snapshot is archived
+	archivedSnapshot, err := client.GetSnapshot(context.Background(), *snapshot.Name, nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archivedSnapshot.Snapshot.Status)
+
+	// Recover the snapshot
+	readySnapshot, err := client.RecoverSnapshot(context.Background(), *snapshot.Name, nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Snapshot.Status)
+
+	// Best effort snapshot cleanup
+	_ = CleanupSnapshot(client, snapshotName)
+}
+
+func TestSnapshotCreate(t *testing.T) {
+	snapshotName := "createSnapshotsTest" + string(testId)
+
+	client := NewClientFromConnectionString(t)
+
+	//Create a snapshot
+	snapshot, err := CreateSnapshot(client, snapshotName, nil)
+
+	require.NoError(t, err)
+	require.Equal(t, snapshotName, *snapshot.Name)
+
+	// Best effort cleanup snapshot
+	_ = CleanupSnapshot(client, snapshotName)
+}
+
+func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
+	if sf == nil {
+		all := "*"
+		sf = []azappconfig.SettingFilter{
+			{
+				KeyFilter: &all,
+			},
+		}
+	}
+
+	retPer := int64(3600)
+
+	opts := &azappconfig.CreateSnapshotOptions{
+		RetentionPeriod: &retPer,
+	}
+
+	//Create a snapshot
+	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
+
+	if err != nil {
+		return azappconfig.CreateSnapshotResponse{}, err
+	}
+
+	if resp == nil {
+		return azappconfig.CreateSnapshotResponse{}, fmt.Errorf("resp is nil")
+	}
+	snapshot, err := resp.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+		Frequency: 1 * time.Second,
+	})
+
+	if err != nil {
+		return azappconfig.CreateSnapshotResponse{}, err
+	}
+
+	//Check if snapshot exists. If not fail the test
+	_, err = c.GetSnapshot(context.Background(), snapshotName, nil)
+
+	if err != nil {
+		return azappconfig.CreateSnapshotResponse{}, err
+	}
+
+	if snapshotName != *snapshot.Name {
+		return azappconfig.CreateSnapshotResponse{}, fmt.Errorf("Snapshot name does not match")
+	}
+
+	return snapshot, nil
+}
+
+func CleanupSnapshot(client *azappconfig.Client, snapshotName string) error {
+	_, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+
+	if err != nil {
+		return err
+	}
+
+	//Check if snapshot exists
+	snapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+
+	if err != nil || *snapshot.Status != azappconfig.SnapshotStatusArchived {
+		return fmt.Errorf("Snapshot still exists")
+	}
+
+	return nil
 }

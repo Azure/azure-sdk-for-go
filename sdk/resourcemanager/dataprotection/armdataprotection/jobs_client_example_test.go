@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/ListJobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/ListJobs.json
 func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				ProgressEnabled: to.Ptr(false),
 		// 				SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 		// 				SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-16T05:00:08.1746833Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-16T05:00:08.174Z"); return t}()),
 		// 				Status: to.Ptr("Started"),
 		// 				SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 		// 				SupportedActions: []*string{
@@ -93,7 +93,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				ProgressEnabled: to.Ptr(false),
 		// 				SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 		// 				SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-16T18:00:03.6660733Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-16T18:00:03.666Z"); return t}()),
 		// 				Status: to.Ptr("Started"),
 		// 				SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 		// 				SupportedActions: []*string{
@@ -123,7 +123,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				ProgressEnabled: to.Ptr(false),
 		// 				SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 		// 				SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T03:00:03.7604146Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T03:00:03.760Z"); return t}()),
 		// 				Status: to.Ptr("Started"),
 		// 				SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 		// 				SupportedActions: []*string{
@@ -145,7 +145,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				DataSourceSetName: to.Ptr("mabtestingccybasicv11"),
 		// 				DataSourceType: to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
 		// 				Duration: to.Ptr("00:02:11.9724387"),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T11:14:02.5319646Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T11:14:02.531Z"); return t}()),
 		// 				IsUserTriggered: to.Ptr(true),
 		// 				Operation: to.Ptr("Backup"),
 		// 				OperationCategory: to.Ptr("Backup"),
@@ -154,7 +154,7 @@ func ExampleJobsClient_NewListPager() {
 		// 				ProgressEnabled: to.Ptr(false),
 		// 				SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 		// 				SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T11:11:50.5595259Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T11:11:50.559Z"); return t}()),
 		// 				Status: to.Ptr("Succeeded"),
 		// 				SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 		// 				SupportedActions: []*string{
@@ -166,7 +166,7 @@ func ExampleJobsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/GetJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/GetJob.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleJobsClient_Get() {
 	// 		ProgressEnabled: to.Ptr(false),
 	// 		SourceResourceGroup: to.Ptr("DppPostgresTestingCcy"),
 	// 		SourceSubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T03:00:03.7604146Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-17T03:00:03.760Z"); return t}()),
 	// 		Status: to.Ptr("Started"),
 	// 		SubscriptionID: to.Ptr("62b829ee-7936-40c9-a1c9-47a93f9f3965"),
 	// 		SupportedActions: []*string{

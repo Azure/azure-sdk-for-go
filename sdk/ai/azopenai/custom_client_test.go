@@ -51,7 +51,7 @@ func TestNewClient(t *testing.T) {
 func TestNewClientWithKeyCredential(t *testing.T) {
 	type args struct {
 		endpoint   string
-		credential azopenai.KeyCredential
+		credential *azcore.KeyCredential
 		options    *azopenai.ClientOptions
 	}
 	tests := []struct {
@@ -77,12 +77,7 @@ func TestNewClientWithKeyCredential(t *testing.T) {
 }
 
 func TestGetCompletionsStream_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetCompletionsStream(t, client, azureOpenAI)
 }
 
@@ -97,13 +92,14 @@ func TestGetCompletionsStream_OpenAI(t *testing.T) {
 
 func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars) {
 	body := azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI?"},
-		MaxTokens:   to.Ptr(int32(2048)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  tv.Completions,
+		Prompt:         []string{"What is Azure OpenAI?"},
+		MaxTokens:      to.Ptr(int32(2048)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &tv.Completions,
 	}
 
 	response, err := client.GetCompletionsStream(context.TODO(), body, nil)
+	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
 	if err != nil {
@@ -123,10 +119,10 @@ func testGetCompletionsStream(t *testing.T, client *azopenai.Client, tv testVars
 			break
 		}
 
-		if completion.PromptAnnotations != nil {
-			require.Equal(t, []azopenai.PromptFilterResult{
-				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
-			}, completion.PromptAnnotations)
+		if completion.PromptFilterResults != nil {
+			require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
+				{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
+			}, completion.PromptFilterResults)
 		}
 
 		eventCount++
@@ -158,10 +154,10 @@ func TestClient_GetCompletions_Error(t *testing.T) {
 
 	doTest := func(t *testing.T, client *azopenai.Client, model string) {
 		streamResp, err := client.GetCompletionsStream(context.Background(), azopenai.CompletionsOptions{
-			Prompt:      []string{"What is Azure OpenAI?"},
-			MaxTokens:   to.Ptr(int32(2048 - 127)),
-			Temperature: to.Ptr(float32(0.0)),
-			Deployment:  model,
+			Prompt:         []string{"What is Azure OpenAI?"},
+			MaxTokens:      to.Ptr(int32(2048 - 127)),
+			Temperature:    to.Ptr(float32(0.0)),
+			DeploymentName: &model,
 		}, nil)
 		require.Empty(t, streamResp)
 		assertResponseIsError(t, err)

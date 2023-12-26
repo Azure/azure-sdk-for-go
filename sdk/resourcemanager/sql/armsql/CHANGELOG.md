@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0-beta.3 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.2.0 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.0.0-beta.2 (2023-09-22)
+### Features Added
+
+- New enum type `FreeLimitExhaustionBehavior` with values `FreeLimitExhaustionBehaviorAutoPause`, `FreeLimitExhaustionBehaviorBillOverUsage`
+- New field `EncryptionProtectorAutoRotation`, `FreeLimitExhaustionBehavior`, `UseFreeLimit` in struct `DatabaseProperties`
+- New field `EncryptionProtectorAutoRotation`, `FreeLimitExhaustionBehavior`, `UseFreeLimit` in struct `DatabaseUpdateProperties`
+- New field `TargetServer` in struct `FailoverGroupReadOnlyEndpoint`
+- New field `PartnerServers` in struct `FailoverGroupUpdateProperties`
+- New field `IsIPv6Enabled` in struct `ServerProperties`
+
+
 ## 2.0.0-beta.1 (2023-07-28)
 ### Breaking Changes
 

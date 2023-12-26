@@ -8,10 +8,8 @@ package azeventgrid
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/internal"
@@ -23,15 +21,16 @@ type ClientOptions struct {
 }
 
 // NewClientWithSharedKeyCredential creates a [Client] using a shared key.
-func NewClientWithSharedKeyCredential(endpoint string, key string, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	// TODO: I believe we're supposed to allow for dynamically updating the key at any time as well.
 	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
-			&skpolicy{Key: key},
+			runtime.NewKeyCredentialPolicy(keyCred, "Authorization", &runtime.KeyCredentialPolicyOptions{
+				Prefix: "SharedAccessKey ",
+			}),
 		},
 	}, &options.ClientOptions)
 
@@ -45,32 +44,59 @@ func NewClientWithSharedKeyCredential(endpoint string, key string, options *Clie
 	}, nil
 }
 
-// PublishCloudEvents - Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP
-// 200 status code with an empty JSON object in response. Otherwise, the server can return various error
-// codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large,
-// 410: which indicates that specific topic is not found, 400: for bad
-// request, and 500: for internal server error.
+// RejectCloudEvents - Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
+// accepted. The response body will include the set of successfully rejected lockTokens,
+// along with other failed lockTokens with their corresponding error information.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01-preview
-//   - endpoint - The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net
+// Generated from API version 2023-10-01-preview
 //   - topicName - Topic Name.
-//   - events - Array of Cloud Events being published.
-//   - options - ClientPublishCloudEventsOptions contains the optional parameters for the Client.PublishCloudEvents method.
-func (client *Client) PublishCloudEvents(ctx context.Context, topicName string, events []messaging.CloudEvent, options *PublishCloudEventsOptions) (PublishCloudEventsResponse, error) {
-	ctx = runtime.WithHTTPHeader(ctx, http.Header{
-		"Content-type": []string{"application/cloudevents-batch+json; charset=utf-8"},
-	})
-
-	return client.internalPublishCloudEvents(ctx, topicName, events, options)
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - slice of lock tokens.
+//   - options - RejectCloudEventsOptions contains the optional parameters for the Client.RejectCloudEvents method.
+func (client *Client) RejectCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RejectCloudEventsOptions) (RejectCloudEventsResponse, error) {
+	return client.internalRejectCloudEvents(ctx, topicName, eventSubscriptionName, rejectOptions{LockTokens: lockTokens}, options)
 }
 
-// TODO: remove in favor of a common policy instead?
-type skpolicy struct {
-	Key string
+// AcknowledgeCloudEvents - Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully acknowledged
+// lockTokens, along with other failed lockTokens with their corresponding error information. Successfully acknowledged events
+// will no longer be available to any consumer.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - slice of lock tokens.
+//   - options - AcknowledgeCloudEventsOptions contains the optional parameters for the Client.AcknowledgeCloudEvents method.
+func (client *Client) AcknowledgeCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *AcknowledgeCloudEventsOptions) (AcknowledgeCloudEventsResponse, error) {
+	return client.internalAcknowledgeCloudEvents(ctx, topicName, eventSubscriptionName, acknowledgeOptions{LockTokens: lockTokens}, options)
 }
 
-func (p *skpolicy) Do(req *policy.Request) (*http.Response, error) {
-	req.Raw().Header.Add("Authorization", "SharedAccessKey "+p.Key)
-	return req.Next()
+// ReleaseCloudEvents - Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
+// successfully accepted. The response body will include the set of successfully released lockTokens,
+// along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - slice of lock tokens.
+//   - options - ReleaseCloudEventsOptions contains the optional parameters for the Client.ReleaseCloudEvents method.
+func (client *Client) ReleaseCloudEvents(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *ReleaseCloudEventsOptions) (ReleaseCloudEventsResponse, error) {
+	return client.internalReleaseCloudEvents(ctx, topicName, eventSubscriptionName, releaseOptions{LockTokens: lockTokens}, options)
+}
+
+// RenewCloudEventLocks - Renew lock for batch of Cloud Events. The server responds with an HTTP 200 status code if the request
+// is successfully accepted. The response body will include the set of successfully renewed
+// lockTokens, along with other failed lockTokens with their corresponding error information.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-10-01-preview
+//   - topicName - Topic Name.
+//   - eventSubscriptionName - Event Subscription Name.
+//   - lockTokens - slice of lock tokens.
+//   - options - RenewCloudEventLocksOptions contains the optional parameters for the Client.RenewCloudEventLocks method.
+func (client *Client) RenewCloudEventLocks(ctx context.Context, topicName string, eventSubscriptionName string, lockTokens []string, options *RenewCloudEventLocksOptions) (RenewCloudEventLocksResponse, error) {
+	return client.internalRenewCloudEventLocks(ctx, topicName, eventSubscriptionName, renewLockOptions{LockTokens: lockTokens}, options)
 }

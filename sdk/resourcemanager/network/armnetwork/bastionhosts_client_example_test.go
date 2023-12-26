@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostDelete.json
-func ExampleBastionHostsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostDelete.json
+func ExampleBastionHostsClient_BeginDelete_deleteBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -39,8 +39,29 @@ func ExampleBastionHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostGet.json
-func ExampleBastionHostsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostDeveloperDelete.json
+func ExampleBastionHostsClient_BeginDelete_deleteDeveloperBastionHost() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBastionHostsClient().BeginDelete(ctx, "rg2", "bastionhostdeveloper", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostGet.json
+func ExampleBastionHostsClient_Get_getBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -99,8 +120,53 @@ func ExampleBastionHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostPut.json
-func ExampleBastionHostsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostDeveloperGet.json
+func ExampleBastionHostsClient_Get_getDeveloperBastionHost() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBastionHostsClient().Get(ctx, "rg1", "bastionhostdeveloper'", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BastionHost = armnetwork.BastionHost{
+	// 	Name: to.Ptr("bastionhostdeveloper'"),
+	// 	Type: to.Ptr("Microsoft.Network/bastionHosts"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/bastionHosts/bastionhostdeveloper'"),
+	// 	Location: to.Ptr("West US"),
+	// 	Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 	Properties: &armnetwork.BastionHostPropertiesFormat{
+	// 		DNSName: to.Ptr("omnibrain.uswest.bastionglobal.azure.com"),
+	// 		IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
+	// 		},
+	// 		NetworkACLs: &armnetwork.BastionHostPropertiesFormatNetworkACLs{
+	// 			IPRules: []*armnetwork.IPRule{
+	// 				{
+	// 					AddressPrefix: to.Ptr("1.1.1.1/16"),
+	// 			}},
+	// 		},
+	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		VirtualNetwork: &armnetwork.SubResource{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 		},
+	// 	},
+	// 	SKU: &armnetwork.SKU{
+	// 		Name: to.Ptr(armnetwork.BastionHostSKUNameDeveloper),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostPut.json
+func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -175,7 +241,69 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostDeveloperPut.json
+func ExampleBastionHostsClient_BeginCreateOrUpdate_createDeveloperBastionHost() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBastionHostsClient().BeginCreateOrUpdate(ctx, "rg2", "bastionhostdeveloper", armnetwork.BastionHost{
+		Properties: &armnetwork.BastionHostPropertiesFormat{
+			IPConfigurations: []*armnetwork.BastionHostIPConfiguration{},
+			NetworkACLs: &armnetwork.BastionHostPropertiesFormatNetworkACLs{
+				IPRules: []*armnetwork.IPRule{
+					{
+						AddressPrefix: to.Ptr("1.1.1.1/16"),
+					}},
+			},
+			VirtualNetwork: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/vnet2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.BastionHost = armnetwork.BastionHost{
+	// 	Name: to.Ptr("bastionhostdeveloper"),
+	// 	Type: to.Ptr("Microsoft.Network/bastionHosts"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/bastionHosts/bastionhostdeveloper'"),
+	// 	Location: to.Ptr("West US"),
+	// 	Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 	Properties: &armnetwork.BastionHostPropertiesFormat{
+	// 		DNSName: to.Ptr("omnibrain.uswest.bastionglobal.azure.com"),
+	// 		IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
+	// 		},
+	// 		NetworkACLs: &armnetwork.BastionHostPropertiesFormatNetworkACLs{
+	// 			IPRules: []*armnetwork.IPRule{
+	// 				{
+	// 					AddressPrefix: to.Ptr("1.1.1.1/16"),
+	// 			}},
+	// 		},
+	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		VirtualNetwork: &armnetwork.SubResource{
+	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/vnet2"),
+	// 		},
+	// 	},
+	// 	SKU: &armnetwork.SKU{
+	// 		Name: to.Ptr(armnetwork.BastionHostSKUNameDeveloper),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostPatch.json
 func ExampleBastionHostsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +373,7 @@ func ExampleBastionHostsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostListBySubscription.json
 func ExampleBastionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,12 +433,37 @@ func ExampleBastionHostsClient_NewListPager() {
 		// 			SKU: &armnetwork.SKU{
 		// 				Name: to.Ptr(armnetwork.BastionHostSKUNameStandard),
 		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("bastionhostdeveloper'"),
+		// 			Type: to.Ptr("Microsoft.Network/bastionHosts"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/bastionHosts/bastionhostdeveloper'"),
+		// 			Location: to.Ptr("West US"),
+		// 			Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 			Properties: &armnetwork.BastionHostPropertiesFormat{
+		// 				DNSName: to.Ptr("omnibrain.uswest.bastionglobal.azure.com"),
+		// 				IPConfigurations: []*armnetwork.BastionHostIPConfiguration{
+		// 				},
+		// 				NetworkACLs: &armnetwork.BastionHostPropertiesFormatNetworkACLs{
+		// 					IPRules: []*armnetwork.IPRule{
+		// 						{
+		// 							AddressPrefix: to.Ptr("1.1.1.1/16"),
+		// 					}},
+		// 				},
+		// 				ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				VirtualNetwork: &armnetwork.SubResource{
+		// 					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/vnet2"),
+		// 				},
+		// 			},
+		// 			SKU: &armnetwork.SKU{
+		// 				Name: to.Ptr(armnetwork.BastionHostSKUNameDeveloper),
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/baac183ffa684d94f697f0fc6f480e02cfb00f3d/specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/BastionHostListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/639ecfad68419328658bd4cfe7094af4ce472be2/specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostListByResourceGroup.json
 func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

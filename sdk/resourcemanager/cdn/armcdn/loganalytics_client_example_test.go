@@ -16,10 +16,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,34 +46,34 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.MetricsResponse = armcdn.MetricsResponse{
-	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T12:30:27.554+08:00"); return t}()),
-	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T13:00:27.554+08:00"); return t}()),
-	// 	Granularity: to.Ptr(armcdn.MetricsResponseGranularityPT5M),
+	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:30:27.554Z"); return t}()),
+	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:27.554Z"); return t}()),
+	// 	Granularity: to.Ptr(armcdn.MetricsGranularityPT5M),
 	// 	Series: []*armcdn.MetricsResponseSeriesItem{
 	// 		{
 	// 			Data: []*armcdn.Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems{
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:35:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:35:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](4250),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:40:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:40:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](3120),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:45:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:45:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](2221),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:50:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:50:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](2466),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:55:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:55:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](2654),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](3565),
 	// 			}},
 	// 			Groups: []*armcdn.MetricsResponseSeriesPropertiesItemsItem{
@@ -82,12 +82,12 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	// 					Value: to.Ptr("https"),
 	// 			}},
 	// 			Metric: to.Ptr("clientRequestCount"),
-	// 			Unit: to.Ptr(armcdn.MetricsResponseSeriesItemUnitCount),
+	// 			Unit: to.Ptr(armcdn.MetricsSeriesUnitCount),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,8 +108,8 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.RankingsResponse = armcdn.RankingsResponse{
-	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:49:27.554+08:00"); return t}()),
-	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:49:27.554+08:00"); return t}()),
+	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t}()),
+	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t}()),
 	// 	Tables: []*armcdn.RankingsResponseTablesItem{
 	// 		{
 	// 			Data: []*armcdn.RankingsResponseTablesPropertiesItemsItem{
@@ -163,7 +163,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsResources.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,117 +305,117 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.WafMetricsResponse = armcdn.WafMetricsResponse{
-	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:30:27.554+08:00"); return t}()),
-	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:00:27.554+08:00"); return t}()),
-	// 	Granularity: to.Ptr(armcdn.WafMetricsResponseGranularityPT5M),
+	// 	DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:30:27.554Z"); return t}()),
+	// 	DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:00:27.554Z"); return t}()),
+	// 	Granularity: to.Ptr(armcdn.WafMetricsGranularityPT5M),
 	// 	Series: []*armcdn.WafMetricsResponseSeriesItem{
 	// 		{
 	// 			Data: []*armcdn.Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems{
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:05:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:05:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](2),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:10:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:10:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](32),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:15:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:15:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](31),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:20:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:20:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](63),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:25:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:25:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](50),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:30:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:30:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](12),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:35:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:35:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](8),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:40:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:40:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](21),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:45:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:45:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](30),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:50:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:50:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](18),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:55:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T07:55:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](28),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:00:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:00:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](3),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:05:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:05:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](58),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:10:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:10:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](42),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:15:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:15:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](17),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:20:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:20:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](21),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:25:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:25:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](41),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:30:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:30:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](8),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:35:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:35:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](15),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:40:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:40:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](25),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:45:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:45:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](13),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:50:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:50:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](17),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:55:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T08:55:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](29),
 	// 				},
 	// 				{
-	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:00:00+00:00"); return t}()),
+	// 					DateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:00:00.000Z"); return t}()),
 	// 					Value: to.Ptr[float32](17),
 	// 			}},
 	// 			Groups: []*armcdn.WafMetricsResponseSeriesPropertiesItemsItem{
 	// 			},
 	// 			Metric: to.Ptr("clientRequestCount"),
-	// 			Unit: to.Ptr(armcdn.WafMetricsResponseSeriesItemUnitCount),
+	// 			Unit: to.Ptr(armcdn.WafMetricsSeriesUnitCount),
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7b551033155a63739b6d28f79b9c07569f6179b8/specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,8 +449,8 @@ func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	// 						Value: to.Ptr[int64](1268),
 	// 				}},
 	// 		}},
-	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T14:49:27.554+08:00"); return t}()),
-	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T17:49:27.554+08:00"); return t}()),
+	// 		DateTimeBegin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t}()),
+	// 		DateTimeEnd: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t}()),
 	// 		Groups: []*string{
 	// 			to.Ptr("ruleId")},
 	// 		}

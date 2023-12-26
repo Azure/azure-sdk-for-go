@@ -1,14 +1,26 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.4.0 (2023-11-27)
 
 ### Features Added
 
+- New functionality for Event Grid namespaces: 
+  - Client.PublishCloudEvent can be used to publish a single `messaging.CloudEvent`.
+  - Client.RenewCloudEventLocks can extend the lock time for a set of events.
+  - Client.ReleaseCloudEvents (via ReleaseCloudEventsOptions.ReleaseDelayInSeconds) can release an event with a 
+    server-side delay, allowing the message to remain unavailable for a configured period of time.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- FailedLockToken, included in the response for settlement functions, has an `Error` field, which contains the data previously
+  in `ErrorDescription` and `ErrorCode`.
+- Settlement functions (AcknowledgeCloudEvents, ReleaseCloudEvents, RejectCloudEvents) take lock tokens as a parameter.
 
-### Other Changes
+## 0.3.0 (2023-10-17)
+
+### Breaking Changes
+
+- Client constructors that take a `key string` parameter for a credential now require an `*azcore.KeyCredential` or `*azcore.SASCredential`.
 
 ## 0.2.0 (2023-09-12)
 

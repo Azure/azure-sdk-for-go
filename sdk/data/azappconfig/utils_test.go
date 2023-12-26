@@ -11,23 +11,32 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	fakeConnStr = "Endpoint=https://contoso.azconfig.io;Id=fake-id:fake-value;Secret=ZmFrZS1zZWNyZXQ="
-)
+const recordingDirectory = "sdk/data/azappconfig/testdata"
+const fakeConnStr = "Endpoint=https://contoso.azconfig.io;Id=fake-id:fake-value;Secret=ZmFrZS1zZWNyZXQ="
 
 func TestMain(m *testing.M) {
 	os.Exit(run(m))
 }
 
 func run(m *testing.M) int {
-	err := recording.ResetProxy(nil)
-	if err != nil {
-		panic(err)
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
 	}
 
 	switch recording.GetRecordMode() {
@@ -39,18 +48,15 @@ func run(m *testing.M) int {
 		}
 
 	case recording.RecordingMode:
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
-
 		if err := recording.AddURISanitizer("https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
 			panic(err)
 		}
 
 		if err := recording.AddHeaderRegexSanitizer("x-ms-content-sha256", "fake-content", "", nil); err != nil {
+			panic(err)
+		}
+
+		if err := recording.AddHeaderRegexSanitizer("Operation-Location", "https://contoso.azconfig.io", `https://\w+\.azconfig\.io`, nil); err != nil {
 			panic(err)
 		}
 	}
@@ -64,7 +70,7 @@ func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
 		t.Skip("set APPCONFIGURATION_CONNECTION_STRING to run this test")
 	}
 
-	err := recording.Start(t, "sdk/data/azappconfig/testdata", nil)
+	err := recording.Start(t, recordingDirectory, nil)
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
@@ -78,6 +84,9 @@ func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
 	client, err := azappconfig.NewClientFromConnectionString(connStr, &azappconfig.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: transport,
+			Logging: policy.LogOptions{
+				IncludeBody: true,
+			},
 		},
 	})
 	require.NoError(t, err)

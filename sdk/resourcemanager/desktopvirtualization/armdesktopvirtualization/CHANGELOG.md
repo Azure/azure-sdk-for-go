@@ -1,5 +1,63 @@
 # Release History
 
+## 2.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.1.0 (2023-10-27)
+### Features Added
+
+- New enum type `HostpoolPublicNetworkAccess` with values `HostpoolPublicNetworkAccessDisabled`, `HostpoolPublicNetworkAccessEnabled`, `HostpoolPublicNetworkAccessEnabledForClientsOnly`, `HostpoolPublicNetworkAccessEnabledForSessionHostsOnly`
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCreating`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New enum type `SessionHandlingOperation` with values `SessionHandlingOperationDeallocate`, `SessionHandlingOperationHibernate`, `SessionHandlingOperationNone`
+- New enum type `SetStartVMOnConnect` with values `SetStartVMOnConnectDisable`, `SetStartVMOnConnectEnable`
+- New enum type `StartupBehavior` with values `StartupBehaviorAll`, `StartupBehaviorNone`, `StartupBehaviorWithAssignedUser`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*ClientFactory.NewScalingPlanPersonalSchedulesClient() *ScalingPlanPersonalSchedulesClient`
+- New function `NewPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.DeleteByHostPool(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteByHostPoolOptions) (PrivateEndpointConnectionsClientDeleteByHostPoolResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.DeleteByWorkspace(context.Context, string, string, string, *PrivateEndpointConnectionsClientDeleteByWorkspaceOptions) (PrivateEndpointConnectionsClientDeleteByWorkspaceResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.GetByHostPool(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetByHostPoolOptions) (PrivateEndpointConnectionsClientGetByHostPoolResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.GetByWorkspace(context.Context, string, string, string, *PrivateEndpointConnectionsClientGetByWorkspaceOptions) (PrivateEndpointConnectionsClientGetByWorkspaceResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.NewListByHostPoolPager(string, string, *PrivateEndpointConnectionsClientListByHostPoolOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByHostPoolResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByWorkspacePager(string, string, *PrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByWorkspaceResponse]`
+- New function `*PrivateEndpointConnectionsClient.UpdateByHostPool(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateByHostPoolOptions) (PrivateEndpointConnectionsClientUpdateByHostPoolResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.UpdateByWorkspace(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientUpdateByWorkspaceOptions) (PrivateEndpointConnectionsClientUpdateByWorkspaceResponse, error)`
+- New function `NewPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.NewListByHostPoolPager(string, string, *PrivateLinkResourcesClientListByHostPoolOptions) *runtime.Pager[PrivateLinkResourcesClientListByHostPoolResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByWorkspacePager(string, string, *PrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[PrivateLinkResourcesClientListByWorkspaceResponse]`
+- New function `NewScalingPlanPersonalSchedulesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ScalingPlanPersonalSchedulesClient, error)`
+- New function `*ScalingPlanPersonalSchedulesClient.Create(context.Context, string, string, string, ScalingPlanPersonalSchedule, *ScalingPlanPersonalSchedulesClientCreateOptions) (ScalingPlanPersonalSchedulesClientCreateResponse, error)`
+- New function `*ScalingPlanPersonalSchedulesClient.Delete(context.Context, string, string, string, *ScalingPlanPersonalSchedulesClientDeleteOptions) (ScalingPlanPersonalSchedulesClientDeleteResponse, error)`
+- New function `*ScalingPlanPersonalSchedulesClient.Get(context.Context, string, string, string, *ScalingPlanPersonalSchedulesClientGetOptions) (ScalingPlanPersonalSchedulesClientGetResponse, error)`
+- New function `*ScalingPlanPersonalSchedulesClient.NewListPager(string, string, *ScalingPlanPersonalSchedulesClientListOptions) *runtime.Pager[ScalingPlanPersonalSchedulesClientListResponse]`
+- New function `*ScalingPlanPersonalSchedulesClient.Update(context.Context, string, string, string, *ScalingPlanPersonalSchedulesClientUpdateOptions) (ScalingPlanPersonalSchedulesClientUpdateResponse, error)`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResultWithSystemData`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointConnectionWithSystemData`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `ScalingPlanPersonalSchedule`
+- New struct `ScalingPlanPersonalScheduleList`
+- New struct `ScalingPlanPersonalSchedulePatch`
+- New struct `ScalingPlanPersonalScheduleProperties`
+- New field `ShowInFeed` in struct `ApplicationGroupPatchProperties`
+- New field `ShowInFeed` in struct `ApplicationGroupProperties`
+- New field `PublicNetworkAccess` in struct `HostPoolPatchProperties`
+- New field `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `HostPoolProperties`
+- New field `PublicNetworkAccess` in struct `WorkspacePatchProperties`
+- New field `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `WorkspaceProperties`
+
+
 ## 2.0.0 (2023-03-24)
 ### Breaking Changes
 

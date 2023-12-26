@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersGet.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,17 +99,17 @@ func ExampleClustersClient_Get() {
 	// 			Tier: to.Ptr(armkusto.AzureSKUTierStandard),
 	// 		},
 	// 		SystemData: &armkusto.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.2757906Z"); return t}()),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.275Z"); return t}()),
 	// 			CreatedBy: to.Ptr("user@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.2757906Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.275Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("user@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCreateOrUpdate.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,8 +135,9 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 			LanguageExtensions: &armkusto.LanguageExtensionsList{
 				Value: []*armkusto.LanguageExtension{
 					{
-						LanguageExtensionImageName: to.Ptr(armkusto.LanguageExtensionImageNamePython3108),
-						LanguageExtensionName:      to.Ptr(armkusto.LanguageExtensionNamePYTHON),
+						LanguageExtensionCustomImageName: to.Ptr("customImage8"),
+						LanguageExtensionImageName:       to.Ptr(armkusto.LanguageExtensionImageName("Python_Custom_Image")),
+						LanguageExtensionName:            to.Ptr(armkusto.LanguageExtensionNamePYTHON),
 					},
 					{
 						LanguageExtensionImageName: to.Ptr(armkusto.LanguageExtensionImageNameR),
@@ -194,7 +195,8 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 			LanguageExtensions: &armkusto.LanguageExtensionsList{
 	// 				Value: []*armkusto.LanguageExtension{
 	// 					{
-	// 						LanguageExtensionImageName: to.Ptr(armkusto.LanguageExtensionImageNamePython3108),
+	// 						LanguageExtensionCustomImageName: to.Ptr("customImage8"),
+	// 						LanguageExtensionImageName: to.Ptr(armkusto.LanguageExtensionImageName("Python_Custom_Image")),
 	// 						LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
 	// 					},
 	// 					{
@@ -215,7 +217,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersUpdate.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +277,7 @@ func ExampleClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +298,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStop.json
 func ExampleClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +319,7 @@ func ExampleClustersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersStart.json
 func ExampleClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +340,7 @@ func ExampleClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterMigrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterMigrate.json
 func ExampleClustersClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +363,7 @@ func ExampleClustersClient_BeginMigrate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterListFollowerDatabases.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterListFollowerDatabases.json
 func ExampleClustersClient_NewListFollowerDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +417,7 @@ func ExampleClustersClient_NewListFollowerDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterDetachFollowerDatabases.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterDetachFollowerDatabases.json
 func ExampleClustersClient_BeginDetachFollowerDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +441,7 @@ func ExampleClustersClient_BeginDetachFollowerDatabases() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersDiagnoseVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersDiagnoseVirtualNetwork.json
 func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -467,7 +469,7 @@ func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +554,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersList.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +662,7 @@ func ExampleClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListSkus.json
 func ExampleClustersClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -768,7 +770,7 @@ func ExampleClustersClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersCheckNameAvailability.json
 func ExampleClustersClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +798,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClustersListResourceSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClustersListResourceSkus.json
 func ExampleClustersClient_NewListSKUsByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +878,7 @@ func ExampleClustersClient_NewListSKUsByResourcePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoOutboundNetworkDependenciesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoOutboundNetworkDependenciesList.json
 func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -911,6 +913,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("login.microsoftonline.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -918,6 +921,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("graph.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -925,6 +929,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("graph.microsoft.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -932,6 +937,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("graph.microsoft-ppe.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 				}},
@@ -949,6 +955,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("prod.warmpath.msftcloudes.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -956,6 +963,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("gcs.prod.monitoring.core.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -963,6 +971,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("production.diagnostics.monitoring.core.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -970,6 +979,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("shoebox2.metrics.nsatc.net:443"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 				}},
@@ -987,6 +997,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("ocsp.msocsp.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](80),
 		// 						}},
 		// 					},
@@ -994,6 +1005,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("ocsp.digicert.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](80),
 		// 						}},
 		// 					},
@@ -1001,6 +1013,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("crl3.digicert.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](80),
 		// 						}},
 		// 					},
@@ -1008,6 +1021,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("crl.microsoft.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](80),
 		// 						}},
 		// 					},
@@ -1015,6 +1029,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("www.microsoft.com"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](80),
 		// 						}},
 		// 				}},
@@ -1032,6 +1047,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("clusterinternalsa.blob.core.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -1039,6 +1055,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("clusterinternalsa.queue.core.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 					},
@@ -1046,6 +1063,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		// 						DomainName: to.Ptr("clusterinternalsa.table.core.windows.net"),
 		// 						EndpointDetails: []*armkusto.EndpointDetail{
 		// 							{
+		// 								IPAddress: to.Ptr("1.2.3.4"),
 		// 								Port: to.Ptr[int32](443),
 		// 						}},
 		// 				}},
@@ -1056,7 +1074,7 @@ func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterListLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterListLanguageExtensions.json
 func ExampleClustersClient_NewListLanguageExtensionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1090,7 +1108,7 @@ func ExampleClustersClient_NewListLanguageExtensionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterAddLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterAddLanguageExtensions.json
 func ExampleClustersClient_BeginAddLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1119,7 +1137,7 @@ func ExampleClustersClient_BeginAddLanguageExtensions() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/310a0100f5b020c1900c527a6aa70d21992f078a/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoClusterRemoveLanguageExtensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterRemoveLanguageExtensions.json
 func ExampleClustersClient_BeginRemoveLanguageExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

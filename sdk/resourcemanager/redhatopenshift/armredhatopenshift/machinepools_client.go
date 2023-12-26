@@ -32,7 +32,7 @@ type MachinePoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMachinePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MachinePoolsClient, error) {
-	cl, err := arm.NewClient(moduleName+".MachinePoolsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewMachinePoolsClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the MachinePool resource.
@@ -55,6 +55,10 @@ func NewMachinePoolsClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *MachinePoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters MachinePool, options *MachinePoolsClientCreateOrUpdateOptions) (MachinePoolsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "MachinePoolsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return MachinePoolsClientCreateOrUpdateResponse{}, err
@@ -95,7 +99,7 @@ func (client *MachinePoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -116,13 +120,17 @@ func (client *MachinePoolsClient) createOrUpdateHandleResponse(resp *http.Respon
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the MachinePool resource.
 //   - options - MachinePoolsClientDeleteOptions contains the optional parameters for the MachinePoolsClient.Delete method.
 func (client *MachinePoolsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *MachinePoolsClientDeleteOptions) (MachinePoolsClientDeleteResponse, error) {
 	var err error
+	const operationName = "MachinePoolsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return MachinePoolsClientDeleteResponse{}, err
@@ -162,7 +170,7 @@ func (client *MachinePoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,13 +179,17 @@ func (client *MachinePoolsClient) deleteCreateRequest(ctx context.Context, resou
 // Get - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the MachinePool resource.
 //   - options - MachinePoolsClientGetOptions contains the optional parameters for the MachinePoolsClient.Get method.
 func (client *MachinePoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *MachinePoolsClientGetOptions) (MachinePoolsClientGetResponse, error) {
 	var err error
+	const operationName = "MachinePoolsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return MachinePoolsClientGetResponse{}, err
@@ -218,7 +230,7 @@ func (client *MachinePoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +247,7 @@ func (client *MachinePoolsClient) getHandleResponse(resp *http.Response) (Machin
 
 // NewListPager - The operation returns properties of each MachinePool.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - options - MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.NewListPager method.
@@ -245,25 +257,20 @@ func (client *MachinePoolsClient) NewListPager(resourceGroupName string, resourc
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MachinePoolsClientListResponse) (MachinePoolsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MachinePoolsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return MachinePoolsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MachinePoolsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MachinePoolsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -287,7 +294,7 @@ func (client *MachinePoolsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +312,7 @@ func (client *MachinePoolsClient) listHandleResponse(resp *http.Response) (Machi
 // Update - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2023-09-04
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the OpenShift cluster resource.
 //   - childResourceName - The name of the MachinePool resource.
@@ -313,6 +320,10 @@ func (client *MachinePoolsClient) listHandleResponse(resp *http.Response) (Machi
 //   - options - MachinePoolsClientUpdateOptions contains the optional parameters for the MachinePoolsClient.Update method.
 func (client *MachinePoolsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters MachinePoolUpdate, options *MachinePoolsClientUpdateOptions) (MachinePoolsClientUpdateResponse, error) {
 	var err error
+	const operationName = "MachinePoolsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return MachinePoolsClientUpdateResponse{}, err
@@ -353,7 +364,7 @@ func (client *MachinePoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2023-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // Responder represents a scalar response.
@@ -68,14 +69,14 @@ type ErrorResponder struct {
 // SetError sets the specified error to be returned.
 // Use SetResponseError for returning an *azcore.ResponseError.
 func (e *ErrorResponder) SetError(err error) {
-	e.err = shared.NonRetriableError(err)
+	e.err = errorinfo.NonRetriableError(err)
 }
 
 // SetResponseError sets an *azcore.ResponseError with the specified values to be returned.
 //   - errorCode is the value to be used in the ResponseError.Code field
 //   - httpStatus is the HTTP status code
 func (e *ErrorResponder) SetResponseError(httpStatus int, errorCode string) {
-	e.err = shared.NonRetriableError(&exported.ResponseError{ErrorCode: errorCode, StatusCode: httpStatus})
+	e.err = errorinfo.NonRetriableError(&exported.ResponseError{ErrorCode: errorCode, StatusCode: httpStatus})
 }
 
 // GetError returns the error for this responder.
@@ -90,11 +91,11 @@ func (e ErrorResponder) GetError(req *http.Request) error {
 		// fix up the raw response
 		rawResp, err := newErrorResponse(respErr.StatusCode, respErr.ErrorCode, req)
 		if err != nil {
-			return shared.NonRetriableError(err)
+			return errorinfo.NonRetriableError(err)
 		}
 		respErr.RawResponse = rawResp
 	}
-	return shared.NonRetriableError(e.err)
+	return errorinfo.NonRetriableError(e.err)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,13 +116,13 @@ func (p *PagerResponder[T]) AddPage(httpStatus int, page T, o *AddPageOptions) {
 // AddError adds an error to the sequence of responses.
 // The error is returned from the call to runtime.Pager[T].NextPage().
 func (p *PagerResponder[T]) AddError(err error) {
-	p.pages = append(p.pages, shared.NonRetriableError(err))
+	p.pages = append(p.pages, errorinfo.NonRetriableError(err))
 }
 
 // AddResponseError adds an *azcore.ResponseError to the sequence of responses.
 // The error is returned from the call to runtime.Pager[T].NextPage().
 func (p *PagerResponder[T]) AddResponseError(httpStatus int, errorCode string) {
-	p.pages = append(p.pages, shared.NonRetriableError(&exported.ResponseError{ErrorCode: errorCode, StatusCode: httpStatus}))
+	p.pages = append(p.pages, errorinfo.NonRetriableError(&exported.ResponseError{ErrorCode: errorCode, StatusCode: httpStatus}))
 }
 
 // AddPageOptions contains the optional values for PagerResponder[T].AddPage.
@@ -133,7 +134,7 @@ type AddPageOptions struct {
 // This function is called by the fake server internals.
 func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	if len(p.pages) == 0 {
-		return nil, shared.NonRetriableError(errors.New("paged response has no pages"))
+		return nil, errorinfo.NonRetriableError(errors.New("fake paged response is empty"))
 	}
 
 	page := p.pages[0]
@@ -143,7 +144,7 @@ func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 	if ok {
 		body, err := json.Marshal(pageT.entry)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		content := ResponseContent{
 			HTTPStatus: pageT.httpStatus,
@@ -151,7 +152,7 @@ func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		}
 		resp, err := NewResponse(content, req)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		return SetResponseBody(resp, body, shared.ContentTypeAppJSON), nil
 	}
@@ -162,22 +163,17 @@ func (p *PagerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		// fix up the raw response
 		rawResp, err := newErrorResponse(respErr.StatusCode, respErr.ErrorCode, req)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		respErr.RawResponse = rawResp
 	}
-	return nil, shared.NonRetriableError(err)
+	return nil, errorinfo.NonRetriableError(err)
 }
 
 // More returns true if there are more responses for consumption.
 // This function is called by the fake server internals.
 func (p *PagerResponder[T]) More() bool {
 	return len(p.pages) > 0
-}
-
-type pageindex[T any] struct {
-	i    int
-	page pageResp[T]
 }
 
 // nextLinkURLSuffix is the URL path suffix for a faked next page followed by one or more digits.
@@ -187,22 +183,20 @@ const nextLinkURLSuffix = "/fake_page_"
 // The inject callback is executed for every T in the sequence except for the last one.
 // This function is called by the fake server internals.
 func (p *PagerResponder[T]) InjectNextLinks(req *http.Request, inject func(page *T, createLink func() string)) {
-	// first find all the actual pages in the list
-	pages := make([]pageindex[T], 0, len(p.pages))
+	// populate the next links, including pageResp[T] where the next
+	// "page" is an error response. this allows an error response to
+	// be returned when there are no subsequent pages.
+	pageNum := 1
 	for i := range p.pages {
-		if pageT, ok := p.pages[i].(pageResp[T]); ok {
-			pages = append(pages, pageindex[T]{
-				i:    i,
-				page: pageT,
-			})
-		}
-	}
-
-	// now populate the next links
-	for i := range pages {
-		if i+1 == len(pages) {
+		if i+1 == len(p.pages) {
 			// no nextLink for last page
 			break
+		}
+
+		pageT, ok := p.pages[i].(pageResp[T])
+		if !ok {
+			// error entry, no next link
+			continue
 		}
 
 		qp := ""
@@ -210,13 +204,14 @@ func (p *PagerResponder[T]) InjectNextLinks(req *http.Request, inject func(page 
 			qp = "?" + req.URL.RawQuery
 		}
 
-		inject(&pages[i].page.entry, func() string {
+		inject(&pageT.entry, func() string {
 			// NOTE: any changes to this path format MUST be reflected in SanitizePagerPath()
-			return fmt.Sprintf("%s://%s%s%s%d%s", req.URL.Scheme, req.URL.Host, req.URL.Path, nextLinkURLSuffix, i+1, qp)
+			return fmt.Sprintf("%s://%s%s%s%d%s", req.URL.Scheme, req.URL.Host, req.URL.Path, nextLinkURLSuffix, pageNum, qp)
 		})
+		pageNum++
 
 		// update the original slice with the modified page
-		p.pages[pages[i].i] = pages[i].page
+		p.pages[i] = pageT
 	}
 }
 
@@ -279,7 +274,7 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		p.nonTermResps = p.nonTermResps[1:]
 
 		if resp.err != nil {
-			return nil, shared.NonRetriableError(resp.err)
+			return nil, errorinfo.NonRetriableError(resp.err)
 		}
 
 		content := ResponseContent{
@@ -288,7 +283,7 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		}
 		httpResp, err := NewResponse(content, req)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, resp.status)
 
@@ -303,15 +298,15 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		respErr := p.err
 		rawResp, err := newErrorResponse(p.err.StatusCode, p.err.ErrorCode, req)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		respErr.RawResponse = rawResp
 		p.err = nil
-		return nil, shared.NonRetriableError(respErr)
+		return nil, errorinfo.NonRetriableError(respErr)
 	} else if p.res != nil {
 		body, err := json.Marshal(*p.res)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		p.res = nil
 		content := ResponseContent{
@@ -320,13 +315,13 @@ func (p *PollerResponder[T]) Next(req *http.Request) (*http.Response, error) {
 		}
 		resp, err := NewResponse(content, req)
 		if err != nil {
-			return nil, shared.NonRetriableError(err)
+			return nil, errorinfo.NonRetriableError(err)
 		}
 		httpResp := SetResponseBody(resp, body, shared.ContentTypeAppJSON)
 		httpResp.Header.Set(shared.HeaderFakePollerStatus, "Succeeded")
 		return httpResp, nil
 	} else {
-		return nil, shared.NonRetriableError(fmt.Errorf("%T has no terminal response", p))
+		return nil, errorinfo.NonRetriableError(errors.New("fake poller response is emtpy"))
 	}
 }
 

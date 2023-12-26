@@ -16,12 +16,7 @@ import (
 )
 
 func TestClient_GetCompletions_AzureOpenAI(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetCompletions(t, client, true)
 }
 
@@ -42,11 +37,12 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 	}
 
 	resp, err := client.GetCompletions(context.Background(), azopenai.CompletionsOptions{
-		Prompt:      []string{"What is Azure OpenAI?"},
-		MaxTokens:   to.Ptr(int32(2048 - 127)),
-		Temperature: to.Ptr(float32(0.0)),
-		Deployment:  deploymentID,
+		Prompt:         []string{"What is Azure OpenAI?"},
+		MaxTokens:      to.Ptr(int32(2048 - 127)),
+		Temperature:    to.Ptr(float32(0.0)),
+		DeploymentName: &deploymentID,
 	}, nil)
+	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
 	want := azopenai.GetCompletionsResponse{
@@ -68,9 +64,9 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 	}
 
 	if isAzure {
-		want.Choices[0].ContentFilterResults = (*azopenai.ChoiceContentFilterResults)(safeContentFilter)
-		want.PromptAnnotations = []azopenai.PromptFilterResult{
-			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: (*azopenai.PromptFilterResultContentFilterResults)(safeContentFilter)},
+		want.Choices[0].ContentFilterResults = (*azopenai.ContentFilterResultsForChoice)(safeContentFilter)
+		want.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
+			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
 		}
 	}
 

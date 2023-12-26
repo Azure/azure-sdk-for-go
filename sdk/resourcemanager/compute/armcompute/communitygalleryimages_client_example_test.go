@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/communityGalleryExamples/CommunityGalleryImage_Get.json
 func ExampleCommunityGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,17 @@ func ExampleCommunityGalleryImagesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CommunityGalleryImage = armcompute.CommunityGalleryImage{
 	// 	Name: to.Ptr("myGalleryImageName"),
-	// 	Type: to.Ptr("Microsoft.Compute/Locations/CommunityGalleryImage"),
+	// 	Type: to.Ptr("Microsoft.Compute/locations/communityGalleryImage"),
 	// 	Identifier: &armcompute.CommunityGalleryIdentifier{
 	// 		UniqueID: to.Ptr("/CommunityGalleries/publicGalleryName/Images/myGalleryImageName"),
 	// 	},
 	// 	Location: to.Ptr("myLocation"),
 	// 	Properties: &armcompute.CommunityGalleryImageProperties{
-	// 		Eula: to.Ptr("https://www.microsoft.com/en-us/"),
+	// 		ArtifactTags: map[string]*string{
+	// 			"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
+	// 		},
+	// 		Disclaimer: to.Ptr("https://test-uri.com"),
+	// 		Eula: to.Ptr("https://test-uri.com"),
 	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
 	// 		Identifier: &armcompute.CommunityGalleryImageIdentifier{
 	// 			Offer: to.Ptr("myOfferName"),
@@ -52,12 +56,12 @@ func ExampleCommunityGalleryImagesClient_Get() {
 	// 		},
 	// 		OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
 	// 		OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 		PrivacyStatementURI: to.Ptr("https://www.microsoft.com/en-us/"),
+	// 		PrivacyStatementURI: to.Ptr("https://test-uri.com"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGalleryImage_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/communityGalleryExamples/CommunityGalleryImage_List.json
 func ExampleCommunityGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,6 +92,10 @@ func ExampleCommunityGalleryImagesClient_NewListPager() {
 		// 			},
 		// 			Location: to.Ptr("myLocation"),
 		// 			Properties: &armcompute.CommunityGalleryImageProperties{
+		// 				ArtifactTags: map[string]*string{
+		// 					"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
+		// 				},
+		// 				Disclaimer: to.Ptr("https://test-uri.com"),
 		// 				HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV1),
 		// 				Identifier: &armcompute.CommunityGalleryImageIdentifier{
 		// 					Offer: to.Ptr("myOfferName"),

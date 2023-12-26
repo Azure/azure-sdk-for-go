@@ -32,7 +32,7 @@ type NotificationRecipientEmailClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNotificationRecipientEmailClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotificationRecipientEmailClient, error) {
-	cl, err := arm.NewClient(moduleName+".NotificationRecipientEmailClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewNotificationRecipientEmailClient(subscriptionID string, credential azcor
 //     method.
 func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCheckEntityExistsOptions) (NotificationRecipientEmailClientCheckEntityExistsResponse, error) {
 	var err error
+	const operationName = "NotificationRecipientEmailClient.CheckEntityExists"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
 		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
@@ -115,6 +119,10 @@ func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(c
 //     method.
 func (client *NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientCreateOrUpdateOptions) (NotificationRecipientEmailClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "NotificationRecipientEmailClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
 		return NotificationRecipientEmailClientCreateOrUpdateResponse{}, err
@@ -186,6 +194,10 @@ func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(res
 //     method.
 func (client *NotificationRecipientEmailClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string, options *NotificationRecipientEmailClientDeleteOptions) (NotificationRecipientEmailClientDeleteResponse, error) {
 	var err error
+	const operationName = "NotificationRecipientEmailClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, notificationName, email, options)
 	if err != nil {
 		return NotificationRecipientEmailClientDeleteResponse{}, err
@@ -246,6 +258,10 @@ func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.
 //     method.
 func (client *NotificationRecipientEmailClient) ListByNotification(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientEmailClientListByNotificationOptions) (NotificationRecipientEmailClientListByNotificationResponse, error) {
 	var err error
+	const operationName = "NotificationRecipientEmailClient.ListByNotification"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByNotificationCreateRequest(ctx, resourceGroupName, serviceName, notificationName, options)
 	if err != nil {
 		return NotificationRecipientEmailClientListByNotificationResponse{}, err

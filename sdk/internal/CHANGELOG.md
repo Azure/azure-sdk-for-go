@@ -1,16 +1,38 @@
 # Release History
 
-## 1.3.1 (Unreleased)
+## 1.5.2 (Unreleased)
 
 ### Features Added
-
-* Add support for auto-installing the test proxy standalone tooling in the test recording package
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+* Prevent `exported.Payload` from panicking in the rare event `*http.Response.Body` is `nil`.
+
 ### Other Changes
+
+## 1.5.1 (2023-12-06)
+
+### Bugs Fixed
+
+* Recording will restore the original scheme/host after making a successful HTTP(s) call.
+
+## 1.5.0 (2023-11-02)
+
+### Features Added
+
+* Added a new `NonRetriableError` func to the `errorinfo` package. New func serves as an error wrapper for non-retriable errors in the `azure-sdk-for-go/sdk` folder.
+
+## 1.4.0 (2023-10-17)
+
+### Features Added
+
+* Add support for auto-installing the test proxy standalone tooling in the test recording package
+
+### Other Changes
+
+* Updated dependencies.
 
 ## 1.3.0 (2023-04-04)
 

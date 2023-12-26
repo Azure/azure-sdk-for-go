@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterList.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,10 +49,10 @@ func ExampleClustersClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
 		// 			SystemData: &armcosmosforpostgresql.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 		// 			},
@@ -110,10 +110,10 @@ func ExampleClustersClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup2/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster2"),
 		// 				SystemData: &armcosmosforpostgresql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 		// 				},
@@ -165,7 +165,7 @@ func ExampleClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,10 +194,10 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
 		// 			SystemData: &armcosmosforpostgresql.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 		// 			},
@@ -259,10 +259,10 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster2"),
 		// 				SystemData: &armcosmosforpostgresql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 		// 				},
@@ -318,113 +318,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreate.json
-func ExampleClustersClient_BeginCreate_createANewCluster() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmosforpostgresql.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginCreate(ctx, "TestGroup", "testcluster", armcosmosforpostgresql.Cluster{
-		Location: to.Ptr("westus"),
-		Tags:     map[string]*string{},
-		Properties: &armcosmosforpostgresql.ClusterProperties{
-			AdministratorLoginPassword:      to.Ptr("password"),
-			CitusVersion:                    to.Ptr("11.1"),
-			CoordinatorEnablePublicIPAccess: to.Ptr(true),
-			CoordinatorServerEdition:        to.Ptr("GeneralPurpose"),
-			CoordinatorStorageQuotaInMb:     to.Ptr[int32](524288),
-			CoordinatorVCores:               to.Ptr[int32](4),
-			EnableHa:                        to.Ptr(true),
-			EnableShardsOnCoordinator:       to.Ptr(false),
-			NodeCount:                       to.Ptr[int32](3),
-			NodeEnablePublicIPAccess:        to.Ptr(false),
-			NodeServerEdition:               to.Ptr("MemoryOptimized"),
-			NodeStorageQuotaInMb:            to.Ptr[int32](524288),
-			NodeVCores:                      to.Ptr[int32](8),
-			PostgresqlVersion:               to.Ptr("15"),
-			PreferredPrimaryZone:            to.Ptr("1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Cluster = armcosmosforpostgresql.Cluster{
-	// 	Name: to.Ptr("testcluster"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
-	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-01T17:18:19.1234567Z"); return t}()),
-	// 		CreatedBy: to.Ptr("user1"),
-	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-02T17:18:19.1234567Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
-	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 	},
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmosforpostgresql.ClusterProperties{
-	// 		AdministratorLogin: to.Ptr("citus"),
-	// 		CitusVersion: to.Ptr("11.1"),
-	// 		CoordinatorEnablePublicIPAccess: to.Ptr(true),
-	// 		CoordinatorServerEdition: to.Ptr("GeneralPurpose"),
-	// 		CoordinatorStorageQuotaInMb: to.Ptr[int32](524288),
-	// 		CoordinatorVCores: to.Ptr[int32](4),
-	// 		EnableHa: to.Ptr(true),
-	// 		EnableShardsOnCoordinator: to.Ptr(false),
-	// 		MaintenanceWindow: &armcosmosforpostgresql.MaintenanceWindow{
-	// 			CustomWindow: to.Ptr("Disabled"),
-	// 			DayOfWeek: to.Ptr[int32](0),
-	// 			StartHour: to.Ptr[int32](0),
-	// 			StartMinute: to.Ptr[int32](0),
-	// 		},
-	// 		NodeCount: to.Ptr[int32](3),
-	// 		NodeEnablePublicIPAccess: to.Ptr(false),
-	// 		NodeServerEdition: to.Ptr("MemoryOptimized"),
-	// 		NodeStorageQuotaInMb: to.Ptr[int32](524288),
-	// 		NodeVCores: to.Ptr[int32](8),
-	// 		PostgresqlVersion: to.Ptr("15"),
-	// 		PreferredPrimaryZone: to.Ptr("1"),
-	// 		PrivateEndpointConnections: []*armcosmosforpostgresql.SimplePrivateEndpointConnection{
-	// 		},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
-	// 		ReadReplicas: []*string{
-	// 		},
-	// 		ServerNames: []*armcosmosforpostgresql.ServerNameItem{
-	// 			{
-	// 				Name: to.Ptr("testcluster-c"),
-	// 				FullyQualifiedDomainName: to.Ptr("c.testcluster.postgres.database.azure.com"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("testcluster-w0"),
-	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster.postgres.database.azure.com"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("testcluster-w2"),
-	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster.postgres.database.azure.com"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("testcluster-w3"),
-	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster.postgres.database.azure.com"),
-	// 		}},
-	// 		State: to.Ptr("Provisioning"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreatePITR.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreatePITR.json
 func ExampleClustersClient_BeginCreate_createANewClusterAsAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,10 +352,10 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAPointInTimeRestore() 
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -508,7 +402,7 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAPointInTimeRestore() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateReadReplica.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateReadReplica.json
 func ExampleClustersClient_BeginCreate_createANewClusterAsAReadReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,10 +435,10 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAReadReplica() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -591,7 +485,392 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAReadReplica() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateMultiNode.json
+func ExampleClustersClient_BeginCreate_createANewMultiNodeCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmosforpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreate(ctx, "TestGroup", "testcluster-multinode", armcosmosforpostgresql.Cluster{
+		Location: to.Ptr("westus"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmosforpostgresql.ClusterProperties{
+			AdministratorLoginPassword:      to.Ptr("password"),
+			CitusVersion:                    to.Ptr("11.1"),
+			CoordinatorEnablePublicIPAccess: to.Ptr(true),
+			CoordinatorServerEdition:        to.Ptr("GeneralPurpose"),
+			CoordinatorStorageQuotaInMb:     to.Ptr[int32](524288),
+			CoordinatorVCores:               to.Ptr[int32](4),
+			EnableHa:                        to.Ptr(true),
+			EnableShardsOnCoordinator:       to.Ptr(false),
+			NodeCount:                       to.Ptr[int32](3),
+			NodeEnablePublicIPAccess:        to.Ptr(false),
+			NodeServerEdition:               to.Ptr("MemoryOptimized"),
+			NodeStorageQuotaInMb:            to.Ptr[int32](524288),
+			NodeVCores:                      to.Ptr[int32](8),
+			PostgresqlVersion:               to.Ptr("15"),
+			PreferredPrimaryZone:            to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armcosmosforpostgresql.Cluster{
+	// 	Name: to.Ptr("testcluster-multinode"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-multinode"),
+	// 	SystemData: &armcosmosforpostgresql.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armcosmosforpostgresql.ClusterProperties{
+	// 		AdministratorLogin: to.Ptr("citus"),
+	// 		CitusVersion: to.Ptr("11.1"),
+	// 		CoordinatorEnablePublicIPAccess: to.Ptr(true),
+	// 		CoordinatorServerEdition: to.Ptr("GeneralPurpose"),
+	// 		CoordinatorStorageQuotaInMb: to.Ptr[int32](524288),
+	// 		CoordinatorVCores: to.Ptr[int32](4),
+	// 		EnableHa: to.Ptr(true),
+	// 		EnableShardsOnCoordinator: to.Ptr(false),
+	// 		MaintenanceWindow: &armcosmosforpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		NodeCount: to.Ptr[int32](3),
+	// 		NodeEnablePublicIPAccess: to.Ptr(false),
+	// 		NodeServerEdition: to.Ptr("MemoryOptimized"),
+	// 		NodeStorageQuotaInMb: to.Ptr[int32](524288),
+	// 		NodeVCores: to.Ptr[int32](8),
+	// 		PostgresqlVersion: to.Ptr("15"),
+	// 		PreferredPrimaryZone: to.Ptr("1"),
+	// 		PrivateEndpointConnections: []*armcosmosforpostgresql.SimplePrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ReadReplicas: []*string{
+	// 		},
+	// 		ServerNames: []*armcosmosforpostgresql.ServerNameItem{
+	// 			{
+	// 				Name: to.Ptr("testcluster-multinode-c"),
+	// 				FullyQualifiedDomainName: to.Ptr("c.testcluster-multinode.postgres.database.azure.com"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("testcluster-multinode-w0"),
+	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster-multinode.postgres.database.azure.com"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("testcluster-multinode-w2"),
+	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster-multinode.postgres.database.azure.com"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("testcluster-multinode-w3"),
+	// 				FullyQualifiedDomainName: to.Ptr("w0.testcluster-multinode.postgres.database.azure.com"),
+	// 		}},
+	// 		State: to.Ptr("Provisioning"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateBurstablev1.json
+func ExampleClustersClient_BeginCreate_createANewSingleNodeBurstable1VCoreCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmosforpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreate(ctx, "TestGroup", "testcluster-burstablev1", armcosmosforpostgresql.Cluster{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"owner": to.Ptr("JohnDoe"),
+		},
+		Properties: &armcosmosforpostgresql.ClusterProperties{
+			AdministratorLoginPassword:      to.Ptr("password"),
+			CitusVersion:                    to.Ptr("11.3"),
+			CoordinatorEnablePublicIPAccess: to.Ptr(true),
+			CoordinatorServerEdition:        to.Ptr("BurstableMemoryOptimized"),
+			CoordinatorStorageQuotaInMb:     to.Ptr[int32](131072),
+			CoordinatorVCores:               to.Ptr[int32](1),
+			EnableHa:                        to.Ptr(false),
+			EnableShardsOnCoordinator:       to.Ptr(true),
+			NodeCount:                       to.Ptr[int32](0),
+			PostgresqlVersion:               to.Ptr("15"),
+			PreferredPrimaryZone:            to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armcosmosforpostgresql.Cluster{
+	// 	Name: to.Ptr("testcluster-burstablev1"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-burstablev1"),
+	// 	SystemData: &armcosmosforpostgresql.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"owner": to.Ptr("JohnDoe"),
+	// 	},
+	// 	Properties: &armcosmosforpostgresql.ClusterProperties{
+	// 		AdministratorLogin: to.Ptr("citus"),
+	// 		CitusVersion: to.Ptr("11.3"),
+	// 		CoordinatorEnablePublicIPAccess: to.Ptr(true),
+	// 		CoordinatorServerEdition: to.Ptr("BurstableMemoryOptimized"),
+	// 		CoordinatorStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		CoordinatorVCores: to.Ptr[int32](1),
+	// 		EnableHa: to.Ptr(false),
+	// 		EnableShardsOnCoordinator: to.Ptr(true),
+	// 		MaintenanceWindow: &armcosmosforpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		NodeCount: to.Ptr[int32](0),
+	// 		NodeEnablePublicIPAccess: to.Ptr(false),
+	// 		NodeServerEdition: to.Ptr("MemoryOptimized"),
+	// 		NodeStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		NodeVCores: to.Ptr[int32](2),
+	// 		PostgresqlVersion: to.Ptr("15"),
+	// 		PreferredPrimaryZone: to.Ptr("1"),
+	// 		PrivateEndpointConnections: []*armcosmosforpostgresql.SimplePrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ReadReplicas: []*string{
+	// 		},
+	// 		ServerNames: []*armcosmosforpostgresql.ServerNameItem{
+	// 			{
+	// 				Name: to.Ptr("testcluster-burstablev1-c"),
+	// 				FullyQualifiedDomainName: to.Ptr("c.testcluster-burstablev1.postgres.database.azure.com"),
+	// 		}},
+	// 		State: to.Ptr("Provisioning"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateBurstablev2.json
+func ExampleClustersClient_BeginCreate_createANewSingleNodeBurstable2VCoresCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmosforpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreate(ctx, "TestGroup", "testcluster-burstablev2", armcosmosforpostgresql.Cluster{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"owner": to.Ptr("JohnDoe"),
+		},
+		Properties: &armcosmosforpostgresql.ClusterProperties{
+			AdministratorLoginPassword:      to.Ptr("password"),
+			CitusVersion:                    to.Ptr("11.3"),
+			CoordinatorEnablePublicIPAccess: to.Ptr(true),
+			CoordinatorServerEdition:        to.Ptr("BurstableGeneralPurpose"),
+			CoordinatorStorageQuotaInMb:     to.Ptr[int32](131072),
+			CoordinatorVCores:               to.Ptr[int32](2),
+			EnableHa:                        to.Ptr(false),
+			EnableShardsOnCoordinator:       to.Ptr(true),
+			NodeCount:                       to.Ptr[int32](0),
+			PostgresqlVersion:               to.Ptr("15"),
+			PreferredPrimaryZone:            to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armcosmosforpostgresql.Cluster{
+	// 	Name: to.Ptr("testcluster-burstablev2"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-burstablev2"),
+	// 	SystemData: &armcosmosforpostgresql.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"owner": to.Ptr("JohnDoe"),
+	// 	},
+	// 	Properties: &armcosmosforpostgresql.ClusterProperties{
+	// 		AdministratorLogin: to.Ptr("citus"),
+	// 		CitusVersion: to.Ptr("11.3"),
+	// 		CoordinatorEnablePublicIPAccess: to.Ptr(true),
+	// 		CoordinatorServerEdition: to.Ptr("BurstableGeneralPurpose"),
+	// 		CoordinatorStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		CoordinatorVCores: to.Ptr[int32](2),
+	// 		EnableHa: to.Ptr(false),
+	// 		EnableShardsOnCoordinator: to.Ptr(true),
+	// 		MaintenanceWindow: &armcosmosforpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		NodeCount: to.Ptr[int32](0),
+	// 		NodeEnablePublicIPAccess: to.Ptr(false),
+	// 		NodeServerEdition: to.Ptr("MemoryOptimized"),
+	// 		NodeStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		NodeVCores: to.Ptr[int32](2),
+	// 		PostgresqlVersion: to.Ptr("15"),
+	// 		PreferredPrimaryZone: to.Ptr("1"),
+	// 		PrivateEndpointConnections: []*armcosmosforpostgresql.SimplePrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ReadReplicas: []*string{
+	// 		},
+	// 		ServerNames: []*armcosmosforpostgresql.ServerNameItem{
+	// 			{
+	// 				Name: to.Ptr("testcluster-burstablev2-c"),
+	// 				FullyQualifiedDomainName: to.Ptr("c.testcluster-burstablev2.postgres.database.azure.com"),
+	// 		}},
+	// 		State: to.Ptr("Provisioning"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterCreateSingleNode.json
+func ExampleClustersClient_BeginCreate_createANewSingleNodeCluster() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmosforpostgresql.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginCreate(ctx, "TestGroup", "testcluster-singlenode", armcosmosforpostgresql.Cluster{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"owner": to.Ptr("JohnDoe"),
+		},
+		Properties: &armcosmosforpostgresql.ClusterProperties{
+			AdministratorLoginPassword:      to.Ptr("password"),
+			CitusVersion:                    to.Ptr("11.3"),
+			CoordinatorEnablePublicIPAccess: to.Ptr(true),
+			CoordinatorServerEdition:        to.Ptr("GeneralPurpose"),
+			CoordinatorStorageQuotaInMb:     to.Ptr[int32](131072),
+			CoordinatorVCores:               to.Ptr[int32](8),
+			EnableHa:                        to.Ptr(true),
+			EnableShardsOnCoordinator:       to.Ptr(true),
+			NodeCount:                       to.Ptr[int32](0),
+			PostgresqlVersion:               to.Ptr("15"),
+			PreferredPrimaryZone:            to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Cluster = armcosmosforpostgresql.Cluster{
+	// 	Name: to.Ptr("testcluster-singlenode"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-singlenode"),
+	// 	SystemData: &armcosmosforpostgresql.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-01T17:18:19.123Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-02T17:18:19.123Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("westus"),
+	// 	Tags: map[string]*string{
+	// 		"owner": to.Ptr("JohnDoe"),
+	// 	},
+	// 	Properties: &armcosmosforpostgresql.ClusterProperties{
+	// 		AdministratorLogin: to.Ptr("citus"),
+	// 		CitusVersion: to.Ptr("11.3"),
+	// 		CoordinatorEnablePublicIPAccess: to.Ptr(true),
+	// 		CoordinatorServerEdition: to.Ptr("GeneralPurpose"),
+	// 		CoordinatorStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		CoordinatorVCores: to.Ptr[int32](8),
+	// 		EnableHa: to.Ptr(true),
+	// 		EnableShardsOnCoordinator: to.Ptr(true),
+	// 		MaintenanceWindow: &armcosmosforpostgresql.MaintenanceWindow{
+	// 			CustomWindow: to.Ptr("Disabled"),
+	// 			DayOfWeek: to.Ptr[int32](0),
+	// 			StartHour: to.Ptr[int32](0),
+	// 			StartMinute: to.Ptr[int32](0),
+	// 		},
+	// 		NodeCount: to.Ptr[int32](0),
+	// 		NodeEnablePublicIPAccess: to.Ptr(false),
+	// 		NodeServerEdition: to.Ptr("MemoryOptimized"),
+	// 		NodeStorageQuotaInMb: to.Ptr[int32](131072),
+	// 		NodeVCores: to.Ptr[int32](8),
+	// 		PostgresqlVersion: to.Ptr("15"),
+	// 		PreferredPrimaryZone: to.Ptr("1"),
+	// 		PrivateEndpointConnections: []*armcosmosforpostgresql.SimplePrivateEndpointConnection{
+	// 		},
+	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ReadReplicas: []*string{
+	// 		},
+	// 		ServerNames: []*armcosmosforpostgresql.ServerNameItem{
+	// 			{
+	// 				Name: to.Ptr("testcluster-singlenode-c"),
+	// 				FullyQualifiedDomainName: to.Ptr("c.testcluster-singlenode.postgres.database.azure.com"),
+	// 		}},
+	// 		State: to.Ptr("Provisioning"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterGet.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -614,10 +893,10 @@ func ExampleClustersClient_Get() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -674,7 +953,7 @@ func ExampleClustersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +974,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterScaleCompute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterScaleCompute.json
 func ExampleClustersClient_BeginUpdate_scaleComputeUpOrDown() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,10 +1005,10 @@ func ExampleClustersClient_BeginUpdate_scaleComputeUpOrDown() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -784,7 +1063,7 @@ func ExampleClustersClient_BeginUpdate_scaleComputeUpOrDown() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterAddNode.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterAddNode.json
 func ExampleClustersClient_BeginUpdate_scaleOutAddNewWorkerNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -815,10 +1094,10 @@ func ExampleClustersClient_BeginUpdate_scaleOutAddNewWorkerNodes() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -867,7 +1146,7 @@ func ExampleClustersClient_BeginUpdate_scaleOutAddNewWorkerNodes() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterScaleStorage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterScaleStorage.json
 func ExampleClustersClient_BeginUpdate_scaleUpStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,10 +1177,10 @@ func ExampleClustersClient_BeginUpdate_scaleUpStorage() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -956,7 +1235,7 @@ func ExampleClustersClient_BeginUpdate_scaleUpStorage() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterUpdate.json
 func ExampleClustersClient_BeginUpdate_updateMultipleConfigurationSettingsOfTheCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,10 +1269,10 @@ func ExampleClustersClient_BeginUpdate_updateMultipleConfigurationSettingsOfTheC
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -1058,7 +1337,7 @@ func ExampleClustersClient_BeginUpdate_updateMultipleConfigurationSettingsOfTheC
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterUpdateMaintenanceWindow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterUpdateMaintenanceWindow.json
 func ExampleClustersClient_BeginUpdate_updateOrDefineMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1094,10 +1373,10 @@ func ExampleClustersClient_BeginUpdate_updateOrDefineMaintenanceWindow() {
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
 	// 	SystemData: &armcosmosforpostgresql.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.123Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.123Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("user2"),
 	// 		LastModifiedByType: to.Ptr(armcosmosforpostgresql.CreatedByTypeUser),
 	// 	},
@@ -1148,7 +1427,7 @@ func ExampleClustersClient_BeginUpdate_updateOrDefineMaintenanceWindow() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterRestart.json
 func ExampleClustersClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1169,7 +1448,7 @@ func ExampleClustersClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterStart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterStart.json
 func ExampleClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1190,7 +1469,7 @@ func ExampleClustersClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterStop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterStop.json
 func ExampleClustersClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1211,7 +1490,7 @@ func ExampleClustersClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterPromoteReadReplica.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterPromoteReadReplica.json
 func ExampleClustersClient_BeginPromoteReadReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1232,7 +1511,7 @@ func ExampleClustersClient_BeginPromoteReadReplica() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d41e635294dce73dfa99b07f3da4b68a9c9e29c/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/80c21c17b4a7aa57f637ee594f7cfd653255a7e0/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/CheckNameAvailability.json
 func ExampleClustersClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

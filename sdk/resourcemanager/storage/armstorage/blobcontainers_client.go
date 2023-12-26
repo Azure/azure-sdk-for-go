@@ -32,7 +32,7 @@ type BlobContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".BlobContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClientClearLegalHoldOptions) (BlobContainersClientClearLegalHoldResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.ClearLegalHold"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.clearLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
@@ -133,6 +137,10 @@ func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Resp
 //   - options - BlobContainersClientCreateOptions contains the optional parameters for the BlobContainersClient.Create method.
 func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersClientCreateOptions) (BlobContainersClientCreateResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
@@ -206,6 +214,10 @@ func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (B
 //     method.
 func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.CreateOrUpdateImmutabilityPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
@@ -287,6 +299,10 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleRespon
 //   - options - BlobContainersClientDeleteOptions contains the optional parameters for the BlobContainersClient.Delete method.
 func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientDeleteOptions) (BlobContainersClientDeleteResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientDeleteResponse{}, err
@@ -351,6 +367,10 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 //     method.
 func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientDeleteImmutabilityPolicyOptions) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.DeleteImmutabilityPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
@@ -429,6 +449,10 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp 
 //     method.
 func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientExtendImmutabilityPolicyOptions) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.ExtendImmutabilityPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.extendImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
@@ -507,6 +531,10 @@ func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp 
 //   - options - BlobContainersClientGetOptions contains the optional parameters for the BlobContainersClient.Get method.
 func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientGetOptions) (BlobContainersClientGetResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
@@ -577,6 +605,10 @@ func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (Blob
 //     method.
 func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientGetImmutabilityPolicyOptions) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.GetImmutabilityPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
@@ -653,6 +685,10 @@ func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *ht
 //   - options - BlobContainersClientLeaseOptions contains the optional parameters for the BlobContainersClient.Lease method.
 func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientLeaseOptions) (BlobContainersClientLeaseResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.Lease"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
@@ -728,25 +764,20 @@ func (client *BlobContainersClient) NewListPager(resourceGroupName string, accou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BlobContainersClientListResponse) (BlobContainersClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobContainersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
 			if err != nil {
 				return BlobContainersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BlobContainersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BlobContainersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -812,6 +843,10 @@ func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (Blo
 //     method.
 func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientLockImmutabilityPolicyOptions) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.LockImmutabilityPolicy"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.lockImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
@@ -893,10 +928,13 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BlobContainersClientObjectLevelWormResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -908,6 +946,10 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 // Generated from API version 2023-01-01
 func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*http.Response, error) {
 	var err error
+	const operationName = "BlobContainersClient.BeginObjectLevelWorm"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.objectLevelWormCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
@@ -969,6 +1011,10 @@ func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Con
 //     method.
 func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClientSetLegalHoldOptions) (BlobContainersClientSetLegalHoldResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.SetLegalHold"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.setLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
@@ -1042,6 +1088,10 @@ func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Respon
 //   - options - BlobContainersClientUpdateOptions contains the optional parameters for the BlobContainersClient.Update method.
 func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersClientUpdateOptions) (BlobContainersClientUpdateResponse, error) {
 	var err error
+	const operationName = "BlobContainersClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err

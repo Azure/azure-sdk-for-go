@@ -1,5 +1,32 @@
 # Release History
 
+## 1.3.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.2.0 (2023-10-27)
+### Features Added
+
+- New enum type `MoveType` with values `MoveTypeRegionToRegion`, `MoveTypeRegionToZone`
+- New field `TargetResourceGroupName` in struct `AvailabilitySetResourceSettings`
+- New field `TargetResourceGroupName` in struct `DiskEncryptionSetResourceSettings`
+- New field `TargetResourceGroupName` in struct `KeyVaultResourceSettings`
+- New field `TargetResourceGroupName` in struct `LoadBalancerResourceSettings`
+- New field `MoveRegion`, `MoveType`, `Version` in struct `MoveCollectionProperties`
+- New field `TargetResourceGroupName` in struct `NetworkInterfaceResourceSettings`
+- New field `TargetResourceGroupName` in struct `NetworkSecurityGroupResourceSettings`
+- New field `TargetResourceGroupName` in struct `PublicIPAddressResourceSettings`
+- New field `TargetResourceGroupName` in struct `ResourceGroupResourceSettings`
+- New field `TargetResourceGroupName` in struct `ResourceSettings`
+- New field `TargetResourceGroupName` in struct `SQLDatabaseResourceSettings`
+- New field `TargetResourceGroupName` in struct `SQLElasticPoolResourceSettings`
+- New field `TargetResourceGroupName` in struct `SQLServerResourceSettings`
+- New field `TargetResourceGroupName` in struct `VirtualMachineResourceSettings`
+- New field `TargetResourceGroupName` in struct `VirtualNetworkResourceSettings`
+
+
 ## 1.1.1 (2023-04-14)
 ### Bug Fixes
 

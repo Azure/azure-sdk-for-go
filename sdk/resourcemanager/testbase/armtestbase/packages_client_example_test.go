@@ -54,7 +54,7 @@ func ExamplePackagesClient_NewListByTestBaseAccountPager() {
 		// 				BlobPath: to.Ptr("storageAccountPath/package.zip"),
 		// 				FlightingRing: to.Ptr("Insider Beta Channel"),
 		// 				IsEnabled: to.Ptr(true),
-		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+		// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 		// 				PackageStatus: to.Ptr(armtestbase.PackageStatusReady),
 		// 				ProvisioningState: to.Ptr(armtestbase.ProvisioningStateSucceeded),
 		// 				TargetOSList: []*armtestbase.TargetOSInfo{
@@ -183,7 +183,7 @@ func ExamplePackagesClient_NewListByTestBaseAccountPager() {
 		// 							BlobPath: to.Ptr("storageAccountPath/package.zip"),
 		// 							FlightingRing: to.Ptr("Insider Beta Channel"),
 		// 							IsEnabled: to.Ptr(true),
-		// 							LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+		// 							LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 		// 							PackageStatus: to.Ptr(armtestbase.PackageStatusReady),
 		// 							ProvisioningState: to.Ptr(armtestbase.ProvisioningStateSucceeded),
 		// 							TargetOSList: []*armtestbase.TargetOSInfo{
@@ -370,7 +370,7 @@ func ExamplePackagesClient_BeginCreate() {
 	// 		BlobPath: to.Ptr("storageAccountPath/package.zip"),
 	// 		FlightingRing: to.Ptr("Insider Beta Channel"),
 	// 		IsEnabled: to.Ptr(true),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 	// 		PackageStatus: to.Ptr(armtestbase.PackageStatusReady),
 	// 		ProvisioningState: to.Ptr(armtestbase.ProvisioningStateSucceeded),
 	// 		TargetOSList: []*armtestbase.TargetOSInfo{
@@ -553,7 +553,7 @@ func ExamplePackagesClient_BeginUpdate() {
 	// 		BlobPath: to.Ptr("storageAccountPath/package.zip"),
 	// 		FlightingRing: to.Ptr("Insider Beta Channel"),
 	// 		IsEnabled: to.Ptr(false),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 	// 		PackageStatus: to.Ptr(armtestbase.PackageStatusReady),
 	// 		ProvisioningState: to.Ptr(armtestbase.ProvisioningStateSucceeded),
 	// 		TargetOSList: []*armtestbase.TargetOSInfo{
@@ -685,7 +685,7 @@ func ExamplePackagesClient_Get() {
 	// 		BlobPath: to.Ptr("storageAccountPath/package.zip"),
 	// 		FlightingRing: to.Ptr("Insider Beta Channel"),
 	// 		IsEnabled: to.Ptr(true),
-	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00Z"); return t}()),
+	// 		LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-28T17:30:00.000Z"); return t}()),
 	// 		PackageStatus: to.Ptr(armtestbase.PackageStatusReady),
 	// 		ProvisioningState: to.Ptr(armtestbase.ProvisioningStateSucceeded),
 	// 		TargetOSList: []*armtestbase.TargetOSInfo{
@@ -807,6 +807,6 @@ func ExamplePackagesClient_GetDownloadURL() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DownloadURLResponse = armtestbase.DownloadURLResponse{
 	// 	DownloadURL: to.Ptr("some URL"),
-	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00Z"); return t}()),
+	// 	ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-10T06:00:00.000Z"); return t}()),
 	// }
 }

@@ -9,18 +9,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
+	client := newTestClient(t, azureOpenAI.Endpoint)
 
-	chatClient, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
-	_, err = chatClient.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
-		Deployment: "thisdoesntexist",
+	_, err := client.GetEmbeddings(context.Background(), azopenai.EmbeddingsOptions{
+		DeploymentName: to.Ptr("thisdoesntexist"),
 	}, nil)
 
 	var respErr *azcore.ResponseError
@@ -38,12 +35,7 @@ func TestClient_OpenAI_GetEmbeddings(t *testing.T) {
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {
-	cred, err := azopenai.NewKeyCredential(azureOpenAI.APIKey)
-	require.NoError(t, err)
-
-	client, err := azopenai.NewClientWithKeyCredential(azureOpenAI.Endpoint, cred, newClientOptionsForTest(t))
-	require.NoError(t, err)
-
+	client := newTestClient(t, azureOpenAI.Endpoint)
 	testGetEmbeddings(t, client, azureOpenAI.Embeddings)
 }
 
@@ -69,8 +61,8 @@ func testGetEmbeddings(t *testing.T, client *azopenai.Client, modelOrDeploymentI
 				ctx:          context.TODO(),
 				deploymentID: modelOrDeploymentID,
 				body: azopenai.EmbeddingsOptions{
-					Input:      []string{"\"Your text string goes here\""},
-					Deployment: modelOrDeploymentID,
+					Input:          []string{"\"Your text string goes here\""},
+					DeploymentName: &modelOrDeploymentID,
 				},
 				options: nil,
 			},

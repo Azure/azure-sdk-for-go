@@ -18,25 +18,34 @@ $ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotne
 
 ## Running the test proxy
 
-Recording and playing back tests relies on the [Test Proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md) to intercept traffic. The recording package can automatically install and run an instance of the test-proxy server per package. The following code needs to be added to test setup and teardown in order to achieve this:
+Recording and playing back tests relies on the [Test Proxy](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md) to intercept traffic. The recording package can automatically install and run an instance of the test-proxy server per package. The below code needs to be added to test setup and teardown in order to achieve this. The service directory value should correspond to the `testdata` directory within the directory containing the [assets.json](https://github.com/Azure/azure-sdk-tools/blob/main/tools/assets-automation/asset-sync/README.md#assetsjson-discovery) config, see [examples](https://github.com/search?q=repo%3AAzure%2Fazure-sdk-for-go+assets.json+language%3AJSON&type=code&l=JSON).
 
 ```golang
+const recordingDirectory = "<path to service directory with assets.json file>/testdata"
+
 func TestMain(m *testing.M) {
-	proxy, err := recording.StartTestProxy(nil)
-	if err != nil {
-		panic(err)
-	}
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
+	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
+        proxy, err := recording.StartTestProxy(recordingDirectory, nil)
+        if err != nil {
+            panic(err)
+        }
+
+        // NOTE: defer should not be used directly within TestMain as it will not be executed due to os.Exit()
+		defer func() {
+			err := recording.StopTestProxy(proxy)
+			if err != nil {
+				panic(err)
+			}
+		}()
+    }
 
     ... all other test code, including proxy recording setup ...
-
-	code := m.Run()
-
-	err = recording.StopTestProxy(proxy)
-	if err != nil {
-		panic(err)
-	}
-
-	os.Exit(code)
+	return m.Run()
 }
 ```
 
@@ -47,9 +56,6 @@ The first step in instrumenting a client to interact with recorded tests is to d
 The snippet below demonstrates an example test policy:
 
 ```go
-// This should be a 'testdata' directory in your module. `testdata` is ignored by the go tool, making it perfect for ancillary data
-var pathToPackage = "sdk/data/aztables/testdata"
-
 type recordingPolicy struct {
 	options recording.RecordingOptions
 	t       *testing.T
@@ -109,8 +115,8 @@ func TestSomething(t *testing.T) {
 To start and stop your tests use the `recording.Start` and `recording.Stop` (make sure to use `defer recording.Stop` to ensure the proxy cleans up your test on failure) methods:
 ```go
 func TestSomething(t *testing.T) {
-    err := recording.Start(nil)
-    defer recording.Stop(nil)
+    err := recording.Start(t, recordingDirectory, nil)
+    defer recording.Stop(t, recordingDirectory, nil)
 
     // Continue test
 }
@@ -126,8 +132,8 @@ func TestSomething(t *testing.T) {
     // To remove the sanitizer after this test use the following:
     defer recording.ResetSanitizers(nil)
 
-    err := recording.Start(nil)
-    defer recording.Stop(nil)
+    err := recording.Start(t, recordingDirectory, nil)
+    defer recording.Stop(t, recordingDirectory, nil)
 
     // Continue test
 }

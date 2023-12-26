@@ -37,14 +37,14 @@ func ExampleOperationsStatusClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Job = armdataboxedge.Job{
 	// 	Name: to.Ptr("159a00c7-8543-4343-9435-263ac87df3bb"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T03:18:51.4270267Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T03:18:51.427Z"); return t}()),
 	// 	ID: to.Ptr("/subscriptions/id/locations/westus/operationsStatus/159a00c7-8543-4343-9435-263ac87df3bb"),
 	// 	PercentComplete: to.Ptr[int32](100),
 	// 	Properties: &armdataboxedge.JobProperties{
 	// 		CurrentStage: to.Ptr(armdataboxedge.UpdateOperationStageSuccess),
 	// 		JobType: to.Ptr(armdataboxedge.JobTypeDownloadUpdates),
 	// 	},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.427Z"); return t}()),
 	// 	Status: to.Ptr(armdataboxedge.JobStatusSucceeded),
 	// }
 }

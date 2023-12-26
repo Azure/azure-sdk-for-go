@@ -238,24 +238,48 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return newResp, err
 }
 
-func (f *Client) renamePathInURL(newName string) (string, string, string) {
-	endpoint := f.DFSURL()
-	separator := "/"
-	// Find the index of the last occurrence of the separator
-	lastIndex := strings.LastIndex(endpoint, separator)
-	// Split the string based on the last occurrence of the separator
-	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
-	newBlobURL, newPathURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
-	oldURL, _ := url.Parse(f.DFSURL())
-	return oldURL.Path, newPathURL, newBlobURL
-}
-
 // Rename renames a file. The original file will no longer exist and the client will be stale.
-func (f *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	oldPathWithoutURL, newPathURL, newBlobURL := f.renamePathInURL(newName)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, oldPathWithoutURL)
+func (f *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
 	var newBlobClient *blockblob.Client
-	var err error
+	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
+	if len(destinationPath) == 0 {
+		return RenameResponse{}, errors.New("destination path must not be empty")
+	}
+	urlParts, err := sas.ParseURL(f.DFSURL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+
+	oldPath, err := url.Parse(f.DFSURL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+	srcParts := strings.Split(f.DFSURL(), "?")
+	newSrcPath := oldPath.Path
+	newSrcQuery := ""
+	if len(srcParts) == 2 {
+		newSrcQuery = srcParts[1]
+	}
+	if len(newSrcQuery) > 0 {
+		newSrcPath = newSrcPath + "?" + newSrcQuery
+	}
+
+	destParts := strings.Split(destinationPath, "?")
+	newDestPath := destParts[0]
+	newDestQuery := ""
+	if len(destParts) == 2 {
+		newDestQuery = destParts[1]
+	}
+
+	urlParts.PathName = newDestPath
+	newPathURL := urlParts.String()
+	// replace the query part if it is present in destination path
+	if len(newDestQuery) > 0 {
+		newPathURL = strings.Split(newPathURL, "?")[0] + "?" + newDestQuery
+	}
+	newBlobURL, _ := shared.GetURLs(newPathURL)
+	lac, mac, smac, createOpts, cpkOpts := path.FormatRenameOptions(options, newSrcPath)
+
 	if f.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *f.identityCredential(), nil)
 	} else if f.sharedKey() != nil {
@@ -264,15 +288,18 @@ func (f *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	} else {
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
 	}
+
 	if err != nil {
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newFileClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, f.generatedFileClientWithDFS().InternalClient().WithClientName(shared.FileClient), f.sharedKey(), f.identityCredential(), f.getClientOptions()))
-	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	resp, err := newFileClient.generatedFileClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
+
 	//return RenameResponse{
 	//	Response:      resp,
 	//	NewFileClient: newFileClient,
 	//}, exported.ConvertToDFSError(err)
+
 	return path.FormatRenameResponse(&resp), exported.ConvertToDFSError(err)
 }
 

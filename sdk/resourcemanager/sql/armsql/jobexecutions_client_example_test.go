@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgentWithFilter.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgentWithFilter.json
 func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAgentWithFiltering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,10 +31,10 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewJobExecutionsClient().NewListByAgentPager("group1", "server1", "agent1", &armsql.JobExecutionsClientListByAgentOptions{CreateTimeMin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:00:00Z"); return t }()),
-		CreateTimeMax: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:05:00Z"); return t }()),
-		EndTimeMin:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:20:00Z"); return t }()),
-		EndTimeMax:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:25:00Z"); return t }()),
+	pager := clientFactory.NewJobExecutionsClient().NewListByAgentPager("group1", "server1", "agent1", &armsql.JobExecutionsClientListByAgentOptions{CreateTimeMin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:00:00.000Z"); return t }()),
+		CreateTimeMax: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:05:00.000Z"); return t }()),
+		EndTimeMin:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:20:00.000Z"); return t }()),
+		EndTimeMax:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:25:00.000Z"); return t }()),
 		IsActive:      to.Ptr(false),
 		Skip:          nil,
 		Top:           nil,
@@ -56,16 +56,16 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.8707045Z"); return t}()),
-		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.870Z"); return t}()),
+		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](0),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution created."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleCreated),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -73,22 +73,22 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job2/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](1),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution succeeded."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.870Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgent.json
 func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAgent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,16 +124,16 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.8707045Z"); return t}()),
-		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.870Z"); return t}()),
+		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](0),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution created."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleCreated),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -141,22 +141,22 @@ func ExampleJobExecutionsClient_NewListByAgentPager_listAllJobExecutionsInAJobAg
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job2/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](1),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution succeeded."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.870Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CancelJobExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CancelJobExecution.json
 func ExampleJobExecutionsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleJobExecutionsClient_Cancel() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateJobExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateJobExecution.json
 func ExampleJobExecutionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleJobExecutionsClient_BeginCreate() {
 	// 	Type: to.Ptr("Microsoft.Sql/servers/jobAgents/executions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 	// 	Properties: &armsql.JobExecutionProperties{
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T01:00:00Z"); return t}()),
+	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-23T01:00:00.000Z"); return t}()),
 	// 		CurrentAttempts: to.Ptr[int32](0),
 	// 		JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 	// 		JobVersion: to.Ptr[int32](1),
@@ -211,7 +211,7 @@ func ExampleJobExecutionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByJob.json
 func ExampleJobExecutionsClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,16 +247,16 @@ func ExampleJobExecutionsClient_NewListByJobPager() {
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.8707045Z"); return t}()),
-		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:02:00.870Z"); return t}()),
+		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](0),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution created."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleCreated),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:12:00.870Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -264,22 +264,22 @@ func ExampleJobExecutionsClient_NewListByJobPager() {
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.8707045Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:02:00.870Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](1),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.8707045Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:22:00.870Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Job execution succeeded."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.8707045Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-15T19:12:00.870Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecution.json
 func ExampleJobExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,21 +302,21 @@ func ExampleJobExecutionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Sql/servers/jobAgents/executions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 	// 	Properties: &armsql.JobExecutionProperties{
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:02:00.8707045Z"); return t}()),
-	// 		CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-13T19:12:00.8707045Z"); return t}()),
+	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:02:00.870Z"); return t}()),
+	// 		CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-13T19:12:00.870Z"); return t}()),
 	// 		CurrentAttempts: to.Ptr[int32](0),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:22:00.8707045Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:22:00.870Z"); return t}()),
 	// 		JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 	// 		JobVersion: to.Ptr[int32](1),
 	// 		LastMessage: to.Ptr("Job execution created."),
 	// 		Lifecycle: to.Ptr(armsql.JobExecutionLifecycleCreated),
 	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:12:00.8707045Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T19:12:00.870Z"); return t}()),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fe78d8f1e7bd86c778c7e1cafd52cb0e9fec67ef/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateJobExecution.json
 func ExampleJobExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleJobExecutionsClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Sql/servers/jobAgents/executions"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999"),
 	// 	Properties: &armsql.JobExecutionProperties{
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-18T19:02:00.8707045Z"); return t}()),
+	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-18T19:02:00.870Z"); return t}()),
 	// 		CurrentAttempts: to.Ptr[int32](0),
 	// 		JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 	// 		JobVersion: to.Ptr[int32](1),

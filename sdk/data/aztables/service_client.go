@@ -27,21 +27,16 @@ type ServiceClient struct {
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil)},
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 	}, nil
 }
 
@@ -49,52 +44,42 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Call this method when serviceURL contains a SAS token.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
-	serviceClient, err := generated.NewServiceClient(serviceURL, runtime.PipelineOptions{}, conOptions)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, runtime.PipelineOptions{}, conOptions)
+	client, err := newClient(serviceURL, runtime.PipelineOptions{}, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 	}, nil
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 // Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{newSharedKeyCredPolicy(cred)},
 	}
-	serviceClient, err := generated.NewServiceClient(serviceURL, plOpts, conOptions)
-	if err != nil {
-		return nil, err
-	}
-	tableClient, err := generated.NewTableClient(serviceURL, plOpts, conOptions)
+	client, err := newClient(serviceURL, plOpts, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ServiceClient{
-		client:  tableClient,
-		service: serviceClient,
+		client:  generated.NewTableClient(serviceURL, client),
+		service: generated.NewServiceClient(serviceURL, client),
 		cred:    cred,
 	}, nil
 }
 
-func getConnectionOptions(serviceURL string, options *ClientOptions) *policy.ClientOptions {
+func newClient(serviceURL string, plOpts runtime.PipelineOptions, options *ClientOptions) (*azcore.Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	conOptions := options.toPolicyOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+		plOpts.PerCall = append(plOpts.PerCall, cosmosPatchTransformPolicy{})
 	}
-	return conOptions
+	plOpts.Tracing.Namespace = "Microsoft.Tables"
+	return azcore.NewClient(generated.ModuleName, generated.Version, plOpts, &options.ClientOptions)
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
@@ -119,6 +104,10 @@ func (c *CreateTableOptions) toGenerated() *generated.TableClientCreateOptions {
 // CreateTable creates a table with the specified name. If the service returns a non-successful HTTP status code,
 // the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *CreateTableOptions) (CreateTableResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "ServiceClient.CreateTable", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
@@ -128,7 +117,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	}
 	return CreateTableResponse{
 		TableName: resp.TableName,
-	}, nil
+	}, err
 }
 
 // DeleteTableOptions contains optional parameters for Client.Delete and ServiceClient.DeleteTable
@@ -152,6 +141,10 @@ func deleteTableResponseFromGen(g generated.TableClientDeleteResponse) DeleteTab
 // DeleteTable deletes a table by name. If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *DeleteTableOptions) (DeleteTableResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "ServiceClient.DeleteTable", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	resp, err := t.client.Delete(ctx, name, options.toGenerated())
 	if err != nil {
 		return DeleteTableResponse{}, err
@@ -237,7 +230,7 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 //
 // NewListTablesPager returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
-//   - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//   - API Documentation: https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities
 //   - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
 	if listOptions == nil {
@@ -268,6 +261,7 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 			}
 			return fromGeneratedTableQueryResponseEnvelope(resp), nil
 		},
+		Tracer: t.client.Tracer(),
 	})
 }
 
@@ -294,6 +288,10 @@ func (g *GetStatisticsOptions) toGenerated() *generated.ServiceClientGetStatisti
 // GetStatistics retrieves all the statistics for an account with Geo-redundancy established. If the service returns a non-successful
 // HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "ServiceClient.GetStatistics", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
@@ -337,6 +335,10 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceClientGetPropertiesR
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "ServiceClient.GetProperties", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
@@ -377,6 +379,10 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceClientSetPropertiesR
 // status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "ServiceClient.SetProperties", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}

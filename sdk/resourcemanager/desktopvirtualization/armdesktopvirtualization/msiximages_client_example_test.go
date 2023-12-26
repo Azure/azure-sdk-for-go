@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f339d469c0fe83466edfe295a7960c82ebecf4f/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/MsixImage_Expand_Post.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/MsixImage_Expand_Post.json
 func ExampleMsixImagesClient_NewExpandPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 				ImagePath: to.Ptr("imagepath"),
 		// 				IsActive: to.Ptr(false),
 		// 				IsRegularRegistration: to.Ptr(false),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				PackageAlias: to.Ptr("msixpackagealias"),
 		// 				PackageApplications: []*armdesktopvirtualization.MsixPackageApplications{
 		// 					{
@@ -83,7 +83,7 @@ func ExampleMsixImagesClient_NewExpandPager() {
 		// 				ImagePath: to.Ptr("imagepath"),
 		// 				IsActive: to.Ptr(false),
 		// 				IsRegularRegistration: to.Ptr(false),
-		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.9571247Z"); return t}()),
+		// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2008-09-22T14:01:54.957Z"); return t}()),
 		// 				PackageAlias: to.Ptr("msixpackagealias2"),
 		// 				PackageApplications: []*armdesktopvirtualization.MsixPackageApplications{
 		// 					{

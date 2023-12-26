@@ -29,6 +29,10 @@
             "CoverageGoal": 0.87
         },
         {
+            "Name": "azidentity/cache",
+            "CoverageGoal": 0.35
+        },
+        {
             "Name": "azqueue",
             "CoverageGoal": 0.60
         },
@@ -42,7 +46,7 @@
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.39
+            "CoverageGoal": 0.32
         },
         {
             "Name": "aztemplate",

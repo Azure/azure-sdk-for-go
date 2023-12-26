@@ -34,8 +34,7 @@ type widgets struct {
 }
 
 func TestNewTokenCredential(t *testing.T) {
-	cred := fake.NewTokenCredential()
-	require.NotNil(t, cred)
+	cred := fake.TokenCredential{}
 
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{})
 	require.NoError(t, err)
@@ -162,7 +161,7 @@ func TestPagerResponder(t *testing.T) {
 			require.NotNil(t, resp)
 			page, err := unmarshal[widgets](resp)
 			require.NoError(t, err)
-			require.Nil(t, page.NextPage)
+			require.NotNil(t, page.NextPage)
 			require.Equal(t, []widget{{Name: "baz"}}, page.Widgets)
 		case 4:
 			require.Error(t, err)

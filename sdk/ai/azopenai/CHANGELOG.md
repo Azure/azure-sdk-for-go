@@ -1,14 +1,35 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.4.0 (2023-12-11)
+
+Support for many of the features mentioned in OpenAI's November Dev Day and Microsoft's 2023 Ignite conference
 
 ### Features Added
 
+- Chat completions has been extended to accomodate new features:
+  - Parallel function calling via Tools. See the function `ExampleClient_GetChatCompletions_functions` in `example_client_getchatcompletions_extensions_test.go` for an example of specifying a Tool.
+  - "JSON mode", via `ChatCompletionOptions.ResponseFormat` for guaranteed function outputs.
+- ChatCompletions can now be used with both text and images using `gpt-4-vision-preview`.
+  - Azure enhancements to `gpt-4-vision-preview` results that include grounding and OCR features
+- GetImageGenerations now works with DallE-3.
+- `-1106` model feature support for `gpt-35-turbo` and `gpt-4-turbo`, including use of a seed via `ChatCompletionsOptions.Seed` and system fingerprints returned in `ChatCompletions.SystemFingerprint`.
+- `dall-e-3` image generation capabilities via `GetImageGenerations`, featuring higher model quality, automatic prompt revisions by `gpt-4`, and customizable quality/style settings
+
 ### Breaking Changes
 
-### Bugs Fixed
+- `azopenai.KeyCredential` has been replaced by [azcore.KeyCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#KeyCredential).
+- `Deployment` has been renamed to `DeploymentName` throughout all APIs.
+- `CreateImage` has been replaced with `GetImageGenerations`.
+- `ChatMessage` has been split into per-role types. The function `ExampleClient_GetChatCompletions` in `example_client_getcompletions_test.go` shows an example of this.
 
-### Other Changes
+## 0.3.0 (2023-09-26)
+
+### Features Added
+- Support for Whisper audio APIs for transcription and translation using `GetAudioTranscription` and `GetAudioTranslation`.
+
+### Breaking Changes
+- ChatChoiceContentFilterResults content filtering fields are now all typed as ContentFilterResult, instead of unique types for each field.
+- `PromptAnnotations` renamed to `PromptFilterResults` in `ChatCompletions` and `Completions`.
 
 ## 0.2.0 (2023-08-28)
 

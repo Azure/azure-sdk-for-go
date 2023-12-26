@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_List.json
 func ExampleReplicasClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,10 +47,10 @@ func ExampleReplicasClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
 		// 			SystemData: &armwebpubsub.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
 		// 				CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
 		// 				LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 		// 			},
@@ -60,6 +60,8 @@ func ExampleReplicasClient_NewListPager() {
 		// 			},
 		// 			Properties: &armwebpubsub.ReplicaProperties{
 		// 				ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 				RegionEndpointEnabled: to.Ptr("Enabled"),
+		// 				ResourceStopped: to.Ptr("false"),
 		// 			},
 		// 			SKU: &armwebpubsub.ResourceSKU{
 		// 				Name: to.Ptr("Premium_P1"),
@@ -72,7 +74,7 @@ func ExampleReplicasClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Get.json
 func ExampleReplicasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,10 +97,10 @@ func ExampleReplicasClient_Get() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -108,6 +110,8 @@ func ExampleReplicasClient_Get() {
 	// 	},
 	// 	Properties: &armwebpubsub.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armwebpubsub.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -118,7 +122,7 @@ func ExampleReplicasClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_CreateOrUpdate.json
 func ExampleReplicasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +138,9 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-		Properties: &armwebpubsub.ReplicaProperties{},
+		Properties: &armwebpubsub.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
 		SKU: &armwebpubsub.ResourceSKU{
 			Name:     to.Ptr("Premium_P1"),
 			Capacity: to.Ptr[int32](1),
@@ -156,10 +162,10 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -169,6 +175,8 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// 	},
 	// 	Properties: &armwebpubsub.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armwebpubsub.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -179,7 +187,7 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Delete.json
 func ExampleReplicasClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +204,7 @@ func ExampleReplicasClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Update.json
 func ExampleReplicasClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +220,9 @@ func ExampleReplicasClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
-		Properties: &armwebpubsub.ReplicaProperties{},
+		Properties: &armwebpubsub.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
 		SKU: &armwebpubsub.ResourceSKU{
 			Name:     to.Ptr("Premium_P1"),
 			Capacity: to.Ptr[int32](1),
@@ -234,10 +244,10 @@ func ExampleReplicasClient_BeginUpdate() {
 	// 	Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
 	// 	SystemData: &armwebpubsub.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
 	// 		CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-02-03T04:05:06.000Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
 	// 		LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
 	// 	},
@@ -247,6 +257,8 @@ func ExampleReplicasClient_BeginUpdate() {
 	// 	},
 	// 	Properties: &armwebpubsub.ReplicaProperties{
 	// 		ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 		RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 		ResourceStopped: to.Ptr("false"),
 	// 	},
 	// 	SKU: &armwebpubsub.ResourceSKU{
 	// 		Name: to.Ptr("Premium_P1"),
@@ -257,7 +269,7 @@ func ExampleReplicasClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9ec0fcc278aa2128c4fbb2b8a1aa93432d72cce0/specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Restart.json
 func ExampleReplicasClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

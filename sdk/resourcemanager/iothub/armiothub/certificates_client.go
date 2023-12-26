@@ -32,7 +32,7 @@ type CertificatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificatesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CertificatesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Adds new or replaces existing certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - certificateName - The name of the certificate
@@ -55,6 +55,10 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, certificateDescription CertificateDescription, options *CertificatesClientCreateOrUpdateOptions) (CertificatesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, certificateName, certificateDescription, options)
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
@@ -95,7 +99,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -119,7 +123,7 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 // Delete - Deletes an existing X509 certificate or does nothing if it does not exist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - certificateName - The name of the certificate
@@ -127,6 +131,10 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
 func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, options *CertificatesClientDeleteOptions) (CertificatesClientDeleteResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, options)
 	if err != nil {
 		return CertificatesClientDeleteResponse{}, err
@@ -166,7 +174,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -177,7 +185,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 // to generate a leaf certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - certificateName - The name of the certificate
@@ -186,6 +194,10 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 //     method.
 func (client *CertificatesClient) GenerateVerificationCode(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, options *CertificatesClientGenerateVerificationCodeOptions) (CertificatesClientGenerateVerificationCodeResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.GenerateVerificationCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.generateVerificationCodeCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, options)
 	if err != nil {
 		return CertificatesClientGenerateVerificationCodeResponse{}, err
@@ -226,7 +238,7 @@ func (client *CertificatesClient) generateVerificationCodeCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -245,13 +257,17 @@ func (client *CertificatesClient) generateVerificationCodeHandleResponse(resp *h
 // Get - Returns the certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - certificateName - The name of the certificate
 //   - options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
 func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, options *CertificatesClientGetOptions) (CertificatesClientGetResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, certificateName, options)
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
@@ -292,7 +308,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,13 +326,17 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 // ListByIotHub - Returns the list of certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - options - CertificatesClientListByIotHubOptions contains the optional parameters for the CertificatesClient.ListByIotHub
 //     method.
 func (client *CertificatesClient) ListByIotHub(ctx context.Context, resourceGroupName string, resourceName string, options *CertificatesClientListByIotHubOptions) (CertificatesClientListByIotHubResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.ListByIotHub"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByIotHubCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return CertificatesClientListByIotHubResponse{}, err
@@ -353,7 +373,7 @@ func (client *CertificatesClient) listByIotHubCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -372,7 +392,7 @@ func (client *CertificatesClient) listByIotHubHandleResponse(resp *http.Response
 // certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-30-preview
+// Generated from API version 2023-06-30
 //   - resourceGroupName - The name of the resource group that contains the IoT hub.
 //   - resourceName - The name of the IoT hub.
 //   - certificateName - The name of the certificate
@@ -381,6 +401,10 @@ func (client *CertificatesClient) listByIotHubHandleResponse(resp *http.Response
 //   - options - CertificatesClientVerifyOptions contains the optional parameters for the CertificatesClient.Verify method.
 func (client *CertificatesClient) Verify(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, ifMatch string, certificateVerificationBody CertificateVerificationDescription, options *CertificatesClientVerifyOptions) (CertificatesClientVerifyResponse, error) {
 	var err error
+	const operationName = "CertificatesClient.Verify"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.verifyCreateRequest(ctx, resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, options)
 	if err != nil {
 		return CertificatesClientVerifyResponse{}, err
@@ -421,7 +445,7 @@ func (client *CertificatesClient) verifyCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-30-preview")
+	reqQP.Set("api-version", "2023-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	req.Raw().Header["Accept"] = []string{"application/json"}

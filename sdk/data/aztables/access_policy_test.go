@@ -10,12 +10,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSetEmptyAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+		Name: "Client.SetAccessPolicy",
+	}))
 	defer delete()
 
 	_, err := client.SetAccessPolicy(ctx, nil)
@@ -23,7 +26,9 @@ func TestSetEmptyAccessPolicy(t *testing.T) {
 }
 
 func TestSetAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+		Name: "Client.GetAccessPolicy",
+	}))
 	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -67,7 +72,7 @@ func TestSetAccessPolicy(t *testing.T) {
 }
 
 func TestSetMultipleAccessPolicies(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
 	defer delete()
 
 	id := "empty"
@@ -115,7 +120,10 @@ func TestSetMultipleAccessPolicies(t *testing.T) {
 }
 
 func TestSetTooManyAccessPolicies(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, NewSpanValidator(t, SpanMatcher{
+		Name:   "Client.SetAccessPolicy",
+		Status: tracing.SpanStatusError,
+	}))
 	defer delete()
 
 	start := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -147,7 +155,7 @@ func TestSetTooManyAccessPolicies(t *testing.T) {
 }
 
 func TestSetNullAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
 	defer delete()
 
 	id := "null"
@@ -170,7 +178,7 @@ func TestSetNullAccessPolicy(t *testing.T) {
 }
 
 func TestSetInvalidAccessPolicy(t *testing.T) {
-	client, delete := initClientTest(t, "storage", true)
+	client, delete := initClientTest(t, "storage", true, tracing.Provider{})
 	defer delete()
 
 	signedIdentifiers := make([]*SignedIdentifier, 0)

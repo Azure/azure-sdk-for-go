@@ -37,6 +37,14 @@ func Test(t *testing.T) {
 	}
 }
 
+func (s *RecordedTestSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
+}
+
+func (s *RecordedTestSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
+}
+
 func (s *RecordedTestSuite) BeforeTest(suite string, test string) {
 	testcommon.BeforeTest(s.T(), suite, test)
 }
@@ -55,6 +63,7 @@ func (s *UnrecordedTestSuite) AfterTest(suite string, test string) {
 
 type RecordedTestSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type UnrecordedTestSuite struct {

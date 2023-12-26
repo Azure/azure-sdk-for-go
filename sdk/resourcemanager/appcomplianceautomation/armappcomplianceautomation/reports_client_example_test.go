@@ -52,10 +52,10 @@ func ExampleReportsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsfot.AppComplianceAutomation/reports"),
 		// 			ID: to.Ptr("/provider/Microsfot.AppComplianceAutomation/reports/testReportName"),
 		// 			SystemData: &armappcomplianceautomation.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-14T22:34:55.4499903Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-14T22:34:55.449Z"); return t}()),
 		// 				CreatedBy: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				CreatedByType: to.Ptr(armappcomplianceautomation.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-14T22:34:55.4499903Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-14T22:34:55.449Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				LastModifiedByType: to.Ptr(armappcomplianceautomation.CreatedByTypeUser),
 		// 			},

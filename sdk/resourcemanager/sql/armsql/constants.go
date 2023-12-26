@@ -9,8 +9,8 @@
 package armsql
 
 const (
-	moduleName    = "armsql"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	moduleVersion = "v2.0.0-beta.3"
 )
 
 type AdministratorName string
@@ -114,7 +114,7 @@ func PossibleAggregationFunctionTypeValues() []AggregationFunctionType {
 	}
 }
 
-// AlwaysEncryptedEnclaveType - Type of enclave requested on the database i.e. Default or VBS enclaves.
+// AlwaysEncryptedEnclaveType - Type of enclave requested on the elastic pool.
 type AlwaysEncryptedEnclaveType string
 
 const (
@@ -302,7 +302,7 @@ func PossibleAutomaticTuningServerReasonValues() []AutomaticTuningServerReason {
 	}
 }
 
-// AvailabilityZoneType - Specifies the availability zone the database is pinned to.
+// AvailabilityZoneType - Specifies the availability zone the pool's primary replica is pinned to.
 type AvailabilityZoneType string
 
 const (
@@ -985,6 +985,24 @@ func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole
 	return []FailoverGroupReplicationRole{
 		FailoverGroupReplicationRolePrimary,
 		FailoverGroupReplicationRoleSecondary,
+	}
+}
+
+// FreeLimitExhaustionBehavior - Specifies the behavior when monthly free limits are exhausted for the free database.
+// AutoPause: The database will be auto paused upon exhaustion of free limits for remainder of the month.
+// BillForUsage: The database will continue to be online upon exhaustion of free limits and any overage will be billed.
+type FreeLimitExhaustionBehavior string
+
+const (
+	FreeLimitExhaustionBehaviorAutoPause     FreeLimitExhaustionBehavior = "AutoPause"
+	FreeLimitExhaustionBehaviorBillOverUsage FreeLimitExhaustionBehavior = "BillOverUsage"
+)
+
+// PossibleFreeLimitExhaustionBehaviorValues returns the possible values for the FreeLimitExhaustionBehavior const type.
+func PossibleFreeLimitExhaustionBehaviorValues() []FreeLimitExhaustionBehavior {
+	return []FreeLimitExhaustionBehavior{
+		FreeLimitExhaustionBehaviorAutoPause,
+		FreeLimitExhaustionBehaviorBillOverUsage,
 	}
 }
 

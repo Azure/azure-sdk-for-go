@@ -8,6 +8,7 @@ package directory
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -277,24 +278,48 @@ func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	return newResp, err
 }
 
-func (d *Client) renamePathInURL(newName string) (string, string, string) {
-	endpoint := d.DFSURL()
-	separator := "/"
-	// Find the index of the last occurrence of the separator
-	lastIndex := strings.LastIndex(endpoint, separator)
-	// Split the string based on the last occurrence of the separator
-	firstPart := endpoint[:lastIndex] // From the beginning of the string to the last occurrence of the separator
-	newBlobURL, newPathURL := shared.GetURLs(runtime.JoinPaths(firstPart, newName))
-	oldURL, _ := url.Parse(d.DFSURL())
-	return oldURL.Path, newPathURL, newBlobURL
-}
-
 // Rename renames a directory. The original directory will no longer exist and the client will be stale.
-func (d *Client) Rename(ctx context.Context, newName string, options *RenameOptions) (RenameResponse, error) {
-	oldURL, newPathURL, newBlobURL := d.renamePathInURL(newName)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, oldURL)
+func (d *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
 	var newBlobClient *blockblob.Client
-	var err error
+	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
+	if len(destinationPath) == 0 {
+		return RenameResponse{}, errors.New("destination path must not be empty")
+	}
+	urlParts, err := sas.ParseURL(d.DFSURL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+
+	oldPath, err := url.Parse(d.DFSURL())
+	if err != nil {
+		return RenameResponse{}, err
+	}
+	srcParts := strings.Split(d.DFSURL(), "?")
+	newSrcPath := oldPath.Path
+	newSrcQuery := ""
+	if len(srcParts) == 2 {
+		newSrcQuery = srcParts[1]
+	}
+	if len(newSrcQuery) > 0 {
+		newSrcPath = newSrcPath + "?" + newSrcQuery
+	}
+
+	destParts := strings.Split(destinationPath, "?")
+	newDestPath := destParts[0]
+	newDestQuery := ""
+	if len(destParts) == 2 {
+		newDestQuery = destParts[1]
+	}
+
+	urlParts.PathName = newDestPath
+	newPathURL := urlParts.String()
+	// replace the query part if it is present in destination path
+	if len(newDestQuery) > 0 {
+		newPathURL = strings.Split(newPathURL, "?")[0] + "?" + newDestQuery
+	}
+	newBlobURL, _ := shared.GetURLs(newPathURL)
+	lac, mac, smac, createOpts, cpkOpts := path.FormatRenameOptions(options, newSrcPath)
+
 	if d.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
 	} else if d.sharedKey() != nil {
@@ -303,11 +328,12 @@ func (d *Client) Rename(ctx context.Context, newName string, options *RenameOpti
 	} else {
 		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, nil)
 	}
+
 	if err != nil {
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
-	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
 	//return RenameResponse{
 	//	Response:           resp,
 	//	NewDirectoryClient: newDirClient,

@@ -1,5 +1,35 @@
 # Release History
 
+## 2.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 2.1.0 (2023-10-27)
+### Features Added
+
+- New value `LanguageExtensionImageNamePython3108DL`, `LanguageExtensionImageNamePythonCustomImage` added to enum type `LanguageExtensionImageName`
+- New enum type `Language` with values `LanguagePython`
+- New enum type `VnetState` with values `VnetStateDisabled`, `VnetStateEnabled`
+- New function `*ClientFactory.NewSandboxCustomImagesClient() *SandboxCustomImagesClient`
+- New function `NewSandboxCustomImagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SandboxCustomImagesClient, error)`
+- New function `*SandboxCustomImagesClient.CheckNameAvailability(context.Context, string, string, SandboxCustomImagesCheckNameRequest, *SandboxCustomImagesClientCheckNameAvailabilityOptions) (SandboxCustomImagesClientCheckNameAvailabilityResponse, error)`
+- New function `*SandboxCustomImagesClient.BeginCreateOrUpdate(context.Context, string, string, string, SandboxCustomImage, *SandboxCustomImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientCreateOrUpdateResponse], error)`
+- New function `*SandboxCustomImagesClient.BeginDelete(context.Context, string, string, string, *SandboxCustomImagesClientBeginDeleteOptions) (*runtime.Poller[SandboxCustomImagesClientDeleteResponse], error)`
+- New function `*SandboxCustomImagesClient.Get(context.Context, string, string, string, *SandboxCustomImagesClientGetOptions) (SandboxCustomImagesClientGetResponse, error)`
+- New function `*SandboxCustomImagesClient.NewListByClusterPager(string, string, *SandboxCustomImagesClientListByClusterOptions) *runtime.Pager[SandboxCustomImagesClientListByClusterResponse]`
+- New function `*SandboxCustomImagesClient.BeginUpdate(context.Context, string, string, string, SandboxCustomImage, *SandboxCustomImagesClientBeginUpdateOptions) (*runtime.Poller[SandboxCustomImagesClientUpdateResponse], error)`
+- New struct `SandboxCustomImage`
+- New struct `SandboxCustomImageProperties`
+- New struct `SandboxCustomImagesCheckNameRequest`
+- New struct `SandboxCustomImagesListResult`
+- New field `Zones` in struct `ClusterUpdate`
+- New field `IPAddress` in struct `EndpointDetail`
+- New field `LanguageExtensionCustomImageName` in struct `LanguageExtension`
+- New field `State` in struct `VirtualNetworkConfiguration`
+
+
 ## 2.0.0 (2023-07-28)
 ### Breaking Changes
 

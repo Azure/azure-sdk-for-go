@@ -33,7 +33,7 @@ type APISchemaClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APISchemaClient, error) {
-	cl, err := arm.NewClient(moduleName+".APISchemaClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -64,10 +64,13 @@ func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APISchemaClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[APISchemaClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APISchemaClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -77,6 +80,10 @@ func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resource
 // Generated from API version 2022-08-01
 func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "APISchemaClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -146,6 +153,10 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 //   - options - APISchemaClientDeleteOptions contains the optional parameters for the APISchemaClient.Delete method.
 func (client *APISchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, ifMatch string, options *APISchemaClientDeleteOptions) (APISchemaClientDeleteResponse, error) {
 	var err error
+	const operationName = "APISchemaClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, ifMatch, options)
 	if err != nil {
 		return APISchemaClientDeleteResponse{}, err
@@ -211,6 +222,10 @@ func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resource
 //   - options - APISchemaClientGetOptions contains the optional parameters for the APISchemaClient.Get method.
 func (client *APISchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetOptions) (APISchemaClientGetResponse, error) {
 	var err error
+	const operationName = "APISchemaClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, options)
 	if err != nil {
 		return APISchemaClientGetResponse{}, err
@@ -284,6 +299,10 @@ func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchema
 //   - options - APISchemaClientGetEntityTagOptions contains the optional parameters for the APISchemaClient.GetEntityTag method.
 func (client *APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, options *APISchemaClientGetEntityTagOptions) (APISchemaClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APISchemaClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, options)
 	if err != nil {
 		return APISchemaClientGetEntityTagResponse{}, err
@@ -336,11 +355,10 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (APISchemaClientGetEntityTagResponse, error) {
-	result := APISchemaClientGetEntityTagResponse{}
+	result := APISchemaClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -358,25 +376,20 @@ func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, servi
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *APISchemaClientListByAPIResponse) (APISchemaClientListByAPIResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APISchemaClient.NewListByAPIPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+			}, nil)
 			if err != nil {
 				return APISchemaClientListByAPIResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return APISchemaClientListByAPIResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return APISchemaClientListByAPIResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAPIHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

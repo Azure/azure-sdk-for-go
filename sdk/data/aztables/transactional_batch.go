@@ -69,17 +69,22 @@ type SubmitTransactionOptions struct {
 // All transactionActions must be for entities with the same PartitionKey. There can only be one transaction action
 // for a RowKey, a duplicated row key will return an error. A storage account will return a 202 Accepted response
 // when a transaction fails, the multipart data will have 4XX responses for the batch request that failed. For
-// more information about error responses see https://docs.microsoft.com/en-us/rest/api/storageservices/performing-entity-group-transactions#sample-error-response
+// more information about error responses see https://learn.microsoft.com/rest/api/storageservices/performing-entity-group-transactions#sample-error-response
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
-	u1, err := uuid.New()
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SubmitTransaction", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
+	batchID, err := uuid.New()
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	u2, err := uuid.New()
+	changesetID, err := uuid.New()
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	return t.submitTransactionInternal(ctx, transactionActions, u1, u2, tableSubmitTransactionOptions)
+	resp, err := t.submitTransactionInternal(ctx, transactionActions, batchID, changesetID, tableSubmitTransactionOptions)
+	return resp, err
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
@@ -88,7 +93,7 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, errEmptyTransaction
 	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
-	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
+	changeSetBody, err := t.generateChangesetBody(ctx, changesetBoundary, transactionActions)
 	if err != nil {
 		return TransactionResponse{}, err
 	}
@@ -192,7 +197,7 @@ func getBoundaryName(bytesBody []byte) string {
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.
 // There is a changeset for Insert, Delete, Merge etc.
-func (t *Client) generateChangesetBody(changesetBoundary string, transactionActions []TransactionAction) (*bytes.Buffer, error) {
+func (t *Client) generateChangesetBody(ctx context.Context, changesetBoundary string, transactionActions []TransactionAction) (*bytes.Buffer, error) {
 
 	body := new(bytes.Buffer)
 	writer := multipart.NewWriter(body)
@@ -202,7 +207,7 @@ func (t *Client) generateChangesetBody(changesetBoundary string, transactionActi
 	}
 
 	for _, be := range transactionActions {
-		err := t.generateEntitySubset(&be, writer)
+		err := t.generateEntitySubset(ctx, &be, writer)
 		if err != nil {
 			return nil, err
 		}
@@ -213,7 +218,7 @@ func (t *Client) generateChangesetBody(changesetBoundary string, transactionActi
 }
 
 // generateEntitySubset generates body payload for particular batch entity
-func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writer *multipart.Writer) error {
+func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *TransactionAction, writer *multipart.Writer) error {
 	h := make(textproto.MIMEHeader)
 	h.Set(headerContentTransferEncoding, "binary")
 	h.Set(headerContentType, "application/http")
@@ -224,7 +229,7 @@ func (t *Client) generateEntitySubset(transactionAction *TransactionAction, writ
 		return err
 	}
 	var req *policy.Request
-	var entity map[string]interface{}
+	var entity map[string]any
 	err = json.Unmarshal(transactionAction.Entity, &entity)
 	if err != nil {
 		return err

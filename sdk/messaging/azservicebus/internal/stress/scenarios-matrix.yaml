@@ -28,6 +28,10 @@ matrix:
     finiteSessions:
       testTarget: finiteSessions
       memory: "4Gi"
+    finiteSessionsWithChaos:
+      testTarget: finiteSessions
+      memory: "4Gi"
+      chaos: "true"
     idleFastReconnect:
       testTarget: idleFastReconnect
       memory: "0.5Gi"

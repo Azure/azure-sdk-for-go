@@ -25,6 +25,11 @@ type Client struct {
 	name    string
 }
 
+// ClientOptions contains the optional parameters for client constructors.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
+
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.table.core.windows.net/<myTableName>".
 // Pass in nil for options to construct the client with the default ClientOptions.
@@ -120,6 +125,10 @@ func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTa
 // NOTE: creating a table with the same name as a table that's in the process of being deleted will return an *azcore.ResponseError
 // with error code TableBeingDeleted and status code http.StatusConflict.
 func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (CreateTableResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.CreateTable", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
@@ -135,7 +144,12 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 // NOTE: deleting a table can take up to 40 seconds or more to complete.  If a table with the same name is created while the delete is still
 // in progress, an *azcore.ResponseError is returned with error code TableBeingDeleted and status code http.StatusConflict.
 func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (DeleteTableResponse, error) {
-	return t.service.DeleteTable(ctx, t.name, options)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.Delete", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
+	resp, err := t.service.DeleteTable(ctx, t.name, options)
+	return resp, err
 }
 
 // ListEntitiesOptions contains optional parameters for Table.Query
@@ -214,7 +228,7 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 //
 // NewListEntitiesPager returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
-//   - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//   - API Documentation: https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities
 //   - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
@@ -250,6 +264,7 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 			}
 			return newListEntitiesPage(resp)
 		},
+		Tracer: t.client.Tracer(),
 	})
 }
 
@@ -292,6 +307,10 @@ func newGetEntityResponse(g generated.TableClientQueryEntityWithPartitionAndRowK
 // no entity is available it returns an error. If the service returns a non-successful HTTP status code, the function
 // returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey string, options *GetEntityOptions) (GetEntityResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetEntity", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetEntityOptions{}
 	}
@@ -301,7 +320,8 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
-	return newGetEntityResponse(resp)
+	entityResp, err := newGetEntityResponse(resp)
+	return entityResp, err
 }
 
 // AddEntityOptions contains optional parameters for Client.AddEntity
@@ -333,8 +353,12 @@ func addEntityResponseFromGenerated(g *generated.TableClientInsertEntityResponse
 // and a RowKey an error will be returned. If the service returns a non-successful HTTP status code, the function returns
 // an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntityOptions) (AddEntityResponse, error) {
-	var mapEntity map[string]interface{}
-	err := json.Unmarshal(entity, &mapEntity)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.AddEntity", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
+	var mapEntity map[string]any
+	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
@@ -367,6 +391,10 @@ func deleteEntityResponseFromGenerated(g *generated.TableClientDeleteEntityRespo
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table. If the service returns a non-successful HTTP
 // status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, options *DeleteEntityOptions) (DeleteEntityResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.DeleteEntity", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &DeleteEntityOptions{}
 	}
@@ -387,7 +415,7 @@ type UpdateEntityOptions struct {
 	UpdateMode UpdateMode
 }
 
-func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableClientMergeEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]any) *generated.TableClientMergeEntityOptions {
 	if u == nil {
 		return &generated.TableClientMergeEntityOptions{}
 	}
@@ -397,7 +425,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 	}
 }
 
-func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableClientUpdateEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]any) *generated.TableClientUpdateEntityOptions {
 	if u == nil {
 		return &generated.TableClientUpdateEntityOptions{}
 	}
@@ -447,6 +475,10 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntit
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *UpdateEntityOptions) (UpdateEntityResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpdateEntity", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &UpdateEntityOptions{
 			UpdateMode: UpdateModeMerge,
@@ -458,8 +490,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		options.IfMatch = &star
 	}
 
-	var mapEntity map[string]interface{}
-	err := json.Unmarshal(entity, &mapEntity)
+	var mapEntity map[string]any
+	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return UpdateEntityResponse{}, err
 	}
@@ -472,7 +504,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 
 	switch options.UpdateMode {
 	case UpdateModeMerge:
-		resp, err := t.client.MergeEntity(
+		var resp generated.TableClientMergeEntityResponse
+		resp, err = t.client.MergeEntity(
 			ctx,
 			t.name,
 			prepareKey(partKey),
@@ -485,7 +518,8 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		}
 		return updateEntityResponseFromMergeGenerated(&resp), err
 	case UpdateModeReplace:
-		resp, err := t.client.UpdateEntity(
+		var resp generated.TableClientUpdateEntityResponse
+		resp, err = t.client.UpdateEntity(
 			ctx,
 			t.name,
 			prepareKey(partKey),
@@ -499,9 +533,11 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	if pk == "" || rk == "" {
-		return UpdateEntityResponse{}, errPartitionKeyRowKeyError
+		err = errPartitionKeyRowKeyError
+	} else {
+		err = errInvalidUpdateMode
 	}
-	return UpdateEntityResponse{}, errInvalidUpdateMode
+	return UpdateEntityResponse{}, err
 }
 
 // UpsertEntityOptions contains optional parameters for Client.InsertEntity
@@ -554,13 +590,17 @@ func insertEntityFromGeneratedUpdate(g *generated.TableClientUpdateEntityRespons
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *UpsertEntityOptions) (UpsertEntityResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.UpsertEntity", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &UpsertEntityOptions{
 			UpdateMode: UpdateModeMerge,
 		}
 	}
-	var mapEntity map[string]interface{}
-	err := json.Unmarshal(entity, &mapEntity)
+	var mapEntity map[string]any
+	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return UpsertEntityResponse{}, err
 	}
@@ -573,7 +613,8 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 
 	switch options.UpdateMode {
 	case UpdateModeMerge:
-		resp, err := t.client.MergeEntity(
+		var resp generated.TableClientMergeEntityResponse
+		resp, err = t.client.MergeEntity(
 			ctx,
 			t.name,
 			prepareKey(partKey),
@@ -586,7 +627,8 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 		}
 		return insertEntityFromGeneratedMerge(&resp), err
 	case UpdateModeReplace:
-		resp, err := t.client.UpdateEntity(
+		var resp generated.TableClientUpdateEntityResponse
+		resp, err = t.client.UpdateEntity(
 			ctx,
 			t.name,
 			prepareKey(partKey),
@@ -600,9 +642,11 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {
-		return UpsertEntityResponse{}, errPartitionKeyRowKeyError
+		err = errPartitionKeyRowKeyError
+	} else {
+		err = errInvalidUpdateMode
 	}
-	return UpsertEntityResponse{}, errInvalidUpdateMode
+	return UpsertEntityResponse{}, err
 }
 
 // GetAccessPolicyOptions contains optional parameters for Client.GetAccessPolicy
@@ -637,6 +681,10 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolic
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetAccessPolicy", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	resp, err := t.client.GetAccessPolicy(ctx, t.name, options.toGenerated())
 	if err != nil {
 		return GetAccessPolicyResponse{}, err
@@ -672,6 +720,10 @@ func (s *SetAccessPolicyOptions) toGenerated() *generated.TableClientSetAccessPo
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
 func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.SetAccessPolicy", t.client.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &SetAccessPolicyOptions{}
 	}

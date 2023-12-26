@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -27,9 +28,7 @@ func ConstantDetachment(remainingArgs []string) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	stats := sc.NewStat("stats")
-
-	sender, err := client.NewSender(queueName, nil)
+	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 	sc.PanicOnError("create a sender", err)
 
 	// this number isn't too special, but it gives us long enough so that
@@ -38,7 +37,7 @@ func ConstantDetachment(remainingArgs []string) {
 	//   https://github.com/Azure/azure-sdk-for-go/issues/17945)
 	const maxMessages = 20000
 
-	shared.MustGenerateMessages(sc, sender, maxMessages, 1024, stats)
+	shared.MustGenerateMessages(sc, sender, maxMessages, 1024)
 
 	// We'll give it a little time for the messages to show up in the runtime properties.
 	// Just a simple sanity check that we don't have a bug in our message generator and that
@@ -56,7 +55,7 @@ func ConstantDetachment(remainingArgs []string) {
 	}
 
 	// now attempt to receive messages, while constant detaching is happening
-	receiver, err := client.NewReceiverForQueue(queueName, &azservicebus.ReceiverOptions{
+	receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, &azservicebus.ReceiverOptions{
 		ReceiveMode: azservicebus.ReceiveModePeekLock,
 	})
 	sc.PanicOnError("failed to create receiver", err)
@@ -71,10 +70,13 @@ func ConstantDetachment(remainingArgs []string) {
 		sc.PanicOnError("constantly updated queue failed", err)
 	}()
 
+	var completed int64
+	var received int
+
 InfiniteLoop:
-	for stats.Completed != maxMessages {
+	for atomic.LoadInt64(&completed) != maxMessages {
 		select {
-		case <-sc.Done():
+		case <-sc.Context.Done():
 			break InfiniteLoop
 		default:
 		}
@@ -87,11 +89,11 @@ InfiniteLoop:
 		}
 
 		if err != nil {
-			sc.LogIfFailed("receive failed, continuing", err, stats)
+			sc.LogIfFailed("receive failed, continuing", err)
 			continue
 		}
 
-		stats.AddReceived(int32(len(messages)))
+		received += len(messages)
 
 		wg := sync.WaitGroup{}
 		wg.Add(len(messages))
@@ -101,19 +103,18 @@ InfiniteLoop:
 				defer wg.Done()
 
 				if err := receiver.CompleteMessage(sc.Context, m, nil); err != nil {
-					sc.LogIfFailed("Failed completing message", err, stats)
 					return
 				}
 
-				stats.AddCompleted(int32(1))
+				atomic.AddInt64(&completed, 1)
 			}(m)
 		}
 
 		wg.Wait()
 	}
 
-	if stats.Completed != maxMessages {
-		sc.PanicOnError("constantdetach failed", fmt.Errorf("not all messages received (got %d, wanted %d)", stats.Received, maxMessages))
+	if completed != maxMessages {
+		sc.PanicOnError("constantdetach failed", fmt.Errorf("not all messages received (got %d, wanted %d)", received, maxMessages))
 	} else {
 		log.Printf("All messages received")
 	}

@@ -39,24 +39,33 @@ func Test(t *testing.T) {
 	}
 }
 
-func (d *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(d.T(), suite, test)
+func (s *DirectoryRecordedTestsSuite) SetupSuite() {
+	s.proxy = testcommon.SetupSuite(&s.Suite)
 }
 
-func (d *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(d.T(), suite, test)
+func (s *DirectoryRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&s.Suite, s.proxy)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (s *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(s.T(), suite, test)
+}
+
+func (s *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(s.T(), suite, test)
+}
+
+func (s *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (d *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (s *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
 type DirectoryRecordedTestsSuite struct {
 	suite.Suite
+	proxy *recording.TestProxyInstance
 }
 
 type DirectoryUnrecordedTestsSuite struct {
@@ -437,6 +446,45 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirCreateDeleteNonDefault() {
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ResourceNotFound)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirCreateEmptyAttributes() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
+
+	cResp, err := dirClient.Create(context.Background(), &directory.CreateOptions{
+		FileSMBProperties: &file.SMBProperties{
+			Attributes: &file.NTFSFileAttributes{},
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(cResp.FilePermissionKey)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotNil(cResp.ETag)
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotNil(cResp.RequestID)
+
+	fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes)
+	_require.True(fileAttributes.Directory)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	fileAttributes2, err := file.ParseNTFSFileAttributes(gResp.FileAttributes)
+	_require.NoError(err)
+	_require.NotNil(fileAttributes2)
+	_require.True(fileAttributes2.Directory)
+	_require.EqualValues(fileAttributes, fileAttributes2)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirCreateNegativePermissions() {

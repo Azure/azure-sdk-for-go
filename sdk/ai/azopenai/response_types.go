@@ -8,10 +8,26 @@
 
 package azopenai
 
-// azureBatchImageGenerationInternalResponse contains the response from method Client.beginAzureBatchImageGeneration.
-type azureBatchImageGenerationInternalResponse struct {
-	// A polling status update or final response payload for an image operation.
-	batchImageGenerationOperationResponse
+// GetAudioTranscriptionAsPlainTextResponse contains the response from method Client.GetAudioTranscriptionAsPlainText.
+type GetAudioTranscriptionAsPlainTextResponse struct {
+	Value *string
+}
+
+// getAudioTranscriptionInternalResponse contains the response from method Client.getAudioTranscriptionInternal.
+type getAudioTranscriptionInternalResponse struct {
+	// Result information for an operation that transcribed spoken audio into written text.
+	AudioTranscription
+}
+
+// GetAudioTranslationAsPlainTextResponse contains the response from method Client.GetAudioTranslationAsPlainText.
+type GetAudioTranslationAsPlainTextResponse struct {
+	Value *string
+}
+
+// getAudioTranslationInternalResponse contains the response from method Client.getAudioTranslationInternal.
+type getAudioTranslationInternalResponse struct {
+	// Result information for an operation that translated spoken audio into written text.
+	AudioTranslation
 }
 
 // GetChatCompletionsResponse contains the response from method Client.GetChatCompletions.
@@ -44,4 +60,10 @@ type GetEmbeddingsResponse struct {
 	// Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
 	// recommendations, and other similar scenarios.
 	Embeddings
+}
+
+// GetImageGenerationsResponse contains the response from method Client.GetImageGenerations.
+type GetImageGenerationsResponse struct {
+	// The result of a successful image generation operation.
+	ImageGenerations
 }

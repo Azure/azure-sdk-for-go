@@ -64,12 +64,12 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 //   - endpoint - Azure OpenAI service endpoint, for example: https://{your-resource-name}.openai.azure.com
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
-func NewClientWithKeyCredential(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithKeyCredential(endpoint string, credential *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
 
-	authPolicy := newAPIKeyPolicy(credential, "api-key")
+	authPolicy := runtime.NewKeyCredentialPolicy(credential, "api-key", nil)
 	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -88,12 +88,19 @@ func NewClientWithKeyCredential(endpoint string, credential KeyCredential, optio
 //   - endpoint - OpenAI service endpoint, for example: https://api.openai.com/v1
 //   - credential - used to authorize requests with an API Key credential
 //   - options - client options, pass nil to accept the default values.
-func NewClientForOpenAI(endpoint string, credential KeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientForOpenAI(endpoint string, credential *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	openAIPolicy := newOpenAIPolicy(credential)
-	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{openAIPolicy}}, &options.ClientOptions)
+
+	kp := runtime.NewKeyCredentialPolicy(credential, "authorization", &runtime.KeyCredentialPolicyOptions{
+		Prefix: "Bearer ",
+	})
+
+	azcoreClient, err := azcore.NewClient(clientName, version, runtime.PipelineOptions{
+		PerRetry: []policy.Policy{kp, newOpenAIPolicy()},
+	}, &options.ClientOptions)
+
 	if err != nil {
 		return nil, err
 	}
@@ -108,14 +115,11 @@ func NewClientForOpenAI(endpoint string, credential KeyCredential, options *Clie
 }
 
 // openAIPolicy is an internal pipeline policy to remove the api-version query parameter
-type openAIPolicy struct {
-	cred KeyCredential
-}
+type openAIPolicy struct{}
 
 // newOpenAIPolicy creates a new instance of openAIPolicy.
-// cred: a KeyCredential implementation.
-func newOpenAIPolicy(cred KeyCredential) *openAIPolicy {
-	return &openAIPolicy{cred: cred}
+func newOpenAIPolicy() *openAIPolicy {
+	return &openAIPolicy{}
 }
 
 // Do returns a function which adapts a request to target OpenAI.
@@ -123,7 +127,6 @@ func newOpenAIPolicy(cred KeyCredential) *openAIPolicy {
 func (b *openAIPolicy) Do(req *policy.Request) (*http.Response, error) {
 	q := req.Raw().URL.Query()
 	q.Del("api-version")
-	req.Raw().Header.Set("authorization", "Bearer "+b.cred.apiKey)
 	return req.Next()
 }
 
@@ -268,21 +271,59 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeployment[T ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | ImageGenerationOptions](v T) string {
+func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
+	var p *string
+
 	switch a := any(v).(type) {
+	case AudioTranscriptionOptions:
+		p = a.DeploymentName
+	case AudioTranslationOptions:
+		p = a.DeploymentName
 	case ChatCompletionsOptions:
-		return a.Deployment
+		p = a.DeploymentName
 	case CompletionsOptions:
-		return a.Deployment
+		p = a.DeploymentName
 	case EmbeddingsOptions:
-		return a.Deployment
+		p = a.DeploymentName
+	case *getAudioTranscriptionInternalOptions:
+		p = a.Model
+	case *getAudioTranslationInternalOptions:
+		p = a.Model
 	case ImageGenerationOptions:
-		return ""
-	default:
-		return ""
+		p = a.DeploymentName
 	}
+
+	if p != nil {
+		return *p
+	}
+
+	return ""
 }
 
 func hasAzureExtensions(body ChatCompletionsOptions) bool {
-	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions.Extensions) > 0
+	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions) > 0
+}
+
+// ChatRequestUserMessageContent contains the user prompt - either as a single string
+// or as a []ChatCompletionRequestMessageContentPart, enabling images and text as input.
+//
+// NOTE: This should be created using [azopenai.NewChatRequestUserMessageContent]
+type ChatRequestUserMessageContent struct {
+	value any
+}
+
+// NewChatRequestUserMessageContent creates a [azopenai.ChatRequestUserMessageContent].
+func NewChatRequestUserMessageContent[T string | []ChatCompletionRequestMessageContentPartClassification](v T) ChatRequestUserMessageContent {
+	switch actualV := any(v).(type) {
+	case string:
+		return ChatRequestUserMessageContent{value: &actualV}
+	case []ChatCompletionRequestMessageContentPartClassification:
+		return ChatRequestUserMessageContent{value: actualV}
+	}
+	return ChatRequestUserMessageContent{}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Error.
+func (c ChatRequestUserMessageContent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c.value)
 }

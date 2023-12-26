@@ -128,27 +128,21 @@ func TestNewClient(t *testing.T) {
 	require.NotNil(t, client)
 }
 
-func TestNewClientError(t *testing.T) {
-	client, err := NewClient("malformed", "v1.0.0", runtime.PipelineOptions{}, nil)
-	require.Error(t, err)
-	require.Nil(t, client)
-
-	client, err = NewClient("package.Client", "malformed", runtime.PipelineOptions{}, nil)
-	require.Error(t, err)
-	require.Nil(t, client)
-}
-
 func TestNewClientTracingEnabled(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 
 	var attrString string
-	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+	client, err := NewClient("package.Client", "v1.0.0", runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: "Widget.Factory",
+		},
+	}, &policy.ClientOptions{
 		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 				require.NotNil(t, options)
 				for _, attr := range options.Attributes {
-					if attr.Key == "az.namespace" {
+					if attr.Key == shared.TracingNamespaceAttrName {
 						v, ok := attr.Value.(string)
 						require.True(t, ok)
 						attrString = attr.Key + ":" + v
@@ -180,14 +174,18 @@ func TestClientWithClientName(t *testing.T) {
 	var clientName string
 	var modVersion string
 	var attrString string
-	client, err := NewClient("module/package.Client", "v1.0.0", runtime.PipelineOptions{TracingNamespace: "Widget.Factory"}, &policy.ClientOptions{
+	client, err := NewClient("module", "v1.0.0", runtime.PipelineOptions{
+		Tracing: runtime.TracingOptions{
+			Namespace: "Widget.Factory",
+		},
+	}, &policy.ClientOptions{
 		TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
 			clientName = name
 			modVersion = version
 			return tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 				require.NotNil(t, options)
 				for _, attr := range options.Attributes {
-					if attr.Key == "az.namespace" {
+					if attr.Key == shared.TracingNamespaceAttrName {
 						v, ok := attr.Value.(string)
 						require.True(t, ok)
 						attrString = attr.Key + ":" + v
@@ -202,7 +200,7 @@ func TestClientWithClientName(t *testing.T) {
 	require.NotNil(t, client)
 	require.NotZero(t, client.Pipeline())
 	require.NotZero(t, client.Tracer())
-	require.EqualValues(t, "package.Client", clientName)
+	require.EqualValues(t, "module", clientName)
 	require.EqualValues(t, "v1.0.0", modVersion)
 
 	const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
@@ -213,11 +211,19 @@ func TestClientWithClientName(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
 
-	newClient := client.WithClientName("other.Client")
-	require.EqualValues(t, "other.Client", clientName)
+	newClient := client.WithClientName("other")
+	require.EqualValues(t, "other", clientName)
 	require.EqualValues(t, "v1.0.0", modVersion)
 	require.EqualValues(t, client.Pipeline(), newClient.Pipeline())
 	_, err = newClient.Pipeline().Do(req)
 	require.NoError(t, err)
 	require.EqualValues(t, "az.namespace:Widget.Factory", attrString)
+}
+
+func TestNewKeyCredential(t *testing.T) {
+	require.NotNil(t, NewKeyCredential("foo"))
+}
+
+func TestNewSASCredential(t *testing.T) {
+	require.NotNil(t, NewSASCredential("foo"))
 }

@@ -71,7 +71,7 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-func (s *RecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
+func (s *UnrecordedTestSuite) TestCreateDirAndDeleteWithConnectionString() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

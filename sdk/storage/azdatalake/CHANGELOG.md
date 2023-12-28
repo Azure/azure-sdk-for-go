@@ -5,6 +5,7 @@
 ### Features Added
 * Encryption Scope For SAS
 * CPK for Datalake
+* Create SubDirectory Client
 
 ### Breaking Changes
 

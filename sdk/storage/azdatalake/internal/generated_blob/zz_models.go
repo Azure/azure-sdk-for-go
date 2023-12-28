@@ -556,7 +556,7 @@ type PathItem struct {
 	VersionID  *string            `xml:"VersionId"`
 }
 
-type BlobName struct {
+type PathName struct {
 	// The name of the blob.
 	Content *string `xml:",chardata"`
 

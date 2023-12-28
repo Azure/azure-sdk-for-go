@@ -88,7 +88,6 @@ func (p *PathPrefix) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) erro
 		if aux.PathName.Encoded != nil && *aux.PathName.Encoded {
 			name, err := url.QueryUnescape(*aux.PathName.Content)
 
-			// name, err := base64.StdEncoding.DecodeString(*aux.PathName.Content)
 			if err != nil {
 				return err
 			}

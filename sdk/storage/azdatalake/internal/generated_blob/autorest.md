@@ -475,6 +475,7 @@ directive:
         replace(/BlobItem/g, 'PathItem').
         replace(/BlobPrefix/g, 'PathPrefix').
         replace(/BlobPrefixes/g, 'PathPrefixes').
+        replace(/BlobName/g, 'PathName').
         replace(/BlobProperties/g, 'PathProperties').
         replace(/ContainerProperties/g, 'FileSystemProperties');
 ```

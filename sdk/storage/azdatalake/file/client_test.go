@@ -924,6 +924,85 @@ func (s *RecordedTestSuite) TestDeleteFileIfETagMatchFalse() {
 	testcommon.ValidateErrorCode(_require, err, datalakeerror.ConditionNotMet)
 }
 
+func (s *RecordedTestSuite) TestFileSetExpiry() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_, err = fClient.SetExpiry(context.Background(), file.SetExpiryValues{ExpiryType: file.SetExpiryTypeNeverExpire}, nil)
+	_require.NoError(err)
+
+	res, err := fClient.GetProperties(context.Background(), nil)
+	_require.Nil(res.ExpiresOn)
+	_require.NoError(err)
+
+	_, err = fClient.SetExpiry(
+		context.Background(),
+		file.SetExpiryValues{
+			ExpiryType: file.SetExpiryTypeRelativeToCreation,
+			ExpiresOn:  strconv.Itoa(10),
+		},
+		nil,
+	)
+	_require.NoError(err)
+
+	time.Sleep(time.Second * 12)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+}
+
+func (s *UnrecordedTestSuite) TestFileSetExpiryTypeAbsoluteTime() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	_, err = fClient.SetExpiry(
+		context.Background(),
+		file.SetExpiryValues{
+			ExpiryType: file.SetExpiryTypeAbsolute,
+			ExpiresOn:  time.Now().Add(5 * time.Second).UTC().Format(http.TimeFormat),
+		},
+		nil)
+	_require.NoError(err)
+
+	time.Sleep(time.Second * 7)
+
+	_, err = fClient.GetProperties(context.Background(), nil)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+
+}
+
 func (s *RecordedTestSuite) TestFileSetAccessControlNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

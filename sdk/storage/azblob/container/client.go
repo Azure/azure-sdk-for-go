@@ -42,7 +42,8 @@ type Client base.Client[generated.ContainerClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
@@ -50,7 +51,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewContainerClient(containerURL, azClient, &cred)), nil
+	return (*Client)(base.NewContainerClient(containerURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -64,7 +65,7 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewContainerClient(containerURL, azClient, nil)), nil
+	return (*Client)(base.NewContainerClient(containerURL, azClient, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -80,7 +81,7 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewContainerClient(containerURL, azClient, cred)), nil
+	return (*Client)(base.NewContainerClient(containerURL, azClient, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -122,6 +123,10 @@ func getGeneratedBlobClient(b *blob.Client) *generated.BlobClient {
 	return base.InnerClient((*base.Client[generated.BlobClient])(b))
 }
 
+func (c *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.ContainerClient])(c))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (c *Client) URL() string {
 	return c.generated().Endpoint()
@@ -133,7 +138,7 @@ func (c *Client) URL() string {
 func (c *Client) NewBlobClient(blobName string) *blob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlobClient), c.credential()))
+	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlobClient), c.credential(), c.getClientOptions()))
 }
 
 // NewAppendBlobClient creates a new appendblob.Client object by concatenating blobName to the end of
@@ -366,7 +371,7 @@ func (c *Client) NewBatchBuilder() (*BatchBuilder, error) {
 
 	switch cred := c.credential().(type) {
 	case *azcore.TokenCredential:
-		authPolicy = shared.NewStorageChallengePolicy(*cred)
+		authPolicy = shared.NewStorageChallengePolicy(*cred, base.GetAudience(c.getClientOptions()))
 	case *SharedKeyCredential:
 		authPolicy = exported.NewSharedKeyCredPolicy(cred)
 	case nil:

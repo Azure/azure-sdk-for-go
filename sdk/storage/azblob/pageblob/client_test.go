@@ -4929,3 +4929,71 @@ func (s *PageBlobRecordedTestsSuite) TestPageGetAccountInfo() {
 	_require.NoError(err)
 	_require.NotZero(bAccInfo)
 }
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlobClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &pageblob.ClientOptions{
+		Audience: to.Ptr("https://storage.azure.com/"),
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	pbClientAudience, err := pageblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	_, err = pbClientAudience.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	_, err = pbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &pageblob.ClientOptions{
+		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	pbClientAudience, err := pageblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	_, err = pbClientAudience.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	_, err = pbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}

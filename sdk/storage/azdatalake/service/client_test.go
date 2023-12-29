@@ -781,7 +781,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 	_require.GreaterOrEqual(count, 2)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientRequiresHTTPS() {
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -1809,3 +1809,30 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {
 	_, err = svcClient.SubmitBatch(context.Background(), nil, nil)
 	_require.Error(err)
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientRequiresHTTPS() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".blob.core.windows.net/", nil, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+}

@@ -53,7 +53,7 @@ func ExampleLibrariesClient_NewListByWorkspacePager() {
 		// 				ContainerName: to.Ptr("exampleContainer"),
 		// 				CreatorID: to.Ptr("2222222e-222d-222f-2222-22a2f222d2f2"),
 		// 				ProvisioningStatus: to.Ptr("Succeeded"),
-		// 				UploadedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T07:59:29.1573546+00:00"); return t}()),
+		// 				UploadedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T07:59:29.157Z"); return t}()),
 		// 			},
 		// 		},
 		// 		{
@@ -68,7 +68,7 @@ func ExampleLibrariesClient_NewListByWorkspacePager() {
 		// 				ContainerName: to.Ptr("exampleContainer"),
 		// 				CreatorID: to.Ptr("2222222e-222d-222f-2222-22a2f222d2f2"),
 		// 				ProvisioningStatus: to.Ptr("Succeeded"),
-		// 				UploadedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T07:59:29.1573546+00:00"); return t}()),
+		// 				UploadedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-23T07:59:29.157Z"); return t}()),
 		// 			},
 		// 	}},
 		// }

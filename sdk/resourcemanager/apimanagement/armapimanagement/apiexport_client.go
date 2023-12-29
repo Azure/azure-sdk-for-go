@@ -32,7 +32,7 @@ type APIExportClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIExportClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIExportClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIExportClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewAPIExportClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - APIExportClientGetOptions contains the optional parameters for the APIExportClient.Get method.
 func (client *APIExportClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, formatParam ExportFormat, export ExportAPI, options *APIExportClientGetOptions) (APIExportClientGetResponse, error) {
 	var err error
+	const operationName = "APIExportClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, formatParam, export, options)
 	if err != nil {
 		return APIExportClientGetResponse{}, err

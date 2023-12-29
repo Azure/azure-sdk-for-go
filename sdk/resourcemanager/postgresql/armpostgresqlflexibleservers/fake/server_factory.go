@@ -26,11 +26,23 @@ type ServerFactory struct {
 	ConfigurationsServer                    ConfigurationsServer
 	DatabasesServer                         DatabasesServer
 	FirewallRulesServer                     FirewallRulesServer
+	FlexibleServerServer                    FlexibleServerServer
 	GetPrivateDNSZoneSuffixServer           GetPrivateDNSZoneSuffixServer
 	LocationBasedCapabilitiesServer         LocationBasedCapabilitiesServer
+	LogFilesServer                          LogFilesServer
+	LtrBackupOperationsServer               LtrBackupOperationsServer
+	MigrationsServer                        MigrationsServer
 	OperationsServer                        OperationsServer
+	PostgreSQLManagementServer              PostgreSQLManagementServer
+	PrivateEndpointConnectionServer         PrivateEndpointConnectionServer
+	PrivateEndpointConnectionsServer        PrivateEndpointConnectionsServer
+	PrivateLinkResourcesServer              PrivateLinkResourcesServer
+	QuotaUsagesServer                       QuotaUsagesServer
 	ReplicasServer                          ReplicasServer
+	ServerCapabilitiesServer                ServerCapabilitiesServer
+	ServerThreatProtectionSettingsServer    ServerThreatProtectionSettingsServer
 	ServersServer                           ServersServer
+	VirtualEndpointsServer                  VirtualEndpointsServer
 	VirtualNetworkSubnetUsageServer         VirtualNetworkSubnetUsageServer
 }
 
@@ -55,11 +67,23 @@ type ServerFactoryTransport struct {
 	trConfigurationsServer                    *ConfigurationsServerTransport
 	trDatabasesServer                         *DatabasesServerTransport
 	trFirewallRulesServer                     *FirewallRulesServerTransport
+	trFlexibleServerServer                    *FlexibleServerServerTransport
 	trGetPrivateDNSZoneSuffixServer           *GetPrivateDNSZoneSuffixServerTransport
 	trLocationBasedCapabilitiesServer         *LocationBasedCapabilitiesServerTransport
+	trLogFilesServer                          *LogFilesServerTransport
+	trLtrBackupOperationsServer               *LtrBackupOperationsServerTransport
+	trMigrationsServer                        *MigrationsServerTransport
 	trOperationsServer                        *OperationsServerTransport
+	trPostgreSQLManagementServer              *PostgreSQLManagementServerTransport
+	trPrivateEndpointConnectionServer         *PrivateEndpointConnectionServerTransport
+	trPrivateEndpointConnectionsServer        *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer              *PrivateLinkResourcesServerTransport
+	trQuotaUsagesServer                       *QuotaUsagesServerTransport
 	trReplicasServer                          *ReplicasServerTransport
+	trServerCapabilitiesServer                *ServerCapabilitiesServerTransport
+	trServerThreatProtectionSettingsServer    *ServerThreatProtectionSettingsServerTransport
 	trServersServer                           *ServersServerTransport
+	trVirtualEndpointsServer                  *VirtualEndpointsServerTransport
 	trVirtualNetworkSubnetUsageServer         *VirtualNetworkSubnetUsageServerTransport
 }
 
@@ -107,6 +131,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
+	case "FlexibleServerClient":
+		initServer(s, &s.trFlexibleServerServer, func() *FlexibleServerServerTransport {
+			return NewFlexibleServerServerTransport(&s.srv.FlexibleServerServer)
+		})
+		resp, err = s.trFlexibleServerServer.Do(req)
 	case "GetPrivateDNSZoneSuffixClient":
 		initServer(s, &s.trGetPrivateDNSZoneSuffixServer, func() *GetPrivateDNSZoneSuffixServerTransport {
 			return NewGetPrivateDNSZoneSuffixServerTransport(&s.srv.GetPrivateDNSZoneSuffixServer)
@@ -117,15 +146,64 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewLocationBasedCapabilitiesServerTransport(&s.srv.LocationBasedCapabilitiesServer)
 		})
 		resp, err = s.trLocationBasedCapabilitiesServer.Do(req)
+	case "LogFilesClient":
+		initServer(s, &s.trLogFilesServer, func() *LogFilesServerTransport { return NewLogFilesServerTransport(&s.srv.LogFilesServer) })
+		resp, err = s.trLogFilesServer.Do(req)
+	case "LtrBackupOperationsClient":
+		initServer(s, &s.trLtrBackupOperationsServer, func() *LtrBackupOperationsServerTransport {
+			return NewLtrBackupOperationsServerTransport(&s.srv.LtrBackupOperationsServer)
+		})
+		resp, err = s.trLtrBackupOperationsServer.Do(req)
+	case "MigrationsClient":
+		initServer(s, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
+		resp, err = s.trMigrationsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PostgreSQLManagementClient":
+		initServer(s, &s.trPostgreSQLManagementServer, func() *PostgreSQLManagementServerTransport {
+			return NewPostgreSQLManagementServerTransport(&s.srv.PostgreSQLManagementServer)
+		})
+		resp, err = s.trPostgreSQLManagementServer.Do(req)
+	case "PrivateEndpointConnectionClient":
+		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
+			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
+	case "QuotaUsagesClient":
+		initServer(s, &s.trQuotaUsagesServer, func() *QuotaUsagesServerTransport { return NewQuotaUsagesServerTransport(&s.srv.QuotaUsagesServer) })
+		resp, err = s.trQuotaUsagesServer.Do(req)
 	case "ReplicasClient":
 		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)
+	case "ServerCapabilitiesClient":
+		initServer(s, &s.trServerCapabilitiesServer, func() *ServerCapabilitiesServerTransport {
+			return NewServerCapabilitiesServerTransport(&s.srv.ServerCapabilitiesServer)
+		})
+		resp, err = s.trServerCapabilitiesServer.Do(req)
+	case "ServerThreatProtectionSettingsClient":
+		initServer(s, &s.trServerThreatProtectionSettingsServer, func() *ServerThreatProtectionSettingsServerTransport {
+			return NewServerThreatProtectionSettingsServerTransport(&s.srv.ServerThreatProtectionSettingsServer)
+		})
+		resp, err = s.trServerThreatProtectionSettingsServer.Do(req)
 	case "ServersClient":
 		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
+	case "VirtualEndpointsClient":
+		initServer(s, &s.trVirtualEndpointsServer, func() *VirtualEndpointsServerTransport {
+			return NewVirtualEndpointsServerTransport(&s.srv.VirtualEndpointsServer)
+		})
+		resp, err = s.trVirtualEndpointsServer.Do(req)
 	case "VirtualNetworkSubnetUsageClient":
 		initServer(s, &s.trVirtualNetworkSubnetUsageServer, func() *VirtualNetworkSubnetUsageServerTransport {
 			return NewVirtualNetworkSubnetUsageServerTransport(&s.srv.VirtualNetworkSubnetUsageServer)

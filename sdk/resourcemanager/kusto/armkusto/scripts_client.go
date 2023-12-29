@@ -32,7 +32,7 @@ type ScriptsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ScriptsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewScriptsClient(subscriptionID string, credential azcore.TokenCredential, 
 //     method.
 func (client *ScriptsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName ScriptCheckNameRequest, options *ScriptsClientCheckNameAvailabilityOptions) (ScriptsClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "ScriptsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
 	if err != nil {
 		return ScriptsClientCheckNameAvailabilityResponse{}, err
@@ -130,10 +134,14 @@ func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ScriptsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ScriptsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScriptsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +151,10 @@ func (client *ScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // Generated from API version 2023-08-15
 func (client *ScriptsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScriptsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -210,10 +222,14 @@ func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ScriptsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ScriptsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScriptsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -223,6 +239,10 @@ func (client *ScriptsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-08-15
 func (client *ScriptsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScriptsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
 	if err != nil {
 		return nil, err
@@ -283,6 +303,10 @@ func (client *ScriptsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - ScriptsClientGetOptions contains the optional parameters for the ScriptsClient.Get method.
 func (client *ScriptsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, options *ScriptsClientGetOptions) (ScriptsClientGetResponse, error) {
 	var err error
+	const operationName = "ScriptsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, options)
 	if err != nil {
 		return ScriptsClientGetResponse{}, err
@@ -356,6 +380,7 @@ func (client *ScriptsClient) NewListByDatabasePager(resourceGroupName string, cl
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *ScriptsClientListByDatabaseResponse) (ScriptsClientListByDatabaseResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScriptsClient.NewListByDatabasePager")
 			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
 			if err != nil {
 				return ScriptsClientListByDatabaseResponse{}, err
@@ -369,6 +394,7 @@ func (client *ScriptsClient) NewListByDatabasePager(resourceGroupName string, cl
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -427,10 +453,14 @@ func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ScriptsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScriptsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ScriptsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScriptsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -440,6 +470,10 @@ func (client *ScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-08-15
 func (client *ScriptsClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, scriptName string, parameters Script, options *ScriptsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ScriptsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, scriptName, parameters, options)
 	if err != nil {
 		return nil, err

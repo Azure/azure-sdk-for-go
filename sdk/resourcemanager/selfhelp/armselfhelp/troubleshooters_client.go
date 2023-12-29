@@ -30,7 +30,7 @@ type TroubleshootersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTroubleshootersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TroubleshootersClient, error) {
-	cl, err := arm.NewClient(moduleName+".TroubleshootersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,12 +47,17 @@ func NewTroubleshootersClient(credential azcore.TokenCredential, options *arm.Cl
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
 //   - options - TroubleshootersClientContinueOptions contains the optional parameters for the TroubleshootersClient.Continue
 //     method.
 func (client *TroubleshootersClient) Continue(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientContinueOptions) (TroubleshootersClientContinueResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Continue"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.continueCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientContinueResponse{}, err
@@ -104,23 +109,27 @@ func (client *TroubleshootersClient) continueHandleResponse(resp *http.Response)
 }
 
 // Create - Creates the specific troubleshooter action under a resource or subscription using the ‘solutionId’ and ‘properties.parameters’
-// as the trigger. Troubleshooters are step-by-step interactive guidance
-// that scope the problem by collecting additional inputs from you in each stage while troubleshooting an Azure issue. You
-// will be guided down decision tree style workflow and the best possible solution
-// will be presented at the end of the workflow. Create API creates the Troubleshooter API using ‘parameters’ and ‘solutionId’
-// After creating the Troubleshooter instance, the following APIs can be used:
-// CONTINUE API: to move to the next step in the flow GET API: to identify the next step after executing the CONTINUE API.
-// Note: ‘requiredParameters’ from solutions response must be passed via ‘properties. parameters’ in the request body of Troubleshooters
-// API.
+// as the trigger. Azure Troubleshooters help with hard to classify issues,
+// reducing the gap between customer observed problems and solutions by guiding the user effortlessly through the troubleshooting
+// process. Each Troubleshooter flow represents a problem area within Azure
+// and has a complex tree-like structure that addresses many root causes. These flows are prepared with the help of Subject
+// Matter experts and customer support engineers by carefully considering previous
+// support requests raised by customers. Troubleshooters terminate at a well curated solution based off of resource backend
+// signals and customer manual selections.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
 //   - createTroubleshooterRequestBody - The required request body for this Troubleshooter resource creation.
 //   - options - TroubleshootersClientCreateOptions contains the optional parameters for the TroubleshootersClient.Create method.
 func (client *TroubleshootersClient) Create(ctx context.Context, scope string, troubleshooterName string, createTroubleshooterRequestBody TroubleshooterResource, options *TroubleshootersClientCreateOptions) (TroubleshootersClientCreateResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, troubleshooterName, createTroubleshooterRequestBody, options)
 	if err != nil {
 		return TroubleshootersClientCreateResponse{}, err
@@ -172,11 +181,16 @@ func (client *TroubleshootersClient) createHandleResponse(resp *http.Response) (
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
 //   - options - TroubleshootersClientEndOptions contains the optional parameters for the TroubleshootersClient.End method.
 func (client *TroubleshootersClient) End(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientEndOptions) (TroubleshootersClientEndResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.End"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.endCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientEndResponse{}, err
@@ -228,11 +242,16 @@ func (client *TroubleshootersClient) endHandleResponse(resp *http.Response) (Tro
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
 //   - options - TroubleshootersClientGetOptions contains the optional parameters for the TroubleshootersClient.Get method.
 func (client *TroubleshootersClient) Get(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientGetOptions) (TroubleshootersClientGetResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientGetResponse{}, err
@@ -283,11 +302,16 @@ func (client *TroubleshootersClient) getHandleResponse(resp *http.Response) (Tro
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - troubleshooterName - Troubleshooter resource Name.
 //   - options - TroubleshootersClientRestartOptions contains the optional parameters for the TroubleshootersClient.Restart method.
 func (client *TroubleshootersClient) Restart(ctx context.Context, scope string, troubleshooterName string, options *TroubleshootersClientRestartOptions) (TroubleshootersClientRestartResponse, error) {
 	var err error
+	const operationName = "TroubleshootersClient.Restart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, scope, troubleshooterName, options)
 	if err != nil {
 		return TroubleshootersClientRestartResponse{}, err

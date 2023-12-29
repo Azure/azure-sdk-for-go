@@ -42,11 +42,11 @@ func ExampleScopeAccessReviewHistoryDefinitionInstanceClient_GenerateDownloadURI
 	// 	Properties: &armauthorization.AccessReviewHistoryInstanceProperties{
 	// 		DisplayName: to.Ptr("Hello world name"),
 	// 		DownloadURI: to.Ptr("https://dfermconsolreportusc.blob.core.windows.net/df-erm-reports/Hello world name-22be232e-a93d-42a3-8ac5-313cfd29a0eb.csv?sv=2015-04-05&ss=b&srt=o&sp=rl&st=2021-03-22T19:39:38.0000000Z&se=2021-03-23T19:41:38.0000000Z&spr=https&sig=84rlGCIgU4ToMn%2FFLncBXq95O8a8RsFlwQY1Knl%2Fo%2FI%3D"),
-	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-22T00:28:33.6905189+00:00"); return t}()),
-	// 		FulfilledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:28:33.6905189+00:00"); return t}()),
-	// 		ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T00:00:00-08:00"); return t}()),
-	// 		ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00-07:00"); return t}()),
-	// 		RunDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.6905189+00:00"); return t}()),
+	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-22T00:28:33.690Z"); return t}()),
+	// 		FulfilledDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:28:33.690Z"); return t}()),
+	// 		ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T08:00:00.000Z"); return t}()),
+	// 		ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T07:00:00.000Z"); return t}()),
+	// 		RunDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.690Z"); return t}()),
 	// 		Status: to.Ptr(armauthorization.AccessReviewHistoryDefinitionStatusRequested),
 	// 	},
 	// }

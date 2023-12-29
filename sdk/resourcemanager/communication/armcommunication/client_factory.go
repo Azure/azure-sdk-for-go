@@ -66,3 +66,15 @@ func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	subClient, _ := NewServicesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+// NewSuppressionListAddressesClient creates a new instance of SuppressionListAddressesClient.
+func (c *ClientFactory) NewSuppressionListAddressesClient() *SuppressionListAddressesClient {
+	subClient, _ := NewSuppressionListAddressesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewSuppressionListsClient creates a new instance of SuppressionListsClient.
+func (c *ClientFactory) NewSuppressionListsClient() *SuppressionListsClient {
+	subClient, _ := NewSuppressionListsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

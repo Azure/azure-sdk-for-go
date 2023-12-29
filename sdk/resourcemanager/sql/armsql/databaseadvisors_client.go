@@ -32,7 +32,7 @@ type DatabaseAdvisorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseAdvisorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseAdvisorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewDatabaseAdvisorsClient(subscriptionID string, credential azcore.TokenCre
 //   - options - DatabaseAdvisorsClientGetOptions contains the optional parameters for the DatabaseAdvisorsClient.Get method.
 func (client *DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, options *DatabaseAdvisorsClientGetOptions) (DatabaseAdvisorsClientGetResponse, error) {
 	var err error
+	const operationName = "DatabaseAdvisorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, options)
 	if err != nil {
 		return DatabaseAdvisorsClientGetResponse{}, err
@@ -126,6 +130,10 @@ func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response) (Da
 //     method.
 func (client *DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseAdvisorsClientListByDatabaseOptions) (DatabaseAdvisorsClientListByDatabaseResponse, error) {
 	var err error
+	const operationName = "DatabaseAdvisorsClient.ListByDatabase"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
@@ -197,6 +205,10 @@ func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Re
 //   - options - DatabaseAdvisorsClientUpdateOptions contains the optional parameters for the DatabaseAdvisorsClient.Update method.
 func (client *DatabaseAdvisorsClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, advisorName string, parameters Advisor, options *DatabaseAdvisorsClientUpdateOptions) (DatabaseAdvisorsClientUpdateResponse, error) {
 	var err error
+	const operationName = "DatabaseAdvisorsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, advisorName, parameters, options)
 	if err != nil {
 		return DatabaseAdvisorsClientUpdateResponse{}, err

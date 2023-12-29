@@ -32,7 +32,7 @@ type BitLockerKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBitLockerKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BitLockerKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".BitLockerKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,7 @@ func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupNam
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *BitLockerKeysClientListResponse) (BitLockerKeysClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BitLockerKeysClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, jobName, resourceGroupName, options)
 			if err != nil {
 				return BitLockerKeysClientListResponse{}, err
@@ -68,6 +69,7 @@ func (client *BitLockerKeysClient) NewListPager(jobName string, resourceGroupNam
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

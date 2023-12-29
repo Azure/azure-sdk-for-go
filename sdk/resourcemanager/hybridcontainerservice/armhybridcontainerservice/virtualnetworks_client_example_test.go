@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetVirtualNetwork.json
 func ExampleVirtualNetworksClient_Retrieve() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,34 +36,33 @@ func ExampleVirtualNetworksClient_Retrieve() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworks = armhybridcontainerservice.VirtualNetworks{
+	// res.VirtualNetwork = armhybridcontainerservice.VirtualNetwork{
 	// 	Name: to.Ptr("test-vnet-static"),
 	// 	Type: to.Ptr("microsoft.hybridcontainerservice/virtualnetworks"),
 	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/virtualNetworks/test-vnet-static"),
 	// 	Location: to.Ptr("westus"),
-	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
-	// 	Properties: &armhybridcontainerservice.VirtualNetworksProperties{
+	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
-	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-	// 				Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-	// 					MocGroup: to.Ptr("target-group"),
-	// 					MocLocation: to.Ptr("MocLocation"),
-	// 					MocVnetName: to.Ptr("test-vnet"),
+	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+	// 					SegmentName: to.Ptr("test-network"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
 	// 			ProvisioningState: to.Ptr(armhybridcontainerservice.ProvisioningStateSucceeded),
-	// 			VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+	// 			VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.50"),
 	// 					StartIP: to.Ptr("192.168.0.10"),
 	// 			}},
-	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+	// 			VlanID: to.Ptr[int32](10),
+	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.130"),
 	// 					StartIP: to.Ptr("192.168.0.110"),
@@ -72,7 +71,7 @@ func ExampleVirtualNetworksClient_Retrieve() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,26 +82,29 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetworks{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "test-arcappliance-resgrp", "test-vnet-static", armhybridcontainerservice.VirtualNetwork{
 		Location: to.Ptr("westus"),
-		ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+		ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 			Type: to.Ptr("CustomLocation"),
 		},
-		Properties: &armhybridcontainerservice.VirtualNetworksProperties{
-			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-				Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-					MocGroup:    to.Ptr("target-group"),
-					MocLocation: to.Ptr("MocLocation"),
-					MocVnetName: to.Ptr("test-vnet"),
+		Properties: &armhybridcontainerservice.VirtualNetworkProperties{
+			DNSServers: []*string{
+				to.Ptr("192.168.0.1")},
+			Gateway: to.Ptr("192.168.0.1"),
+			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+					SegmentName: to.Ptr("test-network"),
 				},
 			},
-			VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
+			VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 				{
 					EndIP:   to.Ptr("192.168.0.50"),
 					StartIP: to.Ptr("192.168.0.10"),
 				}},
-			VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+			VlanID: to.Ptr[int32](10),
+			VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 				{
 					EndIP:   to.Ptr("192.168.0.130"),
 					StartIP: to.Ptr("192.168.0.110"),
@@ -119,34 +121,33 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworks = armhybridcontainerservice.VirtualNetworks{
+	// res.VirtualNetwork = armhybridcontainerservice.VirtualNetwork{
 	// 	Name: to.Ptr("test-vnet-static"),
 	// 	Type: to.Ptr("microsoft.hybridcontainerservice/virtualnetworks"),
 	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/virtualNetworks/test-vnet-static"),
 	// 	Location: to.Ptr("westus"),
-	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
-	// 	Properties: &armhybridcontainerservice.VirtualNetworksProperties{
+	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
-	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-	// 				Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-	// 					MocGroup: to.Ptr("target-group"),
-	// 					MocLocation: to.Ptr("MocLocation"),
-	// 					MocVnetName: to.Ptr("test-vnet"),
+	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+	// 					SegmentName: to.Ptr("test-network"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
 	// 			ProvisioningState: to.Ptr(armhybridcontainerservice.ProvisioningStateSucceeded),
-	// 			VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+	// 			VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.50"),
 	// 					StartIP: to.Ptr("192.168.0.10"),
 	// 			}},
-	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+	// 			VlanID: to.Ptr[int32](10),
+	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.130"),
 	// 					StartIP: to.Ptr("192.168.0.110"),
@@ -155,8 +156,8 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteVirtualNetwork.json
-func ExampleVirtualNetworksClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteVirtualNetwork.json
+func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -166,13 +167,17 @@ func ExampleVirtualNetworksClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewVirtualNetworksClient().Delete(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginDelete(ctx, "test-arcappliance-resgrp", "test-vnet-static", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/UpdateVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +203,7 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.VirtualNetworks = armhybridcontainerservice.VirtualNetworks{
+	// res.VirtualNetwork = armhybridcontainerservice.VirtualNetwork{
 	// 	Name: to.Ptr("test-vnet-static"),
 	// 	Type: to.Ptr("microsoft.hybridcontainerservice/virtualnetworks"),
 	// 	ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/virtualNetworks/test-vnet-static"),
@@ -206,29 +211,28 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// 	Tags: map[string]*string{
 	// 		"additionalProperties": to.Ptr("sample"),
 	// 	},
-	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
-	// 	Properties: &armhybridcontainerservice.VirtualNetworksProperties{
+	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
-	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-	// 				Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-	// 					MocGroup: to.Ptr("target-group"),
-	// 					MocLocation: to.Ptr("MocLocation"),
-	// 					MocVnetName: to.Ptr("test-vnet"),
+	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+	// 					SegmentName: to.Ptr("test-network"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
 	// 			ProvisioningState: to.Ptr(armhybridcontainerservice.ProvisioningStateSucceeded),
-	// 			VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+	// 			VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.50"),
 	// 					StartIP: to.Ptr("192.168.0.10"),
 	// 			}},
-	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+	// 			VlanID: to.Ptr[int32](10),
+	// 			VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 	// 				{
 	// 					EndIP: to.Ptr("192.168.0.130"),
 	// 					StartIP: to.Ptr("192.168.0.110"),
@@ -237,7 +241,7 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVirtualNetworkByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListVirtualNetworkByResourceGroup.json
 func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,35 +264,34 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.VirtualNetworksListResult = armhybridcontainerservice.VirtualNetworksListResult{
-		// 	Value: []*armhybridcontainerservice.VirtualNetworks{
+		// 	Value: []*armhybridcontainerservice.VirtualNetwork{
 		// 		{
 		// 			Name: to.Ptr("test-vnet-static"),
 		// 			Type: to.Ptr("microsoft.hybridcontainerservice/virtualnetworks"),
 		// 			ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/virtualNetworks/test-vnet-static"),
 		// 			Location: to.Ptr("westus"),
-		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
-		// 			Properties: &armhybridcontainerservice.VirtualNetworksProperties{
+		// 			Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 		// 				DNSServers: []*string{
 		// 					to.Ptr("192.168.0.1")},
 		// 					Gateway: to.Ptr("192.168.0.1"),
-		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-		// 						Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-		// 							MocGroup: to.Ptr("target-group"),
-		// 							MocLocation: to.Ptr("MocLocation"),
-		// 							MocVnetName: to.Ptr("test-vnet"),
+		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+		// 						Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+		// 							SegmentName: to.Ptr("test-network"),
 		// 						},
 		// 					},
 		// 					IPAddressPrefix: to.Ptr("192.168.0.0/16"),
 		// 					ProvisioningState: to.Ptr(armhybridcontainerservice.ProvisioningStateSucceeded),
-		// 					VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+		// 					VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 		// 						{
 		// 							EndIP: to.Ptr("192.168.0.50"),
 		// 							StartIP: to.Ptr("192.168.0.10"),
 		// 					}},
-		// 					VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+		// 					VlanID: to.Ptr[int32](10),
+		// 					VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 		// 						{
 		// 							EndIP: to.Ptr("192.168.0.130"),
 		// 							StartIP: to.Ptr("192.168.0.110"),
@@ -299,7 +302,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a60468a0c5e2beb054680ae488fb9f92699f0a0d/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVirtualNetworkBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListVirtualNetworkBySubscription.json
 func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,35 +325,34 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.VirtualNetworksListResult = armhybridcontainerservice.VirtualNetworksListResult{
-		// 	Value: []*armhybridcontainerservice.VirtualNetworks{
+		// 	Value: []*armhybridcontainerservice.VirtualNetwork{
 		// 		{
 		// 			Name: to.Ptr("test-vnet-static"),
 		// 			Type: to.Ptr("microsoft.hybridcontainerservice/virtualnetworks"),
 		// 			ID: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.HybridContainerService/virtualNetworks/test-vnet-static"),
 		// 			Location: to.Ptr("westus"),
-		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworksExtendedLocation{
+		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
-		// 			Properties: &armhybridcontainerservice.VirtualNetworksProperties{
+		// 			Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 		// 				DNSServers: []*string{
 		// 					to.Ptr("192.168.0.1")},
 		// 					Gateway: to.Ptr("192.168.0.1"),
-		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfile{
-		// 						Hci: &armhybridcontainerservice.VirtualNetworksPropertiesInfraVnetProfileHci{
-		// 							MocGroup: to.Ptr("target-group"),
-		// 							MocLocation: to.Ptr("MocLocation"),
-		// 							MocVnetName: to.Ptr("test-vnet"),
+		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
+		// 						Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
+		// 							SegmentName: to.Ptr("test-network"),
 		// 						},
 		// 					},
 		// 					IPAddressPrefix: to.Ptr("192.168.0.0/16"),
 		// 					ProvisioningState: to.Ptr(armhybridcontainerservice.ProvisioningStateSucceeded),
-		// 					VipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVipPoolItem{
+		// 					VipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVipPoolItem{
 		// 						{
 		// 							EndIP: to.Ptr("192.168.0.50"),
 		// 							StartIP: to.Ptr("192.168.0.10"),
 		// 					}},
-		// 					VmipPool: []*armhybridcontainerservice.VirtualNetworksPropertiesVmipPoolItem{
+		// 					VlanID: to.Ptr[int32](10),
+		// 					VmipPool: []*armhybridcontainerservice.VirtualNetworkPropertiesVmipPoolItem{
 		// 						{
 		// 							EndIP: to.Ptr("192.168.0.130"),
 		// 							StartIP: to.Ptr("192.168.0.110"),

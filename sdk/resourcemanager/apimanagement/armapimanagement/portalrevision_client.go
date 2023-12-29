@@ -33,7 +33,7 @@ type PortalRevisionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPortalRevisionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PortalRevisionClient, error) {
-	cl, err := arm.NewClient(moduleName+".PortalRevisionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, res
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PortalRevisionClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PortalRevisionClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PortalRevisionClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -76,6 +79,10 @@ func (client *PortalRevisionClient) BeginCreateOrUpdate(ctx context.Context, res
 // Generated from API version 2022-08-01
 func (client *PortalRevisionClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, parameters PortalRevisionContract, options *PortalRevisionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PortalRevisionClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -134,6 +141,10 @@ func (client *PortalRevisionClient) createOrUpdateCreateRequest(ctx context.Cont
 //   - options - PortalRevisionClientGetOptions contains the optional parameters for the PortalRevisionClient.Get method.
 func (client *PortalRevisionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, options *PortalRevisionClientGetOptions) (PortalRevisionClientGetResponse, error) {
 	var err error
+	const operationName = "PortalRevisionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, options)
 	if err != nil {
 		return PortalRevisionClientGetResponse{}, err
@@ -202,6 +213,10 @@ func (client *PortalRevisionClient) getHandleResponse(resp *http.Response) (Port
 //     method.
 func (client *PortalRevisionClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, options *PortalRevisionClientGetEntityTagOptions) (PortalRevisionClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "PortalRevisionClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, options)
 	if err != nil {
 		return PortalRevisionClientGetEntityTagResponse{}, err
@@ -250,11 +265,10 @@ func (client *PortalRevisionClient) getEntityTagCreateRequest(ctx context.Contex
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *PortalRevisionClient) getEntityTagHandleResponse(resp *http.Response) (PortalRevisionClientGetEntityTagResponse, error) {
-	result := PortalRevisionClientGetEntityTagResponse{}
+	result := PortalRevisionClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -271,25 +285,20 @@ func (client *PortalRevisionClient) NewListByServicePager(resourceGroupName stri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PortalRevisionClientListByServiceResponse) (PortalRevisionClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PortalRevisionClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return PortalRevisionClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PortalRevisionClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PortalRevisionClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -356,10 +365,13 @@ func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGro
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PortalRevisionClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[PortalRevisionClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PortalRevisionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -369,6 +381,10 @@ func (client *PortalRevisionClient) BeginUpdate(ctx context.Context, resourceGro
 // Generated from API version 2022-08-01
 func (client *PortalRevisionClient) update(ctx context.Context, resourceGroupName string, serviceName string, portalRevisionID string, ifMatch string, parameters PortalRevisionContract, options *PortalRevisionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "PortalRevisionClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, portalRevisionID, ifMatch, parameters, options)
 	if err != nil {
 		return nil, err

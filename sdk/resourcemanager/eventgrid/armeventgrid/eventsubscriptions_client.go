@@ -49,7 +49,7 @@ func NewEventSubscriptionsClient(subscriptionID string, credential azcore.TokenC
 // the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The identifier of the resource to which the event subscription needs to be created or updated. The scope can be
 //     a subscription, or a resource group, or a top level resource belonging to a resource
 //     provider namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -84,7 +84,7 @@ func (client *EventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context,
 // specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 func (client *EventSubscriptionsClient) createOrUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *EventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EventSubscriptionsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionInfo); err != nil {
@@ -131,7 +131,7 @@ func (client *EventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.
 // BeginDelete - Delete an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The scope of the event subscription. The scope can be a subscription, or a resource group, or a top level resource
 //     belonging to a resource provider namespace, or an EventGrid topic. For example, use
 //     '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -163,7 +163,7 @@ func (client *EventSubscriptionsClient) BeginDelete(ctx context.Context, scope s
 // Delete - Delete an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 func (client *EventSubscriptionsClient) deleteOperation(ctx context.Context, scope string, eventSubscriptionName string, options *EventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EventSubscriptionsClient.BeginDelete"
@@ -198,7 +198,7 @@ func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -206,7 +206,7 @@ func (client *EventSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 // Get - Get properties of an event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The scope of the event subscription. The scope can be a subscription, or a resource group, or a top level resource
 //     belonging to a resource provider namespace, or an EventGrid topic. For example, use
 //     '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -252,7 +252,7 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +270,7 @@ func (client *EventSubscriptionsClient) getHandleResponse(resp *http.Response) (
 // GetDeliveryAttributes - Get all delivery attributes for an event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The scope of the event subscription. The scope can be a subscription, or a resource group, or a top level resource
 //     belonging to a resource provider namespace, or an EventGrid topic. For example, use
 //     '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -317,7 +317,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,7 +335,7 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp
 // GetFullURL - Get the full endpoint URL for an event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The scope of the event subscription. The scope can be a subscription, or a resource group, or a top level resource
 //     belonging to a resource provider namespace, or an EventGrid topic. For example, use
 //     '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -382,7 +382,7 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -399,7 +399,7 @@ func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Resp
 
 // NewListByDomainTopicPager - List all event subscriptions that have been created for a specific domain topic.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -452,7 +452,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -475,7 +475,7 @@ func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *ht
 
 // NewListByResourcePager - List all event subscriptions that have been created for a specific resource.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - providerNamespace - Namespace of the provider of the topic.
 //   - resourceTypeName - Name of the resource type.
@@ -533,7 +533,7 @@ func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -557,7 +557,7 @@ func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.
 // NewListGlobalByResourceGroupPager - List all global event subscriptions under a specific Azure subscription and resource
 // group.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - options - EventSubscriptionsClientListGlobalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalByResourceGroupPager
 //     method.
@@ -600,7 +600,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -624,7 +624,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(
 // NewListGlobalByResourceGroupForTopicTypePager - List all global event subscriptions under a resource group for a specific
 // topic type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - topicTypeName - Name of the topic type.
 //   - options - EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions contains the optional parameters for the
@@ -672,7 +672,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -695,7 +695,7 @@ func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHan
 
 // NewListGlobalBySubscriptionPager - List all aggregated global event subscriptions under a specific Azure subscription.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - options - EventSubscriptionsClientListGlobalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListGlobalBySubscriptionPager
 //     method.
 func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionPager(options *EventSubscriptionsClientListGlobalBySubscriptionOptions) *runtime.Pager[EventSubscriptionsClientListGlobalBySubscriptionResponse] {
@@ -733,7 +733,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -757,7 +757,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(r
 // NewListGlobalBySubscriptionForTopicTypePager - List all global event subscriptions under an Azure subscription for a topic
 // type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - topicTypeName - Name of the topic type.
 //   - options - EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions contains the optional parameters for the
 //     EventSubscriptionsClient.NewListGlobalBySubscriptionForTopicTypePager method.
@@ -800,7 +800,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -824,7 +824,7 @@ func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHand
 // NewListRegionalByResourceGroupPager - List all event subscriptions from the given location under a specific Azure subscription
 // and resource group.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - location - Name of the location.
 //   - options - EventSubscriptionsClientListRegionalByResourceGroupOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalByResourceGroupPager
@@ -872,7 +872,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -896,7 +896,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleRespons
 // NewListRegionalByResourceGroupForTopicTypePager - List all event subscriptions from the given location under a specific
 // Azure subscription and resource group and topic type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - location - Name of the location.
 //   - topicTypeName - Name of the topic type.
@@ -949,7 +949,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -972,7 +972,7 @@ func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeH
 
 // NewListRegionalBySubscriptionPager - List all event subscriptions from the given location under a specific Azure subscription.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - location - Name of the location.
 //   - options - EventSubscriptionsClientListRegionalBySubscriptionOptions contains the optional parameters for the EventSubscriptionsClient.NewListRegionalBySubscriptionPager
 //     method.
@@ -1015,7 +1015,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1039,7 +1039,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse
 // NewListRegionalBySubscriptionForTopicTypePager - List all event subscriptions from the given location under a specific
 // Azure subscription and topic type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - location - Name of the location.
 //   - topicTypeName - Name of the topic type.
 //   - options - EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions contains the optional parameters for the
@@ -1087,7 +1087,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1111,7 +1111,7 @@ func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHa
 // BeginUpdate - Asynchronously updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 //   - scope - The scope of existing event subscription. The scope can be a subscription, or a resource group, or a top level
 //     resource belonging to a resource provider namespace, or an EventGrid topic. For example,
 //     use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -1144,7 +1144,7 @@ func (client *EventSubscriptionsClient) BeginUpdate(ctx context.Context, scope s
 // Update - Asynchronously updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-15
+// Generated from API version 2023-12-15-preview
 func (client *EventSubscriptionsClient) update(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *EventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EventSubscriptionsClient.BeginUpdate"
@@ -1179,7 +1179,7 @@ func (client *EventSubscriptionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-15")
+	reqQP.Set("api-version", "2023-12-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {

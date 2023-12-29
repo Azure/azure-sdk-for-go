@@ -32,7 +32,7 @@ type APIWikiClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAPIWikiClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIWikiClient, error) {
-	cl, err := arm.NewClient(moduleName+".APIWikiClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewAPIWikiClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - APIWikiClientCreateOrUpdateOptions contains the optional parameters for the APIWikiClient.CreateOrUpdate method.
 func (client *APIWikiClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, parameters WikiContract, options *APIWikiClientCreateOrUpdateOptions) (APIWikiClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "APIWikiClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, parameters, options)
 	if err != nil {
 		return APIWikiClientCreateOrUpdateResponse{}, err
@@ -130,6 +134,10 @@ func (client *APIWikiClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - APIWikiClientDeleteOptions contains the optional parameters for the APIWikiClient.Delete method.
 func (client *APIWikiClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, ifMatch string, options *APIWikiClientDeleteOptions) (APIWikiClientDeleteResponse, error) {
 	var err error
+	const operationName = "APIWikiClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiID, ifMatch, options)
 	if err != nil {
 		return APIWikiClientDeleteResponse{}, err
@@ -186,6 +194,10 @@ func (client *APIWikiClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - APIWikiClientGetOptions contains the optional parameters for the APIWikiClient.Get method.
 func (client *APIWikiClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIWikiClientGetOptions) (APIWikiClientGetResponse, error) {
 	var err error
+	const operationName = "APIWikiClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 	if err != nil {
 		return APIWikiClientGetResponse{}, err
@@ -253,6 +265,10 @@ func (client *APIWikiClient) getHandleResponse(resp *http.Response) (APIWikiClie
 //   - options - APIWikiClientGetEntityTagOptions contains the optional parameters for the APIWikiClient.GetEntityTag method.
 func (client *APIWikiClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIWikiClientGetEntityTagOptions) (APIWikiClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "APIWikiClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 	if err != nil {
 		return APIWikiClientGetEntityTagResponse{}, err
@@ -301,11 +317,10 @@ func (client *APIWikiClient) getEntityTagCreateRequest(ctx context.Context, reso
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *APIWikiClient) getEntityTagHandleResponse(resp *http.Response) (APIWikiClientGetEntityTagResponse, error) {
-	result := APIWikiClientGetEntityTagResponse{}
+	result := APIWikiClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -322,6 +337,10 @@ func (client *APIWikiClient) getEntityTagHandleResponse(resp *http.Response) (AP
 //   - options - APIWikiClientUpdateOptions contains the optional parameters for the APIWikiClient.Update method.
 func (client *APIWikiClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, ifMatch string, parameters WikiUpdateContract, options *APIWikiClientUpdateOptions) (APIWikiClientUpdateResponse, error) {
 	var err error
+	const operationName = "APIWikiClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, apiID, ifMatch, parameters, options)
 	if err != nil {
 		return APIWikiClientUpdateResponse{}, err

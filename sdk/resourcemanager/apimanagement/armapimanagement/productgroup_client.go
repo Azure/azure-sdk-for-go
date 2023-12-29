@@ -33,7 +33,7 @@ type ProductGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProductGroupClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProductGroupClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCheckEntityExistsOptions) (ProductGroupClientCheckEntityExistsResponse, error) {
 	var err error
+	const operationName = "ProductGroupClient.CheckEntityExists"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkEntityExistsCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
 		return ProductGroupClientCheckEntityExistsResponse{}, err
@@ -116,6 +120,10 @@ func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Con
 //     method.
 func (client *ProductGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientCreateOrUpdateOptions) (ProductGroupClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProductGroupClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
 		return ProductGroupClientCreateOrUpdateResponse{}, err
@@ -186,6 +194,10 @@ func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - ProductGroupClientDeleteOptions contains the optional parameters for the ProductGroupClient.Delete method.
 func (client *ProductGroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, groupID string, options *ProductGroupClientDeleteOptions) (ProductGroupClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProductGroupClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, productID, groupID, options)
 	if err != nil {
 		return ProductGroupClientDeleteResponse{}, err
@@ -249,25 +261,20 @@ func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProductGroupClientListByProductResponse) (ProductGroupClientListByProductResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProductGroupClient.NewListByProductPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
+			}, nil)
 			if err != nil {
 				return ProductGroupClientListByProductResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProductGroupClientListByProductResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProductGroupClientListByProductResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProductHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

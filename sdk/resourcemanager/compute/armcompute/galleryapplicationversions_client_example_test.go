@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_Create.json
 func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("West US"),
 		Properties: &armcompute.GalleryApplicationVersionProperties{
 			PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00Z"); return t }()),
+				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t }()),
 				ReplicaCount:       to.Ptr[int32](1),
 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 				TargetRegions: []*armcompute.TargetRegion{
@@ -90,9 +90,9 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armcompute.GalleryApplicationVersionProperties{
 	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 	// 		PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00+00:00"); return t}()),
+	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t}()),
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.597Z"); return t}()),
 	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			TargetRegions: []*armcompute.TargetRegion{
@@ -140,7 +140,7 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_Update.json
 func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	poller, err := clientFactory.NewGalleryApplicationVersionsClient().BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", "1.0.0", armcompute.GalleryApplicationVersionUpdate{
 		Properties: &armcompute.GalleryApplicationVersionProperties{
 			PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00Z"); return t }()),
+				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t }()),
 				ReplicaCount:       to.Ptr[int32](1),
 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 				TargetRegions: []*armcompute.TargetRegion{
@@ -195,9 +195,9 @@ func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	// 	Properties: &armcompute.GalleryApplicationVersionProperties{
 	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 	// 		PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00+00:00"); return t}()),
+	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t}()),
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.597Z"); return t}()),
 	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			TargetRegions: []*armcompute.TargetRegion{
@@ -223,7 +223,7 @@ func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWithReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,13 +243,14 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.GalleryApplicationVersion = armcompute.GalleryApplicationVersion{
 	// 	Name: to.Ptr("1.0.0"),
+	// 	ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/applications/myGalleryApplicationName/versions/1.0.0"),
 	// 	Location: to.Ptr("West US"),
 	// 	Properties: &armcompute.GalleryApplicationVersionProperties{
 	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 	// 		PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00+00:00"); return t}()),
+	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t}()),
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.597Z"); return t}()),
 	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			TargetRegions: []*armcompute.TargetRegion{
@@ -307,7 +308,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_Get.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,9 +334,9 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion()
 	// 	Properties: &armcompute.GalleryApplicationVersionProperties{
 	// 		ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 	// 		PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00+00:00"); return t}()),
+	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t}()),
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.597Z"); return t}()),
 	// 			ReplicaCount: to.Ptr[int32](1),
 	// 			StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			TargetRegions: []*armcompute.TargetRegion{
@@ -375,7 +376,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_Delete.json
 func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -396,7 +397,7 @@ func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/60679ee3db06e93eb73faa0587fed93ed843d6dc/specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
 func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,9 +429,9 @@ func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() 
 		// 			Properties: &armcompute.GalleryApplicationVersionProperties{
 		// 				ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 		// 				PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
-		// 					EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00+00:00"); return t}()),
+		// 					EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-01T07:00:00.000Z"); return t}()),
 		// 					ExcludeFromLatest: to.Ptr(false),
-		// 					PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.5972568+00:00"); return t}()),
+		// 					PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-21T17:13:57.597Z"); return t}()),
 		// 					ReplicaCount: to.Ptr[int32](1),
 		// 					StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 		// 					TargetRegions: []*armcompute.TargetRegion{

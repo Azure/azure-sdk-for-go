@@ -28,7 +28,7 @@ type GuestAgentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGuestAgentClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GuestAgentClient, error) {
-	cl, err := arm.NewClient(moduleName+".GuestAgentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,10 +52,13 @@ func (client *GuestAgentClient) BeginCreate(ctx context.Context, resourceURI str
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GuestAgentClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GuestAgentClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GuestAgentClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -65,6 +68,10 @@ func (client *GuestAgentClient) BeginCreate(ctx context.Context, resourceURI str
 // Generated from API version 2023-09-01-preview
 func (client *GuestAgentClient) create(ctx context.Context, resourceURI string, options *GuestAgentClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GuestAgentClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return nil, err
@@ -113,10 +120,14 @@ func (client *GuestAgentClient) BeginDelete(ctx context.Context, resourceURI str
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[GuestAgentClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GuestAgentClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GuestAgentClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GuestAgentClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -126,6 +137,10 @@ func (client *GuestAgentClient) BeginDelete(ctx context.Context, resourceURI str
 // Generated from API version 2023-09-01-preview
 func (client *GuestAgentClient) deleteOperation(ctx context.Context, resourceURI string, options *GuestAgentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GuestAgentClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return nil, err
@@ -164,6 +179,10 @@ func (client *GuestAgentClient) deleteCreateRequest(ctx context.Context, resourc
 //   - options - GuestAgentClientGetOptions contains the optional parameters for the GuestAgentClient.Get method.
 func (client *GuestAgentClient) Get(ctx context.Context, resourceURI string, options *GuestAgentClientGetOptions) (GuestAgentClientGetResponse, error) {
 	var err error
+	const operationName = "GuestAgentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return GuestAgentClientGetResponse{}, err

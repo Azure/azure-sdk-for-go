@@ -43,9 +43,27 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return subClient
 }
 
+// NewArchiveVersionsClient creates a new instance of ArchiveVersionsClient.
+func (c *ClientFactory) NewArchiveVersionsClient() *ArchiveVersionsClient {
+	subClient, _ := NewArchiveVersionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewArchivesClient creates a new instance of ArchivesClient.
+func (c *ClientFactory) NewArchivesClient() *ArchivesClient {
+	subClient, _ := NewArchivesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewCacheRulesClient creates a new instance of CacheRulesClient.
 func (c *ClientFactory) NewCacheRulesClient() *CacheRulesClient {
 	subClient, _ := NewCacheRulesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewConnectedRegistriesClient creates a new instance of ConnectedRegistriesClient.
+func (c *ClientFactory) NewConnectedRegistriesClient() *ConnectedRegistriesClient {
+	subClient, _ := NewConnectedRegistriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -55,9 +73,27 @@ func (c *ClientFactory) NewCredentialSetsClient() *CredentialSetsClient {
 	return subClient
 }
 
+// NewExportPipelinesClient creates a new instance of ExportPipelinesClient.
+func (c *ClientFactory) NewExportPipelinesClient() *ExportPipelinesClient {
+	subClient, _ := NewExportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewImportPipelinesClient creates a new instance of ImportPipelinesClient.
+func (c *ClientFactory) NewImportPipelinesClient() *ImportPipelinesClient {
+	subClient, _ := NewImportPipelinesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewPipelineRunsClient creates a new instance of PipelineRunsClient.
+func (c *ClientFactory) NewPipelineRunsClient() *PipelineRunsClient {
+	subClient, _ := NewPipelineRunsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

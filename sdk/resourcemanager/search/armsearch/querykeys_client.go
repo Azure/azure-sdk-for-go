@@ -33,7 +33,7 @@ type QueryKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueryKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".QueryKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - QueryKeysClientCreateOptions contains the optional parameters for the QueryKeysClient.Create method.
 func (client *QueryKeysClient) Create(ctx context.Context, resourceGroupName string, searchServiceName string, name string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientCreateOptions) (QueryKeysClientCreateResponse, error) {
 	var err error
+	const operationName = "QueryKeysClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, searchServiceName, name, searchManagementRequestOptions, options)
 	if err != nil {
 		return QueryKeysClientCreateResponse{}, err
@@ -129,6 +133,10 @@ func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryK
 //   - options - QueryKeysClientDeleteOptions contains the optional parameters for the QueryKeysClient.Delete method.
 func (client *QueryKeysClient) Delete(ctx context.Context, resourceGroupName string, searchServiceName string, key string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientDeleteOptions) (QueryKeysClientDeleteResponse, error) {
 	var err error
+	const operationName = "QueryKeysClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, searchServiceName, key, searchManagementRequestOptions, options)
 	if err != nil {
 		return QueryKeysClientDeleteResponse{}, err
@@ -193,25 +201,20 @@ func (client *QueryKeysClient) NewListBySearchServicePager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *QueryKeysClientListBySearchServiceResponse) (QueryKeysClientListBySearchServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySearchServiceCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "QueryKeysClient.NewListBySearchServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySearchServiceCreateRequest(ctx, resourceGroupName, searchServiceName, searchManagementRequestOptions, options)
+			}, nil)
 			if err != nil {
 				return QueryKeysClientListBySearchServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return QueryKeysClientListBySearchServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return QueryKeysClientListBySearchServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySearchServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

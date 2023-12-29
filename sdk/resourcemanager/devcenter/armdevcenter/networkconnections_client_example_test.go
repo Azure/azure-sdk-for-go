@@ -325,15 +325,15 @@ func ExampleNetworkConnectionsClient_NewListHealthDetailsPager() {
 		// 				LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armdevcenter.HealthCheckStatusDetailsProperties{
-		// 				EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15Z"); return t}()),
+		// 				EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15.000Z"); return t}()),
 		// 				HealthChecks: []*armdevcenter.HealthCheck{
 		// 					{
 		// 						DisplayName: to.Ptr("Azure AD device sync"),
-		// 						EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14Z"); return t}()),
-		// 						StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15Z"); return t}()),
+		// 						EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14.000Z"); return t}()),
+		// 						StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15.000Z"); return t}()),
 		// 						Status: to.Ptr(armdevcenter.HealthCheckStatusPassed),
 		// 				}},
-		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14Z"); return t}()),
+		// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14.000Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -371,15 +371,15 @@ func ExampleNetworkConnectionsClient_GetHealthDetails() {
 	// 		LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeApplication),
 	// 	},
 	// 	Properties: &armdevcenter.HealthCheckStatusDetailsProperties{
-	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15Z"); return t}()),
+	// 		EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15.000Z"); return t}()),
 	// 		HealthChecks: []*armdevcenter.HealthCheck{
 	// 			{
 	// 				DisplayName: to.Ptr("Azure AD device sync"),
-	// 				EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14Z"); return t}()),
-	// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15Z"); return t}()),
+	// 				EndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14.000Z"); return t}()),
+	// 				StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:15.000Z"); return t}()),
 	// 				Status: to.Ptr(armdevcenter.HealthCheckStatusPassed),
 	// 		}},
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14Z"); return t}()),
+	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-03T12:43:14.000Z"); return t}()),
 	// 	},
 	// }
 }

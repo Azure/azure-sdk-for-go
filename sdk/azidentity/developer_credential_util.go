@@ -7,16 +7,12 @@
 package azidentity
 
 import (
-	"context"
 	"errors"
 	"time"
 )
 
 // cliTimeout is the default timeout for authentication attempts via CLI tools
 const cliTimeout = 10 * time.Second
-
-// cliTokenProvider is used by tests to fake invoking CLI authentication tools
-type cliTokenProvider func(ctx context.Context, scopes []string, tenant string) ([]byte, error)
 
 // unavailableIfInChain returns err or, if the credential was invoked by DefaultAzureCredential, a
 // credentialUnavailableError having the same message. This ensures DefaultAzureCredential will try
@@ -34,7 +30,7 @@ func unavailableIfInChain(err error, inDefaultChain bool) error {
 // validScope is for credentials authenticating via external tools. The authority validates scopes for all other credentials.
 func validScope(scope string) bool {
 	for _, r := range scope {
-		if !((r >= '0' && r <= '9') || (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || r == '.' || r == '-' || r == '_' || r == '/' || r == ':') {
+		if !(alphanumeric(r) || r == '.' || r == '-' || r == '_' || r == '/' || r == ':') {
 			return false
 		}
 	}

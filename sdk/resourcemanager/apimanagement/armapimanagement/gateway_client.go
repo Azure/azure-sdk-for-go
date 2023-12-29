@@ -33,7 +33,7 @@ type GatewayClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewayClient, error) {
-	cl, err := arm.NewClient(moduleName+".GatewayClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewGatewayClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - GatewayClientCreateOrUpdateOptions contains the optional parameters for the GatewayClient.CreateOrUpdate method.
 func (client *GatewayClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters GatewayContract, options *GatewayClientCreateOrUpdateOptions) (GatewayClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "GatewayClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, parameters, options)
 	if err != nil {
 		return GatewayClientCreateOrUpdateResponse{}, err
@@ -132,6 +136,10 @@ func (client *GatewayClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - GatewayClientDeleteOptions contains the optional parameters for the GatewayClient.Delete method.
 func (client *GatewayClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, ifMatch string, options *GatewayClientDeleteOptions) (GatewayClientDeleteResponse, error) {
 	var err error
+	const operationName = "GatewayClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, ifMatch, options)
 	if err != nil {
 		return GatewayClientDeleteResponse{}, err
@@ -189,6 +197,10 @@ func (client *GatewayClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - GatewayClientGenerateTokenOptions contains the optional parameters for the GatewayClient.GenerateToken method.
 func (client *GatewayClient) GenerateToken(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters GatewayTokenRequestContract, options *GatewayClientGenerateTokenOptions) (GatewayClientGenerateTokenResponse, error) {
 	var err error
+	const operationName = "GatewayClient.GenerateToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.generateTokenCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, parameters, options)
 	if err != nil {
 		return GatewayClientGenerateTokenResponse{}, err
@@ -258,6 +270,10 @@ func (client *GatewayClient) generateTokenHandleResponse(resp *http.Response) (G
 //   - options - GatewayClientGetOptions contains the optional parameters for the GatewayClient.Get method.
 func (client *GatewayClient) Get(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, options *GatewayClientGetOptions) (GatewayClientGetResponse, error) {
 	var err error
+	const operationName = "GatewayClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
 	if err != nil {
 		return GatewayClientGetResponse{}, err
@@ -326,6 +342,10 @@ func (client *GatewayClient) getHandleResponse(resp *http.Response) (GatewayClie
 //   - options - GatewayClientGetEntityTagOptions contains the optional parameters for the GatewayClient.GetEntityTag method.
 func (client *GatewayClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, options *GatewayClientGetEntityTagOptions) (GatewayClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GatewayClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
 	if err != nil {
 		return GatewayClientGetEntityTagResponse{}, err
@@ -374,11 +394,10 @@ func (client *GatewayClient) getEntityTagCreateRequest(ctx context.Context, reso
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GatewayClient) getEntityTagHandleResponse(resp *http.Response) (GatewayClientGetEntityTagResponse, error) {
-	result := GatewayClientGetEntityTagResponse{}
+	result := GatewayClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -395,25 +414,20 @@ func (client *GatewayClient) NewListByServicePager(resourceGroupName string, ser
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GatewayClientListByServiceResponse) (GatewayClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GatewayClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return GatewayClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GatewayClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GatewayClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -472,6 +486,10 @@ func (client *GatewayClient) listByServiceHandleResponse(resp *http.Response) (G
 //   - options - GatewayClientListKeysOptions contains the optional parameters for the GatewayClient.ListKeys method.
 func (client *GatewayClient) ListKeys(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, options *GatewayClientListKeysOptions) (GatewayClientListKeysResponse, error) {
 	var err error
+	const operationName = "GatewayClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, options)
 	if err != nil {
 		return GatewayClientListKeysResponse{}, err
@@ -541,6 +559,10 @@ func (client *GatewayClient) listKeysHandleResponse(resp *http.Response) (Gatewa
 //   - options - GatewayClientRegenerateKeyOptions contains the optional parameters for the GatewayClient.RegenerateKey method.
 func (client *GatewayClient) RegenerateKey(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, parameters GatewayKeyRegenerationRequestContract, options *GatewayClientRegenerateKeyOptions) (GatewayClientRegenerateKeyResponse, error) {
 	var err error
+	const operationName = "GatewayClient.RegenerateKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, parameters, options)
 	if err != nil {
 		return GatewayClientRegenerateKeyResponse{}, err
@@ -602,6 +624,10 @@ func (client *GatewayClient) regenerateKeyCreateRequest(ctx context.Context, res
 //   - options - GatewayClientUpdateOptions contains the optional parameters for the GatewayClient.Update method.
 func (client *GatewayClient) Update(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, ifMatch string, parameters GatewayContract, options *GatewayClientUpdateOptions) (GatewayClientUpdateResponse, error) {
 	var err error
+	const operationName = "GatewayClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, gatewayID, ifMatch, parameters, options)
 	if err != nil {
 		return GatewayClientUpdateResponse{}, err

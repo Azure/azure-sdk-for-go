@@ -46,7 +46,7 @@ func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCancelVerification - Cancel verification of DNS record.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -74,7 +74,7 @@ func (client *DomainsClient) BeginCancelVerification(ctx context.Context, resour
 // CancelVerification - Cancel verification of DNS record.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 func (client *DomainsClient) cancelVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginCancelVerificationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginCancelVerification"
@@ -120,7 +120,7 @@ func (client *DomainsClient) cancelVerificationCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,7 +132,7 @@ func (client *DomainsClient) cancelVerificationCreateRequest(ctx context.Context
 // BeginCreateOrUpdate - Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -160,7 +160,7 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 // CreateOrUpdate - Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters DomainResource, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginCreateOrUpdate"
@@ -206,7 +206,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -218,7 +218,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // BeginDelete - Operation to delete a Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -244,7 +244,7 @@ func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Operation to delete a Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, options *DomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginDelete"
@@ -290,7 +290,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get the Domains resource and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -350,7 +350,7 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,7 +368,7 @@ func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClie
 // BeginInitiateVerification - Initiate verification of DNS record.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -396,7 +396,7 @@ func (client *DomainsClient) BeginInitiateVerification(ctx context.Context, reso
 // InitiateVerification - Initiate verification of DNS record.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 func (client *DomainsClient) initiateVerification(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters VerificationParameter, options *DomainsClientBeginInitiateVerificationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginInitiateVerification"
@@ -442,7 +442,7 @@ func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -453,7 +453,7 @@ func (client *DomainsClient) initiateVerificationCreateRequest(ctx context.Conte
 
 // NewListByEmailServiceResourcePager - Handles requests to list all Domains resources under the parent EmailServices resource.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - options - DomainsClientListByEmailServiceResourceOptions contains the optional parameters for the DomainsClient.NewListByEmailServiceResourcePager
@@ -501,7 +501,7 @@ func (client *DomainsClient) listByEmailServiceResourceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -519,7 +519,7 @@ func (client *DomainsClient) listByEmailServiceResourceHandleResponse(resp *http
 // BeginUpdate - Operation to update an existing Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -546,7 +546,7 @@ func (client *DomainsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Operation to update an existing Domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-03-31
+// Generated from API version 2023-06-01-preview
 func (client *DomainsClient) update(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters UpdateDomainRequestParameters, options *DomainsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginUpdate"
@@ -592,7 +592,7 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-31")
+	reqQP.Set("api-version", "2023-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

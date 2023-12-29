@@ -33,7 +33,7 @@ type AuthorizationServerClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAuthorizationServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationServerClient, error) {
-	cl, err := arm.NewClient(moduleName+".AuthorizationServerClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewAuthorizationServerClient(subscriptionID string, credential azcore.Token
 //     method.
 func (client *AuthorizationServerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters AuthorizationServerContract, options *AuthorizationServerClientCreateOrUpdateOptions) (AuthorizationServerClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, authsid, parameters, options)
 	if err != nil {
 		return AuthorizationServerClientCreateOrUpdateResponse{}, err
@@ -133,6 +137,10 @@ func (client *AuthorizationServerClient) createOrUpdateHandleResponse(resp *http
 //     method.
 func (client *AuthorizationServerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, options *AuthorizationServerClientDeleteOptions) (AuthorizationServerClientDeleteResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, authsid, ifMatch, options)
 	if err != nil {
 		return AuthorizationServerClientDeleteResponse{}, err
@@ -189,6 +197,10 @@ func (client *AuthorizationServerClient) deleteCreateRequest(ctx context.Context
 //   - options - AuthorizationServerClientGetOptions contains the optional parameters for the AuthorizationServerClient.Get method.
 func (client *AuthorizationServerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerClientGetOptions) (AuthorizationServerClientGetResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, authsid, options)
 	if err != nil {
 		return AuthorizationServerClientGetResponse{}, err
@@ -257,6 +269,10 @@ func (client *AuthorizationServerClient) getHandleResponse(resp *http.Response) 
 //     method.
 func (client *AuthorizationServerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerClientGetEntityTagOptions) (AuthorizationServerClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, authsid, options)
 	if err != nil {
 		return AuthorizationServerClientGetEntityTagResponse{}, err
@@ -305,11 +321,10 @@ func (client *AuthorizationServerClient) getEntityTagCreateRequest(ctx context.C
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.Response) (AuthorizationServerClientGetEntityTagResponse, error) {
-	result := AuthorizationServerClientGetEntityTagResponse{}
+	result := AuthorizationServerClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -326,25 +341,20 @@ func (client *AuthorizationServerClient) NewListByServicePager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AuthorizationServerClientListByServiceResponse) (AuthorizationServerClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AuthorizationServerClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return AuthorizationServerClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AuthorizationServerClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AuthorizationServerClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -403,6 +413,10 @@ func (client *AuthorizationServerClient) listByServiceHandleResponse(resp *http.
 //     method.
 func (client *AuthorizationServerClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerClientListSecretsOptions) (AuthorizationServerClientListSecretsResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, authsid, options)
 	if err != nil {
 		return AuthorizationServerClientListSecretsResponse{}, err
@@ -475,6 +489,10 @@ func (client *AuthorizationServerClient) listSecretsHandleResponse(resp *http.Re
 //     method.
 func (client *AuthorizationServerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, parameters AuthorizationServerUpdateContract, options *AuthorizationServerClientUpdateOptions) (AuthorizationServerClientUpdateResponse, error) {
 	var err error
+	const operationName = "AuthorizationServerClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, authsid, ifMatch, parameters, options)
 	if err != nil {
 		return AuthorizationServerClientUpdateResponse{}, err

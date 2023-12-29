@@ -47,8 +47,8 @@ func ExampleIntegrationAccountBatchConfigurationsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/batchConfigurations"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/batchConfigurations/testBatchConfiguration"),
 		// 			Properties: &armlogic.BatchConfigurationProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.7042301Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.6518552Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.704Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.651Z"); return t}()),
 		// 				BatchGroupName: to.Ptr("DEFAULT"),
 		// 				ReleaseCriteria: &armlogic.BatchReleaseCriteria{
 		// 					BatchSize: to.Ptr[int32](234567),
@@ -89,8 +89,8 @@ func ExampleIntegrationAccountBatchConfigurationsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/batchConfigurations"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/batchConfigurations/testBatchConfiguration"),
 	// 	Properties: &armlogic.BatchConfigurationProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.7042301Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.6518552Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.704Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.651Z"); return t}()),
 	// 		BatchGroupName: to.Ptr("DEFAULT"),
 	// 		ReleaseCriteria: &armlogic.BatchReleaseCriteria{
 	// 			BatchSize: to.Ptr[int32](234567),
@@ -144,8 +144,8 @@ func ExampleIntegrationAccountBatchConfigurationsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/batchConfigurations"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/batchConfigurations/testBatchConfiguration"),
 	// 	Properties: &armlogic.BatchConfigurationProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.7042301Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.6518552Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.704Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T06:14:16.651Z"); return t}()),
 	// 		BatchGroupName: to.Ptr("DEFAULT"),
 	// 		ReleaseCriteria: &armlogic.BatchReleaseCriteria{
 	// 			BatchSize: to.Ptr[int32](234567),

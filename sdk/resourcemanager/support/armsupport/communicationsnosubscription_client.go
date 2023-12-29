@@ -30,7 +30,7 @@ type CommunicationsNoSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCommunicationsNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunicationsNoSubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".CommunicationsNoSubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewCommunicationsNoSubscriptionClient(credential azcore.TokenCredential, op
 //     method.
 func (client *CommunicationsNoSubscriptionClient) CheckNameAvailability(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CommunicationsNoSubscriptionClientCheckNameAvailabilityOptions) (CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "CommunicationsNoSubscriptionClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, supportTicketName, checkNameAvailabilityInput, options)
 	if err != nil {
 		return CommunicationsNoSubscriptionClientCheckNameAvailabilityResponse{}, err
@@ -114,10 +118,13 @@ func (client *CommunicationsNoSubscriptionClient) BeginCreate(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunicationsNoSubscriptionClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[CommunicationsNoSubscriptionClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunicationsNoSubscriptionClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -127,6 +134,10 @@ func (client *CommunicationsNoSubscriptionClient) BeginCreate(ctx context.Contex
 // Generated from API version 2022-09-01-preview
 func (client *CommunicationsNoSubscriptionClient) create(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, options *CommunicationsNoSubscriptionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "CommunicationsNoSubscriptionClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, supportTicketName, communicationName, createCommunicationParameters, options)
 	if err != nil {
 		return nil, err
@@ -177,6 +188,10 @@ func (client *CommunicationsNoSubscriptionClient) createCreateRequest(ctx contex
 //     method.
 func (client *CommunicationsNoSubscriptionClient) Get(ctx context.Context, supportTicketName string, communicationName string, options *CommunicationsNoSubscriptionClientGetOptions) (CommunicationsNoSubscriptionClientGetResponse, error) {
 	var err error
+	const operationName = "CommunicationsNoSubscriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, supportTicketName, communicationName, options)
 	if err != nil {
 		return CommunicationsNoSubscriptionClientGetResponse{}, err

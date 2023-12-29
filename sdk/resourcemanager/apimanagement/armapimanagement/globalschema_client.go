@@ -33,7 +33,7 @@ type GlobalSchemaClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGlobalSchemaClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalSchemaClient, error) {
-	cl, err := arm.NewClient(moduleName+".GlobalSchemaClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *GlobalSchemaClient) BeginCreateOrUpdate(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GlobalSchemaClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[GlobalSchemaClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GlobalSchemaClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *GlobalSchemaClient) BeginCreateOrUpdate(ctx context.Context, resou
 // Generated from API version 2022-08-01
 func (client *GlobalSchemaClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, parameters GlobalSchemaContract, options *GlobalSchemaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "GlobalSchemaClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, schemaID, parameters, options)
 	if err != nil {
 		return nil, err
@@ -138,6 +145,10 @@ func (client *GlobalSchemaClient) createOrUpdateCreateRequest(ctx context.Contex
 //   - options - GlobalSchemaClientDeleteOptions contains the optional parameters for the GlobalSchemaClient.Delete method.
 func (client *GlobalSchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, ifMatch string, options *GlobalSchemaClientDeleteOptions) (GlobalSchemaClientDeleteResponse, error) {
 	var err error
+	const operationName = "GlobalSchemaClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, schemaID, ifMatch, options)
 	if err != nil {
 		return GlobalSchemaClientDeleteResponse{}, err
@@ -194,6 +205,10 @@ func (client *GlobalSchemaClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - GlobalSchemaClientGetOptions contains the optional parameters for the GlobalSchemaClient.Get method.
 func (client *GlobalSchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, options *GlobalSchemaClientGetOptions) (GlobalSchemaClientGetResponse, error) {
 	var err error
+	const operationName = "GlobalSchemaClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, schemaID, options)
 	if err != nil {
 		return GlobalSchemaClientGetResponse{}, err
@@ -262,6 +277,10 @@ func (client *GlobalSchemaClient) getHandleResponse(resp *http.Response) (Global
 //     method.
 func (client *GlobalSchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, options *GlobalSchemaClientGetEntityTagOptions) (GlobalSchemaClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "GlobalSchemaClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, schemaID, options)
 	if err != nil {
 		return GlobalSchemaClientGetEntityTagResponse{}, err
@@ -310,11 +329,10 @@ func (client *GlobalSchemaClient) getEntityTagCreateRequest(ctx context.Context,
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *GlobalSchemaClient) getEntityTagHandleResponse(resp *http.Response) (GlobalSchemaClientGetEntityTagResponse, error) {
-	result := GlobalSchemaClientGetEntityTagResponse{}
+	result := GlobalSchemaClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -331,25 +349,20 @@ func (client *GlobalSchemaClient) NewListByServicePager(resourceGroupName string
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *GlobalSchemaClientListByServiceResponse) (GlobalSchemaClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GlobalSchemaClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return GlobalSchemaClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GlobalSchemaClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GlobalSchemaClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

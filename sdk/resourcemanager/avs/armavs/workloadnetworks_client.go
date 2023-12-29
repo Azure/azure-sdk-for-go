@@ -32,7 +32,7 @@ type WorkloadNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkloadNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadNetworksClient, error) {
-	cl, err := arm.NewClient(moduleName+".WorkloadNetworksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *WorkloadNetworksClient) BeginCreateDNSService(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreateDNSServiceResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreateDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreateDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *WorkloadNetworksClient) BeginCreateDNSService(ctx context.Context,
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginCreateDNSServiceOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreateDNSService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 	if err != nil {
 		return nil, err
@@ -136,10 +144,14 @@ func (client *WorkloadNetworksClient) BeginCreateDNSZone(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreateDNSZoneResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreateDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreateDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -149,6 +161,10 @@ func (client *WorkloadNetworksClient) BeginCreateDNSZone(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginCreateDNSZoneOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreateDNSZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 	if err != nil {
 		return nil, err
@@ -213,10 +229,14 @@ func (client *WorkloadNetworksClient) BeginCreateDhcp(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreateDhcpResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreateDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreateDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -226,6 +246,10 @@ func (client *WorkloadNetworksClient) BeginCreateDhcp(ctx context.Context, resou
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginCreateDhcpOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreateDhcp"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 	if err != nil {
 		return nil, err
@@ -290,10 +314,14 @@ func (client *WorkloadNetworksClient) BeginCreatePortMirroring(ctx context.Conte
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreatePortMirroringResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreatePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreatePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -303,6 +331,10 @@ func (client *WorkloadNetworksClient) BeginCreatePortMirroring(ctx context.Conte
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginCreatePortMirroringOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreatePortMirroring"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 	if err != nil {
 		return nil, err
@@ -367,10 +399,14 @@ func (client *WorkloadNetworksClient) BeginCreatePublicIP(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreatePublicIPResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreatePublicIPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreatePublicIPResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreatePublicIPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -380,6 +416,10 @@ func (client *WorkloadNetworksClient) BeginCreatePublicIP(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP, options *WorkloadNetworksClientBeginCreatePublicIPOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreatePublicIP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createPublicIPCreateRequest(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP, options)
 	if err != nil {
 		return nil, err
@@ -444,10 +484,14 @@ func (client *WorkloadNetworksClient) BeginCreateSegments(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreateSegmentsResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreateSegmentsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateSegmentsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreateSegmentsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -457,6 +501,10 @@ func (client *WorkloadNetworksClient) BeginCreateSegments(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginCreateSegmentsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreateSegments"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 	if err != nil {
 		return nil, err
@@ -521,10 +569,14 @@ func (client *WorkloadNetworksClient) BeginCreateVMGroup(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientCreateVMGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientCreateVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientCreateVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientCreateVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -534,6 +586,10 @@ func (client *WorkloadNetworksClient) BeginCreateVMGroup(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) createVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginCreateVMGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginCreateVMGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 	if err != nil {
 		return nil, err
@@ -597,10 +653,14 @@ func (client *WorkloadNetworksClient) BeginDeleteDNSService(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeleteDNSServiceResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeleteDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeleteDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -610,6 +670,10 @@ func (client *WorkloadNetworksClient) BeginDeleteDNSService(ctx context.Context,
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deleteDNSService(ctx context.Context, resourceGroupName string, dnsServiceID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSServiceOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeleteDNSService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteDNSServiceCreateRequest(ctx, resourceGroupName, dnsServiceID, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -670,10 +734,14 @@ func (client *WorkloadNetworksClient) BeginDeleteDNSZone(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeleteDNSZoneResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeleteDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeleteDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -683,6 +751,10 @@ func (client *WorkloadNetworksClient) BeginDeleteDNSZone(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deleteDNSZone(ctx context.Context, resourceGroupName string, dnsZoneID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteDNSZoneOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeleteDNSZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteDNSZoneCreateRequest(ctx, resourceGroupName, dnsZoneID, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -743,10 +815,14 @@ func (client *WorkloadNetworksClient) BeginDeleteDhcp(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeleteDhcpResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeleteDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeleteDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -756,6 +832,10 @@ func (client *WorkloadNetworksClient) BeginDeleteDhcp(ctx context.Context, resou
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, options *WorkloadNetworksClientBeginDeleteDhcpOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeleteDhcp"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, options)
 	if err != nil {
 		return nil, err
@@ -816,10 +896,14 @@ func (client *WorkloadNetworksClient) BeginDeletePortMirroring(ctx context.Conte
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeletePortMirroringResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeletePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeletePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -829,6 +913,10 @@ func (client *WorkloadNetworksClient) BeginDeletePortMirroring(ctx context.Conte
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePortMirroringOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeletePortMirroring"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deletePortMirroringCreateRequest(ctx, resourceGroupName, portMirroringID, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -889,10 +977,14 @@ func (client *WorkloadNetworksClient) BeginDeletePublicIP(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeletePublicIPResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeletePublicIPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeletePublicIPResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeletePublicIPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -902,6 +994,10 @@ func (client *WorkloadNetworksClient) BeginDeletePublicIP(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string, options *WorkloadNetworksClientBeginDeletePublicIPOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeletePublicIP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deletePublicIPCreateRequest(ctx, resourceGroupName, publicIPID, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -962,10 +1058,14 @@ func (client *WorkloadNetworksClient) BeginDeleteSegment(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeleteSegmentResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeleteSegmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteSegmentResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeleteSegmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -975,6 +1075,10 @@ func (client *WorkloadNetworksClient) BeginDeleteSegment(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientBeginDeleteSegmentOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeleteSegment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteSegmentCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, options)
 	if err != nil {
 		return nil, err
@@ -1035,10 +1139,14 @@ func (client *WorkloadNetworksClient) BeginDeleteVMGroup(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientDeleteVMGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientDeleteVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientDeleteVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientDeleteVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1048,6 +1156,10 @@ func (client *WorkloadNetworksClient) BeginDeleteVMGroup(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) deleteVMGroup(ctx context.Context, resourceGroupName string, vmGroupID string, privateCloudName string, options *WorkloadNetworksClientBeginDeleteVMGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginDeleteVMGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteVMGroupCreateRequest(ctx, resourceGroupName, vmGroupID, privateCloudName, options)
 	if err != nil {
 		return nil, err
@@ -1103,6 +1215,10 @@ func (client *WorkloadNetworksClient) deleteVMGroupCreateRequest(ctx context.Con
 //   - options - WorkloadNetworksClientGetOptions contains the optional parameters for the WorkloadNetworksClient.Get method.
 func (client *WorkloadNetworksClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, workloadNetworkName WorkloadNetworkName, options *WorkloadNetworksClientGetOptions) (WorkloadNetworksClientGetResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, workloadNetworkName, options)
 	if err != nil {
 		return WorkloadNetworksClientGetResponse{}, err
@@ -1169,6 +1285,10 @@ func (client *WorkloadNetworksClient) getHandleResponse(resp *http.Response) (Wo
 //     method.
 func (client *WorkloadNetworksClient) GetDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, options *WorkloadNetworksClientGetDNSServiceOptions) (WorkloadNetworksClientGetDNSServiceResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetDNSService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSServiceResponse{}, err
@@ -1235,6 +1355,10 @@ func (client *WorkloadNetworksClient) getDNSServiceHandleResponse(resp *http.Res
 //     method.
 func (client *WorkloadNetworksClient) GetDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, options *WorkloadNetworksClientGetDNSZoneOptions) (WorkloadNetworksClientGetDNSZoneResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetDNSZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDNSZoneResponse{}, err
@@ -1301,6 +1425,10 @@ func (client *WorkloadNetworksClient) getDNSZoneHandleResponse(resp *http.Respon
 //     method.
 func (client *WorkloadNetworksClient) GetDhcp(ctx context.Context, resourceGroupName string, dhcpID string, privateCloudName string, options *WorkloadNetworksClientGetDhcpOptions) (WorkloadNetworksClientGetDhcpResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetDhcp"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDhcpCreateRequest(ctx, resourceGroupName, dhcpID, privateCloudName, options)
 	if err != nil {
 		return WorkloadNetworksClientGetDhcpResponse{}, err
@@ -1367,6 +1495,10 @@ func (client *WorkloadNetworksClient) getDhcpHandleResponse(resp *http.Response)
 //     method.
 func (client *WorkloadNetworksClient) GetGateway(ctx context.Context, resourceGroupName string, privateCloudName string, gatewayID string, options *WorkloadNetworksClientGetGatewayOptions) (WorkloadNetworksClientGetGatewayResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetGateway"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getGatewayCreateRequest(ctx, resourceGroupName, privateCloudName, gatewayID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetGatewayResponse{}, err
@@ -1433,6 +1565,10 @@ func (client *WorkloadNetworksClient) getGatewayHandleResponse(resp *http.Respon
 //     method.
 func (client *WorkloadNetworksClient) GetPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, options *WorkloadNetworksClientGetPortMirroringOptions) (WorkloadNetworksClientGetPortMirroringResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetPortMirroring"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetPortMirroringResponse{}, err
@@ -1499,6 +1635,10 @@ func (client *WorkloadNetworksClient) getPortMirroringHandleResponse(resp *http.
 //     method.
 func (client *WorkloadNetworksClient) GetPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, options *WorkloadNetworksClientGetPublicIPOptions) (WorkloadNetworksClientGetPublicIPResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetPublicIP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getPublicIPCreateRequest(ctx, resourceGroupName, privateCloudName, publicIPID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetPublicIPResponse{}, err
@@ -1565,6 +1705,10 @@ func (client *WorkloadNetworksClient) getPublicIPHandleResponse(resp *http.Respo
 //     method.
 func (client *WorkloadNetworksClient) GetSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, options *WorkloadNetworksClientGetSegmentOptions) (WorkloadNetworksClientGetSegmentResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetSegment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getSegmentCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetSegmentResponse{}, err
@@ -1631,6 +1775,10 @@ func (client *WorkloadNetworksClient) getSegmentHandleResponse(resp *http.Respon
 //     method.
 func (client *WorkloadNetworksClient) GetVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, options *WorkloadNetworksClientGetVMGroupOptions) (WorkloadNetworksClientGetVMGroupResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetVMGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetVMGroupResponse{}, err
@@ -1697,6 +1845,10 @@ func (client *WorkloadNetworksClient) getVMGroupHandleResponse(resp *http.Respon
 //     method.
 func (client *WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string, options *WorkloadNetworksClientGetVirtualMachineOptions) (WorkloadNetworksClientGetVirtualMachineResponse, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.GetVirtualMachine"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVirtualMachineCreateRequest(ctx, resourceGroupName, privateCloudName, virtualMachineID, options)
 	if err != nil {
 		return WorkloadNetworksClientGetVirtualMachineResponse{}, err
@@ -1765,25 +1917,20 @@ func (client *WorkloadNetworksClient) NewListPager(resourceGroupName string, pri
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListResponse) (WorkloadNetworksClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1835,25 +1982,20 @@ func (client *WorkloadNetworksClient) NewListDNSServicesPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDNSServicesResponse) (WorkloadNetworksClientListDNSServicesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListDNSServicesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listDNSServicesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListDNSServicesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListDNSServicesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListDNSServicesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listDNSServicesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1905,25 +2047,20 @@ func (client *WorkloadNetworksClient) NewListDNSZonesPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDNSZonesResponse) (WorkloadNetworksClientListDNSZonesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListDNSZonesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listDNSZonesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListDNSZonesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListDNSZonesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListDNSZonesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listDNSZonesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -1975,25 +2112,20 @@ func (client *WorkloadNetworksClient) NewListDhcpPager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListDhcpResponse) (WorkloadNetworksClientListDhcpResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListDhcpPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListDhcpResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListDhcpResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListDhcpResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listDhcpHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2045,25 +2177,20 @@ func (client *WorkloadNetworksClient) NewListGatewaysPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListGatewaysResponse) (WorkloadNetworksClientListGatewaysResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListGatewaysPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listGatewaysCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListGatewaysResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListGatewaysResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListGatewaysResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listGatewaysHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2115,25 +2242,20 @@ func (client *WorkloadNetworksClient) NewListPortMirroringPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListPortMirroringResponse) (WorkloadNetworksClientListPortMirroringResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListPortMirroringPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listPortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListPortMirroringResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListPortMirroringResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListPortMirroringResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listPortMirroringHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2185,25 +2307,20 @@ func (client *WorkloadNetworksClient) NewListPublicIPsPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListPublicIPsResponse) (WorkloadNetworksClientListPublicIPsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListPublicIPsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listPublicIPsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListPublicIPsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListPublicIPsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListPublicIPsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listPublicIPsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2255,25 +2372,20 @@ func (client *WorkloadNetworksClient) NewListSegmentsPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListSegmentsResponse) (WorkloadNetworksClientListSegmentsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListSegmentsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListSegmentsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListSegmentsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListSegmentsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listSegmentsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2325,25 +2437,20 @@ func (client *WorkloadNetworksClient) NewListVMGroupsPager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListVMGroupsResponse) (WorkloadNetworksClientListVMGroupsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListVMGroupsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listVMGroupsCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListVMGroupsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListVMGroupsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListVMGroupsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listVMGroupsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2395,25 +2502,20 @@ func (client *WorkloadNetworksClient) NewListVirtualMachinesPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadNetworksClientListVirtualMachinesResponse) (WorkloadNetworksClientListVirtualMachinesResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadNetworksClient.NewListVirtualMachinesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, privateCloudName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadNetworksClientListVirtualMachinesResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadNetworksClientListVirtualMachinesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listVirtualMachinesHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -2468,10 +2570,14 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdateDNSServiceResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdateDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSServiceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdateDNSServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2481,6 +2587,10 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSService(ctx context.Context,
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, dnsServiceID string, workloadNetworkDNSService WorkloadNetworkDNSService, options *WorkloadNetworksClientBeginUpdateDNSServiceOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdateDNSService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateDNSServiceCreateRequest(ctx, resourceGroupName, privateCloudName, dnsServiceID, workloadNetworkDNSService, options)
 	if err != nil {
 		return nil, err
@@ -2545,10 +2655,14 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdateDNSZoneResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdateDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDNSZoneResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdateDNSZoneResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2558,6 +2672,10 @@ func (client *WorkloadNetworksClient) BeginUpdateDNSZone(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, dnsZoneID string, workloadNetworkDNSZone WorkloadNetworkDNSZone, options *WorkloadNetworksClientBeginUpdateDNSZoneOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdateDNSZone"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateDNSZoneCreateRequest(ctx, resourceGroupName, privateCloudName, dnsZoneID, workloadNetworkDNSZone, options)
 	if err != nil {
 		return nil, err
@@ -2622,10 +2740,14 @@ func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdateDhcpResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdateDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateDhcpResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdateDhcpResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2635,6 +2757,10 @@ func (client *WorkloadNetworksClient) BeginUpdateDhcp(ctx context.Context, resou
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updateDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string, workloadNetworkDhcp WorkloadNetworkDhcp, options *WorkloadNetworksClientBeginUpdateDhcpOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdateDhcp"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateDhcpCreateRequest(ctx, resourceGroupName, privateCloudName, dhcpID, workloadNetworkDhcp, options)
 	if err != nil {
 		return nil, err
@@ -2699,10 +2825,14 @@ func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Conte
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdatePortMirroringResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdatePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdatePortMirroringResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdatePortMirroringResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2712,6 +2842,10 @@ func (client *WorkloadNetworksClient) BeginUpdatePortMirroring(ctx context.Conte
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring WorkloadNetworkPortMirroring, options *WorkloadNetworksClientBeginUpdatePortMirroringOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdatePortMirroring"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updatePortMirroringCreateRequest(ctx, resourceGroupName, privateCloudName, portMirroringID, workloadNetworkPortMirroring, options)
 	if err != nil {
 		return nil, err
@@ -2776,10 +2910,14 @@ func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, r
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdateSegmentsResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdateSegmentsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateSegmentsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdateSegmentsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2789,6 +2927,10 @@ func (client *WorkloadNetworksClient) BeginUpdateSegments(ctx context.Context, r
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment WorkloadNetworkSegment, options *WorkloadNetworksClientBeginUpdateSegmentsOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdateSegments"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateSegmentsCreateRequest(ctx, resourceGroupName, privateCloudName, segmentID, workloadNetworkSegment, options)
 	if err != nil {
 		return nil, err
@@ -2853,10 +2995,14 @@ func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadNetworksClientUpdateVMGroupResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadNetworksClientUpdateVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadNetworksClientUpdateVMGroupResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadNetworksClientUpdateVMGroupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2866,6 +3012,10 @@ func (client *WorkloadNetworksClient) BeginUpdateVMGroup(ctx context.Context, re
 // Generated from API version 2023-03-01
 func (client *WorkloadNetworksClient) updateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, vmGroupID string, workloadNetworkVMGroup WorkloadNetworkVMGroup, options *WorkloadNetworksClientBeginUpdateVMGroupOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadNetworksClient.BeginUpdateVMGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateVMGroupCreateRequest(ctx, resourceGroupName, privateCloudName, vmGroupID, workloadNetworkVMGroup, options)
 	if err != nil {
 		return nil, err

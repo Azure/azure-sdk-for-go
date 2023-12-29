@@ -32,7 +32,7 @@ type ManagedEnvironmentsDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedEnvironmentsDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentsDiagnosticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedEnvironmentsDiagnosticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewManagedEnvironmentsDiagnosticsClient(subscriptionID string, credential a
 //     method.
 func (client *ManagedEnvironmentsDiagnosticsClient) GetRoot(ctx context.Context, resourceGroupName string, environmentName string, options *ManagedEnvironmentsDiagnosticsClientGetRootOptions) (ManagedEnvironmentsDiagnosticsClientGetRootResponse, error) {
 	var err error
+	const operationName = "ManagedEnvironmentsDiagnosticsClient.GetRoot"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getRootCreateRequest(ctx, resourceGroupName, environmentName, options)
 	if err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err

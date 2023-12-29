@@ -38,9 +38,27 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewCaCertificatesClient creates a new instance of CaCertificatesClient.
+func (c *ClientFactory) NewCaCertificatesClient() *CaCertificatesClient {
+	subClient, _ := NewCaCertificatesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewChannelsClient creates a new instance of ChannelsClient.
 func (c *ClientFactory) NewChannelsClient() *ChannelsClient {
 	subClient, _ := NewChannelsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewClientGroupsClient creates a new instance of ClientGroupsClient.
+func (c *ClientFactory) NewClientGroupsClient() *ClientGroupsClient {
+	subClient, _ := NewClientGroupsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewClientsClient creates a new instance of ClientsClient.
+func (c *ClientFactory) NewClientsClient() *ClientsClient {
+	subClient, _ := NewClientsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -80,6 +98,30 @@ func (c *ClientFactory) NewExtensionTopicsClient() *ExtensionTopicsClient {
 	return subClient
 }
 
+// NewNamespaceTopicEventSubscriptionsClient creates a new instance of NamespaceTopicEventSubscriptionsClient.
+func (c *ClientFactory) NewNamespaceTopicEventSubscriptionsClient() *NamespaceTopicEventSubscriptionsClient {
+	subClient, _ := NewNamespaceTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNamespaceTopicsClient creates a new instance of NamespaceTopicsClient.
+func (c *ClientFactory) NewNamespaceTopicsClient() *NamespaceTopicsClient {
+	subClient, _ := NewNamespaceTopicsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNamespacesClient creates a new instance of NamespacesClient.
+func (c *ClientFactory) NewNamespacesClient() *NamespacesClient {
+	subClient, _ := NewNamespacesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	subClient, _ := NewNetworkSecurityPerimeterConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
@@ -89,6 +131,12 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewPartnerConfigurationsClient creates a new instance of PartnerConfigurationsClient.
 func (c *ClientFactory) NewPartnerConfigurationsClient() *PartnerConfigurationsClient {
 	subClient, _ := NewPartnerConfigurationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewPartnerDestinationsClient creates a new instance of PartnerDestinationsClient.
+func (c *ClientFactory) NewPartnerDestinationsClient() *PartnerDestinationsClient {
+	subClient, _ := NewPartnerDestinationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -113,6 +161,12 @@ func (c *ClientFactory) NewPartnerTopicEventSubscriptionsClient() *PartnerTopicE
 // NewPartnerTopicsClient creates a new instance of PartnerTopicsClient.
 func (c *ClientFactory) NewPartnerTopicsClient() *PartnerTopicsClient {
 	subClient, _ := NewPartnerTopicsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewPermissionBindingsClient creates a new instance of PermissionBindingsClient.
+func (c *ClientFactory) NewPermissionBindingsClient() *PermissionBindingsClient {
+	subClient, _ := NewPermissionBindingsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -143,6 +197,12 @@ func (c *ClientFactory) NewSystemTopicsClient() *SystemTopicsClient {
 // NewTopicEventSubscriptionsClient creates a new instance of TopicEventSubscriptionsClient.
 func (c *ClientFactory) NewTopicEventSubscriptionsClient() *TopicEventSubscriptionsClient {
 	subClient, _ := NewTopicEventSubscriptionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewTopicSpacesClient creates a new instance of TopicSpacesClient.
+func (c *ClientFactory) NewTopicSpacesClient() *TopicSpacesClient {
+	subClient, _ := NewTopicSpacesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

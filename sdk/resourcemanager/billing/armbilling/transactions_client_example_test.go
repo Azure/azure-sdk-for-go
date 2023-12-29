@@ -54,7 +54,7 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 				BillingCurrency: to.Ptr("USD"),
 		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
 		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00Z"); return t}()),
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
 		// 				Discount: to.Ptr[float32](0.1),
 		// 				EffectivePrice: &armbilling.Amount{
 		// 					Currency: to.Ptr("USD"),
@@ -76,8 +76,8 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 				ProductType: to.Ptr("VM Instance"),
 		// 				ProductTypeID: to.Ptr("A12345"),
 		// 				Quantity: to.Ptr[int32](1),
-		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00Z"); return t}()),
-		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00Z"); return t}()),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
 		// 				SubTotal: &armbilling.Amount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](4500),
@@ -109,7 +109,7 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 				BillingCurrency: to.Ptr("USD"),
 		// 				BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
 		// 				BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"),
-		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T00:00:00Z"); return t}()),
+		// 				Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-01T00:00:00.000Z"); return t}()),
 		// 				Discount: to.Ptr[float32](0.1),
 		// 				EffectivePrice: &armbilling.Amount{
 		// 					Currency: to.Ptr("USD"),
@@ -130,8 +130,8 @@ func ExampleTransactionsClient_NewListByInvoicePager() {
 		// 				ProductType: to.Ptr("VM Instance"),
 		// 				ProductTypeID: to.Ptr("A12345"),
 		// 				Quantity: to.Ptr[int32](1),
-		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00Z"); return t}()),
-		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00Z"); return t}()),
+		// 				ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-30T00:00:00.000Z"); return t}()),
+		// 				ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-01T00:00:00.000Z"); return t}()),
 		// 				SubTotal: &armbilling.Amount{
 		// 					Currency: to.Ptr("USD"),
 		// 					Value: to.Ptr[float32](45),

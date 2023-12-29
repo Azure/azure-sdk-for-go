@@ -32,7 +32,7 @@ type ManagedLedgerDigestUploadsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedLedgerDigestUploadsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedLedgerDigestUploadsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedLedgerDigestUploadsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,14 @@ func (client *ManagedLedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedLedgerDigestUploadsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedLedgerDigestUploadsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedLedgerDigestUploadsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedLedgerDigestUploadsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +78,10 @@ func (client *ManagedLedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.
 // Generated from API version 2022-08-01-preview
 func (client *ManagedLedgerDigestUploadsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, parameters ManagedLedgerDigestUploads, options *ManagedLedgerDigestUploadsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedLedgerDigestUploadsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads, parameters, options)
 	if err != nil {
 		return nil, err
@@ -142,10 +150,14 @@ func (client *ManagedLedgerDigestUploadsClient) BeginDisable(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedLedgerDigestUploadsClientDisableResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedLedgerDigestUploadsClientDisableResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedLedgerDigestUploadsClientDisableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedLedgerDigestUploadsClientDisableResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -155,6 +167,10 @@ func (client *ManagedLedgerDigestUploadsClient) BeginDisable(ctx context.Context
 // Generated from API version 2022-08-01-preview
 func (client *ManagedLedgerDigestUploadsClient) disable(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, options *ManagedLedgerDigestUploadsClientBeginDisableOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedLedgerDigestUploadsClient.BeginDisable"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.disableCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads, options)
 	if err != nil {
 		return nil, err
@@ -216,6 +232,10 @@ func (client *ManagedLedgerDigestUploadsClient) disableCreateRequest(ctx context
 //     method.
 func (client *ManagedLedgerDigestUploadsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, ledgerDigestUploads ManagedLedgerDigestUploadsName, options *ManagedLedgerDigestUploadsClientGetOptions) (ManagedLedgerDigestUploadsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedLedgerDigestUploadsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, ledgerDigestUploads, options)
 	if err != nil {
 		return ManagedLedgerDigestUploadsClientGetResponse{}, err
@@ -290,25 +310,20 @@ func (client *ManagedLedgerDigestUploadsClient) NewListByDatabasePager(resourceG
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedLedgerDigestUploadsClientListByDatabaseResponse) (ManagedLedgerDigestUploadsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedLedgerDigestUploadsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return ManagedLedgerDigestUploadsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedLedgerDigestUploadsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedLedgerDigestUploadsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

@@ -33,7 +33,7 @@ type EnvironmentDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".EnvironmentDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewEnvironmentDefinitionsClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetOptions) (EnvironmentDefinitionsClientGetResponse, error) {
 	var err error
+	const operationName = "EnvironmentDefinitionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
 	if err != nil {
 		return EnvironmentDefinitionsClientGetResponse{}, err
@@ -127,6 +131,10 @@ func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Respons
 //     method.
 func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, environmentDefinitionName string, options *EnvironmentDefinitionsClientGetErrorDetailsOptions) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
 	var err error
+	const operationName = "EnvironmentDefinitionsClient.GetErrorDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, environmentDefinitionName, options)
 	if err != nil {
 		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
@@ -200,25 +208,20 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EnvironmentDefinitionsClientListByCatalogResponse) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentDefinitionsClient.NewListByCatalogPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
+			}, nil)
 			if err != nil {
 				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EnvironmentDefinitionsClientListByCatalogResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByCatalogHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

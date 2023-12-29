@@ -33,7 +33,7 @@ type MHSMPrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MHSMPrivateLinkResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".MHSMPrivateLinkResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.
 //     method.
 func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateLinkResourcesClientListByMHSMResourceOptions) (MHSMPrivateLinkResourcesClientListByMHSMResourceResponse, error) {
 	var err error
+	const operationName = "MHSMPrivateLinkResourcesClient.ListByMHSMResource"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listByMHSMResourceCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}, err

@@ -32,7 +32,7 @@ type SecurityAdvisoryImpactedResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSecurityAdvisoryImpactedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityAdvisoryImpactedResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".SecurityAdvisoryImpactedResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,25 +55,20 @@ func (client *SecurityAdvisoryImpactedResourcesClient) NewListBySubscriptionIDAn
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse) (SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
+			}, nil)
 			if err != nil {
 				return SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionIDAndEventIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -123,25 +118,20 @@ func (client *SecurityAdvisoryImpactedResourcesClient) NewListByTenantIDAndEvent
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse) (SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
+			}, nil)
 			if err != nil {
 				return SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByTenantIDAndEventIDHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

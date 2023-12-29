@@ -36,7 +36,7 @@ func Example_publishAndReceiveCloudEvents() {
 	// Publish an event with a string payload
 	//
 	fmt.Fprintf(os.Stderr, "Published event with a string payload 'hello world'\n")
-	eventWithString, err := publishAndReceiveEvent(client, topicName, subscriptionName, "hello world")
+	eventWithString, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/json", "hello world")
 
 	if err != nil {
 		panic(err)
@@ -57,7 +57,7 @@ func Example_publishAndReceiveCloudEvents() {
 	//
 	// Publish an event with a []byte payload
 	//
-	eventWithBytes, err := publishAndReceiveEvent(client, topicName, subscriptionName, []byte{0, 1, 2})
+	eventWithBytes, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/octet-stream", []byte{0, 1, 2})
 
 	if err != nil {
 		panic(err)
@@ -74,7 +74,7 @@ func Example_publishAndReceiveCloudEvents() {
 		Name string `json:"name"`
 	}
 
-	eventWithStruct, err := publishAndReceiveEvent(client, topicName, subscriptionName, SampleData{Name: "hello"})
+	eventWithStruct, err := publishAndReceiveEvent(client, topicName, subscriptionName, "application/json", SampleData{Name: "hello"})
 
 	if err != nil {
 		panic(err)
@@ -92,8 +92,10 @@ func Example_publishAndReceiveCloudEvents() {
 	// Output:
 }
 
-func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, payload any) (azeventgrid.ReceiveDetails, error) {
-	event, err := messaging.NewCloudEvent("source", "eventType", payload, nil)
+func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, dataContentType string, payload any) (azeventgrid.ReceiveDetails, error) {
+	event, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
+		DataContentType: &dataContentType,
+	})
 
 	if err != nil {
 		return azeventgrid.ReceiveDetails{}, err
@@ -126,16 +128,24 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 		return azeventgrid.ReceiveDetails{}, errors.New("no events received")
 	}
 
+	// We can (optionally) renew the lock (multiple times) if we want to continue to
+	// extend the lock time on the event.
+	_, err = client.RenewCloudEventLocks(context.TODO(), topicName, subscriptionName, []string{
+		*events.Value[0].BrokerProperties.LockToken,
+	}, nil)
+
+	if err != nil {
+		return azeventgrid.ReceiveDetails{}, err
+	}
+
 	// This acknowledges the event and causes it to be deleted from the subscription.
 	// Other options are:
 	// - client.ReleaseCloudEvents, which invalidates our event lock and allows another subscriber to receive the event.
 	// - client.RejectCloudEvents, which rejects the event.
 	//     If dead-lettering is configured, the event will be moved into the dead letter queue.
 	//     Otherwise the event is deleted.
-	ackResp, err := client.AcknowledgeCloudEvents(context.TODO(), topicName, subscriptionName, azeventgrid.AcknowledgeOptions{
-		LockTokens: []string{
-			*events.Value[0].BrokerProperties.LockToken,
-		},
+	ackResp, err := client.AcknowledgeCloudEvents(context.TODO(), topicName, subscriptionName, []string{
+		*events.Value[0].BrokerProperties.LockToken,
 	}, nil)
 
 	if err != nil {
@@ -145,7 +155,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	if len(ackResp.FailedLockTokens) > 0 {
 		// some events failed when we tried to acknowledge them.
 		for _, failed := range ackResp.FailedLockTokens {
-			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, *failed.ErrorDescription)
+			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, failed.Error)
 		}
 
 		return azeventgrid.ReceiveDetails{}, errors.New("failed to acknowledge event")

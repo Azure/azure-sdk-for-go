@@ -314,7 +314,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && changelog.HasBreakingChanges() {
 			log.Printf("Replace fake module v2+...")
 			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, previousVersion, version.String(),
-				"fake", "_server.go"); err != nil {
+				"fake", ".go"); err != nil {
 				return nil, err
 			}
 		}
@@ -326,6 +326,16 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 				"", "_live_test.go"); err != nil {
 				return nil, err
 			}
+		}
+
+		log.Printf("Replace README.md module...")
+		if err = replaceReadmeModule(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String()); err != nil {
+			return nil, err
+		}
+
+		log.Printf("Replace README.md NewClient name...")
+		if err = ReplaceReadmeNewClientName(packagePath, newExports); err != nil {
+			return nil, err
 		}
 
 		// Example generation should be the last step because the package import relay on the new calculated version

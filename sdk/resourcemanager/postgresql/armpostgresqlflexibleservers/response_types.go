@@ -125,6 +125,21 @@ type FirewallRulesClientListByServerResponse struct {
 	FirewallRuleListResult
 }
 
+// FlexibleServerClientStartLtrBackupResponse contains the response from method FlexibleServerClient.BeginStartLtrBackup.
+type FlexibleServerClientStartLtrBackupResponse struct {
+	// Response for the LTR backup API call
+	LtrBackupResponse
+}
+
+// FlexibleServerClientTriggerLtrPreBackupResponse contains the response from method FlexibleServerClient.TriggerLtrPreBackup.
+type FlexibleServerClientTriggerLtrPreBackupResponse struct {
+	// Response for the LTR pre-backup API call
+	LtrPreBackupResponse
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
+}
+
 // GetPrivateDNSZoneSuffixClientExecuteResponse contains the response from method GetPrivateDNSZoneSuffixClient.Execute.
 type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
 	// Represents a resource name availability.
@@ -133,8 +148,55 @@ type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
 
 // LocationBasedCapabilitiesClientExecuteResponse contains the response from method LocationBasedCapabilitiesClient.NewExecutePager.
 type LocationBasedCapabilitiesClientExecuteResponse struct {
-	// location capability
+	// Capability for the PostgreSQL server
 	CapabilitiesListResult
+}
+
+// LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
+type LogFilesClientListByServerResponse struct {
+	// A List of logFiles.
+	LogFileListResult
+}
+
+// LtrBackupOperationsClientGetResponse contains the response from method LtrBackupOperationsClient.Get.
+type LtrBackupOperationsClientGetResponse struct {
+	// Response for the LTR backup Operation API call
+	LtrServerBackupOperation
+}
+
+// LtrBackupOperationsClientListByServerResponse contains the response from method LtrBackupOperationsClient.NewListByServerPager.
+type LtrBackupOperationsClientListByServerResponse struct {
+	// A list of long term retention backup operations for server.
+	LtrServerBackupOperationList
+}
+
+// MigrationsClientCreateResponse contains the response from method MigrationsClient.Create.
+type MigrationsClientCreateResponse struct {
+	// Represents a migration resource.
+	MigrationResource
+}
+
+// MigrationsClientDeleteResponse contains the response from method MigrationsClient.Delete.
+type MigrationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationsClientGetResponse contains the response from method MigrationsClient.Get.
+type MigrationsClientGetResponse struct {
+	// Represents a migration resource.
+	MigrationResource
+}
+
+// MigrationsClientListByTargetServerResponse contains the response from method MigrationsClient.NewListByTargetServerPager.
+type MigrationsClientListByTargetServerResponse struct {
+	// A list of migration resources.
+	MigrationResourceListResult
+}
+
+// MigrationsClientUpdateResponse contains the response from method MigrationsClient.Update.
+type MigrationsClientUpdateResponse struct {
+	// Represents a migration resource.
+	MigrationResource
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
@@ -143,10 +205,81 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLManagementClient.CheckMigrationNameAvailability.
+type PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse struct {
+	// Represents a migration name's availability.
+	MigrationNameAvailabilityResource
+}
+
+// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.BeginDelete.
+type PrivateEndpointConnectionClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionClientUpdateResponse contains the response from method PrivateEndpointConnectionClient.BeginUpdate.
+type PrivateEndpointConnectionClientUpdateResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListByServerResponse contains the response from method PrivateEndpointConnectionsClient.NewListByServerPager.
+type PrivateEndpointConnectionsClientListByServerResponse struct {
+	// A list of private endpoint connections.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListByServerResponse contains the response from method PrivateLinkResourcesClient.NewListByServerPager.
+type PrivateLinkResourcesClientListByServerResponse struct {
+	// A list of private link resources
+	PrivateLinkResourceListResult
+}
+
+// QuotaUsagesClientListResponse contains the response from method QuotaUsagesClient.NewListPager.
+type QuotaUsagesClientListResponse struct {
+	// Capability for the PostgreSQL server
+	QuotaUsagesListResult
+}
+
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.
 type ReplicasClientListByServerResponse struct {
 	// A list of servers.
 	ServerListResult
+}
+
+// ServerCapabilitiesClientListResponse contains the response from method ServerCapabilitiesClient.NewListPager.
+type ServerCapabilitiesClientListResponse struct {
+	// Capability for the PostgreSQL server
+	CapabilitiesListResult
+}
+
+// ServerThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method ServerThreatProtectionSettingsClient.BeginCreateOrUpdate.
+type ServerThreatProtectionSettingsClientCreateOrUpdateResponse struct {
+	// Server's Advanced Threat Protection settings.
+	ServerThreatProtectionSettingsModel
+}
+
+// ServerThreatProtectionSettingsClientGetResponse contains the response from method ServerThreatProtectionSettingsClient.Get.
+type ServerThreatProtectionSettingsClientGetResponse struct {
+	// Server's Advanced Threat Protection settings.
+	ServerThreatProtectionSettingsModel
+}
+
+// ServerThreatProtectionSettingsClientListByServerResponse contains the response from method ServerThreatProtectionSettingsClient.NewListByServerPager.
+type ServerThreatProtectionSettingsClientListByServerResponse struct {
+	// A list of the server's Advanced Threat Protection settings.
+	ServerThreatProtectionListResult
 }
 
 // ServersClientCreateResponse contains the response from method ServersClient.BeginCreate.
@@ -197,6 +330,35 @@ type ServersClientStopResponse struct {
 type ServersClientUpdateResponse struct {
 	// Represents a server.
 	Server
+}
+
+// VirtualEndpointsClientCreateResponse contains the response from method VirtualEndpointsClient.BeginCreate.
+type VirtualEndpointsClientCreateResponse struct {
+	// Represents a virtual endpoint for a server.
+	VirtualEndpointResource
+}
+
+// VirtualEndpointsClientDeleteResponse contains the response from method VirtualEndpointsClient.BeginDelete.
+type VirtualEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualEndpointsClientGetResponse contains the response from method VirtualEndpointsClient.Get.
+type VirtualEndpointsClientGetResponse struct {
+	// Represents a virtual endpoint for a server.
+	VirtualEndpointResource
+}
+
+// VirtualEndpointsClientListByServerResponse contains the response from method VirtualEndpointsClient.NewListByServerPager.
+type VirtualEndpointsClientListByServerResponse struct {
+	// A list of virtual endpoints.
+	VirtualEndpointsListResult
+}
+
+// VirtualEndpointsClientUpdateResponse contains the response from method VirtualEndpointsClient.BeginUpdate.
+type VirtualEndpointsClientUpdateResponse struct {
+	// Represents a virtual endpoint for a server.
+	VirtualEndpointResource
 }
 
 // VirtualNetworkSubnetUsageClientExecuteResponse contains the response from method VirtualNetworkSubnetUsageClient.Execute.

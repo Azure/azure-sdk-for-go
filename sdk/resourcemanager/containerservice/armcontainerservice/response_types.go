@@ -19,6 +19,11 @@ type AgentPoolsClientCreateOrUpdateResponse struct {
 	AgentPool
 }
 
+// AgentPoolsClientDeleteMachinesResponse contains the response from method AgentPoolsClient.BeginDeleteMachines.
+type AgentPoolsClientDeleteMachinesResponse struct {
+	// placeholder for future response values
+}
+
 // AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.BeginDelete.
 type AgentPoolsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -294,6 +299,24 @@ type ManagedClustersClientStopResponse struct {
 type ManagedClustersClientUpdateTagsResponse struct {
 	// Managed cluster.
 	ManagedCluster
+}
+
+// OperationStatusResultClientGetByAgentPoolResponse contains the response from method OperationStatusResultClient.GetByAgentPool.
+type OperationStatusResultClientGetByAgentPoolResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// OperationStatusResultClientGetResponse contains the response from method OperationStatusResultClient.Get.
+type OperationStatusResultClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// OperationStatusResultClientListResponse contains the response from method OperationStatusResultClient.NewListPager.
+type OperationStatusResultClientListResponse struct {
+	// The operations list. It contains an URL link to get the next set of results.
+	OperationStatusResultList
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

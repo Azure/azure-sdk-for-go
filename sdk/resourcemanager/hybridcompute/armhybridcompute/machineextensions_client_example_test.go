@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/PUTExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_CreateOrUpdate.json
 func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,13 +73,15 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Publisher: to.Ptr("Microsoft.Compute"),
-	// 		Settings: "@{commandToExecute=powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"}",
+	// 		Settings: map[string]any{
+	// 			"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"",
+	// 		},
 	// 		TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/UpdateExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_Update.json
 func ExampleMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,8 +94,9 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewMachineExtensionsClient().BeginUpdate(ctx, "myResourceGroup", "myMachine", "CustomScriptExtension", armhybridcompute.MachineExtensionUpdate{
 		Properties: &armhybridcompute.MachineExtensionUpdateProperties{
-			Type:      to.Ptr("CustomScriptExtension"),
-			Publisher: to.Ptr("Microsoft.Compute"),
+			Type:                   to.Ptr("CustomScriptExtension"),
+			EnableAutomaticUpgrade: to.Ptr(true),
+			Publisher:              to.Ptr("Microsoft.Compute"),
 			Settings: map[string]any{
 				"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -lt 100 }\"",
 			},
@@ -118,6 +121,7 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	// 	Properties: &armhybridcompute.MachineExtensionProperties{
 	// 		Type: to.Ptr("string"),
 	// 		AutoUpgradeMinorVersion: to.Ptr(false),
+	// 		EnableAutomaticUpgrade: to.Ptr(true),
 	// 		InstanceView: &armhybridcompute.MachineExtensionInstanceView{
 	// 			Name: to.Ptr("CustomScriptExtension"),
 	// 			Type: to.Ptr("CustomScriptExtension"),
@@ -133,13 +137,15 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	// 		},
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Publisher: to.Ptr("Microsoft.Compute"),
-	// 		Settings: "@{commandToExecute=powershell.exe -c \"Get-Process | Where-Object { $_.CPU -lt 100 }\"}",
+	// 		Settings: map[string]any{
+	// 			"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"",
+	// 		},
 	// 		TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/DELETEExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_Delete.json
 func ExampleMachineExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +166,7 @@ func ExampleMachineExtensionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/GETExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_Get.json
 func ExampleMachineExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,13 +208,15 @@ func ExampleMachineExtensionsClient_Get() {
 	// 		},
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		Publisher: to.Ptr("Microsoft.Compute"),
-	// 		Settings: "@{commandToExecute=powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"}",
+	// 		Settings: map[string]any{
+	// 			"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"",
+	// 		},
 	// 		TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/LISTExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_List.json
 func ExampleMachineExtensionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

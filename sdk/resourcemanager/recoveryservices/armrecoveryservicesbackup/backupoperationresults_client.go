@@ -32,7 +32,7 @@ type BackupOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackupOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupOperationResultsClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackupOperationResultsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewBackupOperationResultsClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *BackupOperationResultsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *BackupOperationResultsClientGetOptions) (BackupOperationResultsClientGetResponse, error) {
 	var err error
+	const operationName = "BackupOperationResultsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return BackupOperationResultsClientGetResponse{}, err

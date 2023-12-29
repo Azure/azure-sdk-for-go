@@ -123,7 +123,7 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace_createACompleteStreamingJob
 	// 	},
 	// 	Properties: &armstreamanalytics.StreamingJobProperties{
 	// 		CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.54Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.540Z"); return t}()),
 	// 		DataLocale: to.Ptr("en-US"),
 	// 		EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
 	// 		EventsOutOfOrderMaxDelayInSeconds: to.Ptr[int32](0),
@@ -423,7 +423,7 @@ func ExampleStreamingJobsClient_Get_getAStreamingJobAndUseTheExpandODataQueryPar
 	// 	},
 	// 	Properties: &armstreamanalytics.StreamingJobProperties{
 	// 		CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.54Z"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.540Z"); return t}()),
 	// 		DataLocale: to.Ptr("en-US"),
 	// 		EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
 	// 		EventsOutOfOrderMaxDelayInSeconds: to.Ptr[int32](0),
@@ -614,7 +614,7 @@ func ExampleStreamingJobsClient_NewListByResourceGroupPager_listAllStreamingJobs
 		// 			},
 		// 			Properties: &armstreamanalytics.StreamingJobProperties{
 		// 				CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.54Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.540Z"); return t}()),
 		// 				DataLocale: to.Ptr("en-US"),
 		// 				Etag: to.Ptr("8081b2a3-dfe6-457f-8740-1a22d209bf8a"),
 		// 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
@@ -698,7 +698,7 @@ func ExampleStreamingJobsClient_NewListByResourceGroupPager_listAllStreamingJobs
 		// 			},
 		// 			Properties: &armstreamanalytics.StreamingJobProperties{
 		// 				CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:38:11.54Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:38:11.540Z"); return t}()),
 		// 				DataLocale: to.Ptr("en-US"),
 		// 				Etag: to.Ptr("5420059f-e5d7-47d4-be44-40816a4dca7e"),
 		// 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
@@ -892,7 +892,7 @@ func ExampleStreamingJobsClient_NewListPager_listAllStreamingJobsInASubscription
 		// 			},
 		// 			Properties: &armstreamanalytics.StreamingJobProperties{
 		// 				CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.54Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:37:11.540Z"); return t}()),
 		// 				DataLocale: to.Ptr("en-US"),
 		// 				Etag: to.Ptr("8081b2a3-dfe6-457f-8740-1a22d209bf8a"),
 		// 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
@@ -976,7 +976,7 @@ func ExampleStreamingJobsClient_NewListPager_listAllStreamingJobsInASubscription
 		// 			},
 		// 			Properties: &armstreamanalytics.StreamingJobProperties{
 		// 				CompatibilityLevel: to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:38:11.54Z"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-11T04:38:11.540Z"); return t}()),
 		// 				DataLocale: to.Ptr("en-US"),
 		// 				Etag: to.Ptr("5420059f-e5d7-47d4-be44-40816a4dca7e"),
 		// 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
@@ -1065,7 +1065,7 @@ func ExampleStreamingJobsClient_BeginStart_startAStreamingJobWithCustomTimeOutpu
 	}
 	poller, err := clientFactory.NewStreamingJobsClient().BeginStart(ctx, "sjrg6936", "sj59", &armstreamanalytics.StreamingJobsClientBeginStartOptions{StartJobParameters: &armstreamanalytics.StartStreamingJobParameters{
 		OutputStartMode: to.Ptr(armstreamanalytics.OutputStartModeCustomTime),
-		OutputStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2012-12-12T12:12:12Z"); return t }()),
+		OutputStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2012-12-12T12:12:12.000Z"); return t }()),
 	},
 	})
 	if err != nil {

@@ -32,7 +32,7 @@ type DatabaseEncryptionProtectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseEncryptionProtectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseEncryptionProtectorsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseEncryptionProtectorsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseEncryptionProtectorsClientRevalidateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseEncryptionProtectorsClientRevalidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseEncryptionProtectorsClientRevalidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 // Generated from API version 2022-08-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevalidate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revalidateCreateRequest(ctx, resourceGroupName, serverName, databaseName, encryptionProtectorName, options)
 	if err != nil {
 		return nil, err
@@ -142,10 +149,13 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseEncryptionProtectorsClientRevertResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabaseEncryptionProtectorsClientRevertResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseEncryptionProtectorsClientRevertResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -155,6 +165,10 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 // Generated from API version 2022-08-01-preview
 func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabaseEncryptionProtectorsClient.BeginRevert"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.revertCreateRequest(ctx, resourceGroupName, serverName, databaseName, encryptionProtectorName, options)
 	if err != nil {
 		return nil, err

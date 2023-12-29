@@ -409,21 +409,21 @@ func (d *DeploymentsServerTransport) dispatchCancel(req *http.Request) (*http.Re
 	if d.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -442,21 +442,21 @@ func (d *DeploymentsServerTransport) dispatchCancelAtManagementGroupScope(req *h
 	if d.srv.CancelAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtManagementGroupScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CancelAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CancelAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -475,21 +475,21 @@ func (d *DeploymentsServerTransport) dispatchCancelAtScope(req *http.Request) (*
 	if d.srv.CancelAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CancelAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CancelAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -508,17 +508,17 @@ func (d *DeploymentsServerTransport) dispatchCancelAtSubscriptionScope(req *http
 	if d.srv.CancelAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtSubscriptionScope not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -537,17 +537,17 @@ func (d *DeploymentsServerTransport) dispatchCancelAtTenantScope(req *http.Reque
 	if d.srv.CancelAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtTenantScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CancelAtTenantScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CancelAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -566,21 +566,21 @@ func (d *DeploymentsServerTransport) dispatchCheckExistence(req *http.Request) (
 	if d.srv.CheckExistence == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CheckExistence(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CheckExistence(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -599,21 +599,21 @@ func (d *DeploymentsServerTransport) dispatchCheckExistenceAtManagementGroupScop
 	if d.srv.CheckExistenceAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtManagementGroupScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -632,21 +632,21 @@ func (d *DeploymentsServerTransport) dispatchCheckExistenceAtScope(req *http.Req
 	if d.srv.CheckExistenceAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CheckExistenceAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CheckExistenceAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -665,17 +665,17 @@ func (d *DeploymentsServerTransport) dispatchCheckExistenceAtSubscriptionScope(r
 	if d.srv.CheckExistenceAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtSubscriptionScope not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -694,17 +694,17 @@ func (d *DeploymentsServerTransport) dispatchCheckExistenceAtTenantScope(req *ht
 	if d.srv.CheckExistenceAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtTenantScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -725,7 +725,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -735,15 +735,15 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -773,7 +773,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtManagementGrou
 	}
 	beginCreateOrUpdateAtManagementGroupScope := d.beginCreateOrUpdateAtManagementGroupScope.get(req)
 	if beginCreateOrUpdateAtManagementGroupScope == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -783,15 +783,15 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtManagementGrou
 		if err != nil {
 			return nil, err
 		}
-		groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdateAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -821,7 +821,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *htt
 	}
 	beginCreateOrUpdateAtScope := d.beginCreateOrUpdateAtScope.get(req)
 	if beginCreateOrUpdateAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -831,15 +831,15 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *htt
 		if err != nil {
 			return nil, err
 		}
-		scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdateAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -869,7 +869,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionSc
 	}
 	beginCreateOrUpdateAtSubscriptionScope := d.beginCreateOrUpdateAtSubscriptionScope.get(req)
 	if beginCreateOrUpdateAtSubscriptionScope == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -879,11 +879,11 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionSc
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdateAtSubscriptionScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -913,7 +913,7 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(re
 	}
 	beginCreateOrUpdateAtTenantScope := d.beginCreateOrUpdateAtTenantScope.get(req)
 	if beginCreateOrUpdateAtTenantScope == nil {
-		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -923,11 +923,11 @@ func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(re
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginCreateOrUpdateAtTenantScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -957,21 +957,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, nil)
+		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1001,21 +1001,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtManagementGroupScope(r
 	}
 	beginDeleteAtManagementGroupScope := d.beginDeleteAtManagementGroupScope.get(req)
 	if beginDeleteAtManagementGroupScope == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDeleteAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, nil)
+		respr, errRespr := d.srv.BeginDeleteAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1045,21 +1045,21 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtScope(req *http.Reques
 	}
 	beginDeleteAtScope := d.beginDeleteAtScope.get(req)
 	if beginDeleteAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDeleteAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, nil)
+		respr, errRespr := d.srv.BeginDeleteAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1089,17 +1089,17 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtSubscriptionScope(req 
 	}
 	beginDeleteAtSubscriptionScope := d.beginDeleteAtSubscriptionScope.get(req)
 	if beginDeleteAtSubscriptionScope == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDeleteAtSubscriptionScope(req.Context(), deploymentNameUnescaped, nil)
+		respr, errRespr := d.srv.BeginDeleteAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1129,17 +1129,17 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtTenantScope(req *http.
 	}
 	beginDeleteAtTenantScope := d.beginDeleteAtTenantScope.get(req)
 	if beginDeleteAtTenantScope == nil {
-		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginDeleteAtTenantScope(req.Context(), deploymentNameUnescaped, nil)
+		respr, errRespr := d.srv.BeginDeleteAtTenantScope(req.Context(), deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1167,21 +1167,21 @@ func (d *DeploymentsServerTransport) dispatchExportTemplate(req *http.Request) (
 	if d.srv.ExportTemplate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.ExportTemplate(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.ExportTemplate(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1200,21 +1200,21 @@ func (d *DeploymentsServerTransport) dispatchExportTemplateAtManagementGroupScop
 	if d.srv.ExportTemplateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtManagementGroupScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1233,21 +1233,21 @@ func (d *DeploymentsServerTransport) dispatchExportTemplateAtScope(req *http.Req
 	if d.srv.ExportTemplateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.ExportTemplateAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.ExportTemplateAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1266,17 +1266,17 @@ func (d *DeploymentsServerTransport) dispatchExportTemplateAtSubscriptionScope(r
 	if d.srv.ExportTemplateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtSubscriptionScope not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1295,17 +1295,17 @@ func (d *DeploymentsServerTransport) dispatchExportTemplateAtTenantScope(req *ht
 	if d.srv.ExportTemplateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtTenantScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1324,21 +1324,21 @@ func (d *DeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1357,21 +1357,21 @@ func (d *DeploymentsServerTransport) dispatchGetAtManagementGroupScope(req *http
 	if d.srv.GetAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroupScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.GetAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.GetAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1390,21 +1390,21 @@ func (d *DeploymentsServerTransport) dispatchGetAtScope(req *http.Request) (*htt
 	if d.srv.GetAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
 		return nil, err
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.GetAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.GetAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1423,17 +1423,17 @@ func (d *DeploymentsServerTransport) dispatchGetAtSubscriptionScope(req *http.Re
 	if d.srv.GetAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtSubscriptionScope not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.GetAtSubscriptionScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.GetAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1452,17 +1452,17 @@ func (d *DeploymentsServerTransport) dispatchGetAtTenantScope(req *http.Request)
 	if d.srv.GetAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtTenantScope not implemented")}
 	}
-	const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 1 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.GetAtTenantScope(req.Context(), deploymentNameUnescaped, nil)
+	respr, errRespr := d.srv.GetAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1483,14 +1483,14 @@ func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(
 	}
 	newListAtManagementGroupScopePager := d.newListAtManagementGroupScopePager.get(req)
 	if newListAtManagementGroupScopePager == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 		if err != nil {
 			return nil, err
 		}
@@ -1520,7 +1520,7 @@ func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(
 				Top:    topParam,
 			}
 		}
-		resp := d.srv.NewListAtManagementGroupScopePager(groupIDUnescaped, options)
+		resp := d.srv.NewListAtManagementGroupScopePager(groupIDParam, options)
 		newListAtManagementGroupScopePager = &resp
 		d.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
 		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armresources.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
@@ -1547,14 +1547,14 @@ func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Reque
 	}
 	newListAtScopePager := d.newListAtScopePager.get(req)
 	if newListAtScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
+		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 		if err != nil {
 			return nil, err
 		}
@@ -1584,7 +1584,7 @@ func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Reque
 				Top:    topParam,
 			}
 		}
-		resp := d.srv.NewListAtScopePager(scopeUnescaped, options)
+		resp := d.srv.NewListAtScopePager(scopeParam, options)
 		newListAtScopePager = &resp
 		d.newListAtScopePager.add(req, newListAtScopePager)
 		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armresources.DeploymentsClientListAtScopeResponse, createLink func() string) {
@@ -1611,7 +1611,7 @@ func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req
 	}
 	newListAtSubscriptionScopePager := d.newListAtSubscriptionScopePager.get(req)
 	if newListAtSubscriptionScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -1725,14 +1725,14 @@ func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
@@ -1762,7 +1762,7 @@ func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 				Top:    topParam,
 			}
 		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameUnescaped, options)
+		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresources.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
@@ -1789,7 +1789,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*
 	}
 	beginValidate := d.beginValidate.get(req)
 	if beginValidate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -1799,15 +1799,15 @@ func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginValidate(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginValidate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1837,7 +1837,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtManagementGroupScope
 	}
 	beginValidateAtManagementGroupScope := d.beginValidateAtManagementGroupScope.get(req)
 	if beginValidateAtManagementGroupScope == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -1847,15 +1847,15 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtManagementGroupScope
 		if err != nil {
 			return nil, err
 		}
-		groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginValidateAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1885,7 +1885,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Requ
 	}
 	beginValidateAtScope := d.beginValidateAtScope.get(req)
 	if beginValidateAtScope == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -1895,15 +1895,15 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		scopeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginValidateAtScope(req.Context(), scopeUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1933,7 +1933,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtSubscriptionScope(re
 	}
 	beginValidateAtSubscriptionScope := d.beginValidateAtSubscriptionScope.get(req)
 	if beginValidateAtSubscriptionScope == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -1943,11 +1943,11 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtSubscriptionScope(re
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginValidateAtSubscriptionScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -1977,7 +1977,7 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtTenantScope(req *htt
 	}
 	beginValidateAtTenantScope := d.beginValidateAtTenantScope.get(req)
 	if beginValidateAtTenantScope == nil {
-		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -1987,11 +1987,11 @@ func (d *DeploymentsServerTransport) dispatchBeginValidateAtTenantScope(req *htt
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginValidateAtTenantScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -2021,7 +2021,7 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIf(req *http.Request) (*ht
 	}
 	beginWhatIf := d.beginWhatIf.get(req)
 	if beginWhatIf == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
@@ -2031,15 +2031,15 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIf(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginWhatIf(req.Context(), resourceGroupNameUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginWhatIf(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -2069,7 +2069,7 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtManagementGroupScope(r
 	}
 	beginWhatIfAtManagementGroupScope := d.beginWhatIfAtManagementGroupScope.get(req)
 	if beginWhatIfAtManagementGroupScope == nil {
-		const regexStr = `/providers/Microsoft.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -2079,15 +2079,15 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtManagementGroupScope(r
 		if err != nil {
 			return nil, err
 		}
-		groupIDUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginWhatIfAtManagementGroupScope(req.Context(), groupIDUnescaped, deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -2117,7 +2117,7 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req 
 	}
 	beginWhatIfAtSubscriptionScope := d.beginWhatIfAtSubscriptionScope.get(req)
 	if beginWhatIfAtSubscriptionScope == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
@@ -2127,11 +2127,11 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req 
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginWhatIfAtSubscriptionScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -2161,7 +2161,7 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.
 	}
 	beginWhatIfAtTenantScope := d.beginWhatIfAtTenantScope.get(req)
 	if beginWhatIfAtTenantScope == nil {
-		const regexStr = `/providers/Microsoft.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
@@ -2171,11 +2171,11 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.
 		if err != nil {
 			return nil, err
 		}
-		deploymentNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginWhatIfAtTenantScope(req.Context(), deploymentNameUnescaped, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

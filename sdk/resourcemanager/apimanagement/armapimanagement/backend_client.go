@@ -33,7 +33,7 @@ type BackendClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackendClient, error) {
-	cl, err := arm.NewClient(moduleName+".BackendClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewBackendClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - options - BackendClientCreateOrUpdateOptions contains the optional parameters for the BackendClient.CreateOrUpdate method.
 func (client *BackendClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, backendID string, parameters BackendContract, options *BackendClientCreateOrUpdateOptions) (BackendClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "BackendClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, backendID, parameters, options)
 	if err != nil {
 		return BackendClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *BackendClient) createOrUpdateHandleResponse(resp *http.Response) (
 //   - options - BackendClientDeleteOptions contains the optional parameters for the BackendClient.Delete method.
 func (client *BackendClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, options *BackendClientDeleteOptions) (BackendClientDeleteResponse, error) {
 	var err error
+	const operationName = "BackendClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, backendID, ifMatch, options)
 	if err != nil {
 		return BackendClientDeleteResponse{}, err
@@ -187,6 +195,10 @@ func (client *BackendClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - options - BackendClientGetOptions contains the optional parameters for the BackendClient.Get method.
 func (client *BackendClient) Get(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetOptions) (BackendClientGetResponse, error) {
 	var err error
+	const operationName = "BackendClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
 		return BackendClientGetResponse{}, err
@@ -254,6 +266,10 @@ func (client *BackendClient) getHandleResponse(resp *http.Response) (BackendClie
 //   - options - BackendClientGetEntityTagOptions contains the optional parameters for the BackendClient.GetEntityTag method.
 func (client *BackendClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientGetEntityTagOptions) (BackendClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "BackendClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
 		return BackendClientGetEntityTagResponse{}, err
@@ -302,11 +318,10 @@ func (client *BackendClient) getEntityTagCreateRequest(ctx context.Context, reso
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *BackendClient) getEntityTagHandleResponse(resp *http.Response) (BackendClientGetEntityTagResponse, error) {
-	result := BackendClientGetEntityTagResponse{}
+	result := BackendClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -323,25 +338,20 @@ func (client *BackendClient) NewListByServicePager(resourceGroupName string, ser
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *BackendClientListByServiceResponse) (BackendClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackendClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return BackendClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BackendClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BackendClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -400,6 +410,10 @@ func (client *BackendClient) listByServiceHandleResponse(resp *http.Response) (B
 //   - options - BackendClientReconnectOptions contains the optional parameters for the BackendClient.Reconnect method.
 func (client *BackendClient) Reconnect(ctx context.Context, resourceGroupName string, serviceName string, backendID string, options *BackendClientReconnectOptions) (BackendClientReconnectResponse, error) {
 	var err error
+	const operationName = "BackendClient.Reconnect"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.reconnectCreateRequest(ctx, resourceGroupName, serviceName, backendID, options)
 	if err != nil {
 		return BackendClientReconnectResponse{}, err
@@ -464,6 +478,10 @@ func (client *BackendClient) reconnectCreateRequest(ctx context.Context, resourc
 //   - options - BackendClientUpdateOptions contains the optional parameters for the BackendClient.Update method.
 func (client *BackendClient) Update(ctx context.Context, resourceGroupName string, serviceName string, backendID string, ifMatch string, parameters BackendUpdateParameters, options *BackendClientUpdateOptions) (BackendClientUpdateResponse, error) {
 	var err error
+	const operationName = "BackendClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, backendID, ifMatch, parameters, options)
 	if err != nil {
 		return BackendClientUpdateResponse{}, err

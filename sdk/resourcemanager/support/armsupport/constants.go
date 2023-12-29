@@ -9,8 +9,8 @@
 package armsupport
 
 const (
-	moduleName    = "armsupport"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
+	moduleVersion = "v2.0.0-beta.2"
 )
 
 // CommunicationDirection - Direction of communication.

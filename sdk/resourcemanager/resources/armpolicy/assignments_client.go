@@ -33,7 +33,7 @@ type AssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AssignmentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +60,10 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - options - AssignmentsClientCreateOptions contains the optional parameters for the AssignmentsClient.Create method.
 func (client *AssignmentsClient) Create(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment, options *AssignmentsClientCreateOptions) (AssignmentsClientCreateResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, scope, policyAssignmentName, parameters, options)
 	if err != nil {
 		return AssignmentsClientCreateResponse{}, err
@@ -123,6 +127,10 @@ func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (Assi
 //   - options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
 func (client *AssignmentsClient) CreateByID(ctx context.Context, policyAssignmentID string, parameters Assignment, options *AssignmentsClientCreateByIDOptions) (AssignmentsClientCreateByIDResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.CreateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createByIDCreateRequest(ctx, policyAssignmentID, parameters, options)
 	if err != nil {
 		return AssignmentsClientCreateByIDResponse{}, err
@@ -181,6 +189,10 @@ func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (
 //   - options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
 func (client *AssignmentsClient) Delete(ctx context.Context, scope string, policyAssignmentName string, options *AssignmentsClientDeleteOptions) (AssignmentsClientDeleteResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, scope, policyAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientDeleteResponse{}, err
@@ -239,6 +251,10 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 //   - options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
 func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.DeleteByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteByIDCreateRequest(ctx, policyAssignmentID, options)
 	if err != nil {
 		return AssignmentsClientDeleteByIDResponse{}, err
@@ -292,6 +308,10 @@ func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (
 //   - options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
 func (client *AssignmentsClient) Get(ctx context.Context, scope string, policyAssignmentName string, options *AssignmentsClientGetOptions) (AssignmentsClientGetResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, scope, policyAssignmentName, options)
 	if err != nil {
 		return AssignmentsClientGetResponse{}, err
@@ -349,6 +369,10 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 //   - options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.GetByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByIDCreateRequest(ctx, policyAssignmentID, options)
 	if err != nil {
 		return AssignmentsClientGetByIDResponse{}, err
@@ -409,25 +433,20 @@ func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOpti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientListResponse) (AssignmentsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -484,25 +503,20 @@ func (client *AssignmentsClient) NewListForManagementGroupPager(managementGroupI
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientListForManagementGroupResponse) (AssignmentsClientListForManagementGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListForManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientListForManagementGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListForManagementGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForManagementGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -578,25 +592,20 @@ func (client *AssignmentsClient) NewListForResourcePager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceResponse) (AssignmentsClientListForResourceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListForResourcePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientListForResourceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListForResourceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientListForResourceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForResourceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -671,25 +680,20 @@ func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AssignmentsClientListForResourceGroupResponse) (AssignmentsClientListForResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssignmentsClient.NewListForResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AssignmentsClientListForResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AssignmentsClientListForResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AssignmentsClientListForResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listForResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -748,6 +752,10 @@ func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.R
 //   - options - AssignmentsClientUpdateOptions contains the optional parameters for the AssignmentsClient.Update method.
 func (client *AssignmentsClient) Update(ctx context.Context, scope string, policyAssignmentName string, parameters AssignmentUpdate, options *AssignmentsClientUpdateOptions) (AssignmentsClientUpdateResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, scope, policyAssignmentName, parameters, options)
 	if err != nil {
 		return AssignmentsClientUpdateResponse{}, err
@@ -811,6 +819,10 @@ func (client *AssignmentsClient) updateHandleResponse(resp *http.Response) (Assi
 //   - options - AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
 func (client *AssignmentsClient) UpdateByID(ctx context.Context, policyAssignmentID string, parameters AssignmentUpdate, options *AssignmentsClientUpdateByIDOptions) (AssignmentsClientUpdateByIDResponse, error) {
 	var err error
+	const operationName = "AssignmentsClient.UpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateByIDCreateRequest(ctx, policyAssignmentID, parameters, options)
 	if err != nil {
 		return AssignmentsClientUpdateByIDResponse{}, err

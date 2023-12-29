@@ -33,7 +33,7 @@ type ApplicationGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewApplicationGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ApplicationGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewApplicationGroupsClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *ApplicationGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationGroupName string, applicationGroup ApplicationGroup, options *ApplicationGroupsClientCreateOrUpdateOptions) (ApplicationGroupsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationGroupsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationGroupName, applicationGroup, options)
 	if err != nil {
 		return ApplicationGroupsClientCreateOrUpdateResponse{}, err
@@ -119,6 +123,10 @@ func (client *ApplicationGroupsClient) createOrUpdateHandleResponse(resp *http.R
 //     method.
 func (client *ApplicationGroupsClient) Delete(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientDeleteOptions) (ApplicationGroupsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ApplicationGroupsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
 		return ApplicationGroupsClientDeleteResponse{}, err
@@ -169,6 +177,10 @@ func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, 
 //   - options - ApplicationGroupsClientGetOptions contains the optional parameters for the ApplicationGroupsClient.Get method.
 func (client *ApplicationGroupsClient) Get(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientGetOptions) (ApplicationGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "ApplicationGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
 		return ApplicationGroupsClientGetResponse{}, err
@@ -232,25 +244,20 @@ func (client *ApplicationGroupsClient) NewListByResourceGroupPager(resourceGroup
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGroupsClientListByResourceGroupResponse) (ApplicationGroupsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGroupsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ApplicationGroupsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGroupsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationGroupsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -308,25 +315,20 @@ func (client *ApplicationGroupsClient) NewListBySubscriptionPager(options *Appli
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ApplicationGroupsClientListBySubscriptionResponse) (ApplicationGroupsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApplicationGroupsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ApplicationGroupsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ApplicationGroupsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplicationGroupsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -370,6 +372,10 @@ func (client *ApplicationGroupsClient) listBySubscriptionHandleResponse(resp *ht
 //     method.
 func (client *ApplicationGroupsClient) Update(ctx context.Context, resourceGroupName string, applicationGroupName string, options *ApplicationGroupsClientUpdateOptions) (ApplicationGroupsClientUpdateResponse, error) {
 	var err error
+	const operationName = "ApplicationGroupsClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, applicationGroupName, options)
 	if err != nil {
 		return ApplicationGroupsClientUpdateResponse{}, err

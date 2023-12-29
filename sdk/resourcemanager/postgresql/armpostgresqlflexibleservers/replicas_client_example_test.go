@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/75ece9197dbac70ac0ba651c53a79c1841944be2/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,11 +79,19 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				Network: &armpostgresqlflexibleservers.Network{
 		// 					PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
 		// 				},
+		// 				Replica: &armpostgresqlflexibleservers.Replica{
+		// 					Capacity: to.Ptr[int32](0),
+		// 					ReplicationState: to.Ptr(armpostgresqlflexibleservers.ReplicationStateActive),
+		// 					Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
+		// 				},
 		// 				ReplicaCapacity: to.Ptr[int32](0),
 		// 				ReplicationRole: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
 		// 				State: to.Ptr(armpostgresqlflexibleservers.ServerStateReady),
 		// 				Storage: &armpostgresqlflexibleservers.Storage{
+		// 					AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
+		// 					Iops: to.Ptr[int32](2300),
 		// 					StorageSizeGB: to.Ptr[int32](512),
+		// 					Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP20),
 		// 				},
 		// 				Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionTwelve),
 		// 			},

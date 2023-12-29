@@ -32,7 +32,7 @@ type FileServicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileServicesClient, error) {
-	cl, err := arm.NewClient(moduleName+".FileServicesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}

@@ -30,7 +30,7 @@ type FileWorkspacesNoSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFileWorkspacesNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*FileWorkspacesNoSubscriptionClient, error) {
-	cl, err := arm.NewClient(moduleName+".FileWorkspacesNoSubscriptionClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +49,10 @@ func NewFileWorkspacesNoSubscriptionClient(credential azcore.TokenCredential, op
 //     method.
 func (client *FileWorkspacesNoSubscriptionClient) Create(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesNoSubscriptionClientCreateOptions) (FileWorkspacesNoSubscriptionClientCreateResponse, error) {
 	var err error
+	const operationName = "FileWorkspacesNoSubscriptionClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, fileWorkspaceName, options)
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientCreateResponse{}, err
@@ -101,6 +105,10 @@ func (client *FileWorkspacesNoSubscriptionClient) createHandleResponse(resp *htt
 //     method.
 func (client *FileWorkspacesNoSubscriptionClient) Get(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesNoSubscriptionClientGetOptions) (FileWorkspacesNoSubscriptionClientGetResponse, error) {
 	var err error
+	const operationName = "FileWorkspacesNoSubscriptionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, fileWorkspaceName, options)
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientGetResponse{}, err

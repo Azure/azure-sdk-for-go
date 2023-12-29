@@ -32,7 +32,7 @@ type ManagedInstancePrivateEndpointConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedInstancePrivateEndpointConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedInstancePrivateEndpointConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,10 +58,14 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpda
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -71,6 +75,10 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpda
 // Generated from API version 2020-11-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancePrivateEndpointConnectionsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +142,14 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx c
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +159,10 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx c
 // Generated from API version 2020-11-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ManagedInstancePrivateEndpointConnectionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -203,6 +219,10 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateReque
 //     method.
 func (client *ManagedInstancePrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientGetOptions) (ManagedInstancePrivateEndpointConnectionsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedInstancePrivateEndpointConnectionsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, options)
 	if err != nil {
 		return ManagedInstancePrivateEndpointConnectionsClientGetResponse{}, err
@@ -272,25 +292,20 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) NewListByManagedI
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse) (ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedInstancePrivateEndpointConnectionsClient.NewListByManagedInstancePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByManagedInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
+			}, nil)
 			if err != nil {
 				return ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByManagedInstanceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

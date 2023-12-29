@@ -32,7 +32,7 @@ type ProtectedItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectedItemsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +59,10 @@ func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *ProtectedItemsClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource, options *ProtectedItemsClientCreateOrUpdateOptions) (ProtectedItemsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProtectedItemsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, options)
 	if err != nil {
 		return ProtectedItemsClientCreateOrUpdateResponse{}, err
@@ -138,6 +142,10 @@ func (client *ProtectedItemsClient) createOrUpdateHandleResponse(resp *http.Resp
 //   - options - ProtectedItemsClientDeleteOptions contains the optional parameters for the ProtectedItemsClient.Delete method.
 func (client *ProtectedItemsClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientDeleteOptions) (ProtectedItemsClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProtectedItemsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
 	if err != nil {
 		return ProtectedItemsClientDeleteResponse{}, err
@@ -204,6 +212,10 @@ func (client *ProtectedItemsClient) deleteCreateRequest(ctx context.Context, vau
 //   - options - ProtectedItemsClientGetOptions contains the optional parameters for the ProtectedItemsClient.Get method.
 func (client *ProtectedItemsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientGetOptions) (ProtectedItemsClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectedItemsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, options)
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err

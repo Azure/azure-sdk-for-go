@@ -8,6 +8,108 @@
 
 package armhybridcompute
 
+// AgentVersionClientGetOptions contains the optional parameters for the AgentVersionClient.Get method.
+type AgentVersionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentVersionClientListOptions contains the optional parameters for the AgentVersionClient.List method.
+type AgentVersionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExtensionMetadataClientGetOptions contains the optional parameters for the ExtensionMetadataClient.Get method.
+type ExtensionMetadataClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExtensionMetadataClientListOptions contains the optional parameters for the ExtensionMetadataClient.NewListPager method.
+type ExtensionMetadataClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridIdentityMetadataClientGetOptions contains the optional parameters for the HybridIdentityMetadataClient.Get method.
+type HybridIdentityMetadataClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HybridIdentityMetadataClientListByMachinesOptions contains the optional parameters for the HybridIdentityMetadataClient.NewListByMachinesPager
+// method.
+type HybridIdentityMetadataClientListByMachinesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicenseProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the LicenseProfilesClient.BeginCreateOrUpdate
+// method.
+type LicenseProfilesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicenseProfilesClientBeginDeleteOptions contains the optional parameters for the LicenseProfilesClient.BeginDelete method.
+type LicenseProfilesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicenseProfilesClientBeginUpdateOptions contains the optional parameters for the LicenseProfilesClient.BeginUpdate method.
+type LicenseProfilesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicenseProfilesClientGetOptions contains the optional parameters for the LicenseProfilesClient.Get method.
+type LicenseProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicenseProfilesClientListOptions contains the optional parameters for the LicenseProfilesClient.NewListPager method.
+type LicenseProfilesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicensesClientBeginCreateOrUpdateOptions contains the optional parameters for the LicensesClient.BeginCreateOrUpdate method.
+type LicensesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientBeginDeleteOptions contains the optional parameters for the LicensesClient.BeginDelete method.
+type LicensesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientBeginUpdateOptions contains the optional parameters for the LicensesClient.BeginUpdate method.
+type LicensesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientBeginValidateLicenseOptions contains the optional parameters for the LicensesClient.BeginValidateLicense
+// method.
+type LicensesClientBeginValidateLicenseOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// LicensesClientGetOptions contains the optional parameters for the LicensesClient.Get method.
+type LicensesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicensesClientListByResourceGroupOptions contains the optional parameters for the LicensesClient.NewListByResourceGroupPager
+// method.
+type LicensesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LicensesClientListBySubscriptionOptions contains the optional parameters for the LicensesClient.NewListBySubscriptionPager
+// method.
+type LicensesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
 // method.
 type MachineExtensionsClientBeginCreateOrUpdateOptions struct {
@@ -40,9 +142,22 @@ type MachineExtensionsClientListOptions struct {
 	Expand *string
 }
 
+// MachinesClientBeginAssessPatchesOptions contains the optional parameters for the MachinesClient.BeginAssessPatches method.
+type MachinesClientBeginAssessPatchesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// MachinesClientBeginInstallPatchesOptions contains the optional parameters for the MachinesClient.BeginInstallPatches method.
+type MachinesClientBeginInstallPatchesOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
 type MachinesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Expands referenced resources.
+	Expand *string
 }
 
 // MachinesClientDeleteOptions contains the optional parameters for the MachinesClient.Delete method.
@@ -59,7 +174,8 @@ type MachinesClientGetOptions struct {
 // MachinesClientListByResourceGroupOptions contains the optional parameters for the MachinesClient.NewListByResourceGroupPager
 // method.
 type MachinesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// Expands referenced resources.
+	Expand *string
 }
 
 // MachinesClientListBySubscriptionOptions contains the optional parameters for the MachinesClient.NewListBySubscriptionPager
@@ -78,6 +194,11 @@ type MachinesClientUpdateOptions struct {
 type ManagementClientBeginUpgradeExtensionsOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+}
+
+// NetworkProfileClientGetOptions contains the optional parameters for the NetworkProfileClient.Get method.
+type NetworkProfileClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.

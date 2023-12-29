@@ -13,30 +13,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetAudioTranscription_AzureOpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
-	client := newTestClient(t, azureWhisper, withForgivingRetryOption())
-	runTranscriptionTests(t, client, azureWhisperModel)
+	client := newTestClient(t, azureOpenAI.Whisper.Endpoint, withForgivingRetryOption())
+	runTranscriptionTests(t, client, azureOpenAI.Whisper.Model)
 }
 
 func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
 	client := newOpenAIClientForTest(t)
 
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
 	require.NoError(t, err)
 
-	args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, openAIWhisperModel, mp3Bytes)
+	args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, openAI.Whisper.Model, mp3Bytes)
 	transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, transcriptResp)
@@ -50,25 +41,17 @@ func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
 }
 
 func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
-	client := newTestClient(t, azureWhisper, withForgivingRetryOption())
-	runTranslationTests(t, client, azureWhisperModel)
+	client := newTestClient(t, azureOpenAI.Whisper.Endpoint, withForgivingRetryOption())
+	runTranslationTests(t, client, azureOpenAI.Whisper.Model)
 }
 
 func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Recording needs to be revisited for multipart: https://github.com/Azure/azure-sdk-for-go/issues/21598")
-	}
-
 	client := newOpenAIClientForTest(t)
 
 	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
 	require.NoError(t, err)
 
-	args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, openAIWhisperModel, mp3Bytes)
+	args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, openAI.Whisper.Model, mp3Bytes)
 	transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, transcriptResp)
@@ -151,7 +134,7 @@ func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
 		require.NotEmpty(t, transcriptResp)
 
 		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
 	})
 
 	t.Run(string(azopenai.AudioTranscriptionFormatSrt), func(t *testing.T) {
@@ -161,7 +144,7 @@ func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
 		require.NotEmpty(t, transcriptResp)
 
 		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
 	})
 
 	t.Run(string(azopenai.AudioTranscriptionFormatVtt), func(t *testing.T) {
@@ -171,7 +154,7 @@ func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
 		require.NotEmpty(t, transcriptResp)
 
 		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
 	})
 
 	t.Run(string(azopenai.AudioTranscriptionFormatVerboseJSON), func(t *testing.T) {
@@ -195,13 +178,13 @@ func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
 		require.NotEmpty(t, transcriptResp)
 
 		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
 	})
 }
 
 func newTranscriptionOptions(format azopenai.AudioTranscriptionFormat, model string, mp3Bytes []byte) azopenai.AudioTranscriptionOptions {
 	return azopenai.AudioTranscriptionOptions{
-		Deployment:     model,
+		DeploymentName: to.Ptr(model),
 		File:           mp3Bytes,
 		ResponseFormat: &format,
 		Language:       to.Ptr("en"),
@@ -211,7 +194,7 @@ func newTranscriptionOptions(format azopenai.AudioTranscriptionFormat, model str
 
 func newTranslationOptions(format azopenai.AudioTranslationFormat, model string, mp3Bytes []byte) azopenai.AudioTranslationOptions {
 	return azopenai.AudioTranslationOptions{
-		Deployment:     model,
+		DeploymentName: to.Ptr(model),
 		File:           mp3Bytes,
 		ResponseFormat: &format,
 		Temperature:    to.Ptr[float32](0.0),
@@ -221,6 +204,15 @@ func newTranslationOptions(format azopenai.AudioTranslationFormat, model string,
 // requireEmptyAudioTranscription checks that all the attributes are empty (aside
 // from Text)
 func requireEmptyAudioTranscription(t *testing.T, at azopenai.AudioTranscription) {
+	// Text is always filled out for
+
+	require.Empty(t, at.Duration)
+	require.Empty(t, at.Language)
+	require.Empty(t, at.Segments)
+	require.Empty(t, at.Task)
+}
+
+func requireEmptyAudioTranslation(t *testing.T, at azopenai.AudioTranslation) {
 	// Text is always filled out for
 
 	require.Empty(t, at.Duration)

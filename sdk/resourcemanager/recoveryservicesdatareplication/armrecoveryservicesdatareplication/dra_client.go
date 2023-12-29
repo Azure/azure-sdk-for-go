@@ -32,7 +32,7 @@ type DraClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDraClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DraClient, error) {
-	cl, err := arm.NewClient(moduleName+".DraClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *DraClient) BeginCreate(ctx context.Context, resourceGroupName stri
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DraClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DraClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DraClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *DraClient) BeginCreate(ctx context.Context, resourceGroupName stri
 // Generated from API version 2021-02-16-preview
 func (client *DraClient) create(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, body DraModel, options *DraClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DraClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, fabricName, fabricAgentName, body, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *DraClient) create(ctx context.Context, resourceGroupName string, f
 // createCreateRequest creates the Create request.
 func (client *DraClient) createCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, body DraModel, options *DraClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -134,10 +144,13 @@ func (client *DraClient) BeginDelete(ctx context.Context, resourceGroupName stri
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DraClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DraClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DraClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +160,10 @@ func (client *DraClient) BeginDelete(ctx context.Context, resourceGroupName stri
 // Generated from API version 2021-02-16-preview
 func (client *DraClient) deleteOperation(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *DraClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DraClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fabricName, fabricAgentName, options)
 	if err != nil {
 		return nil, err
@@ -165,6 +182,9 @@ func (client *DraClient) deleteOperation(ctx context.Context, resourceGroupName 
 // deleteCreateRequest creates the Delete request.
 func (client *DraClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *DraClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -199,6 +219,10 @@ func (client *DraClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 //   - options - DraClientGetOptions contains the optional parameters for the DraClient.Get method.
 func (client *DraClient) Get(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *DraClientGetOptions) (DraClientGetResponse, error) {
 	var err error
+	const operationName = "DraClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, fabricName, fabricAgentName, options)
 	if err != nil {
 		return DraClientGetResponse{}, err
@@ -218,6 +242,9 @@ func (client *DraClient) Get(ctx context.Context, resourceGroupName string, fabr
 // getCreateRequest creates the Get request.
 func (client *DraClient) getCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *DraClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -263,31 +290,29 @@ func (client *DraClient) NewListPager(resourceGroupName string, fabricName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DraClientListResponse) (DraClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, fabricName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DraClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, fabricName, options)
+			}, nil)
 			if err != nil {
 				return DraClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DraClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DraClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *DraClient) listCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, options *DraClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -32,7 +32,7 @@ type TargetComputeSizesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTargetComputeSizesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetComputeSizesClient, error) {
-	cl, err := arm.NewClient(moduleName+".TargetComputeSizesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,25 +59,20 @@ func (client *TargetComputeSizesClient) NewListByReplicationProtectedItemsPager(
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TargetComputeSizesClientListByReplicationProtectedItemsResponse) (TargetComputeSizesClientListByReplicationProtectedItemsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByReplicationProtectedItemsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TargetComputeSizesClient.NewListByReplicationProtectedItemsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByReplicationProtectedItemsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+			}, nil)
 			if err != nil {
 				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TargetComputeSizesClientListByReplicationProtectedItemsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByReplicationProtectedItemsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

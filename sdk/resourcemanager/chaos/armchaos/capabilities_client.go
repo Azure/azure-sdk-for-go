@@ -32,7 +32,7 @@ type CapabilitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapabilitiesClient, error) {
-	cl, err := arm.NewClient(moduleName+".CapabilitiesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 // CreateOrUpdate - Create or update a Capability resource that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -58,6 +58,10 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *CapabilitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, capability Capability, options *CapabilitiesClientCreateOrUpdateOptions) (CapabilitiesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "CapabilitiesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, capability, options)
 	if err != nil {
 		return CapabilitiesClientCreateOrUpdateResponse{}, err
@@ -110,7 +114,7 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, capability); err != nil {
@@ -131,7 +135,7 @@ func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Respon
 // Delete - Delete a Capability that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -141,6 +145,10 @@ func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Respon
 //   - options - CapabilitiesClientDeleteOptions contains the optional parameters for the CapabilitiesClient.Delete method.
 func (client *CapabilitiesClient) Delete(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientDeleteOptions) (CapabilitiesClientDeleteResponse, error) {
 	var err error
+	const operationName = "CapabilitiesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, options)
 	if err != nil {
 		return CapabilitiesClientDeleteResponse{}, err
@@ -192,7 +200,7 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +209,7 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get a Capability resource that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -211,6 +219,10 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 //   - options - CapabilitiesClientGetOptions contains the optional parameters for the CapabilitiesClient.Get method.
 func (client *CapabilitiesClient) Get(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, capabilityName string, options *CapabilitiesClientGetOptions) (CapabilitiesClientGetResponse, error) {
 	var err error
+	const operationName = "CapabilitiesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, capabilityName, options)
 	if err != nil {
 		return CapabilitiesClientGetResponse{}, err
@@ -263,7 +275,7 @@ func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +292,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 
 // NewListPager - Get a list of Capability resources that extend a Target resource..
 //
-// Generated from API version 2023-04-15-preview
+// Generated from API version 2023-11-01
 //   - resourceGroupName - String that represents an Azure resource group.
 //   - parentProviderNamespace - String that represents a resource provider namespace.
 //   - parentResourceType - String that represents a resource type.
@@ -293,25 +305,20 @@ func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentP
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CapabilitiesClientListResponse) (CapabilitiesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CapabilitiesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
+			}, nil)
 			if err != nil {
 				return CapabilitiesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CapabilitiesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CapabilitiesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -347,7 +354,7 @@ func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-15-preview")
+	reqQP.Set("api-version", "2023-11-01")
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}

@@ -242,3 +242,166 @@ func ExampleClient_DeleteSetting() {
 
 	// Output:
 }
+
+func ExampleClient_BeginCreateSnapshot() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotName := "example-snapshot"
+
+	filter := []azappconfig.SettingFilter{
+		{
+			// TODO: Update the following line with your application specific filter logic
+			KeyFilter:   to.Ptr("*"),
+			LabelFilter: to.Ptr("*"),
+		},
+	}
+
+	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.CreateSnapshotOptions{})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleClient_ArchiveSnapshot() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotName := "existing-snapshot-example"
+
+	_, err = client.ArchiveSnapshot(context.TODO(), snapshotName, &azappconfig.ArchiveSnapshotOptions{})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleClient_RecoverSnapshot() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotName := "existing-snapshot-example"
+
+	_, err = client.RecoverSnapshot(context.TODO(), snapshotName, &azappconfig.RecoverSnapshotOptions{})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleClient_NewListSnapshotsPager() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotPager := client.NewListSnapshotsPager(nil)
+
+	for snapshotPager.More() {
+		snapshotPage, err := snapshotPager.NextPage(context.TODO())
+
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, snapshot := range snapshotPage.Snapshots {
+			// TODO: implement your application specific logic here
+			_ = snapshot
+		}
+	}
+}
+
+func ExampleClient_NewListSettingsForSnapshotPager() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotName := "existing-snapshot-example"
+
+	snapshotPager := client.NewListSettingsForSnapshotPager(snapshotName, nil)
+
+	for snapshotPager.More() {
+		snapshotPage, err := snapshotPager.NextPage(context.TODO())
+
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, setting := range snapshotPage.Settings {
+			// TODO: implement your application specific logic here
+			_ = setting
+		}
+	}
+}
+
+func ExampleClient_GetSnapshot() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	snapshotName := "snapshot-example"
+
+	snapshot, err := client.GetSnapshot(context.TODO(), snapshotName, &azappconfig.GetSnapshotOptions{})
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+	}
+
+	_ = snapshot // TODO: do something with snapshot
+}

@@ -33,7 +33,7 @@ type ManagedDatabaseMoveOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseMoveOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseMoveOperationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseMoveOperationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewManagedDatabaseMoveOperationsClient(subscriptionID string, credential az
 //     method.
 func (client *ManagedDatabaseMoveOperationsClient) Get(ctx context.Context, resourceGroupName string, locationName string, operationID string, options *ManagedDatabaseMoveOperationsClientGetOptions) (ManagedDatabaseMoveOperationsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseMoveOperationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, locationName, operationID, options)
 	if err != nil {
 		return ManagedDatabaseMoveOperationsClientGetResponse{}, err
@@ -81,6 +85,9 @@ func (client *ManagedDatabaseMoveOperationsClient) getCreateRequest(ctx context.
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -119,25 +126,20 @@ func (client *ManagedDatabaseMoveOperationsClient) NewListByLocationPager(resour
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedDatabaseMoveOperationsClientListByLocationResponse) (ManagedDatabaseMoveOperationsClientListByLocationResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDatabaseMoveOperationsClient.NewListByLocationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
+			}, nil)
 			if err != nil {
 				return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByLocationHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

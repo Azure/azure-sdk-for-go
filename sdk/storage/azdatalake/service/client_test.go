@@ -780,3 +780,33 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 	}
 	_require.GreaterOrEqual(count, 2)
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientRequiresHTTPS() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := svcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	_require.Equal(fileClient.DFSURL(), "http://"+cred.AccountName()+".dfs.core.windows.net/"+fsName+"/"+fileName)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+accountName+".dfs.core.windows.net/", nil, nil)
+	_require.Error(err)
+	_require.Nil(svcClient)
+}

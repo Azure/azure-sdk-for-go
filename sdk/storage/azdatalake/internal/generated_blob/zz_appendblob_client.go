@@ -33,7 +33,7 @@ type AppendBlobClient struct {
 // AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2021-12-02
 //   - contentLength - The length of the request.
 //   - body - Initial data
 //   - options - AppendBlobClientAppendBlockOptions contains the optional parameters for the AppendBlobClient.AppendBlock method.
@@ -113,7 +113,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -199,7 +199,7 @@ func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (
 // created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2021-12-02
 //   - sourceURL - Specify a URL to the copy source.
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientAppendBlockFromURLOptions contains the optional parameters for the AppendBlobClient.AppendBlockFromURL
@@ -301,7 +301,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfNoneMatch)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -382,7 +382,7 @@ func (client *AppendBlobClient) appendBlockFromURLHandleResponse(resp *http.Resp
 // Create - The Create Append Blob operation creates a new append blob.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2021-12-02
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientCreateOptions contains the optional parameters for the AppendBlobClient.Create method.
 //   - BlobHTTPHeaders - BlobHTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
@@ -473,7 +473,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
 		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -552,7 +552,7 @@ func (client *AppendBlobClient) createHandleResponse(resp *http.Response) (Appen
 // or later.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-02
+// Generated from API version 2021-12-02
 //   - options - AppendBlobClientSealOptions contains the optional parameters for the AppendBlobClient.Seal method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
@@ -585,7 +585,7 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["x-ms-version"] = []string{"2021-12-02"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

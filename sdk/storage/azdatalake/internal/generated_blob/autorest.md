@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e515b6251fdc21015282d2e84b85beec7c091763/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a32d0b2423d19835246bb2ef92941503bfd5e734/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated_blob
 file-prefix: "zz_"
@@ -475,6 +475,7 @@ directive:
         replace(/BlobItem/g, 'PathItem').
         replace(/BlobPrefix/g, 'PathPrefix').
         replace(/BlobPrefixes/g, 'PathPrefixes').
+        replace(/BlobName/g, 'PathName').
         replace(/BlobProperties/g, 'PathProperties').
         replace(/ContainerProperties/g, 'FileSystemProperties');
 ```

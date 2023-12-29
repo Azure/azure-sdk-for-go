@@ -9,7 +9,7 @@
 
 ### Bugs Fixed
 
-* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
 
 ### Other Changes
 

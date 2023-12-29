@@ -1810,7 +1810,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {
 	_require.Error(err)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientRequiresHTTPS() {
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
 	_require := require.New(s.T())
 
 	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
@@ -1829,7 +1829,9 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
-	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".blob.core.windows.net/", nil, nil)
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".blob.core.windows.net/", nil, options)
 	_require.NoError(err)
 
 	_, err = svcClient.GetProperties(context.Background(), nil)

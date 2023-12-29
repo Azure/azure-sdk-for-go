@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
 ### Other Changes
 
 ## 1.2.1 (2023-12-13)

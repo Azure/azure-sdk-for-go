@@ -8,7 +8,11 @@
 
 ### Bugs Fixed
 
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints.
+
 ### Other Changes
+
+* Updated azcore version to `1.9.1` and azidentity version to `1.4.0`.
 
 ## 1.0.0 (2023-10-18)
 

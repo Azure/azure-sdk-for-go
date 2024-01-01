@@ -1037,6 +1037,9 @@ type CreationData struct {
 	// disabled after enabled.
 	PerformancePlus *bool
 
+	// If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker speed.
+	ProvisionedBandwidthCopySpeed *ProvisionedBandwidthCopyOption
+
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
 	SecurityDataURI *string
 

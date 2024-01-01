@@ -1,5 +1,13 @@
 # Release History
 
+## 5.5.0 (2024-01-26)
+### Features Added
+
+- New value `DiskSecurityTypesConfidentialVMNonPersistedTPM` added to enum type `DiskSecurityTypes`
+- New enum type `ProvisionedBandwidthCopyOption` with values `ProvisionedBandwidthCopyOptionEnhanced`, `ProvisionedBandwidthCopyOptionNone`
+- New field `ProvisionedBandwidthCopySpeed` in struct `CreationData`
+
+
 ## 5.4.0 (2023-12-22)
 ### Features Added
 

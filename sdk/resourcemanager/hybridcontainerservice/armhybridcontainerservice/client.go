@@ -38,11 +38,11 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 	return client, nil
 }
 
-// BeginDeleteKubernetesVersions - Delete the kubernetes versions resource type
+// BeginDeleteKubernetesVersions - Delete the default kubernetes versions resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - ClientBeginDeleteKubernetesVersionsOptions contains the optional parameters for the Client.BeginDeleteKubernetesVersions
 //     method.
 func (client *Client) BeginDeleteKubernetesVersions(ctx context.Context, customLocationResourceURI string, options *ClientBeginDeleteKubernetesVersionsOptions) (*runtime.Poller[ClientDeleteKubernetesVersionsResponse], error) {
@@ -63,10 +63,10 @@ func (client *Client) BeginDeleteKubernetesVersions(ctx context.Context, customL
 	}
 }
 
-// DeleteKubernetesVersions - Delete the kubernetes versions resource type
+// DeleteKubernetesVersions - Delete the default kubernetes versions resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *Client) deleteKubernetesVersions(ctx context.Context, customLocationResourceURI string, options *ClientBeginDeleteKubernetesVersionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteKubernetesVersions"
@@ -97,17 +97,17 @@ func (client *Client) deleteKubernetesVersionsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteVMSKUs - Deletes the Vm Sku resource type
+// BeginDeleteVMSKUs - Deletes the default VM skus resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - ClientBeginDeleteVMSKUsOptions contains the optional parameters for the Client.BeginDeleteVMSKUs method.
 func (client *Client) BeginDeleteVMSKUs(ctx context.Context, customLocationResourceURI string, options *ClientBeginDeleteVMSKUsOptions) (*runtime.Poller[ClientDeleteVMSKUsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -127,10 +127,10 @@ func (client *Client) BeginDeleteVMSKUs(ctx context.Context, customLocationResou
 	}
 }
 
-// DeleteVMSKUs - Deletes the Vm Sku resource type
+// DeleteVMSKUs - Deletes the default VM skus resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *Client) deleteVMSKUs(ctx context.Context, customLocationResourceURI string, options *ClientBeginDeleteVMSKUsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDeleteVMSKUs"
@@ -161,17 +161,17 @@ func (client *Client) deleteVMSKUsCreateRequest(ctx context.Context, customLocat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// GetKubernetesVersions - Gets the supported kubernetes versions from the underlying custom location
+// GetKubernetesVersions - Lists the supported kubernetes versions for the specified custom location
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - ClientGetKubernetesVersionsOptions contains the optional parameters for the Client.GetKubernetesVersions method.
 func (client *Client) GetKubernetesVersions(ctx context.Context, customLocationResourceURI string, options *ClientGetKubernetesVersionsOptions) (ClientGetKubernetesVersionsResponse, error) {
 	var err error
@@ -204,7 +204,7 @@ func (client *Client) getKubernetesVersionsCreateRequest(ctx context.Context, cu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -219,11 +219,11 @@ func (client *Client) getKubernetesVersionsHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// GetVMSKUs - Gets the supported VM skus from the underlying custom location
+// GetVMSKUs - Lists the supported VM skus for the specified custom location
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - ClientGetVMSKUsOptions contains the optional parameters for the Client.GetVMSKUs method.
 func (client *Client) GetVMSKUs(ctx context.Context, customLocationResourceURI string, options *ClientGetVMSKUsOptions) (ClientGetVMSKUsResponse, error) {
 	var err error
@@ -256,7 +256,7 @@ func (client *Client) getVMSKUsCreateRequest(ctx context.Context, customLocation
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -271,11 +271,12 @@ func (client *Client) getVMSKUsHandleResponse(resp *http.Response) (ClientGetVMS
 	return result, nil
 }
 
-// BeginPutKubernetesVersions - Puts the kubernetes version resource type
+// BeginPutKubernetesVersions - Puts the default kubernetes version resource type (one time operation, before listing the
+// kubernetes versions)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - kubernetesVersions - Kubernetes Versions resource definition
 //   - options - ClientBeginPutKubernetesVersionsOptions contains the optional parameters for the Client.BeginPutKubernetesVersions
 //     method.
@@ -297,10 +298,11 @@ func (client *Client) BeginPutKubernetesVersions(ctx context.Context, customLoca
 	}
 }
 
-// PutKubernetesVersions - Puts the kubernetes version resource type
+// PutKubernetesVersions - Puts the default kubernetes version resource type (one time operation, before listing the kubernetes
+// versions)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *Client) putKubernetesVersions(ctx context.Context, customLocationResourceURI string, kubernetesVersions KubernetesVersionProfile, options *ClientBeginPutKubernetesVersionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginPutKubernetesVersions"
@@ -331,7 +333,7 @@ func (client *Client) putKubernetesVersionsCreateRequest(ctx context.Context, cu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, kubernetesVersions); err != nil {
@@ -340,11 +342,11 @@ func (client *Client) putKubernetesVersionsCreateRequest(ctx context.Context, cu
 	return req, nil
 }
 
-// BeginPutVMSKUs - Puts the VM SKUs resource type
+// BeginPutVMSKUs - Puts the default VM skus resource type (one time operation, before listing the VM skus)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - skus - VM SKUs resource definition
 //   - options - ClientBeginPutVMSKUsOptions contains the optional parameters for the Client.BeginPutVMSKUs method.
 func (client *Client) BeginPutVMSKUs(ctx context.Context, customLocationResourceURI string, skus VMSKUProfile, options *ClientBeginPutVMSKUsOptions) (*runtime.Poller[ClientPutVMSKUsResponse], error) {
@@ -365,10 +367,10 @@ func (client *Client) BeginPutVMSKUs(ctx context.Context, customLocationResource
 	}
 }
 
-// PutVMSKUs - Puts the VM SKUs resource type
+// PutVMSKUs - Puts the default VM skus resource type (one time operation, before listing the VM skus)
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *Client) putVMSKUs(ctx context.Context, customLocationResourceURI string, skus VMSKUProfile, options *ClientBeginPutVMSKUsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginPutVMSKUs"
@@ -399,7 +401,7 @@ func (client *Client) putVMSKUsCreateRequest(ctx context.Context, customLocation
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, skus); err != nil {

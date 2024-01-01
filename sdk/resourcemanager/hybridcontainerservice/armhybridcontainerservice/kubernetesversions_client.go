@@ -38,10 +38,10 @@ func NewKubernetesVersionsClient(credential azcore.TokenCredential, options *arm
 	return client, nil
 }
 
-// NewListPager - Lists the supported kubernetes versions from the underlying custom location
+// NewListPager - Lists the supported kubernetes versions for the specified custom location
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - KubernetesVersionsClientListOptions contains the optional parameters for the KubernetesVersionsClient.NewListPager
 //     method.
 func (client *KubernetesVersionsClient) NewListPager(customLocationResourceURI string, options *KubernetesVersionsClientListOptions) *runtime.Pager[KubernetesVersionsClientListResponse] {
@@ -76,7 +76,7 @@ func (client *KubernetesVersionsClient) listCreateRequest(ctx context.Context, c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

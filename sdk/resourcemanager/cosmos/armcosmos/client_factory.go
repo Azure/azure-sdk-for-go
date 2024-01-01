@@ -79,12 +79,6 @@ func (c *ClientFactory) NewCollectionRegionClient() *CollectionRegionClient {
 	return subClient
 }
 
-// NewDataTransferJobsClient creates a new instance of DataTransferJobsClient.
-func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
-	subClient, _ := NewDataTransferJobsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 // NewDatabaseAccountRegionClient creates a new instance of DatabaseAccountRegionClient.
 func (c *ClientFactory) NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient {
 	subClient, _ := NewDatabaseAccountRegionClient(c.subscriptionID, c.credential, c.options)
@@ -103,12 +97,6 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	return subClient
 }
 
-// NewGraphResourcesClient creates a new instance of GraphResourcesClient.
-func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
-	subClient, _ := NewGraphResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient.
 func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 	subClient, _ := NewGremlinResourcesClient(c.subscriptionID, c.credential, c.options)
@@ -118,12 +106,6 @@ func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewMongoClustersClient creates a new instance of MongoClustersClient.
-func (c *ClientFactory) NewMongoClustersClient() *MongoClustersClient {
-	subClient, _ := NewMongoClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

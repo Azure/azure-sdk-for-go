@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBRestorableSqlDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBRestorableSqlDatabaseList.json
 func ExampleRestorableSQLDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,6 +48,7 @@ func ExampleRestorableSQLDatabasesClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableSQLDatabaseProperties{
 		// 				Resource: &armcosmos.RestorableSQLDatabasePropertiesResource{
 		// 					Rid: to.Ptr("DLB14gAAAA=="),
+		// 					CanUndelete: to.Ptr("invalid"),
 		// 					Database: &armcosmos.RestorableSQLDatabasePropertiesResourceDatabase{
 		// 						Etag: to.Ptr("\"0000c20a-0000-0700-0000-5f4ff63f0000\""),
 		// 						Rid: to.Ptr("3fu-hg=="),
@@ -70,6 +71,8 @@ func ExampleRestorableSQLDatabasesClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableSQLDatabaseProperties{
 		// 				Resource: &armcosmos.RestorableSQLDatabasePropertiesResource{
 		// 					Rid: to.Ptr("ESXNLAAAAA=="),
+		// 					CanUndelete: to.Ptr("notRestorable"),
+		// 					CanUndeleteReason: to.Ptr("Database already exists. Only deleted resources can be restored within same account."),
 		// 					Database: &armcosmos.RestorableSQLDatabasePropertiesResourceDatabase{
 		// 						Etag: to.Ptr("\"0000c20a-0000-0700-0000-5f4ff63f0000\""),
 		// 						Rid: to.Ptr("3fu-hg=="),
@@ -93,6 +96,7 @@ func ExampleRestorableSQLDatabasesClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableSQLDatabaseProperties{
 		// 				Resource: &armcosmos.RestorableSQLDatabasePropertiesResource{
 		// 					Rid: to.Ptr("aXFqUQAAAA=="),
+		// 					CanUndelete: to.Ptr("invalid"),
 		// 					Database: &armcosmos.RestorableSQLDatabasePropertiesResourceDatabase{
 		// 						Etag: to.Ptr("\"0000ca0a-0000-0700-0000-5f4ff82b0000\""),
 		// 						Rid: to.Ptr("0SziSg=="),

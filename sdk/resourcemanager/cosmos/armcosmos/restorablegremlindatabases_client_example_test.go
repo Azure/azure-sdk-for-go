@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBRestorableGremlinDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBRestorableGremlinDatabaseList.json
 func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,6 +48,7 @@ func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableGremlinDatabaseProperties{
 		// 				Resource: &armcosmos.RestorableGremlinDatabasePropertiesResource{
 		// 					Rid: to.Ptr("DLB14gAAAA=="),
+		// 					CanUndelete: to.Ptr("invalid"),
 		// 					EventTimestamp: to.Ptr("2020-09-02T19:45:03Z"),
 		// 					OperationType: to.Ptr(armcosmos.OperationTypeCreate),
 		// 					OwnerID: to.Ptr("Database1"),
@@ -62,6 +63,8 @@ func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableGremlinDatabaseProperties{
 		// 				Resource: &armcosmos.RestorableGremlinDatabasePropertiesResource{
 		// 					Rid: to.Ptr("ESXNLAAAAA=="),
+		// 					CanUndelete: to.Ptr("notRestorable"),
+		// 					CanUndeleteReason: to.Ptr("Database already exists. Only deleted resources can be restored within same account."),
 		// 					EventTimestamp: to.Ptr("2020-09-02T19:53:42Z"),
 		// 					OperationType: to.Ptr(armcosmos.OperationTypeDelete),
 		// 					OwnerID: to.Ptr("Database1"),

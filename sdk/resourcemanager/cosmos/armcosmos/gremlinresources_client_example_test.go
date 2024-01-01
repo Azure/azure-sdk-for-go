@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseList.json
 func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,15 +198,17 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +258,7 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +297,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +333,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphList.json
 func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +412,7 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +483,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +607,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +628,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -656,15 +658,17 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +718,7 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -753,7 +757,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,7 +793,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBGremlinGraphBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBGremlinGraphBackupInformation.json
 func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

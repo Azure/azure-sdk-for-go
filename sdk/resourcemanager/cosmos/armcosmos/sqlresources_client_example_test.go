@@ -13,14 +13,12 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseList.json
 func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +64,7 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseGet.json
 func ExampleSQLResourcesClient_GetSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,8 +102,8 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseCreateUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -153,61 +151,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseRestore.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
-		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
-		Properties: &armcosmos.SQLDatabaseCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.SQLDatabaseResource{
-				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-				ID:         to.Ptr("databaseName"),
-				RestoreParameters: &armcosmos.ResourceRestoreParameters{
-					RestoreSource:         to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
-					RestoreTimestampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00.000Z"); return t }()),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SQLDatabaseGetResults = armcosmos.SQLDatabaseGetResults{
-	// 	Name: to.Ptr("databaseName"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.SQLDatabaseGetProperties{
-	// 		Resource: &armcosmos.SQLDatabaseGetPropertiesResource{
-	// 			Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
-	// 			Rid: to.Ptr("CqNBAA=="),
-	// 			Ts: to.Ptr[float32](1449602962),
-	// 			ID: to.Ptr("databaseName"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +172,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,15 +202,17 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +262,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +301,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,177 +337,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlClientEncryptionKeysList.json
-func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewSQLResourcesClient().NewListClientEncryptionKeysPager("rgName", "accountName", "databaseName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ClientEncryptionKeysListResult = armcosmos.ClientEncryptionKeysListResult{
-		// 	Value: []*armcosmos.ClientEncryptionKeyGetResults{
-		// 		{
-		// 			Name: to.Ptr("cekName1"),
-		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
-		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName1"),
-		// 			Properties: &armcosmos.ClientEncryptionKeyGetProperties{
-		// 				Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-		// 					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-		// 					ID: to.Ptr("cekName1"),
-		// 					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-		// 						Name: to.Ptr("customerManagedKey1"),
-		// 						Type: to.Ptr("AzureKeyVault"),
-		// 						Algorithm: to.Ptr("RSA-OAEP"),
-		// 						Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey1"),
-		// 					},
-		// 					WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
-		// 					Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
-		// 					Rid: to.Ptr("nAMyAAAAAADPw1kKAgAAAA=="),
-		// 					Ts: to.Ptr[float32](1626425552),
-		// 				},
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("cekName2"),
-		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
-		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName2"),
-		// 			Properties: &armcosmos.ClientEncryptionKeyGetProperties{
-		// 				Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-		// 					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-		// 					ID: to.Ptr("cekName2"),
-		// 					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-		// 						Name: to.Ptr("customerManagedKey2"),
-		// 						Type: to.Ptr("AzureKeyVault"),
-		// 						Algorithm: to.Ptr("RSA-OAEP"),
-		// 						Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey2"),
-		// 					},
-		// 					WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
-		// 					Etag: to.Ptr("00000000-0000-0000-7a21-7788a38c01d7"),
-		// 					Rid: to.Ptr("nAMyAAAAAAAWWfxHAgAAAA=="),
-		// 					Ts: to.Ptr[float32](1626425631),
-		// 				},
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlClientEncryptionKeyGet.json
-func ExampleSQLResourcesClient_GetClientEncryptionKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSQLResourcesClient().GetClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ClientEncryptionKeyGetResults = armcosmos.ClientEncryptionKeyGetResults{
-	// 	Name: to.Ptr("cekName"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
-	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
-	// 	Properties: &armcosmos.ClientEncryptionKeyGetProperties{
-	// 		Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-	// 			EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-	// 			ID: to.Ptr("cekName"),
-	// 			KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-	// 				Name: to.Ptr("customerManagedKey"),
-	// 				Type: to.Ptr("AzureKeyVault"),
-	// 				Algorithm: to.Ptr("RSA-OAEP"),
-	// 				Value: to.Ptr("AzureKeyVault Key URL"),
-	// 			},
-	// 			WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
-	// 			Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
-	// 			Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
-	// 			Ts: to.Ptr[float32](1626425552),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", armcosmos.ClientEncryptionKeyCreateUpdateParameters{
-		Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
-			Resource: &armcosmos.ClientEncryptionKeyResource{
-				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-				ID:                  to.Ptr("cekName"),
-				KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-					Name:      to.Ptr("customerManagedKey"),
-					Type:      to.Ptr("AzureKeyVault"),
-					Algorithm: to.Ptr("RSA-OAEP"),
-					Value:     to.Ptr("AzureKeyVault Key URL"),
-				},
-				WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ClientEncryptionKeyGetResults = armcosmos.ClientEncryptionKeyGetResults{
-	// 	Name: to.Ptr("cekName"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
-	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
-	// 	Properties: &armcosmos.ClientEncryptionKeyGetProperties{
-	// 		Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
-	// 			EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-	// 			ID: to.Ptr("cekName"),
-	// 			KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
-	// 				Name: to.Ptr("customerManagedKey"),
-	// 				Type: to.Ptr("AzureKeyVault"),
-	// 				Algorithm: to.Ptr("RSA-OAEP"),
-	// 				Value: to.Ptr("AzureKeyVault Key URL"),
-	// 			},
-	// 			WrappedDataEncryptionKey: []byte("VGhpcyBpcyBhY3R1YWxseSBhbiBhcnJheSBvZiBieXRlcy4gVGhpcyByZXF1ZXN0L3Jlc3BvbnNlIGlzIGJlaW5nIHByZXNlbnRlZCBhcyBhIHN0cmluZyBmb3IgcmVhZGFiaWxpdHkgaW4gdGhlIGV4YW1wbGU="),
-	// 			Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
-	// 			Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
-	// 			Ts: to.Ptr[float32](1626425552),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerList.json
 func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,6 +383,11 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 						}},
 		// 						PolicyFormatVersion: to.Ptr[int32](1),
 		// 					},
+		// 					ComputedProperties: []*armcosmos.ComputedProperty{
+		// 						{
+		// 							Name: to.Ptr("cp_lowerName"),
+		// 							Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
+		// 					}},
 		// 					ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
 		// 						ConflictResolutionPath: to.Ptr("/path"),
 		// 						Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
@@ -670,6 +451,8 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		// 										EncryptionType: to.Ptr("Deterministic"),
 		// 								}},
 		// 								PolicyFormatVersion: to.Ptr[int32](1),
+		// 							},
+		// 							ComputedProperties: []*armcosmos.ComputedProperty{
 		// 							},
 		// 							ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
 		// 								ConflictResolutionPath: to.Ptr("/path"),
@@ -785,7 +568,7 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerGet.json
 func ExampleSQLResourcesClient_GetSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,6 +611,11 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// 				}},
 	// 				PolicyFormatVersion: to.Ptr[int32](1),
 	// 			},
+	// 			ComputedProperties: []*armcosmos.ComputedProperty{
+	// 				{
+	// 					Name: to.Ptr("cp_lowerName"),
+	// 					Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
+	// 			}},
 	// 			ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
 	// 				ConflictResolutionPath: to.Ptr("/path"),
 	// 				Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
@@ -872,8 +660,8 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerCreateUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -899,6 +687,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 						}},
 					PolicyFormatVersion: to.Ptr[int32](2),
 				},
+				ComputedProperties: []*armcosmos.ComputedProperty{
+					{
+						Name:  to.Ptr("cp_lowerName"),
+						Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
+					}},
 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
 					ConflictResolutionPath: to.Ptr("/path"),
 					Mode:                   to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
@@ -972,6 +765,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	// 				}},
 	// 				PolicyFormatVersion: to.Ptr[int32](1),
 	// 			},
+	// 			ComputedProperties: []*armcosmos.ComputedProperty{
+	// 				{
+	// 					Name: to.Ptr("cp_lowerName"),
+	// 					Query: to.Ptr("SELECT VALUE LOWER(c.name) FROM c"),
+	// 			}},
 	// 			ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
 	// 				ConflictResolutionPath: to.Ptr("/path"),
 	// 				Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
@@ -1016,219 +814,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerRestore.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.SQLContainerCreateUpdateParameters{
-		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
-		Properties: &armcosmos.SQLContainerCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.SQLContainerResource{
-				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-				ID:         to.Ptr("containerName"),
-				RestoreParameters: &armcosmos.ResourceRestoreParameters{
-					RestoreSource:         to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
-					RestoreTimestampInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00.000Z"); return t }()),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SQLContainerGetResults = armcosmos.SQLContainerGetResults{
-	// 	Name: to.Ptr("containerName"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.SQLContainerGetProperties{
-	// 		Resource: &armcosmos.SQLContainerGetPropertiesResource{
-	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 			Rid: to.Ptr("PD5DALigDgw="),
-	// 			Ts: to.Ptr[float32](1459200611),
-	// 			ClientEncryptionPolicy: &armcosmos.ClientEncryptionPolicy{
-	// 				IncludedPaths: []*armcosmos.ClientEncryptionIncludedPath{
-	// 					{
-	// 						Path: to.Ptr("/path"),
-	// 						ClientEncryptionKeyID: to.Ptr("keyId"),
-	// 						EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
-	// 						EncryptionType: to.Ptr("Deterministic"),
-	// 				}},
-	// 				PolicyFormatVersion: to.Ptr[int32](1),
-	// 			},
-	// 			ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-	// 				ConflictResolutionPath: to.Ptr("/path"),
-	// 				Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-	// 			},
-	// 			DefaultTTL: to.Ptr[int32](100),
-	// 			ID: to.Ptr("containerName"),
-	// 			IndexingPolicy: &armcosmos.IndexingPolicy{
-	// 				Automatic: to.Ptr(true),
-	// 				ExcludedPaths: []*armcosmos.ExcludedPath{
-	// 				},
-	// 				IncludedPaths: []*armcosmos.IncludedPath{
-	// 					{
-	// 						Path: to.Ptr("/*"),
-	// 						Indexes: []*armcosmos.Indexes{
-	// 							{
-	// 								DataType: to.Ptr(armcosmos.DataTypeString),
-	// 								Kind: to.Ptr(armcosmos.IndexKindRange),
-	// 								Precision: to.Ptr[int32](-1),
-	// 							},
-	// 							{
-	// 								DataType: to.Ptr(armcosmos.DataTypeNumber),
-	// 								Kind: to.Ptr(armcosmos.IndexKindRange),
-	// 								Precision: to.Ptr[int32](-1),
-	// 						}},
-	// 				}},
-	// 				IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
-	// 			},
-	// 			PartitionKey: &armcosmos.ContainerPartitionKey{
-	// 				Kind: to.Ptr(armcosmos.PartitionKindHash),
-	// 				Paths: []*string{
-	// 					to.Ptr("/AccountNumber")},
-	// 				},
-	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
-	// 					UniqueKeys: []*armcosmos.UniqueKey{
-	// 						{
-	// 							Paths: []*string{
-	// 								to.Ptr("/testPath")},
-	// 						}},
-	// 					},
-	// 				},
-	// 			},
-	// 		}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlMaterializedViewCreateUpdate.json
-func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterializedViewCreateUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "mvContainerName", armcosmos.SQLContainerCreateUpdateParameters{
-		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
-		Properties: &armcosmos.SQLContainerCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
-			Resource: &armcosmos.SQLContainerResource{
-				ID: to.Ptr("mvContainerName"),
-				IndexingPolicy: &armcosmos.IndexingPolicy{
-					Automatic:     to.Ptr(true),
-					ExcludedPaths: []*armcosmos.ExcludedPath{},
-					IncludedPaths: []*armcosmos.IncludedPath{
-						{
-							Path: to.Ptr("/*"),
-							Indexes: []*armcosmos.Indexes{
-								{
-									DataType:  to.Ptr(armcosmos.DataTypeString),
-									Kind:      to.Ptr(armcosmos.IndexKindRange),
-									Precision: to.Ptr[int32](-1),
-								},
-								{
-									DataType:  to.Ptr(armcosmos.DataTypeNumber),
-									Kind:      to.Ptr(armcosmos.IndexKindRange),
-									Precision: to.Ptr[int32](-1),
-								}},
-						}},
-					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
-				},
-				MaterializedViewDefinition: &armcosmos.MaterializedViewDefinition{
-					Definition:         to.Ptr("select * from ROOT"),
-					SourceCollectionID: to.Ptr("sourceContainerName"),
-				},
-				PartitionKey: &armcosmos.ContainerPartitionKey{
-					Kind: to.Ptr(armcosmos.PartitionKindHash),
-					Paths: []*string{
-						to.Ptr("/mvpk")},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SQLContainerGetResults = armcosmos.SQLContainerGetResults{
-	// 	Name: to.Ptr("mvContainerName"),
-	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
-	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/mvContainerName"),
-	// 	Location: to.Ptr("West US"),
-	// 	Tags: map[string]*string{
-	// 	},
-	// 	Properties: &armcosmos.SQLContainerGetProperties{
-	// 		Resource: &armcosmos.SQLContainerGetPropertiesResource{
-	// 			Etag: to.Ptr("\"00000800-0000-0200-0000-639ff6480000\""),
-	// 			Rid: to.Ptr("vb0sn8MDxLw="),
-	// 			Ts: to.Ptr[float32](1671427656),
-	// 			ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-	// 				ConflictResolutionPath: to.Ptr("/_ts"),
-	// 				ConflictResolutionProcedure: to.Ptr(""),
-	// 				Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-	// 			},
-	// 			DefaultTTL: to.Ptr[int32](-1),
-	// 			ID: to.Ptr("mvContainerName"),
-	// 			IndexingPolicy: &armcosmos.IndexingPolicy{
-	// 				Automatic: to.Ptr(true),
-	// 				ExcludedPaths: []*armcosmos.ExcludedPath{
-	// 					{
-	// 						Path: to.Ptr("/\"_etag\"/?"),
-	// 				}},
-	// 				IncludedPaths: []*armcosmos.IncludedPath{
-	// 					{
-	// 						Path: to.Ptr("/*"),
-	// 				}},
-	// 				IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
-	// 			},
-	// 			MaterializedViewDefinition: &armcosmos.MaterializedViewDefinition{
-	// 				Definition: to.Ptr("select * from ROOT"),
-	// 				SourceCollectionID: to.Ptr("sourceContainerName"),
-	// 				SourceCollectionRid: to.Ptr("vb0sn6nEu9A="),
-	// 			},
-	// 			PartitionKey: &armcosmos.ContainerPartitionKey{
-	// 				Kind: to.Ptr(armcosmos.PartitionKindHash),
-	// 				Paths: []*string{
-	// 					to.Ptr("/mvpk")},
-	// 				},
-	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
-	// 					UniqueKeys: []*armcosmos.UniqueKey{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1249,113 +835,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabasePartitionMerge.json
-func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionStorageInfoCollection = armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 	PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 		{
-	// 			ID: to.Ptr("0"),
-	// 			StorageInKB: to.Ptr[float64](333),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("1"),
-	// 			StorageInKB: to.Ptr[float64](305),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("177"),
-	// 			StorageInKB: to.Ptr[float64](368),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("178"),
-	// 			StorageInKB: to.Ptr[float64](96313),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("5"),
-	// 			StorageInKB: to.Ptr[float64](194),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("6"),
-	// 			StorageInKB: to.Ptr[float64](331),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerPartitionMerge.json
-func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginListSQLContainerPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.MergeParameters{
-		IsDryRun: to.Ptr(false),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionStorageInfoCollection = armcosmos.PhysicalPartitionStorageInfoCollection{
-	// 	PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
-	// 		{
-	// 			ID: to.Ptr("0"),
-	// 			StorageInKB: to.Ptr[float64](333),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("1"),
-	// 			StorageInKB: to.Ptr[float64](305),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("177"),
-	// 			StorageInKB: to.Ptr[float64](368),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("178"),
-	// 			StorageInKB: to.Ptr[float64](96313),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("5"),
-	// 			StorageInKB: to.Ptr[float64](194),
-	// 		},
-	// 		{
-	// 			ID: to.Ptr("6"),
-	// 			StorageInKB: to.Ptr[float64](331),
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1385,15 +865,17 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1443,7 +925,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1482,7 +964,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1518,8 +1000,8 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
-func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlClientEncryptionKeysList.json
+func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1529,16 +1011,129 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					}},
+	pager := clientFactory.NewSQLResourcesClient().NewListClientEncryptionKeysPager("rgName", "accountName", "databaseName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ClientEncryptionKeysListResult = armcosmos.ClientEncryptionKeysListResult{
+		// 	Value: []*armcosmos.ClientEncryptionKeyGetResults{
+		// 		{
+		// 			Name: to.Ptr("cekName1"),
+		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName1"),
+		// 			Properties: &armcosmos.ClientEncryptionKeyGetProperties{
+		// 				Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
+		// 					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+		// 					ID: to.Ptr("cekName1"),
+		// 					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+		// 						Name: to.Ptr("customerManagedKey1"),
+		// 						Type: to.Ptr("AzureKeyVault"),
+		// 						Algorithm: to.Ptr("RSA-OAEP"),
+		// 						Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey1"),
+		// 					},
+		// 					WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+		// 					Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+		// 					Rid: to.Ptr("nAMyAAAAAADPw1kKAgAAAA=="),
+		// 					Ts: to.Ptr[float32](1626425552),
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("cekName2"),
+		// 			Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+		// 			ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName2"),
+		// 			Properties: &armcosmos.ClientEncryptionKeyGetProperties{
+		// 				Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
+		// 					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+		// 					ID: to.Ptr("cekName2"),
+		// 					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+		// 						Name: to.Ptr("customerManagedKey2"),
+		// 						Type: to.Ptr("AzureKeyVault"),
+		// 						Algorithm: to.Ptr("RSA-OAEP"),
+		// 						Value: to.Ptr("AzureKeyVault Key URL for customerManagedKey2"),
+		// 					},
+		// 					WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+		// 					Etag: to.Ptr("00000000-0000-0000-7a21-7788a38c01d7"),
+		// 					Rid: to.Ptr("nAMyAAAAAAAWWfxHAgAAAA=="),
+		// 					Ts: to.Ptr[float32](1626425631),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlClientEncryptionKeyGet.json
+func ExampleSQLResourcesClient_GetClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSQLResourcesClient().GetClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ClientEncryptionKeyGetResults = armcosmos.ClientEncryptionKeyGetResults{
+	// 	Name: to.Ptr("cekName"),
+	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
+	// 	Properties: &armcosmos.ClientEncryptionKeyGetProperties{
+	// 		Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
+	// 			EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+	// 			ID: to.Ptr("cekName"),
+	// 			KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+	// 				Name: to.Ptr("customerManagedKey"),
+	// 				Type: to.Ptr("AzureKeyVault"),
+	// 				Algorithm: to.Ptr("RSA-OAEP"),
+	// 				Value: to.Ptr("AzureKeyVault Key URL"),
+	// 			},
+	// 			WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+	// 			Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 			Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
+	// 			Ts: to.Ptr[float32](1626425552),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", armcosmos.ClientEncryptionKeyCreateUpdateParameters{
+		Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
+			Resource: &armcosmos.ClientEncryptionKeyResource{
+				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+				ID:                  to.Ptr("cekName"),
+				KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+					Name:      to.Ptr("customerManagedKey"),
+					Type:      to.Ptr("AzureKeyVault"),
+					Algorithm: to.Ptr("RSA-OAEP"),
+					Value:     to.Ptr("AzureKeyVault Key URL"),
+				},
+				WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
 			},
 		},
 	}, nil)
@@ -1552,215 +1147,30 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() 
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 				{
-	// 					ID: to.Ptr("0"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("1"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 			}},
+	// res.ClientEncryptionKeyGetResults = armcosmos.ClientEncryptionKeyGetResults{
+	// 	Name: to.Ptr("cekName"),
+	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
+	// 	ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
+	// 	Properties: &armcosmos.ClientEncryptionKeyGetProperties{
+	// 		Resource: &armcosmos.ClientEncryptionKeyGetPropertiesResource{
+	// 			EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+	// 			ID: to.Ptr("cekName"),
+	// 			KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+	// 				Name: to.Ptr("customerManagedKey"),
+	// 				Type: to.Ptr("AzureKeyVault"),
+	// 				Algorithm: to.Ptr("RSA-OAEP"),
+	// 				Value: to.Ptr("AzureKeyVault Key URL"),
+	// 			},
+	// 			WrappedDataEncryptionKey: []byte("U3dhZ2dlciByb2Nrcw=="),
+	// 			Etag: to.Ptr("00000000-0000-0000-7a1f-bc0828e801d7"),
+	// 			Rid: to.Ptr("tNc4AAAAAAAQkjzWAgAAAA=="),
+	// 			Ts: to.Ptr[float32](1626425552),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlDatabaseRedistributeThroughput.json
-func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					}},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					}},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 				{
-	// 					ID: to.Ptr("0"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("1"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("2"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("3"),
-	// 					Throughput: to.Ptr[float64](3000),
-	// 			}},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerRetrieveThroughputDistribution.json
-func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RetrieveThroughputParameters{
-		Properties: &armcosmos.RetrieveThroughputProperties{
-			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
-				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
-					{
-						ID: to.Ptr("0"),
-					},
-					{
-						ID: to.Ptr("1"),
-					}},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 				{
-	// 					ID: to.Ptr("0"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("1"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 			}},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerRedistributeThroughput.json
-func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLResourcesClient().BeginSQLContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.RedistributeThroughputParameters{
-		Properties: &armcosmos.RedistributeThroughputProperties{
-			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
-				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("2"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID: to.Ptr("3"),
-					}},
-				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-					{
-						ID:         to.Ptr("0"),
-						Throughput: to.Ptr[float64](5000),
-					},
-					{
-						ID:         to.Ptr("1"),
-						Throughput: to.Ptr[float64](5000),
-					}},
-				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
-	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
-	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
-	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
-	// 				{
-	// 					ID: to.Ptr("0"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("1"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("2"),
-	// 					Throughput: to.Ptr[float64](5000),
-	// 				},
-	// 				{
-	// 					ID: to.Ptr("3"),
-	// 					Throughput: to.Ptr[float64](3000),
-	// 			}},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlStoredProcedureList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlStoredProcedureList.json
 func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1802,7 +1212,7 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlStoredProcedureGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlStoredProcedureGet.json
 func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1836,7 +1246,7 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1882,7 +1292,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlStoredProcedureDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlStoredProcedureDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1903,7 +1313,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlUserDefinedFunctionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlUserDefinedFunctionList.json
 func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1945,7 +1355,7 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlUserDefinedFunctionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlUserDefinedFunctionGet.json
 func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1979,7 +1389,7 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2025,7 +1435,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlUserDefinedFunctionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlUserDefinedFunctionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2046,7 +1456,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlTriggerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlTriggerList.json
 func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2090,7 +1500,7 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlTriggerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlTriggerGet.json
 func ExampleSQLResourcesClient_GetSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2126,7 +1536,7 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlTriggerCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlTriggerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2176,7 +1586,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlTriggerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlTriggerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2197,7 +1607,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleDefinitionGet.json
 func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2237,7 +1647,7 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2294,7 +1704,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleDefinitionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2315,7 +1725,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleDefinitionList.json
 func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2363,7 +1773,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleAssignmentGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleAssignmentGet.json
 func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2393,7 +1803,7 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleAssignmentCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2433,7 +1843,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleAssignmentDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleAssignmentDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2454,7 +1864,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlRoleAssignmentList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlRoleAssignmentList.json
 func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2492,7 +1902,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -47,7 +47,7 @@ func NewRestorableSQLDatabasesClient(subscriptionID string, credential azcore.To
 // account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2023-11-15
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableSQLDatabasesClientListOptions contains the optional parameters for the RestorableSQLDatabasesClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableSQLDatabasesClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2023-11-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

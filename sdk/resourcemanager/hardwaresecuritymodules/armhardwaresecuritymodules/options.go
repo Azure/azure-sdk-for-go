@@ -8,6 +8,69 @@
 
 package armhardwaresecuritymodules
 
+// CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete
+// method.
+type CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CloudHsmClusterPrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.Create
+// method.
+type CloudHsmClusterPrivateEndpointConnectionsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudHsmClusterPrivateEndpointConnectionsClientGetOptions contains the optional parameters for the CloudHsmClusterPrivateEndpointConnectionsClient.Get
+// method.
+type CloudHsmClusterPrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions contains the optional parameters for the CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster
+// method.
+type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudHsmClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudHsmClustersClient.BeginCreateOrUpdate
+// method.
+type CloudHsmClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CloudHsmClustersClientBeginDeleteOptions contains the optional parameters for the CloudHsmClustersClient.BeginDelete method.
+type CloudHsmClustersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CloudHsmClustersClientBeginUpdateOptions contains the optional parameters for the CloudHsmClustersClient.BeginUpdate method.
+type CloudHsmClustersClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CloudHsmClustersClientGetOptions contains the optional parameters for the CloudHsmClustersClient.Get method.
+type CloudHsmClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CloudHsmClustersClientListByResourceGroupOptions contains the optional parameters for the CloudHsmClustersClient.NewListByResourceGroupPager
+// method.
+type CloudHsmClustersClientListByResourceGroupOptions struct {
+	// The page-continuation token to use with a paged version of this API
+	Skiptoken *string
+}
+
+// CloudHsmClustersClientListBySubscriptionOptions contains the optional parameters for the CloudHsmClustersClient.NewListBySubscriptionPager
+// method.
+type CloudHsmClustersClientListBySubscriptionOptions struct {
+	// The page-continuation token to use with a paged version of this API
+	Skiptoken *string
+}
+
 // DedicatedHsmClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedHsmClient.BeginCreateOrUpdate
 // method.
 type DedicatedHsmClientBeginCreateOrUpdateOptions struct {
@@ -54,5 +117,11 @@ type DedicatedHsmClientListOutboundNetworkDependenciesEndpointsOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByCloudHsmClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByCloudHsmClusterPager
+// method.
+type PrivateEndpointConnectionsClientListByCloudHsmClusterOptions struct {
 	// placeholder for future optional parameters
 }

@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_OperationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_OperationsList.json
 func ExampleOperationsClient_NewListPager_getAListOfDedicatedHsmOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,14 @@ func ExampleOperationsClient_NewListPager_getAListOfDedicatedHsmOperations() {
 		// 				Provider: to.Ptr("Microsoft HardwareSecurityModules"),
 		// 				Resource: to.Ptr("Dedicated HSM"),
 		// 			},
-		// 			IsDataAction: to.Ptr("false"),
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("system"),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_OperationsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_OperationsList.json
 func ExampleOperationsClient_NewListPager_getAListOfPaymentHsmOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +88,8 @@ func ExampleOperationsClient_NewListPager_getAListOfPaymentHsmOperations() {
 		// 				Provider: to.Ptr("Microsoft HardwareSecurityModules"),
 		// 				Resource: to.Ptr("Dedicated HSM"),
 		// 			},
-		// 			IsDataAction: to.Ptr("false"),
+		// 			IsDataAction: to.Ptr(false),
+		// 			Origin: to.Ptr("system"),
 		// 	}},
 		// }
 	}

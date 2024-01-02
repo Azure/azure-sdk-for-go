@@ -13,6 +13,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated version of azblob to 1.2.1
 
 ## 1.0.0 (2023-10-18)
 

@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `azidentity.doForClient` method no longer removes headers from the incoming request
 
 ### Other Changes
 

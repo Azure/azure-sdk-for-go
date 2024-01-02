@@ -21,7 +21,7 @@ const (
 
 var (
 	// Version is the default version encoded in the SAS token.
-	Version = "2020-02-10"
+	Version = "2020-12-06"
 )
 
 // TimeFormats ISO 8601 format.
@@ -137,6 +137,7 @@ type QueryParameters struct {
 	authorizedObjectID   string    `param:"saoid"`
 	unauthorizedObjectID string    `param:"suoid"`
 	correlationID        string    `param:"scid"`
+	encryptionScope      string    `param:"ses"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -277,6 +278,11 @@ func (p *QueryParameters) SignedDirectoryDepth() string {
 	return p.signedDirectoryDepth
 }
 
+// SignedEncryptionScope returns encryptionScope.
+func (p *QueryParameters) SignedEncryptionScope() string {
+	return p.encryptionScope
+}
+
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
 func (p *QueryParameters) Encode() string {
 	v := url.Values{}
@@ -349,6 +355,9 @@ func (p *QueryParameters) Encode() string {
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
 	}
+	if p.encryptionScope != "" {
+		v.Add("ses", p.encryptionScope)
+	}
 
 	return v.Encode()
 }
@@ -418,6 +427,8 @@ func NewQueryParameters(values url.Values) QueryParameters {
 			p.unauthorizedObjectID = val
 		case "scid":
 			p.correlationID = val
+		case "ses":
+			p.encryptionScope = val
 		default:
 			continue // query param didn't get recognized
 		}
@@ -495,6 +506,8 @@ func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.unauthorizedObjectID = val
 		case "scid":
 			p.correlationID = val
+		case "ses":
+			p.encryptionScope = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

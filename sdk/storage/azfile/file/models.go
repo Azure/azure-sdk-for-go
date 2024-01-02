@@ -669,7 +669,7 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 		leaseAccessConditions = o.LeaseAccessConditions
 
 		if o.SourceContentValidation != nil {
-			err := o.SourceContentValidation.apply(opts)
+			err := o.SourceContentValidation.Apply(opts)
 			if err != nil {
 				return "", nil, nil, nil, err
 			}

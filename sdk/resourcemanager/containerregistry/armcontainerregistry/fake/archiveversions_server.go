@@ -99,33 +99,33 @@ func (a *ArchiveVersionsServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := a.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		packageTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
+		packageTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
 		if err != nil {
 			return nil, err
 		}
-		archiveNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
+		archiveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
 		if err != nil {
 			return nil, err
 		}
-		archiveVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
+		archiveVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, packageTypeUnescaped, archiveNameUnescaped, archiveVersionNameUnescaped, nil)
+		respr, errRespr := a.srv.BeginCreate(req.Context(), resourceGroupNameParam, registryNameParam, packageTypeParam, archiveNameParam, archiveVersionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -155,33 +155,33 @@ func (a *ArchiveVersionsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		packageTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
+		packageTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
 		if err != nil {
 			return nil, err
 		}
-		archiveNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
+		archiveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
 		if err != nil {
 			return nil, err
 		}
-		archiveVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
+		archiveVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, packageTypeUnescaped, archiveNameUnescaped, archiveVersionNameUnescaped, nil)
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, packageTypeParam, archiveNameParam, archiveVersionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -209,33 +209,33 @@ func (a *ArchiveVersionsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<archiveVersionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 	if err != nil {
 		return nil, err
 	}
-	packageTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
+	packageTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
 	if err != nil {
 		return nil, err
 	}
-	archiveNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
+	archiveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
 	if err != nil {
 		return nil, err
 	}
-	archiveVersionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
+	archiveVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveVersionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, packageTypeUnescaped, archiveNameUnescaped, archiveVersionNameUnescaped, nil)
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, packageTypeParam, archiveNameParam, archiveVersionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -256,29 +256,29 @@ func (a *ArchiveVersionsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/packages/(?P<packageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/archives/(?P<archiveName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		packageTypeUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
+		packageTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("packageType")])
 		if err != nil {
 			return nil, err
 		}
-		archiveNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
+		archiveNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("archiveName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, packageTypeUnescaped, archiveNameUnescaped, nil)
+		resp := a.srv.NewListPager(resourceGroupNameParam, registryNameParam, packageTypeParam, archiveNameParam, nil)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.ArchiveVersionsClientListResponse, createLink func() string) {

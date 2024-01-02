@@ -33,7 +33,7 @@ type VirtualApplianceConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualApplianceConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualApplianceConnectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".VirtualApplianceConnectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewVirtualApplianceConnectionsClient(subscriptionID string, credential azco
 // NVA connection'
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - connectionName - The name of the NVA connection.
@@ -63,17 +63,20 @@ func (client *VirtualApplianceConnectionsClient) BeginCreateOrUpdate(ctx context
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualApplianceConnectionsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualApplianceConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualApplianceConnectionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VirtualApplianceConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, networkVirtualApplianceConnectionParameters VirtualApplianceConnection, options *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualApplianceConnectionsClient.BeginCreateOrUpdate"
@@ -119,7 +122,7 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, networkVirtualApplianceConnectionParameters); err != nil {
@@ -131,7 +134,7 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx
 // BeginDelete - Deletes a NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - connectionName - The name of the NVA connection.
@@ -145,17 +148,20 @@ func (client *VirtualApplianceConnectionsClient) BeginDelete(ctx context.Context
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualApplianceConnectionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualApplianceConnectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualApplianceConnectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes a NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualApplianceConnectionsClient.BeginDelete"
@@ -201,7 +207,7 @@ func (client *VirtualApplianceConnectionsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +216,7 @@ func (client *VirtualApplianceConnectionsClient) deleteCreateRequest(ctx context
 // Get - Retrieves the details of specified NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - connectionName - The name of the NVA connection.
@@ -262,7 +268,7 @@ func (client *VirtualApplianceConnectionsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +285,7 @@ func (client *VirtualApplianceConnectionsClient) getHandleResponse(resp *http.Re
 
 // NewListPager - Lists NetworkVirtualApplianceConnections under the NVA.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkVirtualApplianceName - The name of the Network Virtual Appliance.
 //   - options - VirtualApplianceConnectionsClientListOptions contains the optional parameters for the VirtualApplianceConnectionsClient.NewListPager
@@ -291,22 +297,15 @@ func (client *VirtualApplianceConnectionsClient) NewListPager(resourceGroupName 
 		},
 		Fetcher: func(ctx context.Context, page *VirtualApplianceConnectionsClientListResponse) (VirtualApplianceConnectionsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualApplianceConnectionsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
+			}, nil)
 			if err != nil {
 				return VirtualApplianceConnectionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualApplianceConnectionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualApplianceConnectionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -334,7 +333,7 @@ func (client *VirtualApplianceConnectionsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

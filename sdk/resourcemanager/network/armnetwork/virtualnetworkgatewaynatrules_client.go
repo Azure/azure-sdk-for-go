@@ -33,7 +33,7 @@ type VirtualNetworkGatewayNatRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkGatewayNatRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".VirtualNetworkGatewayNatRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string, credential az
 // nat rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -63,10 +63,13 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx conte
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,7 +77,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx conte
 // nat rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate"
@@ -120,7 +123,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, natRuleParameters); err != nil {
@@ -132,7 +135,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 // BeginDelete - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -146,17 +149,20 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Conte
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkGatewayNatRulesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkGatewayNatRulesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworkGatewayNatRulesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkGatewayNatRulesClient.BeginDelete"
@@ -202,7 +208,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +217,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 // Get - Retrieves the details of a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the Virtual Network Gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - natRuleName - The name of the nat rule.
@@ -263,7 +269,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +286,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.
 
 // NewListByVirtualNetworkGatewayPager - Retrieves all nat rules for a particular virtual network gateway.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The resource group name of the virtual network gateway.
 //   - virtualNetworkGatewayName - The name of the gateway.
 //   - options - VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the
@@ -292,22 +298,15 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 		},
 		Fetcher: func(ctx context.Context, page *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVirtualNetworkGatewayCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVirtualNetworkGatewayCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
+			}, nil)
 			if err != nil {
 				return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVirtualNetworkGatewayHandleResponse(resp)
 		},
@@ -335,7 +334,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

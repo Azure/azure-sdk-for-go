@@ -113,7 +113,7 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	}
 	beginCreate := t.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -123,19 +123,19 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		taskRunNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginCreate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, taskRunNameUnescaped, body, nil)
+		respr, errRespr := t.srv.BeginCreate(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -165,25 +165,25 @@ func (t *TaskRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 	beginDelete := t.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		taskRunNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, taskRunNameUnescaped, nil)
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -211,25 +211,25 @@ func (t *TaskRunsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 	if err != nil {
 		return nil, err
 	}
-	taskRunNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+	taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, taskRunNameUnescaped, nil)
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -248,25 +248,25 @@ func (t *TaskRunsServerTransport) dispatchGetDetails(req *http.Request) (*http.R
 	if t.srv.GetDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 	if err != nil {
 		return nil, err
 	}
-	taskRunNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+	taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.GetDetails(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, taskRunNameUnescaped, nil)
+	respr, errRespr := t.srv.GetDetails(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -287,21 +287,21 @@ func (t *TaskRunsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := t.srv.NewListPager(resourceGroupNameUnescaped, registryNameUnescaped, nil)
+		resp := t.srv.NewListPager(resourceGroupNameParam, registryNameParam, nil)
 		newListPager = &resp
 		t.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerregistry.TaskRunsClientListResponse, createLink func() string) {
@@ -328,7 +328,7 @@ func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 	beginUpdate := t.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 4 {
@@ -338,19 +338,19 @@ func (t *TaskRunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		registryNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
 		if err != nil {
 			return nil, err
 		}
-		taskRunNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameUnescaped, registryNameUnescaped, taskRunNameUnescaped, body, nil)
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

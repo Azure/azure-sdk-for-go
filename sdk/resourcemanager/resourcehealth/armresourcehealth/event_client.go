@@ -32,7 +32,7 @@ type EventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventClient, error) {
-	cl, err := arm.NewClient(moduleName+".EventClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewEventClient(subscriptionID string, credential azcore.TokenCredential, op
 //     method.
 func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.FetchDetailsBySubscriptionIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
@@ -110,6 +114,10 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleRespon
 //     method.
 func (client *EventClient) FetchDetailsByTenantIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchDetailsByTenantIDAndTrackingIDOptions) (EventClientFetchDetailsByTenantIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.FetchDetailsByTenantIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
@@ -162,6 +170,10 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(res
 //     method.
 func (client *EventClient) GetBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientGetBySubscriptionIDAndTrackingIDOptions) (EventClientGetBySubscriptionIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.GetBySubscriptionIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
@@ -224,6 +236,10 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *
 //     method.
 func (client *EventClient) GetByTenantIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientGetByTenantIDAndTrackingIDOptions) (EventClientGetByTenantIDAndTrackingIDResponse, error) {
 	var err error
+	const operationName = "EventClient.GetByTenantIDAndTrackingID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByTenantIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
 		return EventClientGetByTenantIDAndTrackingIDResponse{}, err

@@ -32,7 +32,7 @@ type DatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabasesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *DatabasesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -140,10 +147,13 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -153,6 +163,10 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -213,10 +227,14 @@ func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientExportResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientExportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientExportResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientExportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -226,6 +244,10 @@ func (client *DatabasesClient) BeginExport(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) export(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ExportDatabaseDefinition, options *DatabasesClientBeginExportOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginExport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.exportCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -289,10 +311,14 @@ func (client *DatabasesClient) BeginFailover(ctx context.Context, resourceGroupN
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientFailoverResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -302,6 +328,10 @@ func (client *DatabasesClient) BeginFailover(ctx context.Context, resourceGroupN
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -360,6 +390,10 @@ func (client *DatabasesClient) failoverCreateRequest(ctx context.Context, resour
 //   - options - DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
 func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientGetOptions) (DatabasesClientGetResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return DatabasesClientGetResponse{}, err
@@ -437,10 +471,14 @@ func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientImportResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientImportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientImportResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientImportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -450,6 +488,10 @@ func (client *DatabasesClient) BeginImport(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) importOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ImportExistingDatabaseDefinition, options *DatabasesClientBeginImportOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginImport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.importCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -513,25 +555,20 @@ func (client *DatabasesClient) NewListByElasticPoolPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListByElasticPoolResponse) (DatabasesClientListByElasticPoolResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListByElasticPoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByElasticPoolCreateRequest(ctx, resourceGroupName, serverName, elasticPoolName, options)
+			}, nil)
 			if err != nil {
 				return DatabasesClientListByElasticPoolResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabasesClientListByElasticPoolResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabasesClientListByElasticPoolResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByElasticPoolHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -588,25 +625,20 @@ func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, se
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListByServerResponse) (DatabasesClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return DatabasesClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabasesClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabasesClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -662,25 +694,20 @@ func (client *DatabasesClient) NewListInaccessibleByServerPager(resourceGroupNam
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListInaccessibleByServerResponse) (DatabasesClientListInaccessibleByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listInaccessibleByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListInaccessibleByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listInaccessibleByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return DatabasesClientListInaccessibleByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DatabasesClientListInaccessibleByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DatabasesClientListInaccessibleByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listInaccessibleByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -734,6 +761,7 @@ func (client *DatabasesClient) NewListMetricDefinitionsPager(resourceGroupName s
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListMetricDefinitionsResponse) (DatabasesClientListMetricDefinitionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListMetricDefinitionsPager")
 			req, err := client.listMetricDefinitionsCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 			if err != nil {
 				return DatabasesClientListMetricDefinitionsResponse{}, err
@@ -747,6 +775,7 @@ func (client *DatabasesClient) NewListMetricDefinitionsPager(resourceGroupName s
 			}
 			return client.listMetricDefinitionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -805,6 +834,7 @@ func (client *DatabasesClient) NewListMetricsPager(resourceGroupName string, ser
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *DatabasesClientListMetricsResponse) (DatabasesClientListMetricsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DatabasesClient.NewListMetricsPager")
 			req, err := client.listMetricsCreateRequest(ctx, resourceGroupName, serverName, databaseName, filter, options)
 			if err != nil {
 				return DatabasesClientListMetricsResponse{}, err
@@ -818,6 +848,7 @@ func (client *DatabasesClient) NewListMetricsPager(resourceGroupName string, ser
 			}
 			return client.listMetricsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -876,10 +907,14 @@ func (client *DatabasesClient) BeginPause(ctx context.Context, resourceGroupName
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientPauseResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientPauseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientPauseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientPauseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -889,6 +924,10 @@ func (client *DatabasesClient) BeginPause(ctx context.Context, resourceGroupName
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) pause(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginPauseOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginPause"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.pauseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -946,6 +985,10 @@ func (client *DatabasesClient) pauseCreateRequest(ctx context.Context, resourceG
 //   - options - DatabasesClientRenameOptions contains the optional parameters for the DatabasesClient.Rename method.
 func (client *DatabasesClient) Rename(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ResourceMoveDefinition, options *DatabasesClientRenameOptions) (DatabasesClientRenameResponse, error) {
 	var err error
+	const operationName = "DatabasesClient.Rename"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.renameCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return DatabasesClientRenameResponse{}, err
@@ -1008,10 +1051,14 @@ func (client *DatabasesClient) BeginResume(ctx context.Context, resourceGroupNam
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientResumeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientResumeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1021,6 +1068,10 @@ func (client *DatabasesClient) BeginResume(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginResumeOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err
@@ -1084,10 +1135,13 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1097,6 +1151,10 @@ func (client *DatabasesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseUpdate, options *DatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -1161,10 +1219,14 @@ func (client *DatabasesClient) BeginUpgradeDataWarehouse(ctx context.Context, re
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DatabasesClientUpgradeDataWarehouseResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabasesClientUpgradeDataWarehouseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DatabasesClientUpgradeDataWarehouseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabasesClientUpgradeDataWarehouseResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1174,6 +1236,10 @@ func (client *DatabasesClient) BeginUpgradeDataWarehouse(ctx context.Context, re
 // Generated from API version 2023-02-01-preview
 func (client *DatabasesClient) upgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginUpgradeDataWarehouseOptions) (*http.Response, error) {
 	var err error
+	const operationName = "DatabasesClient.BeginUpgradeDataWarehouse"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.upgradeDataWarehouseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return nil, err

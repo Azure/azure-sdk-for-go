@@ -33,7 +33,7 @@ type PublicMaintenanceConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicMaintenanceConfigurationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".PublicMaintenanceConfigurationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 //     method.
 func (client *PublicMaintenanceConfigurationsClient) Get(ctx context.Context, resourceName string, options *PublicMaintenanceConfigurationsClientGetOptions) (PublicMaintenanceConfigurationsClientGetResponse, error) {
 	var err error
+	const operationName = "PublicMaintenanceConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, options)
 	if err != nil {
 		return PublicMaintenanceConfigurationsClientGetResponse{}, err
@@ -111,6 +115,7 @@ func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *Publi
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *PublicMaintenanceConfigurationsClientListResponse) (PublicMaintenanceConfigurationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PublicMaintenanceConfigurationsClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
 				return PublicMaintenanceConfigurationsClientListResponse{}, err
@@ -124,6 +129,7 @@ func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *Publi
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

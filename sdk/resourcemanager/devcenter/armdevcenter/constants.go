@@ -9,8 +9,8 @@
 package armdevcenter
 
 const (
-	moduleName    = "armdevcenter"
-	moduleVersion = "v1.1.0-beta.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devcenter/armdevcenter"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

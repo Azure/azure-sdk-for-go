@@ -1,0 +1,6 @@
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/loadtesting/armloadtesting",
+  "Tag": "go/resourcemanager/loadtesting/armloadtesting_8e87e8f6c0"
+}

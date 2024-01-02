@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
 func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
 func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,7 +527,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,7 +562,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagno
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +597,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCate
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteAnalyses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteAnalysesSlot.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -804,7 +804,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,7 +831,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,11 +858,11 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	// 	Properties: &armappservice.DiagnosticAnalysisProperties{
 	// 		AbnormalTimePeriods: []*armappservice.AbnormalTimePeriod{
 	// 			{
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 				Events: []*armappservice.DetectorAbnormalTimePeriod{
 	// 					{
 	// 						Type: to.Ptr(armappservice.IssueTypeServiceIncident),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48.000Z"); return t}()),
 	// 						Message: to.Ptr("Your application process was restarted as application environment variables changed. This can most likely occur due to update in app settings or swap operation. This event occurred multiple times during the day."),
 	// 						MetaData: [][]*armappservice.NameValuePair{
 	// 							[]*armappservice.NameValuePair{
@@ -877,13 +877,13 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	// 						Priority: to.Ptr[float64](0),
 	// 						Solutions: []*armappservice.Solution{
 	// 						},
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50.000Z"); return t}()),
 	// 				}},
 	// 				Solutions: []*armappservice.Solution{
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 		}},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 		NonCorrelatedDetectors: []*armappservice.DetectorDefinition{
 	// 		},
 	// 		Payload: []*armappservice.AnalysisData{
@@ -893,72 +893,72 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	// 				Metrics: []*armappservice.DiagnosticMetricSet{
 	// 					{
 	// 						Name: to.Ptr("All Application Stop Events"),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 						TimeGrain: to.Ptr("00:05:00"),
 	// 						Values: []*armappservice.DiagnosticMetricSample{
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C15BE"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C15C1"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3BE0FB"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](4),
 	// 						}},
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("User Events"),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 						TimeGrain: to.Ptr("00:05:00"),
 	// 						Unit: to.Ptr(""),
 	// 						Values: []*armappservice.DiagnosticMetricSample{
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](3),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C09FC"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C2ADC"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C214E"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 						}},
 	// 				}},
 	// 				Source: to.Ptr("workerprocessrecycle"),
 	// 		}},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -985,11 +985,11 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	// 	Properties: &armappservice.DiagnosticAnalysisProperties{
 	// 		AbnormalTimePeriods: []*armappservice.AbnormalTimePeriod{
 	// 			{
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 				Events: []*armappservice.DetectorAbnormalTimePeriod{
 	// 					{
 	// 						Type: to.Ptr(armappservice.IssueTypeServiceIncident),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:48.000Z"); return t}()),
 	// 						Message: to.Ptr("Your application process was restarted as application environment variables changed. This can most likely occur due to update in app settings or swap operation. This event occurred multiple times during the day."),
 	// 						MetaData: [][]*armappservice.NameValuePair{
 	// 							[]*armappservice.NameValuePair{
@@ -1004,13 +1004,13 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	// 						Priority: to.Ptr[float64](0),
 	// 						Solutions: []*armappservice.Solution{
 	// 						},
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:21:50.000Z"); return t}()),
 	// 				}},
 	// 				Solutions: []*armappservice.Solution{
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 		}},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 		NonCorrelatedDetectors: []*armappservice.DetectorDefinition{
 	// 		},
 	// 		Payload: []*armappservice.AnalysisData{
@@ -1020,72 +1020,72 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	// 				Metrics: []*armappservice.DiagnosticMetricSet{
 	// 					{
 	// 						Name: to.Ptr("All Application Stop Events"),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 						TimeGrain: to.Ptr("00:05:00"),
 	// 						Values: []*armappservice.DiagnosticMetricSample{
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C15BE"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:00:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C15C1"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3BE0FB"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](2),
 	// 							},
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T00:10:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](4),
 	// 						}},
 	// 					},
 	// 					{
 	// 						Name: to.Ptr("User Events"),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 						TimeGrain: to.Ptr("00:05:00"),
 	// 						Unit: to.Ptr(""),
 	// 						Values: []*armappservice.DiagnosticMetricSample{
 	// 							{
 	// 								IsAggregated: to.Ptr(true),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](3),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C09FC"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C2ADC"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 							},
 	// 							{
 	// 								RoleInstance: to.Ptr("RD00155D3C214E"),
-	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00Z"); return t}()),
+	// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:20:00.000Z"); return t}()),
 	// 								Total: to.Ptr[float64](1),
 	// 						}},
 	// 				}},
 	// 				Source: to.Ptr("workerprocessrecycle"),
 	// 		}},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1275,7 +1275,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDetectorsSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1339,7 +1339,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1368,7 +1368,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDetectorSlot.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,7 +1397,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ExecuteSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1424,18 +1424,18 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	// 	Properties: &armappservice.DiagnosticDetectorResponseProperties{
 	// 		AbnormalTimePeriods: []*armappservice.DetectorAbnormalTimePeriod{
 	// 			{
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 				Solutions: []*armappservice.Solution{
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 		}},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1462,13 +1462,13 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	// 	Properties: &armappservice.DiagnosticDetectorResponseProperties{
 	// 		AbnormalTimePeriods: []*armappservice.DetectorAbnormalTimePeriod{
 	// 			{
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
+	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
 	// 				Solutions: []*armappservice.Solution{
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 		}},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-06T22:50:00.000Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T22:50:00.000Z"); return t}()),
 	// 	},
 	// }
 }

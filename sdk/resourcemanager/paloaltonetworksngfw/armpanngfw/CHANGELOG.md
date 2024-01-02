@@ -1,5 +1,12 @@
 # Release History
 
+## 1.1.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+- New field `TrustedRanges` in struct `NetworkProfile`
+
+
 ## 1.0.0 (2023-07-14)
 ### Other Changes
 

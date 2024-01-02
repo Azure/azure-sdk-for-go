@@ -1,5 +1,21 @@
 # Release History
 
+## 1.3.0-beta.1 (2023-11-30)
+### Features Added
+
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `PortalOperationsHostName` in struct `IotDpsPropertiesDescription`
+- New field `Identity`, `Resourcegroup`, `Subscriptionid` in struct `ProvisioningServiceDescription`
+
+
+## 1.2.0 (2023-11-24)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 1.2.0-beta.1 (2023-06-23)
 ### Features Added
 

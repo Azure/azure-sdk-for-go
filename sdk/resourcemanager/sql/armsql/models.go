@@ -276,6 +276,16 @@ type BenchmarkReference struct {
 	Reference *string
 }
 
+// ChangeLongTermRetentionBackupAccessTierParameters - Contains the information necessary to change long term retention backup
+// access tier and related operation mode.
+type ChangeLongTermRetentionBackupAccessTierParameters struct {
+	// REQUIRED; The long term retention backup storage access tier
+	BackupStorageAccessTier *string
+
+	// REQUIRED; The operation mode when updating ltr backup storage access tier
+	OperationMode *string
+}
+
 // CheckNameAvailabilityRequest - A request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
 	// REQUIRED
@@ -2251,6 +2261,40 @@ type EndpointDetail struct {
 	Port *int32
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // ExportDatabaseDefinition - Contains the information necessary to perform export database operation.
 type ExportDatabaseDefinition struct {
 	// REQUIRED; Administrator login name.
@@ -2983,10 +3027,22 @@ type InstancePoolProperties struct {
 
 	// REQUIRED; Count of vCores belonging to this instance pool.
 	VCores *int32
+
+	// Specifies maintenance configuration id to apply to this managed instance.
+	MaintenanceConfigurationID *string
+
+	// READ-ONLY; The Dns Zone that the managed instance pool is in.
+	DNSZone *string
 }
 
 // InstancePoolUpdate - An update to an Instance pool.
 type InstancePoolUpdate struct {
+	// Resource properties.
+	Properties *InstancePoolProperties
+
+	// The name and tier of the SKU.
+	SKU *SKU
+
 	// Resource tags.
 	Tags map[string]*string
 }
@@ -3190,6 +3246,39 @@ type JobListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*Job
+}
+
+// JobPrivateEndpoint - A job agent private endpoint.
+type JobPrivateEndpoint struct {
+	// Resource properties.
+	Properties *JobPrivateEndpointProperties
+
+	// READ-ONLY; Resource ID.
+	ID *string
+
+	// READ-ONLY; Resource name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// JobPrivateEndpointListResult - A list of job agent private endpoints.
+type JobPrivateEndpointListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string
+
+	// READ-ONLY; Array of results.
+	Value []*JobPrivateEndpoint
+}
+
+// JobPrivateEndpointProperties - Properties of job agent private endpoint.
+type JobPrivateEndpointProperties struct {
+	// REQUIRED; ARM resource id of the server the private endpoint will target.
+	TargetServerAzureResourceID *string
+
+	// READ-ONLY; Private endpoint id of the private endpoint.
+	PrivateEndpointID *string
 }
 
 // JobProperties - Properties of a job.
@@ -3556,11 +3645,17 @@ type LongTermRetentionBackupOperationResult struct {
 
 // LongTermRetentionBackupProperties - Properties of a long term retention backup
 type LongTermRetentionBackupProperties struct {
+	// The setting whether the LTR backup is immutable
+	IsBackupImmutable *bool
+
 	// The storage redundancy type of the backup
 	RequestedBackupStorageRedundancy *BackupStorageRedundancy
 
 	// READ-ONLY; The time the long term retention backup will expire.
 	BackupExpirationTime *time.Time
+
+	// READ-ONLY; The BackupStorageAccessTier for the LTR backup
+	BackupStorageAccessTier *BackupStorageAccessTier
 
 	// READ-ONLY; The storage redundancy type of the backup
 	BackupStorageRedundancy *BackupStorageRedundancy
@@ -3608,7 +3703,7 @@ type LongTermRetentionOperationResultProperties struct {
 // LongTermRetentionPolicy - A long term retention policy.
 type LongTermRetentionPolicy struct {
 	// Resource properties.
-	Properties *BaseLongTermRetentionPolicyProperties
+	Properties *LongTermRetentionPolicyProperties
 
 	// READ-ONLY; Resource ID.
 	ID *string
@@ -3627,6 +3722,27 @@ type LongTermRetentionPolicyListResult struct {
 
 	// READ-ONLY; Array of results.
 	Value []*LongTermRetentionPolicy
+}
+
+// LongTermRetentionPolicyProperties - Properties of a long term retention policy
+type LongTermRetentionPolicyProperties struct {
+	// The BackupStorageAccessTier for the LTR backups
+	BackupStorageAccessTier *BackupStorageAccessTier
+
+	// The setting whether to make LTR backups immutable
+	MakeBackupsImmutable *bool
+
+	// The monthly retention policy for an LTR backup in an ISO 8601 format.
+	MonthlyRetention *string
+
+	// The week of year to take the yearly backup in an ISO 8601 format.
+	WeekOfYear *int32
+
+	// The weekly retention policy for an LTR backup in an ISO 8601 format.
+	WeeklyRetention *string
+
+	// The yearly retention policy for an LTR backup in an ISO 8601 format.
+	YearlyRetention *string
 }
 
 // MaintenanceConfigurationCapability - The maintenance configuration capability
@@ -7106,8 +7222,8 @@ type ServerProperties struct {
 	// A CMK URI of the key to use for encryption.
 	KeyID *string
 
-	// Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
-	MinimalTLSVersion *string
+	// Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
+	MinimalTLSVersion *MinimalTLSVersion
 
 	// The resource id of a user assigned identity to be used by default.
 	PrimaryUserAssignedIdentityID *string

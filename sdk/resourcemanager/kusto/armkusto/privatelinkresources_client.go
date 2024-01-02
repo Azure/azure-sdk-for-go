@@ -32,7 +32,7 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
-	cl, err := arm.NewClient(moduleName+".PrivateLinkResourcesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //     method.
 func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, privateLinkResourceName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error) {
 	var err error
+	const operationName = "PrivateLinkResourcesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, privateLinkResourceName, options)
 	if err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
@@ -122,6 +126,7 @@ func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string,
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *PrivateLinkResourcesClientListResponse) (PrivateLinkResourcesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkResourcesClient.NewListPager")
 			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
 			if err != nil {
 				return PrivateLinkResourcesClientListResponse{}, err
@@ -135,6 +140,7 @@ func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string,
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

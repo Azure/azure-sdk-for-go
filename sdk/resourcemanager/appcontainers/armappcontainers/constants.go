@@ -9,8 +9,8 @@
 package armappcontainers
 
 const (
-	moduleName    = "armappcontainers"
-	moduleVersion = "v2.0.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers"
+	moduleVersion = "v2.1.0"
 )
 
 // AccessMode - Access mode for storage

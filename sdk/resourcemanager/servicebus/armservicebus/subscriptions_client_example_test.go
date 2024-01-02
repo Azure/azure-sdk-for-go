@@ -49,7 +49,7 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 		// 			Type: to.Ptr("Microsoft.ServiceBus/Namespaces/Topics/Subscriptions"),
 		// 			ID: to.Ptr("/subscriptions/Subscriptionid/resourceGroups/ResourceGroup/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-1349/topics/sdk-Topics-8740/subscriptions/sdk-Subscriptions-2178"),
 		// 			Properties: &armservicebus.SBSubscriptionProperties{
-		// 				AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+		// 				AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 		// 				AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
 		// 				CountDetails: &armservicebus.MessageCountDetails{
 		// 					ActiveMessageCount: to.Ptr[int64](0),
@@ -58,7 +58,7 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 		// 					TransferDeadLetterMessageCount: to.Ptr[int64](0),
 		// 					TransferMessageCount: to.Ptr[int64](0),
 		// 				},
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 		// 				DeadLetteringOnFilterEvaluationExceptions: to.Ptr(true),
 		// 				DeadLetteringOnMessageExpiration: to.Ptr(true),
 		// 				DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
@@ -70,7 +70,7 @@ func ExampleSubscriptionsClient_NewListByTopicPager() {
 		// 				MessageCount: to.Ptr[int64](0),
 		// 				RequiresSession: to.Ptr(false),
 		// 				Status: to.Ptr(armservicebus.EntityStatusActive),
-		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 		// 			},
 		// 	}},
 		// }
@@ -104,7 +104,7 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.ServiceBus/Namespaces/Topics/Subscriptions"),
 	// 	ID: to.Ptr("/subscriptions/Subscriptionid/resourceGroups/ResourceGroup/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-1349/topics/sdk-Topics-8740/subscriptions/sdk-Subscriptions-2178"),
 	// 	Properties: &armservicebus.SBSubscriptionProperties{
-	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 		AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
 	// 		CountDetails: &armservicebus.MessageCountDetails{
 	// 			ActiveMessageCount: to.Ptr[int64](0),
@@ -113,7 +113,7 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 	// 			TransferDeadLetterMessageCount: to.Ptr[int64](0),
 	// 			TransferMessageCount: to.Ptr[int64](0),
 	// 		},
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 		DeadLetteringOnFilterEvaluationExceptions: to.Ptr(true),
 	// 		DeadLetteringOnMessageExpiration: to.Ptr(true),
 	// 		DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
@@ -125,7 +125,7 @@ func ExampleSubscriptionsClient_CreateOrUpdate() {
 	// 		MessageCount: to.Ptr[int64](0),
 	// 		RequiresSession: to.Ptr(false),
 	// 		Status: to.Ptr(armservicebus.EntityStatusActive),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 	},
 	// }
 }
@@ -170,7 +170,7 @@ func ExampleSubscriptionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.ServiceBus/Namespaces/Topics/Subscriptions"),
 	// 	ID: to.Ptr("/subscriptions/Subscriptionid/resourceGroups/ResourceGroup/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-1349/topics/sdk-Topics-8740/subscriptions/sdk-Subscriptions-2178"),
 	// 	Properties: &armservicebus.SBSubscriptionProperties{
-	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		AccessedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 		AutoDeleteOnIdle: to.Ptr("P10675199DT2H48M5.4775807S"),
 	// 		CountDetails: &armservicebus.MessageCountDetails{
 	// 			ActiveMessageCount: to.Ptr[int64](0),
@@ -179,7 +179,7 @@ func ExampleSubscriptionsClient_Get() {
 	// 			TransferDeadLetterMessageCount: to.Ptr[int64](0),
 	// 			TransferMessageCount: to.Ptr[int64](0),
 	// 		},
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 		DeadLetteringOnFilterEvaluationExceptions: to.Ptr(true),
 	// 		DeadLetteringOnMessageExpiration: to.Ptr(true),
 	// 		DefaultMessageTimeToLive: to.Ptr("P10675199DT2H48M5.4775807S"),
@@ -191,7 +191,7 @@ func ExampleSubscriptionsClient_Get() {
 	// 		MessageCount: to.Ptr[int64](0),
 	// 		RequiresSession: to.Ptr(false),
 	// 		Status: to.Ptr(armservicebus.EntityStatusActive),
-	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.5992764Z"); return t}()),
+	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-04T18:02:20.599Z"); return t}()),
 	// 	},
 	// }
 }

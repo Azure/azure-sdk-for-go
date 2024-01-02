@@ -32,7 +32,7 @@ type ContainerAppsDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsDiagnosticsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContainerAppsDiagnosticsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewContainerAppsDiagnosticsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ContainerAppsDiagnosticsClient) GetDetector(ctx context.Context, resourceGroupName string, containerAppName string, detectorName string, options *ContainerAppsDiagnosticsClientGetDetectorOptions) (ContainerAppsDiagnosticsClientGetDetectorResponse, error) {
 	var err error
+	const operationName = "ContainerAppsDiagnosticsClient.GetDetector"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getDetectorCreateRequest(ctx, resourceGroupName, containerAppName, detectorName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
@@ -120,6 +124,10 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorHandleResponse(resp *ht
 //     method.
 func (client *ContainerAppsDiagnosticsClient) GetRevision(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, options *ContainerAppsDiagnosticsClientGetRevisionOptions) (ContainerAppsDiagnosticsClientGetRevisionResponse, error) {
 	var err error
+	const operationName = "ContainerAppsDiagnosticsClient.GetRevision"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getRevisionCreateRequest(ctx, resourceGroupName, containerAppName, revisionName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
@@ -185,6 +193,10 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionHandleResponse(resp *ht
 //     method.
 func (client *ContainerAppsDiagnosticsClient) GetRoot(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientGetRootOptions) (ContainerAppsDiagnosticsClientGetRootResponse, error) {
 	var err error
+	const operationName = "ContainerAppsDiagnosticsClient.GetRoot"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getRootCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
@@ -249,25 +261,20 @@ func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerAppsDiagnosticsClientListDetectorsResponse) (ContainerAppsDiagnosticsClientListDetectorsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listDetectorsCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerAppsDiagnosticsClient.NewListDetectorsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listDetectorsCreateRequest(ctx, resourceGroupName, containerAppName, options)
+			}, nil)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listDetectorsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -319,25 +326,20 @@ func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGrou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerAppsDiagnosticsClientListRevisionsResponse) (ContainerAppsDiagnosticsClientListRevisionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerAppsDiagnosticsClient.NewListRevisionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, options)
+			}, nil)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listRevisionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

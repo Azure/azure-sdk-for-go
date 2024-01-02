@@ -32,7 +32,7 @@ type ManagedDatabaseRestoreDetailsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseRestoreDetailsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedDatabaseRestoreDetailsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewManagedDatabaseRestoreDetailsClient(subscriptionID string, credential az
 //     method.
 func (client *ManagedDatabaseRestoreDetailsClient) Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, restoreDetailsName RestoreDetailsName, options *ManagedDatabaseRestoreDetailsClientGetOptions) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedDatabaseRestoreDetailsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, restoreDetailsName, options)
 	if err != nil {
 		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err

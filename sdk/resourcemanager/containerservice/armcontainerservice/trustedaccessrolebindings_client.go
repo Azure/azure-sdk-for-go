@@ -28,11 +28,11 @@ type TrustedAccessRoleBindingsClient struct {
 }
 
 // NewTrustedAccessRoleBindingsClient creates a new instance of TrustedAccessRoleBindingsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTrustedAccessRoleBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedAccessRoleBindingsClient, error) {
-	cl, err := arm.NewClient(moduleName+".TrustedAccessRoleBindingsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewTrustedAccessRoleBindingsClient(subscriptionID string, credential azcore
 // BeginCreateOrUpdate - Create or update a trusted access role binding
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -59,17 +59,21 @@ func (client *TrustedAccessRoleBindingsClient) BeginCreateOrUpdate(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[TrustedAccessRoleBindingsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrustedAccessRoleBindingsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TrustedAccessRoleBindingsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TrustedAccessRoleBindingsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Create or update a trusted access role binding
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 func (client *TrustedAccessRoleBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, trustedAccessRoleBinding TrustedAccessRoleBinding, options *TrustedAccessRoleBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TrustedAccessRoleBindingsClient.BeginCreateOrUpdate"
@@ -115,7 +119,7 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, trustedAccessRoleBinding); err != nil {
@@ -127,7 +131,7 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdateCreateRequest(ctx c
 // BeginDelete - Delete a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -139,17 +143,21 @@ func (client *TrustedAccessRoleBindingsClient) BeginDelete(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[TrustedAccessRoleBindingsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TrustedAccessRoleBindingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[TrustedAccessRoleBindingsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TrustedAccessRoleBindingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Delete a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 func (client *TrustedAccessRoleBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, trustedAccessRoleBindingName string, options *TrustedAccessRoleBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TrustedAccessRoleBindingsClient.BeginDelete"
@@ -195,7 +203,7 @@ func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,7 +212,7 @@ func (client *TrustedAccessRoleBindingsClient) deleteCreateRequest(ctx context.C
 // Get - Get a trusted access role binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - trustedAccessRoleBindingName - The name of trusted access role binding.
@@ -256,7 +264,7 @@ func (client *TrustedAccessRoleBindingsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +281,7 @@ func (client *TrustedAccessRoleBindingsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List trusted access role bindings.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - TrustedAccessRoleBindingsClientListOptions contains the optional parameters for the TrustedAccessRoleBindingsClient.NewListPager
@@ -285,22 +293,15 @@ func (client *TrustedAccessRoleBindingsClient) NewListPager(resourceGroupName st
 		},
 		Fetcher: func(ctx context.Context, page *TrustedAccessRoleBindingsClientListResponse) (TrustedAccessRoleBindingsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRoleBindingsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
+			}, nil)
 			if err != nil {
 				return TrustedAccessRoleBindingsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TrustedAccessRoleBindingsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TrustedAccessRoleBindingsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -328,7 +329,7 @@ func (client *TrustedAccessRoleBindingsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

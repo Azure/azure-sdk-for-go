@@ -37,7 +37,7 @@ func TestSortFuncItem(t *testing.T) {
 		},
 	}
 
-	sortResult := sortFuncItem(s)
+	sortResult := SortFuncItem(s)
 	expected := []string{
 		"NewPrivateEndpointConnectionsClient",
 		"*PrivateEndpointConnectionsClient.BeginCreate",

@@ -55,7 +55,7 @@ func ExampleServiceFabricSchedulesClient_NewListPager() {
 		// 				"tagName1": to.Ptr("tagValue1"),
 		// 			},
 		// 			Properties: &armdevtestlabs.ScheduleProperties{
-		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.0000000-00:00"); return t}()),
+		// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.000Z"); return t}()),
 		// 				NotificationSettings: &armdevtestlabs.NotificationSettings{
 		// 					EmailRecipient: to.Ptr("{email}"),
 		// 					NotificationLocale: to.Ptr("EN"),
@@ -113,7 +113,7 @@ func ExampleServiceFabricSchedulesClient_Get() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.0000000-00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.000Z"); return t}()),
 	// 		NotificationSettings: &armdevtestlabs.NotificationSettings{
 	// 			EmailRecipient: to.Ptr("{email}"),
 	// 			NotificationLocale: to.Ptr("EN"),
@@ -204,7 +204,7 @@ func ExampleServiceFabricSchedulesClient_CreateOrUpdate() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.0000000-00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.000Z"); return t}()),
 	// 		NotificationSettings: &armdevtestlabs.NotificationSettings{
 	// 			EmailRecipient: to.Ptr("{email}"),
 	// 			NotificationLocale: to.Ptr("EN"),
@@ -281,7 +281,7 @@ func ExampleServiceFabricSchedulesClient_Update() {
 	// 		"tagName1": to.Ptr("tagValue1"),
 	// 	},
 	// 	Properties: &armdevtestlabs.ScheduleProperties{
-	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.0000000-00:00"); return t}()),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-15T00:00:00.000Z"); return t}()),
 	// 		NotificationSettings: &armdevtestlabs.NotificationSettings{
 	// 			EmailRecipient: to.Ptr("{email}"),
 	// 			NotificationLocale: to.Ptr("EN"),

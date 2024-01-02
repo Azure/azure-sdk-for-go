@@ -92,25 +92,25 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchDelete(req *http.Req
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	privateEndpointConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, privateEndpointConnectionNameUnescaped, nil)
+	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameParam, accountNameParam, privateEndpointConnectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -129,25 +129,25 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	privateEndpointConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, privateEndpointConnectionNameUnescaped, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, privateEndpointConnectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -168,21 +168,21 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
 		}
-		accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListPager(resourceGroupNameUnescaped, accountNameUnescaped, nil)
+		resp := p.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
 		newListPager = &resp
 		p.newListPager.add(req, newListPager)
 	}
@@ -204,7 +204,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchPut(req *http.Reques
 	if p.srv.Put == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 4 {
@@ -214,19 +214,19 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchPut(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	accountNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
 	if err != nil {
 		return nil, err
 	}
-	privateEndpointConnectionNameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+	privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Put(req.Context(), resourceGroupNameUnescaped, accountNameUnescaped, privateEndpointConnectionNameUnescaped, body, nil)
+	respr, errRespr := p.srv.Put(req.Context(), resourceGroupNameParam, accountNameParam, privateEndpointConnectionNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

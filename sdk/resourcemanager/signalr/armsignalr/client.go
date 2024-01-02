@@ -32,7 +32,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, location string, parameters NameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
 	var err error
+	const operationName = "Client.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
@@ -75,6 +79,9 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, lo
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -115,10 +122,13 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -128,6 +138,10 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 // Generated from API version 2023-08-01-preview
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -146,6 +160,9 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -184,10 +201,13 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -197,6 +217,10 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 // Generated from API version 2023-08-01-preview
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -215,6 +239,9 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 // deleteCreateRequest creates the Delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -244,6 +271,10 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ClientGetOptions) (ClientGetResponse, error) {
 	var err error
+	const operationName = "Client.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ClientGetResponse{}, err
@@ -263,6 +294,9 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, resourc
 // getCreateRequest creates the Get request.
 func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -304,31 +338,29 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListByResourceGroupResponse) (ClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -364,31 +396,29 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClientListBySubscriptionResponse) (ClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, options *ClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/signalR"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -419,6 +449,10 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 //   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
 func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
 	var err error
+	const operationName = "Client.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ClientListKeysResponse{}, err
@@ -438,6 +472,9 @@ func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, re
 // listKeysCreateRequest creates the ListKeys request.
 func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -477,6 +514,10 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 //   - options - ClientListReplicaSKUsOptions contains the optional parameters for the Client.ListReplicaSKUs method.
 func (client *Client) ListReplicaSKUs(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ClientListReplicaSKUsOptions) (ClientListReplicaSKUsResponse, error) {
 	var err error
+	const operationName = "Client.ListReplicaSKUs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listReplicaSKUsCreateRequest(ctx, resourceGroupName, resourceName, replicaName, options)
 	if err != nil {
 		return ClientListReplicaSKUsResponse{}, err
@@ -496,6 +537,9 @@ func (client *Client) ListReplicaSKUs(ctx context.Context, resourceGroupName str
 // listReplicaSKUsCreateRequest creates the ListReplicaSKUs request.
 func (client *Client) listReplicaSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, replicaName string, options *ClientListReplicaSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/replicas/{replicaName}/skus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -538,6 +582,10 @@ func (client *Client) listReplicaSKUsHandleResponse(resp *http.Response) (Client
 //   - options - ClientListSKUsOptions contains the optional parameters for the Client.ListSKUs method.
 func (client *Client) ListSKUs(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListSKUsOptions) (ClientListSKUsResponse, error) {
 	var err error
+	const operationName = "Client.ListSKUs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return ClientListSKUsResponse{}, err
@@ -557,6 +605,9 @@ func (client *Client) ListSKUs(ctx context.Context, resourceGroupName string, re
 // listSKUsCreateRequest creates the ListSKUs request.
 func (client *Client) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientListSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/skus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -603,10 +654,13 @@ func (client *Client) BeginRegenerateKey(ctx context.Context, resourceGroupName 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientRegenerateKeyResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientRegenerateKeyResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientRegenerateKeyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -617,6 +671,10 @@ func (client *Client) BeginRegenerateKey(ctx context.Context, resourceGroupName 
 // Generated from API version 2023-08-01-preview
 func (client *Client) regenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters RegenerateKeyParameters, options *ClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginRegenerateKey"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -635,6 +693,9 @@ func (client *Client) regenerateKey(ctx context.Context, resourceGroupName strin
 // regenerateKeyCreateRequest creates the RegenerateKey request.
 func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RegenerateKeyParameters, options *ClientBeginRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/regenerateKey"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -673,10 +734,13 @@ func (client *Client) BeginRestart(ctx context.Context, resourceGroupName string
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientRestartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientRestartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -686,6 +750,10 @@ func (client *Client) BeginRestart(ctx context.Context, resourceGroupName string
 // Generated from API version 2023-08-01-preview
 func (client *Client) restart(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginRestartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -704,6 +772,9 @@ func (client *Client) restart(ctx context.Context, resourceGroupName string, res
 // restartCreateRequest creates the Restart request.
 func (client *Client) restartCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -740,10 +811,13 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -753,6 +827,10 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // Generated from API version 2023-08-01-preview
 func (client *Client) update(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -771,6 +849,9 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, reso
 // updateCreateRequest creates the Update request.
 func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceInfo, options *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -70,9 +70,9 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	// 		},
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -122,9 +122,9 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -187,9 +187,9 @@ func ExampleDNSResolversClient_Get() {
 	// 		},
 	// 	},
 	// 	SystemData: &armdnsresolver.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.1075056Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
 	// 		CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.1974346Z"); return t}()),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 	// 	},
 	// }
@@ -237,9 +237,9 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 		},
@@ -261,9 +261,9 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-03T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 	}},
@@ -313,9 +313,9 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 		},
@@ -337,9 +337,9 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			SystemData: &armdnsresolver.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.1075056Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T01:01:01.107Z"); return t}()),
 		// 				CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.1974346Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T02:03:01.197Z"); return t}()),
 		// 				LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
 		// 			},
 		// 	}},

@@ -57,8 +57,15 @@ clientFactory, err := armconnectedvmware.NewClientFactory(<subscription ID>, cre
 A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewVirtualMachinesClient()
+client := clientFactory.NewVCentersClient()
 ```
+
+## Fakes
+
+The fake package contains types used for constructing in-memory fake servers used in unit tests.
+This allows writing tests to cover various success/error conditions without the need for connecting to a live service.
+
+Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes for details and examples on how to use fakes.
 
 ## Provide Feedback
 

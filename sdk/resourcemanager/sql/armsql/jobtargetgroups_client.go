@@ -32,7 +32,7 @@ type JobTargetGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobTargetGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobTargetGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobTargetGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewJobTargetGroupsClient(subscriptionID string, credential azcore.TokenCred
 //     method.
 func (client *JobTargetGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, parameters JobTargetGroup, options *JobTargetGroupsClientCreateOrUpdateOptions) (JobTargetGroupsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "JobTargetGroupsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, targetGroupName, parameters, options)
 	if err != nil {
 		return JobTargetGroupsClientCreateOrUpdateResponse{}, err
@@ -131,6 +135,10 @@ func (client *JobTargetGroupsClient) createOrUpdateHandleResponse(resp *http.Res
 //   - options - JobTargetGroupsClientDeleteOptions contains the optional parameters for the JobTargetGroupsClient.Delete method.
 func (client *JobTargetGroupsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsClientDeleteOptions) (JobTargetGroupsClientDeleteResponse, error) {
 	var err error
+	const operationName = "JobTargetGroupsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, targetGroupName, options)
 	if err != nil {
 		return JobTargetGroupsClientDeleteResponse{}, err
@@ -191,6 +199,10 @@ func (client *JobTargetGroupsClient) deleteCreateRequest(ctx context.Context, re
 //   - options - JobTargetGroupsClientGetOptions contains the optional parameters for the JobTargetGroupsClient.Get method.
 func (client *JobTargetGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, targetGroupName string, options *JobTargetGroupsClientGetOptions) (JobTargetGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "JobTargetGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, targetGroupName, options)
 	if err != nil {
 		return JobTargetGroupsClientGetResponse{}, err
@@ -265,25 +277,20 @@ func (client *JobTargetGroupsClient) NewListByAgentPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobTargetGroupsClientListByAgentResponse) (JobTargetGroupsClientListByAgentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobTargetGroupsClient.NewListByAgentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAgentCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, options)
+			}, nil)
 			if err != nil {
 				return JobTargetGroupsClientListByAgentResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobTargetGroupsClientListByAgentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobTargetGroupsClientListByAgentResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByAgentHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

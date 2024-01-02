@@ -32,7 +32,7 @@ type ContentTypeClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContentTypeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContentTypeClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContentTypeClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,6 +57,10 @@ func NewContentTypeClient(subscriptionID string, credential azcore.TokenCredenti
 //     method.
 func (client *ContentTypeClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, parameters ContentTypeContract, options *ContentTypeClientCreateOrUpdateOptions) (ContentTypeClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ContentTypeClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, parameters, options)
 	if err != nil {
 		return ContentTypeClientCreateOrUpdateResponse{}, err
@@ -135,6 +139,10 @@ func (client *ContentTypeClient) createOrUpdateHandleResponse(resp *http.Respons
 //   - options - ContentTypeClientDeleteOptions contains the optional parameters for the ContentTypeClient.Delete method.
 func (client *ContentTypeClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, ifMatch string, options *ContentTypeClientDeleteOptions) (ContentTypeClientDeleteResponse, error) {
 	var err error
+	const operationName = "ContentTypeClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, ifMatch, options)
 	if err != nil {
 		return ContentTypeClientDeleteResponse{}, err
@@ -192,6 +200,10 @@ func (client *ContentTypeClient) deleteCreateRequest(ctx context.Context, resour
 //   - options - ContentTypeClientGetOptions contains the optional parameters for the ContentTypeClient.Get method.
 func (client *ContentTypeClient) Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentTypeClientGetOptions) (ContentTypeClientGetResponse, error) {
 	var err error
+	const operationName = "ContentTypeClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, contentTypeID, options)
 	if err != nil {
 		return ContentTypeClientGetResponse{}, err
@@ -264,25 +276,20 @@ func (client *ContentTypeClient) NewListByServicePager(resourceGroupName string,
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContentTypeClientListByServiceResponse) (ContentTypeClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContentTypeClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return ContentTypeClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContentTypeClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContentTypeClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

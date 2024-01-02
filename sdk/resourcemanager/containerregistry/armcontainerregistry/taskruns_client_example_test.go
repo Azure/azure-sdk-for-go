@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGet.json
 func ExampleTaskRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,10 +64,10 @@ func ExampleTaskRunsClient_Get() {
 	// 				AgentConfiguration: &armcontainerregistry.AgentProperties{
 	// 					CPU: to.Ptr[int32](2),
 	// 				},
-	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
-	// 				FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.8792157+00:00"); return t}()),
+	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.926Z"); return t}()),
+	// 				FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.879Z"); return t}()),
 	// 				IsArchiveEnabled: to.Ptr(true),
-	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29+00:00"); return t}()),
+	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.000Z"); return t}()),
 	// 				Platform: &armcontainerregistry.PlatformProperties{
 	// 					Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 	// 					OS: to.Ptr(armcontainerregistry.OSLinux),
@@ -75,7 +75,7 @@ func ExampleTaskRunsClient_Get() {
 	// 				ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 				RunID: to.Ptr("yd5"),
 	// 				RunType: to.Ptr(armcontainerregistry.RunTypeQuickRun),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.1348714+00:00"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.134Z"); return t}()),
 	// 				Status: to.Ptr(armcontainerregistry.RunStatusSucceeded),
 	// 			},
 	// 		},
@@ -83,7 +83,7 @@ func ExampleTaskRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
 func ExampleTaskRunsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,9 +148,9 @@ func ExampleTaskRunsClient_BeginCreate() {
 	// 				AgentConfiguration: &armcontainerregistry.AgentProperties{
 	// 					CPU: to.Ptr[int32](2),
 	// 				},
-	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
+	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.926Z"); return t}()),
 	// 				IsArchiveEnabled: to.Ptr(true),
-	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21+00:00"); return t}()),
+	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.000Z"); return t}()),
 	// 				Platform: &armcontainerregistry.PlatformProperties{
 	// 					Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 	// 					OS: to.Ptr(armcontainerregistry.OSLinux),
@@ -165,7 +165,7 @@ func ExampleTaskRunsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
 func ExampleTaskRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleTaskRunsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsUpdate.json
 func ExampleTaskRunsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,9 +252,9 @@ func ExampleTaskRunsClient_BeginUpdate() {
 	// 				AgentConfiguration: &armcontainerregistry.AgentProperties{
 	// 					CPU: to.Ptr[int32](2),
 	// 				},
-	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34.1184031+00:00"); return t}()),
+	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34.118Z"); return t}()),
 	// 				IsArchiveEnabled: to.Ptr(true),
-	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34+00:00"); return t}()),
+	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34.000Z"); return t}()),
 	// 				Platform: &armcontainerregistry.PlatformProperties{
 	// 					Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 	// 					OS: to.Ptr(armcontainerregistry.OSLinux),
@@ -269,7 +269,7 @@ func ExampleTaskRunsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGetDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGetDetails.json
 func ExampleTaskRunsClient_GetDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,10 +315,10 @@ func ExampleTaskRunsClient_GetDetails() {
 	// 				AgentConfiguration: &armcontainerregistry.AgentProperties{
 	// 					CPU: to.Ptr[int32](2),
 	// 				},
-	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
-	// 				FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.8792157+00:00"); return t}()),
+	// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.926Z"); return t}()),
+	// 				FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.879Z"); return t}()),
 	// 				IsArchiveEnabled: to.Ptr(true),
-	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29+00:00"); return t}()),
+	// 				LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.000Z"); return t}()),
 	// 				Platform: &armcontainerregistry.PlatformProperties{
 	// 					Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 	// 					OS: to.Ptr(armcontainerregistry.OSLinux),
@@ -326,7 +326,7 @@ func ExampleTaskRunsClient_GetDetails() {
 	// 				ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 				RunID: to.Ptr("yd5"),
 	// 				RunType: to.Ptr(armcontainerregistry.RunTypeQuickRun),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.1348714+00:00"); return t}()),
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.134Z"); return t}()),
 	// 				Status: to.Ptr(armcontainerregistry.RunStatusSucceeded),
 	// 			},
 	// 		},
@@ -334,7 +334,7 @@ func ExampleTaskRunsClient_GetDetails() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/68d03f91ea7c30e1ab28fb9d35c13f81bc85b724/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/bf204aab860f2eb58a9d346b00d44760f2a9b0a2/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsList.json
 func ExampleTaskRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,10 +386,10 @@ func ExampleTaskRunsClient_NewListPager() {
 		// 						AgentConfiguration: &armcontainerregistry.AgentProperties{
 		// 							CPU: to.Ptr[int32](2),
 		// 						},
-		// 						CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.2278794+00:00"); return t}()),
-		// 						FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37.0349516+00:00"); return t}()),
+		// 						CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.227Z"); return t}()),
+		// 						FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37.034Z"); return t}()),
 		// 						IsArchiveEnabled: to.Ptr(true),
-		// 						LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37+00:00"); return t}()),
+		// 						LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37.000Z"); return t}()),
 		// 						Platform: &armcontainerregistry.PlatformProperties{
 		// 							Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 		// 							OS: to.Ptr(armcontainerregistry.OSLinux),
@@ -397,7 +397,7 @@ func ExampleTaskRunsClient_NewListPager() {
 		// 						ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 						RunID: to.Ptr("yd4"),
 		// 						RunType: to.Ptr(armcontainerregistry.RunTypeQuickRun),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.4589616+00:00"); return t}()),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.458Z"); return t}()),
 		// 						Status: to.Ptr(armcontainerregistry.RunStatusSucceeded),
 		// 					},
 		// 				},

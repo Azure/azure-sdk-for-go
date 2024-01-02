@@ -51,7 +51,7 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_NewListPager() {
 		// 					PrincipalName: to.Ptr("levi"),
 		// 					UserPrincipalName: to.Ptr("levi"),
 		// 				},
-		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.6905189+00:00"); return t}()),
+		// 				CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.690Z"); return t}()),
 		// 				Decisions: []*armauthorization.AccessReviewResult{
 		// 					to.Ptr(armauthorization.AccessReviewResultApprove),
 		// 					to.Ptr(armauthorization.AccessReviewResultDeny),
@@ -59,8 +59,8 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_NewListPager() {
 		// 					to.Ptr(armauthorization.AccessReviewResultDontKnow),
 		// 					to.Ptr(armauthorization.AccessReviewResultNotNotified)},
 		// 					DisplayName: to.Ptr("Hello world name"),
-		// 					ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T00:00:00-08:00"); return t}()),
-		// 					ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00-07:00"); return t}()),
+		// 					ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T08:00:00.000Z"); return t}()),
+		// 					ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T07:00:00.000Z"); return t}()),
 		// 					Scopes: []*armauthorization.AccessReviewScope{
 		// 						{
 		// 							ExpandNestedMemberships: to.Ptr(true),
@@ -77,9 +77,9 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_NewListPager() {
 		// 					Settings: &armauthorization.AccessReviewHistoryScheduleSettings{
 		// 						Range: &armauthorization.AccessReviewRecurrenceRange{
 		// 							Type: to.Ptr(armauthorization.AccessReviewRecurrenceRangeTypeEndDate),
-		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00-08:00"); return t}()),
+		// 							EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T08:00:00.000Z"); return t}()),
 		// 							NumberOfOccurrences: to.Ptr[int32](1),
-		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T00:00:00-08:00"); return t}()),
+		// 							StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T08:00:00.000Z"); return t}()),
 		// 						},
 		// 					},
 		// 					Status: to.Ptr(armauthorization.AccessReviewHistoryDefinitionStatusDone),
@@ -117,7 +117,7 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_GetByID() {
 	// 			PrincipalName: to.Ptr("levi"),
 	// 			UserPrincipalName: to.Ptr("levi"),
 	// 		},
-	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.6905189+00:00"); return t}()),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-23T00:27:33.690Z"); return t}()),
 	// 		Decisions: []*armauthorization.AccessReviewResult{
 	// 			to.Ptr(armauthorization.AccessReviewResultApprove),
 	// 			to.Ptr(armauthorization.AccessReviewResultDeny),
@@ -125,8 +125,8 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_GetByID() {
 	// 			to.Ptr(armauthorization.AccessReviewResultDontKnow),
 	// 			to.Ptr(armauthorization.AccessReviewResultNotNotified)},
 	// 			DisplayName: to.Ptr("Hello world name"),
-	// 			ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T00:00:00-08:00"); return t}()),
-	// 			ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00-07:00"); return t}()),
+	// 			ReviewHistoryPeriodEndDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T08:00:00.000Z"); return t}()),
+	// 			ReviewHistoryPeriodStartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T07:00:00.000Z"); return t}()),
 	// 			Scopes: []*armauthorization.AccessReviewScope{
 	// 				{
 	// 					ExpandNestedMemberships: to.Ptr(true),
@@ -143,9 +143,9 @@ func ExampleScopeAccessReviewHistoryDefinitionsClient_GetByID() {
 	// 			Settings: &armauthorization.AccessReviewHistoryScheduleSettings{
 	// 				Range: &armauthorization.AccessReviewRecurrenceRange{
 	// 					Type: to.Ptr(armauthorization.AccessReviewRecurrenceRangeTypeEndDate),
-	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T00:00:00-08:00"); return t}()),
+	// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T08:00:00.000Z"); return t}()),
 	// 					NumberOfOccurrences: to.Ptr[int32](1),
-	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T00:00:00-08:00"); return t}()),
+	// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-12-01T08:00:00.000Z"); return t}()),
 	// 				},
 	// 			},
 	// 			Status: to.Ptr(armauthorization.AccessReviewHistoryDefinitionStatusDone),

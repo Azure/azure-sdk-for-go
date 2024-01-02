@@ -28,7 +28,7 @@ type HybridIdentityMetadataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewHybridIdentityMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridIdentityMetadataClient, error) {
-	cl, err := arm.NewClient(moduleName+".HybridIdentityMetadataClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +47,10 @@ func NewHybridIdentityMetadataClient(credential azcore.TokenCredential, options 
 //     method.
 func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceURI string, options *HybridIdentityMetadataClientGetOptions) (HybridIdentityMetadataClientGetResponse, error) {
 	var err error
+	const operationName = "HybridIdentityMetadataClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceURI, options)
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
@@ -99,25 +103,20 @@ func (client *HybridIdentityMetadataClient) NewListPager(resourceURI string, opt
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *HybridIdentityMetadataClientListResponse) (HybridIdentityMetadataClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceURI, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "HybridIdentityMetadataClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceURI, options)
+			}, nil)
 			if err != nil {
 				return HybridIdentityMetadataClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return HybridIdentityMetadataClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return HybridIdentityMetadataClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

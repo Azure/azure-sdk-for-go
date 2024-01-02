@@ -32,7 +32,7 @@ type BMSPrepareDataMoveOperationResultClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BMSPrepareDataMoveOperationResultClient, error) {
-	cl, err := arm.NewClient(moduleName+".BMSPrepareDataMoveOperationResultClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewBMSPrepareDataMoveOperationResultClient(subscriptionID string, credentia
 //     method.
 func (client *BMSPrepareDataMoveOperationResultClient) Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *BMSPrepareDataMoveOperationResultClientGetOptions) (BMSPrepareDataMoveOperationResultClientGetResponse, error) {
 	var err error
+	const operationName = "BMSPrepareDataMoveOperationResultClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
 	if err != nil {
 		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err

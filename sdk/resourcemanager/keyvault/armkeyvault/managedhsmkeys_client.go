@@ -33,7 +33,7 @@ type ManagedHsmKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewManagedHsmKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedHsmKeysClient, error) {
-	cl, err := arm.NewClient(moduleName+".ManagedHsmKeysClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +60,10 @@ func NewManagedHsmKeysClient(subscriptionID string, credential azcore.TokenCrede
 //     method.
 func (client *ManagedHsmKeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, name string, keyName string, parameters ManagedHsmKeyCreateParameters, options *ManagedHsmKeysClientCreateIfNotExistOptions) (ManagedHsmKeysClientCreateIfNotExistResponse, error) {
 	var err error
+	const operationName = "ManagedHsmKeysClient.CreateIfNotExist"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createIfNotExistCreateRequest(ctx, resourceGroupName, name, keyName, parameters, options)
 	if err != nil {
 		return ManagedHsmKeysClientCreateIfNotExistResponse{}, err
@@ -130,6 +134,10 @@ func (client *ManagedHsmKeysClient) createIfNotExistHandleResponse(resp *http.Re
 //   - options - ManagedHsmKeysClientGetOptions contains the optional parameters for the ManagedHsmKeysClient.Get method.
 func (client *ManagedHsmKeysClient) Get(ctx context.Context, resourceGroupName string, name string, keyName string, options *ManagedHsmKeysClientGetOptions) (ManagedHsmKeysClientGetResponse, error) {
 	var err error
+	const operationName = "ManagedHsmKeysClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, keyName, options)
 	if err != nil {
 		return ManagedHsmKeysClientGetResponse{}, err
@@ -199,6 +207,10 @@ func (client *ManagedHsmKeysClient) getHandleResponse(resp *http.Response) (Mana
 //     method.
 func (client *ManagedHsmKeysClient) GetVersion(ctx context.Context, resourceGroupName string, name string, keyName string, keyVersion string, options *ManagedHsmKeysClientGetVersionOptions) (ManagedHsmKeysClientGetVersionResponse, error) {
 	var err error
+	const operationName = "ManagedHsmKeysClient.GetVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getVersionCreateRequest(ctx, resourceGroupName, name, keyName, keyVersion, options)
 	if err != nil {
 		return ManagedHsmKeysClientGetVersionResponse{}, err
@@ -270,25 +282,20 @@ func (client *ManagedHsmKeysClient) NewListPager(resourceGroupName string, name 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedHsmKeysClientListResponse) (ManagedHsmKeysClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, name, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedHsmKeysClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, name, options)
+			}, nil)
 			if err != nil {
 				return ManagedHsmKeysClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedHsmKeysClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedHsmKeysClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -343,25 +350,20 @@ func (client *ManagedHsmKeysClient) NewListVersionsPager(resourceGroupName strin
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ManagedHsmKeysClientListVersionsResponse) (ManagedHsmKeysClientListVersionsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listVersionsCreateRequest(ctx, resourceGroupName, name, keyName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedHsmKeysClient.NewListVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listVersionsCreateRequest(ctx, resourceGroupName, name, keyName, options)
+			}, nil)
 			if err != nil {
 				return ManagedHsmKeysClientListVersionsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedHsmKeysClientListVersionsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ManagedHsmKeysClientListVersionsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listVersionsHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

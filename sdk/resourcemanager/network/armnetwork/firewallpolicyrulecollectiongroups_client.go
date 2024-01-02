@@ -33,7 +33,7 @@ type FirewallPolicyRuleCollectionGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFirewallPolicyRuleCollectionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallPolicyRuleCollectionGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".FirewallPolicyRuleCollectionGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewFirewallPolicyRuleCollectionGroupsClient(subscriptionID string, credenti
 // BeginCreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -62,17 +62,20 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallPolicyRuleCollectionGroupsClient.BeginCreateOrUpdate"
@@ -118,7 +121,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,7 +133,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 // BeginDelete - Deletes the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -144,17 +147,20 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallPolicyRuleCollectionGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[FirewallPolicyRuleCollectionGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallPolicyRuleCollectionGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *FirewallPolicyRuleCollectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallPolicyRuleCollectionGroupsClient.BeginDelete"
@@ -200,7 +206,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +215,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 // Get - Gets the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -261,7 +267,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +284,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 
 // NewListPager - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - options - FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.NewListPager
@@ -290,22 +296,15 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) NewListPager(resourceGro
 		},
 		Fetcher: func(ctx context.Context, page *FirewallPolicyRuleCollectionGroupsClientListResponse) (FirewallPolicyRuleCollectionGroupsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FirewallPolicyRuleCollectionGroupsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
+			}, nil)
 			if err != nil {
 				return FirewallPolicyRuleCollectionGroupsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FirewallPolicyRuleCollectionGroupsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FirewallPolicyRuleCollectionGroupsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -333,7 +332,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

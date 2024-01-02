@@ -33,7 +33,7 @@ type ServiceEndpointPolicyDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewServiceEndpointPolicyDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceEndpointPolicyDefinitionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServiceEndpointPolicyDefinitionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewServiceEndpointPolicyDefinitionsClient(subscriptionID string, credential
 // BeginCreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceEndpointPolicyName - The name of the service endpoint policy.
 //   - serviceEndpointPolicyDefinitionName - The name of the service endpoint policy definition name.
@@ -62,17 +62,20 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx co
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceEndpointPolicyDefinitionsClient.BeginCreateOrUpdate"
@@ -118,7 +121,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, serviceEndpointPolicyDefinitions); err != nil {
@@ -130,7 +133,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateReques
 // BeginDelete - Deletes the specified ServiceEndpoint policy definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceEndpointPolicyName - The name of the Service Endpoint Policy.
 //   - serviceEndpointPolicyDefinitionName - The name of the service endpoint policy definition.
@@ -144,17 +147,20 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceEndpointPolicyDefinitionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceEndpointPolicyDefinitionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceEndpointPolicyDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified ServiceEndpoint policy definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *ServiceEndpointPolicyDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceEndpointPolicyDefinitionsClient.BeginDelete"
@@ -200,7 +206,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +215,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteCreateRequest(ctx co
 // Get - Get the specified service endpoint policy definitions from service endpoint policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceEndpointPolicyName - The name of the service endpoint policy name.
 //   - serviceEndpointPolicyDefinitionName - The name of the service endpoint policy definition name.
@@ -261,7 +267,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +284,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *ht
 
 // NewListByResourceGroupPager - Gets all service endpoint policy definitions in a service end point policy.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - serviceEndpointPolicyName - The name of the service endpoint policy name.
 //   - options - ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager
@@ -290,22 +296,15 @@ func (client *ServiceEndpointPolicyDefinitionsClient) NewListByResourceGroupPage
 		},
 		Fetcher: func(ctx context.Context, page *ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse) (ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
+			}, nil)
 			if err != nil {
 				return ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -333,7 +332,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) listByResourceGroupCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

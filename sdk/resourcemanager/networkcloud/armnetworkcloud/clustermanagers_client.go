@@ -32,7 +32,7 @@ type ClusterManagersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClusterManagersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterManagersClient, error) {
-	cl, err := arm.NewClient(moduleName+".ClusterManagersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ClusterManagersClient) BeginCreateOrUpdate(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterManagersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterManagersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterManagersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *ClusterManagersClient) BeginCreateOrUpdate(ctx context.Context, re
 // Generated from API version 2023-07-01
 func (client *ClusterManagersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerParameters ClusterManager, options *ClusterManagersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterManagersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterManagerName, clusterManagerParameters, options)
 	if err != nil {
 		return nil, err
@@ -91,6 +98,9 @@ func (client *ClusterManagersClient) createOrUpdate(ctx context.Context, resourc
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ClusterManagersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerParameters ClusterManager, options *ClusterManagersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -130,10 +140,13 @@ func (client *ClusterManagersClient) BeginDelete(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterManagersClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterManagersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterManagersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -143,6 +156,10 @@ func (client *ClusterManagersClient) BeginDelete(ctx context.Context, resourceGr
 // Generated from API version 2023-07-01
 func (client *ClusterManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterManagersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterManagerName, options)
 	if err != nil {
 		return nil, err
@@ -161,6 +178,9 @@ func (client *ClusterManagersClient) deleteOperation(ctx context.Context, resour
 // deleteCreateRequest creates the Delete request.
 func (client *ClusterManagersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,6 +210,10 @@ func (client *ClusterManagersClient) deleteCreateRequest(ctx context.Context, re
 //   - options - ClusterManagersClientGetOptions contains the optional parameters for the ClusterManagersClient.Get method.
 func (client *ClusterManagersClient) Get(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientGetOptions) (ClusterManagersClientGetResponse, error) {
 	var err error
+	const operationName = "ClusterManagersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterManagerName, options)
 	if err != nil {
 		return ClusterManagersClientGetResponse{}, err
@@ -209,6 +233,9 @@ func (client *ClusterManagersClient) Get(ctx context.Context, resourceGroupName 
 // getCreateRequest creates the Get request.
 func (client *ClusterManagersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, options *ClusterManagersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -250,31 +277,29 @@ func (client *ClusterManagersClient) NewListByResourceGroupPager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClusterManagersClientListByResourceGroupResponse) (ClusterManagersClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterManagersClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ClusterManagersClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClusterManagersClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClusterManagersClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ClusterManagersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ClusterManagersClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -311,31 +336,29 @@ func (client *ClusterManagersClient) NewListBySubscriptionPager(options *Cluster
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClusterManagersClientListBySubscriptionResponse) (ClusterManagersClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterManagersClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ClusterManagersClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClusterManagersClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClusterManagersClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
 func (client *ClusterManagersClient) listBySubscriptionCreateRequest(ctx context.Context, options *ClusterManagersClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/clusterManagers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -368,6 +391,10 @@ func (client *ClusterManagersClient) listBySubscriptionHandleResponse(resp *http
 //   - options - ClusterManagersClientUpdateOptions contains the optional parameters for the ClusterManagersClient.Update method.
 func (client *ClusterManagersClient) Update(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters ClusterManagerPatchParameters, options *ClusterManagersClientUpdateOptions) (ClusterManagersClientUpdateResponse, error) {
 	var err error
+	const operationName = "ClusterManagersClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterManagerName, clusterManagerUpdateParameters, options)
 	if err != nil {
 		return ClusterManagersClientUpdateResponse{}, err
@@ -387,6 +414,9 @@ func (client *ClusterManagersClient) Update(ctx context.Context, resourceGroupNa
 // updateCreateRequest creates the Update request.
 func (client *ClusterManagersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters ClusterManagerPatchParameters, options *ClusterManagersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusterManagers/{clusterManagerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

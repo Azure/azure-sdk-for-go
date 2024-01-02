@@ -54,7 +54,7 @@ func ExampleBackupAndExportClient_BeginCreate() {
 	// 	Name: to.Ptr("custom-backup101"),
 	// 	Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/backupAndExport"),
 	// 	ID: to.Ptr("/subscriptions/cb9d743d-2140-4e73-b871-cd31abab1d2f/resourceGroups/mrgsumitkumatest1/providers/Microsoft.DBforMySQL/flexibleServers/servermysql-01/backupAndExport/custom-backup101"),
-	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-29T07:37:05.6406008Z"); return t}()),
+	// 	EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-29T07:37:05.640Z"); return t}()),
 	// 	Error: &armmysqlflexibleservers.ErrorResponse{
 	// 		Code: to.Ptr("AggregateException"),
 	// 		Message: to.Ptr("System.AggregateException: One or more errors occurred. (Mismatch in count of number of Commited-Blocks from service.)"),
@@ -65,7 +65,7 @@ func ExampleBackupAndExportClient_BeginCreate() {
 	// 		DataTransferredInBytes: to.Ptr[int64](1024),
 	// 		DatasourceSizeInBytes: to.Ptr[int64](1024),
 	// 	},
-	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-29T07:34:02.328326Z"); return t}()),
+	// 	StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-29T07:34:02.328Z"); return t}()),
 	// 	Status: to.Ptr(armmysqlflexibleservers.OperationStatusFailed),
 	// }
 }

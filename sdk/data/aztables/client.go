@@ -228,7 +228,7 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 //
 // NewListEntitiesPager returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
-//   - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
+//   - API Documentation: https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities
 //   - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
 func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
@@ -357,7 +357,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.AddEntity", t.client.Tracer(), nil)
 	defer func() { endSpan(err) }()
 
-	var mapEntity map[string]interface{}
+	var mapEntity map[string]any
 	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return AddEntityResponse{}, err
@@ -415,7 +415,7 @@ type UpdateEntityOptions struct {
 	UpdateMode UpdateMode
 }
 
-func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *generated.TableClientMergeEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]any) *generated.TableClientMergeEntityOptions {
 	if u == nil {
 		return &generated.TableClientMergeEntityOptions{}
 	}
@@ -425,7 +425,7 @@ func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]interface{}) *
 	}
 }
 
-func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]interface{}) *generated.TableClientUpdateEntityOptions {
+func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]any) *generated.TableClientUpdateEntityOptions {
 	if u == nil {
 		return &generated.TableClientUpdateEntityOptions{}
 	}
@@ -490,7 +490,7 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		options.IfMatch = &star
 	}
 
-	var mapEntity map[string]interface{}
+	var mapEntity map[string]any
 	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return UpdateEntityResponse{}, err
@@ -599,7 +599,7 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 			UpdateMode: UpdateModeMerge,
 		}
 	}
-	var mapEntity map[string]interface{}
+	var mapEntity map[string]any
 	err = json.Unmarshal(entity, &mapEntity)
 	if err != nil {
 		return UpsertEntityResponse{}, err

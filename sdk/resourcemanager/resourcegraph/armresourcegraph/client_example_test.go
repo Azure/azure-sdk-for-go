@@ -739,8 +739,8 @@ func ExampleClient_ResourcesHistory_resourceHistoryManagementGroupScopeQuery() {
 			to.Ptr("ProductionMG")},
 		Options: &armresourcegraph.ResourcesHistoryRequestOptions{
 			Interval: &armresourcegraph.DateTimeInterval{
-				End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:25:00.0000000Z"); return t }()),
-				Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:00:00.0000000Z"); return t }()),
+				End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:25:00.000Z"); return t }()),
+				Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:00:00.000Z"); return t }()),
 			},
 		},
 		Query: to.Ptr("where name =~ 'cpu-utilization' | project id, name, properties"),
@@ -804,8 +804,8 @@ func ExampleClient_ResourcesHistory_resourceHistoryQuery() {
 	res, err := clientFactory.NewClient().ResourcesHistory(ctx, armresourcegraph.ResourcesHistoryRequest{
 		Options: &armresourcegraph.ResourcesHistoryRequestOptions{
 			Interval: &armresourcegraph.DateTimeInterval{
-				End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:25:00.0000000Z"); return t }()),
-				Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:00:00.0000000Z"); return t }()),
+				End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:25:00.000Z"); return t }()),
+				Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:00:00.000Z"); return t }()),
 			},
 		},
 		Query: to.Ptr("where name =~ 'cpu-utilization' | project id, name, properties"),

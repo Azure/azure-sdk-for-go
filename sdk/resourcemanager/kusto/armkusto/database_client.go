@@ -32,7 +32,7 @@ type DatabaseClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseClient, error) {
-	cl, err := arm.NewClient(moduleName+".DatabaseClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,10 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - DatabaseClientInviteFollowerOptions contains the optional parameters for the DatabaseClient.InviteFollower method.
 func (client *DatabaseClient) InviteFollower(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DatabaseInviteFollowerRequest, options *DatabaseClientInviteFollowerOptions) (DatabaseClientInviteFollowerResponse, error) {
 	var err error
+	const operationName = "DatabaseClient.InviteFollower"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.inviteFollowerCreateRequest(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
 	if err != nil {
 		return DatabaseClientInviteFollowerResponse{}, err

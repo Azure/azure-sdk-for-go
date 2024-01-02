@@ -32,7 +32,7 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,13 @@ func (client *Client) BeginPerformConnectivityCheckAsync(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientPerformConnectivityCheckAsyncResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientPerformConnectivityCheckAsyncResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientPerformConnectivityCheckAsyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *Client) BeginPerformConnectivityCheckAsync(ctx context.Context, re
 // Generated from API version 2022-08-01
 func (client *Client) performConnectivityCheckAsync(ctx context.Context, resourceGroupName string, serviceName string, connectivityCheckRequestParams ConnectivityCheckRequest, options *ClientBeginPerformConnectivityCheckAsyncOptions) (*http.Response, error) {
 	var err error
+	const operationName = "Client.BeginPerformConnectivityCheckAsync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.performConnectivityCheckAsyncCreateRequest(ctx, resourceGroupName, serviceName, connectivityCheckRequestParams, options)
 	if err != nil {
 		return nil, err

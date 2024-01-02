@@ -32,7 +32,7 @@ type ContainerAppsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ContainerAppsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, reso
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -73,6 +76,10 @@ func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, reso
 // Generated from API version 2023-05-01
 func (client *ContainerAppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ContainerAppsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
 	if err != nil {
 		return nil, err
@@ -133,10 +140,13 @@ func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -146,6 +156,10 @@ func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *ContainerAppsClient) deleteOperation(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ContainerAppsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return nil, err
@@ -196,6 +210,10 @@ func (client *ContainerAppsClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - ContainerAppsClientGetOptions contains the optional parameters for the ContainerAppsClient.Get method.
 func (client *ContainerAppsClient) Get(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientGetOptions) (ContainerAppsClientGetResponse, error) {
 	var err error
+	const operationName = "ContainerAppsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsClientGetResponse{}, err
@@ -257,6 +275,10 @@ func (client *ContainerAppsClient) getHandleResponse(resp *http.Response) (Conta
 //     method.
 func (client *ContainerAppsClient) GetAuthToken(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientGetAuthTokenOptions) (ContainerAppsClientGetAuthTokenResponse, error) {
 	var err error
+	const operationName = "ContainerAppsClient.GetAuthToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getAuthTokenCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsClientGetAuthTokenResponse{}, err
@@ -320,25 +342,20 @@ func (client *ContainerAppsClient) NewListByResourceGroupPager(resourceGroupName
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerAppsClientListByResourceGroupResponse) (ContainerAppsClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerAppsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ContainerAppsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerAppsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContainerAppsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -384,25 +401,20 @@ func (client *ContainerAppsClient) NewListBySubscriptionPager(options *Container
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContainerAppsClientListBySubscriptionResponse) (ContainerAppsClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerAppsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return ContainerAppsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerAppsClientListBySubscriptionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ContainerAppsClientListBySubscriptionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listBySubscriptionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -443,6 +455,10 @@ func (client *ContainerAppsClient) listBySubscriptionHandleResponse(resp *http.R
 //     method.
 func (client *ContainerAppsClient) ListCustomHostNameAnalysis(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListCustomHostNameAnalysisOptions) (ContainerAppsClientListCustomHostNameAnalysisResponse, error) {
 	var err error
+	const operationName = "ContainerAppsClient.ListCustomHostNameAnalysis"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listCustomHostNameAnalysisCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsClientListCustomHostNameAnalysisResponse{}, err
@@ -507,6 +523,10 @@ func (client *ContainerAppsClient) listCustomHostNameAnalysisHandleResponse(resp
 //     method.
 func (client *ContainerAppsClient) ListSecrets(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientListSecretsOptions) (ContainerAppsClientListSecretsResponse, error) {
 	var err error
+	const operationName = "ContainerAppsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return ContainerAppsClientListSecretsResponse{}, err
@@ -574,10 +594,13 @@ func (client *ContainerAppsClient) BeginStart(ctx context.Context, resourceGroup
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStartResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -587,6 +610,10 @@ func (client *ContainerAppsClient) BeginStart(ctx context.Context, resourceGroup
 // Generated from API version 2023-05-01
 func (client *ContainerAppsClient) start(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStartOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ContainerAppsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.startCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return nil, err
@@ -643,10 +670,13 @@ func (client *ContainerAppsClient) BeginStop(ctx context.Context, resourceGroupN
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientStopResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientStopResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -656,6 +686,10 @@ func (client *ContainerAppsClient) BeginStop(ctx context.Context, resourceGroupN
 // Generated from API version 2023-05-01
 func (client *ContainerAppsClient) stop(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsClientBeginStopOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ContainerAppsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, containerAppName, options)
 	if err != nil {
 		return nil, err
@@ -712,10 +746,14 @@ func (client *ContainerAppsClient) BeginUpdate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ContainerAppsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerAppsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ContainerAppsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerAppsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -725,6 +763,10 @@ func (client *ContainerAppsClient) BeginUpdate(ctx context.Context, resourceGrou
 // Generated from API version 2023-05-01
 func (client *ContainerAppsClient) update(ctx context.Context, resourceGroupName string, containerAppName string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ContainerAppsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, containerAppName, containerAppEnvelope, options)
 	if err != nil {
 		return nil, err

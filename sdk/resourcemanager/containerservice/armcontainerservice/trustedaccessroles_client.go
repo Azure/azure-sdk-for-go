@@ -28,11 +28,11 @@ type TrustedAccessRolesClient struct {
 }
 
 // NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedAccessRolesClient, error) {
-	cl, err := arm.NewClient(moduleName+".TrustedAccessRolesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -45,8 +45,8 @@ func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenC
 
 // NewListPager - List supported trusted access roles.
 //
-// Generated from API version 2023-08-02-preview
-//   - location - The name of Azure region.
+// Generated from API version 2023-10-02-preview
+//   - location - The name of the Azure region.
 //   - options - TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager
 //     method.
 func (client *TrustedAccessRolesClient) NewListPager(location string, options *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse] {
@@ -56,22 +56,15 @@ func (client *TrustedAccessRolesClient) NewListPager(location string, options *T
 		},
 		Fetcher: func(ctx context.Context, page *TrustedAccessRolesClientListResponse) (TrustedAccessRolesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRolesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, location, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, location, options)
+			}, nil)
 			if err != nil {
 				return TrustedAccessRolesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TrustedAccessRolesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TrustedAccessRolesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -95,7 +88,7 @@ func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

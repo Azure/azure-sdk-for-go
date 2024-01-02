@@ -33,7 +33,7 @@ type AttachedNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAttachedNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedNetworksClient, error) {
-	cl, err := arm.NewClient(moduleName+".AttachedNetworksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *AttachedNetworksClient) BeginCreateOrUpdate(ctx context.Context, r
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedNetworksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AttachedNetworksClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *AttachedNetworksClient) BeginCreateOrUpdate(ctx context.Context, r
 // Generated from API version 2023-10-01-preview
 func (client *AttachedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, body AttachedNetworkConnection, options *AttachedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AttachedNetworksClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, attachedNetworkConnectionName, body, options)
 	if err != nil {
 		return nil, err
@@ -140,10 +147,13 @@ func (client *AttachedNetworksClient) BeginDelete(ctx context.Context, resourceG
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AttachedNetworksClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedNetworksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AttachedNetworksClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -153,6 +163,10 @@ func (client *AttachedNetworksClient) BeginDelete(ctx context.Context, resourceG
 // Generated from API version 2023-10-01-preview
 func (client *AttachedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, options *AttachedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "AttachedNetworksClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, attachedNetworkConnectionName, options)
 	if err != nil {
 		return nil, err
@@ -209,6 +223,10 @@ func (client *AttachedNetworksClient) deleteCreateRequest(ctx context.Context, r
 //     method.
 func (client *AttachedNetworksClient) GetByDevCenter(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, options *AttachedNetworksClientGetByDevCenterOptions) (AttachedNetworksClientGetByDevCenterResponse, error) {
 	var err error
+	const operationName = "AttachedNetworksClient.GetByDevCenter"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, attachedNetworkConnectionName, options)
 	if err != nil {
 		return AttachedNetworksClientGetByDevCenterResponse{}, err
@@ -275,6 +293,10 @@ func (client *AttachedNetworksClient) getByDevCenterHandleResponse(resp *http.Re
 //     method.
 func (client *AttachedNetworksClient) GetByProject(ctx context.Context, resourceGroupName string, projectName string, attachedNetworkConnectionName string, options *AttachedNetworksClientGetByProjectOptions) (AttachedNetworksClientGetByProjectResponse, error) {
 	var err error
+	const operationName = "AttachedNetworksClient.GetByProject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByProjectCreateRequest(ctx, resourceGroupName, projectName, attachedNetworkConnectionName, options)
 	if err != nil {
 		return AttachedNetworksClientGetByProjectResponse{}, err
@@ -343,25 +365,20 @@ func (client *AttachedNetworksClient) NewListByDevCenterPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AttachedNetworksClientListByDevCenterResponse) (AttachedNetworksClientListByDevCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttachedNetworksClient.NewListByDevCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
+			}, nil)
 			if err != nil {
 				return AttachedNetworksClientListByDevCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AttachedNetworksClientListByDevCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AttachedNetworksClientListByDevCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDevCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -416,25 +433,20 @@ func (client *AttachedNetworksClient) NewListByProjectPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AttachedNetworksClientListByProjectResponse) (AttachedNetworksClientListByProjectResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttachedNetworksClient.NewListByProjectPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
+			}, nil)
 			if err != nil {
 				return AttachedNetworksClientListByProjectResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AttachedNetworksClientListByProjectResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AttachedNetworksClientListByProjectResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByProjectHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

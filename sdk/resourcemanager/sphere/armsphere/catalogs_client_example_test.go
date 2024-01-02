@@ -343,22 +343,22 @@ func ExampleCatalogsClient_NewListDeviceInsightsPager() {
 		// 		{
 		// 			Description: to.Ptr("eventDescription1"),
 		// 			DeviceID: to.Ptr("eventIdentifier1"),
-		// 			EndTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-30T23:54:21.96Z"); return t}()),
+		// 			EndTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-30T23:54:21.960Z"); return t}()),
 		// 			EventCategory: to.Ptr("eventCategory1"),
 		// 			EventClass: to.Ptr("eventClass1"),
 		// 			EventCount: to.Ptr[int32](1),
 		// 			EventType: to.Ptr("eventType1"),
-		// 			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-30T21:51:39.26Z"); return t}()),
+		// 			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-30T21:51:39.260Z"); return t}()),
 		// 		},
 		// 		{
 		// 			Description: to.Ptr("eventDescription2"),
 		// 			DeviceID: to.Ptr("eventIdentifier2"),
-		// 			EndTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-07T17:34:12.50Z"); return t}()),
+		// 			EndTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-07T17:34:12.500Z"); return t}()),
 		// 			EventCategory: to.Ptr("eventCategory2"),
 		// 			EventClass: to.Ptr("eventClass2"),
 		// 			EventCount: to.Ptr[int32](1),
 		// 			EventType: to.Ptr("eventType2"),
-		// 			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-06T12:41:39.26Z"); return t}()),
+		// 			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-06T12:41:39.260Z"); return t}()),
 		// 	}},
 		// }
 	}

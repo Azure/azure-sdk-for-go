@@ -32,7 +32,7 @@ type IPv6FirewallRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPv6FirewallRulesClient, error) {
-	cl, err := arm.NewClient(moduleName+".IPv6FirewallRulesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewIPv6FirewallRulesClient(subscriptionID string, credential azcore.TokenCr
 //     method.
 func (client *IPv6FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, parameters IPv6FirewallRule, options *IPv6FirewallRulesClientCreateOrUpdateOptions) (IPv6FirewallRulesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, parameters, options)
 	if err != nil {
 		return IPv6FirewallRulesClientCreateOrUpdateResponse{}, err
@@ -126,6 +130,10 @@ func (client *IPv6FirewallRulesClient) createOrUpdateHandleResponse(resp *http.R
 //     method.
 func (client *IPv6FirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *IPv6FirewallRulesClientDeleteOptions) (IPv6FirewallRulesClientDeleteResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
 	if err != nil {
 		return IPv6FirewallRulesClientDeleteResponse{}, err
@@ -181,6 +189,10 @@ func (client *IPv6FirewallRulesClient) deleteCreateRequest(ctx context.Context, 
 //   - options - IPv6FirewallRulesClientGetOptions contains the optional parameters for the IPv6FirewallRulesClient.Get method.
 func (client *IPv6FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, serverName string, firewallRuleName string, options *IPv6FirewallRulesClientGetOptions) (IPv6FirewallRulesClientGetResponse, error) {
 	var err error
+	const operationName = "IPv6FirewallRulesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, firewallRuleName, options)
 	if err != nil {
 		return IPv6FirewallRulesClientGetResponse{}, err
@@ -250,25 +262,20 @@ func (client *IPv6FirewallRulesClient) NewListByServerPager(resourceGroupName st
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *IPv6FirewallRulesClientListByServerResponse) (IPv6FirewallRulesClientListByServerResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IPv6FirewallRulesClient.NewListByServerPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
+			}, nil)
 			if err != nil {
 				return IPv6FirewallRulesClientListByServerResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IPv6FirewallRulesClientListByServerResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return IPv6FirewallRulesClientListByServerResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServerHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

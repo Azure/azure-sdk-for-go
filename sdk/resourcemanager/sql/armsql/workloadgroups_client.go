@@ -32,7 +32,7 @@ type WorkloadGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkloadGroupsClient, error) {
-	cl, err := arm.NewClient(moduleName+".WorkloadGroupsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +61,14 @@ func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadGroupsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadGroupsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +78,10 @@ func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 // Generated from API version 2020-11-01-preview
 func (client *WorkloadGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadGroupsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -143,10 +151,14 @@ func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[WorkloadGroupsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[WorkloadGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadGroupsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -156,6 +168,10 @@ func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGro
 // Generated from API version 2020-11-01-preview
 func (client *WorkloadGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "WorkloadGroupsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
 		return nil, err
@@ -216,6 +232,10 @@ func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, res
 //   - options - WorkloadGroupsClientGetOptions contains the optional parameters for the WorkloadGroupsClient.Get method.
 func (client *WorkloadGroupsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientGetOptions) (WorkloadGroupsClientGetResponse, error) {
 	var err error
+	const operationName = "WorkloadGroupsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
 		return WorkloadGroupsClientGetResponse{}, err
@@ -290,25 +310,20 @@ func (client *WorkloadGroupsClient) NewListByDatabasePager(resourceGroupName str
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkloadGroupsClientListByDatabaseResponse) (WorkloadGroupsClientListByDatabaseResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkloadGroupsClient.NewListByDatabasePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
+			}, nil)
 			if err != nil {
 				return WorkloadGroupsClientListByDatabaseResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkloadGroupsClientListByDatabaseResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return WorkloadGroupsClientListByDatabaseResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDatabaseHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

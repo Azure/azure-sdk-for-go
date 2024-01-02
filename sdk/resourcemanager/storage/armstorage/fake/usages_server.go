@@ -75,17 +75,17 @@ func (u *UsagesServerTransport) dispatchNewListByLocationPager(req *http.Request
 	}
 	newListByLocationPager := u.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Storage/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		locationUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		resp := u.srv.NewListByLocationPager(locationUnescaped, nil)
+		resp := u.srv.NewListByLocationPager(locationParam, nil)
 		newListByLocationPager = &resp
 		u.newListByLocationPager.add(req, newListByLocationPager)
 	}

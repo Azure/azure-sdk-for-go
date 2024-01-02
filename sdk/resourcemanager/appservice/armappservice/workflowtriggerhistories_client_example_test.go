@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggerHistories_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowTriggerHistories_List.json
 func ExampleWorkflowTriggerHistoriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,15 +52,15 @@ func ExampleWorkflowTriggerHistoriesClient_NewListPager() {
 		// 				Correlation: &armappservice.Correlation{
 		// 					ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 				},
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.2987996Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.298Z"); return t}()),
 		// 				Fired: to.Ptr(true),
 		// 				Run: &armappservice.ResourceReference{
 		// 					Name: to.Ptr("08586676746934337772206998657CU22"),
 		// 					Type: to.Ptr("/workflows/runs"),
 		// 					ID: to.Ptr("/workflows/testWorkflowName/runs/08586676746934337772206998657CU22"),
 		// 				},
-		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 		// 				Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 			},
 		// 	}},
@@ -68,7 +68,7 @@ func ExampleWorkflowTriggerHistoriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggerHistories_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowTriggerHistories_Get.json
 func ExampleWorkflowTriggerHistoriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,21 +95,21 @@ func ExampleWorkflowTriggerHistoriesClient_Get() {
 	// 		Correlation: &armappservice.Correlation{
 	// 			ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.2987996Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.298Z"); return t}()),
 	// 		Fired: to.Ptr(true),
 	// 		Run: &armappservice.ResourceReference{
 	// 			Name: to.Ptr("08586676746934337772206998657CU22"),
 	// 			Type: to.Ptr("/workflows/runs"),
 	// 			ID: to.Ptr("/workflows/testWorkflowName/runs/08586676746934337772206998657CU22"),
 	// 		},
-	// 		ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+	// 		ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.634Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.038Z"); return t}()),
 	// 		Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggerHistories_Resubmit.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowTriggerHistories_Resubmit.json
 func ExampleWorkflowTriggerHistoriesClient_BeginResubmit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

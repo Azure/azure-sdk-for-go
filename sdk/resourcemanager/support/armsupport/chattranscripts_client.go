@@ -32,7 +32,7 @@ type ChatTranscriptsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewChatTranscriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChatTranscriptsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ChatTranscriptsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +52,10 @@ func NewChatTranscriptsClient(subscriptionID string, credential azcore.TokenCred
 //   - options - ChatTranscriptsClientGetOptions contains the optional parameters for the ChatTranscriptsClient.Get method.
 func (client *ChatTranscriptsClient) Get(ctx context.Context, supportTicketName string, chatTranscriptName string, options *ChatTranscriptsClientGetOptions) (ChatTranscriptsClientGetResponse, error) {
 	var err error
+	const operationName = "ChatTranscriptsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, supportTicketName, chatTranscriptName, options)
 	if err != nil {
 		return ChatTranscriptsClientGetResponse{}, err
@@ -115,25 +119,20 @@ func (client *ChatTranscriptsClient) NewListPager(supportTicketName string, opti
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ChatTranscriptsClientListResponse) (ChatTranscriptsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, supportTicketName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ChatTranscriptsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, supportTicketName, options)
+			}, nil)
 			if err != nil {
 				return ChatTranscriptsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ChatTranscriptsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ChatTranscriptsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

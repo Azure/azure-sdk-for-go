@@ -33,7 +33,7 @@ type CustomizationTasksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCustomizationTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomizationTasksClient, error) {
-	cl, err := arm.NewClient(moduleName+".CustomizationTasksClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,10 @@ func NewCustomizationTasksClient(subscriptionID string, credential azcore.TokenC
 //   - options - CustomizationTasksClientGetOptions contains the optional parameters for the CustomizationTasksClient.Get method.
 func (client *CustomizationTasksClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetOptions) (CustomizationTasksClientGetResponse, error) {
 	var err error
+	const operationName = "CustomizationTasksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, taskName, options)
 	if err != nil {
 		return CustomizationTasksClientGetResponse{}, err
@@ -126,6 +130,10 @@ func (client *CustomizationTasksClient) getHandleResponse(resp *http.Response) (
 //     method.
 func (client *CustomizationTasksClient) GetErrorDetails(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, taskName string, options *CustomizationTasksClientGetErrorDetailsOptions) (CustomizationTasksClientGetErrorDetailsResponse, error) {
 	var err error
+	const operationName = "CustomizationTasksClient.GetErrorDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getErrorDetailsCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, taskName, options)
 	if err != nil {
 		return CustomizationTasksClientGetErrorDetailsResponse{}, err
@@ -199,25 +207,20 @@ func (client *CustomizationTasksClient) NewListByCatalogPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomizationTasksClientListByCatalogResponse) (CustomizationTasksClientListByCatalogResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomizationTasksClient.NewListByCatalogPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
+			}, nil)
 			if err != nil {
 				return CustomizationTasksClientListByCatalogResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return CustomizationTasksClientListByCatalogResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return CustomizationTasksClientListByCatalogResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByCatalogHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

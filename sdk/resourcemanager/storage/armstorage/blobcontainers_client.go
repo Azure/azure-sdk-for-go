@@ -32,7 +32,7 @@ type BlobContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".BlobContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -765,22 +765,15 @@ func (client *BlobContainersClient) NewListPager(resourceGroupName string, accou
 		},
 		Fetcher: func(ctx context.Context, page *BlobContainersClientListResponse) (BlobContainersClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobContainersClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
+			}, nil)
 			if err != nil {
 				return BlobContainersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return BlobContainersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return BlobContainersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -935,10 +928,13 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[BlobContainersClientObjectLevelWormResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BlobContainersClientObjectLevelWormResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 

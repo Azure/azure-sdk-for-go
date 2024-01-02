@@ -28,11 +28,11 @@ type MachinesClient struct {
 }
 
 // NewMachinesClient creates a new instance of MachinesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MachinesClient, error) {
-	cl, err := arm.NewClient(moduleName+".MachinesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func NewMachinesClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get a specific machine in the specified agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - agentPoolName - The name of the agent pool.
@@ -102,7 +102,7 @@ func (client *MachinesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *MachinesClient) getHandleResponse(resp *http.Response) (MachinesCl
 
 // NewListPager - Gets a list of machines in the specified agent pool.
 //
-// Generated from API version 2023-08-02-preview
+// Generated from API version 2023-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - agentPoolName - The name of the agent pool.
@@ -131,22 +131,15 @@ func (client *MachinesClient) NewListPager(resourceGroupName string, resourceNam
 		},
 		Fetcher: func(ctx context.Context, page *MachinesClientListResponse) (MachinesClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MachinesClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, options)
+			}, nil)
 			if err != nil {
 				return MachinesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MachinesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MachinesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -178,7 +171,7 @@ func (client *MachinesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-08-02-preview")
+	reqQP.Set("api-version", "2023-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

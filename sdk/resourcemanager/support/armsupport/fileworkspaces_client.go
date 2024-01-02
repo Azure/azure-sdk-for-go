@@ -32,7 +32,7 @@ type FileWorkspacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFileWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileWorkspacesClient, error) {
-	cl, err := arm.NewClient(moduleName+".FileWorkspacesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +51,10 @@ func NewFileWorkspacesClient(subscriptionID string, credential azcore.TokenCrede
 //   - options - FileWorkspacesClientCreateOptions contains the optional parameters for the FileWorkspacesClient.Create method.
 func (client *FileWorkspacesClient) Create(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesClientCreateOptions) (FileWorkspacesClientCreateResponse, error) {
 	var err error
+	const operationName = "FileWorkspacesClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, fileWorkspaceName, options)
 	if err != nil {
 		return FileWorkspacesClientCreateResponse{}, err
@@ -106,6 +110,10 @@ func (client *FileWorkspacesClient) createHandleResponse(resp *http.Response) (F
 //   - options - FileWorkspacesClientGetOptions contains the optional parameters for the FileWorkspacesClient.Get method.
 func (client *FileWorkspacesClient) Get(ctx context.Context, fileWorkspaceName string, options *FileWorkspacesClientGetOptions) (FileWorkspacesClientGetResponse, error) {
 	var err error
+	const operationName = "FileWorkspacesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, fileWorkspaceName, options)
 	if err != nil {
 		return FileWorkspacesClientGetResponse{}, err

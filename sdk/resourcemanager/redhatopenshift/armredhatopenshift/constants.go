@@ -9,8 +9,8 @@
 package armredhatopenshift
 
 const (
-	moduleName    = "armredhatopenshift"
-	moduleVersion = "v1.4.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
+	moduleVersion = "v1.5.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

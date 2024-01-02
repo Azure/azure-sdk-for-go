@@ -1,5 +1,48 @@
 # Release History
 
+## 2.0.0-beta.4 (2023-12-22)
+### Breaking Changes
+
+- Type of `LongTermRetentionPolicy.Properties` has been changed from `*BaseLongTermRetentionPolicyProperties` to `*LongTermRetentionPolicyProperties`
+- Type of `ServerProperties.MinimalTLSVersion` has been changed from `*string` to `*MinimalTLSVersion`
+
+### Features Added
+
+- New enum type `BackupStorageAccessTier` with values `BackupStorageAccessTierArchive`, `BackupStorageAccessTierHot`
+- New enum type `MinimalTLSVersion` with values `MinimalTLSVersionNone`, `MinimalTLSVersionOne0`, `MinimalTLSVersionOne1`, `MinimalTLSVersionOne2`, `MinimalTLSVersionOne3`
+- New function `*ClientFactory.NewJobPrivateEndpointsClient() *JobPrivateEndpointsClient`
+- New function `NewJobPrivateEndpointsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*JobPrivateEndpointsClient, error)`
+- New function `*JobPrivateEndpointsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, JobPrivateEndpoint, *JobPrivateEndpointsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JobPrivateEndpointsClientCreateOrUpdateResponse], error)`
+- New function `*JobPrivateEndpointsClient.BeginDelete(context.Context, string, string, string, string, *JobPrivateEndpointsClientBeginDeleteOptions) (*runtime.Poller[JobPrivateEndpointsClientDeleteResponse], error)`
+- New function `*JobPrivateEndpointsClient.Get(context.Context, string, string, string, string, *JobPrivateEndpointsClientGetOptions) (JobPrivateEndpointsClientGetResponse, error)`
+- New function `*JobPrivateEndpointsClient.NewListByAgentPager(string, string, string, *JobPrivateEndpointsClientListByAgentOptions) *runtime.Pager[JobPrivateEndpointsClientListByAgentResponse]`
+- New function `*LongTermRetentionBackupsClient.BeginChangeAccessTier(context.Context, string, string, string, string, ChangeLongTermRetentionBackupAccessTierParameters, *LongTermRetentionBackupsClientBeginChangeAccessTierOptions) (*runtime.Poller[LongTermRetentionBackupsClientChangeAccessTierResponse], error)`
+- New function `*LongTermRetentionBackupsClient.BeginChangeAccessTierByResourceGroup(context.Context, string, string, string, string, string, ChangeLongTermRetentionBackupAccessTierParameters, *LongTermRetentionBackupsClientBeginChangeAccessTierByResourceGroupOptions) (*runtime.Poller[LongTermRetentionBackupsClientChangeAccessTierByResourceGroupResponse], error)`
+- New struct `ChangeLongTermRetentionBackupAccessTierParameters`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New struct `JobPrivateEndpoint`
+- New struct `JobPrivateEndpointListResult`
+- New struct `JobPrivateEndpointProperties`
+- New struct `LongTermRetentionPolicyProperties`
+- New field `DNSZone`, `MaintenanceConfigurationID` in struct `InstancePoolProperties`
+- New field `Properties`, `SKU` in struct `InstancePoolUpdate`
+- New field `BackupStorageAccessTier`, `IsBackupImmutable` in struct `LongTermRetentionBackupProperties`
+
+
+## 2.0.0-beta.3 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
+## 1.2.0 (2023-11-30)
+### Features Added
+
+- Support for test fakes and OpenTelemetry trace spans.
+
+
 ## 2.0.0-beta.2 (2023-09-22)
 ### Features Added
 

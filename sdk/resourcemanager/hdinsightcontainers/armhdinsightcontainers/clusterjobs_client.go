@@ -32,7 +32,7 @@ type ClusterJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterJobsClient, error) {
-	cl, err := arm.NewClient(moduleName+".ClusterJobsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,31 +56,29 @@ func (client *ClusterJobsClient) NewListPager(resourceGroupName string, clusterP
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClusterJobsClientListResponse) (ClusterJobsClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, clusterPoolName, clusterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClusterJobsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, clusterPoolName, clusterName, options)
+			}, nil)
 			if err != nil {
 				return ClusterJobsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClusterJobsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ClusterJobsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *ClusterJobsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterName string, options *ClusterJobsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/jobs"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -131,10 +129,13 @@ func (client *ClusterJobsClient) BeginRunJob(ctx context.Context, resourceGroupN
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClusterJobsClientRunJobResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterJobsClientRunJobResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClusterJobsClientRunJobResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -144,6 +145,10 @@ func (client *ClusterJobsClient) BeginRunJob(ctx context.Context, resourceGroupN
 // Generated from API version 2023-06-01-preview
 func (client *ClusterJobsClient) runJob(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterName string, clusterJob ClusterJob, options *ClusterJobsClientBeginRunJobOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ClusterJobsClient.BeginRunJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.runJobCreateRequest(ctx, resourceGroupName, clusterPoolName, clusterName, clusterJob, options)
 	if err != nil {
 		return nil, err
@@ -162,6 +167,9 @@ func (client *ClusterJobsClient) runJob(ctx context.Context, resourceGroupName s
 // runJobCreateRequest creates the RunJob request.
 func (client *ClusterJobsClient) runJobCreateRequest(ctx context.Context, resourceGroupName string, clusterPoolName string, clusterName string, clusterJob ClusterJob, options *ClusterJobsClientBeginRunJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/runJob"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

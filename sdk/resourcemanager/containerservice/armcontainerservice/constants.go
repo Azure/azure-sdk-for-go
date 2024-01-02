@@ -9,8 +9,8 @@
 package armcontainerservice
 
 const (
-	moduleName    = "armcontainerservice"
-	moduleVersion = "v4.5.0-beta.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
+	moduleVersion = "v4.7.0-beta.1"
 )
 
 // AddonAutoscaling - Whether VPA add-on is enabled and configured to scale AKS-managed add-ons.
@@ -77,6 +77,8 @@ const (
 	AgentPoolTypeAvailabilitySet AgentPoolType = "AvailabilitySet"
 	// AgentPoolTypeVirtualMachineScaleSets - Create an Agent Pool backed by a Virtual Machine Scale Set.
 	AgentPoolTypeVirtualMachineScaleSets AgentPoolType = "VirtualMachineScaleSets"
+	// AgentPoolTypeVirtualMachines - Create an Agent Pool backed by a Single Instance VM orchestration mode.
+	AgentPoolTypeVirtualMachines AgentPoolType = "VirtualMachines"
 )
 
 // PossibleAgentPoolTypeValues returns the possible values for the AgentPoolType const type.
@@ -84,6 +86,7 @@ func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
 		AgentPoolTypeVirtualMachineScaleSets,
+		AgentPoolTypeVirtualMachines,
 	}
 }
 
@@ -658,6 +661,25 @@ func PossibleNodeOSUpgradeChannelValues() []NodeOSUpgradeChannel {
 	}
 }
 
+// NodeProvisioningMode - Once the mode it set to Auto, it cannot be changed back to Manual.
+type NodeProvisioningMode string
+
+const (
+	// NodeProvisioningModeAuto - Nodes are provisioned automatically by AKS using Karpenter. Fixed size Node Pools can still
+	// be created, but autoscaling Node Pools cannot be. (See aka.ms/aks/nap for more details).
+	NodeProvisioningModeAuto NodeProvisioningMode = "Auto"
+	// NodeProvisioningModeManual - Nodes are provisioned manually by the user
+	NodeProvisioningModeManual NodeProvisioningMode = "Manual"
+)
+
+// PossibleNodeProvisioningModeValues returns the possible values for the NodeProvisioningMode const type.
+func PossibleNodeProvisioningModeValues() []NodeProvisioningMode {
+	return []NodeProvisioningMode{
+		NodeProvisioningModeAuto,
+		NodeProvisioningModeManual,
+	}
+}
+
 // OSDiskType - The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
 // Otherwise, defaults to 'Managed'. May not be changed after creation. For more information
 // see Ephemeral OS [https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os].
@@ -703,6 +725,9 @@ const (
 	// OSSKUWindows2022 - Use Windows2022 as the OS for node images. Unsupported for system node pools. Windows2022 only supports
 	// Windows2022 containers; it cannot run Windows2019 containers and vice versa.
 	OSSKUWindows2022 OSSKU = "Windows2022"
+	// OSSKUWindowsAnnual - Use Windows Annual Channel version as the OS for node images. Unsupported for system node pools. Details
+	// about supported container images and kubernetes versions under different AKS Annual Channel versions could be seen in https://aka.ms/aks/windows-annual-channel-details.
+	OSSKUWindowsAnnual OSSKU = "WindowsAnnual"
 )
 
 // PossibleOSSKUValues returns the possible values for the OSSKU const type.
@@ -714,6 +739,7 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUUbuntu,
 		OSSKUWindows2019,
 		OSSKUWindows2022,
+		OSSKUWindowsAnnual,
 	}
 }
 

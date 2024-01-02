@@ -27,7 +27,7 @@ type ClientFactory struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
-	_, err := arm.NewClient(moduleName+".ClientFactory", moduleVersion, credential, options)
+	_, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -37,21 +37,25 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewMonitorsClient creates a new instance of MonitorsClient.
 func (c *ClientFactory) NewMonitorsClient() *MonitorsClient {
 	subClient, _ := NewMonitorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
 	return subClient
 }
 
+// NewSingleSignOnClient creates a new instance of SingleSignOnClient.
 func (c *ClientFactory) NewSingleSignOnClient() *SingleSignOnClient {
 	subClient, _ := NewSingleSignOnClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
+// NewTagRulesClient creates a new instance of TagRulesClient.
 func (c *ClientFactory) NewTagRulesClient() *TagRulesClient {
 	subClient, _ := NewTagRulesClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -33,7 +33,7 @@ type InterfaceTapConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InterfaceTapConfigurationsClient, error) {
-	cl, err := arm.NewClient(moduleName+".InterfaceTapConfigurationsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewInterfaceTapConfigurationsClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - tapConfigurationName - The name of the tap configuration.
@@ -62,17 +62,20 @@ func (client *InterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InterfaceTapConfigurationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InterfaceTapConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InterfaceTapConfigurationsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *InterfaceTapConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters InterfaceTapConfiguration, options *InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InterfaceTapConfigurationsClient.BeginCreateOrUpdate"
@@ -118,7 +121,7 @@ func (client *InterfaceTapConfigurationsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tapConfigurationParameters); err != nil {
@@ -130,7 +133,7 @@ func (client *InterfaceTapConfigurationsClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Deletes the specified tap configuration from the NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - tapConfigurationName - The name of the tap configuration.
@@ -144,17 +147,20 @@ func (client *InterfaceTapConfigurationsClient) BeginDelete(ctx context.Context,
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InterfaceTapConfigurationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[InterfaceTapConfigurationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InterfaceTapConfigurationsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes the specified tap configuration from the NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *InterfaceTapConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *InterfaceTapConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InterfaceTapConfigurationsClient.BeginDelete"
@@ -200,7 +206,7 @@ func (client *InterfaceTapConfigurationsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +215,7 @@ func (client *InterfaceTapConfigurationsClient) deleteCreateRequest(ctx context.
 // Get - Get the specified tap configuration on a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - tapConfigurationName - The name of the tap configuration.
@@ -261,7 +267,7 @@ func (client *InterfaceTapConfigurationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +284,7 @@ func (client *InterfaceTapConfigurationsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Get all Tap configurations in a network interface.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkInterfaceName - The name of the network interface.
 //   - options - InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.NewListPager
@@ -290,22 +296,15 @@ func (client *InterfaceTapConfigurationsClient) NewListPager(resourceGroupName s
 		},
 		Fetcher: func(ctx context.Context, page *InterfaceTapConfigurationsClientListResponse) (InterfaceTapConfigurationsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "InterfaceTapConfigurationsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
+			}, nil)
 			if err != nil {
 				return InterfaceTapConfigurationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return InterfaceTapConfigurationsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return InterfaceTapConfigurationsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -333,7 +332,7 @@ func (client *InterfaceTapConfigurationsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

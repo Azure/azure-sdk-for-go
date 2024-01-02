@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByExecution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByExecution.json
 func ExampleJobTargetExecutionsClient_NewListByJobExecutionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,16 +53,16 @@ func ExampleJobTargetExecutionsClient_NewListByJobExecutionPager() {
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions/steps/targets"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1/targets/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:17.5133333Z"); return t}()),
-		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.2391013Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:17.513Z"); return t}()),
+		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.239Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](1),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.7031029Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.703Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Step 1 succeeded execution on target (server 'server1', database 'database1')."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.1230403Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.123Z"); return t}()),
 		// 				StepID: to.Ptr[int32](1),
 		// 				StepName: to.Ptr("step1"),
 		// 				Target: &armsql.JobExecutionTarget{
@@ -76,7 +76,7 @@ func ExampleJobTargetExecutionsClient_NewListByJobExecutionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByStep.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByStep.json
 func ExampleJobTargetExecutionsClient_NewListByStepPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,16 +112,16 @@ func ExampleJobTargetExecutionsClient_NewListByStepPager() {
 		// 			Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions/steps/targets"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1/targets/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 		// 			Properties: &armsql.JobExecutionProperties{
-		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:17.5133333Z"); return t}()),
-		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.2391013Z"); return t}()),
+		// 				CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:17.513Z"); return t}()),
+		// 				CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.239Z"); return t}()),
 		// 				CurrentAttempts: to.Ptr[int32](1),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.7031029Z"); return t}()),
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.703Z"); return t}()),
 		// 				JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 		// 				JobVersion: to.Ptr[int32](1),
 		// 				LastMessage: to.Ptr("Step 1 succeeded execution on target (server 'server1', database 'database1')."),
 		// 				Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 		// 				ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.1230403Z"); return t}()),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-07-01T04:33:18.123Z"); return t}()),
 		// 				StepID: to.Ptr[int32](1),
 		// 				StepName: to.Ptr("step1"),
 		// 				Target: &armsql.JobExecutionTarget{
@@ -135,7 +135,7 @@ func ExampleJobTargetExecutionsClient_NewListByStepPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecutionTarget.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetJobExecutionTarget.json
 func ExampleJobTargetExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,16 +158,16 @@ func ExampleJobTargetExecutionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Sql/servers/jobAgents/jobs/executions/steps/targets"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/servers/server1/jobAgents/agent1/jobs/job1/executions/5555-6666-7777-8888-999999999999/steps/step1/targets/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 	Properties: &armsql.JobExecutionProperties{
-	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:17.5133333Z"); return t}()),
-	// 		CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.2391013Z"); return t}()),
+	// 		CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:17.513Z"); return t}()),
+	// 		CurrentAttemptStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.239Z"); return t}()),
 	// 		CurrentAttempts: to.Ptr[int32](1),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.7031029Z"); return t}()),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.703Z"); return t}()),
 	// 		JobExecutionID: to.Ptr("5A86BF65-43AC-F258-2524-9E92992F97CA"),
 	// 		JobVersion: to.Ptr[int32](1),
 	// 		LastMessage: to.Ptr("Step 1 succeeded execution on target (server 'server1', database 'database1')."),
 	// 		Lifecycle: to.Ptr(armsql.JobExecutionLifecycleSucceeded),
 	// 		ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.1230403Z"); return t}()),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-05T04:33:18.123Z"); return t}()),
 	// 		StepID: to.Ptr[int32](1),
 	// 		StepName: to.Ptr("step1"),
 	// 		Target: &armsql.JobExecutionTarget{

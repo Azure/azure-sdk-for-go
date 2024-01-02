@@ -34,7 +34,7 @@ type AdminRuleCollectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdminRuleCollectionsClient, error) {
-	cl, err := arm.NewClient(moduleName+".AdminRuleCollectionsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewAdminRuleCollectionsClient(subscriptionID string, credential azcore.Toke
 // CreateOrUpdate - Creates or updates an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -106,7 +106,7 @@ func (client *AdminRuleCollectionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, ruleCollection); err != nil {
@@ -127,7 +127,7 @@ func (client *AdminRuleCollectionsClient) createOrUpdateHandleResponse(resp *htt
 // BeginDelete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -142,17 +142,20 @@ func (client *AdminRuleCollectionsClient) BeginDelete(ctx context.Context, resou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdminRuleCollectionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[AdminRuleCollectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdminRuleCollectionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - Deletes an admin rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 func (client *AdminRuleCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *AdminRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdminRuleCollectionsClient.BeginDelete"
@@ -202,7 +205,7 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -214,7 +217,7 @@ func (client *AdminRuleCollectionsClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets a network manager security admin configuration rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -271,7 +274,7 @@ func (client *AdminRuleCollectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +291,7 @@ func (client *AdminRuleCollectionsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Lists all the rule collections in a security admin configuration, in a paginated format.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-06-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - configurationName - The name of the network manager Security Configuration.
@@ -301,22 +304,15 @@ func (client *AdminRuleCollectionsClient) NewListPager(resourceGroupName string,
 		},
 		Fetcher: func(ctx context.Context, page *AdminRuleCollectionsClientListResponse) (AdminRuleCollectionsClientListResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AdminRuleCollectionsClient.NewListPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, options)
+			}, nil)
 			if err != nil {
 				return AdminRuleCollectionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AdminRuleCollectionsClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AdminRuleCollectionsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -348,7 +344,7 @@ func (client *AdminRuleCollectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-06-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

@@ -47,8 +47,8 @@ func ExampleIntegrationAccountAssembliesClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.Logic/integrationAccounts/assemblies"),
 		// 			ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/assemblies/testAssembly"),
 		// 			Properties: &armlogic.AssemblyProperties{
-		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4137139Z"); return t}()),
-		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4129778Z"); return t}()),
+		// 				ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.413Z"); return t}()),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.412Z"); return t}()),
 		// 				Metadata: map[string]any{
 		// 				},
 		// 				ContentLink: &armlogic.ContentLink{
@@ -91,8 +91,8 @@ func ExampleIntegrationAccountAssembliesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/assemblies"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/assemblies/testAssembly"),
 	// 	Properties: &armlogic.AssemblyProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4137139Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4129778Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.413Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.412Z"); return t}()),
 	// 		Metadata: map[string]any{
 	// 		},
 	// 		ContentLink: &armlogic.ContentLink{
@@ -140,8 +140,8 @@ func ExampleIntegrationAccountAssembliesClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Logic/integrationAccounts/assemblies"),
 	// 	ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.Logic/integrationAccounts/testIntegrationAccount/assemblies/testAssembly"),
 	// 	Properties: &armlogic.AssemblyProperties{
-	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4137139Z"); return t}()),
-	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.4129778Z"); return t}()),
+	// 		ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.413Z"); return t}()),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T18:45:23.412Z"); return t}()),
 	// 		Metadata: map[string]any{
 	// 		},
 	// 		ContentLink: &armlogic.ContentLink{

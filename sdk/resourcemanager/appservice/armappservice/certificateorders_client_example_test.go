@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ListAppServiceCertificateOrdersBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ListAppServiceCertificateOrdersBySubscription.json
 func ExampleCertificateOrdersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,11 +72,11 @@ func ExampleCertificateOrdersClient_NewListPager() {
 		// 					Csr: to.Ptr("xdf!x|"),
 		// 					DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
 		// 					DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 		// 					Intermediate: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("k45kad0024"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=IntermediateCertSubjectName"),
@@ -85,14 +85,14 @@ func ExampleCertificateOrdersClient_NewListPager() {
 		// 					},
 		// 					IsPrivateKeyExternal: to.Ptr(false),
 		// 					KeySize: to.Ptr[int32](2048),
-		// 					LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
-		// 					NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+		// 					LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
+		// 					NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 		// 					ProductType: to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
 		// 					ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
 		// 					Root: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("jkskd890ajdd00124"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=RootCertSubjectName"),
@@ -102,8 +102,8 @@ func ExampleCertificateOrdersClient_NewListPager() {
 		// 					SerialNumber: to.Ptr("12324325325"),
 		// 					SignedCertificate: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("sds12424k"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=CertSubjectName"),
@@ -118,7 +118,7 @@ func ExampleCertificateOrdersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ValidateAppServiceCertificatePurchaseInformationBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ValidateAppServiceCertificatePurchaseInformationBySubscription.json
 func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
 func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,11 +208,11 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 		// 					Csr: to.Ptr("xdf!x|"),
 		// 					DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
 		// 					DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+		// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 		// 					Intermediate: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("k45kad0024"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=IntermediateCertSubjectName"),
@@ -221,14 +221,14 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					IsPrivateKeyExternal: to.Ptr(false),
 		// 					KeySize: to.Ptr[int32](2048),
-		// 					LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
-		// 					NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+		// 					LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
+		// 					NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 		// 					ProductType: to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
 		// 					ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
 		// 					Root: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("jkskd890ajdd00124"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=RootCertSubjectName"),
@@ -238,8 +238,8 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 		// 					SerialNumber: to.Ptr("12324325325"),
 		// 					SignedCertificate: &armappservice.CertificateDetails{
 		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
-		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+		// 						NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
+		// 						NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 		// 						SerialNumber: to.Ptr("sds12424k"),
 		// 						SignatureAlgorithm: to.Ptr("SHA"),
 		// 						Subject: to.Ptr("CN=CertSubjectName"),
@@ -254,7 +254,7 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/GetAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/GetAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,11 +302,11 @@ func ExampleCertificateOrdersClient_Get() {
 	// 			Csr: to.Ptr("xdf!x|"),
 	// 			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
 	// 			DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			Intermediate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("k45kad0024"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=IntermediateCertSubjectName"),
@@ -315,14 +315,14 @@ func ExampleCertificateOrdersClient_Get() {
 	// 			},
 	// 			IsPrivateKeyExternal: to.Ptr(false),
 	// 			KeySize: to.Ptr[int32](2048),
-	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
-	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
+	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			ProductType: to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
 	// 			ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
 	// 			Root: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("jkskd890ajdd00124"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=RootCertSubjectName"),
@@ -332,8 +332,8 @@ func ExampleCertificateOrdersClient_Get() {
 	// 			SerialNumber: to.Ptr("12324325325"),
 	// 			SignedCertificate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("sds12424k"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=CertSubjectName"),
@@ -346,7 +346,7 @@ func ExampleCertificateOrdersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/CreateAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/CreateAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,11 +417,11 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	// 			Csr: to.Ptr("xdf!x|"),
 	// 			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
 	// 			DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			Intermediate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("k45kad0024"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=IntermediateCertSubjectName"),
@@ -430,14 +430,14 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			IsPrivateKeyExternal: to.Ptr(false),
 	// 			KeySize: to.Ptr[int32](2048),
-	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
-	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
+	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			ProductType: to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
 	// 			ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
 	// 			Root: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("jkskd890ajdd00124"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=RootCertSubjectName"),
@@ -447,8 +447,8 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	// 			SerialNumber: to.Ptr("12324325325"),
 	// 			SignedCertificate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("sds12424k"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=CertSubjectName"),
@@ -461,7 +461,7 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/DeleteAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/DeleteAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleCertificateOrdersClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/UpdateAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/UpdateAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,11 +544,11 @@ func ExampleCertificateOrdersClient_Update() {
 	// 			Csr: to.Ptr("xdf!x|"),
 	// 			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
 	// 			DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			Intermediate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("k45kad0024"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=IntermediateCertSubjectName"),
@@ -557,14 +557,14 @@ func ExampleCertificateOrdersClient_Update() {
 	// 			},
 	// 			IsPrivateKeyExternal: to.Ptr(false),
 	// 			KeySize: to.Ptr[int32](2048),
-	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
-	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 			LastCertificateIssuanceTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
+	// 			NextAutoRenewalTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 			ProductType: to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
 	// 			ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
 	// 			Root: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("jkskd890ajdd00124"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=RootCertSubjectName"),
@@ -574,8 +574,8 @@ func ExampleCertificateOrdersClient_Update() {
 	// 			SerialNumber: to.Ptr("12324325325"),
 	// 			SignedCertificate: &armappservice.CertificateDetails{
 	// 				Issuer: to.Ptr("CACert"),
-	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
-	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+	// 				NotAfter: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
+	// 				NotBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 	// 				SerialNumber: to.Ptr("sds12424k"),
 	// 				SignatureAlgorithm: to.Ptr("SHA"),
 	// 				Subject: to.Ptr("CN=CertSubjectName"),
@@ -588,7 +588,7 @@ func ExampleCertificateOrdersClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ListCertificatesByAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ListCertificatesByAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_NewListCertificatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,7 +638,7 @@ func ExampleCertificateOrdersClient_NewListCertificatesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/GetAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/GetAppServiceCertificate.json
 func ExampleCertificateOrdersClient_GetCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +669,7 @@ func ExampleCertificateOrdersClient_GetCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/CreateAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/CreateAppServiceCertificate.json
 func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +710,7 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/DeleteAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/DeleteAppServiceCertificate.json
 func ExampleCertificateOrdersClient_DeleteCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -727,7 +727,7 @@ func ExampleCertificateOrdersClient_DeleteCertificate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/UpdateAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/UpdateAppServiceCertificate.json
 func ExampleCertificateOrdersClient_UpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +763,7 @@ func ExampleCertificateOrdersClient_UpdateCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ReissueAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ReissueAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Reissue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -787,7 +787,7 @@ func ExampleCertificateOrdersClient_Reissue() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RenewAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/RenewAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Renew() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,7 +810,7 @@ func ExampleCertificateOrdersClient_Renew() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ResendAppServiceCertificateOrderEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ResendAppServiceCertificateOrderEmail.json
 func ExampleCertificateOrdersClient_ResendEmail() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +827,7 @@ func ExampleCertificateOrdersClient_ResendEmail() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ResendDomainOwnershipVerificationEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/ResendDomainOwnershipVerificationEmail.json
 func ExampleCertificateOrdersClient_ResendRequestEmails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +846,7 @@ func ExampleCertificateOrdersClient_ResendRequestEmails() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RetrieveSiteSeal.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/RetrieveSiteSeal.json
 func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -872,7 +872,7 @@ func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/VerifyDomainOwnership.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/VerifyDomainOwnership.json
 func ExampleCertificateOrdersClient_VerifyDomainOwnership() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -889,7 +889,7 @@ func ExampleCertificateOrdersClient_VerifyDomainOwnership() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RetrieveCertificateOrderActions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/RetrieveCertificateOrderActions.json
 func ExampleCertificateOrdersClient_RetrieveCertificateActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,19 +910,19 @@ func ExampleCertificateOrdersClient_RetrieveCertificateActions() {
 	// res.CertificateOrderActionArray = []*armappservice.CertificateOrderAction{
 	// 	{
 	// 		ActionType: to.Ptr(armappservice.CertificateOrderActionTypeFraudDetected),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 	},
 	// 	{
 	// 		ActionType: to.Ptr(armappservice.CertificateOrderActionTypeCertificateRevoked),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 	},
 	// 	{
 	// 		ActionType: to.Ptr(armappservice.CertificateOrderActionTypeCertificateIssued),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/10c740b7224771c889cfb92f128168f5a0568c26/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/RetrieveCertificateEmailHistory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/738ab25fe76324897f273645906d4a0415068a6c/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/RetrieveCertificateEmailHistory.json
 func ExampleCertificateOrdersClient_RetrieveCertificateEmailHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -943,10 +943,10 @@ func ExampleCertificateOrdersClient_RetrieveCertificateEmailHistory() {
 	// res.CertificateEmailArray = []*armappservice.CertificateEmail{
 	// 	{
 	// 		EmailID: to.Ptr("customer@email.com"),
-	// 		TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25+00:00"); return t}()),
+	// 		TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-12T23:40:25.000Z"); return t}()),
 	// 	},
 	// 	{
 	// 		EmailID: to.Ptr("customer@email.com"),
-	// 		TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25+00:00"); return t}()),
+	// 		TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-12T23:40:25.000Z"); return t}()),
 	// }}
 }

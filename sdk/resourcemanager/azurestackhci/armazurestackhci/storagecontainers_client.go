@@ -32,7 +32,7 @@ type StorageContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStorageContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageContainersClient, error) {
-	cl, err := arm.NewClient(moduleName+".StorageContainersClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,10 +60,13 @@ func (client *StorageContainersClient) BeginCreateOrUpdate(ctx context.Context, 
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageContainersClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageContainersClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageContainersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -74,6 +77,10 @@ func (client *StorageContainersClient) BeginCreateOrUpdate(ctx context.Context, 
 // Generated from API version 2023-09-01-preview
 func (client *StorageContainersClient) createOrUpdate(ctx context.Context, resourceGroupName string, storageContainerName string, storageContainers StorageContainers, options *StorageContainersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "StorageContainersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageContainerName, storageContainers, options)
 	if err != nil {
 		return nil, err
@@ -134,10 +141,13 @@ func (client *StorageContainersClient) BeginDelete(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageContainersClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageContainersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageContainersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -147,6 +157,10 @@ func (client *StorageContainersClient) BeginDelete(ctx context.Context, resource
 // Generated from API version 2023-09-01-preview
 func (client *StorageContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, storageContainerName string, options *StorageContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "StorageContainersClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageContainerName, options)
 	if err != nil {
 		return nil, err
@@ -197,6 +211,10 @@ func (client *StorageContainersClient) deleteCreateRequest(ctx context.Context, 
 //   - options - StorageContainersClientGetOptions contains the optional parameters for the StorageContainersClient.Get method.
 func (client *StorageContainersClient) Get(ctx context.Context, resourceGroupName string, storageContainerName string, options *StorageContainersClientGetOptions) (StorageContainersClientGetResponse, error) {
 	var err error
+	const operationName = "StorageContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, storageContainerName, options)
 	if err != nil {
 		return StorageContainersClientGetResponse{}, err
@@ -261,25 +279,20 @@ func (client *StorageContainersClient) NewListPager(resourceGroupName string, op
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *StorageContainersClientListResponse) (StorageContainersClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return StorageContainersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return StorageContainersClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return StorageContainersClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -326,25 +339,20 @@ func (client *StorageContainersClient) NewListAllPager(options *StorageContainer
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *StorageContainersClientListAllResponse) (StorageContainersClientListAllResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAllCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAllCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return StorageContainersClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return StorageContainersClientListAllResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return StorageContainersClientListAllResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAllHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -391,10 +399,13 @@ func (client *StorageContainersClient) BeginUpdate(ctx context.Context, resource
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageContainersClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageContainersClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageContainersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -404,6 +415,10 @@ func (client *StorageContainersClient) BeginUpdate(ctx context.Context, resource
 // Generated from API version 2023-09-01-preview
 func (client *StorageContainersClient) update(ctx context.Context, resourceGroupName string, storageContainerName string, storageContainers StorageContainersUpdateRequest, options *StorageContainersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "StorageContainersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageContainerName, storageContainers, options)
 	if err != nil {
 		return nil, err

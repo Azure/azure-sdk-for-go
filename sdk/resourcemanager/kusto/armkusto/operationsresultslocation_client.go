@@ -32,7 +32,7 @@ type OperationsResultsLocationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOperationsResultsLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsLocationClient, error) {
-	cl, err := arm.NewClient(moduleName+".OperationsResultsLocationClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +53,10 @@ func NewOperationsResultsLocationClient(subscriptionID string, credential azcore
 //     method.
 func (client *OperationsResultsLocationClient) Get(ctx context.Context, location string, operationID string, options *OperationsResultsLocationClientGetOptions) (OperationsResultsLocationClientGetResponse, error) {
 	var err error
+	const operationName = "OperationsResultsLocationClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, operationID, options)
 	if err != nil {
 		return OperationsResultsLocationClientGetResponse{}, err

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c78b5d8bd3aff2d82a5f034d9164b1a9ac030e09/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseRestoreDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/01e99457ccf5613a95d5b2960d31a12f84018863/specification/sql/resource-manager/Microsoft.Sql/preview/2022-05-01-preview/examples/ManagedDatabaseRestoreDetails.json
 func ExampleManagedDatabaseRestoreDetailsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,8 +56,8 @@ func ExampleManagedDatabaseRestoreDetailsClient_Get() {
 	// 				BackupSizeMB: to.Ptr[int32](1),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleDiff3_1.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](3),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:20:21.3667454Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:19:40.5455092Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:20:21.366Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:19:40.545Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 		}},
 	// 		FullBackupSets: []*armsql.ManagedDatabaseRestoreDetailsBackupSetProperties{
@@ -71,14 +71,14 @@ func ExampleManagedDatabaseRestoreDetailsClient_Get() {
 	// 				BackupSizeMB: to.Ptr[int32](3),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleFull3_1.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](3),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:18:41.3785089Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:15:40.3143263Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:18:41.378Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:15:40.314Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 		}},
 	// 		LastRestoredFileName: to.Ptr("RestoreDetailsFullBlownExampleLog9_1.bak"),
-	// 		LastRestoredFileTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:27:20.4936305Z"); return t}()),
+	// 		LastRestoredFileTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:27:20.493Z"); return t}()),
 	// 		LastUploadedFileName: to.Ptr("RestoreDetailsFullBlownExampleLog11.bak"),
-	// 		LastUploadedFileTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-01T07:54:21Z"); return t}()),
+	// 		LastUploadedFileTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-01T07:54:21.000Z"); return t}()),
 	// 		LogBackupSets: []*armsql.ManagedDatabaseRestoreDetailsBackupSetProperties{
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](0),
@@ -102,47 +102,47 @@ func ExampleManagedDatabaseRestoreDetailsClient_Get() {
 	// 				BackupSizeMB: to.Ptr[int32](7),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog5.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](1),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:21:54.7557851Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:21:01.7717453Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:21:54.755Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:21:01.771Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 			},
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](3),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog6.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](1),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:03.709407Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:22:41.8784062Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:03.709Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:22:41.878Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 			},
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](4),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog7.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](1),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:52.9274047Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:36.6264066Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:52.927Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:23:36.626Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 			},
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](3),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog8.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](1),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:24:37.9954063Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:24:25.899407Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:24:37.995Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:24:25.899Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 			},
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](4),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog9_1.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](4),
-	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:25:27.808409Z"); return t}()),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:25:10.8804065Z"); return t}()),
+	// 				RestoreFinishedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:25:27.808Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:25:10.880Z"); return t}()),
 	// 				Status: to.Ptr("Restored"),
 	// 			},
 	// 			{
 	// 				BackupSizeMB: to.Ptr[int32](15),
 	// 				FirstStripeName: to.Ptr("RestoreDetailsFullBlownExampleLog10.bak"),
 	// 				NumberOfStripes: to.Ptr[int32](1),
-	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:26:00.7813103Z"); return t}()),
+	// 				RestoreStartedTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-09T12:26:00.781Z"); return t}()),
 	// 				Status: to.Ptr("Restoring"),
 	// 			},
 	// 			{

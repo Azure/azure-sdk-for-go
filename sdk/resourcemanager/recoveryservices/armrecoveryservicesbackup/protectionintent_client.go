@@ -32,7 +32,7 @@ type ProtectionIntentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionIntentClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectionIntentClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *ProtectionIntentClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, parameters ProtectionIntentResource, options *ProtectionIntentClientCreateOrUpdateOptions) (ProtectionIntentClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "ProtectionIntentClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, vaultName, resourceGroupName, fabricName, intentObjectName, parameters, options)
 	if err != nil {
 		return ProtectionIntentClientCreateOrUpdateResponse{}, err
@@ -129,6 +133,10 @@ func (client *ProtectionIntentClient) createOrUpdateHandleResponse(resp *http.Re
 //   - options - ProtectionIntentClientDeleteOptions contains the optional parameters for the ProtectionIntentClient.Delete method.
 func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, options *ProtectionIntentClientDeleteOptions) (ProtectionIntentClientDeleteResponse, error) {
 	var err error
+	const operationName = "ProtectionIntentClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, vaultName, resourceGroupName, fabricName, intentObjectName, options)
 	if err != nil {
 		return ProtectionIntentClientDeleteResponse{}, err
@@ -189,6 +197,10 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 //   - options - ProtectionIntentClientGetOptions contains the optional parameters for the ProtectionIntentClient.Get method.
 func (client *ProtectionIntentClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, options *ProtectionIntentClientGetOptions) (ProtectionIntentClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectionIntentClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, vaultName, resourceGroupName, fabricName, intentObjectName, options)
 	if err != nil {
 		return ProtectionIntentClientGetResponse{}, err
@@ -261,6 +273,10 @@ func (client *ProtectionIntentClient) getHandleResponse(resp *http.Response) (Pr
 //     method.
 func (client *ProtectionIntentClient) Validate(ctx context.Context, azureRegion string, parameters PreValidateEnableBackupRequest, options *ProtectionIntentClientValidateOptions) (ProtectionIntentClientValidateResponse, error) {
 	var err error
+	const operationName = "ProtectionIntentClient.Validate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.validateCreateRequest(ctx, azureRegion, parameters, options)
 	if err != nil {
 		return ProtectionIntentClientValidateResponse{}, err

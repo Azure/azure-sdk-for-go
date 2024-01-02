@@ -9,8 +9,8 @@
 package armsql
 
 const (
-	moduleName    = "armsql"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	moduleVersion = "v2.0.0-beta.4"
 )
 
 type AdministratorName string
@@ -322,7 +322,23 @@ func PossibleAvailabilityZoneTypeValues() []AvailabilityZoneType {
 	}
 }
 
-// BackupStorageRedundancy - The storage redundancy type of the copied backup
+// BackupStorageAccessTier - The BackupStorageAccessTier for the LTR backup
+type BackupStorageAccessTier string
+
+const (
+	BackupStorageAccessTierArchive BackupStorageAccessTier = "Archive"
+	BackupStorageAccessTierHot     BackupStorageAccessTier = "Hot"
+)
+
+// PossibleBackupStorageAccessTierValues returns the possible values for the BackupStorageAccessTier const type.
+func PossibleBackupStorageAccessTierValues() []BackupStorageAccessTier {
+	return []BackupStorageAccessTier{
+		BackupStorageAccessTierArchive,
+		BackupStorageAccessTierHot,
+	}
+}
+
+// BackupStorageRedundancy - The storage redundancy type of the backup
 type BackupStorageRedundancy string
 
 const (
@@ -1625,6 +1641,28 @@ func PossibleMetricTypeValues() []MetricType {
 		MetricTypeDuration,
 		MetricTypeIo,
 		MetricTypeLogIo,
+	}
+}
+
+// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
+type MinimalTLSVersion string
+
+const (
+	MinimalTLSVersionNone MinimalTLSVersion = "None"
+	MinimalTLSVersionOne0 MinimalTLSVersion = "1.0"
+	MinimalTLSVersionOne1 MinimalTLSVersion = "1.1"
+	MinimalTLSVersionOne2 MinimalTLSVersion = "1.2"
+	MinimalTLSVersionOne3 MinimalTLSVersion = "1.3"
+)
+
+// PossibleMinimalTLSVersionValues returns the possible values for the MinimalTLSVersion const type.
+func PossibleMinimalTLSVersionValues() []MinimalTLSVersion {
+	return []MinimalTLSVersion{
+		MinimalTLSVersionNone,
+		MinimalTLSVersionOne0,
+		MinimalTLSVersionOne1,
+		MinimalTLSVersionOne2,
+		MinimalTLSVersionOne3,
 	}
 }
 

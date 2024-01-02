@@ -33,7 +33,7 @@ type ProtectedItemClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectedItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectedItemClient, error) {
-	cl, err := arm.NewClient(moduleName+".ProtectedItemClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +62,13 @@ func (client *ProtectedItemClient) BeginCreate(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectedItemClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectedItemClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectedItemClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -75,6 +78,10 @@ func (client *ProtectedItemClient) BeginCreate(ctx context.Context, resourceGrou
 // Generated from API version 2021-02-16-preview
 func (client *ProtectedItemClient) create(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, body ProtectedItemModel, options *ProtectedItemClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProtectedItemClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vaultName, protectedItemName, body, options)
 	if err != nil {
 		return nil, err
@@ -93,6 +100,9 @@ func (client *ProtectedItemClient) create(ctx context.Context, resourceGroupName
 // createCreateRequest creates the Create request.
 func (client *ProtectedItemClient) createCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, body ProtectedItemModel, options *ProtectedItemClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,10 +147,13 @@ func (client *ProtectedItemClient) BeginDelete(ctx context.Context, resourceGrou
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectedItemClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectedItemClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectedItemClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -150,6 +163,10 @@ func (client *ProtectedItemClient) BeginDelete(ctx context.Context, resourceGrou
 // Generated from API version 2021-02-16-preview
 func (client *ProtectedItemClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProtectedItemClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, protectedItemName, options)
 	if err != nil {
 		return nil, err
@@ -168,6 +185,9 @@ func (client *ProtectedItemClient) deleteOperation(ctx context.Context, resource
 // deleteCreateRequest creates the Delete request.
 func (client *ProtectedItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -205,6 +225,10 @@ func (client *ProtectedItemClient) deleteCreateRequest(ctx context.Context, reso
 //   - options - ProtectedItemClientGetOptions contains the optional parameters for the ProtectedItemClient.Get method.
 func (client *ProtectedItemClient) Get(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientGetOptions) (ProtectedItemClientGetResponse, error) {
 	var err error
+	const operationName = "ProtectedItemClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, protectedItemName, options)
 	if err != nil {
 		return ProtectedItemClientGetResponse{}, err
@@ -224,6 +248,9 @@ func (client *ProtectedItemClient) Get(ctx context.Context, resourceGroupName st
 // getCreateRequest creates the Get request.
 func (client *ProtectedItemClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,31 +296,29 @@ func (client *ProtectedItemClient) NewListPager(resourceGroupName string, vaultN
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProtectedItemClientListResponse) (ProtectedItemClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProtectedItemClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
+			}, nil)
 			if err != nil {
 				return ProtectedItemClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ProtectedItemClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ProtectedItemClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
 func (client *ProtectedItemClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *ProtectedItemClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -340,10 +365,13 @@ func (client *ProtectedItemClient) BeginPlannedFailover(ctx context.Context, res
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectedItemClientPlannedFailoverResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ProtectedItemClientPlannedFailoverResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectedItemClientPlannedFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -353,6 +381,10 @@ func (client *ProtectedItemClient) BeginPlannedFailover(ctx context.Context, res
 // Generated from API version 2021-02-16-preview
 func (client *ProtectedItemClient) plannedFailover(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientBeginPlannedFailoverOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ProtectedItemClient.BeginPlannedFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.plannedFailoverCreateRequest(ctx, resourceGroupName, vaultName, protectedItemName, options)
 	if err != nil {
 		return nil, err
@@ -371,6 +403,9 @@ func (client *ProtectedItemClient) plannedFailover(ctx context.Context, resource
 // plannedFailoverCreateRequest creates the PlannedFailover request.
 func (client *ProtectedItemClient) plannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientBeginPlannedFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/plannedFailover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -9,8 +9,8 @@
 package armhdinsightcontainers
 
 const (
-	moduleName    = "armhdinsightcontainers"
-	moduleVersion = "v0.1.0"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsightcontainers/armhdinsightcontainers"
+	moduleVersion = "v0.2.0"
 )
 
 // Action - A string property that indicates the action to be performed on the Flink job. It can have one of the following

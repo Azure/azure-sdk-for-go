@@ -33,7 +33,7 @@ type DeploymentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
-	cl, err := arm.NewClient(moduleName+".DeploymentsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -619,10 +619,14 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -696,10 +700,14 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx c
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -769,10 +777,14 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientCreateOrUpdateAtScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientCreateOrUpdateAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -838,10 +850,14 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -911,10 +927,14 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientCreateOrUpdateAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateAtTenantScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientCreateOrUpdateAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -984,10 +1004,14 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1069,10 +1093,14 @@ func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientDeleteAtManagementGroupScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientDeleteAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteAtManagementGroupScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientDeleteAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1149,10 +1177,14 @@ func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope s
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientDeleteAtScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientDeleteAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteAtScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientDeleteAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1225,10 +1257,14 @@ func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Cont
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientDeleteAtSubscriptionScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientDeleteAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteAtSubscriptionScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientDeleteAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1304,10 +1340,14 @@ func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, d
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientDeleteAtTenantScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientDeleteAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteAtTenantScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientDeleteAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -1971,22 +2011,15 @@ func (client *DeploymentsClient) NewListAtManagementGroupScopePager(groupID stri
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtManagementGroupScopeResponse) (DeploymentsClientListAtManagementGroupScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListAtManagementGroupScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtManagementGroupScopeCreateRequest(ctx, groupID, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtManagementGroupScopeCreateRequest(ctx, groupID, options)
+			}, nil)
 			if err != nil {
 				return DeploymentsClientListAtManagementGroupScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentsClientListAtManagementGroupScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentsClientListAtManagementGroupScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtManagementGroupScopeHandleResponse(resp)
 		},
@@ -2040,22 +2073,15 @@ func (client *DeploymentsClient) NewListAtScopePager(scope string, options *Depl
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtScopeResponse) (DeploymentsClientListAtScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListAtScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtScopeCreateRequest(ctx, scope, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtScopeCreateRequest(ctx, scope, options)
+			}, nil)
 			if err != nil {
 				return DeploymentsClientListAtScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentsClientListAtScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentsClientListAtScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtScopeHandleResponse(resp)
 		},
@@ -2105,22 +2131,15 @@ func (client *DeploymentsClient) NewListAtSubscriptionScopePager(options *Deploy
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtSubscriptionScopeResponse) (DeploymentsClientListAtSubscriptionScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListAtSubscriptionScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtSubscriptionScopeCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtSubscriptionScopeCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return DeploymentsClientListAtSubscriptionScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentsClientListAtSubscriptionScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentsClientListAtSubscriptionScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtSubscriptionScopeHandleResponse(resp)
 		},
@@ -2173,22 +2192,15 @@ func (client *DeploymentsClient) NewListAtTenantScopePager(options *DeploymentsC
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentsClientListAtTenantScopeResponse) (DeploymentsClientListAtTenantScopeResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListAtTenantScopePager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listAtTenantScopeCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listAtTenantScopeCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return DeploymentsClientListAtTenantScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentsClientListAtTenantScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentsClientListAtTenantScopeResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listAtTenantScopeHandleResponse(resp)
 		},
@@ -2238,22 +2250,15 @@ func (client *DeploymentsClient) NewListByResourceGroupPager(resourceGroupName s
 		},
 		Fetcher: func(ctx context.Context, page *DeploymentsClientListByResourceGroupResponse) (DeploymentsClientListByResourceGroupResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DeploymentsClient.NewListByResourceGroupPager")
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return DeploymentsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DeploymentsClientListByResourceGroupResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DeploymentsClientListByResourceGroupResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -2314,10 +2319,14 @@ func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientValidateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientValidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientValidateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2391,10 +2400,14 @@ func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientValidateAtManagementGroupScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientValidateAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientValidateAtManagementGroupScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientValidateAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2465,10 +2478,14 @@ func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientValidateAtScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientValidateAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientValidateAtScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientValidateAtScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2535,10 +2552,14 @@ func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientValidateAtSubscriptionScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientValidateAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientValidateAtSubscriptionScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientValidateAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2608,10 +2629,14 @@ func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[DeploymentsClientValidateAtTenantScopeResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientValidateAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientValidateAtTenantScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientValidateAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2678,10 +2703,13 @@ func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupN
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientWhatIfResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientWhatIfResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientWhatIfResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2757,10 +2785,13 @@ func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.C
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientWhatIfAtManagementGroupScopeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtManagementGroupScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientWhatIfAtManagementGroupScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2831,10 +2862,13 @@ func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Cont
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientWhatIfAtSubscriptionScopeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtSubscriptionScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientWhatIfAtSubscriptionScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -2904,10 +2938,13 @@ func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, d
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeploymentsClientWhatIfAtTenantScopeResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientWhatIfAtTenantScopeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeploymentsClientWhatIfAtTenantScopeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 

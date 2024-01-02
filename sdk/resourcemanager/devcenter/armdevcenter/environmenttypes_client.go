@@ -33,7 +33,7 @@ type EnvironmentTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnvironmentTypesClient, error) {
-	cl, err := arm.NewClient(moduleName+".EnvironmentTypesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewEnvironmentTypesClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *EnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentType, options *EnvironmentTypesClientCreateOrUpdateOptions) (EnvironmentTypesClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "EnvironmentTypesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, body, options)
 	if err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
@@ -124,6 +128,10 @@ func (client *EnvironmentTypesClient) createOrUpdateHandleResponse(resp *http.Re
 //   - options - EnvironmentTypesClientDeleteOptions contains the optional parameters for the EnvironmentTypesClient.Delete method.
 func (client *EnvironmentTypesClient) Delete(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientDeleteOptions) (EnvironmentTypesClientDeleteResponse, error) {
 	var err error
+	const operationName = "EnvironmentTypesClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, options)
 	if err != nil {
 		return EnvironmentTypesClientDeleteResponse{}, err
@@ -179,6 +187,10 @@ func (client *EnvironmentTypesClient) deleteCreateRequest(ctx context.Context, r
 //   - options - EnvironmentTypesClientGetOptions contains the optional parameters for the EnvironmentTypesClient.Get method.
 func (client *EnvironmentTypesClient) Get(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, options *EnvironmentTypesClientGetOptions) (EnvironmentTypesClientGetResponse, error) {
 	var err error
+	const operationName = "EnvironmentTypesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, options)
 	if err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
@@ -247,25 +259,20 @@ func (client *EnvironmentTypesClient) NewListByDevCenterPager(resourceGroupName 
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EnvironmentTypesClientListByDevCenterResponse) (EnvironmentTypesClientListByDevCenterResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EnvironmentTypesClient.NewListByDevCenterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
+			}, nil)
 			if err != nil {
 				return EnvironmentTypesClientListByDevCenterResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return EnvironmentTypesClientListByDevCenterResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return EnvironmentTypesClientListByDevCenterResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByDevCenterHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -318,6 +325,10 @@ func (client *EnvironmentTypesClient) listByDevCenterHandleResponse(resp *http.R
 //   - options - EnvironmentTypesClientUpdateOptions contains the optional parameters for the EnvironmentTypesClient.Update method.
 func (client *EnvironmentTypesClient) Update(ctx context.Context, resourceGroupName string, devCenterName string, environmentTypeName string, body EnvironmentTypeUpdate, options *EnvironmentTypesClientUpdateOptions) (EnvironmentTypesClientUpdateResponse, error) {
 	var err error
+	const operationName = "EnvironmentTypesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, devCenterName, environmentTypeName, body, options)
 	if err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err

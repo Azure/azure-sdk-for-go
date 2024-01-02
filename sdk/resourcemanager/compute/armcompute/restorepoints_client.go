@@ -33,7 +33,7 @@ type RestorePointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorePointsClient, error) {
-	cl, err := arm.NewClient(moduleName+".RestorePointsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func NewRestorePointsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreate - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - restorePointCollectionName - The name of the restore point collection.
 //   - restorePointName - The name of the restore point.
@@ -60,17 +60,21 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[RestorePointsClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestorePointsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[RestorePointsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestorePointsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Create - The operation to create the restore point. Updating properties of an existing restore point is not allowed
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-09-01
 func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters RestorePoint, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestorePointsClient.BeginCreate"
@@ -116,7 +120,7 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +132,7 @@ func (client *RestorePointsClient) createCreateRequest(ctx context.Context, reso
 // BeginDelete - The operation to delete the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - restorePointCollectionName - The name of the Restore Point Collection.
 //   - restorePointName - The name of the restore point.
@@ -140,17 +144,21 @@ func (client *RestorePointsClient) BeginDelete(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[RestorePointsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestorePointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[RestorePointsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestorePointsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
 // Delete - The operation to delete the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-09-01
 func (client *RestorePointsClient) deleteOperation(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *RestorePointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RestorePointsClient.BeginDelete"
@@ -196,7 +204,7 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +213,7 @@ func (client *RestorePointsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - The operation to get the restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-07-01
+// Generated from API version 2023-09-01
 //   - resourceGroupName - The name of the resource group.
 //   - restorePointCollectionName - The name of the restore point collection.
 //   - restorePointName - The name of the restore point.
@@ -259,7 +267,7 @@ func (client *RestorePointsClient) getCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2023-07-01")
+	reqQP.Set("api-version", "2023-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

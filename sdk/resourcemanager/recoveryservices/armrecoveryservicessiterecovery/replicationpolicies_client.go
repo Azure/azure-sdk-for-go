@@ -32,7 +32,7 @@ type ReplicationPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewReplicationPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationPoliciesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ReplicationPoliciesClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,14 @@ func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationPoliciesClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationPoliciesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationPoliciesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -72,6 +76,10 @@ func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, resour
 // Generated from API version 2023-06-01
 func (client *ReplicationPoliciesClient) create(ctx context.Context, resourceName string, resourceGroupName string, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationPoliciesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, policyName, input, options)
 	if err != nil {
 		return nil, err
@@ -135,10 +143,14 @@ func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationPoliciesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationPoliciesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationPoliciesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -148,6 +160,10 @@ func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, resour
 // Generated from API version 2023-06-01
 func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationPoliciesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceName, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -202,6 +218,10 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 //   - options - ReplicationPoliciesClientGetOptions contains the optional parameters for the ReplicationPoliciesClient.Get method.
 func (client *ReplicationPoliciesClient) Get(ctx context.Context, resourceName string, resourceGroupName string, policyName string, options *ReplicationPoliciesClientGetOptions) (ReplicationPoliciesClientGetResponse, error) {
 	var err error
+	const operationName = "ReplicationPoliciesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, policyName, options)
 	if err != nil {
 		return ReplicationPoliciesClientGetResponse{}, err
@@ -270,25 +290,20 @@ func (client *ReplicationPoliciesClient) NewListPager(resourceName string, resou
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ReplicationPoliciesClientListResponse) (ReplicationPoliciesClientListResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReplicationPoliciesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return ReplicationPoliciesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicationPoliciesClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReplicationPoliciesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -343,10 +358,14 @@ func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, resour
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller[ReplicationPoliciesClientUpdateResponse](resp, client.internal.Pipeline(), nil)
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationPoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
 }
 
@@ -356,6 +375,10 @@ func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, resour
 // Generated from API version 2023-06-01
 func (client *ReplicationPoliciesClient) update(ctx context.Context, resourceName string, resourceGroupName string, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
+	const operationName = "ReplicationPoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceName, resourceGroupName, policyName, input, options)
 	if err != nil {
 		return nil, err

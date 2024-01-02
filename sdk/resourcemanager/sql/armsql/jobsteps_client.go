@@ -33,7 +33,7 @@ type JobStepsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobStepsClient, error) {
-	cl, err := arm.NewClient(moduleName+".JobStepsClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,10 @@ func NewJobStepsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - JobStepsClientCreateOrUpdateOptions contains the optional parameters for the JobStepsClient.CreateOrUpdate method.
 func (client *JobStepsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, parameters JobStep, options *JobStepsClientCreateOrUpdateOptions) (JobStepsClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "JobStepsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters, options)
 	if err != nil {
 		return JobStepsClientCreateOrUpdateResponse{}, err
@@ -137,6 +141,10 @@ func (client *JobStepsClient) createOrUpdateHandleResponse(resp *http.Response) 
 //   - options - JobStepsClientDeleteOptions contains the optional parameters for the JobStepsClient.Delete method.
 func (client *JobStepsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsClientDeleteOptions) (JobStepsClientDeleteResponse, error) {
 	var err error
+	const operationName = "JobStepsClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, stepName, options)
 	if err != nil {
 		return JobStepsClientDeleteResponse{}, err
@@ -202,6 +210,10 @@ func (client *JobStepsClient) deleteCreateRequest(ctx context.Context, resourceG
 //   - options - JobStepsClientGetOptions contains the optional parameters for the JobStepsClient.Get method.
 func (client *JobStepsClient) Get(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, stepName string, options *JobStepsClientGetOptions) (JobStepsClientGetResponse, error) {
 	var err error
+	const operationName = "JobStepsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, stepName, options)
 	if err != nil {
 		return JobStepsClientGetResponse{}, err
@@ -279,6 +291,10 @@ func (client *JobStepsClient) getHandleResponse(resp *http.Response) (JobStepsCl
 //   - options - JobStepsClientGetByVersionOptions contains the optional parameters for the JobStepsClient.GetByVersion method.
 func (client *JobStepsClient) GetByVersion(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, stepName string, options *JobStepsClientGetByVersionOptions) (JobStepsClientGetByVersionResponse, error) {
 	var err error
+	const operationName = "JobStepsClient.GetByVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName, options)
 	if err != nil {
 		return JobStepsClientGetByVersionResponse{}, err
@@ -358,25 +374,20 @@ func (client *JobStepsClient) NewListByJobPager(resourceGroupName string, server
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobStepsClientListByJobResponse) (JobStepsClientListByJobResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobStepsClient.NewListByJobPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
+			}, nil)
 			if err != nil {
 				return JobStepsClientListByJobResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobStepsClientListByJobResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobStepsClientListByJobResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByJobHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -440,25 +451,20 @@ func (client *JobStepsClient) NewListByVersionPager(resourceGroupName string, se
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *JobStepsClientListByVersionResponse) (JobStepsClientListByVersionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JobStepsClient.NewListByVersionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVersionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobVersion, options)
+			}, nil)
 			if err != nil {
 				return JobStepsClientListByVersionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return JobStepsClientListByVersionResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return JobStepsClientListByVersionResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByVersionHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 

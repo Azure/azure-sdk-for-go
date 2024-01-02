@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3066a973f4baf2e2bf072a013b585a820bb10146/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/90115af9fda46f323e5c42c274f2b376108d1d47/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.7279547+00:00"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-27T00:28:17.727Z"); return t}()),
 		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
 		// 				},
 		// 				DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
@@ -78,6 +78,11 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 				MinorVersion: to.Ptr("6"),
 		// 				Network: &armpostgresqlflexibleservers.Network{
 		// 					PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
+		// 				},
+		// 				Replica: &armpostgresqlflexibleservers.Replica{
+		// 					Capacity: to.Ptr[int32](0),
+		// 					ReplicationState: to.Ptr(armpostgresqlflexibleservers.ReplicationStateActive),
+		// 					Role: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),
 		// 				},
 		// 				ReplicaCapacity: to.Ptr[int32](0),
 		// 				ReplicationRole: to.Ptr(armpostgresqlflexibleservers.ReplicationRoleAsyncReplica),

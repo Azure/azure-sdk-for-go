@@ -33,7 +33,7 @@ type OpenIDConnectProviderClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OpenIDConnectProviderClient, error) {
-	cl, err := arm.NewClient(moduleName+".OpenIDConnectProviderClient", moduleVersion, credential, options)
+	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,6 +56,10 @@ func NewOpenIDConnectProviderClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderContract, options *OpenIDConnectProviderClientCreateOrUpdateOptions) (OpenIDConnectProviderClientCreateOrUpdateResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, opid, parameters, options)
 	if err != nil {
 		return OpenIDConnectProviderClientCreateOrUpdateResponse{}, err
@@ -133,6 +137,10 @@ func (client *OpenIDConnectProviderClient) createOrUpdateHandleResponse(resp *ht
 //     method.
 func (client *OpenIDConnectProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, options *OpenIDConnectProviderClientDeleteOptions) (OpenIDConnectProviderClientDeleteResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.Delete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, opid, ifMatch, options)
 	if err != nil {
 		return OpenIDConnectProviderClientDeleteResponse{}, err
@@ -190,6 +198,10 @@ func (client *OpenIDConnectProviderClient) deleteCreateRequest(ctx context.Conte
 //     method.
 func (client *OpenIDConnectProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetOptions) (OpenIDConnectProviderClientGetResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
 		return OpenIDConnectProviderClientGetResponse{}, err
@@ -258,6 +270,10 @@ func (client *OpenIDConnectProviderClient) getHandleResponse(resp *http.Response
 //     method.
 func (client *OpenIDConnectProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientGetEntityTagOptions) (OpenIDConnectProviderClientGetEntityTagResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.GetEntityTag"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.getEntityTagCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
 		return OpenIDConnectProviderClientGetEntityTagResponse{}, err
@@ -306,11 +322,10 @@ func (client *OpenIDConnectProviderClient) getEntityTagCreateRequest(ctx context
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
 func (client *OpenIDConnectProviderClient) getEntityTagHandleResponse(resp *http.Response) (OpenIDConnectProviderClientGetEntityTagResponse, error) {
-	result := OpenIDConnectProviderClientGetEntityTagResponse{}
+	result := OpenIDConnectProviderClientGetEntityTagResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
@@ -327,25 +342,20 @@ func (client *OpenIDConnectProviderClient) NewListByServicePager(resourceGroupNa
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *OpenIDConnectProviderClientListByServiceResponse) (OpenIDConnectProviderClientListByServiceResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OpenIDConnectProviderClient.NewListByServicePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
 			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
 			if err != nil {
 				return OpenIDConnectProviderClientListByServiceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return OpenIDConnectProviderClientListByServiceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OpenIDConnectProviderClientListByServiceResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByServiceHandleResponse(resp)
 		},
+		Tracer: client.internal.Tracer(),
 	})
 }
 
@@ -404,6 +414,10 @@ func (client *OpenIDConnectProviderClient) listByServiceHandleResponse(resp *htt
 //     method.
 func (client *OpenIDConnectProviderClient) ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, opid string, options *OpenIDConnectProviderClientListSecretsOptions) (OpenIDConnectProviderClientListSecretsResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, serviceName, opid, options)
 	if err != nil {
 		return OpenIDConnectProviderClientListSecretsResponse{}, err
@@ -476,6 +490,10 @@ func (client *OpenIDConnectProviderClient) listSecretsHandleResponse(resp *http.
 //     method.
 func (client *OpenIDConnectProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string, parameters OpenidConnectProviderUpdateContract, options *OpenIDConnectProviderClientUpdateOptions) (OpenIDConnectProviderClientUpdateResponse, error) {
 	var err error
+	const operationName = "OpenIDConnectProviderClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, opid, ifMatch, parameters, options)
 	if err != nil {
 		return OpenIDConnectProviderClientUpdateResponse{}, err

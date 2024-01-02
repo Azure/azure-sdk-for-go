@@ -80,21 +80,21 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchGet(req *http.Reques
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettingsCategories/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/diagnosticSettingsCategories/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if matches == nil || len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 	if err != nil {
 		return nil, err
 	}
-	nameUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceURIUnescaped, nameUnescaped, nil)
+	respr, errRespr := d.srv.Get(req.Context(), resourceURIParam, nameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -115,17 +115,17 @@ func (d *DiagnosticSettingsCategoryServerTransport) dispatchNewListPager(req *ht
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft.Insights/diagnosticSettingsCategories`
+		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/diagnosticSettingsCategories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
 		if err != nil {
 			return nil, err
 		}
-		resp := d.srv.NewListPager(resourceURIUnescaped, nil)
+		resp := d.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 	}

@@ -153,6 +153,17 @@ func (p pipelineAdapter) Do(r *http.Request) (*http.Response, error) {
 			return nil, err
 		}
 	}
+
+	// copy headers to the new request, ignoring any for which the new request has a value
+	h := req.Raw().Header
+	for key, vals := range r.Header {
+		if _, has := h[key]; !has {
+			for _, val := range vals {
+				h.Add(key, val)
+			}
+		}
+	}
+
 	resp, err := p.pl.Do(req)
 	if err != nil {
 		return nil, err

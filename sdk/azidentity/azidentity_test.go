@@ -7,11 +7,14 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"

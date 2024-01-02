@@ -1,6 +1,6 @@
 # ADLS Gen2 Storage SDK for Go
 
-> Service Version: 2020-10-02
+> Service Version: 2021-06-08
 
 Azure Data Lake Storage Gen2 (ADLS Gen2) is Microsoft's hierarchical object storage solution for the cloud with converged capabilities with Azure Blob Storage. 
 For example, Data Lake Storage Gen2 provides file system semantics, file-level security, and scale. 

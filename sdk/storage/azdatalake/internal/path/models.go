@@ -38,9 +38,11 @@ type RenameOptions struct {
 	SourceAccessConditions *SourceAccessConditions
 	// AccessConditions contains parameters for accessing the path.
 	AccessConditions *AccessConditions
+	// CPKInfo contains CPK related information.
+	CPKInfo *CPKInfo
 }
 
-func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions) {
+func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions, *generated.PathClientCreateOptions, *generated.CPKInfo) {
 	// we don't need sourceModAccCond since this is not rename
 	mode := generated.PathRenameModeLegacy
 	createOpts := &generated.PathClientCreateOptions{
@@ -48,7 +50,15 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 		RenameSource: &path,
 	}
 	if o == nil {
-		return nil, nil, nil, createOpts
+		return nil, nil, nil, createOpts, nil
+	}
+	var cpkOpts *generated.CPKInfo
+	if o.CPKInfo != nil {
+		cpkOpts = &generated.CPKInfo{
+			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+			EncryptionKey:       o.CPKInfo.EncryptionKey,
+			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		}
 	}
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
 	if o.SourceAccessConditions != nil {
@@ -62,10 +72,10 @@ func FormatRenameOptions(o *RenameOptions, path string) (*generated.LeaseAccessC
 				SourceIfNoneMatch:       o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfNoneMatch,
 				SourceIfUnmodifiedSince: o.SourceAccessConditions.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
 			}
-			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts
+			return leaseAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, createOpts, cpkOpts
 		}
 	}
-	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts
+	return leaseAccessConditions, modifiedAccessConditions, nil, createOpts, cpkOpts
 }
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.

@@ -3,6 +3,10 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
+* Encryption Scope For SAS
+* CPK for Datalake
+* Create SubDirectory Client
+* Service Version upgrade to 2021-06-08
 
 ### Breaking Changes
 

@@ -3717,10 +3717,6 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
-	defer func(destFile *os.File) {
-		err = destFile.Close()
-		_require.NoError(err)
-	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -3729,8 +3725,18 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
+	err = destFile.Close()
+	_require.NoError(err)
+
+	newDestFileHandle, err := os.Open(destFileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		err = file.Close()
+		_require.NoError(err)
+	}(newDestFileHandle)
+
 	destHash := md5.New()
-	_, err = io.Copy(destHash, destFile)
+	_, err = io.Copy(destHash, newDestFileHandle)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -3739,6 +3745,7 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+
 }
 
 func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
@@ -3796,10 +3803,10 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
-	defer func(destFile *os.File) {
-		err = destFile.Close()
-		_require.NoError(err)
-	}(destFile)
+	//defer func(destFile *os.File) {
+	//	err = destFile.Close()
+	//	_require.NoError(err)
+	//}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -3812,8 +3819,18 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithRange() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
+	err = destFile.Close()
+	_require.NoError(err)
+
+	newDestFileHandle, err := os.Open(destFileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		err = file.Close()
+		_require.NoError(err)
+	}(newDestFileHandle)
+
 	destHash := md5.New()
-	_, err = io.Copy(destHash, destFile)
+	_, err = io.Copy(destHash, newDestFileHandle)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 
@@ -3880,10 +3897,6 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
-	defer func(destFile *os.File) {
-		err = destFile.Close()
-		_require.NoError(err)
-	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -3901,8 +3914,18 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithAccessConditions(
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
+	err = destFile.Close()
+	_require.NoError(err)
+
+	newDestFileHandle, err := os.Open(destFileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		err = file.Close()
+		_require.NoError(err)
+	}(newDestFileHandle)
+
 	destHash := md5.New()
-	_, err = io.Copy(destHash, destFile)
+	_, err = io.Copy(destHash, newDestFileHandle)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 

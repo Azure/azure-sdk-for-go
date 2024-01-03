@@ -11,6 +11,7 @@
 * `azidentity.doForClient` method no longer removes headers from the incoming request
 
 ### Other Changes
+* Move to latest released versions of net, crypto, core, etc...
 
 ## 1.5.0-beta.2 (2023-11-07)
 

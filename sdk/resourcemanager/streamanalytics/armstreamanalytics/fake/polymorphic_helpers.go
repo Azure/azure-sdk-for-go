@@ -10,7 +10,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2"
 )
 
 func unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMsg json.RawMessage) (armstreamanalytics.FunctionRetrieveDefaultDefinitionParametersClassification, error) {
@@ -24,7 +24,11 @@ func unmarshalFunctionRetrieveDefaultDefinitionParametersClassification(rawMsg j
 	var b armstreamanalytics.FunctionRetrieveDefaultDefinitionParametersClassification
 	switch m["bindingType"] {
 	case "Microsoft.MachineLearning/WebService":
-		b = &armstreamanalytics.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters{}
+		b = &armstreamanalytics.AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters{}
+	case "Microsoft.MachineLearningServices":
+		b = &armstreamanalytics.AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters{}
+	case "Microsoft.StreamAnalytics/CLRUdf":
+		b = &armstreamanalytics.CSharpFunctionRetrieveDefaultDefinitionParameters{}
 	case "Microsoft.StreamAnalytics/JavascriptUdf":
 		b = &armstreamanalytics.JavaScriptFunctionRetrieveDefaultDefinitionParameters{}
 	default:

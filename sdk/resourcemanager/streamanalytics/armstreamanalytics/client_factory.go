@@ -73,6 +73,12 @@ func (c *ClientFactory) NewPrivateEndpointsClient() *PrivateEndpointsClient {
 	return subClient
 }
 
+// NewSKUClient creates a new instance of SKUClient.
+func (c *ClientFactory) NewSKUClient() *SKUClient {
+	subClient, _ := NewSKUClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewStreamingJobsClient creates a new instance of StreamingJobsClient.
 func (c *ClientFactory) NewStreamingJobsClient() *StreamingJobsClient {
 	subClient, _ := NewStreamingJobsClient(c.subscriptionID, c.credential, c.options)

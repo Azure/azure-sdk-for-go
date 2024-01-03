@@ -46,7 +46,7 @@ func NewPrivateEndpointsClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Creates a Stream Analytics Private Endpoint or replaces an already existing Private Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2020-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - privateEndpointName - The name of the private endpoint.
@@ -100,7 +100,7 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -127,7 +127,7 @@ func (client *PrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Re
 // BeginDelete - Delete the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2020-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - privateEndpointName - The name of the private endpoint.
@@ -153,7 +153,7 @@ func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Delete the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2020-03-01-preview
 func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointsClient.BeginDelete"
@@ -199,7 +199,7 @@ func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -208,7 +208,7 @@ func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets information about the specified Private Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2020-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - privateEndpointName - The name of the private endpoint.
@@ -259,7 +259,7 @@ func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (Pr
 
 // NewListByClusterPager - Lists the private endpoints in the cluster.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2020-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - PrivateEndpointsClientListByClusterOptions contains the optional parameters for the PrivateEndpointsClient.NewListByClusterPager
@@ -324,7 +324,7 @@ func (client *PrivateEndpointsClient) listByClusterCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2020-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

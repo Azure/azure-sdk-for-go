@@ -50,7 +50,7 @@ const (
 	SnapshotFieldsCreated SnapshotFields = generated.SnapshotFieldsCreated
 
 	// An ETag indicating the version of a snapshot.
-	SnapshotFieldsEtag SnapshotFields = generated.SnapshotFieldsEtag
+	SnapshotFieldsETag SnapshotFields = generated.SnapshotFieldsETag
 
 	// The time when the snapshot will expire once archived.
 	SnapshotFieldsExpires SnapshotFields = generated.SnapshotFieldsExpires

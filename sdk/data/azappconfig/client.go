@@ -236,9 +236,10 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 			if err != nil {
 				return ListRevisionsPageResponse{}, err
 			}
-			var css []Setting
-			for _, cs := range page.Items {
-				css = append(css, settingFromGenerated(cs))
+
+			css := make([]Setting, len(page.Items))
+			for i := range page.Items {
+				css[i] = settingFromGenerated(page.Items[i])
 			}
 
 			return ListRevisionsPageResponse{
@@ -262,9 +263,9 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 			if err != nil {
 				return ListSettingsPageResponse{}, err
 			}
-			var css []Setting
-			for _, cs := range page.Items {
-				css = append(css, settingFromGenerated(cs))
+			css := make([]Setting, len(page.Items))
+			for i := range page.Items {
+				css[i] = settingFromGenerated(page.Items[i])
 			}
 
 			return ListSettingsPageResponse{
@@ -296,18 +297,16 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 
 			snapshots := make([]Snapshot, len(page.Items))
 
-			for i := 0; i < len(page.Items); i++ {
-
+			for i := range page.Items {
 				snapshot := page.Items[i]
 
 				convertedETag := azcore.ETag(*snapshot.Etag)
 
-				convertedFilters := make([]KeyValueFilter, len(snapshot.Filters))
-
-				for j := 0; j < len(snapshot.Filters); j++ {
-					convertedFilters[j] = KeyValueFilter{
-						Key:   snapshot.Filters[j].Key,
-						Label: snapshot.Filters[j].Label,
+				convertedFilters := make([]SettingFilter, len(snapshot.Filters))
+				for j := range snapshot.Filters {
+					convertedFilters[j] = SettingFilter{
+						KeyFilter:   snapshot.Filters[j].Key,
+						LabelFilter: snapshot.Filters[j].Label,
 					}
 				}
 
@@ -367,8 +366,7 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 			}
 
 			settings := make([]Setting, len(page.Items))
-
-			for i := 0; i < len(page.Items); i++ {
+			for i := range page.Items {
 				setting := page.Items[i]
 
 				settings[i] = settingFromGenerated(setting)
@@ -386,45 +384,52 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 // BeginCreateSnapshot creates a snapshot of the configuration store.
 //
 // - snapshotName - The name of the snapshot to create.
-// - keyLabelFilter - The filters to apply on the key-values.
+// - settingFilter - The filters to apply on the key-values.
 // - options - CreateSnapshotOptions contains the optional parameters to create a Snapshot
-func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, keyLabelFilter []SettingFilter, options *CreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
-	filter := []generated.KeyValueFilter{}
-
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, settingFilter []SettingFilter, options *CreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
 	if options == nil {
 		options = &CreateSnapshotOptions{}
 	}
 
-	for _, f := range keyLabelFilter {
-		filter = append(filter, generated.KeyValueFilter{
-			Key:   f.KeyFilter,
-			Label: f.LabelFilter,
-		})
+	filter := make([]generated.KeyValueFilter, len(settingFilter))
+	for i := range settingFilter {
+		filter[i] = generated.KeyValueFilter{
+			Key:   settingFilter[i].KeyFilter,
+			Label: settingFilter[i].LabelFilter,
+		}
 	}
 
+	// if no filters were specified, add an empty filter to mean "all the things"
 	if len(filter) == 0 {
 		filter = append(filter, generated.KeyValueFilter{})
 	}
 
 	entity := generated.Snapshot{
-		Filters:         filter,
 		CompositionType: options.CompositionType,
+		Filters:         filter,
+		Name:            &snapshotName,
 		RetentionPeriod: options.RetentionPeriod,
 		Tags:            options.Tags,
-		Name:            &snapshotName,
 	}
 
-	opts := generated.AzureAppConfigurationClientBeginCreateSnapshotOptions{
-		ResumeToken: options.ResumeToken,
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.appConfigClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CreateSnapshotResponse]{
+			Tracer: c.appConfigClient.Tracer(),
+		})
 	}
 
-	pollerSS, err := generated.NewCreateSnapshotPoller[CreateSnapshotResponse](ctx, c.appConfigClient, snapshotName, entity, &opts)
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.BeginCreateSnapshot", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
 
+	resp, err := c.appConfigClient.CreateSnapshot(ctx, snapshotName, entity, nil)
 	if err != nil {
 		return nil, err
 	}
-
-	return pollerSS, nil
+	poller, err := runtime.NewPoller(resp, c.appConfigClient.Pipeline(), &runtime.NewPollerOptions[CreateSnapshotResponse]{
+		Tracer: c.appConfigClient.Tracer(),
+	})
+	return poller, err
 }
 
 // GetSnapshot gets a snapshot
@@ -432,6 +437,10 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, k
 // - snapshotName - The name of the snapshot to get.
 // - options - GetSnapshotOptions contains the optional parameters to get a snapshot
 func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *GetSnapshotOptions) (GetSnapshotResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.GetSnapshot", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &GetSnapshotOptions{}
 	}
@@ -446,13 +455,12 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 
 	convertedETag := azcore.ETag(*getResp.Etag)
 
-	var convertedFilters []KeyValueFilter
-
-	for _, filter := range getResp.Filters {
-		convertedFilters = append(convertedFilters, KeyValueFilter{
-			Key:   filter.Key,
-			Label: filter.Label,
-		})
+	convertedFilters := make([]SettingFilter, len(getResp.Filters))
+	for i := range getResp.Filters {
+		convertedFilters[i] = SettingFilter{
+			KeyFilter:   getResp.Filters[i].Key,
+			LabelFilter: getResp.Filters[i].Label,
+		}
 	}
 
 	resp := GetSnapshotResponse{
@@ -481,6 +489,10 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 // - snapshotName - The name of the snapshot to archive.
 // - options - ArchiveSnapshotOptions contains the optional parameters to archive a snapshot
 func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, options *ArchiveSnapshotOptions) (ArchiveSnapshotResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.ArchiveSnapshot", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &ArchiveSnapshotOptions{}
 	}
@@ -503,6 +515,10 @@ func (c *Client) ArchiveSnapshot(ctx context.Context, snapshotName string, optio
 // - snapshotName - The name of the snapshot to recover.
 // - options - RecoverSnapshotOptions contains the optional parameters to recover a snapshot
 func (c *Client) RecoverSnapshot(ctx context.Context, snapshotName string, options *RecoverSnapshotOptions) (RecoverSnapshotResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.RecoverSnapshot", c.appConfigClient.Tracer(), nil)
+	defer func() { endSpan(err) }()
+
 	if options == nil {
 		options = &RecoverSnapshotOptions{}
 	}
@@ -535,13 +551,12 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 
 	convertedETag := azcore.ETag(*updateResp.Etag)
 
-	var convertedFilters []KeyValueFilter
-
-	for _, filter := range updateResp.Filters {
-		convertedFilters = append(convertedFilters, KeyValueFilter{
-			Key:   filter.Key,
-			Label: filter.Label,
-		})
+	convertedFilters := make([]SettingFilter, len(updateResp.Filters))
+	for i := range updateResp.Filters {
+		convertedFilters[i] = SettingFilter{
+			KeyFilter:   updateResp.Filters[i].Key,
+			LabelFilter: updateResp.Filters[i].Label,
+		}
 	}
 
 	resp := updateSnapshotStatusResponse{

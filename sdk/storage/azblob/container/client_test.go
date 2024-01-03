@@ -3472,7 +3472,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientDefaultAudience() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	options := &container.ClientOptions{
-		Audience: to.Ptr("https://storage.azure.com/"),
+		Audience: "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	containerClientAudience, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, options)
@@ -3498,7 +3498,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerClientCustomAudience() {
 
 	containerName := testcommon.GenerateContainerName(testName)
 	options := &container.ClientOptions{
-		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+		Audience: "https://" + accountName + ".blob.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	containerClientAudience, err := container.NewClient("https://"+accountName+".blob.core.windows.net/"+containerName, cred, options)

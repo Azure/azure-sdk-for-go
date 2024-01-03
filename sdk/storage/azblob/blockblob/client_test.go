@@ -5891,7 +5891,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientDefaultAudience() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
 	options := &blockblob.ClientOptions{
-		Audience: to.Ptr("https://storage.azure.com/"),
+		Audience: "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)
@@ -5929,7 +5929,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientCustomAudience() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
 	options := &blockblob.ClientOptions{
-		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+		Audience: "https://" + accountName + ".blob.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)

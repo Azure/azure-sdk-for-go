@@ -650,7 +650,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 	// create service client using token credential
 	options := &service.ClientOptions{
 		FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://" + accountName + ".file.core.windows.net"),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	svcClientAudience, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)

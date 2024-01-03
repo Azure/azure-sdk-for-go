@@ -2287,7 +2287,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
 
 	options := &directory.ClientOptions{
 		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://storage.azure.com/"),
+		Audience:          "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
 	dirClientAudience, err := directory.NewClient(dirURL, cred, options)
@@ -2322,7 +2322,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryClientCustomAudience() {
 
 	options := &directory.ClientOptions{
 		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://" + accountName + ".file.core.windows.net"),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
 	}
 	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
 	dirClientAudience, err := directory.NewClient(dirURL, cred, options)
@@ -2357,7 +2357,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryAudienceNegative() {
 
 	options := &directory.ClientOptions{
 		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://badaudience.file.core.windows.net"),
+		Audience:          "https://badaudience.file.core.windows.net",
 	}
 	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
 	dirClientAudience, err := directory.NewClient(dirURL, cred, options)

@@ -1647,7 +1647,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientDefaultAudience() {
 
 	options := &share.ClientOptions{
 		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
-		Audience:          to.Ptr("https://storage.azure.com/"),
+		Audience:          "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
@@ -1684,7 +1684,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientCustomAudience() {
 
 	options := &share.ClientOptions{
 		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
-		Audience:          to.Ptr("https://" + accountName + ".file.core.windows.net"),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
@@ -1721,7 +1721,7 @@ func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
 
 	options := &share.ClientOptions{
 		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
-		Audience:          to.Ptr("https://badaudience.file.core.windows.net"),
+		Audience:          "https://badaudience.file.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)

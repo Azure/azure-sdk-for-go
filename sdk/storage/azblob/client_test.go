@@ -12,7 +12,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"hash/crc64"
 	"io"
 	"os"
@@ -799,7 +798,7 @@ func (s *AZBlobRecordedTestsSuite) TestAzBlobClientDefaultAudience() {
 	_require.NoError(err)
 
 	options := &azblob.ClientOptions{
-		Audience: to.Ptr("https://storage.azure.com/"),
+		Audience: "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	azClientAudience, err := azblob.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
@@ -837,7 +836,7 @@ func (s *AZBlobRecordedTestsSuite) TestAzBlobClientCustomAudience() {
 	_require.NoError(err)
 
 	options := &azblob.ClientOptions{
-		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+		Audience: "https://" + accountName + ".blob.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	azClientAudience, err := azblob.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)

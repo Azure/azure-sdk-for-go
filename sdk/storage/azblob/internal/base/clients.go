@@ -21,7 +21,7 @@ type ClientOptions struct {
 	// Audience to use when requesting tokens for Azure Active Directory authentication.
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
-	Audience *string
+	Audience string
 }
 
 type Client[T any] struct {
@@ -52,10 +52,10 @@ func GetClientOptions[T any](client *Client[T]) *ClientOptions {
 }
 
 func GetAudience(clOpts *ClientOptions) string {
-	if clOpts == nil || clOpts.Audience == nil {
+	if clOpts == nil || len(strings.TrimSpace(clOpts.Audience)) == 0 {
 		return shared.TokenScope
 	} else {
-		return strings.TrimRight(*clOpts.Audience, "/") + "/.default"
+		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
 }
 

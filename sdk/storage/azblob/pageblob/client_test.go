@@ -4951,7 +4951,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientDefaultAudience() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
 	options := &pageblob.ClientOptions{
-		Audience: to.Ptr("https://storage.azure.com/"),
+		Audience: "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	pbClientAudience, err := pageblob.NewClient(blobURL, cred, options)
@@ -4985,7 +4985,7 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
 
 	options := &pageblob.ClientOptions{
-		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+		Audience: "https://" + accountName + ".blob.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	pbClientAudience, err := pageblob.NewClient(blobURL, cred, options)

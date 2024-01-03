@@ -1821,7 +1821,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
 	_require.NoError(err)
 
 	options := &service.ClientOptions{
-		Audience: to.Ptr("https://storage.azure.com/"),
+		Audience: "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	svcClientAudience, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
@@ -1859,7 +1859,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require.NoError(err)
 
 	options := &service.ClientOptions{
-		Audience: to.Ptr("https://" + accountName + ".blob.core.windows.net"),
+		Audience: "https://" + accountName + ".blob.core.windows.net",
 	}
 	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
 	svcClientAudience, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)

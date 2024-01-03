@@ -4543,7 +4543,7 @@ func (f *FileRecordedTestsSuite) TestFileClientDefaultAudience() {
 
 	options := &file.ClientOptions{
 		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://storage.azure.com/"),
+		Audience:          "https://storage.azure.com/",
 	}
 	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
 	fileClientAudience, err := file.NewClient(fileURL, cred, options)
@@ -4578,7 +4578,7 @@ func (f *FileRecordedTestsSuite) TestFileClientCustomAudience() {
 
 	options := &file.ClientOptions{
 		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://" + accountName + ".file.core.windows.net"),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
 	}
 	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
 	fileClientAudience, err := file.NewClient(fileURL, cred, options)
@@ -4613,7 +4613,7 @@ func (f *FileRecordedTestsSuite) TestFileClientAudienceNegative() {
 
 	options := &file.ClientOptions{
 		FileRequestIntent: to.Ptr(file.ShareTokenIntentBackup),
-		Audience:          to.Ptr("https://badaudience.file.core.windows.net"),
+		Audience:          "https://badaudience.file.core.windows.net",
 	}
 	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
 	fileClientAudience, err := file.NewClient(fileURL, cred, options)

@@ -4458,10 +4458,6 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 		err = os.Remove(name)
 		_require.NoError(err)
 	}(destFileName)
-	defer func(destFile *os.File) {
-		err = destFile.Close()
-		_require.NoError(err)
-	}(destFile)
 
 	cnt, err := fClient.DownloadFile(context.Background(), destFile, &file.DownloadFileOptions{
 		ChunkSize:   2 * 1024,
@@ -4475,8 +4471,18 @@ func (s *RecordedTestSuite) TestFileUploadDownloadSmallFileWithCPK() {
 	_require.NoError(err)
 	_require.Equal(cnt, fileSize)
 
+	err = destFile.Close()
+	_require.NoError(err)
+
+	newDestFileHandle, err := os.Open(destFileName)
+	_require.NoError(err)
+	defer func(file *os.File) {
+		err = file.Close()
+		_require.NoError(err)
+	}(newDestFileHandle)
+
 	destHash := md5.New()
-	_, err = io.Copy(destHash, destFile)
+	_, err = io.Copy(destHash, newDestFileHandle)
 	_require.NoError(err)
 	downloadedContentMD5 := destHash.Sum(nil)
 

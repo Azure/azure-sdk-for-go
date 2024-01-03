@@ -14,7 +14,7 @@ type AddToGroupsRequest struct {
 	Filter *string
 
 	// A list of groups which target connections will be added into
-	Groups []*string
+	Groups []string
 }
 
 // ClientTokenResponse - The response object containing the token for the client
@@ -29,7 +29,7 @@ type ErrorDetail struct {
 	Code *string
 
 	// An array of details about specific errors that led to this reported error.
-	Details []*ErrorDetail
+	Details []ErrorDetail
 	Inner   *InnerError
 
 	// A human-readable representation of the error.
@@ -52,5 +52,5 @@ type RemoveFromGroupsRequest struct {
 	Filter *string
 
 	// A list of groups which target connections will be removed from
-	Groups []*string
+	Groups []string
 }

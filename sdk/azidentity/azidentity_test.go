@@ -46,7 +46,7 @@ const (
 )
 
 var (
-	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
+	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s","expires_in": %d,"token_type":"Bearer"}`, tokenValue, tokenExpiresIn))
 	testTRO                = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 
@@ -607,7 +607,8 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					t.Fatal("expected an error")
 				}
 				// silent authentication should succeed
-				tk2, err := c.GetToken(context.Background(), tro)
+				ctx := context.Background()
+				tk2, err := c.GetToken(ctx, tro)
 				if err != nil {
 					t.Fatalf(`silent authentication failed: "%v"`, err)
 				}

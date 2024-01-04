@@ -5,6 +5,9 @@
 ### Bugs Fixed
 * Credentials now preserve MSAL headers e.g. X-Client-Sku
 
+### Other Changes
+* Upgraded dependencies
+
 ## 1.5.0-beta.2 (2023-11-07)
 
 ### Features Added

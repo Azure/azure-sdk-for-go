@@ -7,14 +7,11 @@
 package azidentity
 
 import (
-	"bytes"
 	"context"
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"strings"
@@ -38,7 +35,7 @@ const (
 )
 
 var (
-	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s", "expires_in": %d}`, tokenValue, tokenExpiresIn))
+	accessTokenRespSuccess = []byte(fmt.Sprintf(`{"access_token": "%s","expires_in": %d,"token_type":"Bearer"}`, tokenValue, tokenExpiresIn))
 	testTRO                = policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 )
 

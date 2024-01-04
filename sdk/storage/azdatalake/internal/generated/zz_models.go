@@ -386,6 +386,11 @@ type PathClientDeleteOptions struct {
 	// this response header. When a continuation token is returned in the response, it must be specified in a subsequent invocation
 	// of the delete operation to continue deleting the directory.
 	Continuation *string
+	// If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX requirement in the server
+	// and Delete in an atomic operation once the ACL checks are completed. If false
+	// or missing, normal default behavior will kick in, which may timeout in case of very large directories due to recursive
+	// ACL checks. This new parameter is introduced for backward compatibility.
+	Paginated *bool
 	// Required
 	Recursive *bool
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage

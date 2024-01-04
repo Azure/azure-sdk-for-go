@@ -59,7 +59,7 @@ type MetricsBatchClientQueryBatchOptions struct {
 	// Dimension name(s) to rollup results by. For example if you only want to see metric values with a filter like 'City eq Seattle
 	// or City eq Tacoma' but don't want to see separate values for each city,
 	// you can specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-	Rollupby *string
+	RollUpBy *string
 
 	// The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you have specified the endtime
 	// parameter, then this parameter is required. If only starttime is specified, then
@@ -128,7 +128,7 @@ type MetricsClientQueryResourceOptions struct {
 	// Dimension name(s) to rollup results by. For example if you only want to see metric values with a filter like 'City eq Seattle
 	// or City eq Tacoma' but don't want to see separate values for each city,
 	// you can specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
-	Rollupby *string
+	RollUpBy *string
 
 	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
 	Timespan *TimeInterval

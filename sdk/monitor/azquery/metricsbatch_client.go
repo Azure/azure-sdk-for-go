@@ -91,8 +91,8 @@ func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, s
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
-	if options != nil && options.Rollupby != nil {
-		reqQP.Set("rollupby", *options.Rollupby)
+	if options != nil && options.RollUpBy != nil {
+		reqQP.Set("rollupby", *options.RollUpBy)
 	}
 	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()

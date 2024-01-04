@@ -214,6 +214,10 @@ directive:
   - from: swagger-document
     where: $.parameters.OrderByParameter
     transform: $["x-ms-client-name"] = "OrderBy"
+  - from: swagger-document
+    where: $.parameters.RollUpByParameter
+    transform: $["x-ms-client-name"] = "RollUpBy"
+
 
   # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
   - from: options.go

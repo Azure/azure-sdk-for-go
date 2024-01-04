@@ -206,8 +206,8 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.ValidateDimensions != nil {
 		reqQP.Set("ValidateDimensions", strconv.FormatBool(*options.ValidateDimensions))
 	}
-	if options != nil && options.Rollupby != nil {
-		reqQP.Set("rollupby", *options.Rollupby)
+	if options != nil && options.RollUpBy != nil {
+		reqQP.Set("rollupby", *options.RollUpBy)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

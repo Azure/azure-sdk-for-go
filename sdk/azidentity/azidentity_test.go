@@ -607,8 +607,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					t.Fatal("expected an error")
 				}
 				// silent authentication should succeed
-				ctx := context.Background()
-				tk2, err := c.GetToken(ctx, tro)
+				tk2, err := c.GetToken(context.Background(), tro)
 				if err != nil {
 					t.Fatalf(`silent authentication failed: "%v"`, err)
 				}

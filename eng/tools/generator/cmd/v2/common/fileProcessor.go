@@ -7,8 +7,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"go/parser"
-	"go/token"
 	"io/fs"
 	"io/ioutil"
 	"log"

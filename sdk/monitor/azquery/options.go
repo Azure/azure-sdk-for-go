@@ -47,12 +47,19 @@ type MetricsBatchClientQueryBatchOptions struct {
 	// filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 
-	// The interval (i.e. timegrain) of the query.Examples: PT15M, PT1H, P1D
+	// The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special case for 'FULL' value
+	// that returns single datapoint for entire time span requested.Examples: PT15M,
+	// PT1H, P1D, FULL
 	Interval *string
 
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified.Examples: sum
 	// asc
 	OrderBy *string
+
+	// Dimension name(s) to rollup results by. For example if you only want to see metric values with a filter like 'City eq Seattle
+	// or City eq Tacoma' but don't want to see separate values for each city,
+	// you can specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+	Rollupby *string
 
 	// The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you have specified the endtime
 	// parameter, then this parameter is required. If only starttime is specified, then
@@ -66,7 +73,7 @@ type MetricsBatchClientQueryBatchOptions struct {
 
 // MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager method.
 type MetricsClientListDefinitionsOptions struct {
-	// Metric namespace to query metric definitions for.
+	// Metric namespace where the metrics you want reside.
 	MetricNamespace *string
 }
 
@@ -81,16 +88,23 @@ type MetricsClientQueryResourceOptions struct {
 	// The list of aggregation types to retrieve
 	Aggregation []*AggregationType
 
-	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
-	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
-	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
-	// the logical or operator cannot separate two different metadata names. -
-	// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
-	// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
-	// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
-	// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
-	// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
-	// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
+	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
+	// supported timespan. When set to false, an error is returned for invalid
+	// timespan parameters. Defaults to false.
+	AutoAdjustTimegrain *bool
+
+	// The $filter is used to reduce the set of metric data returned.
+	// Example:
+	// Metric contains metadata A, B and C.
+	// - Return all time series of C where A = a1 and B = b1 or b2
+	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+	// - Invalid variant:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+	// This is invalid because the logical or operator cannot separate two different metadata names.
+	// - Return all time series where A = a1, B = b1 and C = c1:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+	// - Return all time series where A = a1
+	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 
 	// The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special case for 'FULL' value
@@ -98,23 +112,32 @@ type MetricsClientQueryResourceOptions struct {
 	// PT1H, P1D, FULL
 	Interval *string
 
-	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use
-	// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+	// The names of the metrics (comma separated) to retrieve.
 	MetricNames *string
 
-	// Metric namespace to query metric definitions for.
+	// Metric namespace where the metrics you want reside.
 	MetricNamespace *string
 
-	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
-	// asc.
+	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified.Examples: sum
+	// asc
 	OrderBy *string
 
 	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
 	ResultType *ResultType
 
+	// Dimension name(s) to rollup results by. For example if you only want to see metric values with a filter like 'City eq Seattle
+	// or City eq Tacoma' but don't want to see separate values for each city,
+	// you can specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+	Rollupby *string
+
 	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
 	Timespan *TimeInterval
 
-	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
+	// The maximum number of records to retrieve per resource ID in the request. Valid only if filter is specified. Defaults to
+	// 10.
 	Top *int32
+
+	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
+	// filter parameters. Defaults to true.
+	ValidateDimensions *bool
 }

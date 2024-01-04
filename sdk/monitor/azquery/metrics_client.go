@@ -27,7 +27,7 @@ type MetricsClient struct {
 
 // NewListDefinitionsPager - Lists the metric definitions for the resource.
 //
-// Generated from API version 2018-01-01
+// Generated from API version 2023-10-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager
 //     method.
@@ -63,7 +63,7 @@ func (client *MetricsClient) listDefinitionsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-01-01")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.MetricNamespace != nil {
 		reqQP.Set("metricnamespace", *options.MetricNamespace)
 	}
@@ -140,7 +140,7 @@ func (client *MetricsClient) listNamespacesHandleResponse(resp *http.Response) (
 // QueryResource - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2018-01-01
+// Generated from API version 2023-10-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
@@ -196,9 +196,18 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.ResultType != nil {
 		reqQP.Set("resultType", string(*options.ResultType))
 	}
-	reqQP.Set("api-version", "2018-01-01")
+	reqQP.Set("api-version", "2023-10-01")
 	if options != nil && options.MetricNamespace != nil {
 		reqQP.Set("metricnamespace", *options.MetricNamespace)
+	}
+	if options != nil && options.AutoAdjustTimegrain != nil {
+		reqQP.Set("AutoAdjustTimegrain", strconv.FormatBool(*options.AutoAdjustTimegrain))
+	}
+	if options != nil && options.ValidateDimensions != nil {
+		reqQP.Set("ValidateDimensions", strconv.FormatBool(*options.ValidateDimensions))
+	}
+	if options != nil && options.Rollupby != nil {
+		reqQP.Set("rollupby", *options.Rollupby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

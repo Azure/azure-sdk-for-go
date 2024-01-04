@@ -111,16 +111,16 @@ type MetadataValue struct {
 
 // Metric - The result data of a query.
 type Metric struct {
-	// REQUIRED; the metric Id.
+	// REQUIRED; The metric Id.
 	ID *string
 
-	// REQUIRED; the name and the display name of the metric, i.e. it is localizable string.
+	// REQUIRED; The name and the display name of the metric, i.e. it is localizable string.
 	Name *LocalizableString
 
-	// REQUIRED; the time series returned when a data query is performed.
+	// REQUIRED; The time series returned when a data query is performed.
 	TimeSeries []*TimeSeriesElement
 
-	// REQUIRED; the resource type of the metric resource.
+	// REQUIRED; The resource type of the metric resource.
 	Type *string
 
 	// REQUIRED; The unit of the metric.
@@ -139,10 +139,10 @@ type Metric struct {
 // MetricAvailability - Metric availability specifies the time grain (aggregation interval or frequency) and the retention
 // period for that time grain.
 type MetricAvailability struct {
-	// the retention period for the metric at the specified timegrain. Expressed as a duration 'PT1M', 'P1D', etc.
+	// The retention period for the metric at the specified timegrain. Expressed as a duration 'PT1M', 'P1D', etc.
 	Retention *string
 
-	// the time grain specifies the aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
+	// The time grain specifies a supported aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
 	TimeGrain *string
 }
 
@@ -151,37 +151,37 @@ type MetricDefinition struct {
 	// Custom category name for this metric.
 	Category *string
 
-	// the name and the display name of the dimension, i.e. it is a localizable string.
+	// The name and the display name of the dimension, i.e. it is a localizable string.
 	Dimensions []*LocalizableString
 
 	// Detailed description of this metric.
 	DisplayDescription *string
 
-	// the resource identifier of the metric definition.
+	// The resource identifier of the metric definition.
 	ID *string
 
 	// Flag to indicate whether the dimension is required.
 	IsDimensionRequired *bool
 
-	// the collection of what aggregation intervals are available to be queried.
+	// The collection of what aggregation intervals are available to be queried.
 	MetricAvailabilities []*MetricAvailability
 
 	// The class of the metric.
 	MetricClass *MetricClass
 
-	// the name and the display name of the metric, i.e. it is a localizable string.
+	// The name and the display name of the metric, i.e. it is a localizable string.
 	Name *LocalizableString
 
-	// the namespace the metric belongs to.
+	// The namespace the metric belongs to.
 	Namespace *string
 
-	// the primary aggregation type value defining how to use the values for display.
+	// The primary aggregation type value defining how to use the values for display.
 	PrimaryAggregationType *AggregationType
 
-	// the resource identifier of the resource that emitted the metric.
+	// The resource identifier of the resource that emitted the metric.
 	ResourceID *string
 
-	// the collection of what aggregation types are supported.
+	// The collection of what aggregation types are supported.
 	SupportedAggregationTypes []*AggregationType
 
 	// The unit of the metric.
@@ -190,7 +190,7 @@ type MetricDefinition struct {
 
 // MetricDefinitionCollection - Represents collection of metric definitions.
 type MetricDefinitionCollection struct {
-	// REQUIRED; the values for the metric definitions.
+	// REQUIRED; The values for the metric definitions.
 	Value []*MetricDefinition
 }
 
@@ -241,9 +241,10 @@ type MetricValues struct {
 	// REQUIRED; The value of the collection.
 	Values []*Metric
 
-	// The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format (e.g.
-	// 'P1D' for 1 day). This may be adjusted in the future and returned back from what
-	// was originally requested. This is not present if a metadata request was made.
+	// The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special case for 'FULL'
+	// value that returns single datapoint for entire time span requested (
+	// Examples: PT15M, PT1H, P1D, FULL). This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true
+	// is specified.
 	Interval *string
 
 	// The namespace of the metrics been queried
@@ -291,7 +292,7 @@ type Response struct {
 	// requested.
 	Timespan *TimeInterval
 
-	// REQUIRED; the value of the collection.
+	// REQUIRED; The value of the collection.
 	Value []*Metric
 
 	// The integer value representing the relative cost of the query.
@@ -342,6 +343,6 @@ type TimeSeriesElement struct {
 	// An array of data points representing the metric values. This is only returned if a result type of data is specified.
 	Data []*MetricValue
 
-	// the metadata values returned if $filter was specified in the call.
+	// The metadata values returned if $filter was specified in the call.
 	MetadataValues []*MetadataValue
 }

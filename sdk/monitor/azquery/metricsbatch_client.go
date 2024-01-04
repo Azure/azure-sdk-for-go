@@ -30,17 +30,17 @@ type MetricsBatchClient struct {
 // QueryBatch - Lists the metric values for multiple resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-10-01
 //   - subscriptionID - The subscription identifier for the resources in this batch.
 //   - metricNamespace - Metric namespace that contains the requested metric names.
 //   - metricNames - The names of the metrics (comma separated) to retrieve.
-//   - resourceIDs - The comma separated list of resource IDs to query metrics for.
+//   - batchRequest - Metrics batch body including the list of resource ids
 //   - options - MetricsBatchClientQueryBatchOptions contains the optional parameters for the MetricsBatchClient.QueryBatch method.
-func (client *MetricsBatchClient) QueryBatch(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, resourceIDs ResourceIDList, options *MetricsBatchClientQueryBatchOptions) (MetricsBatchClientQueryBatchResponse, error) {
+func (client *MetricsBatchClient) QueryBatch(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *MetricsBatchClientQueryBatchOptions) (MetricsBatchClientQueryBatchResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "MetricsBatchClient.QueryBatch", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryBatchCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, resourceIDs, options)
+	req, err := client.queryBatchCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, batchRequest, options)
 	if err != nil {
 		return MetricsBatchClientQueryBatchResponse{}, err
 	}
@@ -57,7 +57,7 @@ func (client *MetricsBatchClient) QueryBatch(ctx context.Context, subscriptionID
 }
 
 // queryBatchCreateRequest creates the QueryBatch request.
-func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, resourceIDs ResourceIDList, options *MetricsBatchClientQueryBatchOptions) (*policy.Request, error) {
+func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *MetricsBatchClientQueryBatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/metrics:getBatch"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -91,10 +91,13 @@ func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, s
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-05-01-preview")
+	if options != nil && options.Rollupby != nil {
+		reqQP.Set("rollupby", *options.Rollupby)
+	}
+	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resourceIDs); err != nil {
+	if err := runtime.MarshalAsJSON(req, batchRequest); err != nil {
 		return nil, err
 	}
 	return req, nil

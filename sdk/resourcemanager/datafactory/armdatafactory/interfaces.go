@@ -52,7 +52,8 @@ type ControlActivityClassification interface {
 // - *CommonDataServiceForAppsSink, *CopySink, *CosmosDbMongoDbAPISink, *CosmosDbSQLAPISink, *DelimitedTextSink, *DocumentDbCollectionSink,
 // - *DynamicsCrmSink, *DynamicsSink, *FileSystemSink, *InformixSink, *JSONSink, *LakeHouseTableSink, *MicrosoftAccessSink,
 // - *MongoDbAtlasSink, *MongoDbV2Sink, *OdbcSink, *OracleSink, *OrcSink, *ParquetSink, *RestSink, *SQLDWSink, *SQLMISink,
-// - *SQLServerSink, *SQLSink, *SalesforceServiceCloudSink, *SalesforceSink, *SapCloudForCustomerSink, *SnowflakeSink
+// - *SQLServerSink, *SQLSink, *SalesforceServiceCloudSink, *SalesforceServiceCloudV2Sink, *SalesforceSink, *SalesforceV2Sink,
+// - *SapCloudForCustomerSink, *SnowflakeSink, *WarehouseSink
 type CopySinkClassification interface {
 	// GetCopySink returns the CopySink content of the underlying type.
 	GetCopySink() *CopySink
@@ -72,9 +73,10 @@ type CopySinkClassification interface {
 // - *NetezzaSource, *ODataSource, *OdbcSource, *Office365Source, *OracleServiceCloudSource, *OracleSource, *OrcSource, *ParquetSource,
 // - *PaypalSource, *PhoenixSource, *PostgreSQLSource, *PrestoSource, *QuickBooksSource, *RelationalSource, *ResponsysSource,
 // - *RestSource, *SQLDWSource, *SQLMISource, *SQLServerSource, *SQLSource, *SalesforceMarketingCloudSource, *SalesforceServiceCloudSource,
-// - *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOdpSource, *SapOpenHubSource,
-// - *SapTableSource, *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource, *SnowflakeSource, *SparkSource, *SquareSource,
-// - *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *WebSource, *XMLSource, *XeroSource, *ZohoSource
+// - *SalesforceServiceCloudV2Source, *SalesforceSource, *SalesforceV2Source, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource,
+// - *SapHanaSource, *SapOdpSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource,
+// - *SnowflakeSource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *WarehouseSource,
+// - *WebSource, *XMLSource, *XeroSource, *ZohoSource
 type CopySourceClassification interface {
 	// GetCopySource returns the CopySource content of the underlying type.
 	GetCopySource() *CopySource
@@ -125,10 +127,11 @@ type DataFlowClassification interface {
 // - *OracleTableDataset, *OrcDataset, *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset, *PostgreSQLTableDataset,
 // - *PrestoObjectDataset, *QuickBooksObjectDataset, *RelationalTableDataset, *ResponsysObjectDataset, *RestResourceDataset,
 // - *SQLServerTableDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset, *SalesforceServiceCloudObjectDataset,
-// - *SapBwCubeDataset, *SapCloudForCustomerResourceDataset, *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset,
-// - *SapOpenHubTableDataset, *SapTableResourceDataset, *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset,
-// - *SnowflakeDataset, *SparkObjectDataset, *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset,
-// - *WebTableDataset, *XMLDataset, *XeroObjectDataset, *ZohoObjectDataset
+// - *SalesforceServiceCloudV2ObjectDataset, *SalesforceV2ObjectDataset, *SapBwCubeDataset, *SapCloudForCustomerResourceDataset,
+// - *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset, *SapOpenHubTableDataset, *SapTableResourceDataset,
+// - *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset, *SparkObjectDataset,
+// - *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset, *WarehouseTableDataset, *WebTableDataset,
+// - *XMLDataset, *XeroObjectDataset, *ZohoObjectDataset
 type DatasetClassification interface {
 	// GetDataset returns the Dataset content of the underlying type.
 	GetDataset() *Dataset
@@ -272,11 +275,12 @@ type LinkedIntegrationRuntimeTypeClassification interface {
 // - *OracleLinkedService, *OracleServiceCloudLinkedService, *PaypalLinkedService, *PhoenixLinkedService, *PostgreSQLLinkedService,
 // - *PrestoLinkedService, *QuickBooksLinkedService, *QuickbaseLinkedService, *ResponsysLinkedService, *RestServiceLinkedService,
 // - *SQLServerLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService, *SalesforceServiceCloudLinkedService,
-// - *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService, *SapOdpLinkedService,
-// - *SapOpenHubLinkedService, *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService,
-// - *ShopifyLinkedService, *SmartsheetLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService,
-// - *SybaseLinkedService, *TeamDeskLinkedService, *TeradataLinkedService, *TwilioLinkedService, *VerticaLinkedService, *WebLinkedService,
-// - *XeroLinkedService, *ZendeskLinkedService, *ZohoLinkedService
+// - *SalesforceServiceCloudV2LinkedService, *SalesforceV2LinkedService, *SapBWLinkedService, *SapCloudForCustomerLinkedService,
+// - *SapEccLinkedService, *SapHanaLinkedService, *SapOdpLinkedService, *SapOpenHubLinkedService, *SapTableLinkedService,
+// - *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService, *ShopifyLinkedService, *SmartsheetLinkedService,
+// - *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService, *SybaseLinkedService, *TeamDeskLinkedService, *TeradataLinkedService,
+// - *TwilioLinkedService, *VerticaLinkedService, *WarehouseLinkedService, *WebLinkedService, *XeroLinkedService, *ZendeskLinkedService,
+// - *ZohoLinkedService
 type LinkedServiceClassification interface {
 	// GetLinkedService returns the LinkedService content of the underlying type.
 	GetLinkedService() *LinkedService
@@ -340,9 +344,9 @@ type StoreWriteSettingsClassification interface {
 // - *ImpalaSource, *InformixSource, *JiraSource, *MagentoSource, *MariaDBSource, *MarketoSource, *MySQLSource, *NetezzaSource,
 // - *OdbcSource, *OracleServiceCloudSource, *PaypalSource, *PhoenixSource, *PostgreSQLSource, *PrestoSource, *QuickBooksSource,
 // - *ResponsysSource, *SQLDWSource, *SQLMISource, *SQLServerSource, *SQLSource, *SalesforceMarketingCloudSource, *SalesforceSource,
-// - *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOdpSource, *SapOpenHubSource, *SapTableSource,
-// - *ServiceNowSource, *ShopifySource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource,
-// - *XeroSource, *ZohoSource
+// - *SalesforceV2Source, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOdpSource, *SapOpenHubSource,
+// - *SapTableSource, *ServiceNowSource, *ShopifySource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource,
+// - *VerticaSource, *WarehouseSource, *XeroSource, *ZohoSource
 type TabularSourceClassification interface {
 	CopySourceClassification
 	// GetTabularSource returns the TabularSource content of the underlying type.

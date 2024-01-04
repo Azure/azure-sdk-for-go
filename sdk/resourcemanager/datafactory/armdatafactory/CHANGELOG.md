@@ -1,5 +1,58 @@
 # Release History
 
+## 5.0.0 (2024-01-26)
+### Breaking Changes
+
+- Field `Pwd` of struct `MariaDBLinkedServiceTypeProperties` has been removed
+
+### Features Added
+
+- New enum type `SalesforceV2SinkWriteBehavior` with values `SalesforceV2SinkWriteBehaviorInsert`, `SalesforceV2SinkWriteBehaviorUpsert`
+- New function `*SalesforceServiceCloudV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceServiceCloudV2ObjectDataset.GetDataset() *Dataset`
+- New function `*SalesforceServiceCloudV2Sink.GetCopySink() *CopySink`
+- New function `*SalesforceServiceCloudV2Source.GetCopySource() *CopySource`
+- New function `*SalesforceV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SalesforceV2ObjectDataset.GetDataset() *Dataset`
+- New function `*SalesforceV2Sink.GetCopySink() *CopySink`
+- New function `*SalesforceV2Source.GetCopySource() *CopySource`
+- New function `*SalesforceV2Source.GetTabularSource() *TabularSource`
+- New function `*WarehouseLinkedService.GetLinkedService() *LinkedService`
+- New function `*WarehouseSink.GetCopySink() *CopySink`
+- New function `*WarehouseSource.GetCopySource() *CopySource`
+- New function `*WarehouseSource.GetTabularSource() *TabularSource`
+- New function `*WarehouseTableDataset.GetDataset() *Dataset`
+- New struct `SalesforceServiceCloudV2LinkedService`
+- New struct `SalesforceServiceCloudV2LinkedServiceTypeProperties`
+- New struct `SalesforceServiceCloudV2ObjectDataset`
+- New struct `SalesforceServiceCloudV2ObjectDatasetTypeProperties`
+- New struct `SalesforceServiceCloudV2Sink`
+- New struct `SalesforceServiceCloudV2Source`
+- New struct `SalesforceV2LinkedService`
+- New struct `SalesforceV2LinkedServiceTypeProperties`
+- New struct `SalesforceV2ObjectDataset`
+- New struct `SalesforceV2ObjectDatasetTypeProperties`
+- New struct `SalesforceV2Sink`
+- New struct `SalesforceV2Source`
+- New struct `WarehouseLinkedService`
+- New struct `WarehouseLinkedServiceTypeProperties`
+- New struct `WarehouseSink`
+- New struct `WarehouseSource`
+- New struct `WarehouseTableDataset`
+- New struct `WarehouseTableDatasetTypeProperties`
+- New field `Metadata` in struct `AzureBlobFSWriteSettings`
+- New field `Metadata` in struct `AzureBlobStorageWriteSettings`
+- New field `Metadata` in struct `AzureDataLakeStoreWriteSettings`
+- New field `Metadata` in struct `AzureFileStorageWriteSettings`
+- New field `Metadata` in struct `FileServerWriteSettings`
+- New field `Metadata` in struct `LakeHouseWriteSettings`
+- New field `Database`, `DriverVersion`, `Password`, `Port`, `Server`, `Username` in struct `MariaDBLinkedServiceTypeProperties`
+- New field `Database`, `DriverVersion`, `Port`, `SSLMode`, `Server`, `UseSystemTrustStore`, `Username` in struct `MySQLLinkedServiceTypeProperties`
+- New field `Metadata` in struct `SftpWriteSettings`
+- New field `Metadata` in struct `StoreWriteSettings`
+- New field `HTTPRequestTimeout`, `TurnOffAsync` in struct `WebActivityTypeProperties`
+
+
 ## 4.0.0 (2023-12-22)
 ### Breaking Changes
 

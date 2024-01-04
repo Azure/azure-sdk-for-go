@@ -78,6 +78,33 @@ func ExampleNewClientFromConnectionString() {
 	fmt.Println(client)
 }
 
+func ExampleClientOptions_PreferredRegions() {
+	clientOptions := azcosmos.ClientOptions{PreferredRegions: []string{"West US", "Central US"}}
+
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	// Create new Cosmos DB client.
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, clientOptions)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
+
 func ExampleClient_CreateDatabase() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {

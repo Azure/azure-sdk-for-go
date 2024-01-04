@@ -49,6 +49,40 @@ func (d *DistributeVersionerSource) GetDistributeVersioner() *DistributeVersione
 	}
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // ImageTemplate - Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider
 type ImageTemplate struct {
 	// REQUIRED; The identity of the image template, if configured.
@@ -381,6 +415,9 @@ type ImageTemplateProperties struct {
 	// Specifies the properties used to describe the customization steps of the image, like Image source etc
 	Customize []ImageTemplateCustomizerClassification
 
+	// Error handling options upon a build failure
+	ErrorHandling *ImageTemplatePropertiesErrorHandling
+
 	// Specifies optimization to be performed on image.
 	Optimize *ImageTemplatePropertiesOptimize
 
@@ -412,6 +449,19 @@ type ImageTemplateProperties struct {
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *ProvisioningState
+}
+
+// ImageTemplatePropertiesErrorHandling - Error handling options upon a build failure
+type ImageTemplatePropertiesErrorHandling struct {
+	// If there is a customizer error and this field is set to 'cleanup', the build VM and associated network resources will be
+	// cleaned up. This is the default behavior. If there is a customizer error and
+	// this field is set to 'abort', the build VM will be preserved.
+	OnCustomizerError *OnBuildError
+
+	// If there is a validation error and this field is set to 'cleanup', the build VM and associated network resources will be
+	// cleaned up. This is the default behavior. If there is a validation error and
+	// this field is set to 'abort', the build VM will be preserved.
+	OnValidationError *OnBuildError
 }
 
 // ImageTemplatePropertiesOptimize - Specifies optimization to be performed on image.
@@ -603,8 +653,17 @@ type ImageTemplateUpdateParameters struct {
 	// The identity of the image template, if configured.
 	Identity *ImageTemplateIdentity
 
+	// Parameters for updating an image template.
+	Properties *ImageTemplateUpdateParametersProperties
+
 	// The user-specified tags associated with the image template.
 	Tags map[string]*string
+}
+
+// ImageTemplateUpdateParametersProperties - Parameters for updating an image template.
+type ImageTemplateUpdateParametersProperties struct {
+	// The distribution targets where the image output needs to go to.
+	Distribute []ImageTemplateDistributorClassification
 }
 
 // ImageTemplateVMProfile - Describes the virtual machines used to build and validate images

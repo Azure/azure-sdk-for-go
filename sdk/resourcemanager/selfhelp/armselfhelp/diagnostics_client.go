@@ -41,14 +41,15 @@ func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.Client
 }
 
 // BeginCreate - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics tells you precisely the root cause of the issue and the steps to address it.
-// You can get diagnostics once you discover the relevant solution for your Azure issue.
-// Note: requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
+// Diagnostics are powerful solutions that access product resources or other relevant data
+// and provide the root cause of the issue and the steps to address the issue.
+// Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - diagnosticResourceRequest - The required request body for this insightResource invocation.
 //   - options - DiagnosticsClientBeginCreateOptions contains the optional parameters for the DiagnosticsClient.BeginCreate method.
@@ -71,9 +72,9 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, 
 }
 
 // Create - Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-// Diagnostics tells you precisely the root cause of the issue and the steps to address it.
-// You can get diagnostics once you discover the relevant solution for your Azure issue.
-// Note: requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
+// Diagnostics are powerful solutions that access product resources or other relevant data
+// and provide the root cause of the issue and the steps to address the issue.
+// Note: ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -125,7 +126,8 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-09-01-preview
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - scope - scope = resourceUri of affected resource.
+//     For example: /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read
 //   - diagnosticsResourceName - Unique resource name for insight resources
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
 func (client *DiagnosticsClient) Get(ctx context.Context, scope string, diagnosticsResourceName string, options *DiagnosticsClientGetOptions) (DiagnosticsClientGetResponse, error) {

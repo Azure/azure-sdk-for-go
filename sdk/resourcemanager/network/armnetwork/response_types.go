@@ -1573,6 +1573,11 @@ type ManagementClientCheckDNSNameAvailabilityResponse struct {
 	DNSNameAvailabilityResult
 }
 
+// ManagementClientDeleteBastionShareableLinkByTokenResponse contains the response from method ManagementClient.BeginDeleteBastionShareableLinkByToken.
+type ManagementClientDeleteBastionShareableLinkByTokenResponse struct {
+	// placeholder for future response values
+}
+
 // ManagementClientDeleteBastionShareableLinkResponse contains the response from method ManagementClient.BeginDeleteBastionShareableLink.
 type ManagementClientDeleteBastionShareableLinkResponse struct {
 	// placeholder for future response values

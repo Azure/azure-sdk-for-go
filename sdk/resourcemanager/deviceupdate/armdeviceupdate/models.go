@@ -48,6 +48,9 @@ type AccountList struct {
 
 // AccountProperties - Device Update account properties.
 type AccountProperties struct {
+	// CMK encryption at rest properties
+	Encryption *Encryption
+
 	// List of private endpoint connections associated with the account.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
@@ -128,6 +131,16 @@ type DiagnosticStorageProperties struct {
 
 	// ConnectionString of the diagnostic storage account
 	ConnectionString *string
+}
+
+// Encryption - The CMK encryption settings on the Device Update account.
+type Encryption struct {
+	// The URI of the key vault
+	KeyVaultKeyURI *string
+
+	// The full resourceId of the user assigned identity to be used for key vault access. Identity has to be also assigned to
+	// the Account
+	UserAssignedIdentity *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.

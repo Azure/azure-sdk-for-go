@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v2/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -120,13 +120,21 @@ func (testsuite *ServicefabricTestSuite) TestClusters() {
 	fmt.Println("Call operation: Clusters_List")
 	clustersClient, err := armservicefabric.NewClustersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = clustersClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
+	clustersClientNewListPager := clustersClient.NewListPager(nil)
+	for clustersClientNewListPager.More() {
+		_, err := clustersClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
 
 	// From step Clusters_ListByResourceGroup
 	fmt.Println("Call operation: Clusters_ListByResourceGroup")
-	_, err = clustersClient.ListByResourceGroup(testsuite.ctx, testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(err)
+	clustersClientNewListByResourceGroupPager := clustersClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
+	for clustersClientNewListByResourceGroupPager.More() {
+		_, err := clustersClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
 
 	// From step Clusters_Get
 	fmt.Println("Call operation: Clusters_Get")
@@ -193,8 +201,12 @@ func (testsuite *ServicefabricTestSuite) TestApplicationTypes() {
 
 	// From step ApplicationTypes_List
 	fmt.Println("Call operation: ApplicationTypes_List")
-	_, err = applicationTypesClient.List(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, nil)
-	testsuite.Require().NoError(err)
+	applicationTypesClientNewListPager := applicationTypesClient.NewListPager(testsuite.resourceGroupName, testsuite.clusterName, nil)
+	for applicationTypesClientNewListPager.More() {
+		_, err := applicationTypesClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		break
+	}
 
 	// From step ApplicationTypes_Get
 	fmt.Println("Call operation: ApplicationTypes_Get")

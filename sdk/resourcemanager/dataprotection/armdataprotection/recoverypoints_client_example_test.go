@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/ListRecoveryPoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/ListRecoveryPoints.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,6 +64,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 						ID: to.Ptr("5d8cfd30-722e-4bab-85f6-4a9d01ffc6f1"),
 		// 						MetaData: to.Ptr("123456"),
 		// 				}},
+		// 				RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
 		// 				RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00.000Z"); return t}()),
 		// 				RecoveryPointType: to.Ptr("Full"),
 		// 			},
@@ -88,6 +89,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 						ID: to.Ptr("798cfd30-722e-4bab-85f6-4a9d01ffc6f3"),
 		// 						MetaData: to.Ptr("123456"),
 		// 				}},
+		// 				RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
 		// 				RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00.000Z"); return t}()),
 		// 				RecoveryPointType: to.Ptr("Full"),
 		// 			},
@@ -96,7 +98,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c53808ba54beef57059371708f1fa6949a11a280/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/BackupInstanceOperations/GetRecoveryPoint.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,6 +136,7 @@ func ExampleRecoveryPointsClient_Get() {
 	// 				ID: to.Ptr("5d8cfd30-722e-4bab-85f6-4a9d01ffc6f1"),
 	// 				MetaData: to.Ptr("123456"),
 	// 		}},
+	// 		RecoveryPointState: to.Ptr(armdataprotection.RecoveryPointCompletionStateCompleted),
 	// 		RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00.000Z"); return t}()),
 	// 		RecoveryPointType: to.Ptr("Full"),
 	// 	},

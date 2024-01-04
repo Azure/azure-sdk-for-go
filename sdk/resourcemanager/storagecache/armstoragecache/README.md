@@ -1,6 +1,6 @@
 # Azure Storage Caches Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3)
 
 The `armstoragecache` module provides operations for working with Azure Storage Caches.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Storage Caches module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3
 ```
 
 ## Authorization

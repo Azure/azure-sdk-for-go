@@ -230,38 +230,43 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 }
 
 func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
-	if recording.GetRecordMode() == recording.LiveMode {
-		// we're having an issue right now with this preview feature. I luckily got
-		// a recording of it but it won't run in live mode at this moment.
-		t.Skipf("Skipping %s because of a temp live outage with vision preview", t.Name())
+	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
+		imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
+
+		content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
+			&azopenai.ChatCompletionRequestMessageContentPartText{
+				Text: to.Ptr("Describe this image"),
+			},
+			&azopenai.ChatCompletionRequestMessageContentPartImage{
+				ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
+					URL: &imageURL,
+				},
+			},
+		})
+
+		resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+			Messages: []azopenai.ChatRequestMessageClassification{
+				&azopenai.ChatRequestUserMessage{
+					Content: content,
+				},
+			},
+			DeploymentName: to.Ptr(deploymentName),
+		}, nil)
+		require.NoError(t, err)
+		require.NotEmpty(t, resp.Choices[0].Message.Content)
+
+		t.Logf(*resp.Choices[0].Message.Content)
 	}
 
-	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
-
-	chatClient := newOpenAIClientForTest(t)
-	content := azopenai.NewChatRequestUserMessageContent([]azopenai.ChatCompletionRequestMessageContentPartClassification{
-		&azopenai.ChatCompletionRequestMessageContentPartText{
-			Text: to.Ptr("Describe this image"),
-		},
-		&azopenai.ChatCompletionRequestMessageContentPartImage{
-			ImageURL: &azopenai.ChatCompletionRequestMessageContentPartImageURL{
-				URL: &imageURL,
-			},
-		},
+	t.Run("OpenAI", func(t *testing.T) {
+		chatClient := newOpenAIClientForTest(t)
+		testFn(t, chatClient, openAI.Vision.Model)
 	})
 
-	resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
-		Messages: []azopenai.ChatRequestMessageClassification{
-			&azopenai.ChatRequestUserMessage{
-				Content: content,
-			},
-		},
-		DeploymentName: to.Ptr("gpt-4-vision-preview"),
-	}, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, resp.Choices[0].Message.Content)
-
-	t.Logf(*resp.Choices[0].Message.Content)
+	t.Run("AOAI", func(t *testing.T) {
+		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
+		testFn(t, chatClient, azureOpenAI.Vision.Model)
+	})
 }
 
 func TestGetChatCompletions_usingResponseFormatForJSON(t *testing.T) {

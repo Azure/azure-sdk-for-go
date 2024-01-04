@@ -4,9 +4,12 @@
 package azopenai_test
 
 import (
+	"bytes"
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"io"
+	"mime"
 	"net/http"
 	"os"
 	"regexp"
@@ -16,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/joho/godotenv"
@@ -42,6 +46,7 @@ type testVars struct {
 	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
 	Whisper                        endpointWithModel
 	DallE                          endpointWithModel
+	Vision                         endpointWithModel
 
 	ChatCompletionsRAI endpointWithModel // at the moment this is Azure only
 
@@ -165,6 +170,7 @@ func newTestVars(prefix string) testVars {
 
 		DallE:   getEndpointWithModel("DALLE", azure),
 		Whisper: getEndpointWithModel("WHISPER", azure),
+		Vision:  getEndpointWithModel("VISION", azure),
 	}
 
 	if azure {
@@ -215,6 +221,11 @@ func initEnvVars() {
 			Model:    "dall-e-3",
 		}
 
+		azureOpenAI.Vision = endpointWithModel{
+			Endpoint: azureOpenAI.Endpoint,
+			Model:    "gpt-4-vision-preview",
+		}
+
 		openAI.Endpoint = endpoint{
 			APIKey: fakeAPIKey,
 			URL:    fakeEndpoint,
@@ -232,6 +243,8 @@ func initEnvVars() {
 			Endpoint: openAI.Endpoint,
 			Model:    "dall-e-3",
 		}
+
+		openAI.Vision = azureOpenAI.Vision
 
 		azureOpenAI.Completions = "text-davinci-003"
 		openAI.Completions = "text-davinci-003"
@@ -263,6 +276,13 @@ func initEnvVars() {
 	}
 }
 
+type MultipartRecordingPolicy struct {
+}
+
+func (mrp MultipartRecordingPolicy) Do(req *http.Request) (*http.Response, error) {
+	return nil, nil
+}
+
 // newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
 // involve UUIDs that would make the response/request inconsistent.
 func newRecordingTransporter(t *testing.T) policy.Transporter {
@@ -284,6 +304,7 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
 			azureOpenAI.Whisper.Endpoint.URL,
 			azureOpenAI.DallE.Endpoint.URL,
+			azureOpenAI.Vision.Endpoint.URL,
 			azureOpenAI.ChatCompletionsOYD.Endpoint.URL,
 			azureOpenAI.ChatCompletionsRAI.Endpoint.URL,
 		}
@@ -357,6 +378,7 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 
 		co.Transport = &http.Client{Transport: tp}
 	} else {
+		co.PerRetryPolicies = append(co.PerRetryPolicies, &mimeTypeRecordingPolicy{})
 		co.Transport = newRecordingTransporter(t)
 	}
 
@@ -416,4 +438,51 @@ func skipNowIfThrottled(t *testing.T, err error) {
 	if respErr := (*azcore.ResponseError)(nil); errors.As(err, &respErr) && respErr.StatusCode == http.StatusTooManyRequests {
 		t.Skipf("OpenAI resource overloaded, skipping this test")
 	}
+}
+
+type mimeTypeRecordingPolicy struct{}
+
+// Do changes out the boundary for a multipart message. This makes it simpler to write
+// recordings.
+func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		// this is strictly to make the IDs in the multipart body stable for test recordings.
+		return req.Next()
+	}
+
+	// we'll fix up the multipart to make it more predictable for test recordings.
+	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
+	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
+
+	if err != nil || mediaType != "multipart/form-data" {
+		// we'll just assume our policy doesn't apply here.
+		return req.Next()
+	}
+
+	origBoundary := params["boundary"]
+
+	if origBoundary == "" {
+		return nil, errors.New("Invalid use of this policy - no boundary was passed as part of the multipart mime type")
+	}
+
+	params["boundary"] = "boundary-for-recordings"
+
+	// now let's update the body itself - we'll just do a simple string replacement. The entire purpose of the boundary string is to provide a
+	// separator, which is distinct from the content.
+	body := req.Body()
+	defer body.Close()
+
+	origBody, err := io.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	newBody := bytes.ReplaceAll(origBody, []byte(origBoundary), []byte("boundary-for-recordings"))
+
+	if err := req.SetBody(streaming.NopCloser(bytes.NewReader(newBody)), mime.FormatMediaType(mediaType, params)); err != nil {
+		return nil, err
+	}
+
+	return req.Next()
 }

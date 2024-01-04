@@ -1,5 +1,17 @@
 # Release History
 
+## 2.0.0-beta.3 (2023-12-22)
+### Breaking Changes
+
+- Type of `StepInput.QuestionType` has been changed from `*string` to `*QuestionType`
+
+### Features Added
+
+- New value `DiagnosticProvisioningStateRunning` added to enum type `DiagnosticProvisioningState`
+- New value `SolutionProvisioningStatePartialComplete`, `SolutionProvisioningStateRunning` added to enum type `SolutionProvisioningState`
+- New field `SystemData` in struct `SolutionResource`
+
+
 ## 2.0.0-beta.2 (2023-11-30)
 ### Features Added
 

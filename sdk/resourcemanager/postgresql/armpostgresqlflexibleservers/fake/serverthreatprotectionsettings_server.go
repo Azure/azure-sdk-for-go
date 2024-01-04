@@ -25,7 +25,7 @@ import (
 // ServerThreatProtectionSettingsServer is a fake server for instances of the armpostgresqlflexibleservers.ServerThreatProtectionSettingsClient type.
 type ServerThreatProtectionSettingsServer struct {
 	// BeginCreateOrUpdate is the fake for method ServerThreatProtectionSettingsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, threatProtectionName armpostgresqlflexibleservers.ThreatProtectionName, parameters armpostgresqlflexibleservers.ServerThreatProtectionSettingsModel, options *armpostgresqlflexibleservers.ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServerThreatProtectionSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServerThreatProtectionSettingsClient.Get
@@ -132,9 +132,9 @@ func (s *ServerThreatProtectionSettingsServerTransport) dispatchBeginCreateOrUpd
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		s.beginCreateOrUpdate.remove(req)

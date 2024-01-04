@@ -1,6 +1,6 @@
 # Azure Network Function Manager Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2)
 
 The `armnetworkfunction` module provides operations for working with Azure Network Function Manager.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Network Function Manager module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2
 ```
 
 ## Authorization

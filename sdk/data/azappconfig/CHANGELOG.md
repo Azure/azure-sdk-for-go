@@ -1,12 +1,9 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0 (2024-01-16)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+* Added support for [`Snapshots`](https://learn.microsoft.com/azure/azure-app-configuration/concept-snapshots).
 
 ### Other Changes
 * Updated to latest version of `azcore`.

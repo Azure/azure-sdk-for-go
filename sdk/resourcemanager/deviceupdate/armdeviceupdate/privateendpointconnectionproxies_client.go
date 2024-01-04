@@ -47,7 +47,7 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 // associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -76,7 +76,7 @@ func (client *PrivateEndpointConnectionProxiesClient) BeginCreateOrUpdate(ctx co
 // with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *PrivateEndpointConnectionProxiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy PrivateEndpointConnectionProxy, options *PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate"
@@ -122,7 +122,7 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnectionProxy); err != nil {
@@ -135,7 +135,7 @@ func (client *PrivateEndpointConnectionProxiesClient) createOrUpdateCreateReques
 // update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -163,7 +163,7 @@ func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Co
 // account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 func (client *PrivateEndpointConnectionProxiesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionProxiesClient.BeginDelete"
@@ -209,7 +209,7 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +218,7 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 // Get - (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -270,7 +270,7 @@ func (client *PrivateEndpointConnectionProxiesClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,7 +287,7 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 
 // NewListByAccountPager - (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - options - PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListByAccountPager
@@ -336,7 +336,7 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -355,7 +355,7 @@ func (client *PrivateEndpointConnectionProxiesClient) listByAccountHandleRespons
 // proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -407,7 +407,7 @@ func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPrope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointUpdate); err != nil {
@@ -419,7 +419,7 @@ func (client *PrivateEndpointConnectionProxiesClient) updatePrivateEndpointPrope
 // Validate - (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The resource group name.
 //   - accountName - Account name.
 //   - privateEndpointConnectionProxyID - The ID of the private endpoint connection proxy object.
@@ -471,7 +471,7 @@ func (client *PrivateEndpointConnectionProxiesClient) validateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, privateEndpointConnectionProxy); err != nil {

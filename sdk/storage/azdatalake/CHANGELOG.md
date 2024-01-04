@@ -3,12 +3,17 @@
 ## 1.0.1 (Unreleased)
 
 ### Features Added
+* Encryption Scope For SAS
+* CPK for Datalake
+* Create SubDirectory Client
+* Service Version upgrade to 2021-06-08
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated version of azblob to 1.2.1
 
 ## 1.0.0 (2023-10-18)
 

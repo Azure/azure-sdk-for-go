@@ -4,6 +4,7 @@
 package common
 
 import (
+	"bytes"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -384,7 +385,8 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
-	for k, v := range exports.Funcs {
+	for _, k := range model.SortFuncItem(exports.Funcs) {
+		v := exports.Funcs[k]
 		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
 			clientName = k
 			break
@@ -591,4 +593,72 @@ func existSuffixFile(path, suffix string) bool {
 	}
 
 	return existed
+}
+
+func replaceReadmeModule(path, rpName, namespaceName, currentVersion string) error {
+	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
+	if err != nil {
+		return err
+	}
+
+	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+
+	readmeModule := module
+	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d`, module))
+	if match.Match(readmeFile) {
+		readmeModule = match.FindString(string(readmeFile))
+	}
+
+	newModule := module
+	current, err := semver.NewVersion(currentVersion)
+	if err != nil {
+		return err
+	}
+	if current.Major() > 1 {
+		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
+	}
+
+	if newModule == readmeModule {
+		return nil
+	}
+
+	newReadmeFile := bytes.ReplaceAll(readmeFile, []byte(readmeModule), []byte(newModule))
+	err = os.WriteFile(filepath.Join(path, "README.md"), newReadmeFile, 0666)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content) error {
+	path := filepath.Join(packageRootPath, "README.md")
+	var clientName string
+	for _, k := range model.SortFuncItem(exports.Funcs) {
+		v := exports.Funcs[k]
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
+			clientName = k
+			break
+		}
+	}
+
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("cannot read from file '%s': %+v", path, err)
+	}
+
+	oldClientName := ""
+	for _, v := range strings.Split(string(b), "\n") {
+		oldClientName = regexp.MustCompile(`New.*Client\(\)`).FindString(v)
+		if oldClientName != "" {
+			break
+		}
+	}
+
+	if oldClientName == fmt.Sprintf("%s()", clientName) {
+		return nil
+	}
+
+	var content = strings.ReplaceAll(string(b), oldClientName, fmt.Sprintf("%s()", clientName))
+	return os.WriteFile(path, []byte(content), 0644)
 }

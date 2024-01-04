@@ -76,3 +76,109 @@ type SetSettingOptions struct {
 	// if the passed-in ETag is the same version as the one in the configuration store.
 	OnlyIfUnchanged *azcore.ETag
 }
+
+// CreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
+type CreateSnapshotOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+
+	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
+	// there are no two key-values containing the same key. The 'key_label' composition
+	// type ensures there are no two key-values containing the same key and label.
+	CompositionType *CompositionType
+
+	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
+	// writable during the creation of a snapshot. If not specified, the default
+	// lifetime of key-value revisions will be used.
+	RetentionPeriod *int64
+
+	// The tags of the snapshot.
+	Tags map[string]*string
+}
+
+// ArchiveSnapshotOptions contains the optional parameters for the ArchiveSnapshot method.
+type ArchiveSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+// RestoreSnapshotOptions contains the optional parameters for the RestoreSnapshot method.
+type RestoreSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+// ListSnapshotsOptions contains the optional parameters for the ListSnapshotsPager method.
+type ListSnapshotsOptions struct {
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
+
+	// A filter for the name of the returned snapshots.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+
+	// Used to filter returned snapshots by their status property.
+	Status []SnapshotStatus
+}
+
+// ListSettingsForSnapshotOptions contains the optional parameters for the NewListSettingsForSnapshotPager method.
+type ListSettingsForSnapshotOptions struct {
+	// Requests the server to respond with the state of the resource at the specified time.
+	AcceptDatetime *string
+
+	// Instructs the server to return elements that appear after the element referred to by the specified token.
+	After *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SettingFields
+
+	// A filter used to match Keys
+	Key string
+
+	// A filter used to match Labels
+	Label string
+}
+
+// GetSnapshotOptions contains the optional parameters for the GetSnapshot method.
+type GetSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []SnapshotFields
+}
+
+// RecoverSnapshotOptions contains the optional parameters for the RecoverSnapshot method.
+type RecoverSnapshotOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}
+
+// UpdateSnapshotStatusOptions contains the optional parameters for the UpdateSnapshotStatus method.
+type updateSnapshotStatusOptions struct {
+	// Used to perform an operation only if the targeted resource's etag matches the value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
+	IfNoneMatch *string
+}

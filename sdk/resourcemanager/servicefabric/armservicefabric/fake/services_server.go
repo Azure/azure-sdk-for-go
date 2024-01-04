@@ -15,7 +15,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -35,9 +36,9 @@ type ServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *armservicefabric.ServicesClientGetOptions) (resp azfake.Responder[armservicefabric.ServicesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// List is the fake for method ServicesClient.List
+	// NewListPager is the fake for method ServicesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *armservicefabric.ServicesClientListOptions) (resp azfake.Responder[armservicefabric.ServicesClientListResponse], errResp azfake.ErrorResponder)
+	NewListPager func(resourceGroupName string, clusterName string, applicationName string, options *armservicefabric.ServicesClientListOptions) (resp azfake.PagerResponder[armservicefabric.ServicesClientListResponse])
 
 	// BeginUpdate is the fake for method ServicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusAccepted
@@ -52,6 +53,7 @@ func NewServicesServerTransport(srv *ServicesServer) *ServicesServerTransport {
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armservicefabric.ServicesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armservicefabric.ServicesClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armservicefabric.ServicesClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armservicefabric.ServicesClientUpdateResponse]](),
 	}
 }
@@ -62,6 +64,7 @@ type ServicesServerTransport struct {
 	srv                 *ServicesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armservicefabric.ServicesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armservicefabric.ServicesClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armservicefabric.ServicesClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armservicefabric.ServicesClientUpdateResponse]]
 }
 
@@ -83,8 +86,8 @@ func (s *ServicesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		resp, err = s.dispatchBeginDelete(req)
 	case "ServicesClient.Get":
 		resp, err = s.dispatchGet(req)
-	case "ServicesClient.List":
-		resp, err = s.dispatchList(req)
+	case "ServicesClient.NewListPager":
+		resp, err = s.dispatchNewListPager(req)
 	case "ServicesClient.BeginUpdate":
 		resp, err = s.dispatchBeginUpdate(req)
 	default:
@@ -247,39 +250,47 @@ func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (s *ServicesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
-	if s.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
+func (s *ServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/services`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/services`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListPager(resourceGroupNameParam, clusterNameParam, applicationNameParam, nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armservicefabric.ServicesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.List(req.Context(), resourceGroupNameParam, clusterNameParam, applicationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceResourceList, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

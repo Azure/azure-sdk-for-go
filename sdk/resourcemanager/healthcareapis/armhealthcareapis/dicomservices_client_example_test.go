@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_List.json
 func ExampleDicomServicesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,6 +43,11 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// page.DicomServiceCollection = armhealthcareapis.DicomServiceCollection{
 		// 	Value: []*armhealthcareapis.DicomService{
 		// 		{
+		// 			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+		// 				Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+		// 				PrincipalID: to.Ptr("2f1f372f-edcf-43f5-aedb-173da3cc5c1e"),
+		// 				TenantID: to.Ptr("abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+		// 			},
 		// 			Name: to.Ptr("blue"),
 		// 			Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
 		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/blue"),
@@ -53,30 +58,62 @@ func ExampleDicomServicesClient_NewListByWorkspacePager() {
 		// 						to.Ptr("https://azurehealthcareapis.com")},
 		// 						Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-		// 					ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("red"),
-		// 				Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/red"),
-		// 				Properties: &armhealthcareapis.DicomServiceProperties{
-		// 					AuthenticationConfiguration: &armhealthcareapis.DicomServiceAuthenticationConfiguration{
-		// 						Audiences: []*string{
-		// 							to.Ptr("https://azurehealthcareapis.com/"),
-		// 							to.Ptr("https://azurehealthcareapis.com")},
-		// 							Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+		// 					CorsConfiguration: &armhealthcareapis.CorsConfiguration{
+		// 						AllowCredentials: to.Ptr(false),
+		// 						Headers: []*string{
+		// 							to.Ptr("*")},
+		// 							MaxAge: to.Ptr[int32](1440),
+		// 							Methods: []*string{
+		// 								to.Ptr("DELETE"),
+		// 								to.Ptr("GET"),
+		// 								to.Ptr("OPTIONS"),
+		// 								to.Ptr("PATCH"),
+		// 								to.Ptr("POST"),
+		// 								to.Ptr("PUT")},
+		// 								Origins: []*string{
+		// 									to.Ptr("*")},
+		// 								},
+		// 								Encryption: &armhealthcareapis.Encryption{
+		// 									CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+		// 										KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+		// 									},
+		// 								},
+		// 								EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
+		// 								ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+		// 								ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+		// 							},
 		// 						},
-		// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-		// 						ServiceURL: to.Ptr("https://workspace1-red.dicom.azurehealthcareapis.com"),
-		// 					},
-		// 			}},
-		// 		}
+		// 						{
+		// 							Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+		// 								Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+		// 								PrincipalID: to.Ptr("2f1f372f-edcf-43f5-aedb-173da3cc5c1e"),
+		// 								TenantID: to.Ptr("abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+		// 							},
+		// 							Name: to.Ptr("red"),
+		// 							Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
+		// 							ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/red"),
+		// 							Properties: &armhealthcareapis.DicomServiceProperties{
+		// 								AuthenticationConfiguration: &armhealthcareapis.DicomServiceAuthenticationConfiguration{
+		// 									Audiences: []*string{
+		// 										to.Ptr("https://azurehealthcareapis.com/"),
+		// 										to.Ptr("https://azurehealthcareapis.com")},
+		// 										Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+		// 									},
+		// 									Encryption: &armhealthcareapis.Encryption{
+		// 										CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+		// 											KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+		// 										},
+		// 									},
+		// 									EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
+		// 									ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+		// 									ServiceURL: to.Ptr("https://workspace1-red.dicom.azurehealthcareapis.com"),
+		// 								},
+		// 						}},
+		// 					}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Get.json
 func ExampleDicomServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,6 +132,11 @@ func ExampleDicomServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DicomService = armhealthcareapis.DicomService{
+	// 	Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+	// 		Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("2f1f372f-edcf-43f5-aedb-173da3cc5c1e"),
+	// 		TenantID: to.Ptr("abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+	// 	},
 	// 	Name: to.Ptr("blue"),
 	// 	Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/blue"),
@@ -105,13 +147,34 @@ func ExampleDicomServicesClient_Get() {
 	// 				to.Ptr("https://azurehealthcareapis.com")},
 	// 				Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 			ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
-	// 		},
-	// 	}
+	// 			CorsConfiguration: &armhealthcareapis.CorsConfiguration{
+	// 				AllowCredentials: to.Ptr(false),
+	// 				Headers: []*string{
+	// 					to.Ptr("*")},
+	// 					MaxAge: to.Ptr[int32](1440),
+	// 					Methods: []*string{
+	// 						to.Ptr("DELETE"),
+	// 						to.Ptr("GET"),
+	// 						to.Ptr("OPTIONS"),
+	// 						to.Ptr("PATCH"),
+	// 						to.Ptr("POST"),
+	// 						to.Ptr("PUT")},
+	// 						Origins: []*string{
+	// 							to.Ptr("*")},
+	// 						},
+	// 						Encryption: &armhealthcareapis.Encryption{
+	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+	// 							},
+	// 						},
+	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
+	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 						ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+	// 					},
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Create.json
 func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,6 +200,13 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DicomService = armhealthcareapis.DicomService{
+	// 	Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+	// 		Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armhealthcareapis.UserAssignedIdentity{
+	// 			"/subscriptions/subid/resourcegroups/testRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-mi": &armhealthcareapis.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
 	// 	Name: to.Ptr("blue"),
 	// 	Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/blue"),
@@ -148,12 +218,33 @@ func ExampleDicomServicesClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("https://azurehealthcareapis.com")},
 	// 				Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 		},
-	// 	}
+	// 			CorsConfiguration: &armhealthcareapis.CorsConfiguration{
+	// 				AllowCredentials: to.Ptr(false),
+	// 				Headers: []*string{
+	// 					to.Ptr("*")},
+	// 					MaxAge: to.Ptr[int32](1440),
+	// 					Methods: []*string{
+	// 						to.Ptr("DELETE"),
+	// 						to.Ptr("GET"),
+	// 						to.Ptr("OPTIONS"),
+	// 						to.Ptr("PATCH"),
+	// 						to.Ptr("POST"),
+	// 						to.Ptr("PUT")},
+	// 						Origins: []*string{
+	// 							to.Ptr("*")},
+	// 						},
+	// 						Encryption: &armhealthcareapis.Encryption{
+	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+	// 							},
+	// 						},
+	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
+	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 					},
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Patch.json
 func ExampleDicomServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,6 +271,11 @@ func ExampleDicomServicesClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DicomService = armhealthcareapis.DicomService{
+	// 	Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
+	// 		Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("2f1f372f-edcf-43f5-aedb-173da3cc5c1e"),
+	// 		TenantID: to.Ptr("abfde7b2-df0f-47e6-aabf-2462b07508dc"),
+	// 	},
 	// 	Name: to.Ptr("blue"),
 	// 	Type: to.Ptr("Microsoft.HealthcareApis/workspaces/dicomservices"),
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/dicomservices/blue"),
@@ -193,13 +289,34 @@ func ExampleDicomServicesClient_BeginUpdate() {
 	// 				to.Ptr("https://azurehealthcareapis.com")},
 	// 				Authority: to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 			ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
-	// 		},
-	// 	}
+	// 			CorsConfiguration: &armhealthcareapis.CorsConfiguration{
+	// 				AllowCredentials: to.Ptr(false),
+	// 				Headers: []*string{
+	// 					to.Ptr("*")},
+	// 					MaxAge: to.Ptr[int32](1440),
+	// 					Methods: []*string{
+	// 						to.Ptr("DELETE"),
+	// 						to.Ptr("GET"),
+	// 						to.Ptr("OPTIONS"),
+	// 						to.Ptr("PATCH"),
+	// 						to.Ptr("POST"),
+	// 						to.Ptr("PUT")},
+	// 						Origins: []*string{
+	// 							to.Ptr("*")},
+	// 						},
+	// 						Encryption: &armhealthcareapis.Encryption{
+	// 							CustomerManagedKeyEncryption: &armhealthcareapis.EncryptionCustomerManagedKeyEncryption{
+	// 								KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey/myKeyVersion"),
+	// 							},
+	// 						},
+	// 						EventState: to.Ptr(armhealthcareapis.ServiceEventStateDisabled),
+	// 						ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 						ServiceURL: to.Ptr("https://workspace1-blue.dicom.azurehealthcareapis.com"),
+	// 					},
+	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/dicomservices/DicomServices_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b8c74fd80b415fa1ebb6fa787d454694c39e0fd5/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/DicomServices_Delete.json
 func ExampleDicomServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -84,9 +84,13 @@ type AzureBackupDiscreteRecoveryPoint struct {
 	PolicyVersion                  *string
 	RecoveryPointDataStoresDetails []*RecoveryPointDataStoreDetails
 	RecoveryPointID                *string
-	RecoveryPointType              *string
-	RetentionTagName               *string
-	RetentionTagVersion            *string
+
+	// Specifies recovery point completeness. Partial (i.e., only some of the intended items were backed up), or Completed (i.e.,
+	// ALL intended items were backed up).
+	RecoveryPointState  *RecoveryPointCompletionState
+	RecoveryPointType   *string
+	RetentionTagName    *string
+	RetentionTagVersion *string
 
 	// READ-ONLY
 	ExpiryTime *time.Time
@@ -689,6 +693,9 @@ type BackupVault struct {
 	// Monitoring Settings
 	MonitoringSettings *MonitoringSettings
 
+	// List of replicated regions for Backup Vault
+	ReplicatedRegions []*string
+
 	// Security Settings
 	SecuritySettings *SecuritySettings
 
@@ -801,7 +808,7 @@ func (b *BasePolicyRule) GetBasePolicyRule() *BasePolicyRule { return b }
 // BaseResourceProperties - Properties which are specific to datasource/datasourceSets
 type BaseResourceProperties struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string
+	ObjectType *ResourcePropertiesObjectType
 }
 
 // GetBaseResourceProperties implements the BaseResourcePropertiesClassification interface for type BaseResourceProperties.
@@ -932,6 +939,45 @@ type CopyOption struct {
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
 func (c *CopyOption) GetCopyOption() *CopyOption { return c }
 
+// CrossRegionRestoreDetails - Cross Region Restore details
+type CrossRegionRestoreDetails struct {
+	// REQUIRED
+	SourceBackupInstanceID *string
+
+	// REQUIRED
+	SourceRegion *string
+}
+
+// CrossRegionRestoreJobRequest - Details of CRR Job to be fetched
+type CrossRegionRestoreJobRequest struct {
+	// REQUIRED
+	JobID *string
+
+	// REQUIRED
+	SourceBackupVaultID *string
+
+	// REQUIRED
+	SourceRegion *string
+}
+
+// CrossRegionRestoreJobsRequest - Details of Backup Vault for which CRR Jobs are to be fetched
+type CrossRegionRestoreJobsRequest struct {
+	// REQUIRED
+	SourceBackupVaultID *string
+
+	// REQUIRED
+	SourceRegion *string
+}
+
+// CrossRegionRestoreRequestObject - Cross Region Restore Request Object
+type CrossRegionRestoreRequestObject struct {
+	// REQUIRED; Cross region restore details.
+	CrossRegionRestoreDetails *CrossRegionRestoreDetails
+
+	// REQUIRED; Gets or sets the restore request object.
+	RestoreRequestObject AzureBackupRestoreRequestClassification
+}
+
 type CrossRegionRestoreSettings struct {
 	// CrossRegionRestore state
 	State *CrossRegionRestoreState
@@ -1043,6 +1089,19 @@ type Day struct {
 
 	// Whether Date is last date of month
 	IsLast *bool
+}
+
+// DefaultResourceProperties - Default source properties
+type DefaultResourceProperties struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *ResourcePropertiesObjectType
+}
+
+// GetBaseResourceProperties implements the BaseResourcePropertiesClassification interface for type DefaultResourceProperties.
+func (d *DefaultResourceProperties) GetBaseResourceProperties() *BaseResourceProperties {
+	return &BaseResourceProperties{
+		ObjectType: d.ObjectType,
+	}
 }
 
 // DeleteOption - Delete Option
@@ -1311,6 +1370,31 @@ type ErrorAdditionalInfo struct {
 	Type *string
 }
 
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
 // ExportJobsResult - The result for export jobs containing blob details.
 type ExportJobsResult struct {
 	// READ-ONLY; SAS key to access the blob.
@@ -1392,6 +1476,16 @@ type FeatureValidationResponseBase struct {
 // GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponseBase.
 func (f *FeatureValidationResponseBase) GetFeatureValidationResponseBase() *FeatureValidationResponseBase {
 	return f
+}
+
+// FetchSecondaryRPsRequestParameters - Information about BI whose secondary RecoveryPoints are requested Source region and
+// BI ARM path
+type FetchSecondaryRPsRequestParameters struct {
+	// ARM Path of BackupInstance
+	SourceBackupInstanceID *string
+
+	// Source region in which BackupInstance is located
+	SourceRegion *string
 }
 
 type IdentityDetails struct {
@@ -1520,6 +1614,9 @@ type JobExtendedInfo struct {
 
 	// READ-ONLY; Details of the Target Recovery Point
 	TargetRecoverPoint *RestoreJobRecoveryPointDetails
+
+	// READ-ONLY; A List, detailing the warnings related to the job
+	WarningDetails []*UserFacingWarningDetail
 }
 
 // JobSubTask - Details of Job's Sub Task
@@ -1624,6 +1721,60 @@ func (k *KubernetesClusterRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLe
 	}
 }
 
+// KubernetesClusterVaultTierRestoreCriteria - kubernetes Cluster Backup target info for restore operation from vault
+type KubernetesClusterVaultTierRestoreCriteria struct {
+	// REQUIRED; Gets or sets the include cluster resources property. This property if enabled will include cluster scope resources
+	// during restore from vault.
+	IncludeClusterScopeResources *bool
+
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+
+	// Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during restore from vault.
+	ConflictPolicy *ExistingResourcePolicy
+
+	// Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore from vault.
+	ExcludedNamespaces []*string
+
+	// Gets or sets the exclude resource types property. This property sets the resource types to be excluded during restore from
+	// vault.
+	ExcludedResourceTypes []*string
+
+	// Gets or sets the include namespaces property. This property sets the namespaces to be included during restore from vault.
+	IncludedNamespaces []*string
+
+	// Gets or sets the include resource types property. This property sets the resource types to be included during restore from
+	// vault.
+	IncludedResourceTypes []*string
+
+	// Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be included during
+	// restore from vault.
+	LabelSelectors []*string
+
+	// Gets or sets the Namespace Mappings property. This property sets if namespace needs to be change during restore from vault.
+	NamespaceMappings map[string]*string
+
+	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored
+	// from vault.
+	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode
+
+	// Gets or sets the restore hook references. This property sets the hook reference to be executed during restore from vault.
+	RestoreHookReferences []*NamespacedNameResource
+
+	// Gets or sets the staging RG Id for creating staging disks and snapshots during restore from vault.
+	StagingResourceGroupID *string
+
+	// Gets or sets the staging Storage Account Id for creating backup extension object store data during restore from vault.
+	StagingStorageAccountID *string
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesClusterVaultTierRestoreCriteria.
+func (k *KubernetesClusterVaultTierRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: k.ObjectType,
+	}
+}
+
 // KubernetesPVRestoreCriteria - Item Level kubernetes persistent volume target info for restore operation
 type KubernetesPVRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
@@ -1691,7 +1842,7 @@ type OperationJobExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string
 
-	// Arm Id of the job created for this operation.
+	// Name or Arm Id of the job created for this operation.
 	JobID *string
 }
 
@@ -2305,6 +2456,24 @@ type UserFacingError struct {
 
 	// Target of the error.
 	Target *string
+}
+
+// UserFacingWarningDetail - Warning object used by layers that have access to localized content, and propagate that to user
+type UserFacingWarningDetail struct {
+	// REQUIRED; Error details for the warning.
+	Warning *UserFacingError
+
+	// Name of resource for which warning is raised.
+	ResourceName *string
+}
+
+// ValidateCrossRegionRestoreRequestObject - Cross Region Restore Request Object
+type ValidateCrossRegionRestoreRequestObject struct {
+	// REQUIRED; Cross region restore details.
+	CrossRegionRestoreDetails *CrossRegionRestoreDetails
+
+	// REQUIRED; Gets or sets the restore request object.
+	RestoreRequestObject AzureBackupRestoreRequestClassification
 }
 
 // ValidateForBackupRequest - Validate for backup request

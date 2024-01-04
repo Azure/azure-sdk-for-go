@@ -1,6 +1,6 @@
 # Azure Container Instance Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2)
 
 The `armcontainerinstance` module provides operations for working with Azure Container Instance.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Container Instance module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2
 ```
 
 ## Authorization

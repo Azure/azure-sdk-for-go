@@ -27,7 +27,8 @@ type ApplicationTypeVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypeVersionsClientListOptions contains the optional parameters for the ApplicationTypeVersionsClient.List method.
+// ApplicationTypeVersionsClientListOptions contains the optional parameters for the ApplicationTypeVersionsClient.NewListPager
+// method.
 type ApplicationTypeVersionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -49,7 +50,7 @@ type ApplicationTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.List method.
+// ApplicationTypesClientListOptions contains the optional parameters for the ApplicationTypesClient.NewListPager method.
 type ApplicationTypesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -78,7 +79,7 @@ type ApplicationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
+// ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.NewListPager method.
 type ApplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -127,12 +128,13 @@ type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup method.
+// ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+// method.
 type ClustersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -172,7 +174,7 @@ type ServicesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
+// ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
 type ServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }

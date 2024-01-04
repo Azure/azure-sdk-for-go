@@ -70,8 +70,8 @@ type AccountCreateProperties struct {
 	NetworkProfile *NetworkProfile
 
 	// The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is BatchService,
-	// clients may authenticate using access keys or Azure Active Directory. If the
-	// mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
+	// clients may authenticate using access keys or Microsoft Entra ID. If the mode
+	// is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
 	PoolAllocationMode *PoolAllocationMode
 
 	// If not specified, the default value is 'enabled'.
@@ -726,7 +726,7 @@ type DiffDiskSettings struct {
 }
 
 // DiskEncryptionConfiguration - The disk encryption configuration applied on compute nodes in the pool. Disk encryption configuration
-// is not supported on Linux pool created with Virtual Machine Image or Shared Image Gallery Image.
+// is not supported on Linux pool created with Virtual Machine Image or Azure Compute Gallery Image.
 type DiskEncryptionConfiguration struct {
 	// On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
 	Targets []*DiskEncryptionTarget
@@ -810,7 +810,7 @@ type IPRule struct {
 // Machine. To get the list of all imageReferences verified by Azure Batch, see the 'List
 // supported node agent SKUs' operation.
 type ImageReference struct {
-	// This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in the same
+	// This property is mutually exclusive with other properties. The Azure Compute Gallery Image must have replicas in the same
 	// region as the Azure Batch account. For information about the firewall settings
 	// for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
 	ID *string
@@ -957,6 +957,11 @@ type LocationQuota struct {
 	AccountQuota *int32
 }
 
+type ManagedDisk struct {
+	// The storage account type for use in creating data disks or OS disk.
+	StorageAccountType *StorageAccountType
+}
+
 // MetadataItem - The Batch service does not assign any meaning to this metadata; it is solely for the use of user code.
 type MetadataItem struct {
 	// REQUIRED; The name of the metadata item.
@@ -1068,8 +1073,18 @@ type NodePlacementConfiguration struct {
 
 // OSDisk - Settings for the operating system disk of the virtual machine.
 type OSDisk struct {
+	// The type of caching to enable for the disk.
+	Caching *CachingType
+
+	// The initial disk size in GB when creating new OS disk.
+	DiskSizeGB *int32
+
 	// Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
 	EphemeralOSDiskSettings *DiffDiskSettings
+	ManagedDisk             *ManagedDisk
+
+	// Specifies whether writeAccelerator should be enabled or disabled on the disk.
+	WriteAcceleratorEnabled *bool
 }
 
 // Operation - A REST API operation
@@ -1215,6 +1230,11 @@ type PoolProperties struct {
 
 	// The network configuration for a pool.
 	NetworkConfiguration *NetworkConfiguration
+
+	// The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing
+	// Azure resources associated with the pool. This property can only be specified
+	// when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+	ResourceTags map[string]*string
 
 	// Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified,
 	// or 'autoScale' which defines a formula which is periodically reevaluated.
@@ -1508,6 +1528,28 @@ type ScaleSettings struct {
 	FixedScale *FixedScaleSettings
 }
 
+// SecurityProfile - Specifies the security profile settings for the virtual machine or virtual machine scale set.
+type SecurityProfile struct {
+	// This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual
+	// machine scale set. This will enable the encryption for all the disks
+	// including Resource/Temp disk at host itself.
+	EncryptionAtHost *bool
+
+	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+	SecurityType *string
+
+	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
+	UefiSettings *UefiSettings
+}
+
+// ServiceArtifactReference - Specifies the service artifact reference id used to set same image version for all virtual machines
+// in the scale set when using 'latest' image version.
+type ServiceArtifactReference struct {
+	// REQUIRED; The service artifact reference id in the form of
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+	ID *string
+}
+
 // StartTask - In some cases the start task may be re-run even though the node was not rebooted. Due to this, start tasks
 // should be idempotent and exit gracefully if the setup they're performing has already been
 // done. Special care should be taken to avoid start tasks which create breakaway process or install/launch services from
@@ -1532,7 +1574,7 @@ type StartTask struct {
 	// retries. The Batch service will try the task once, and may then retry up to this
 	// limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries).
 	// If the maximum retry count is 0, the Batch service does not retry the task. If
-	// the maximum retry count is -1, the Batch service retries the task without limit.
+	// the maximum retry count is -1, the Batch service retries the task without limit. Default is 0
 	MaxTaskRetryCount *int32
 
 	// A list of files that the Batch service will download to the compute node before running the command line.
@@ -1593,6 +1635,15 @@ type TaskContainerSettings struct {
 type TaskSchedulingPolicy struct {
 	// REQUIRED; How tasks should be distributed across compute nodes.
 	NodeFillType *ComputeNodeFillType
+}
+
+// UefiSettings - Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
+type UefiSettings struct {
+	// Specifies whether secure boot should be enabled on the virtual machine.
+	SecureBootEnabled *bool
+
+	// Specifies whether vTPM should be enabled on the virtual machine.
+	VTpmEnabled *bool
 }
 
 // UserAccount - Properties used to create a user on an Azure Batch node.
@@ -1706,6 +1757,13 @@ type VirtualMachineConfiguration struct {
 
 	// Contains configuration for ephemeral OSDisk settings.
 	OSDisk *OSDisk
+
+	// Specifies the security profile settings for the virtual machine or virtual machine scale set.
+	SecurityProfile *SecurityProfile
+
+	// The service artifact reference id in the form of
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+	ServiceArtifactReference *ServiceArtifactReference
 
 	// This property must not be specified if the imageReference specifies a Linux OS image.
 	WindowsConfiguration *WindowsConfiguration

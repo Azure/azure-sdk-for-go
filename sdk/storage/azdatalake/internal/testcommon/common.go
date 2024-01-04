@@ -28,6 +28,7 @@ const (
 	FileSystemPrefix            = "gofs"
 	FilePrefix                  = "gotestfile"
 	DirPrefix                   = "gotestdir"
+	SubDirPrefix                = "gotestsubdir"
 	DefaultData                 = "Godatalakedata"
 	InvalidHeaderErrorSubstring = "invalid header field" // error thrown by the http client
 )
@@ -42,6 +43,10 @@ func GenerateFileName(testName string) string {
 
 func GenerateDirName(testName string) string {
 	return DirPrefix + GenerateEntityName(testName)
+}
+
+func GenerateSubDirName(testName string) string {
+	return SubDirPrefix + GenerateEntityName(testName)
 }
 
 func GenerateEntityName(testName string) string {

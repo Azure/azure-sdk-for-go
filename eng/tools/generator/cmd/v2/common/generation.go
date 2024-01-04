@@ -318,7 +318,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 
 		if _, err := os.Stat(filepath.Join(packagePath, "fake")); !os.IsNotExist(err) && oldModuleVersion.Major() != version.Major() {
 			log.Printf("Replace fake module v2+...")
-			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String(),
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
 				"fake", ".go"); err != nil {
 				return nil, err
 			}
@@ -327,7 +327,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		// When sdk has major version bump, the live test needs to update the module referenced in the code.
 		if oldModuleVersion.Major() != version.Major() && existSuffixFile(packagePath, "_live_test.go") {
 			log.Printf("Replace live test module v2+...")
-			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, version.String(),
+			if err = replaceModuleImport(packagePath, generateParam.RPName, generateParam.NamespaceName, oldModuleVersion.String(), version.String(),
 				"", "_live_test.go"); err != nil {
 				return nil, err
 			}

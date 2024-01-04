@@ -513,73 +513,62 @@ func GetTag(path string) (string, error) {
 	return "", nil
 }
 
-func replaceModuleImport(path, rpName, namespaceName, currentVersion, subPath string, suffixes ...string) error {
+func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVersion, subPath string, suffixes ...string) error {
+	previous, err := semver.NewVersion(previousVersion)
+	if err != nil {
+		return err
+	}
+
 	current, err := semver.NewVersion(currentVersion)
 	if err != nil {
 		return err
 	}
 
-	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
-	newModule := module
+	if previous.Major() == current.Major() {
+		return nil
+	}
+
+	oldModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
+	if previous.Major() > 1 {
+		oldModule = fmt.Sprintf("%s/v%d", oldModule, previous.Major())
+	}
+
+	newModule := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s", rpName, namespaceName)
 	if current.Major() > 1 {
 		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
+	}
+
+	if oldModule == newModule {
+		return nil
 	}
 
 	return filepath.Walk(filepath.Join(path, subPath), func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
-
 		if info.IsDir() {
 			return nil
 		}
-
 		suffix := false
 		for i := 0; i < len(suffixes) && !suffix; i++ {
 			suffix = strings.HasSuffix(info.Name(), suffixes[i])
 		}
 
 		if suffix {
-			oldModule, err := getImportModule(path, module)
-			if err != nil {
-				return err
-			}
-
-			if oldModule == "" || oldModule == fmt.Sprintf("\"%s\"", newModule) {
-				return nil
-			}
-
 			b, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
 
-			newFile := strings.ReplaceAll(string(b), oldModule, fmt.Sprintf("\"%s\"", newModule))
+			newFile := strings.ReplaceAll(string(b), fmt.Sprintf("\"%s\"", oldModule), fmt.Sprintf("\"%s\"", newModule))
 			if newFile != string(b) {
 				if err = os.WriteFile(path, []byte(newFile), 0666); err != nil {
 					return err
 				}
 			}
 		}
-
 		return nil
 	})
-}
-
-func getImportModule(filePath, modulePrefix string) (string, error) {
-	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, filePath, nil, parser.ImportsOnly)
-	if err != nil {
-		return "", err
-	}
-
-	for _, i := range f.Imports {
-		if strings.Contains(i.Path.Value, modulePrefix) {
-			return i.Path.Value, nil
-		}
-	}
-
-	return "", nil
 }
 
 func getModuleVersion(autorestPath string) (*semver.Version, error) {

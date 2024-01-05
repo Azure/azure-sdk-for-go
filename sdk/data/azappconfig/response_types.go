@@ -9,7 +9,6 @@ package azappconfig
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
 )
 
@@ -103,7 +102,7 @@ type ListSnapshotsResponse struct {
 // CreateSnapshotResponse contains the response from the BeginCreateSnapshot method.
 type CreateSnapshotResponse struct {
 	// Read-Only information about the snapshot retrieved from a Create Snapshot operation.
-	SnapshotInfo
+	Snapshot
 }
 
 // ListSettingsForSnapshotResponse contains the response from the ListConfigurationSettingsForSnapshot method.
@@ -147,18 +146,4 @@ type updateSnapshotStatusResponse struct {
 
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken SyncToken
-}
-
-// AzureAppConfigurationClientUpdateSnapshotResponse contains the response from method AzureAppConfigurationClient.UpdateSnapshot.
-type AzureAppConfigurationClientUpdateSnapshotResponse struct {
-	Snapshot
-
-	// ETag contains the information returned from the ETag header response.
-	ETag azcore.ETag
-
-	// Link contains the information returned from the Link header response.
-	Link *string
-
-	// SyncToken contains the information returned from the Sync-Token header response.
-	SyncToken *string
 }

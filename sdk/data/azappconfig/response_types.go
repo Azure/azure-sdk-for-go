@@ -45,18 +45,18 @@ type GetSettingResponse struct {
 	SyncToken SyncToken
 }
 
-// ListRevisionsPageResponse contains the configuration settings returned by ListRevisionsPager.
+// ListRevisionsPageResponse contains the response from the NewListRevisionsPager method.
 type ListRevisionsPageResponse struct {
-	// Contains the configuration settings returned that match the setting selector provided.
+	// Contains the configuration setting revisions that match the setting selector provided.
 	Settings []Setting
 
 	// SyncToken contains the value returned in the Sync-Token header.
 	SyncToken SyncToken
 }
 
-// ListSettingsPageResponse contains the configuration settings returned by ListRevisionsPager.
+// ListSettingsPageResponse contains the response from the NewListSettingsPager method.
 type ListSettingsPageResponse struct {
-	// Contains the configuration settings returned that match the setting selector provided.
+	// Contains the configuration settings that match the setting selector provided.
 	Settings []Setting
 
 	// SyncToken contains the value returned in the Sync-Token header.

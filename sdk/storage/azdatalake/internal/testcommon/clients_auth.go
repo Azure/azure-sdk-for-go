@@ -27,13 +27,14 @@ import (
 )
 
 const (
-	DefaultEndpointSuffix       = "core.windows.net/"
-	DefaultBlobEndpointSuffix   = "blob.core.windows.net/"
-	AccountNameEnvVar           = "AZURE_STORAGE_ACCOUNT_NAME"
-	AccountKeyEnvVar            = "AZURE_STORAGE_ACCOUNT_KEY"
-	DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
-	SubscriptionID              = "SUBSCRIPTION_ID"
-	ResourceGroupName           = "RESOURCE_GROUP_NAME"
+	DefaultEndpointSuffix         = "core.windows.net/"
+	DefaultBlobEndpointSuffix     = "blob.core.windows.net/"
+	AccountNameEnvVar             = "AZURE_STORAGE_ACCOUNT_NAME"
+	AccountKeyEnvVar              = "AZURE_STORAGE_ACCOUNT_KEY"
+	DefaultEndpointSuffixEnvVar   = "AZURE_STORAGE_ENDPOINT_SUFFIX"
+	DataLakeEncryptionScopeEnvVar = "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE"
+	SubscriptionID                = "SUBSCRIPTION_ID"
+	ResourceGroupName             = "RESOURCE_GROUP_NAME"
 )
 
 const (
@@ -51,6 +52,17 @@ var (
 	DatalakeCacheControl       = "control"
 	DatalakeContentLanguage    = "my_language"
 	DatalakeContentEncoding    = "my_encoding"
+)
+
+var (
+	testEncryptedKey        = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc="
+	testEncryptedHash       = "3QFFFpRA5+XANHqwwbT4yXDmrT/2JaLt/FKHjzhOdoE="
+	testEncryptionAlgorithm = file.EncryptionAlgorithmTypeAES256
+	TestCPKByValue          = file.CPKInfo{
+		EncryptionKey:       &testEncryptedKey,
+		EncryptionKeySHA256: &testEncryptedHash,
+		EncryptionAlgorithm: &testEncryptionAlgorithm,
+	}
 )
 
 var BasicHeaders = file.HTTPHeaders{

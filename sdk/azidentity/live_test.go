@@ -18,6 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
@@ -146,7 +147,19 @@ func run(m *testing.M) int {
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
 		setFakeValues()
-		err := recording.SetBodilessMatcher(nil, nil)
+		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
+			CompareBodies: to.Ptr(false),
+			// ignore the presence/absence/value of these headers because
+			// MSAL sets them and they don't affect azidentity behavior
+			ExcludedHeaders: []string{
+				"Client-Request-Id",
+				"Return-Client-Request-Id",
+				"X-Client-Cpu",
+				"X-Client-Os",
+				"X-Client-Sku",
+				"X-Client-Ver",
+			},
+		})
 		if err != nil {
 			panic(err)
 		}

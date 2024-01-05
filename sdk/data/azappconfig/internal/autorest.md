@@ -37,10 +37,26 @@ directive:
   where: $.paths.*.get.x-ms-pageable
   transform: >
     $.operationName = "GetNextPage";
-- from: azureappconfiguration_client.go
+- from: zz_azureappconfiguration_client.go
   where: $
   transform: >
     return $.
       replace(/urlPath\s+:=\s+"\/\{nextLink\}"/, "urlPath := nextLink").
       replace(/\s+urlPath\s+=\s+strings\.ReplaceAll\(urlPath, "\{nextLink\}", nextLink\)/, "");
+```
+
+```yaml
+directive:
+- from: zz_azureappconfiguration_client.go
+  where: $
+  transform: >
+    return $.replace(/createSnapshot\(/g, "CreateSnapshot(");
+```
+
+```yaml
+directive:
+- from: zz_constants.go
+  where: $
+  transform: >
+    return $.replace(/SnapshotFieldsEtag/g, "SnapshotFieldsETag");
 ```

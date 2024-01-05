@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Processor distributes partitions optimally, which would result in idle or over-assigned processors. (PR#22153)
+
 ### Other Changes
 
 ## 1.0.2 (2023-11-07)

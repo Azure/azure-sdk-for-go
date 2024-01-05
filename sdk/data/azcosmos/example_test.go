@@ -97,7 +97,7 @@ func ExampleClientOptions_PreferredRegions() {
 		panic(err)
 	}
 
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, *clientOptions)
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, &clientOptions)
 	if err != nil {
 		panic(err)
 	}

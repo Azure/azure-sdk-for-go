@@ -5,9 +5,14 @@
 
 ### Features Added
 
+* Updated service version to `2023-11-03`.
+* Added support for Audience when OAuth is used.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed a bug where `UploadRangeFromURL` using OAuth was returning error.
 
 ### Other Changes
 

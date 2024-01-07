@@ -163,21 +163,51 @@ type BackupPolicyMigrationState struct {
 
 // BackupResource - A restorable backup of a Cassandra cluster.
 type BackupResource struct {
-	Properties *BackupResourceProperties
+	// The time at which the backup will expire.
+	BackupExpiryTimestamp *time.Time
 
-	// READ-ONLY; The unique resource identifier of the database account.
-	ID *string
+	// The unique identifier of backup.
+	BackupID *string
 
-	// READ-ONLY; The name of the database account.
-	Name *string
+	// The time at which the backup process begins.
+	BackupStartTimestamp *time.Time
 
-	// READ-ONLY; The type of Azure resource.
-	Type *string
+	// The current state of the backup.
+	BackupState *BackupState
+
+	// The time at which the backup process ends.
+	BackupStopTimestamp *time.Time
 }
 
-type BackupResourceProperties struct {
-	// The time this backup was taken, formatted like 2021-01-21T17:35:21
-	Timestamp *time.Time
+type BackupSchedule struct {
+	// The cron expression that defines when you want to back up your data.
+	CronExpression *string
+
+	// The retention period (hours) of the backups. If you want to retain data forever, set retention to 0.
+	RetentionInHours *int32
+
+	// The unique identifier of backup schedule.
+	ScheduleName *string
+}
+
+// BaseCosmosDataTransferDataSourceSink - A base CosmosDB data source/sink
+type BaseCosmosDataTransferDataSourceSink struct {
+	// REQUIRED
+	Component         *DataTransferComponent
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type BaseCosmosDataTransferDataSourceSink.
+func (b *BaseCosmosDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return b
+}
+
+// GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type BaseCosmosDataTransferDataSourceSink.
+func (b *BaseCosmosDataTransferDataSourceSink) GetDataTransferDataSourceSink() *DataTransferDataSourceSink {
+	return &DataTransferDataSourceSink{
+		Component: b.Component,
+	}
 }
 
 // Capability - Cosmos DB capability object
@@ -227,7 +257,17 @@ type CassandraDataTransferDataSourceSink struct {
 	KeyspaceName *string
 
 	// REQUIRED
-	TableName *string
+	TableName         *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type CassandraDataTransferDataSourceSink.
+func (c *CassandraDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         c.Component,
+		RemoteAccountName: c.RemoteAccountName,
+	}
 }
 
 // GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type CassandraDataTransferDataSourceSink.
@@ -782,6 +822,15 @@ type ClusterResourceProperties struct {
 	// authentication. The default is 'Cassandra'.
 	AuthenticationMethod *AuthenticationMethod
 
+	// The form of AutoReplicate that is being used by this cluster.
+	AutoReplicate *AutoReplicate
+
+	// How to connect to the azure services needed for running the cluster
+	AzureConnectionMethod *AzureConnectionType
+
+	// List of backup schedules that define when you want to back up your data.
+	BackupSchedules []*BackupSchedule
+
 	// Whether Cassandra audit logging is enabled
 	CassandraAuditLoggingEnabled *bool
 
@@ -799,6 +848,9 @@ type ClusterResourceProperties struct {
 	// the value to use on this property.
 	ClusterNameOverride *string
 
+	// Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+	ClusterType *ClusterType
+
 	// Whether the cluster and associated data centers has been deallocated.
 	Deallocated *bool
 
@@ -806,6 +858,12 @@ type ClusterResourceProperties struct {
 	// must be routable to all subnets that will be delegated to data centers. The
 	// resource id must be of the form '/subscriptions//resourceGroups//providers/Microsoft.Network/virtualNetworks//subnets/'
 	DelegatedManagementSubnetID *string
+
+	// Extensions to be added or updated on cluster.
+	Extensions []*string
+
+	// List of the data center names for unmanaged data centers in this cluster to be included in auto-replication.
+	ExternalDataCenters []*string
 
 	// List of TLS certificates used to authorize gossip from unmanaged data centers. The TLS certificates of all nodes in unmanaged
 	// data centers must be verifiable using one of the certificates provided in
@@ -841,10 +899,17 @@ type ClusterResourceProperties struct {
 	// the resource id of the backup.
 	RestoreFromBackupID *string
 
+	// How the nodes in the cluster react to scheduled events
+	ScheduledEventStrategy *ScheduledEventStrategy
+
 	// READ-ONLY; List of TLS certificates that unmanaged nodes must trust for gossip with managed nodes. All managed nodes will
 	// present TLS client certificates that are verifiable using one of the certificates
 	// provided in this property.
 	GossipCertificates []*Certificate
+
+	// READ-ONLY; If the Connection Method is Vpn, this is the Id of the private link resource that the datacenters need to connect
+	// to.
+	PrivateLinkResourceID *string
 
 	// READ-ONLY; List of IP addresses of seed nodes in the managed data centers. These should be added to the seed node lists
 	// of all unmanaged nodes.
@@ -875,13 +940,46 @@ type CommandPostBody struct {
 	Host *string
 
 	// The arguments for the command to be run
-	Arguments map[string]*string
+	Arguments any
 
 	// If true, stops cassandra before executing the command and then start it again
 	CassandraStopStart *bool
 
 	// If true, allows the command to write to the cassandra directory, otherwise read-only.
-	Readwrite *bool
+	ReadWrite *bool
+}
+
+// CommandPublicResource - resource representing a command
+type CommandPublicResource struct {
+	// The arguments for the command to be run
+	Arguments any
+
+	// If true, stops cassandra before executing the command and then start it again
+	CassandraStopStart *bool
+
+	// The command which should be run
+	Command *string
+
+	// The unique id of command
+	CommandID *string
+
+	// IP address of the cassandra host to run the command on
+	Host *string
+
+	// Whether command has admin privileges
+	IsAdmin *bool
+
+	// The name of the file where the result is written.
+	OutputFile *string
+
+	// If true, allows the command to write to the cassandra directory, otherwise read-only.
+	ReadWrite *bool
+
+	// Result output of the command.
+	Result *string
+
+	// Status of the command.
+	Status *CommandStatus
 }
 
 type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
@@ -910,6 +1008,9 @@ type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersIte
 
 	// The network ID of the node.
 	HostID *string
+
+	// If node has been updated to latest model
+	IsLatestModel *bool
 
 	// The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots subdirectories.
 	// Because all SSTable data files are included, any data that is not cleaned
@@ -950,6 +1051,15 @@ type CompositePath struct {
 
 	// The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string
+}
+
+// ComputedProperty - The definition of a computed property
+type ComputedProperty struct {
+	// The name of a computed property, for example - "cp_lowerName"
+	Name *string
+
+	// The query that evaluates the value for computed property, for example - "SELECT VALUE LOWER(c.name) FROM c"
+	Query *string
 }
 
 // ConflictResolutionPolicy - The conflict resolution policy for the container.
@@ -1096,7 +1206,7 @@ type CreateJobRequest struct {
 // CreateUpdateOptions are a list of key-value pairs that describe the resource. Supported keys are "If-Match", "If-None-Match",
 // "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
-	// Specifies the Autoscale settings.
+	// Specifies the Autoscale settings. Note: Either throughput or autoscaleSettings is required, but not both.
 	AutoscaleSettings *AutoscaleSettings
 
 	// Request Units per second. For example, "throughput": 10000.
@@ -1162,6 +1272,9 @@ type DataCenterResourceProperties struct {
 	// status, use the fetchNodeStatus method on the cluster.
 	NodeCount *int32
 
+	// Ip of the VPN Endpoint for this data center.
+	PrivateEndpointIPAddress *string
+
 	// Error related to resource provisioning.
 	ProvisionError *CassandraError
 
@@ -1220,8 +1333,14 @@ type DataTransferJobProperties struct {
 	// REQUIRED; Source DataStore details
 	Source DataTransferDataSourceSinkClassification
 
+	// Mode of job execution
+	Mode *DataTransferJobMode
+
 	// Worker count
 	WorkerCount *int32
+
+	// READ-ONLY; Total Duration of Job
+	Duration *string
 
 	// READ-ONLY; Error response for Faulted job
 	Error *ErrorResponse
@@ -1378,10 +1497,17 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// Enum to indicate the mode of account creation.
 	CreateMode *CreateMode
 
+	// Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides
+	// troubleshooting guidance.
+	CustomerManagedKeyStatus *string
+
 	// The default identity for accessing key vault used in features like customer managed keys. The default identity needs to
 	// be explicitly set by the users. It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
+
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
 
 	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
 	DiagnosticLogSettings *DiagnosticLogSettings
@@ -1417,6 +1543,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -1480,10 +1609,17 @@ type DatabaseAccountGetProperties struct {
 	// Enum to indicate the mode of account creation.
 	CreateMode *CreateMode
 
+	// Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides
+	// troubleshooting guidance.
+	CustomerManagedKeyStatus *string
+
 	// The default identity for accessing key vault used in features like customer managed keys. The default identity needs to
 	// be explicitly set by the users. It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
+
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
 
 	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
 	DiagnosticLogSettings *DiagnosticLogSettings
@@ -1519,6 +1655,9 @@ type DatabaseAccountGetProperties struct {
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -1714,10 +1853,17 @@ type DatabaseAccountUpdateProperties struct {
 	// The CORS policy for the Cosmos DB database account.
 	Cors []*CorsPolicy
 
+	// Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides
+	// troubleshooting guidance.
+	CustomerManagedKeyStatus *string
+
 	// The default identity for accessing key vault used in features like customer managed keys. The default identity needs to
 	// be explicitly set by the users. It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string
+
+	// Enum to indicate default Priority Level of request for Priority Based Execution.
+	DefaultPriorityLevel *DefaultPriorityLevel
 
 	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
 	DiagnosticLogSettings *DiagnosticLogSettings
@@ -1753,6 +1899,9 @@ type DatabaseAccountUpdateProperties struct {
 
 	// Flag to indicate enabling/disabling of Partition Merge feature on the account
 	EnablePartitionMerge *bool
+
+	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+	EnablePriorityBasedExecution *bool
 
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
@@ -2447,6 +2596,12 @@ type ListClusters struct {
 	Value []*ClusterResource
 }
 
+// ListCommands - List of commands for cluster.
+type ListCommands struct {
+	// READ-ONLY; Container for array of commands.
+	Value []*CommandPublicResource
+}
+
 // ListConnectionStringsResult - The connection strings for the given mongo cluster.
 type ListConnectionStringsResult struct {
 	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
@@ -3097,7 +3252,7 @@ type MongoDBDatabaseResource struct {
 	RestoreParameters *ResourceRestoreParameters
 }
 
-// MongoDataTransferDataSourceSink - A CosmosDB Cassandra API data source/sink
+// MongoDataTransferDataSourceSink - A CosmosDB Mongo API data source/sink
 type MongoDataTransferDataSourceSink struct {
 	// REQUIRED
 	CollectionName *string
@@ -3106,7 +3261,17 @@ type MongoDataTransferDataSourceSink struct {
 	Component *DataTransferComponent
 
 	// REQUIRED
-	DatabaseName *string
+	DatabaseName      *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type MongoDataTransferDataSourceSink.
+func (m *MongoDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         m.Component,
+		RemoteAccountName: m.RemoteAccountName,
+	}
 }
 
 // GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type MongoDataTransferDataSourceSink.
@@ -3917,6 +4082,12 @@ type RestorableGremlinDatabaseProperties struct {
 
 // RestorableGremlinDatabasePropertiesResource - The resource of an Azure Cosmos DB Gremlin database event
 type RestorableGremlinDatabasePropertiesResource struct {
+	// READ-ONLY; A state of this database to identify if this database is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this database can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The time when this database event happened.
 	EventTimestamp *string
 
@@ -3963,6 +4134,12 @@ type RestorableGremlinGraphProperties struct {
 
 // RestorableGremlinGraphPropertiesResource - The resource of an Azure Cosmos DB Gremlin graph event
 type RestorableGremlinGraphPropertiesResource struct {
+	// READ-ONLY; A state of this graph to identify if this graph is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this graph can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The time when this graph event happened.
 	EventTimestamp *string
 
@@ -4047,6 +4224,12 @@ type RestorableMongodbCollectionProperties struct {
 
 // RestorableMongodbCollectionPropertiesResource - The resource of an Azure Cosmos DB MongoDB collection event
 type RestorableMongodbCollectionPropertiesResource struct {
+	// READ-ONLY; A state of this collection to identify if this container is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this collection can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The time when this collection event happened.
 	EventTimestamp *string
 
@@ -4093,6 +4276,12 @@ type RestorableMongodbDatabaseProperties struct {
 
 // RestorableMongodbDatabasePropertiesResource - The resource of an Azure Cosmos DB MongoDB database event
 type RestorableMongodbDatabasePropertiesResource struct {
+	// READ-ONLY; A state of this database to identify if this database is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this database can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The time when this database event happened.
 	EventTimestamp *string
 
@@ -4166,6 +4355,12 @@ type RestorableSQLContainerPropertiesResource struct {
 	// Cosmos DB SQL container resource object
 	Container *RestorableSQLContainerPropertiesResourceContainer
 
+	// READ-ONLY; A state of this container to identify if this container is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this container can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The when this container event happened.
 	EventTimestamp *string
 
@@ -4192,6 +4387,9 @@ type RestorableSQLContainerPropertiesResourceContainer struct {
 
 	// The client encryption policy for the container.
 	ClientEncryptionPolicy *ClientEncryptionPolicy
+
+	// List of computed properties
+	ComputedProperties []*ComputedProperty
 
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy
@@ -4262,6 +4460,12 @@ type RestorableSQLDatabaseProperties struct {
 type RestorableSQLDatabasePropertiesResource struct {
 	// Cosmos DB SQL database resource object
 	Database *RestorableSQLDatabasePropertiesResourceDatabase
+
+	// READ-ONLY; A state of this database to identify if this database is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this database can not be restored in same account.
+	CanUndeleteReason *string
 
 	// READ-ONLY; The time when this database event happened.
 	EventTimestamp *string
@@ -4362,6 +4566,12 @@ type RestorableTableProperties struct {
 
 // RestorableTablePropertiesResource - The resource of an Azure Cosmos DB Table event
 type RestorableTablePropertiesResource struct {
+	// READ-ONLY; A state of this table to identify if this table is restorable in same account.
+	CanUndelete *string
+
+	// READ-ONLY; The reason why this table can not be restored in same account.
+	CanUndeleteReason *string
+
 	// READ-ONLY; The time when this table event happened.
 	EventTimestamp *string
 
@@ -4548,6 +4758,9 @@ type SQLContainerGetPropertiesResource struct {
 	// The client encryption policy for the container.
 	ClientEncryptionPolicy *ClientEncryptionPolicy
 
+	// List of computed properties
+	ComputedProperties []*ComputedProperty
+
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy
 
@@ -4628,6 +4841,9 @@ type SQLContainerResource struct {
 	// The client encryption policy for the container.
 	ClientEncryptionPolicy *ClientEncryptionPolicy
 
+	// List of computed properties
+	ComputedProperties []*ComputedProperty
+
 	// The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy
 
@@ -4654,7 +4870,7 @@ type SQLContainerResource struct {
 	UniqueKeyPolicy *UniqueKeyPolicy
 }
 
-// SQLDataTransferDataSourceSink - A CosmosDB Cassandra API data source/sink
+// SQLDataTransferDataSourceSink - A CosmosDB No Sql API data source/sink
 type SQLDataTransferDataSourceSink struct {
 	// REQUIRED
 	Component *DataTransferComponent
@@ -4663,7 +4879,17 @@ type SQLDataTransferDataSourceSink struct {
 	ContainerName *string
 
 	// REQUIRED
-	DatabaseName *string
+	DatabaseName      *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type SQLDataTransferDataSourceSink.
+func (s *SQLDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         s.Component,
+		RemoteAccountName: s.RemoteAccountName,
+	}
 }
 
 // GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type SQLDataTransferDataSourceSink.
@@ -5488,6 +5714,118 @@ type ThroughputPolicyResource struct {
 	IsEnabled *bool
 }
 
+// ThroughputPoolAccountCreateParameters - Parameters for creating a Azure Cosmos DB throughput pool account.
+type ThroughputPoolAccountCreateParameters struct {
+	// Properties to update Azure Cosmos DB throughput pool.
+	Properties *ThroughputPoolAccountCreateProperties
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
+	// (across resource groups). A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+	// the default experience for a template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string
+}
+
+// ThroughputPoolAccountCreateProperties - Properties to update Azure Cosmos DB throughput pool.
+type ThroughputPoolAccountCreateProperties struct {
+	// The location of global database account in the throughputPool.
+	AccountLocation *string
+
+	// The resource identifier of global database account in the throughputPool.
+	AccountResourceIdentifier *string
+}
+
+// ThroughputPoolAccountProperties - An Azure Cosmos DB Global Database Account which is part of a Throughputpool.
+type ThroughputPoolAccountProperties struct {
+	// The location of global database account in the throughputPool.
+	AccountLocation *string
+
+	// The resource identifier of global database account in the throughputPool.
+	AccountResourceIdentifier *string
+
+	// A provisioning state of the ThroughputPool Account.
+	ProvisioningState *Status
+
+	// READ-ONLY; The instance id of global database account in the throughputPool.
+	AccountInstanceID *string
+}
+
+// ThroughputPoolAccountResource - An Azure Cosmos DB Throughputpool Account
+type ThroughputPoolAccountResource struct {
+	// An Azure Cosmos DB Global Database Account which is part of a Throughputpool.
+	Properties *ThroughputPoolAccountProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ThroughputPoolAccountsListResult - The List operation response, that contains the global database accounts and their properties.
+type ThroughputPoolAccountsListResult struct {
+	// READ-ONLY; The link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of global database accounts in a throughput pool and their properties.
+	Value []*ThroughputPoolAccountResource
+}
+
+// ThroughputPoolProperties - Properties to update Azure Cosmos DB throughput pool.
+type ThroughputPoolProperties struct {
+	// Value for throughput to be shared among CosmosDB resources in the pool.
+	MaxThroughput *int32
+
+	// A provisioning state of the ThroughputPool.
+	ProvisioningState *Status
+}
+
+// ThroughputPoolResource - An Azure Cosmos DB Throughputpool.
+type ThroughputPoolResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties to update Azure Cosmos DB throughput pool.
+	Properties *ThroughputPoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ThroughputPoolUpdate - Represents a throughput pool resource for updates.
+type ThroughputPoolUpdate struct {
+	// Properties of the throughput pool.
+	Properties *ThroughputPoolProperties
+}
+
+// ThroughputPoolsListResult - The List operation response, that contains the throughput pools and their properties.
+type ThroughputPoolsListResult struct {
+	// READ-ONLY; The link used to get the next page of results.
+	NextLink *string
+
+	// READ-ONLY; List of throughput pools and their properties.
+	Value []*ThroughputPoolResource
+}
+
 // ThroughputSettingsGetProperties - The properties of an Azure Cosmos DB resource throughput
 type ThroughputSettingsGetProperties struct {
 	Resource *ThroughputSettingsGetPropertiesResource
@@ -5503,6 +5841,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 	// READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string
 
+	// READ-ONLY; The offer throughput value to instantly scale up without triggering splits
+	InstantMaximumThroughput *string
+
 	// READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string
 
@@ -5511,6 +5852,9 @@ type ThroughputSettingsGetPropertiesResource struct {
 
 	// READ-ONLY; A system generated property. A unique identifier.
 	Rid *string
+
+	// READ-ONLY; The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+	SoftAllowedMaximumThroughput *string
 
 	// READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
 	Ts *float32
@@ -5553,11 +5897,17 @@ type ThroughputSettingsResource struct {
 	// Value of the Cosmos DB resource throughput. Either throughput is required or autoscaleSettings is required, but not both.
 	Throughput *int32
 
+	// READ-ONLY; The offer throughput value to instantly scale up without triggering splits
+	InstantMaximumThroughput *string
+
 	// READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string
 
 	// READ-ONLY; The throughput replace is pending
 	OfferReplacePending *string
+
+	// READ-ONLY; The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+	SoftAllowedMaximumThroughput *string
 }
 
 // ThroughputSettingsUpdateParameters - Parameters to update Cosmos DB resource throughput.

@@ -30,10 +30,22 @@ type CassandraClustersClientGetBackupResponse struct {
 	BackupResource
 }
 
+// CassandraClustersClientGetCommandAsyncResponse contains the response from method CassandraClustersClient.GetCommandAsync.
+type CassandraClustersClientGetCommandAsyncResponse struct {
+	// List of commands for cluster.
+	ListCommands
+}
+
 // CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
 type CassandraClustersClientGetResponse struct {
 	// Representation of a managed Cassandra cluster.
 	ClusterResource
+}
+
+// CassandraClustersClientInvokeCommandAsyncResponse contains the response from method CassandraClustersClient.BeginInvokeCommandAsync.
+type CassandraClustersClientInvokeCommandAsyncResponse struct {
+	// resource representing a command
+	CommandPublicResource
 }
 
 // CassandraClustersClientInvokeCommandResponse contains the response from method CassandraClustersClient.BeginInvokeCommand.
@@ -58,6 +70,12 @@ type CassandraClustersClientListByResourceGroupResponse struct {
 type CassandraClustersClientListBySubscriptionResponse struct {
 	// List of managed Cassandra clusters.
 	ListClusters
+}
+
+// CassandraClustersClientListCommandResponse contains the response from method CassandraClustersClient.NewListCommandPager.
+type CassandraClustersClientListCommandResponse struct {
+	// List of commands for cluster.
+	ListCommands
 }
 
 // CassandraClustersClientStartResponse contains the response from method CassandraClustersClient.BeginStart.
@@ -1377,4 +1395,62 @@ type TableResourcesClientRetrieveContinuousBackupInformationResponse struct {
 type TableResourcesClientUpdateTableThroughputResponse struct {
 	// An Azure Cosmos DB resource throughput.
 	ThroughputSettingsGetResults
+}
+
+// ThroughputPoolAccountClientCreateResponse contains the response from method ThroughputPoolAccountClient.BeginCreate.
+type ThroughputPoolAccountClientCreateResponse struct {
+	// An Azure Cosmos DB Throughputpool Account
+	ThroughputPoolAccountResource
+}
+
+// ThroughputPoolAccountClientDeleteResponse contains the response from method ThroughputPoolAccountClient.BeginDelete.
+type ThroughputPoolAccountClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ThroughputPoolAccountClientGetResponse contains the response from method ThroughputPoolAccountClient.Get.
+type ThroughputPoolAccountClientGetResponse struct {
+	// An Azure Cosmos DB Throughputpool Account
+	ThroughputPoolAccountResource
+}
+
+// ThroughputPoolAccountsClientListResponse contains the response from method ThroughputPoolAccountsClient.NewListPager.
+type ThroughputPoolAccountsClientListResponse struct {
+	// The List operation response, that contains the global database accounts and their properties.
+	ThroughputPoolAccountsListResult
+}
+
+// ThroughputPoolClientCreateOrUpdateResponse contains the response from method ThroughputPoolClient.BeginCreateOrUpdate.
+type ThroughputPoolClientCreateOrUpdateResponse struct {
+	// An Azure Cosmos DB Throughputpool.
+	ThroughputPoolResource
+}
+
+// ThroughputPoolClientDeleteResponse contains the response from method ThroughputPoolClient.BeginDelete.
+type ThroughputPoolClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ThroughputPoolClientGetResponse contains the response from method ThroughputPoolClient.Get.
+type ThroughputPoolClientGetResponse struct {
+	// An Azure Cosmos DB Throughputpool.
+	ThroughputPoolResource
+}
+
+// ThroughputPoolClientUpdateResponse contains the response from method ThroughputPoolClient.BeginUpdate.
+type ThroughputPoolClientUpdateResponse struct {
+	// An Azure Cosmos DB Throughputpool.
+	ThroughputPoolResource
+}
+
+// ThroughputPoolsClientListByResourceGroupResponse contains the response from method ThroughputPoolsClient.NewListByResourceGroupPager.
+type ThroughputPoolsClientListByResourceGroupResponse struct {
+	// The List operation response, that contains the throughput pools and their properties.
+	ThroughputPoolsListResult
+}
+
+// ThroughputPoolsClientListResponse contains the response from method ThroughputPoolsClient.NewListPager.
+type ThroughputPoolsClientListResponse struct {
+	// The List operation response, that contains the throughput pools and their properties.
+	ThroughputPoolsListResult
 }

@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v3.0.0-beta.2"
+	moduleVersion = "v3.0.0-beta.3"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -73,6 +73,40 @@ func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	}
 }
 
+// AutoReplicate - The form of AutoReplicate that is being used by this cluster.
+type AutoReplicate string
+
+const (
+	AutoReplicateAllKeyspaces    AutoReplicate = "AllKeyspaces"
+	AutoReplicateNone            AutoReplicate = "None"
+	AutoReplicateSystemKeyspaces AutoReplicate = "SystemKeyspaces"
+)
+
+// PossibleAutoReplicateValues returns the possible values for the AutoReplicate const type.
+func PossibleAutoReplicateValues() []AutoReplicate {
+	return []AutoReplicate{
+		AutoReplicateAllKeyspaces,
+		AutoReplicateNone,
+		AutoReplicateSystemKeyspaces,
+	}
+}
+
+// AzureConnectionType - How to connect to the azure services needed for running the cluster
+type AzureConnectionType string
+
+const (
+	AzureConnectionTypeNone AzureConnectionType = "None"
+	AzureConnectionTypeVPN  AzureConnectionType = "VPN"
+)
+
+// PossibleAzureConnectionTypeValues returns the possible values for the AzureConnectionType const type.
+func PossibleAzureConnectionTypeValues() []AzureConnectionType {
+	return []AzureConnectionType{
+		AzureConnectionTypeNone,
+		AzureConnectionTypeVPN,
+	}
+}
+
 // BackupPolicyMigrationStatus - Describes the status of migration between backup policy types.
 type BackupPolicyMigrationStatus string
 
@@ -109,6 +143,26 @@ func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	}
 }
 
+// BackupState - The current state of the backup.
+type BackupState string
+
+const (
+	BackupStateFailed     BackupState = "Failed"
+	BackupStateInProgress BackupState = "InProgress"
+	BackupStateInitiated  BackupState = "Initiated"
+	BackupStateSucceeded  BackupState = "Succeeded"
+)
+
+// PossibleBackupStateValues returns the possible values for the BackupState const type.
+func PossibleBackupStateValues() []BackupState {
+	return []BackupState{
+		BackupStateFailed,
+		BackupStateInProgress,
+		BackupStateInitiated,
+		BackupStateSucceeded,
+	}
+}
+
 // BackupStorageRedundancy - Enum to indicate type of backup storage redundancy.
 type BackupStorageRedundancy string
 
@@ -140,6 +194,46 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 	return []CheckNameAvailabilityReason{
 		CheckNameAvailabilityReasonAlreadyExists,
 		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// ClusterType - Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+type ClusterType string
+
+const (
+	ClusterTypeNonProduction ClusterType = "NonProduction"
+	ClusterTypeProduction    ClusterType = "Production"
+)
+
+// PossibleClusterTypeValues returns the possible values for the ClusterType const type.
+func PossibleClusterTypeValues() []ClusterType {
+	return []ClusterType{
+		ClusterTypeNonProduction,
+		ClusterTypeProduction,
+	}
+}
+
+// CommandStatus - Status of the command.
+type CommandStatus string
+
+const (
+	CommandStatusDone       CommandStatus = "Done"
+	CommandStatusEnqueue    CommandStatus = "Enqueue"
+	CommandStatusFailed     CommandStatus = "Failed"
+	CommandStatusFinished   CommandStatus = "Finished"
+	CommandStatusProcessing CommandStatus = "Processing"
+	CommandStatusRunning    CommandStatus = "Running"
+)
+
+// PossibleCommandStatusValues returns the possible values for the CommandStatus const type.
+func PossibleCommandStatusValues() []CommandStatus {
+	return []CommandStatus{
+		CommandStatusDone,
+		CommandStatusEnqueue,
+		CommandStatusFailed,
+		CommandStatusFinished,
+		CommandStatusProcessing,
+		CommandStatusRunning,
 	}
 }
 
@@ -286,6 +380,22 @@ func PossibleDataTransferComponentValues() []DataTransferComponent {
 	}
 }
 
+// DataTransferJobMode - Mode of job execution
+type DataTransferJobMode string
+
+const (
+	DataTransferJobModeOffline DataTransferJobMode = "Offline"
+	DataTransferJobModeOnline  DataTransferJobMode = "Online"
+)
+
+// PossibleDataTransferJobModeValues returns the possible values for the DataTransferJobMode const type.
+func PossibleDataTransferJobModeValues() []DataTransferJobMode {
+	return []DataTransferJobMode{
+		DataTransferJobModeOffline,
+		DataTransferJobModeOnline,
+	}
+}
+
 // DataType - The datatype for which the indexing behavior is applied to.
 type DataType string
 
@@ -347,6 +457,22 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 		DefaultConsistencyLevelEventual,
 		DefaultConsistencyLevelSession,
 		DefaultConsistencyLevelStrong,
+	}
+}
+
+// DefaultPriorityLevel - Enum to indicate default priorityLevel of requests
+type DefaultPriorityLevel string
+
+const (
+	DefaultPriorityLevelHigh DefaultPriorityLevel = "High"
+	DefaultPriorityLevelLow  DefaultPriorityLevel = "Low"
+)
+
+// PossibleDefaultPriorityLevelValues returns the possible values for the DefaultPriorityLevel const type.
+func PossibleDefaultPriorityLevelValues() []DefaultPriorityLevel {
+	return []DefaultPriorityLevel{
+		DefaultPriorityLevelHigh,
+		DefaultPriorityLevelLow,
 	}
 }
 
@@ -719,8 +845,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type PublicNetworkAccess string
 
 const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
+	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
 )
 
 // PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
@@ -728,6 +855,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 
@@ -780,6 +908,24 @@ func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 	return []RoleDefinitionType{
 		RoleDefinitionTypeBuiltInRole,
 		RoleDefinitionTypeCustomRole,
+	}
+}
+
+// ScheduledEventStrategy - How the nodes in the cluster react to scheduled events
+type ScheduledEventStrategy string
+
+const (
+	ScheduledEventStrategyIgnore     ScheduledEventStrategy = "Ignore"
+	ScheduledEventStrategyStopAny    ScheduledEventStrategy = "StopAny"
+	ScheduledEventStrategyStopByRack ScheduledEventStrategy = "StopByRack"
+)
+
+// PossibleScheduledEventStrategyValues returns the possible values for the ScheduledEventStrategy const type.
+func PossibleScheduledEventStrategyValues() []ScheduledEventStrategy {
+	return []ScheduledEventStrategy{
+		ScheduledEventStrategyIgnore,
+		ScheduledEventStrategyStopAny,
+		ScheduledEventStrategyStopByRack,
 	}
 }
 
@@ -889,21 +1035,29 @@ func PossibleSpatialTypeValues() []SpatialType {
 type Status string
 
 const (
+	StatusCanceled        Status = "Canceled"
 	StatusDeleting        Status = "Deleting"
+	StatusFailed          Status = "Failed"
 	StatusInitializing    Status = "Initializing"
 	StatusInternallyReady Status = "InternallyReady"
 	StatusOnline          Status = "Online"
+	StatusSucceeded       Status = "Succeeded"
 	StatusUninitialized   Status = "Uninitialized"
+	StatusUpdating        Status = "Updating"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
 	return []Status{
+		StatusCanceled,
 		StatusDeleting,
+		StatusFailed,
 		StatusInitializing,
 		StatusInternallyReady,
 		StatusOnline,
+		StatusSucceeded,
 		StatusUninitialized,
+		StatusUpdating,
 	}
 }
 

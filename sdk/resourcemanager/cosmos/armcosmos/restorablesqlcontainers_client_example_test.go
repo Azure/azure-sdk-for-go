@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBRestorableSqlContainerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8e674dd2a88ae73868c6fa7593a0ba4371e45991/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBRestorableSqlContainerList.json
 func ExampleRestorableSQLContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,7 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableSQLContainerProperties{
 		// 				Resource: &armcosmos.RestorableSQLContainerPropertiesResource{
 		// 					Rid: to.Ptr("zAyAPQAAAA=="),
+		// 					CanUndelete: to.Ptr("invalid"),
 		// 					Container: &armcosmos.RestorableSQLContainerPropertiesResourceContainer{
 		// 						Etag: to.Ptr("\"00003e00-0000-0700-0000-5f85338a0000\""),
 		// 						Rid: to.Ptr("V18LoLrv-qA="),
@@ -92,6 +93,7 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		// 			Properties: &armcosmos.RestorableSQLContainerProperties{
 		// 				Resource: &armcosmos.RestorableSQLContainerPropertiesResource{
 		// 					Rid: to.Ptr("PrArcgAAAA=="),
+		// 					CanUndelete: to.Ptr("invalid"),
 		// 					Container: &armcosmos.RestorableSQLContainerPropertiesResourceContainer{
 		// 						Etag: to.Ptr("\"00004400-0000-0700-0000-5f85351f0000\""),
 		// 						Rid: to.Ptr("V18LoLrv-qA="),

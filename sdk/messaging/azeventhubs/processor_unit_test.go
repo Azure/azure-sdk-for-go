@@ -38,7 +38,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	// which means that we get to claim them all
 	require.Empty(t, lbinfo.aboveMax)
 	require.Empty(t, lbinfo.current)
-	require.False(t, lbinfo.extraPartitionPossible)
+	require.True(t, lbinfo.claimMorePartitions)
 	require.Equal(t, 3, lbinfo.maxAllowed, "only 1 possible owner (us), so we're allowed all the available partitions")
 
 	expectedOwnerships := []Ownership{
@@ -89,8 +89,8 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, lbinfo.aboveMax)
 	require.Empty(t, lbinfo.current)
-	require.True(t, lbinfo.extraPartitionPossible, "divvying 3 partitions amongst 2 processors")
-	require.Equal(t, 2, lbinfo.maxAllowed, "now we're divvying up 3 partitions between 2 processors. At _most_ you can have min+1")
+	require.True(t, lbinfo.claimMorePartitions)
+	require.Equal(t, 1, lbinfo.maxAllowed, "the max is now 1 (instead of 2) because _our_ processor doesn't own enough")
 
 	// there are two available partition ownerships - we should be getting one of them.
 	newProcessorOwnerships, err := secondProcessor.lb.LoadBalance(context.Background(), allPartitionIDs)

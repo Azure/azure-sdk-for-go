@@ -90,7 +90,7 @@ func TestUnit_Processor_loadBalancing(t *testing.T) {
 	require.Empty(t, lbinfo.aboveMax)
 	require.Empty(t, lbinfo.current)
 	require.True(t, lbinfo.claimMorePartitions)
-	require.Equal(t, 2, lbinfo.maxAllowed, "now we're divvying up 3 partitions between 2 processors. At _most_ you can have min+1")
+	require.Equal(t, 1, lbinfo.maxAllowed, "the max is now 1 (instead of 2) because _our_ processor doesn't own enough")
 
 	// there are two available partition ownerships - we should be getting one of them.
 	newProcessorOwnerships, err := secondProcessor.lb.LoadBalance(context.Background(), allPartitionIDs)

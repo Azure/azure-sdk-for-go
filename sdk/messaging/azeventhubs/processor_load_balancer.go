@@ -51,6 +51,10 @@ type loadBalancerInfo struct {
 	// one extra partition.
 	claimMorePartitions bool
 
+	// maxAllowed is the maximum number of partitions that other processors are allowed
+	// to own during this round. It can change based on how many partitions we own and whether
+	// an 'extra' partition is allowed (ie, partitions %owners is not 0). Look at
+	// [processorLoadBalancer.getAvailablePartitions] for more details.
 	maxAllowed int
 
 	raw []Ownership

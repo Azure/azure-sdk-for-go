@@ -45,33 +45,23 @@ func testGetCompletions(t *testing.T, client *azopenai.Client, isAzure bool) {
 	skipNowIfThrottled(t, err)
 	require.NoError(t, err)
 
-	want := azopenai.GetCompletionsResponse{
-		Completions: azopenai.Completions{
-			Choices: []azopenai.Choice{
-				{
-					Text:         to.Ptr("\n\nAzure OpenAI is a platform from Microsoft that provides access to OpenAI's artificial intelligence (AI) technologies. It enables developers to build, train, and deploy AI models in the cloud. Azure OpenAI provides access to OpenAI's powerful AI technologies, such as GPT-3, which can be used to create natural language processing (NLP) applications, computer vision models, and reinforcement learning models."),
-					Index:        to.Ptr(int32(0)),
-					FinishReason: to.Ptr(azopenai.CompletionsFinishReason("stop")),
-					LogProbs:     nil,
-				},
-			},
-			Usage: &azopenai.CompletionsUsage{
-				CompletionTokens: to.Ptr(int32(85)),
-				PromptTokens:     to.Ptr(int32(6)),
-				TotalTokens:      to.Ptr(int32(91)),
-			},
-		},
-	}
+	// we'll do a general check here - as models change the answers can also change, token usages are different,
+	// etc... So we'll just make sure data is coming back and is reasonable.
+	require.NotZero(t, *resp.Completions.Usage.PromptTokens)
+	require.NotZero(t, *resp.Completions.Usage.CompletionTokens)
+	require.NotZero(t, *resp.Completions.Usage.TotalTokens)
+	require.Equal(t, int32(0), *resp.Completions.Choices[0].Index)
+	require.Equal(t, azopenai.CompletionsFinishReasonStopped, *resp.Completions.Choices[0].FinishReason)
+
+	require.NotEmpty(t, *resp.Completions.Choices[0].Text)
 
 	if isAzure {
-		want.Choices[0].ContentFilterResults = (*azopenai.ContentFilterResultsForChoice)(safeContentFilter)
-		want.PromptFilterResults = []azopenai.ContentFilterResultsForPrompt{
-			{PromptIndex: to.Ptr[int32](0), ContentFilterResults: safeContentFilterResultDetailsForPrompt},
-		}
+		require.Equal(t, safeContentFilter, resp.Completions.Choices[0].ContentFilterResults)
+		require.Equal(t, []azopenai.ContentFilterResultsForPrompt{
+			{
+				PromptIndex:          to.Ptr[int32](0),
+				ContentFilterResults: safeContentFilterResultDetailsForPrompt,
+			}}, resp.PromptFilterResults)
 	}
 
-	want.ID = resp.Completions.ID
-	want.Created = resp.Completions.Created
-
-	require.Equal(t, want, resp)
 }

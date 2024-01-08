@@ -41,7 +41,7 @@ func BalanceTester(ctx context.Context) error {
 	log.SetEvents(EventBalanceTest, azeventhubs.EventConsumer)
 	log.SetListener(func(e log.Event, s string) {
 		// we don't have structured logging in our SDK so this is the most reasonable way to
-		// see what partitions each processor 
+		// see what partitions each processor
 		if e == azeventhubs.EventConsumer &&
 			!strings.Contains(s, "Asked for") {
 			return

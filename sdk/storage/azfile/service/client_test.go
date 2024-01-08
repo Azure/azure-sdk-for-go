@@ -630,6 +630,34 @@ func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
 	}
 }
 
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".file.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".file.core.windows.net/", nil, options)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
 func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

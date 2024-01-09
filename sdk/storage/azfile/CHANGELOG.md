@@ -1,14 +1,12 @@
 # Release History
 
 
-## 1.1.2 (Unreleased)
+## 1.2.0-beta.1 (2024-01-09)
 
 ### Features Added
 
 * Updated service version to `2023-11-03`.
 * Added support for Audience when OAuth is used.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
@@ -17,6 +15,7 @@
 
 ### Other Changes
 
+* Updated azcore version to `1.9.1` and azidentity version to `1.4.0`.
 
 ## 1.1.1 (2023-11-15)
 

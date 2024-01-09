@@ -1,17 +1,11 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.4.1 (2024-01-16)
 
 ### Bugs Fixed
 
 - `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing 
   for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210) 
-
-### Other Changes
 
 ## 0.4.0 (2023-12-11)
 

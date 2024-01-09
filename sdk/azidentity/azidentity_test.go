@@ -842,7 +842,7 @@ func TestCLIArgumentValidation(t *testing.T) {
 	}
 	t.Run(credNameAzureCLI+"/subscription", func(t *testing.T) {
 		for _, r := range invalidRunes {
-			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{Subscription: string(r)}); err == nil {
+			if _, err := NewAzureCLICredential(&AzureCLICredentialOptions{subscription: string(r)}); err == nil {
 				t.Errorf("expected an error for a subscription containing %q", r)
 			}
 		}

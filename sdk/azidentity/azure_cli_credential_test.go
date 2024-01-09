@@ -109,7 +109,7 @@ func TestAzureCLICredential_Subscription(t *testing.T) {
 	for _, want := range []string{"", "expected-subscription"} {
 		t.Run(fmt.Sprintf("subscription=%q", want), func(t *testing.T) {
 			options := AzureCLICredentialOptions{
-				Subscription: want,
+				subscription: want,
 				tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
 					called = true
 					if subscription != want {

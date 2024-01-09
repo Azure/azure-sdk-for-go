@@ -28,7 +28,7 @@
 /sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli
+/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar
 
 # PRLabel: %Tables
 /sdk/data/aztables/           @jhendrixMSFT

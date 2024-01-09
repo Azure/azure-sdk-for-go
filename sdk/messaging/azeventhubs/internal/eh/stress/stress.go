@@ -17,6 +17,8 @@ func main() {
 		fn   func(ctx context.Context) error
 	}{
 		{name: "batch", fn: tests.BatchStressTester},
+		{name: "balance", fn: tests.BalanceTester},
+		{name: "multibalance", fn: tests.MultiBalanceTester},
 		{name: "processor", fn: tests.ProcessorStressTester},
 	}
 

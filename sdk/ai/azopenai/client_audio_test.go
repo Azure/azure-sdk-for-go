@@ -8,7 +8,9 @@ package azopenai_test
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
@@ -24,20 +26,27 @@ func TestClient_GetAudioTranscription_AzureOpenAI(t *testing.T) {
 func TestClient_GetAudioTranscription_OpenAI(t *testing.T) {
 	client := newOpenAIClientForTest(t)
 
-	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
-	require.NoError(t, err)
+	testFiles := []string{
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
+	}
 
-	args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, openAI.Whisper.Model, mp3Bytes)
-	transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, transcriptResp)
+	for _, audioFile := range testFiles {
+		t.Run(fmt.Sprintf("verbose (%s)", filepath.Ext(audioFile)), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, openAI.Whisper.Model, audioFile)
 
-	require.NotEmpty(t, *transcriptResp.Text)
-	require.Greater(t, *transcriptResp.Duration, float32(0.0))
-	require.NotEmpty(t, *transcriptResp.Language)
-	require.NotEmpty(t, transcriptResp.Segments)
-	require.NotEmpty(t, transcriptResp.Segments[0])
-	require.NotEmpty(t, transcriptResp.Task)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
+	}
 }
 
 func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
@@ -48,154 +57,192 @@ func TestClient_GetAudioTranslation_AzureOpenAI(t *testing.T) {
 func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
 	client := newOpenAIClientForTest(t)
 
-	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
-	require.NoError(t, err)
+	testFiles := []string{
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
+	}
 
-	args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, openAI.Whisper.Model, mp3Bytes)
-	transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, transcriptResp)
+	for _, audioFile := range testFiles {
+		t.Run(fmt.Sprintf("verbose (%s)", filepath.Ext(audioFile)), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, openAI.Whisper.Model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	require.NotEmpty(t, *transcriptResp.Text)
-	require.Greater(t, *transcriptResp.Duration, float32(0.0))
-	require.NotEmpty(t, *transcriptResp.Language)
-	require.NotEmpty(t, transcriptResp.Segments)
-	require.NotEmpty(t, transcriptResp.Segments[0])
-	require.NotEmpty(t, transcriptResp.Task)
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
+	}
 }
 
 func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) {
-	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
-	require.NoError(t, err)
+	testFiles := []string{
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
+	}
 
-	t.Run(string(azopenai.AudioTranscriptionFormatText), func(t *testing.T) {
-		args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatText, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+	for _, audioFile := range testFiles {
+		ext := filepath.Ext(audioFile)
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, ext), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatText, model, audioFile)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatSrt), func(t *testing.T) {
-		args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatSrt, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatSrt, ext), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatSrt, model, audioFile)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatVtt), func(t *testing.T) {
-		args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVtt, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVtt, ext), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVtt, model, audioFile)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatVerboseJSON), func(t *testing.T) {
-		args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		require.Greater(t, *transcriptResp.Duration, float32(0.0))
-		require.NotEmpty(t, *transcriptResp.Language)
-		require.NotEmpty(t, transcriptResp.Segments)
-		require.NotEmpty(t, transcriptResp.Segments[0])
-		require.NotEmpty(t, transcriptResp.Task)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVerboseJSON, ext), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatVerboseJSON, model, audioFile)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatJSON), func(t *testing.T) {
-		args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatJSON, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatJSON, ext), func(t *testing.T) {
+			args := newTranscriptionOptions(azopenai.AudioTranscriptionFormatJSON, model, audioFile)
+			transcriptResp, err := client.GetAudioTranscription(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranscription(t, transcriptResp.AudioTranscription)
+		})
+	}
 }
 
 func runTranslationTests(t *testing.T, client *azopenai.Client, model string) {
-	mp3Bytes, err := os.ReadFile(`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`)
-	require.NoError(t, err)
+	testFiles := []string{
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.m4a`,
+		`testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3`,
+	}
 
-	t.Run(string(azopenai.AudioTranscriptionFormatText), func(t *testing.T) {
-		args := newTranslationOptions(azopenai.AudioTranslationFormatText, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+	for _, audioFile := range testFiles {
+		ext := filepath.Ext(audioFile)
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatText, ext), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatText, model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatSrt), func(t *testing.T) {
-		args := newTranslationOptions(azopenai.AudioTranslationFormatSrt, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatSrt, ext), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatSrt, model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatVtt), func(t *testing.T) {
-		args := newTranslationOptions(azopenai.AudioTranslationFormatVtt, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVtt, ext), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatVtt, model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatVerboseJSON), func(t *testing.T) {
-		args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		require.Greater(t, *transcriptResp.Duration, float32(0.0))
-		require.NotEmpty(t, *transcriptResp.Language)
-		require.NotEmpty(t, transcriptResp.Segments)
-		require.NotEmpty(t, transcriptResp.Segments[0])
-		require.NotEmpty(t, transcriptResp.Task)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatVerboseJSON, ext), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatVerboseJSON, model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
 
-	t.Run(string(azopenai.AudioTranscriptionFormatJSON), func(t *testing.T) {
-		args := newTranslationOptions(azopenai.AudioTranslationFormatJSON, model, mp3Bytes)
-		transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
-		require.NoError(t, err)
-		require.NotEmpty(t, transcriptResp)
+			require.NotEmpty(t, *transcriptResp.Text)
+			require.Greater(t, *transcriptResp.Duration, float32(0.0))
+			require.NotEmpty(t, *transcriptResp.Language)
+			require.NotEmpty(t, transcriptResp.Segments)
+			require.NotEmpty(t, transcriptResp.Segments[0])
+			require.NotEmpty(t, transcriptResp.Task)
+		})
 
-		require.NotEmpty(t, *transcriptResp.Text)
-		requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
-	})
+		t.Run(fmt.Sprintf("%s (%s)", azopenai.AudioTranscriptionFormatJSON, ext), func(t *testing.T) {
+			args := newTranslationOptions(azopenai.AudioTranslationFormatJSON, model, audioFile)
+			transcriptResp, err := client.GetAudioTranslation(context.Background(), args, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, transcriptResp)
+
+			require.NotEmpty(t, *transcriptResp.Text)
+			requireEmptyAudioTranslation(t, transcriptResp.AudioTranslation)
+		})
+	}
 }
 
-func newTranscriptionOptions(format azopenai.AudioTranscriptionFormat, model string, mp3Bytes []byte) azopenai.AudioTranscriptionOptions {
+func newTranscriptionOptions(format azopenai.AudioTranscriptionFormat, model string, path string) azopenai.AudioTranscriptionOptions {
+	audioBytes, err := os.ReadFile(path)
+
+	if err != nil {
+		panic(err)
+	}
+
 	return azopenai.AudioTranscriptionOptions{
 		DeploymentName: to.Ptr(model),
-		File:           mp3Bytes,
+		File:           audioBytes,
+		Filename:       &path,
 		ResponseFormat: &format,
 		Language:       to.Ptr("en"),
 		Temperature:    to.Ptr[float32](0.0),
 	}
 }
 
-func newTranslationOptions(format azopenai.AudioTranslationFormat, model string, mp3Bytes []byte) azopenai.AudioTranslationOptions {
+func newTranslationOptions(format azopenai.AudioTranslationFormat, model string, path string) azopenai.AudioTranslationOptions {
+	audioBytes, err := os.ReadFile(path)
+
+	if err != nil {
+		panic(err)
+	}
+
+	var filename *string
+
+	if filepath.Ext(path) != ".mp3" {
+		filename = &path
+	}
+
 	return azopenai.AudioTranslationOptions{
 		DeploymentName: to.Ptr(model),
-		File:           mp3Bytes,
+		File:           audioBytes,
+		Filename:       filename,
 		ResponseFormat: &format,
 		Temperature:    to.Ptr[float32](0.0),
 	}

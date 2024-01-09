@@ -52,9 +52,15 @@
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('authorizationName')]",
       "location": "[variables('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"],
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"
+      ],
       "properties": {
-        "rights": ["Listen", "Manage", "Send"]
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
       }
     },
     {
@@ -62,7 +68,9 @@
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('eventHubNameFull')]",
       "location": "[variables('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"],
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"
+      ],
       "properties": {
         "messageRetentionInDays": 7,
         "partitionCount": 32
@@ -73,7 +81,9 @@
       "apiVersion": "[variables('apiVersion')]",
       "name": "[concat(variables('namespaceName'), '/default')]",
       "location": "[variables('location')]",
-      "dependsOn": ["[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"],
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('namespaceName'))]"
+      ],
       "properties": {
         "defaultAction": "Deny",
         "virtualNetworkRules": [],
@@ -127,13 +137,15 @@
           "name": "[concat('default/', variables('containerName'))]",
           "type": "blobServices/containers",
           "apiVersion": "[variables('storageApiVersion')]",
-          "dependsOn": ["[variables('storageAccountName')]"]
+          "dependsOn": [
+            "[variables('storageAccountName')]"
+          ]
         }
       ]
     },
   ],
   "outputs": {
-    "EVENTHUB_NAME": {
+    "EVENTHUB_NAME_STRESS": {
       "type": "string",
       "value": "[variables('eventHubName')]"
     },

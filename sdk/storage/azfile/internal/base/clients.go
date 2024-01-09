@@ -11,15 +11,30 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"strings"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
-	AllowTrailingDot       *bool
-	FileRequestIntent      *generated.ShareTokenIntent
+
+	// AllowTrailingDot specifies if a trailing dot present in request url should be trimmed or not.
+	AllowTrailingDot *bool
+
+	// FileRequestIntent is required when using TokenCredential for authentication.
+	// Acceptable value is backup.
+	FileRequestIntent *generated.ShareTokenIntent
+
+	// AllowSourceTrailingDot specifies if a trailing dot present in source url should be trimmed or not.
 	AllowSourceTrailingDot *bool
-	pipelineOptions        *runtime.PipelineOptions
+
+	// Audience to use when requesting tokens for Azure Active Directory authentication.
+	// Only has an effect when credential is of type TokenCredential. The value could be
+	// https://storage.azure.com/ (default) or https://<account>.file.core.windows.net.
+	Audience string
+
+	pipelineOptions *runtime.PipelineOptions
 }
 
 type Client[T any] struct {
@@ -46,6 +61,14 @@ func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {
 
 func SetPipelineOptions(clOpts *ClientOptions, plOpts *runtime.PipelineOptions) {
 	clOpts.pipelineOptions = plOpts
+}
+
+func GetAudience(clOpts *ClientOptions) string {
+	if clOpts == nil || len(strings.TrimSpace(clOpts.Audience)) == 0 {
+		return shared.TokenScope
+	} else {
+		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
+	}
 }
 
 func NewServiceClient(serviceURL string, azClient *azcore.Client, sharedKey *exported.SharedKeyCredential, options *ClientOptions) *Client[generated.ServiceClient] {

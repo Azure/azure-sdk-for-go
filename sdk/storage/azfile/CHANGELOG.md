@@ -5,9 +5,15 @@
 
 ### Features Added
 
+* Updated service version to `2023-11-03`.
+* Added support for Audience when OAuth is used.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
+* Fixed a bug where `UploadRangeFromURL` using OAuth was returning error.
 
 ### Other Changes
 

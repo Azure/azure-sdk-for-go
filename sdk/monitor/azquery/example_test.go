@@ -246,12 +246,10 @@ func ExampleMetricsClient_QueryResource() {
 		&azquery.MetricsClientQueryResourceOptions{
 			Timespan:        to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
 			Interval:        to.Ptr("PT1M"),
-			MetricNames:     nil,
 			Aggregation:     to.SliceOfPtrs(azquery.AggregationTypeAverage, azquery.AggregationTypeCount),
 			Top:             to.Ptr[int32](3),
 			OrderBy:         to.Ptr("Average asc"),
 			Filter:          to.Ptr("BlobType eq '*'"),
-			ResultType:      nil,
 			MetricNamespace: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
 		})
 	if err != nil {
@@ -266,6 +264,23 @@ func ExampleMetricsClient_QueryResource() {
 				fmt.Println(metricValue.TimeStamp)
 			}
 		}
+	}
+}
+
+func ExampleMetricsClient_QueryResource_second() {
+	// `QueryResource` with a filter specified.
+	// This example queries an Azure Application Insights resource
+	// for all the server requests over the last day that failed.
+	_, err := metricsClient.QueryResource(context.Background(), resourceURI,
+		&azquery.MetricsClientQueryResourceOptions{
+			Aggregation: to.SliceOfPtrs(azquery.AggregationTypeCount),
+			Filter:      to.Ptr("request/success eq '0'"),
+			Interval:    to.Ptr("PT5M"),
+			MetricNames: to.Ptr("requests/count"),
+			Timespan:    to.Ptr(azquery.TimeInterval("P1D")),
+		})
+	if err != nil {
+		//TODO: handle error
 	}
 }
 

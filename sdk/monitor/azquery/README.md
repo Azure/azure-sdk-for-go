@@ -45,7 +45,7 @@ Example [metrics client][example_metrics_client]
 
 #### Create a metrics batch client
 
-Example metrics batch client
+Example [metrics batch client][example_metrics_batch_client]
 
 ## Key concepts
 
@@ -65,6 +65,8 @@ Each set of metric values is a time series with the following characteristics:
 - A metric name
 - The value itself
 - Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
+
+Read [here][metric_namespaces] for a list of valid metrics by resource provider.
 
 ### Metrics batch query
 
@@ -114,7 +116,7 @@ Get started with our [examples][azquery_pkg_go_samples].
 
 * For the majority of log queries, use the `LogsClient.QueryWorkspace` or the `LogsClient.QueryResource` method. Only use the `LogsClient.QueryBatch` method in advanced scenerios.
 
-* Use `MetricsClient.QueryResource` for metric queries.
+* Use `MetricsClient.QueryResource` for most metric queries. Use `MetricsBatchClient.QueryBatch` for high volume requests as it has high rate limits.
 
 ## Troubleshooting
 
@@ -145,6 +147,7 @@ comments.
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_logs_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewLogsClient
 [example_metrics_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewMetricsClient
+[example_metrics_batch_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery@v1.2.0-beta.1#example-NewMetricsBatchClient
 [go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet

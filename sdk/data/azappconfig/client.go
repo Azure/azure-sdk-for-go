@@ -444,7 +444,7 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 
 	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, &generated.AzureAppConfigurationClientGetSnapshotOptions{
 		IfMatch:     (*string)(options.IfMatch),
-		IfNoneMatch: options.IfNoneMatch,
+		IfNoneMatch: (*string)(options.IfNoneMatch),
 		Select:      options.Select,
 	})
 

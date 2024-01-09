@@ -167,7 +167,7 @@ type GetSnapshotOptions struct {
 	IfMatch *azcore.ETag
 
 	// Used to perform an operation only if the targeted resource's etag does not match the value provided.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// Used to select what fields are present in the returned resource(s).
 	Select []SnapshotFields

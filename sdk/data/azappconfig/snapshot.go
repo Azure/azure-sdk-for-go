@@ -12,39 +12,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// SnapshotInfo contains the snapshot information returned from a Create Snapshot Request
-type SnapshotInfo struct {
-
-	// READ-ONLY; The name of the snapshot.
-	Name *string `json:"name"`
-
-	// READ-ONLY; The current status of the snapshot.
-	Status *SnapshotStatus `json:"status"`
-
-	// READ-ONLY; The time that the snapshot was created.
-	Created *time.Time `json:"created"`
-
-	// READ-ONLY; A value representing the current state of the snapshot.
-	ETag *azcore.ETag `json:"etag"`
-
-	// READ-ONLY; The time that the snapshot will expire.
-	Expires *time.Time `json:"expires"`
-
-	// READ-ONLY; The amount of key-values in the snapshot.
-	ItemsCount *int64 `json:"items_count"`
-
-	// READ-ONLY; The size in bytes of the snapshot.
-	Size *int64 `json:"size"`
-
-	// READ-ONLY; The retention period of the snapshot on archive in seconds.
-	RetentionPeriod *int64 `json:"retention_period"`
-}
-
 // Snapshot contains the snapshot information returned from a Get Snapshot Request
 type Snapshot struct {
-
 	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.
-	Filters []KeyValueFilter `json:"filters"`
+	Filters []SettingFilter `json:"filters"`
 
 	// The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures
 	// there are no two key-values containing the same key. The 'key_label' composition

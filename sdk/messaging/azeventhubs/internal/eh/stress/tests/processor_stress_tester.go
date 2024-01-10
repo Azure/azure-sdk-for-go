@@ -53,7 +53,7 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 	eventsPerRound := fs.Int("send", 5000, "Number of events to send per round")
 	rounds := fs.Int64("rounds", 100, "Number of rounds. -1 means math.MaxInt64")
 	prefetch := fs.Int("prefetch", 0, "Number of events to set for the prefetch. Negative numbers disable prefetch altogether. 0 uses the default for the package.")
-	enableVerboseLogging := fs.Bool("verbose", false, "enable verbose azure sdk logging")
+	enableVerboseLoggingFn := addVerboseLoggingFlag(fs, nil)
 	sleepAfterFn := addSleepAfterFlag(fs)
 
 	if err := fs.Parse(args); err != nil {
@@ -61,11 +61,13 @@ func newProcessorStressTest(args []string) (*processorStressTest, error) {
 		return nil, err
 	}
 
+	enableVerboseLoggingFn()
+
 	if *rounds == -1 {
 		*rounds = math.MaxInt64
 	}
 
-	testData, err := newStressTestData("infiniteprocessor", *enableVerboseLogging, map[string]string{
+	testData, err := newStressTestData("infiniteprocessor", map[string]string{
 		"Processors":     fmt.Sprintf("%d", numProcessors),
 		"EventsPerRound": fmt.Sprintf("%d", eventsPerRound),
 		"Rounds":         fmt.Sprintf("%d", rounds),

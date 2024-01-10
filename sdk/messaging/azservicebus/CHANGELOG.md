@@ -1,14 +1,10 @@
 # Release History
 
-## 1.5.1 (Unreleased)
+## 1.5.1 (2024-01-16)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- ReceiverOptions.TimeAfterFirstMessage lets you configure the amount of time, after the first message in a batch is received, before we return messages. (PR#22154)
 
 ## 1.5.0 (2023-10-10)
 

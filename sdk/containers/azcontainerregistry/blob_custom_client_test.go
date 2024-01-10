@@ -150,15 +150,16 @@ func TestBlobClient_UploadChunk_retry(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusGatewayTimeout))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &BlobClient{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
 	chunkData := bytes.NewReader([]byte("test"))
 	calculator := NewBlobDigestCalculator()
-	_, err := client.UploadChunk(ctx, "location", chunkData, calculator, nil)
+	_, err = client.UploadChunk(ctx, "location", chunkData, calculator, nil)
 	require.NoError(t, err)
 	require.Equal(t, "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", fmt.Sprintf("%x", calculator.h.Sum(nil)))
 }

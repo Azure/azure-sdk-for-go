@@ -695,6 +695,26 @@ func (s *ServiceRecordedTestsSuite) TestListFilesystemsBasicUsingConnectionStrin
 	_require.GreaterOrEqual(count, 0)
 }
 
+func (s *ServiceRecordedTestsSuite) TestListFilesystemsIncludeSystemFileSystems() {
+	_require := require.New(s.T())
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	listOptions := service.ListFileSystemsOptions{Include: service.ListFileSystemsInclude{System: to.Ptr(true)}}
+	count := 0
+	pager := svcClient.NewListFileSystemsPager(&listOptions)
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, ctnr := range resp.FileSystemItems {
+			_require.NotNil(ctnr.Name)
+			_require.Equal("$logs", *ctnr.Name)
+			count += 1
+		}
+	}
+	_require.Equal(1, count)
+}
+
 func (s *ServiceRecordedTestsSuite) TestListFilesystemsPaged() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -779,4 +799,34 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 		}
 	}
 	_require.GreaterOrEqual(count, 2)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDatalake)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := svcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	_require.Equal(fileClient.DFSURL(), "http://"+cred.AccountName()+".dfs.core.windows.net/"+fsName+"/"+fileName)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+accountName+".dfs.core.windows.net/", nil, nil)
+	_require.Error(err)
+	_require.Nil(svcClient)
 }

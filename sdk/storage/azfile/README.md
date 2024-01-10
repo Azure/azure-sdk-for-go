@@ -1,6 +1,6 @@
 # Azure File Storage SDK for Go
 
-> Service Version: 2022-11-02
+> Service Version: 2023-11-03
 
 Azure File Shares offers fully managed file shares in the cloud that are accessible via the industry standard 
 [Server Message Block (SMB) protocol](https://docs.microsoft.com/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview). 

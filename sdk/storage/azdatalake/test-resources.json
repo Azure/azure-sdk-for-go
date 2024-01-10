@@ -27,11 +27,11 @@
       "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
       "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
       "immutableAccountName": "[concat(parameters('baseName'), 'imm')]",
-      "primaryEncryptionScopeName": "encryptionScope",
-      "primaryEncryptionScope": "[concat(parameters('baseName'), 'prim', concat('/', variables('primaryEncryptionScopeName')))]",
       "secondaryAccountName": "[concat(parameters('baseName'), 'sec')]",
       "premiumAccountName": "[concat(parameters('baseName'), 'prem')]",
       "dataLakeAccountName": "[concat(parameters('baseName'), 'dtlk')]",
+      "dataLakeEncryptionScopeName": "encryptionScope",
+      "dataLakeEncryptionScope": "[concat(parameters('baseName'), 'dtlk', concat('/', variables('dataLakeEncryptionScopeName')))]",
       "softDeleteAccountName": "[concat(parameters('baseName'), 'sftdl')]",
       "premiumFileAccountName": "[concat(parameters('baseName'), 'pfile')]",
       "webjobsPrimaryAccountName": "[concat(parameters('baseName'), 'wjprim')]",
@@ -161,18 +161,6 @@
         ]
       },
       {
-        "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
-        "apiVersion": "[variables('mgmtApiVersion')]",
-        "name": "[variables('primaryEncryptionScope')]",
-        "properties": {
-          "source": "Microsoft.Storage",
-          "state": "Enabled"
-        },
-        "dependsOn": [
-          "[variables('primaryAccountName')]"
-        ]
-      },
-      {
         "type": "Microsoft.Storage/storageAccounts",
         "apiVersion": "[variables('mgmtApiVersion')]",
         "name": "[variables('secondaryAccountName')]",
@@ -205,6 +193,18 @@
           "encryption": "[variables('encryption')]",
           "accessTier": "Hot"
         }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+        "apiVersion": "[variables('mgmtApiVersion')]",
+        "name": "[variables('dataLakeEncryptionScope')]",
+        "properties": {
+          "source": "Microsoft.Storage",
+          "state": "Enabled"
+        },
+        "dependsOn": [
+          "[variables('dataLakeAccountName')]"
+        ]
       },
       {
         "type": "Microsoft.Storage/storageAccounts",
@@ -575,10 +575,9 @@
         "type": "string",
         "value": "[variables('location')]"
       },
-      "AZURE_STORAGE_ENCRYPTION_SCOPE": {
+      "DATALAKE_AZURE_STORAGE_ENCRYPTION_SCOPE": {
         "type": "string",
-        "value": "[variables('primaryEncryptionScopeName')]"
+        "value": "[variables('dataLakeEncryptionScopeName')]"
       }
     }
   }
-  

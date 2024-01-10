@@ -12,9 +12,12 @@ clear-output-folder: false
 export-clients: true
 openapi-type: "data-plane"
 output-folder: ../azcontainerregistry
-use: "@autorest/go@4.0.0-preview.45"
+use: "@autorest/go@4.0.0-preview.60"
 honor-body-placement: true
 remove-unreferenced-types: true
+module-name: sdk/containers/azcontainerregistry
+module: github.com/Azure/azure-sdk-for-go/$(module-name)
+inject-spans: true
 ```
 
 ## Customizations
@@ -328,10 +331,11 @@ directive:
     transform: return $.replaceAll(/AuthenticationClient/g, "authenticationClient").replace(/AcrRefreshToken\n/, "acrRefreshToken\n").replace(/AcrAccessToken\n/, "acrAccessToken\n");
   - from:
       - models.go
+      - options.go
     where: $
     transform: return $.replaceAll(/AuthenticationClient/g, "authenticationClient").replace(/AcrRefreshToken struct/, "acrRefreshToken struct").replace(/AcrAccessToken struct/, "acrAccessToken struct");
   - from:
-      - models.go
+      - options.go
     where: $
     transform: return $.replace(/TokenGrantType/, "tokenGrantType");
   - from:
@@ -444,7 +448,7 @@ directive:
         });
   - from:
       - blob_client.go
-      - models.go
+      - options.go
     where: $
     transform: return $.replaceAll(/BlobClientUploadChunkOptions/g, "blobClientUploadChunkOptions").replace(/BlobClient\.UploadChunk/, "BlobClient.uploadChunk");
 ```

@@ -13,6 +13,7 @@ type AccessTier string
 
 const (
 	AccessTierArchive AccessTier = "Archive"
+	AccessTierCold    AccessTier = "Cold"
 	AccessTierCool    AccessTier = "Cool"
 	AccessTierHot     AccessTier = "Hot"
 	AccessTierP10     AccessTier = "P10"
@@ -33,6 +34,7 @@ const (
 func PossibleAccessTierValues() []AccessTier {
 	return []AccessTier{
 		AccessTierArchive,
+		AccessTierCold,
 		AccessTierCool,
 		AccessTierHot,
 		AccessTierP10,
@@ -74,6 +76,7 @@ func PossibleAccountKindValues() []AccountKind {
 type ArchiveStatus string
 
 const (
+	ArchiveStatusRehydratePendingToCold ArchiveStatus = "rehydrate-pending-to-cold"
 	ArchiveStatusRehydratePendingToCool ArchiveStatus = "rehydrate-pending-to-cool"
 	ArchiveStatusRehydratePendingToHot  ArchiveStatus = "rehydrate-pending-to-hot"
 )
@@ -81,8 +84,24 @@ const (
 // PossibleArchiveStatusValues returns the possible values for the ArchiveStatus const type.
 func PossibleArchiveStatusValues() []ArchiveStatus {
 	return []ArchiveStatus{
+		ArchiveStatusRehydratePendingToCold,
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
+	}
+}
+
+type BlobCopySourceTags string
+
+const (
+	BlobCopySourceTagsCOPY    BlobCopySourceTags = "COPY"
+	BlobCopySourceTagsREPLACE BlobCopySourceTags = "REPLACE"
+)
+
+// PossibleBlobCopySourceTagsValues returns the possible values for the BlobCopySourceTags const type.
+func PossibleBlobCopySourceTagsValues() []BlobCopySourceTags {
+	return []BlobCopySourceTags{
+		BlobCopySourceTagsCOPY,
+		BlobCopySourceTagsREPLACE,
 	}
 }
 
@@ -218,6 +237,21 @@ func PossibleExpiryOptionsValues() []ExpiryOptions {
 		ExpiryOptionsNeverExpire,
 		ExpiryOptionsRelativeToCreation,
 		ExpiryOptionsRelativeToNow,
+	}
+}
+
+type FilterBlobsIncludeItem string
+
+const (
+	FilterBlobsIncludeItemNone     FilterBlobsIncludeItem = "none"
+	FilterBlobsIncludeItemVersions FilterBlobsIncludeItem = "versions"
+)
+
+// PossibleFilterBlobsIncludeItemValues returns the possible values for the FilterBlobsIncludeItem const type.
+func PossibleFilterBlobsIncludeItemValues() []FilterBlobsIncludeItem {
+	return []FilterBlobsIncludeItem{
+		FilterBlobsIncludeItemNone,
+		FilterBlobsIncludeItemVersions,
 	}
 }
 

@@ -82,7 +82,6 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 
 		r := &Receiver{
-			defaultTimeAfterFirstMsg: time.Second,
 			amqpLinks: &internal.FakeAMQPLinks{
 				Receiver: &internal.FakeAMQPReceiver{
 					ReceiveFn: func(ctx context.Context) (*amqp.Message, error) {

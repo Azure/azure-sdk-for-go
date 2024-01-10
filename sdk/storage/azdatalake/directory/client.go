@@ -228,6 +228,29 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	return (*file.Client)(base.NewPathClient(fileURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
 }
 
+// NewSubdirectoryClient creates a new directory.Client object by concatenating subdirectoryName to the end of this Client's URL.
+// The new directory.Client uses the same request policy pipeline as the Client.
+func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error) {
+	subdirectoryName = url.PathEscape(strings.TrimRight(subdirectoryName, "/"))
+	subDirectoryURL := runtime.JoinPaths(d.DFSURL(), subdirectoryName)
+	newBlobURL, subDirectoryURL := shared.GetURLs(subDirectoryURL)
+	var newBlobClient *blockblob.Client
+	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
+	var err error
+	if d.identityCredential() != nil {
+		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), clientOptions)
+	} else if d.sharedKey() != nil {
+		blobSharedKey, _ := exported.ConvertToBlobSharedKey(d.sharedKey())
+		newBlobClient, err = blockblob.NewClientWithSharedKeyCredential(newBlobURL, blobSharedKey, clientOptions)
+	} else {
+		newBlobClient, err = blockblob.NewClientWithNoCredential(newBlobURL, clientOptions)
+	}
+	if err != nil {
+		return nil, exported.ConvertToDFSError(err)
+	}
+	return (*Client)(base.NewPathClient(subDirectoryURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions())), nil
+}
+
 // Create creates a new directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
 	lac, mac, httpHeaders, createOpts, cpkOpts := options.format()
@@ -295,7 +318,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		newPathURL = strings.Split(newPathURL, "?")[0] + "?" + newDestQuery
 	}
 	newBlobURL, _ := shared.GetURLs(newPathURL)
-	lac, mac, smac, createOpts := path.FormatRenameOptions(options, newSrcPath)
+	lac, mac, smac, createOpts, cpkOpts := path.FormatRenameOptions(options, newSrcPath)
 
 	if d.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), nil)
@@ -310,7 +333,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, exported.ConvertToDFSError(err)
 	}
 	newDirClient := (*Client)(base.NewPathClient(newPathURL, newBlobURL, newBlobClient, d.generatedDirClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), d.sharedKey(), d.identityCredential(), d.getClientOptions()))
-	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, nil)
+	resp, err := newDirClient.generatedDirClientWithDFS().Create(ctx, createOpts, nil, lac, mac, smac, cpkOpts)
 	//return RenameResponse{
 	//	Response:           resp,
 	//	NewDirectoryClient: newDirClient,

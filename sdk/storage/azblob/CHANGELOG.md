@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.2 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2024-01-09)
+
+### Features Added
+
+* Updated service version to `2023-11-03`.
+* Added support for Audience when OAuth is used.
+
+### Bugs Fixed
+
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
 
 ## 1.2.1 (2023-12-13)
 

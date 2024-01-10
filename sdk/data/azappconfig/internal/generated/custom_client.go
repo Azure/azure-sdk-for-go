@@ -7,8 +7,6 @@
 package generated
 
 import (
-	"context"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -21,19 +19,10 @@ func NewAzureAppConfigurationClient(endpoint string, client *azcore.Client) *Azu
 	}
 }
 
-func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
-	return a.internal.Tracer()
+func (a *AzureAppConfigurationClient) Pipeline() runtime.Pipeline {
+	return a.internal.Pipeline()
 }
 
-func NewCreateSnapshotPoller[T any](ctx context.Context, client *AzureAppConfigurationClient, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*runtime.Poller[T], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createSnapshot(ctx, name, entity, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller[T](resp, client.internal.Pipeline(), nil)
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken[T](options.ResumeToken, client.internal.Pipeline(), nil)
-	}
+func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
+	return a.internal.Tracer()
 }

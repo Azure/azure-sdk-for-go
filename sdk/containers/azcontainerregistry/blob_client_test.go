@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -176,10 +177,11 @@ func TestBlobClient_GetBlob_wrongDigest(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("test")))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &BlobClient{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
 	resp, err := client.GetBlob(ctx, "name", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", nil)
@@ -335,13 +337,14 @@ func TestBlobClient_StartUpload_empty(t *testing.T) {
 }
 
 func TestBlobClient_wrongEndpoint(t *testing.T) {
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
+	require.NoError(t, err)
 	client := &BlobClient{
+		azcoreClient,
 		"wrong-endpoint",
-		pl,
 	}
 	ctx := context.Background()
-	_, err := client.CancelUpload(ctx, "location", nil)
+	_, err = client.CancelUpload(ctx, "location", nil)
 	require.Error(t, err)
 	_, err = client.CheckBlobExists(ctx, "name", "digest", nil)
 	require.Error(t, err)

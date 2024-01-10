@@ -71,7 +71,7 @@ type SnapshotFields string
 const (
 	SnapshotFieldsCompositionType SnapshotFields = "composition_type"
 	SnapshotFieldsCreated         SnapshotFields = "created"
-	SnapshotFieldsEtag            SnapshotFields = "etag"
+	SnapshotFieldsETag            SnapshotFields = "etag"
 	SnapshotFieldsExpires         SnapshotFields = "expires"
 	SnapshotFieldsFilters         SnapshotFields = "filters"
 	SnapshotFieldsItemsCount      SnapshotFields = "items_count"
@@ -87,7 +87,7 @@ func PossibleSnapshotFieldsValues() []SnapshotFields {
 	return []SnapshotFields{
 		SnapshotFieldsCompositionType,
 		SnapshotFieldsCreated,
-		SnapshotFieldsEtag,
+		SnapshotFieldsETag,
 		SnapshotFieldsExpires,
 		SnapshotFieldsFilters,
 		SnapshotFieldsItemsCount,

@@ -1,7 +1,6 @@
 # Release History
 
-
-## 1.1.2 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +10,21 @@
 
 ### Other Changes
 
+## 1.2.0-beta.1 (2024-01-09)
+
+### Features Added
+
+* Updated service version to `2023-11-03`.
+* Added support for Audience when OAuth is used.
+
+### Bugs Fixed
+
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
+* Fixed a bug where `UploadRangeFromURL` using OAuth was returning error.
+
+### Other Changes
+
+* Updated azcore version to `1.9.1`.
 
 ## 1.1.1 (2023-11-15)
 

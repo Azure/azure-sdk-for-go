@@ -26,7 +26,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	_ "github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -223,7 +222,7 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
-			// t.Skip("TODO: unskip this test after restoring persistent cache feature")
+			t.Skip("TODO: fix this test after restoring persistent cache feature")
 			switch recording.GetRecordMode() {
 			case recording.LiveMode:
 				if credential.interactive && !runManualTests {

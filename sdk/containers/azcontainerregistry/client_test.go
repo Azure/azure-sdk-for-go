@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -80,13 +81,14 @@ func TestClient_DeleteRepository_error(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
-	_, err := client.DeleteRepository(ctx, "test", nil)
+	_, err = client.DeleteRepository(ctx, "test", nil)
 	require.Error(t, err)
 }
 
@@ -115,13 +117,14 @@ func TestClient_DeleteTag_error(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
-	_, err := client.DeleteTag(ctx, "name", "tag", nil)
+	_, err = client.DeleteTag(ctx, "name", "tag", nil)
 	require.Error(t, err)
 }
 
@@ -146,10 +149,11 @@ func TestClient_GetManifest_wrongServerDigest(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("test")), mock.WithHeader("Docker-Content-Digest", "sha256:wrong"))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
 	resp, err := client.GetManifest(ctx, "name", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", nil)
@@ -395,10 +399,11 @@ func TestClient_NewListRepositoriesPager_error(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
 	pager := client.NewListRepositoriesPager(nil)
@@ -655,24 +660,26 @@ func TestClient_UploadManifest_error(t *testing.T) {
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		srv.URL(),
-		pl,
 	}
 	ctx := context.Background()
-	_, err := client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
+	_, err = client.UploadManifest(ctx, "name", "reference", "contentType", nil, nil)
 	require.Error(t, err)
 }
 
 func TestClient_wrongEndpoint(t *testing.T) {
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, nil)
+	require.NoError(t, err)
 	client := &Client{
+		azcoreClient,
 		"wrong-endpoint",
-		pl,
 	}
 	ctx := context.Background()
-	_, err := client.DeleteManifest(ctx, "name", "digest", nil)
+	_, err = client.DeleteManifest(ctx, "name", "digest", nil)
 	require.Error(t, err)
 	_, err = client.DeleteRepository(ctx, "name", nil)
 	require.Error(t, err)

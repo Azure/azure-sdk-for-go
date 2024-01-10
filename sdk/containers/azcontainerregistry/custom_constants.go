@@ -7,7 +7,7 @@
 package azcontainerregistry
 
 const (
-	moduleName      = "azcontainerregistry"
+	moduleName      = "github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 	moduleVersion   = "v0.2.1"
 	defaultAudience = "https://containerregistry.azure.net"
 )

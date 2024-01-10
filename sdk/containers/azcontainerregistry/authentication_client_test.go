@@ -23,7 +23,8 @@ import (
 func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	client, err := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	require.NoError(t, err)
 	ctx := context.Background()
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
@@ -44,9 +45,10 @@ func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken(t *testi
 func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken_fail(t *testing.T) {
 	startRecording(t)
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
-	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	client, err := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	require.NoError(t, err)
 	ctx := context.Background()
-	_, err := client.ExchangeAADAccessTokenForACRRefreshToken(ctx, postContentSchemaGrantTypeAccessToken, strings.TrimPrefix(endpoint, "https://"), &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
+	_, err = client.ExchangeAADAccessTokenForACRRefreshToken(ctx, postContentSchemaGrantTypeAccessToken, strings.TrimPrefix(endpoint, "https://"), &authenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions{
 		Tenant:       to.Ptr("wrong tenant"),
 		RefreshToken: to.Ptr("wrong token"),
 		AccessToken:  to.Ptr("wrong token"),
@@ -58,16 +60,18 @@ func Test_authenticationClient_ExchangeAADAccessTokenForACRRefreshToken_error(t 
 	srv, closeServer := mock.NewServer()
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
-	client := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	client, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	require.NoError(t, err)
 	ctx := context.Background()
-	_, err := client.ExchangeAADAccessTokenForACRRefreshToken(ctx, "grantType", "service", nil)
+	_, err = client.ExchangeAADAccessTokenForACRRefreshToken(ctx, "grantType", "service", nil)
 	require.Error(t, err)
 }
 
 func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken(t *testing.T) {
 	startRecording(t)
 	endpoint, cred, options := getEndpointCredAndClientOptions(t)
-	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	client, err := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	require.NoError(t, err)
 	ctx := context.Background()
 	if reflect.ValueOf(options.Cloud).IsZero() {
 		options.Cloud = cloud.AzurePublic
@@ -91,9 +95,10 @@ func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken(t *testi
 func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken_fail(t *testing.T) {
 	startRecording(t)
 	endpoint, _, options := getEndpointCredAndClientOptions(t)
-	client := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	client, err := newAuthenticationClient(endpoint, &authenticationClientOptions{ClientOptions: options})
+	require.NoError(t, err)
 	ctx := context.Background()
-	_, err := client.ExchangeACRRefreshTokenForACRAccessToken(ctx, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*", "wrong token", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
+	_, err = client.ExchangeACRRefreshTokenForACRAccessToken(ctx, strings.TrimPrefix(endpoint, "https://"), "registry:catalog:*", "wrong token", &authenticationClientExchangeACRRefreshTokenForACRAccessTokenOptions{GrantType: to.Ptr(tokenGrantTypeRefreshToken)})
 	require.Error(t, err)
 }
 
@@ -101,8 +106,9 @@ func Test_authenticationClient_ExchangeACRRefreshTokenForACRAccessToken_error(t 
 	srv, closeServer := mock.NewServer()
 	defer closeServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte("wrong response")))
-	client := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	client, err := newAuthenticationClient(srv.URL(), &authenticationClientOptions{ClientOptions: azcore.ClientOptions{Transport: srv}})
+	require.NoError(t, err)
 	ctx := context.Background()
-	_, err := client.ExchangeACRRefreshTokenForACRAccessToken(ctx, "service", "scope", "refresh token", nil)
+	_, err = client.ExchangeACRRefreshTokenForACRAccessToken(ctx, "service", "scope", "refresh token", nil)
 	require.Error(t, err)
 }

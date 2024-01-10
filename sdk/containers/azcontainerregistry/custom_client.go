@@ -37,9 +37,13 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		return nil, errors.New("provided Cloud field is missing Azure Container Registry configuration")
 	}
 
-	authClient := newAuthenticationClient(endpoint, &authenticationClientOptions{
+	authClient, err := newAuthenticationClient(endpoint, &authenticationClientOptions{
 		options.ClientOptions,
 	})
+	if err != nil {
+		return nil, err
+	}
+
 	authPolicy := newAuthenticationPolicy(
 		credential,
 		[]string{c.Audience + "/.default"},
@@ -47,10 +51,14 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		nil,
 	)
 
-	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Client{
+		azcoreClient,
 		endpoint,
-		pl,
 	}, nil
 }
 

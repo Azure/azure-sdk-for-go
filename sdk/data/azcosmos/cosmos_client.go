@@ -207,7 +207,6 @@ func (c *Client) CreateDatabase(
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	fmt.Printf("- db create succeeded with code %d", azResponse.StatusCode)
 
 	return newDatabaseResponse(azResponse)
 }

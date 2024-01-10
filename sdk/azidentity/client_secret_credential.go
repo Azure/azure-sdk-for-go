@@ -32,8 +32,8 @@ type ClientSecretCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
+	// tokenCachePersistenceOptions enables persistent token caching when not nil.
+	tokenCachePersistenceOptions *tokenCachePersistenceOptions
 }
 
 // ClientSecretCredential authenticates an application with a client secret.
@@ -54,7 +54,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
 		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
-		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		tokenCachePersistenceOptions: options.tokenCachePersistenceOptions,
 	}
 	c, err := newConfidentialClient(tenantID, clientID, credNameSecret, cred, msalOpts)
 	if err != nil {

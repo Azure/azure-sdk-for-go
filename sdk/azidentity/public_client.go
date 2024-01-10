@@ -35,7 +35,7 @@ type publicClientOptions struct {
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
 	Record                         authenticationRecord
-	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
+	TokenCachePersistenceOptions   *tokenCachePersistenceOptions
 	Username, Password             string
 }
 
@@ -152,7 +152,7 @@ func (p *publicClient) GetToken(ctx context.Context, tro policy.TokenRequestOpti
 		return p.token(ar, err)
 	}
 	if p.opts.DisableAutomaticAuthentication {
-		return azcore.AccessToken{}, ErrAuthenticationRequired
+		return azcore.AccessToken{}, errAuthenticationRequired
 	}
 	at, err := p.reqToken(ctx, client, tro)
 	if err == nil {

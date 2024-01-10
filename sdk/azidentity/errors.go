@@ -18,9 +18,9 @@ import (
 	msal "github.com/AzureAD/microsoft-authentication-library-for-go/apps/errors"
 )
 
-// ErrAuthenticationRequired indicates a credential's Authenticate method must be called to acquire a token
+// errAuthenticationRequired indicates a credential's Authenticate method must be called to acquire a token
 // because user interaction is required and the credential is configured not to automatically prompt the user.
-var ErrAuthenticationRequired error = &credentialUnavailableError{"can't acquire a token without user interaction. Call Authenticate to interactively authenticate a user"}
+var errAuthenticationRequired error = &credentialUnavailableError{"can't acquire a token without user interaction. Call Authenticate to interactively authenticate a user"}
 
 // getResponseFromError retrieves the response carried by
 // an AuthenticationFailedError or MSAL CallErr, if any

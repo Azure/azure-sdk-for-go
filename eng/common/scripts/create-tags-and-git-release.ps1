@@ -34,7 +34,8 @@ if ($pkgList) {
   }
 
   # CREATE TAGS and RELEASES
-  CreateReleases -pkgList $pkgList -releaseApiUrl $apiUrl/releases -releaseSha $releaseSha
+  Write-Host "bebroder debug skipping release"
+  #CreateReleases -pkgList $pkgList -releaseApiUrl $apiUrl/releases -releaseSha $releaseSha
 }
 else {
   Write-Host "After processing, no packages required release."

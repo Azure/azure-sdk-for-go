@@ -7,6 +7,10 @@ param location string = resourceGroup().location
 @description('The client OID to grant access to test resources.')
 param testApplicationOid string
 
+var storageQueueMessageSenderRoleID = 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a'
+var storageQueueDataContributorRoleID = '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
+var storageBlobDataOwnerRoleID = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+
 resource egTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
   name: '${baseName}-eg'
   location: location
@@ -108,15 +112,14 @@ resource storageQueueMessageSenderRole 'Microsoft.Authorization/roleAssignments@
   name: guid('storageQueueMessageSenderRole${baseName}')
   scope: resourceGroup()
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c6a89b2d-59bc-44d0-9896-0f6e12d7b80a')
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageQueueMessageSenderRoleID)
     principalId: egSystemTopic.identity.principalId
   }
 }
 
-var storageQueueDataContributorRoleID = '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
-var storageBlobDataOwnerRoleID = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-
-resource role1 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
+// setup the roles needed for our test service principal to create blobs and receive messages
+// from our storage queue.
+resource storageQueueDataContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   name: guid('testAppSendRole${baseName}')
   scope: resourceGroup()
   properties: {
@@ -125,7 +128,7 @@ resource role1 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   }
 }
 
-resource role2 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
+resource storageBlobDataOwnerRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
   name: guid('testAppSendRole2${baseName}')
   scope: resourceGroup()
   properties: {

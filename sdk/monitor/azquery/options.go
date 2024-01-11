@@ -27,8 +27,8 @@ type LogsClientQueryWorkspaceOptions struct {
 
 // MetricsBatchClientQueryBatchOptions contains the optional parameters for the MetricsBatchClient.QueryBatch method.
 type MetricsBatchClientQueryBatchOptions struct {
-	// The list of aggregation types to retrieve
-	Aggregation []*AggregationType
+	// The list of aggregation types (comma separated) to retrieve.Examples: average, minimum, maximum
+	Aggregation *string
 
 	// The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
 	EndTime *string

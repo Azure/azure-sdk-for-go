@@ -92,30 +92,6 @@ func PossibleLogsColumnTypeValues() []LogsColumnType {
 	}
 }
 
-// MetricAggregationType - The aggregation type of the metric.
-type MetricAggregationType string
-
-const (
-	MetricAggregationTypeAverage MetricAggregationType = "Average"
-	MetricAggregationTypeCount   MetricAggregationType = "Count"
-	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
-	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
-	MetricAggregationTypeNone    MetricAggregationType = "None"
-	MetricAggregationTypeTotal   MetricAggregationType = "Total"
-)
-
-// PossibleMetricAggregationTypeValues returns the possible values for the MetricAggregationType const type.
-func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return []MetricAggregationType{
-		MetricAggregationTypeAverage,
-		MetricAggregationTypeCount,
-		MetricAggregationTypeMaximum,
-		MetricAggregationTypeMinimum,
-		MetricAggregationTypeNone,
-		MetricAggregationTypeTotal,
-	}
-}
-
 // MetricClass - The class of the metric.
 type MetricClass string
 

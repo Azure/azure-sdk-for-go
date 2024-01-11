@@ -80,7 +80,7 @@ func (client *MetricsBatchClient) queryBatchCreateRequest(ctx context.Context, s
 	reqQP.Set("metricnamespace", metricNamespace)
 	reqQP.Set("metricnames", strings.Join(metricNames, ","))
 	if options != nil && options.Aggregation != nil {
-		reqQP.Set("aggregation", aggregationTypeToString(options.Aggregation))
+		reqQP.Set("aggregation", *options.Aggregation)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))

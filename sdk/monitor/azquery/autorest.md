@@ -183,6 +183,7 @@ directive:
   - remove-model: SubscriptionScopeMetricsRequestBodyParameters
   - remove-model: SubscriptionScopeMetricDefinitionCollection
   - remove-model: SubscriptionScopeMetricDefinition
+  - remove-model: MetricAggregationType
 
   # rename metric operations to generate as a separate metrics client
   - rename-operation:
@@ -222,15 +223,10 @@ directive:
   # change type of MetricsClientQueryResourceOptions.Aggregation from *string to []*AggregationType
   - from: options.go
     where: $
-    transform: return $.replace(/Aggregation \*string/g, "Aggregation []*AggregationType");
-  - from: 
-        - metrics_client.go
-        - metricsbatch_client.go
+    transform: return $.replace(/MetricsClientQueryResourceOptions struct {\n\t(?:\/\/.*\s)+\tAggregation \*string/g, "MetricsClientQueryResourceOptions struct {\n	// The list of aggregation types to retrieve\n  Aggregation []*AggregationType");
+  - from: metrics_client.go
     where: $
     transform: return $.replace(/\*options.Aggregation/g, "aggregationTypeToString(options.Aggregation)");
-  - from: swagger-document
-    where: $.parameters.AggregationsParameter
-    transform: $["description"] = "The list of aggregation types to retrieve"
 ```
 
 ``` yaml

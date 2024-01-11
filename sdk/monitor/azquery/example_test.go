@@ -328,7 +328,7 @@ func ExampleMetricsBatchClient_QueryBatch() {
 		[]string{"Ingress"},
 		azquery.ResourceIDList{ResourceIDs: to.SliceOfPtrs(resourceURI1, resourceURI2)},
 		&azquery.MetricsBatchClientQueryBatchOptions{
-			Aggregation: to.SliceOfPtrs(azquery.AggregationTypeAverage),
+			Aggregation: to.Ptr("average"),
 			StartTime:   to.Ptr("2023-11-15"),
 			EndTime:     to.Ptr("2023-11-16"),
 			Interval:    to.Ptr("PT5M"),

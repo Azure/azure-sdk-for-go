@@ -20,6 +20,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
+const (
+	apiVersion = "2020-11-05"
+)
+
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
 	endpoint string
@@ -420,7 +424,7 @@ func (c *Client) createRequest(
 	}
 
 	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
 
 	req.SetOperationValue(operationContext)

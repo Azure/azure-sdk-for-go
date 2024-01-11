@@ -10,17 +10,19 @@ param testApplicationOid string
 output RESOURCE_GROUP string = resourceGroup().name
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
 
+#disable-next-line no-hardcoded-location // resources for the Event Grid namespaces aren't available in all locations
+var egnsLocation = 'eastus'
+
 // 
 // [BEGIN] Event Grid namespace
 //
 
-var namespaceName = '${baseName}-2'
 var nsTopicName = 'testtopic1'
 var nsSubscriptionName = 'testsubscription1'
 
-resource ns_resource 'Microsoft.EventGrid/namespaces@2023-06-01-preview' = {
-  name: namespaceName
-  location: location
+resource eventGridNamespace 'Microsoft.EventGrid/namespaces@2023-06-01-preview' = {
+  name: 'egns${baseName}'
+  location: egnsLocation
   sku: {
     name: 'Standard'
     capacity: 1
@@ -32,7 +34,7 @@ resource ns_resource 'Microsoft.EventGrid/namespaces@2023-06-01-preview' = {
 }
 
 resource ns_testtopic1 'Microsoft.EventGrid/namespaces/topics@2023-06-01-preview' = {
-  parent: ns_resource
+  parent: eventGridNamespace
   name: nsTopicName
   properties: {
     publisherType: 'Custom'
@@ -62,66 +64,32 @@ resource ns_testtopic1_testsubscription1 'Microsoft.EventGrid/namespaces/topics/
 
 // https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2023-06-01-preview/namespaces/list-shared-access-keys?tabs=HTTP
 #disable-next-line outputs-should-not-contain-secrets // (this is just how our test deployments work)
-output EVENTGRID_KEY string = listKeys(resourceId('Microsoft.EventGrid/namespaces', namespaceName), '2023-06-01-preview').key1
+output EVENTGRID_KEY string = eventGridNamespace.listKeys().key1
 // TODO: get this formatted properly
-output EVENTGRID_ENDPOINT string = 'https://${ns_resource.properties.topicsConfiguration.hostname}'
+output EVENTGRID_ENDPOINT string = 'https://${eventGridNamespace.properties.topicsConfiguration.hostname}'
 
 output EVENTGRID_TOPIC string = nsTopicName
 output EVENTGRID_SUBSCRIPTION string = nsSubscriptionName
 
-// [END] Event Grid namespace
-
-//
-// [BEGIN] Event Grid topics (publisher)
-// 
-
-resource egTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
-  name: '${baseName}-eg'
-  location: location
-  kind: 'Azure'
-  properties: {
-    inputSchema: 'EventGridSchema'
+module egBasic './test-resources-eventgrid-basic.bicep' = {
+  name: 'egBasic'
+  params: {
+    baseName: baseName
+    location: location
+    testApplicationOid: testApplicationOid
   }
 }
 
-resource ceTopic 'Microsoft.EventGrid/topics@2023-06-01-preview' = {
-  name: '${baseName}-ce'
-  location: location
-  kind: 'Azure'
-  properties: {
-    inputSchema: 'CloudEventSchemaV1_0'
-  }
-}
-
-resource egContributorRole 'Microsoft.Authorization/roleAssignments@2018-01-01-preview' = {
-  name: guid('egContributorRoleId${baseName}')
-  scope: resourceGroup()
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1e241071-0855-49ea-94dc-649edcd759de')
-    //    roleDefinitionId: '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/1e241071-0855-49ea-94dc-649edcd759de'
-    principalId: testApplicationOid
-  }
-}
-
-resource egDataSenderRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('egSenderRoleId${baseName}')
-  scope: resourceGroup()
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd5a91429-5739-47e2-a06b-3470a27159e7')
-    principalId: testApplicationOid
-  }
-}
-
-output EVENTGRID_TOPIC_NAME string = egTopic.name
+output EVENTGRID_TOPIC_NAME string = egBasic.outputs.EVENTGRID_TOPIC_NAME
 #disable-next-line outputs-should-not-contain-secrets // (this is just how our test deployments work)
-output EVENTGRID_TOPIC_KEY string = egTopic.listKeys().key1
-output EVENTGRID_TOPIC_ENDPOINT string = egTopic.properties.endpoint
+output EVENTGRID_TOPIC_KEY string = egBasic.outputs.EVENTGRID_TOPIC_KEY
+output EVENTGRID_TOPIC_ENDPOINT string = egBasic.outputs.EVENTGRID_TOPIC_ENDPOINT
 
-output EVENTGRID_CE_TOPIC_NAME string = ceTopic.name
+output EVENTGRID_CE_TOPIC_NAME string = egBasic.outputs.EVENTGRID_CE_TOPIC_NAME
 #disable-next-line outputs-should-not-contain-secrets // (this is just how our test deployments work)
-output EVENTGRID_CE_TOPIC_KEY string = ceTopic.listKeys().key1
-output EVENTGRID_CE_TOPIC_ENDPOINT string = ceTopic.properties.endpoint
+output EVENTGRID_CE_TOPIC_KEY string = egBasic.outputs.EVENTGRID_CE_TOPIC_KEY
+output EVENTGRID_CE_TOPIC_ENDPOINT string = egBasic.outputs.EVENTGRID_CE_TOPIC_ENDPOINT
 
-//
-// [END] Event Grid topics (publisher)
-// 
+output STORAGE_ACCOUNT_BLOB string = egBasic.outputs.STORAGE_ACCOUNT_BLOB
+output STORAGE_ACCOUNT_QUEUE string = egBasic.outputs.STORAGE_ACCOUNT_QUEUE
+output STORAGE_QUEUE_NAME string = egBasic.outputs.STORAGE_QUEUE_NAME

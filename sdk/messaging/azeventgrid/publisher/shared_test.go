@@ -13,7 +13,6 @@ import (
 	"io"
 	"net/http"
 	"net/http/httputil"
-	"os"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -40,35 +39,10 @@ type eventGridVars struct {
 // 	Endpoint: "https://localhost/fake-endpoint",
 // }
 
-func newTestVars(t *testing.T) eventGridVars {
-	// TODO: will get back to this when adding in recordings.
-	// if recording.GetRecordMode() != recording.LiveMode {
-	// 	return eventGridVars{
-	// 		EG: fakeVars,
-	// 		CE: fakeVars,
-	// 	}
-	// }
-
-	egVars := eventGridVars{
-		EG: topicVars{Name: os.Getenv("EVENTGRID_TOPIC_NAME"),
-			Key:      os.Getenv("EVENTGRID_TOPIC_KEY"),
-			Endpoint: os.Getenv("EVENTGRID_TOPIC_ENDPOINT"),
-		},
-		CE: topicVars{Name: os.Getenv("EVENTGRID_CE_TOPIC_NAME"),
-			Key:      os.Getenv("EVENTGRID_CE_TOPIC_KEY"),
-			Endpoint: os.Getenv("EVENTGRID_CE_TOPIC_ENDPOINT"),
-		},
+func skipIntegration(t *testing.T) {
+	if testVars.SkipReason != "" {
+		t.Skipf(testVars.SkipReason)
 	}
-
-	for _, v := range []topicVars{egVars.EG, egVars.CE} {
-		if v.Endpoint == "" || v.Key == "" || v.Name == "" {
-			t.Logf("WARNING: not enabling `publisher` integration tests, environment variables not set")
-			t.Skip()
-			break
-		}
-	}
-
-	return egVars
 }
 
 func newClientOptionsForTest(t *testing.T, tv topicVars) *publisher.ClientOptions {

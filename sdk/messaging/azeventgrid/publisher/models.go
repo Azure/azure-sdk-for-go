@@ -10,6 +10,2352 @@ package publisher
 
 import "time"
 
+// APIManagementAPICreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APICreated
+// event.
+type APIManagementAPICreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementAPIDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIDeleted
+// event.
+type APIManagementAPIDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementAPIReleaseCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseCreated
+// event.
+type APIManagementAPIReleaseCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementAPIReleaseDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseDeleted
+// event.
+type APIManagementAPIReleaseDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementAPIReleaseUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseUpdated
+// event.
+type APIManagementAPIReleaseUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementAPIUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIUpdated
+// event.
+type APIManagementAPIUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayAPIAddedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayAPIAdded
+// event.
+type APIManagementGatewayAPIAddedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/apis/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayAPIRemovedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayAPIRemoved
+// event.
+type APIManagementGatewayAPIRemovedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/apis/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayCertificateAuthorityCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityCreated
+// event.
+type APIManagementGatewayCertificateAuthorityCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/certificateAuthorities/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayCertificateAuthorityDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted
+// event.
+type APIManagementGatewayCertificateAuthorityDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/certificateAuthorities/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayCertificateAuthorityUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated
+// event.
+type APIManagementGatewayCertificateAuthorityUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/certificateAuthorities/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCreated
+// event.
+type APIManagementGatewayCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayDeleted
+// event.
+type APIManagementGatewayDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayHostnameConfigurationCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationCreated
+// event.
+type APIManagementGatewayHostnameConfigurationCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayHostnameConfigurationDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted
+// event.
+type APIManagementGatewayHostnameConfigurationDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayHostnameConfigurationUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated
+// event.
+type APIManagementGatewayHostnameConfigurationUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementGatewayUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayUpdated
+// event.
+type APIManagementGatewayUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementProductCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductCreated
+// event.
+type APIManagementProductCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementProductDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductDeleted
+// event.
+type APIManagementProductDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementProductUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductUpdated
+// event.
+type APIManagementProductUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementSubscriptionCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionCreated
+// event.
+type APIManagementSubscriptionCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementSubscriptionDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionDeleted
+// event.
+type APIManagementSubscriptionDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementSubscriptionUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionUpdated
+// event.
+type APIManagementSubscriptionUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementUserCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserCreated
+// event.
+type APIManagementUserCreatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementUserDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserDeleted
+// event.
+type APIManagementUserDeletedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// APIManagementUserUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserUpdated
+// event.
+type APIManagementUserUpdatedEventData struct {
+	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
+	// type. Uses the format,
+	// /subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>
+	ResourceURI *string
+}
+
+// AcsChatEventBaseProperties - Schema of common properties of all chat events
+type AcsChatEventBaseProperties struct {
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+}
+
+// AcsChatEventInThreadBaseProperties - Schema of common properties of all thread-level chat events
+type AcsChatEventInThreadBaseProperties struct {
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+}
+
+// AcsChatMessageDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageDeleted
+// event.
+type AcsChatMessageDeletedEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The time at which the message was deleted
+	DeleteTime *time.Time
+
+	// The chat message id
+	MessageID *string
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageDeletedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageDeletedInThread
+// event.
+type AcsChatMessageDeletedInThreadEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The time at which the message was deleted
+	DeleteTime *time.Time
+
+	// The chat message id
+	MessageID *string
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageEditedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageEdited
+// event.
+type AcsChatMessageEditedEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The time at which the message was edited
+	EditTime *time.Time
+
+	// The body of the chat message
+	MessageBody *string
+
+	// The chat message id
+	MessageID *string
+
+	// The chat message metadata
+	Metadata map[string]*string
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageEditedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageEditedInThread
+// event.
+type AcsChatMessageEditedInThreadEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The time at which the message was edited
+	EditTime *time.Time
+
+	// The body of the chat message
+	MessageBody *string
+
+	// The chat message id
+	MessageID *string
+
+	// The chat message metadata
+	Metadata map[string]*string
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageEventBaseProperties - Schema of common properties of all chat message events
+type AcsChatMessageEventBaseProperties struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The chat message id
+	MessageID *string
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageEventInThreadBaseProperties - Schema of common properties of all thread-level chat message events
+type AcsChatMessageEventInThreadBaseProperties struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The chat message id
+	MessageID *string
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageReceived
+// event.
+type AcsChatMessageReceivedEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The body of the chat message
+	MessageBody *string
+
+	// The chat message id
+	MessageID *string
+
+	// The chat message metadata
+	Metadata map[string]*string
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatMessageReceivedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageReceivedInThread
+// event.
+type AcsChatMessageReceivedInThreadEventData struct {
+	// The original compose time of the message
+	ComposeTime *time.Time
+
+	// The body of the chat message
+	MessageBody *string
+
+	// The chat message id
+	MessageID *string
+
+	// The chat message metadata
+	Metadata map[string]*string
+
+	// The communication identifier of the sender
+	SenderCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The display name of the sender
+	SenderDisplayName *string
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The type of the message
+	Type *string
+
+	// The version of the message
+	Version *int64
+}
+
+// AcsChatParticipantAddedToThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadParticipantAdded
+// event.
+type AcsChatParticipantAddedToThreadEventData struct {
+	// The communication identifier of the user who added the user
+	AddedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The details of the user who was added
+	ParticipantAdded *AcsChatThreadParticipantProperties
+
+	// The chat thread id
+	ThreadID *string
+
+	// The time at which the user was added to the thread
+	Time *time.Time
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatParticipantAddedToThreadWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
+// event.
+type AcsChatParticipantAddedToThreadWithUserEventData struct {
+	// The communication identifier of the user who added the user
+	AddedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The details of the user who was added
+	ParticipantAdded *AcsChatThreadParticipantProperties
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The time at which the user was added to the thread
+	Time *time.Time
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatParticipantRemovedFromThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadParticipantRemoved
+// event.
+type AcsChatParticipantRemovedFromThreadEventData struct {
+	// The details of the user who was removed
+	ParticipantRemoved *AcsChatThreadParticipantProperties
+
+	// The communication identifier of the user who removed the user
+	RemovedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The time at which the user was removed to the thread
+	Time *time.Time
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatParticipantRemovedFromThreadWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser
+// event.
+type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The details of the user who was removed
+	ParticipantRemoved *AcsChatThreadParticipantProperties
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the user who removed the user
+	RemovedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The time at which the user was removed to the thread
+	Time *time.Time
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadCreatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadCreated
+// event.
+type AcsChatThreadCreatedEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The communication identifier of the user who created the thread
+	CreatedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The list of properties of participants who are part of the thread
+	Participants []AcsChatThreadParticipantProperties
+
+	// The thread properties
+	Properties map[string]any
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadCreatedWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadCreatedWithUser
+// event.
+type AcsChatThreadCreatedWithUserEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The communication identifier of the user who created the thread
+	CreatedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The thread metadata
+	Metadata map[string]*string
+
+	// The list of properties of participants who are part of the thread
+	Participants []AcsChatThreadParticipantProperties
+
+	// The thread properties
+	Properties map[string]any
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadDeleted
+// event.
+type AcsChatThreadDeletedEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The deletion time of the thread
+	DeleteTime *time.Time
+
+	// The communication identifier of the user who deleted the thread
+	DeletedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadEventBaseProperties - Schema of common properties of all chat thread events
+type AcsChatThreadEventBaseProperties struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadEventInThreadBaseProperties - Schema of common properties of all chat thread events
+type AcsChatThreadEventInThreadBaseProperties struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadParticipantProperties - Schema of the chat thread participant
+type AcsChatThreadParticipantProperties struct {
+	// The name of the user
+	DisplayName *string
+
+	// The metadata of the user
+	Metadata map[string]*string
+
+	// The communication identifier of the user
+	ParticipantCommunicationIdentifier *CommunicationIdentifierModel
+}
+
+// AcsChatThreadPropertiesUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadPropertiesUpdated
+// event.
+type AcsChatThreadPropertiesUpdatedEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The time at which the properties of the thread were updated
+	EditTime *time.Time
+
+	// The communication identifier of the user who updated the thread properties
+	EditedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The thread metadata
+	Metadata map[string]*string
+
+	// The updated thread properties
+	Properties map[string]any
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadPropertiesUpdatedPerUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+// event.
+type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The time at which the properties of the thread were updated
+	EditTime *time.Time
+
+	// The communication identifier of the user who updated the thread properties
+	EditedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The thread metadata
+	Metadata map[string]*string
+
+	// The updated thread properties
+	Properties map[string]any
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsChatThreadWithUserDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadWithUserDeleted
+// event.
+type AcsChatThreadWithUserDeletedEventData struct {
+	// The original creation time of the thread
+	CreateTime *time.Time
+
+	// The deletion time of the thread
+	DeleteTime *time.Time
+
+	// The communication identifier of the user who deleted the thread
+	DeletedByCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The communication identifier of the target user
+	RecipientCommunicationIdentifier *CommunicationIdentifierModel
+
+	// The chat thread id
+	ThreadID *string
+
+	// The transaction id will be used as co-relation vector
+	TransactionID *string
+
+	// The version of the thread
+	Version *int64
+}
+
+// AcsEmailDeliveryReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.EmailDeliveryReportReceived
+// event.
+type AcsEmailDeliveryReportReceivedEventData struct {
+	// The time at which the email delivery report received timestamp
+	DeliveryAttemptTimestamp *time.Time
+
+	// Detailed information about the status if any
+	DeliveryStatusDetails *AcsEmailDeliveryReportStatusDetails
+
+	// The Id of the email been sent
+	MessageID *string
+
+	// The recipient Email Address
+	Recipient *string
+
+	// The Sender Email Address
+	Sender *string
+
+	// The status of the email. Any value other than Delivered is considered failed.
+	Status *AcsEmailDeliveryReportStatus
+}
+
+// AcsEmailDeliveryReportStatusDetails - Detailed information about the status if any
+type AcsEmailDeliveryReportStatusDetails struct {
+	// Detailed status message
+	StatusMessage *string
+}
+
+// AcsEmailEngagementTrackingReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.EmailEngagementTrackingReportReceived
+// event.
+type AcsEmailEngagementTrackingReportReceivedEventData struct {
+	// The type of engagement user have with email
+	Engagement *AcsUserEngagement
+
+	// The context of the type of engagement user had with email
+	EngagementContext *string
+
+	// The Id of the email that has been sent
+	MessageID *string
+
+	// The Recipient Email Address
+	Recipient *string
+
+	// The Sender Email Address
+	Sender *string
+
+	// The time at which the user interacted with the email
+	UserActionTimestamp *time.Time
+
+	// The user agent interacting with the email
+	UserAgent *string
+}
+
+// AcsIncomingCallCustomContext - Custom Context of Incoming Call
+type AcsIncomingCallCustomContext struct {
+	// Sip Headers for incoming call
+	SipHeaders map[string]*string
+
+	// Voip Headers for incoming call
+	VoipHeaders map[string]*string
+}
+
+// AcsIncomingCallEventData - Schema of the Data property of an Event for an Microsoft.Communication.IncomingCall
+// event
+type AcsIncomingCallEventData struct {
+	// Display name of caller.
+	CallerDisplayName *string
+
+	// CorrelationId (CallId).
+	CorrelationID *string
+
+	// Custom Context of Incoming Call
+	CustomContext *AcsIncomingCallCustomContext
+
+	// The communication identifier of the user who initiated the call.
+	FromCommunicationIdentifier *CommunicationIdentifierModel
+
+	// Signed incoming call context.
+	IncomingCallContext *string
+
+	// The Id of the server call
+	ServerCallID *string
+
+	// The communication identifier of the target user.
+	ToCommunicationIdentifier *CommunicationIdentifierModel
+}
+
+// AcsRecordingChunkInfoProperties - Schema for all properties of Recording Chunk Information.
+type AcsRecordingChunkInfoProperties struct {
+	// The location of the content for this chunk
+	ContentLocation *string
+
+	// The location to delete all chunk storage
+	DeleteLocation *string
+
+	// The documentId of the recording chunk
+	DocumentID *string
+
+	// The reason for ending the recording chunk
+	EndReason *string
+
+	// The index of the recording chunk
+	Index *int64
+
+	// The location of the metadata for this chunk
+	MetadataLocation *string
+}
+
+// AcsRecordingFileStatusUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RecordingFileStatusUpdated
+// event.
+type AcsRecordingFileStatusUpdatedEventData struct {
+	// The recording channel type - Mixed, Unmixed
+	RecordingChannelType *RecordingChannelType
+
+	// The recording content type- AudioVideo, or Audio
+	RecordingContentType *RecordingContentType
+
+	// The recording duration in milliseconds
+	RecordingDurationMs *int64
+
+	// The recording format type - Mp4, Mp3, Wav
+	RecordingFormatType *RecordingFormatType
+
+	// The time at which the recording started
+	RecordingStartTime *time.Time
+
+	// The details of recording storage information
+	RecordingStorageInfo *AcsRecordingStorageInfoProperties
+
+	// The reason for ending recording session
+	SessionEndReason *string
+}
+
+// AcsRecordingStorageInfoProperties - Schema for all properties of Recording Storage Information.
+type AcsRecordingStorageInfoProperties struct {
+	// List of details of recording chunks information
+	RecordingChunks []AcsRecordingChunkInfoProperties
+}
+
+// AcsRouterChannelConfiguration - Router Channel Configuration
+type AcsRouterChannelConfiguration struct {
+	// Capacity Cost Per Job for Router Job
+	CapacityCostPerJob *int32
+
+	// Channel ID for Router Job
+	ChannelID *string
+
+	// Max Number of Jobs for Router Job
+	MaxNumberOfJobs *int32
+}
+
+// AcsRouterCommunicationError - Router Communication Error
+type AcsRouterCommunicationError struct {
+	// Router Communication Error Code
+	Code *string
+
+	// List of Router Communication Errors
+	Details []AcsRouterCommunicationError
+
+	// Router Communication Inner Error
+	Innererror *AcsRouterCommunicationError
+
+	// Router Communication Error Message
+	Message *string
+
+	// Router Communication Error Target
+	Target *string
+}
+
+// AcsRouterEventData - Schema of common properties of all Router events
+type AcsRouterEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+}
+
+// AcsRouterJobCancelledEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobCancelled
+// event
+type AcsRouterJobCancelledEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Disposition Code
+	DispositionCode *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Note
+	Note *string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobClassificationFailedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClassificationFailed
+// event
+type AcsRouterJobClassificationFailedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Classification Policy Id
+	ClassificationPolicyID *string
+
+	// Router Job Classification Failed Errors
+	Errors []AcsRouterCommunicationError
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobClassifiedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClassified
+// event
+type AcsRouterJobClassifiedEventData struct {
+	// Router Job Attached Worker Selector
+	AttachedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Classification Policy Id
+	ClassificationPolicyID *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Priority
+	Priority *int32
+
+	// Router Job Queue Info
+	QueueDetails *AcsRouterQueueDetails
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobClosedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClosed
+// event
+type AcsRouterJobClosedEventData struct {
+	// Router Job Closed Assignment Id
+	AssignmentID *string
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Closed Disposition Code
+	DispositionCode *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+
+	// Router Job Closed Worker Id
+	WorkerID *string
+}
+
+// AcsRouterJobCompletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobCompleted
+// event
+type AcsRouterJobCompletedEventData struct {
+	// Router Job Completed Assignment Id
+	AssignmentID *string
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+
+	// Router Job Completed Worker Id
+	WorkerID *string
+}
+
+// AcsRouterJobDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobDeleted
+// event
+type AcsRouterJobDeletedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobEventData - Schema of common properties of all Router Job events
+type AcsRouterJobEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobExceptionTriggeredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobExceptionTriggered
+// event
+type AcsRouterJobExceptionTriggeredEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Exception Triggered Rule Id
+	ExceptionRuleID *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Job Exception Triggered Rule Key
+	RuleKey *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobQueuedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobQueued
+// event
+type AcsRouterJobQueuedEventData struct {
+	// Router Job Queued Attached Worker Selector
+	AttachedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Priority
+	Priority *int32
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Job Queued Requested Worker Selector
+	RequestedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobReceived
+// event
+type AcsRouterJobReceivedEventData struct {
+	// REQUIRED; Unavailable For Matching for Router Job Received
+	UnavailableForMatching *bool
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Classification Policy Id
+	ClassificationPolicyID *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job Received Job Status
+	JobStatus *AcsRouterJobStatus
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Priority
+	Priority *int32
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Job Received Requested Worker Selectors
+	RequestedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Job Received Scheduled Time in UTC
+	ScheduledOn *time.Time
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobSchedulingFailedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobSchedulingFailed
+// event
+type AcsRouterJobSchedulingFailedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Scheduling Failed Attached Worker Selector Expired
+	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Job Scheduling Failed Requested Worker Selector Expired
+	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Job Scheduling Failed Reason
+	FailureReason *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Priority
+	Priority *int32
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Job Scheduling Failed Scheduled Time in UTC
+	ScheduledOn *time.Time
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobUnassignedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobUnassigned
+// event
+type AcsRouterJobUnassignedEventData struct {
+	// Router Job Unassigned Assignment Id
+	AssignmentID *string
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+
+	// Router Job Unassigned Worker Id
+	WorkerID *string
+}
+
+// AcsRouterJobWaitingForActivationEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobWaitingForActivation
+// event
+type AcsRouterJobWaitingForActivationEventData struct {
+	// REQUIRED; Router Job Waiting For Activation Unavailable For Matching
+	UnavailableForMatching *bool
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Waiting For Activation Worker Selector Expired
+	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Job Waiting For Activation Requested Worker Selector Expired
+	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job Waiting For Activation Priority
+	Priority *int32
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Job Waiting For Activation Scheduled Time in UTC
+	ScheduledOn *time.Time
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterJobWorkerSelectorsExpiredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
+// event
+type AcsRouterJobWorkerSelectorsExpiredEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Job Worker Selectors Expired Attached Worker Selectors
+	ExpiredAttachedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Job Worker Selectors Expired Requested Worker Selectors
+	ExpiredRequestedWorkerSelectors []AcsRouterWorkerSelector
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Job events Labels
+	Labels map[string]*string
+
+	// Router Job events Queue Id
+	QueueID *string
+
+	// Router Jobs events Tags
+	Tags map[string]*string
+}
+
+// AcsRouterQueueDetails - Router Queue Details
+type AcsRouterQueueDetails struct {
+	// Router Queue Id
+	ID *string
+
+	// Router Queue Labels
+	Labels map[string]*string
+
+	// Router Queue Name
+	Name *string
+}
+
+// AcsRouterWorkerDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerDeleted
+// event
+type AcsRouterWorkerDeletedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerDeregisteredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerDeregistered
+// event
+type AcsRouterWorkerDeregisteredEventData struct {
+	// Router Worker Deregistered Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerEventData - Schema of common properties of all Router Worker events
+type AcsRouterWorkerEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerOfferAcceptedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferAccepted
+// event
+type AcsRouterWorkerOfferAcceptedEventData struct {
+	// Router Worker Offer Accepted Assignment Id
+	AssignmentID *string
+
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker Offer Accepted Job Labels
+	JobLabels map[string]*string
+
+	// Router Worker Offer Accepted Job Priority
+	JobPriority *int32
+
+	// Router Worker Offer Accepted Job Tags
+	JobTags map[string]*string
+
+	// Router Worker Offer Accepted Offer Id
+	OfferID *string
+
+	// Router Worker Offer Accepted Queue Id
+	QueueID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+
+	// Router Worker Offer Accepted Worker Labels
+	WorkerLabels map[string]*string
+
+	// Router Worker Offer Accepted Worker Tags
+	WorkerTags map[string]*string
+}
+
+// AcsRouterWorkerOfferDeclinedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferDeclined
+// event
+type AcsRouterWorkerOfferDeclinedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker Offer Declined Offer Id
+	OfferID *string
+
+	// Router Worker Offer Declined Queue Id
+	QueueID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerOfferExpiredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferExpired
+// event
+type AcsRouterWorkerOfferExpiredEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker Offer Expired Offer Id
+	OfferID *string
+
+	// Router Worker Offer Expired Queue Id
+	QueueID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerOfferIssuedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferIssued
+// event
+type AcsRouterWorkerOfferIssuedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Worker Offer Issued Expiration Time in UTC
+	ExpiresOn *time.Time
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker Offer Issued Job Labels
+	JobLabels map[string]*string
+
+	// Router Worker Offer Issued Job Priority
+	JobPriority *int32
+
+	// Router Worker Offer Issued Job Tags
+	JobTags map[string]*string
+
+	// Router Worker Offer Issued Offer Id
+	OfferID *string
+
+	// Router Worker Offer Issued Time in UTC
+	OfferedOn *time.Time
+
+	// Router Worker Offer Issued Queue Id
+	QueueID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+
+	// Router Worker Offer Issued Worker Labels
+	WorkerLabels map[string]*string
+
+	// Router Worker Offer Issued Worker Tags
+	WorkerTags map[string]*string
+}
+
+// AcsRouterWorkerOfferRevokedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferRevoked
+// event
+type AcsRouterWorkerOfferRevokedEventData struct {
+	// Router Event Channel ID
+	ChannelID *string
+
+	// Router Event Channel Reference
+	ChannelReference *string
+
+	// Router Event Job ID
+	JobID *string
+
+	// Router Worker Offer Revoked Offer Id
+	OfferID *string
+
+	// Router Worker Offer Revoked Queue Id
+	QueueID *string
+
+	// Router Worker events Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerRegisteredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerRegistered
+// event
+type AcsRouterWorkerRegisteredEventData struct {
+	// Router Worker Registered Channel Configuration
+	ChannelConfigurations []AcsRouterChannelConfiguration
+
+	// Router Worker Registered Labels
+	Labels map[string]*string
+
+	// Router Worker Registered Queue Info
+	QueueAssignments []AcsRouterQueueDetails
+
+	// Router Worker Registered Tags
+	Tags map[string]*string
+
+	// Router Worker Register Total Capacity
+	TotalCapacity *int32
+
+	// Router Worker Registered Worker Id
+	WorkerID *string
+}
+
+// AcsRouterWorkerSelector - Router Job Worker Selector
+type AcsRouterWorkerSelector struct {
+	// Router Job Worker Selector Expiration Time
+	ExpirationTime *time.Time
+
+	// Router Job Worker Selector Key
+	Key *string
+
+	// Router Job Worker Selector Label Operator
+	LabelOperator *AcsRouterLabelOperator
+
+	// Router Job Worker Selector Value
+	LabelValue any
+
+	// Router Job Worker Selector State
+	State *AcsRouterWorkerSelectorState
+
+	// Router Job Worker Selector Time to Live in Seconds
+	TTLSeconds *float32
+}
+
+// AcsSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
+type AcsSmsDeliveryAttemptProperties struct {
+	// Number of segments whose delivery failed
+	SegmentsFailed *int32
+
+	// Number of segments that were successfully delivered
+	SegmentsSucceeded *int32
+
+	// TimeStamp when delivery was attempted
+	Timestamp *time.Time
+}
+
+// AcsSmsDeliveryReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.SMSDeliveryReportReceived
+// event.
+type AcsSmsDeliveryReportReceivedEventData struct {
+	// List of details of delivery attempts made
+	DeliveryAttempts []AcsSmsDeliveryAttemptProperties
+
+	// Status of Delivery
+	DeliveryStatus *string
+
+	// Details about Delivery Status
+	DeliveryStatusDetails *string
+
+	// The identity of SMS message sender
+	From *string
+
+	// The identity of the SMS message
+	MessageID *string
+
+	// The time at which the SMS delivery report was received
+	ReceivedTimestamp *time.Time
+
+	// Customer Content
+	Tag *string
+
+	// The identity of SMS message receiver
+	To *string
+}
+
+// AcsSmsEventBaseProperties - Schema of common properties of all SMS events
+type AcsSmsEventBaseProperties struct {
+	// The identity of SMS message sender
+	From *string
+
+	// The identity of the SMS message
+	MessageID *string
+
+	// The identity of SMS message receiver
+	To *string
+}
+
+// AcsSmsReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.SMSReceived event.
+type AcsSmsReceivedEventData struct {
+	// The identity of SMS message sender
+	From *string
+
+	// The SMS content
+	Message *string
+
+	// The identity of the SMS message
+	MessageID *string
+
+	// The time at which the SMS was received
+	ReceivedTimestamp *time.Time
+
+	// The identity of SMS message receiver
+	To *string
+}
+
+// AcsUserDisconnectedEventData - Schema of the Data property of an Event for an Microsoft.Communication.UserDisconnected
+// event.
+type AcsUserDisconnectedEventData struct {
+	// The communication identifier of the user who was disconnected
+	UserCommunicationIdentifier *CommunicationIdentifierModel
+}
+
+// AppConfigurationKeyValueDeletedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.KeyValueDeleted
+// event.
+type AppConfigurationKeyValueDeletedEventData struct {
+	// The etag representing the key-value that was deleted.
+	Etag *string
+
+	// The key used to identify the key-value that was deleted.
+	Key *string
+
+	// The label, if any, used to identify the key-value that was deleted.
+	Label *string
+
+	// The sync token representing the server state after the event.
+	SyncToken *string
+}
+
+// AppConfigurationKeyValueModifiedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.KeyValueModified
+// event.
+type AppConfigurationKeyValueModifiedEventData struct {
+	// The etag representing the new state of the key-value.
+	Etag *string
+
+	// The key used to identify the key-value that was modified.
+	Key *string
+
+	// The label, if any, used to identify the key-value that was modified.
+	Label *string
+
+	// The sync token representing the server state after the event.
+	SyncToken *string
+}
+
+// AppConfigurationSnapshotCreatedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.SnapshotCreated
+// event.
+type AppConfigurationSnapshotCreatedEventData struct {
+	// The etag representing the new state of the snapshot.
+	Etag *string
+
+	// The name of the snapshot.
+	Name *string
+
+	// The sync token representing the server state after the event.
+	SyncToken *string
+}
+
+// AppConfigurationSnapshotEventData - Schema of common properties of snapshot events
+type AppConfigurationSnapshotEventData struct {
+	// The etag representing the new state of the snapshot.
+	Etag *string
+
+	// The name of the snapshot.
+	Name *string
+
+	// The sync token representing the server state after the event.
+	SyncToken *string
+}
+
+// AppConfigurationSnapshotModifiedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.SnapshotModified
+// event.
+type AppConfigurationSnapshotModifiedEventData struct {
+	// The etag representing the new state of the snapshot.
+	Etag *string
+
+	// The name of the snapshot.
+	Name *string
+
+	// The sync token representing the server state after the event.
+	SyncToken *string
+}
+
+// AppEventTypeDetail - Detail of action on the app.
+type AppEventTypeDetail struct {
+	// Type of action of the operation.
+	Action *AppAction
+}
+
+// AppServicePlanEventTypeDetail - Detail of action on the app service plan.
+type AppServicePlanEventTypeDetail struct {
+	// Type of action on the app service plan.
+	Action *AppServicePlanAction
+
+	// Kind of environment where app service plan is.
+	StampKind *StampKind
+
+	// Asynchronous operation status of the operation on the app service plan.
+	Status *AsyncStatus
+}
+
+// CommunicationIdentifierModel - Identifies a participant in Azure Communication services. A participant is, for example,
+// a phone number or an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
+// most one further property may be set.
+type CommunicationIdentifierModel struct {
+	// The communication user.
+	CommunicationUser *CommunicationUserIdentifierModel
+
+	// The Microsoft Teams user.
+	MicrosoftTeamsUser *MicrosoftTeamsUserIdentifierModel
+
+	// The phone number.
+	PhoneNumber *PhoneNumberIdentifierModel
+
+	// Raw Id of the identifier. Optional in requests, required in responses.
+	RawID *string
+}
+
+// CommunicationUserIdentifierModel - A user that got created with an Azure Communication Services resource.
+type CommunicationUserIdentifierModel struct {
+	// REQUIRED; The Id of the communication user.
+	ID *string
+}
+
+// ContainerRegistryArtifactEventData - The content of the event request message.
+type ContainerRegistryArtifactEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The target of the event.
+	Target *ContainerRegistryArtifactEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerRegistryArtifactEventTarget - The target of the event.
+type ContainerRegistryArtifactEventTarget struct {
+	// The digest of the artifact.
+	Digest *string
+
+	// The MIME type of the artifact.
+	MediaType *string
+
+	// The name of the artifact.
+	Name *string
+
+	// The repository name of the artifact.
+	Repository *string
+
+	// The size in bytes of the artifact.
+	Size *int64
+
+	// The tag of the artifact.
+	Tag *string
+
+	// The version of the artifact.
+	Version *string
+}
+
+// ContainerRegistryChartDeletedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ChartDeleted
+// event.
+type ContainerRegistryChartDeletedEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The target of the event.
+	Target *ContainerRegistryArtifactEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerRegistryChartPushedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ChartPushed
+// event.
+type ContainerRegistryChartPushedEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The target of the event.
+	Target *ContainerRegistryArtifactEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerRegistryEventActor - The agent that initiated the event. For most situations, this could be from the authorization
+// context of the request.
+type ContainerRegistryEventActor struct {
+	// The subject or username associated with the request context that generated the event.
+	Name *string
+}
+
+// ContainerRegistryEventConnectedRegistry - The connected registry information if the event is generated by a connected registry.
+type ContainerRegistryEventConnectedRegistry struct {
+	// The name of the connected registry that generated this event.
+	Name *string
+}
+
+// ContainerRegistryEventData - The content of the event request message.
+type ContainerRegistryEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+	Actor *ContainerRegistryEventActor
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The request that generated the event.
+	Request *ContainerRegistryEventRequest
+
+	// The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
+	// it.
+	Source *ContainerRegistryEventSource
+
+	// The target of the event.
+	Target *ContainerRegistryEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerRegistryEventRequest - The request that generated the event.
+type ContainerRegistryEventRequest struct {
+	// The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the
+	// standard http request.
+	Addr *string
+
+	// The externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
+	Host *string
+
+	// The ID of the request that initiated the event.
+	ID *string
+
+	// The request method that generated the event.
+	Method *string
+
+	// The user agent header of the request.
+	Useragent *string
+}
+
+// ContainerRegistryEventSource - The registry node that generated the event. Put differently, while the actor initiates the
+// event, the source generates it.
+type ContainerRegistryEventSource struct {
+	// The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname()
+	// along with the running port.
+	Addr *string
+
+	// The running instance of an application. Changes after each restart.
+	InstanceID *string
+}
+
+// ContainerRegistryEventTarget - The target of the event.
+type ContainerRegistryEventTarget struct {
+	// The digest of the content, as defined by the Registry V2 HTTP API Specification.
+	Digest *string
+
+	// The number of bytes of the content. Same as Size field.
+	Length *int64
+
+	// The MIME type of the referenced object.
+	MediaType *string
+
+	// The repository name.
+	Repository *string
+
+	// The number of bytes of the content. Same as Length field.
+	Size *int64
+
+	// The tag name.
+	Tag *string
+
+	// The direct URL to the content.
+	URL *string
+}
+
+// ContainerRegistryImageDeletedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ImageDeleted
+// event.
+type ContainerRegistryImageDeletedEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+	Actor *ContainerRegistryEventActor
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The request that generated the event.
+	Request *ContainerRegistryEventRequest
+
+	// The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
+	// it.
+	Source *ContainerRegistryEventSource
+
+	// The target of the event.
+	Target *ContainerRegistryEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerRegistryImagePushedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ImagePushed
+// event.
+type ContainerRegistryImagePushedEventData struct {
+	// The action that encompasses the provided event.
+	Action *string
+
+	// The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+	Actor *ContainerRegistryEventActor
+
+	// The connected registry information if the event is generated by a connected registry.
+	ConnectedRegistry *ContainerRegistryEventConnectedRegistry
+
+	// The event ID.
+	ID *string
+
+	// The location of the event.
+	Location *string
+
+	// The request that generated the event.
+	Request *ContainerRegistryEventRequest
+
+	// The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
+	// it.
+	Source *ContainerRegistryEventSource
+
+	// The target of the event.
+	Target *ContainerRegistryEventTarget
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ContainerServiceClusterSupportEndedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.ClusterSupportEnded
+// event
+type ContainerServiceClusterSupportEndedEventData struct {
+	// The Kubernetes version of the ManagedCluster resource
+	KubernetesVersion *string
+}
+
+// ContainerServiceClusterSupportEndingEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.ClusterSupportEnding
+// event
+type ContainerServiceClusterSupportEndingEventData struct {
+	// The Kubernetes version of the ManagedCluster resource
+	KubernetesVersion *string
+}
+
+// ContainerServiceClusterSupportEventData - Schema of common properties of cluster support events
+type ContainerServiceClusterSupportEventData struct {
+	// The Kubernetes version of the ManagedCluster resource
+	KubernetesVersion *string
+}
+
+// ContainerServiceNewKubernetesVersionAvailableEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+// event
+type ContainerServiceNewKubernetesVersionAvailableEventData struct {
+	// The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any version
+	// in preview at the time of publishing the event
+	LatestPreviewKubernetesVersion *string
+
+	// The highest PATCH Kubernetes version for the MINOR version considered stable for the ManagedCluster resource
+	LatestStableKubernetesVersion *string
+
+	// The highest PATCH Kubernetes version for the highest MINOR version supported by ManagedCluster resource
+	LatestSupportedKubernetesVersion *string
+
+	// The highest PATCH Kubernetes version for the lowest applicable MINOR version available for the ManagedCluster resource
+	LowestMinorKubernetesVersion *string
+}
+
+// ContainerServiceNodePoolRollingEventData - Schema of common properties of node pool rolling events
+type ContainerServiceNodePoolRollingEventData struct {
+	// The name of the node pool in the ManagedCluster resource
+	NodePoolName *string
+}
+
+// ContainerServiceNodePoolRollingFailedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingFailed
+// event
+type ContainerServiceNodePoolRollingFailedEventData struct {
+	// The name of the node pool in the ManagedCluster resource
+	NodePoolName *string
+}
+
+// ContainerServiceNodePoolRollingStartedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingStarted
+// event
+type ContainerServiceNodePoolRollingStartedEventData struct {
+	// The name of the node pool in the ManagedCluster resource
+	NodePoolName *string
+}
+
+// ContainerServiceNodePoolRollingSucceededEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingSucceeded
+// event
+type ContainerServiceNodePoolRollingSucceededEventData struct {
+	// The name of the node pool in the ManagedCluster resource
+	NodePoolName *string
+}
+
+// DataBoxCopyCompletedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.CopyCompleted
+// event.
+type DataBoxCopyCompletedEventData struct {
+	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
+	SerialNumber *string
+
+	// Name of the current Stage
+	StageName *DataBoxStageName
+
+	// The time at which the stage happened.
+	StageTime *time.Time
+}
+
+// DataBoxCopyStartedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.CopyStarted event.
+type DataBoxCopyStartedEventData struct {
+	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
+	SerialNumber *string
+
+	// Name of the current Stage
+	StageName *DataBoxStageName
+
+	// The time at which the stage happened.
+	StageTime *time.Time
+}
+
+// DataBoxOrderCompletedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.OrderCompleted
+// event.
+type DataBoxOrderCompletedEventData struct {
+	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
+	SerialNumber *string
+
+	// Name of the current Stage
+	StageName *DataBoxStageName
+
+	// The time at which the stage happened.
+	StageTime *time.Time
+}
+
+// DeviceConnectionStateEventInfo - Information about the device connection state event.
+type DeviceConnectionStateEventInfo struct {
+	// Sequence number is string representation of a hexadecimal number. string compare can be used to identify the larger number
+	// because both in ASCII and HEX numbers come after alphabets. If you are
+	// converting the string to hex, then the number is a 256 bit number.
+	SequenceNumber *string
+}
+
+// DeviceConnectionStateEventProperties - Schema of the Data property of an Event for a device connection state event
+// (DeviceConnected, DeviceDisconnected).
+type DeviceConnectionStateEventProperties struct {
+	// Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
+
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	ModuleID *string
+}
+
+// DeviceLifeCycleEventProperties - Schema of the Data property of an Event for a device life cycle event (DeviceCreated,
+// DeviceDeleted).
+type DeviceLifeCycleEventProperties struct {
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// Information about the device twin, which is the cloud representation of application device metadata.
+	Twin *DeviceTwinInfo
+}
+
+// DeviceTelemetryEventProperties - Schema of the Data property of an Event for a device telemetry event (DeviceTelemetry).
+type DeviceTelemetryEventProperties struct {
+	// The content of the message from the device.
+	Body any
+
+	// Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties map[string]*string
+
+	// System properties help identify contents and source of the messages.
+	SystemProperties map[string]*string
+}
+
+// DeviceTwinInfo - Information about the device twin, which is the cloud representation of application device metadata.
+type DeviceTwinInfo struct {
+	// Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
+	AuthenticationType *string
+
+	// Count of cloud to device messages sent to this device.
+	CloudToDeviceMessageCount *float32
+
+	// Whether the device is connected or disconnected.
+	ConnectionState *string
+
+	// The unique identifier of the device twin.
+	DeviceID *string
+
+	// A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per device twin.
+	Etag *string
+
+	// The ISO8601 timestamp of the last activity.
+	LastActivityTime *string
+
+	// Properties JSON element.
+	Properties *DeviceTwinInfoProperties
+
+	// Whether the device twin is enabled or disabled.
+	Status *string
+
+	// The ISO8601 timestamp of the last device twin status update.
+	StatusUpdateTime *string
+
+	// An integer that is incremented by one each time the device twin is updated.
+	Version *float32
+
+	// The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a certificate
+	// store. The thumbprint is dynamically generated using the SHA1 algorithm, and
+	// does not physically exist in the certificate.
+	X509Thumbprint *DeviceTwinInfoX509Thumbprint
+}
+
+// DeviceTwinInfoProperties - Properties JSON element.
+type DeviceTwinInfoProperties struct {
+	// A portion of the properties that can be written only by the application back-end, and read by the device.
+	Desired *DeviceTwinProperties
+
+	// A portion of the properties that can be written only by the device, and read by the application back-end.
+	Reported *DeviceTwinProperties
+}
+
+// DeviceTwinInfoX509Thumbprint - The thumbprint is a unique value for the x509 certificate, commonly used to find a particular
+// certificate in a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and
+// does not physically exist in the certificate.
+type DeviceTwinInfoX509Thumbprint struct {
+	// Primary thumbprint for the x509 certificate.
+	PrimaryThumbprint *string
+
+	// Secondary thumbprint for the x509 certificate.
+	SecondaryThumbprint *string
+}
+
+// DeviceTwinMetadata - Metadata information for the properties JSON document.
+type DeviceTwinMetadata struct {
+	// The ISO8601 timestamp of the last time the properties were updated.
+	LastUpdated *string
+}
+
+// DeviceTwinProperties - A portion of the properties that can be written only by the application back-end, and read by the
+// device.
+type DeviceTwinProperties struct {
+	// Metadata information for the properties JSON document.
+	Metadata *DeviceTwinMetadata
+
+	// Version of device twin properties.
+	Version *float32
+}
+
 // Event - Properties of an event published to an Event Grid topic using the EventGrid Schema.
 type Event struct {
 	// REQUIRED; Event data specific to the event type.
@@ -35,4 +2381,2747 @@ type Event struct {
 
 	// READ-ONLY; The schema version of the event metadata.
 	MetadataVersion *string
+}
+
+// EventGridMQTTClientCreatedOrUpdatedEventData - Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
+type EventGridMQTTClientCreatedOrUpdatedEventData struct {
+	// The key-value attributes that are assigned to the client resource.
+	Attributes map[string]*string
+
+	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
+	// can be up to 128 characters long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
+	// Time the client resource is created based on the provider's UTC time.
+	CreatedOn *time.Time
+
+	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
+
+	// Configured state of the client. The value could be Enabled or Disabled
+	State *EventGridMqttClientState
+
+	// Time the client resource is last updated based on the provider's UTC time. If the client resource was never updated, this
+	// value is identical to the value of the 'createdOn' property.
+	UpdatedOn *time.Time
+}
+
+// EventGridMQTTClientDeletedEventData - Event data for Microsoft.EventGrid.MQTTClientDeleted event.
+type EventGridMQTTClientDeletedEventData struct {
+	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
+	// can be up to 128 characters long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
+	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
+}
+
+// EventGridMQTTClientEventData - Schema of the Data property of an Event for MQTT Client state changes.
+type EventGridMQTTClientEventData struct {
+	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
+	// can be up to 128 characters long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
+	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
+}
+
+// EventGridMQTTClientSessionConnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionConnected event.
+type EventGridMQTTClientSessionConnectedEventData struct {
+	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
+	// can be up to 128 characters long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
+	// Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long, and supports
+	// UTF-8 characters.
+	ClientSessionName *string
+
+	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
+
+	// A number that helps indicate order of MQTT client session connected or disconnected events. Latest event will have a sequence
+	// number that is higher than the previous event.
+	SequenceNumber *int64
+}
+
+// EventGridMQTTClientSessionDisconnectedEventData - Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event.
+type EventGridMQTTClientSessionDisconnectedEventData struct {
+	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
+	// can be up to 128 characters long, and supports UTF-8 characters.
+	ClientAuthenticationName *string
+
+	// Name of the client resource in the Event Grid namespace.
+	ClientName *string
+
+	// Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long, and supports
+	// UTF-8 characters.
+	ClientSessionName *string
+
+	// Reason for the disconnection of the MQTT client's session. The value could be one of the values in the disconnection reasons
+	// table.
+	DisconnectionReason *EventGridMqttClientDisconnectionReason
+
+	// Name of the Event Grid namespace where the MQTT client was created or updated.
+	NamespaceName *string
+
+	// A number that helps indicate order of MQTT client session connected or disconnected events. Latest event will have a sequence
+	// number that is higher than the previous event.
+	SequenceNumber *int64
+}
+
+// EventHubCaptureFileCreatedEventData - Schema of the Data property of an Event for a Microsoft.EventHub.CaptureFileCreated
+// event.
+type EventHubCaptureFileCreatedEventData struct {
+	// The number of events in the file.
+	EventCount *int32
+
+	// The file type of the capture file.
+	FileType *string
+
+	// The path to the capture file.
+	Fileurl *string
+
+	// The first time from the queue.
+	FirstEnqueueTime *time.Time
+
+	// The smallest sequence number from the queue.
+	FirstSequenceNumber *int32
+
+	// The last time from the queue.
+	LastEnqueueTime *time.Time
+
+	// The last sequence number from the queue.
+	LastSequenceNumber *int32
+
+	// The shard ID.
+	PartitionID *string
+
+	// The file size.
+	SizeInBytes *int32
+}
+
+// HealthcareDicomImageCreatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageCreated
+// event.
+type HealthcareDicomImageCreatedEventData struct {
+	// Unique identifier for the Series
+	ImageSeriesInstanceUID *string
+
+	// Unique identifier for the DICOM Image
+	ImageSopInstanceUID *string
+
+	// Unique identifier for the Study
+	ImageStudyInstanceUID *string
+
+	// Data partition name
+	PartitionName *string
+
+	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and deletion
+	// within the service.
+	SequenceNumber *int64
+
+	// Domain name of the DICOM account for this image.
+	ServiceHostName *string
+}
+
+// HealthcareDicomImageDeletedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageDeleted
+// event.
+type HealthcareDicomImageDeletedEventData struct {
+	// Unique identifier for the Series
+	ImageSeriesInstanceUID *string
+
+	// Unique identifier for the DICOM Image
+	ImageSopInstanceUID *string
+
+	// Unique identifier for the Study
+	ImageStudyInstanceUID *string
+
+	// Data partition name
+	PartitionName *string
+
+	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and deletion
+	// within the service.
+	SequenceNumber *int64
+
+	// Host name of the DICOM account for this image.
+	ServiceHostName *string
+}
+
+// HealthcareDicomImageUpdatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageUpdated
+// event.
+type HealthcareDicomImageUpdatedEventData struct {
+	// Unique identifier for the Series
+	ImageSeriesInstanceUID *string
+
+	// Unique identifier for the DICOM Image
+	ImageSopInstanceUID *string
+
+	// Unique identifier for the Study
+	ImageStudyInstanceUID *string
+
+	// Data partition name
+	PartitionName *string
+
+	// Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation, updation
+	// and deletion within the service.
+	SequenceNumber *int64
+
+	// Domain name of the DICOM account for this image.
+	ServiceHostName *string
+}
+
+// HealthcareFhirResourceCreatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceCreated
+// event.
+type HealthcareFhirResourceCreatedEventData struct {
+	// Id of HL7 FHIR resource.
+	FhirResourceID *string
+
+	// Type of HL7 FHIR resource.
+	FhirResourceType *HealthcareFhirResourceType
+
+	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	FhirResourceVersionID *int64
+
+	// Domain name of FHIR account for this resource.
+	FhirServiceHostName *string
+}
+
+// HealthcareFhirResourceDeletedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceDeleted
+// event.
+type HealthcareFhirResourceDeletedEventData struct {
+	// Id of HL7 FHIR resource.
+	FhirResourceID *string
+
+	// Type of HL7 FHIR resource.
+	FhirResourceType *HealthcareFhirResourceType
+
+	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	FhirResourceVersionID *int64
+
+	// Domain name of FHIR account for this resource.
+	FhirServiceHostName *string
+}
+
+// HealthcareFhirResourceUpdatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceUpdated
+// event.
+type HealthcareFhirResourceUpdatedEventData struct {
+	// Id of HL7 FHIR resource.
+	FhirResourceID *string
+
+	// Type of HL7 FHIR resource.
+	FhirResourceType *HealthcareFhirResourceType
+
+	// VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
+	FhirResourceVersionID *int64
+
+	// Domain name of FHIR account for this resource.
+	FhirServiceHostName *string
+}
+
+// IotHubDeviceConnectedEventData - Event data for Microsoft.Devices.DeviceConnected event.
+type IotHubDeviceConnectedEventData struct {
+	// Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
+
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	ModuleID *string
+}
+
+// IotHubDeviceCreatedEventData - Event data for Microsoft.Devices.DeviceCreated event.
+type IotHubDeviceCreatedEventData struct {
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// Information about the device twin, which is the cloud representation of application device metadata.
+	Twin *DeviceTwinInfo
+}
+
+// IotHubDeviceDeletedEventData - Event data for Microsoft.Devices.DeviceDeleted event.
+type IotHubDeviceDeletedEventData struct {
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// Information about the device twin, which is the cloud representation of application device metadata.
+	Twin *DeviceTwinInfo
+}
+
+// IotHubDeviceDisconnectedEventData - Event data for Microsoft.Devices.DeviceDisconnected event.
+type IotHubDeviceDisconnectedEventData struct {
+	// Information about the device connection state event.
+	DeviceConnectionStateEventInfo *DeviceConnectionStateEventInfo
+
+	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	DeviceID *string
+
+	// Name of the IoT Hub where the device was created or deleted.
+	HubName *string
+
+	// The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
+	// alphanumeric characters plus the following special characters: - : . + % _ #
+	// * ? ! ( ) , = @ ; $ '.
+	ModuleID *string
+}
+
+// IotHubDeviceTelemetryEventData - Event data for Microsoft.Devices.DeviceTelemetry event.
+type IotHubDeviceTelemetryEventData struct {
+	// The content of the message from the device.
+	Body any
+
+	// Application properties are user-defined strings that can be added to the message. These fields are optional.
+	Properties map[string]*string
+
+	// System properties help identify contents and source of the messages.
+	SystemProperties map[string]*string
+}
+
+// KeyVaultAccessPolicyChangedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.VaultAccessPolicyChanged
+// event.
+type KeyVaultAccessPolicyChangedEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultCertificateExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateExpired
+// event.
+type KeyVaultCertificateExpiredEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultCertificateNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateNearExpiry
+// event.
+type KeyVaultCertificateNearExpiryEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultCertificateNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateNewVersionCreated
+// event.
+type KeyVaultCertificateNewVersionCreatedEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultKeyExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyExpired event.
+type KeyVaultKeyExpiredEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultKeyNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyNearExpiry
+// event.
+type KeyVaultKeyNearExpiryEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultKeyNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyNewVersionCreated
+// event.
+type KeyVaultKeyNewVersionCreatedEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultSecretExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretExpired
+// event.
+type KeyVaultSecretExpiredEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultSecretNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretNearExpiry
+// event.
+type KeyVaultSecretNearExpiryEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// KeyVaultSecretNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretNewVersionCreated
+// event.
+type KeyVaultSecretNewVersionCreatedEventData struct {
+	// The expiration date of the object that triggered this event
+	EXP *float32
+
+	// The id of the object that triggered this event.
+	ID *string
+
+	// Not before date of the object that triggered this event
+	NBF *float32
+
+	// The name of the object that triggered this event
+	ObjectName *string
+
+	// The type of the object that triggered this event
+	ObjectType *string
+
+	// Key vault name of the object that triggered this event.
+	VaultName *string
+
+	// The version of the object that triggered this event
+	Version *string
+}
+
+// MachineLearningServicesDatasetDriftDetectedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.DatasetDriftDetected
+// event.
+type MachineLearningServicesDatasetDriftDetectedEventData struct {
+	// The ID of the base Dataset used to detect drift.
+	BaseDatasetID *string
+
+	// The ID of the data drift monitor that triggered the event.
+	DataDriftID *string
+
+	// The name of the data drift monitor that triggered the event.
+	DataDriftName *string
+
+	// The coefficient result that triggered the event.
+	DriftCoefficient *float64
+
+	// The end time of the target dataset time series that resulted in drift detection.
+	EndTime *time.Time
+
+	// The ID of the Run that detected data drift.
+	RunID *string
+
+	// The start time of the target dataset time series that resulted in drift detection.
+	StartTime *time.Time
+
+	// The ID of the target Dataset used to detect drift.
+	TargetDatasetID *string
+}
+
+// MachineLearningServicesModelDeployedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.ModelDeployed
+// event.
+type MachineLearningServicesModelDeployedEventData struct {
+	// A common separated list of model IDs. The IDs of the models deployed in the service.
+	ModelIDs *string
+
+	// The compute type (e.g. ACI, AKS) of the deployed service.
+	ServiceComputeType *string
+
+	// The name of the deployed service.
+	ServiceName *string
+
+	// The properties of the deployed service.
+	ServiceProperties any
+
+	// The tags of the deployed service.
+	ServiceTags any
+}
+
+// MachineLearningServicesModelRegisteredEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.ModelRegistered
+// event.
+type MachineLearningServicesModelRegisteredEventData struct {
+	// The name of the model that was registered.
+	ModelName *string
+
+	// The properties of the model that was registered.
+	ModelProperties any
+
+	// The tags of the model that was registered.
+	ModelTags any
+
+	// The version of the model that was registered.
+	ModelVersion *string
+}
+
+// MachineLearningServicesRunCompletedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.RunCompleted
+// event.
+type MachineLearningServicesRunCompletedEventData struct {
+	// The ID of the experiment that the run belongs to.
+	ExperimentID *string
+
+	// The name of the experiment that the run belongs to.
+	ExperimentName *string
+
+	// The ID of the Run that was completed.
+	RunID *string
+
+	// The properties of the completed Run.
+	RunProperties any
+
+	// The tags of the completed Run.
+	RunTags any
+
+	// The Run Type of the completed Run.
+	RunType *string
+}
+
+// MachineLearningServicesRunStatusChangedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.RunStatusChanged
+// event.
+type MachineLearningServicesRunStatusChangedEventData struct {
+	// The ID of the experiment that the Machine Learning Run belongs to.
+	ExperimentID *string
+
+	// The name of the experiment that the Machine Learning Run belongs to.
+	ExperimentName *string
+
+	// The ID of the Machine Learning Run.
+	RunID *string
+
+	// The properties of the Machine Learning Run.
+	RunProperties any
+
+	// The status of the Machine Learning Run.
+	RunStatus *string
+
+	// The tags of the Machine Learning Run.
+	RunTags any
+
+	// The Run Type of the Machine Learning Run.
+	RunType *string
+}
+
+// MapsGeofenceEnteredEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceEntered event.
+type MapsGeofenceEnteredEventData struct {
+	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
+	// Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around
+	// the fence.
+	Geometries []MapsGeofenceGeometry
+
+	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID []string
+
+	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
+	// Maps event subscriber.
+	IsEventPublished *bool
+}
+
+// MapsGeofenceEventProperties - Schema of the Data property of an Event for a Geofence event (GeofenceEntered, GeofenceExited,
+// GeofenceResult).
+type MapsGeofenceEventProperties struct {
+	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
+	// Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around
+	// the fence.
+	Geometries []MapsGeofenceGeometry
+
+	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID []string
+
+	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
+	// Maps event subscriber.
+	IsEventPublished *bool
+}
+
+// MapsGeofenceExitedEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceExited event.
+type MapsGeofenceExitedEventData struct {
+	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
+	// Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around
+	// the fence.
+	Geometries []MapsGeofenceGeometry
+
+	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID []string
+
+	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
+	// Maps event subscriber.
+	IsEventPublished *bool
+}
+
+// MapsGeofenceGeometry - The geofence geometry.
+type MapsGeofenceGeometry struct {
+	// ID of the device.
+	DeviceID *string
+
+	// Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of the geofence.
+	// If the coordinate is outside of the geofence, but more than the value of
+	// searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is inside of the
+	// geofence. If the coordinate is inside the polygon, but more than the value of
+	// searchBuffer away from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence
+	// the coordinate is well outside the geofence. A value of -999 means that
+	// there is great confidence the coordinate is well within the geofence.
+	Distance *float32
+
+	// The unique ID for the geofence geometry.
+	GeometryID *string
+
+	// Latitude of the nearest point of the geometry.
+	NearestLat *float32
+
+	// Longitude of the nearest point of the geometry.
+	NearestLon *float32
+
+	// The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing post API.
+	UdID *string
+}
+
+// MapsGeofenceResultEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceResult event.
+type MapsGeofenceResultEventData struct {
+	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
+	ExpiredGeofenceGeometryID []string
+
+	// Lists the fence geometries that either fully contain the coordinate position or have an overlap with the searchBuffer around
+	// the fence.
+	Geometries []MapsGeofenceGeometry
+
+	// Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
+	InvalidPeriodGeofenceGeometryID []string
+
+	// True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure
+	// Maps event subscriber.
+	IsEventPublished *bool
+}
+
+// MediaJobCanceledEventData - Job canceled event data. Schema of the data property of an Event for a Microsoft.Media.JobCanceled
+// event.
+type MediaJobCanceledEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// Gets the Job outputs.
+	Outputs []MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobCancelingEventData - Job canceling event data. Schema of the data property of an Event for a Microsoft.Media.JobCanceling
+// event.
+type MediaJobCancelingEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobError - Details of JobOutput errors.
+type MediaJobError struct {
+	// READ-ONLY; Helps with categorization of errors.
+	Category *MediaJobErrorCategory
+
+	// READ-ONLY; Error code describing the error.
+	Code *MediaJobErrorCode
+
+	// READ-ONLY; An array of details about specific errors that led to this reported error.
+	Details []MediaJobErrorDetail
+
+	// READ-ONLY; A human-readable language-dependent representation of the error.
+	Message *string
+
+	// READ-ONLY; Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
+	// Azure Portal.
+	Retry *MediaJobRetry
+}
+
+// MediaJobErrorDetail - Details of JobOutput errors.
+type MediaJobErrorDetail struct {
+	// READ-ONLY; Code describing the error detail.
+	Code *string
+
+	// READ-ONLY; A human-readable representation of the error.
+	Message *string
+}
+
+// MediaJobErroredEventData - Job error state event data. Schema of the data property of an Event for a Microsoft.Media.JobErrored
+// event.
+type MediaJobErroredEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// Gets the Job outputs.
+	Outputs []MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobFinishedEventData - Job finished event data. Schema of the data property of an Event for a Microsoft.Media.JobFinished
+// event.
+type MediaJobFinishedEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// Gets the Job outputs.
+	Outputs []MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobOutput - The event data for a Job output.
+type MediaJobOutput struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string
+
+	// REQUIRED; Gets the Job output progress.
+	Progress *int64
+
+	// REQUIRED; Gets the Job output state.
+	State *MediaJobState
+
+	// Gets the Job output error.
+	Error *MediaJobError
+
+	// Gets the Job output label.
+	Label *string
+}
+
+// GetMediaJobOutput implements the MediaJobOutputClassification interface for type MediaJobOutput.
+func (m *MediaJobOutput) GetMediaJobOutput() *MediaJobOutput { return m }
+
+// MediaJobOutputAsset - The event data for a Job output asset.
+type MediaJobOutputAsset struct {
+	// REQUIRED; The discriminator for derived types.
+	ODataType *string
+
+	// REQUIRED; Gets the Job output progress.
+	Progress *int64
+
+	// REQUIRED; Gets the Job output state.
+	State *MediaJobState
+
+	// Gets the Job output asset name.
+	AssetName *string
+
+	// Gets the Job output error.
+	Error *MediaJobError
+
+	// Gets the Job output label.
+	Label *string
+}
+
+// GetMediaJobOutput implements the MediaJobOutputClassification interface for type MediaJobOutputAsset.
+func (m *MediaJobOutputAsset) GetMediaJobOutput() *MediaJobOutput {
+	return &MediaJobOutput{
+		ODataType: m.ODataType,
+		Error:     m.Error,
+		Label:     m.Label,
+		Progress:  m.Progress,
+		State:     m.State,
+	}
+}
+
+// MediaJobOutputCanceledEventData - Job output canceled event data. Schema of the data property of an Event for
+// a Microsoft.Media.JobOutputCanceled event.
+type MediaJobOutputCanceledEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputCancelingEventData - Job output canceling event data. Schema of the data property of an Event for
+// a Microsoft.Media.JobOutputCanceling event.
+type MediaJobOutputCancelingEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputErroredEventData - Job output error event data. Schema of the data property of an Event for a Microsoft.Media.JobOutputErrored
+// event.
+type MediaJobOutputErroredEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputFinishedEventData - Job output finished event data. Schema of the data property of an Event for
+// a Microsoft.Media.JobOutputFinished event.
+type MediaJobOutputFinishedEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputProcessingEventData - Job output processing event data. Schema of the data property of an Event
+// for a Microsoft.Media.JobOutputProcessing event.
+type MediaJobOutputProcessingEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputProgressEventData - Job Output Progress Event Data. Schema of the Data property of an Event for
+// a Microsoft.Media.JobOutputProgress event.
+type MediaJobOutputProgressEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the Job output label.
+	Label *string
+
+	// Gets the Job output progress.
+	Progress *int64
+}
+
+// MediaJobOutputScheduledEventData - Job output scheduled event data. Schema of the data property of an Event for
+// a Microsoft.Media.JobOutputScheduled event.
+type MediaJobOutputScheduledEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobOutputStateChangeEventData - Schema of the Data property of an Event for a Microsoft.Media.JobOutputStateChange
+// event.
+type MediaJobOutputStateChangeEventData struct {
+	// Gets the Job correlation data.
+	JobCorrelationData map[string]*string
+
+	// Gets the output.
+	Output MediaJobOutputClassification
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+}
+
+// MediaJobProcessingEventData - Job processing event data. Schema of the data property of an Event for a Microsoft.Media.JobProcessing
+// event.
+type MediaJobProcessingEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobScheduledEventData - Job scheduled event data. Schema of the data property of an Event for a Microsoft.Media.JobScheduled
+// event.
+type MediaJobScheduledEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaJobStateChangeEventData - Schema of the Data property of an Event for a Microsoft.Media.JobStateChange event.
+type MediaJobStateChangeEventData struct {
+	// Gets the Job correlation data.
+	CorrelationData map[string]*string
+
+	// READ-ONLY; The previous state of the Job.
+	PreviousState *MediaJobState
+
+	// READ-ONLY; The new state of the Job.
+	State *MediaJobState
+}
+
+// MediaLiveEventChannelArchiveHeartbeatEventData - Channel Archive heartbeat event data. Schema of the data property of an
+// Event for a Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
+type MediaLiveEventChannelArchiveHeartbeatEventData struct {
+	// READ-ONLY; Gets the channel latency in ms.
+	ChannelLatencyMs *string
+
+	// READ-ONLY; Gets the latency result code.
+	LatencyResultCode *string
+}
+
+// MediaLiveEventConnectionRejectedEventData - Encoder connection rejected event data. Schema of the data property of an Event
+// for a Microsoft.Media.LiveEventConnectionRejected event.
+type MediaLiveEventConnectionRejectedEventData struct {
+	// READ-ONLY; Gets the remote IP.
+	EncoderIP *string
+
+	// READ-ONLY; Gets the remote port.
+	EncoderPort *string
+
+	// READ-ONLY; Gets the ingest URL provided by the live event.
+	IngestURL *string
+
+	// READ-ONLY; Gets the result code.
+	ResultCode *string
+
+	// READ-ONLY; Gets the stream Id.
+	StreamID *string
+}
+
+// MediaLiveEventEncoderConnectedEventData - Encoder connect event data. Schema of the data property of an Event
+// for a Microsoft.Media.LiveEventEncoderConnected event.
+type MediaLiveEventEncoderConnectedEventData struct {
+	// READ-ONLY; Gets the remote IP.
+	EncoderIP *string
+
+	// READ-ONLY; Gets the remote port.
+	EncoderPort *string
+
+	// READ-ONLY; Gets the ingest URL provided by the live event.
+	IngestURL *string
+
+	// READ-ONLY; Gets the stream Id.
+	StreamID *string
+}
+
+// MediaLiveEventEncoderDisconnectedEventData - Encoder disconnected event data. Schema of the Data property of an Event
+// for a Microsoft.Media.LiveEventEncoderDisconnected event.
+type MediaLiveEventEncoderDisconnectedEventData struct {
+	// READ-ONLY; Gets the remote IP.
+	EncoderIP *string
+
+	// READ-ONLY; Gets the remote port.
+	EncoderPort *string
+
+	// READ-ONLY; Gets the ingest URL provided by the live event.
+	IngestURL *string
+
+	// READ-ONLY; Gets the result code.
+	ResultCode *string
+
+	// READ-ONLY; Gets the stream Id.
+	StreamID *string
+}
+
+// MediaLiveEventIncomingDataChunkDroppedEventData - Ingest fragment dropped event data. Schema of the data property of an
+// Event for a Microsoft.Media.LiveEventIncomingDataChunkDropped event.
+type MediaLiveEventIncomingDataChunkDroppedEventData struct {
+	// READ-ONLY; Gets the bitrate of the track.
+	Bitrate *int64
+
+	// READ-ONLY; Gets the result code for fragment drop operation.
+	ResultCode *string
+
+	// READ-ONLY; Gets the timescale of the Timestamp.
+	Timescale *string
+
+	// READ-ONLY; Gets the timestamp of the data chunk dropped.
+	Timestamp *string
+
+	// READ-ONLY; Gets the name of the track for which fragment is dropped.
+	TrackName *string
+
+	// READ-ONLY; Gets the type of the track (Audio / Video).
+	TrackType *string
+}
+
+// MediaLiveEventIncomingStreamReceivedEventData - Encoder connect event data. Schema of the data property of an Event
+// for a Microsoft.Media.LiveEventIncomingStreamReceived event.
+type MediaLiveEventIncomingStreamReceivedEventData struct {
+	// READ-ONLY; Gets the bitrate of the track.
+	Bitrate *int64
+
+	// READ-ONLY; Gets the duration of the first data chunk.
+	Duration *string
+
+	// READ-ONLY; Gets the remote IP.
+	EncoderIP *string
+
+	// READ-ONLY; Gets the remote port.
+	EncoderPort *string
+
+	// READ-ONLY; Gets the ingest URL provided by the live event.
+	IngestURL *string
+
+	// READ-ONLY; Gets the timescale in which timestamp is represented.
+	Timescale *string
+
+	// READ-ONLY; Gets the first timestamp of the data chunk received.
+	Timestamp *string
+
+	// READ-ONLY; Gets the track name.
+	TrackName *string
+
+	// READ-ONLY; Gets the type of the track (Audio / Video).
+	TrackType *string
+}
+
+// MediaLiveEventIncomingStreamsOutOfSyncEventData - Incoming streams out of sync event data. Schema of the data property
+// of an Event for a Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
+type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
+	// READ-ONLY; Gets the maximum timestamp among all the tracks (audio or video).
+	MaxLastTimestamp *string
+
+	// READ-ONLY; Gets the minimum last timestamp received.
+	MinLastTimestamp *string
+
+	// READ-ONLY; Gets the timescale in which "MaxLastTimestamp" is represented.
+	TimescaleOfMaxLastTimestamp *string
+
+	// READ-ONLY; Gets the timescale in which "MinLastTimestamp" is represented.
+	TimescaleOfMinLastTimestamp *string
+
+	// READ-ONLY; Gets the type of stream with maximum last timestamp.
+	TypeOfStreamWithMaxLastTimestamp *string
+
+	// READ-ONLY; Gets the type of stream with minimum last timestamp.
+	TypeOfStreamWithMinLastTimestamp *string
+}
+
+// MediaLiveEventIncomingVideoStreamsOutOfSyncEventData - Incoming video stream out of sync event data. Schema of the data
+// property of an Event for a Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
+type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
+	// READ-ONLY; Gets the duration of the data chunk with first timestamp.
+	FirstDuration *string
+
+	// READ-ONLY; Gets the first timestamp received for one of the quality levels.
+	FirstTimestamp *string
+
+	// READ-ONLY; Gets the duration of the data chunk with second timestamp.
+	SecondDuration *string
+
+	// READ-ONLY; Gets the timestamp received for some other quality levels.
+	SecondTimestamp *string
+
+	// READ-ONLY; Gets the timescale in which both the timestamps and durations are represented.
+	Timescale *string
+}
+
+// MediaLiveEventIngestHeartbeatEventData - Ingest heartbeat event data. Schema of the data property of an Event
+// for a Microsoft.Media.LiveEventIngestHeartbeat event.
+type MediaLiveEventIngestHeartbeatEventData struct {
+	// READ-ONLY; Gets the bitrate of the track.
+	Bitrate *int64
+
+	// READ-ONLY; Gets the fragment Discontinuity count.
+	DiscontinuityCount *int64
+
+	// READ-ONLY; Gets a value indicating whether preview is healthy or not.
+	Healthy *bool
+
+	// READ-ONLY; Gets the incoming bitrate.
+	IncomingBitrate *int64
+
+	// READ-ONLY; Gets the track ingest drift value.
+	IngestDriftValue *string
+
+	// READ-ONLY; Gets the arrival UTC time of the last fragment.
+	LastFragmentArrivalTime *string
+
+	// READ-ONLY; Gets the last timestamp.
+	LastTimestamp *string
+
+	// READ-ONLY; Gets Non increasing count.
+	NonincreasingCount *int64
+
+	// READ-ONLY; Gets the fragment Overlap count.
+	OverlapCount *int64
+
+	// READ-ONLY; Gets the state of the live event.
+	State *string
+
+	// READ-ONLY; Gets the timescale of the last timestamp.
+	Timescale *string
+
+	// READ-ONLY; Gets the track name.
+	TrackName *string
+
+	// READ-ONLY; Gets the type of the track (Audio / Video).
+	TrackType *string
+
+	// READ-ONLY; Gets the Live Transcription language.
+	TranscriptionLanguage *string
+
+	// READ-ONLY; Gets the Live Transcription state.
+	TranscriptionState *string
+
+	// READ-ONLY; Gets a value indicating whether unexpected bitrate is present or not.
+	UnexpectedBitrate *bool
+}
+
+// MediaLiveEventTrackDiscontinuityDetectedEventData - Ingest track discontinuity detected event data. Schema of the data
+// property of an Event for a Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
+type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
+	// READ-ONLY; Gets the bitrate.
+	Bitrate *int64
+
+	// READ-ONLY; Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
+	DiscontinuityGap *string
+
+	// READ-ONLY; Gets the timestamp of the current fragment.
+	NewTimestamp *string
+
+	// READ-ONLY; Gets the timestamp of the previous fragment.
+	PreviousTimestamp *string
+
+	// READ-ONLY; Gets the timescale in which both timestamps and discontinuity gap are represented.
+	Timescale *string
+
+	// READ-ONLY; Gets the track name.
+	TrackName *string
+
+	// READ-ONLY; Gets the type of the track (Audio / Video).
+	TrackType *string
+}
+
+// MicrosoftTeamsUserIdentifierModel - A Microsoft Teams user.
+type MicrosoftTeamsUserIdentifierModel struct {
+	// REQUIRED; The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
+	UserID *string
+
+	// The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
+	Cloud *CommunicationCloudEnvironmentModel
+
+	// True if the Microsoft Teams user is anonymous. By default false if missing.
+	IsAnonymous *bool
+}
+
+// PhoneNumberIdentifierModel - A phone number.
+type PhoneNumberIdentifierModel struct {
+	// REQUIRED; The phone number in E.164 format.
+	Value *string
+}
+
+// PolicyInsightsPolicyStateChangedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateChanged
+// event.
+type PolicyInsightsPolicyStateChangedEventData struct {
+	// The compliance reason code. May be empty.
+	ComplianceReasonCode *string
+
+	// The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string
+
+	// The resource ID of the policy assignment.
+	PolicyAssignmentID *string
+
+	// The resource ID of the policy definition.
+	PolicyDefinitionID *string
+
+	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
+	// May be empty.
+	PolicyDefinitionReferenceID *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
+}
+
+// PolicyInsightsPolicyStateCreatedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateCreated
+// event.
+type PolicyInsightsPolicyStateCreatedEventData struct {
+	// The compliance reason code. May be empty.
+	ComplianceReasonCode *string
+
+	// The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string
+
+	// The resource ID of the policy assignment.
+	PolicyAssignmentID *string
+
+	// The resource ID of the policy definition.
+	PolicyDefinitionID *string
+
+	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
+	// May be empty.
+	PolicyDefinitionReferenceID *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
+}
+
+// PolicyInsightsPolicyStateDeletedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateDeleted
+// event.
+type PolicyInsightsPolicyStateDeletedEventData struct {
+	// The compliance reason code. May be empty.
+	ComplianceReasonCode *string
+
+	// The compliance state of the resource with respect to the policy assignment.
+	ComplianceState *string
+
+	// The resource ID of the policy assignment.
+	PolicyAssignmentID *string
+
+	// The resource ID of the policy definition.
+	PolicyDefinitionID *string
+
+	// The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an initiative.
+	// May be empty.
+	PolicyDefinitionReferenceID *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The time that the resource was scanned by Azure Policy in the Universal ISO 8601 DateTime format yyyy-MM-ddTHH:mm:ss.fffffffZ.
+	Timestamp *time.Time
+}
+
+// RedisExportRDBCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ExportRDBCompleted
+// event.
+type RedisExportRDBCompletedEventData struct {
+	// The name of this event.
+	Name *string
+
+	// The status of this event. Failed or succeeded
+	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// RedisImportRDBCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ImportRDBCompleted
+// event.
+type RedisImportRDBCompletedEventData struct {
+	// The name of this event.
+	Name *string
+
+	// The status of this event. Failed or succeeded
+	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// RedisPatchingCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.PatchingCompleted
+// event.
+type RedisPatchingCompletedEventData struct {
+	// The name of this event.
+	Name *string
+
+	// The status of this event. Failed or succeeded
+	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// RedisScalingCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ScalingCompleted
+// event.
+type RedisScalingCompletedEventData struct {
+	// The name of this event.
+	Name *string
+
+	// The status of this event. Failed or succeeded
+	Status *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+}
+
+// ResourceActionCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionCancel
+// event. This is raised when a resource action operation is canceled.
+type ResourceActionCancelEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceActionFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionFailure
+// event. This is raised when a resource action operation fails.
+type ResourceActionFailureEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceActionSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionSuccess
+// event. This is raised when a resource action operation succeeds.
+type ResourceActionSuccessEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceAuthorization - The details of the authorization for the resource.
+type ResourceAuthorization struct {
+	// The action being requested.
+	Action *string
+
+	// The evidence for the authorization.
+	Evidence map[string]*string
+
+	// The scope of the authorization.
+	Scope *string
+}
+
+// ResourceDeleteCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteCancel
+// event. This is raised when a resource delete operation is canceled.
+type ResourceDeleteCancelEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceDeleteFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteFailure
+// event. This is raised when a resource delete operation fails.
+type ResourceDeleteFailureEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceDeleteSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteSuccess
+// event. This is raised when a resource delete operation succeeds.
+type ResourceDeleteSuccessEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceHTTPRequest - The details of the HTTP request.
+type ResourceHTTPRequest struct {
+	// The client IP address.
+	ClientIPAddress *string
+
+	// The client request ID.
+	ClientRequestID *string
+
+	// The request method.
+	Method *string
+
+	// The url used in the request.
+	URL *string
+}
+
+// ResourceNotificationsHealthResourcesAnnotatedEventData - Schema of the Data property of an Event for a Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated
+// event.
+type ResourceNotificationsHealthResourcesAnnotatedEventData struct {
+	// api version of the resource properties bag
+	APIVersion *string
+
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for update event
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
+}
+
+// ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData - Schema of the Data property of an Event
+// for a Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged event.
+type ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData struct {
+	// api version of the resource properties bag
+	APIVersion *string
+
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for update event
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
+}
+
+// ResourceNotificationsOperationalDetails - details of operational info
+type ResourceNotificationsOperationalDetails struct {
+	// Date and Time when resource was updated
+	ResourceEventTime *time.Time
+}
+
+// ResourceNotificationsResourceDeletedDetails - Describes the schema of the properties under resource info which are common
+// across all ARN system topic delete events
+type ResourceNotificationsResourceDeletedDetails struct {
+	// id of the resource for which the event is being emitted
+	ID *string
+
+	// name of the resource for which the event is being emitted
+	Name *string
+
+	// the type of the resource for which the event is being emitted
+	Type *string
+}
+
+// ResourceNotificationsResourceDeletedEventData - Describes the schema of the common properties across all ARN system topic
+// delete events
+type ResourceNotificationsResourceDeletedEventData struct {
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for delete event
+	ResourceDetails *ResourceNotificationsResourceDeletedDetails
+}
+
+// ResourceNotificationsResourceManagementCreatedOrUpdatedEventData - Schema of the Data property of an Event for
+// a Microsoft.ResourceNotifications.Resources.CreatedOrUpdated event.
+type ResourceNotificationsResourceManagementCreatedOrUpdatedEventData struct {
+	// api version of the resource properties bag
+	APIVersion *string
+
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for update event
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
+}
+
+// ResourceNotificationsResourceManagementDeletedEventData - Schema of the Data property of an Event for a Microsoft.ResourceNotifications.Resources.Deleted
+// event.
+type ResourceNotificationsResourceManagementDeletedEventData struct {
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for delete event
+	ResourceDetails *ResourceNotificationsResourceDeletedDetails
+}
+
+// ResourceNotificationsResourceUpdatedDetails - Describes the schema of the properties under resource info which are common
+// across all ARN system topic events
+type ResourceNotificationsResourceUpdatedDetails struct {
+	// id of the resource for which the event is being emitted
+	ID *string
+
+	// the location of the resource for which the event is being emitted
+	Location *string
+
+	// name of the resource for which the event is being emitted
+	Name *string
+
+	// properties in the payload of the resource for which the event is being emitted
+	Properties map[string]any
+
+	// the tags on the resource for which the event is being emitted
+	Tags map[string]*string
+
+	// the type of the resource for which the event is being emitted
+	Type *string
+}
+
+// ResourceNotificationsResourceUpdatedEventData - Describes the schema of the common properties across all ARN system topic
+// events
+type ResourceNotificationsResourceUpdatedEventData struct {
+	// api version of the resource properties bag
+	APIVersion *string
+
+	// details about operational info
+	OperationalDetails *ResourceNotificationsOperationalDetails
+
+	// resourceInfo details for update event
+	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
+}
+
+// ResourceWriteCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteCancel
+// event. This is raised when a resource create or update operation is canceled.
+type ResourceWriteCancelEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceWriteFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteFailure
+// event. This is raised when a resource create or update operation fails.
+type ResourceWriteFailureEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ResourceWriteSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteSuccess
+// event. This is raised when a resource create or update operation succeeds.
+type ResourceWriteSuccessEventData struct {
+	// The requested authorization for the operation.
+	Authorization *ResourceAuthorization
+
+	// The properties of the claims.
+	Claims map[string]*string
+
+	// An operation ID used for troubleshooting.
+	CorrelationID *string
+
+	// The details of the operation.
+	HTTPRequest *ResourceHTTPRequest
+
+	// The operation that was performed.
+	OperationName *string
+
+	// The resource group of the resource.
+	ResourceGroup *string
+
+	// The resource provider performing the operation.
+	ResourceProvider *string
+
+	// The URI of the resource in the operation.
+	ResourceURI *string
+
+	// The status of the operation.
+	Status *string
+
+	// The subscription ID of the resource.
+	SubscriptionID *string
+
+	// The tenant ID of the resource.
+	TenantID *string
+}
+
+// ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an Event for
+// a Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
+type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
+	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string
+
+	// The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string
+
+	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string
+
+	// The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string
+
+	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
+	// be null.
+	SubscriptionName *string
+
+	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string
+}
+
+// ServiceBusActiveMessagesAvailableWithNoListenersEventData - Schema of the Data property of an Event for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners
+// event.
+type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
+	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string
+
+	// The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string
+
+	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string
+
+	// The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string
+
+	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
+	// be null.
+	SubscriptionName *string
+
+	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string
+}
+
+// ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an Event
+// for a Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
+type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct {
+	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string
+
+	// The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string
+
+	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string
+
+	// The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string
+
+	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
+	// be null.
+	SubscriptionName *string
+
+	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string
+}
+
+// ServiceBusDeadletterMessagesAvailableWithNoListenersEventData - Schema of the Data property of an Event for a
+// Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
+type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
+	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
+	EntityType *string
+
+	// The namespace name of the Microsoft.ServiceBus resource.
+	NamespaceName *string
+
+	// The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be null.
+	QueueName *string
+
+	// The endpoint of the Microsoft.ServiceBus resource.
+	RequestURI *string
+
+	// The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value will
+	// be null.
+	SubscriptionName *string
+
+	// The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
+	TopicName *string
+}
+
+// SignalRServiceClientConnectionConnectedEventData - Schema of the Data property of an Event for a Microsoft.SignalRService.ClientConnectionConnected
+// event.
+type SignalRServiceClientConnectionConnectedEventData struct {
+	// The connection Id of connected client connection.
+	ConnectionID *string
+
+	// The hub of connected client connection.
+	HubName *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+
+	// The user Id of connected client connection.
+	UserID *string
+}
+
+// SignalRServiceClientConnectionDisconnectedEventData - Schema of the Data property of an Event for a Microsoft.SignalRService.ClientConnectionDisconnected
+// event.
+type SignalRServiceClientConnectionDisconnectedEventData struct {
+	// The connection Id of connected client connection.
+	ConnectionID *string
+
+	// The message of error that cause the client connection disconnected.
+	ErrorMessage *string
+
+	// The hub of connected client connection.
+	HubName *string
+
+	// The time at which the event occurred.
+	Timestamp *time.Time
+
+	// The user Id of connected client connection.
+	UserID *string
+}
+
+// StorageAsyncOperationInitiatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.AsyncOperationInitiated
+// event.
+type StorageAsyncOperationInitiatedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// The type of blob.
+	BlobType *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
+	ContentLength *int64
+
+	// The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the same
+	// blob name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the blob.
+	URL *string
+}
+
+// StorageBlobCreatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobCreated event.
+type StorageBlobCreatedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// The type of blob.
+	BlobType *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
+	ContentLength *int64
+
+	// The offset of the blob in bytes.
+	ContentOffset *int64
+
+	// The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string
+
+	// The etag of the blob at the time this event was triggered.
+	ETag *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the same
+	// blob name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the blob.
+	URL *string
+}
+
+// StorageBlobDeletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobDeleted event.
+type StorageBlobDeletedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// The type of blob.
+	BlobType *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the same
+	// blob name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the blob.
+	URL *string
+}
+
+// StorageBlobInventoryPolicyCompletedEventData - Schema of the Data property of an Event for an Microsoft.Storage.BlobInventoryPolicyCompleted
+// event.
+type StorageBlobInventoryPolicyCompletedEventData struct {
+	// The account name for which inventory policy is registered.
+	AccountName *string
+
+	// The blob URL for manifest file for inventory run.
+	ManifestBlobURL *string
+
+	// The policy run id for inventory run.
+	PolicyRunID *string
+
+	// The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
+	PolicyRunStatus *string
+
+	// The status message for inventory run.
+	PolicyRunStatusMessage *string
+
+	// The rule name for inventory policy.
+	RuleName *string
+
+	// The time at which inventory policy was scheduled.
+	ScheduleDateTime *time.Time
+}
+
+// StorageBlobRenamedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobRenamed event.
+type StorageBlobRenamedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The new path to the blob after the rename operation.
+	DestinationURL *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the same
+	// blob name.
+	Sequencer *string
+
+	// The path to the blob that was renamed.
+	SourceURL *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+}
+
+// StorageBlobTierChangedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobTierChanged
+// event.
+type StorageBlobTierChangedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// The type of blob.
+	BlobType *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The size of the blob in bytes. This is the same as what would be returned in the Content-Length header from the blob.
+	ContentLength *int64
+
+	// The content type of the blob. This is the same as what would be returned in the Content-Type header from the blob.
+	ContentType *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the Storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular blob name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the same
+	// blob name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the blob.
+	URL *string
+}
+
+// StorageDirectoryCreatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryCreated
+// event.
+type StorageDirectoryCreatedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The etag of the directory at the time this event was triggered.
+	ETag *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular directory name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the
+	// same directory name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the directory.
+	URL *string
+}
+
+// StorageDirectoryDeletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryDeleted
+// event.
+type StorageDirectoryDeletedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// Is this event for a recursive delete operation.
+	Recursive *string
+
+	// The request id generated by the storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular directory name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the
+	// same directory name.
+	Sequencer *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+
+	// The path to the deleted directory.
+	URL *string
+}
+
+// StorageDirectoryRenamedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryRenamed
+// event.
+type StorageDirectoryRenamedEventData struct {
+	// The name of the API/operation that triggered this event.
+	API *string
+
+	// A request id provided by the client of the storage API operation that triggered this event.
+	ClientRequestID *string
+
+	// The new path to the directory after the rename operation.
+	DestinationURL *string
+
+	// The identity of the requester that triggered this event.
+	Identity *string
+
+	// The request id generated by the storage service for the storage API operation that triggered this event.
+	RequestID *string
+
+	// An opaque string value representing the logical sequence of events for any particular directory name. Users can use standard
+	// string comparison to understand the relative sequence of two events on the
+	// same directory name.
+	Sequencer *string
+
+	// The path to the directory that was renamed.
+	SourceURL *string
+
+	// For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be ignored
+	// by event consumers.
+	StorageDiagnostics any
+}
+
+// StorageLifecyclePolicyActionSummaryDetail - Execution statistics of a specific policy action in a Blob Management cycle.
+type StorageLifecyclePolicyActionSummaryDetail struct {
+	// Error messages of this action if any.
+	ErrorList *string
+
+	// Number of success operations of this action.
+	SuccessCount *int64
+
+	// Total number of objects to be acted on by this action.
+	TotalObjectsCount *int64
+}
+
+// StorageLifecyclePolicyCompletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.LifecyclePolicyCompleted
+// event.
+type StorageLifecyclePolicyCompletedEventData struct {
+	// Execution statistics of a specific policy action in a Blob Management cycle.
+	DeleteSummary *StorageLifecyclePolicyActionSummaryDetail
+
+	// The time the policy task was scheduled.
+	ScheduleTime *string
+
+	// Execution statistics of a specific policy action in a Blob Management cycle.
+	TierToArchiveSummary *StorageLifecyclePolicyActionSummaryDetail
+
+	// Execution statistics of a specific policy action in a Blob Management cycle.
+	TierToCoolSummary *StorageLifecyclePolicyActionSummaryDetail
+}
+
+// StorageTaskCompletedEventData - Schema of the Data property of an Event for an Microsoft.Storage.StorageTaskCompleted
+// event.
+type StorageTaskCompletedEventData struct {
+	// The time at which a storage task was completed.
+	CompletedDateTime *time.Time
+
+	// The status for a storage task.
+	Status *StorageTaskCompletedStatus
+
+	// The summary report blob url for a storage task
+	SummaryReportBlobURL *string
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
+
+	// The task name for a storage task.
+	TaskName *string
+}
+
+// StorageTaskQueuedEventData - Schema of the Data property of an Event for an Microsoft.Storage.StorageTaskQueued
+// event.
+type StorageTaskQueuedEventData struct {
+	// The time at which a storage task was queued.
+	QueuedDateTime *time.Time
+
+	// The execution id for a storage task.
+	TaskExecutionID *string
+}
+
+// WebAppServicePlanUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Web.AppServicePlanUpdated
+// event.
+type WebAppServicePlanUpdatedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app service plan.
+	AppServicePlanEventTypeDetail *AppServicePlanEventTypeDetail
+
+	// The client request id generated by the app service for the app service plan API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the app service plan API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the app service plan that had this event.
+	Name *string
+
+	// The request id generated by the app service for the app service plan API operation that triggered this event.
+	RequestID *string
+
+	// sku of app service plan.
+	SKU *WebAppServicePlanUpdatedEventDataSKU
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebAppServicePlanUpdatedEventDataSKU - sku of app service plan.
+type WebAppServicePlanUpdatedEventDataSKU struct {
+	// capacity of app service plan sku.
+	Capacity *string
+
+	// family of app service plan sku.
+	Family *string
+
+	// name of app service plan sku.
+	Name *string
+
+	// size of app service plan sku.
+	Size *string
+
+	// tier of app service plan sku.
+	Tier *string
+}
+
+// WebAppUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Web.AppUpdated event.
+type WebAppUpdatedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebBackupOperationCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationCompleted
+// event.
+type WebBackupOperationCompletedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebBackupOperationFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationFailed
+// event.
+type WebBackupOperationFailedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebBackupOperationStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationStarted
+// event.
+type WebBackupOperationStartedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebRestoreOperationCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationCompleted
+// event.
+type WebRestoreOperationCompletedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebRestoreOperationFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationFailed
+// event.
+type WebRestoreOperationFailedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebRestoreOperationStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationStarted
+// event.
+type WebRestoreOperationStartedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebSlotSwapCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapCompleted
+// event.
+type WebSlotSwapCompletedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebSlotSwapFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapFailed event.
+type WebSlotSwapFailedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebSlotSwapStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapStarted event.
+type WebSlotSwapStartedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebSlotSwapWithPreviewCancelledEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapWithPreviewCancelled
+// event.
+type WebSlotSwapWithPreviewCancelledEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
+}
+
+// WebSlotSwapWithPreviewStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapWithPreviewStarted
+// event.
+type WebSlotSwapWithPreviewStartedEventData struct {
+	// HTTP request URL of this operation.
+	Address *string
+
+	// Detail of action on the app.
+	AppEventTypeDetail *AppEventTypeDetail
+
+	// The client request id generated by the app service for the site API operation that triggered this event.
+	ClientRequestID *string
+
+	// The correlation request id generated by the app service for the site API operation that triggered this event.
+	CorrelationRequestID *string
+
+	// name of the web site that had this event.
+	Name *string
+
+	// The request id generated by the app service for the site API operation that triggered this event.
+	RequestID *string
+
+	// HTTP verb of this operation.
+	Verb *string
 }

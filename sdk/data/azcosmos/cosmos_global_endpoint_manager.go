@@ -17,7 +17,8 @@ import (
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
 
 type globalEndpointManager struct {
-	client              *Client
+	clientEndpoint      string
+	pipeline            azruntime.Pipeline
 	preferredLocations  []string
 	locationCache       *locationCache
 	refreshTimeInterval time.Duration
@@ -25,8 +26,8 @@ type globalEndpointManager struct {
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(client *Client, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
-	endpoint, err := url.Parse(client.endpoint)
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
+	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
 	}
@@ -36,7 +37,8 @@ func newGlobalEndpointManager(client *Client, preferredLocations []string, refre
 	}
 
 	gem := &globalEndpointManager{
-		client:              client,
+		clientEndpoint:      clientEndpoint,
+		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
 		locationCache:       newLocationCache(preferredLocations, *endpoint),
 		refreshTimeInterval: refreshTimeInterval,
@@ -115,19 +117,39 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, 60*time.Second)
-	azResponse, err := gem.client.sendGetRequest(path, ctx, operationContext, nil, nil)
-	cancel()
-	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to retrieve account properties: %v", err)
+	finalURL := gem.clientEndpoint
+	if path != "" {
+		finalURL = azruntime.JoinPaths(gem.clientEndpoint, path)
 	}
 
-	properties, err := newAccountProperties(azResponse)
+	ctxt, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	req, err := azruntime.NewRequest(ctxt, http.MethodGet, finalURL)
 	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
+		return accountProperties{}, err
 	}
 
-	return properties, nil
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+
+	req.SetOperationValue(operationContext)
+
+	azResponse, err := gem.pipeline.Do(req)
+	if err != nil {
+		return accountProperties{}, err
+	}
+
+	successResponse := (azResponse.StatusCode >= 200 && azResponse.StatusCode < 300) || azResponse.StatusCode == 304
+	if successResponse {
+		properties, err := newAccountProperties(azResponse)
+		if err != nil {
+			return accountProperties{}, fmt.Errorf("failed to parse account properties: %v", err)
+		}
+		return properties, nil
+	}
+
+	return accountProperties{}, newCosmosError(azResponse)
 }
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {

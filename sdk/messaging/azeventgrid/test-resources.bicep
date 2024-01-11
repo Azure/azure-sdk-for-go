@@ -13,10 +13,6 @@ output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
 #disable-next-line no-hardcoded-location // resources for the Event Grid namespaces aren't available in all locations
 var egnsLocation = 'eastus'
 
-// 
-// [BEGIN] Event Grid namespace
-//
-
 var nsTopicName = 'testtopic1'
 var nsSubscriptionName = 'testsubscription1'
 

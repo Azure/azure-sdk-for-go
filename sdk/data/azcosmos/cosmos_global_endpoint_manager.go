@@ -112,19 +112,9 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		resourceAddress: "",
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDatabaseAccount, "", false)
-	if err != nil {
-		return accountProperties{}, fmt.Errorf("failed to generate path for name-based request: %v", err)
-	}
-
-	finalURL := gem.clientEndpoint
-	if path != "" {
-		finalURL = azruntime.JoinPaths(gem.clientEndpoint, path)
-	}
-
 	ctxt, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
-	req, err := azruntime.NewRequest(ctxt, http.MethodGet, finalURL)
+	req, err := azruntime.NewRequest(ctxt, http.MethodGet, gem.clientEndpoint)
 	if err != nil {
 		return accountProperties{}, err
 	}
@@ -140,7 +130,7 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		return accountProperties{}, err
 	}
 
-	successResponse := (azResponse.StatusCode >= 200 && azResponse.StatusCode < 300) || azResponse.StatusCode == 304
+	successResponse := (azResponse.StatusCode >= 200 && azResponse.StatusCode < 300)
 	if successResponse {
 		properties, err := newAccountProperties(azResponse)
 		if err != nil {

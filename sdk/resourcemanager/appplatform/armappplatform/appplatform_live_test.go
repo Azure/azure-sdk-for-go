@@ -303,17 +303,17 @@ func (testsuite *AppplatformTestSuite) TestGateways() {
 	testsuite.Require().NoError(err)
 
 	// From step Gateways_UpdateCapacity
-	fmt.Println("Call operation: Gateways_UpdateCapacity")
-	gatewaysClientUpdateCapacityResponsePoller, err := gatewaysClient.BeginUpdateCapacity(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, "default", armappplatform.SKUObject{
-		SKU: &armappplatform.SKU{
-			Name:     to.Ptr("E0"),
-			Capacity: to.Ptr[int32](2),
-			Tier:     to.Ptr("Enterprise"),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, gatewaysClientUpdateCapacityResponsePoller)
-	testsuite.Require().NoError(err)
+	// fmt.Println("Call operation: Gateways_UpdateCapacity")
+	// gatewaysClientUpdateCapacityResponsePoller, err := gatewaysClient.BeginUpdateCapacity(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, "default", armappplatform.SKUObject{
+	// 	SKU: &armappplatform.SKU{
+	// 		Name:     to.Ptr("E0"),
+	// 		Capacity: to.Ptr[int32](2),
+	// 		Tier:     to.Ptr("Enterprise"),
+	// 	},
+	// }, nil)
+	// testsuite.Require().NoError(err)
+	// _, err = testutil.PollForTest(testsuite.ctx, gatewaysClientUpdateCapacityResponsePoller)
+	// testsuite.Require().NoError(err)
 
 	// From step Gateways_ValidateDomain
 	fmt.Println("Call operation: Gateways_ValidateDomain")

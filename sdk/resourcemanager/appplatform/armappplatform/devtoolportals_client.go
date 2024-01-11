@@ -47,7 +47,7 @@ func NewDevToolPortalsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -75,7 +75,7 @@ func (client *DevToolPortalsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *DevToolPortalsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevToolPortalsClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *DevToolPortalsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, devToolPortalResource); err != nil {
@@ -133,7 +133,7 @@ func (client *DevToolPortalsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -160,7 +160,7 @@ func (client *DevToolPortalsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *DevToolPortalsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DevToolPortalsClient.BeginDelete"
@@ -175,7 +175,7 @@ func (client *DevToolPortalsClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -206,7 +206,7 @@ func (client *DevToolPortalsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -215,7 +215,7 @@ func (client *DevToolPortalsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Get the Application Live and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -267,7 +267,7 @@ func (client *DevToolPortalsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +284,7 @@ func (client *DevToolPortalsClient) getHandleResponse(resp *http.Response) (DevT
 
 // NewListPager - Handles requests to list all resources in a Service.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -314,7 +314,7 @@ func (client *DevToolPortalsClient) NewListPager(resourceGroupName string, servi
 
 // listCreateRequest creates the List request.
 func (client *DevToolPortalsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DevToolPortalsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/DevToolPortals"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/devToolPortals"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -332,7 +332,7 @@ func (client *DevToolPortalsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

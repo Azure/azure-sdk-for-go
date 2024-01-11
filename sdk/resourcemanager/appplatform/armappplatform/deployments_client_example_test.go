@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Get.json
 func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,6 +51,10 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(true),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -83,7 +87,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Get_CustomContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Get_CustomContainer.json
 func ExampleDeploymentsClient_Get_deploymentsGetCustomContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,6 +120,10 @@ func ExampleDeploymentsClient_Get_deploymentsGetCustomContainer() {
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(false),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -159,7 +167,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetCustomContainer() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_CreateOrUpdate.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,6 +188,10 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdate() {
 						},
 					},
 				},
+				Apms: []*armappplatform.ApmReference{
+					{
+						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+					}},
 				EnvironmentVariables: map[string]*string{
 					"env": to.Ptr("test"),
 				},
@@ -249,6 +261,10 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdate() {
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(false),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -304,7 +320,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_CreateOrUpdate_CustomContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_CreateOrUpdate_CustomContainer.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdateCustomContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,6 +409,10 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdateCusto
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(false),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -454,7 +474,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_deploymentsCreateOrUpdateCusto
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +495,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,6 +541,10 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(true),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -553,7 +577,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Update_CustomContainer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Update_CustomContainer.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateCustomContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,6 +633,10 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateCustomContainer() {
 	// 	Properties: &armappplatform.DeploymentResourceProperties{
 	// 		Active: to.Ptr(false),
 	// 		DeploymentSettings: &armappplatform.DeploymentSettings{
+	// 			Apms: []*armappplatform.ApmReference{
+	// 				{
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+	// 			}},
 	// 			EnvironmentVariables: map[string]*string{
 	// 				"env": to.Ptr("test"),
 	// 			},
@@ -646,7 +674,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateCustomContainer() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -685,6 +713,10 @@ func ExampleDeploymentsClient_NewListPager() {
 		// 			Properties: &armappplatform.DeploymentResourceProperties{
 		// 				Active: to.Ptr(true),
 		// 				DeploymentSettings: &armappplatform.DeploymentSettings{
+		// 					Apms: []*armappplatform.ApmReference{
+		// 						{
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+		// 					}},
 		// 					EnvironmentVariables: map[string]*string{
 		// 						"env": to.Ptr("test"),
 		// 					},
@@ -719,7 +751,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_ListForCluster.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_ListForCluster.json
 func ExampleDeploymentsClient_NewListForClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -730,7 +762,9 @@ func ExampleDeploymentsClient_NewListForClusterPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDeploymentsClient().NewListForClusterPager("myResourceGroup", "myservice", &armappplatform.DeploymentsClientListForClusterOptions{Version: []string{}})
+	pager := clientFactory.NewDeploymentsClient().NewListForClusterPager("myResourceGroup", "myservice", &armappplatform.DeploymentsClientListForClusterOptions{Version: []string{},
+		Expand: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -758,6 +792,10 @@ func ExampleDeploymentsClient_NewListForClusterPager() {
 		// 			Properties: &armappplatform.DeploymentResourceProperties{
 		// 				Active: to.Ptr(true),
 		// 				DeploymentSettings: &armappplatform.DeploymentSettings{
+		// 					Apms: []*armappplatform.ApmReference{
+		// 						{
+		// 							ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
+		// 					}},
 		// 					EnvironmentVariables: map[string]*string{
 		// 						"env": to.Ptr("test"),
 		// 					},
@@ -792,7 +830,7 @@ func ExampleDeploymentsClient_NewListForClusterPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Start.json
 func ExampleDeploymentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -813,7 +851,7 @@ func ExampleDeploymentsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Stop.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Stop.json
 func ExampleDeploymentsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -834,7 +872,7 @@ func ExampleDeploymentsClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_Restart.json
 func ExampleDeploymentsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +893,7 @@ func ExampleDeploymentsClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_EnableRemoteDebugging.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_EnableRemoteDebugging.json
 func ExampleDeploymentsClient_BeginEnableRemoteDebugging() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -883,7 +921,7 @@ func ExampleDeploymentsClient_BeginEnableRemoteDebugging() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_DisableRemoteDebugging.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_DisableRemoteDebugging.json
 func ExampleDeploymentsClient_BeginDisableRemoteDebugging() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -911,7 +949,7 @@ func ExampleDeploymentsClient_BeginDisableRemoteDebugging() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_GetRemoteDebuggingConfig.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_GetRemoteDebuggingConfig.json
 func ExampleDeploymentsClient_GetRemoteDebuggingConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -935,7 +973,7 @@ func ExampleDeploymentsClient_GetRemoteDebuggingConfig() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_GetLogFileUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_GetLogFileUrl.json
 func ExampleDeploymentsClient_GetLogFileURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +996,7 @@ func ExampleDeploymentsClient_GetLogFileURL() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_GenerateHeapDump.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_GenerateHeapDump.json
 func ExampleDeploymentsClient_BeginGenerateHeapDump() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -982,7 +1020,7 @@ func ExampleDeploymentsClient_BeginGenerateHeapDump() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_GenerateThreadDump.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_GenerateThreadDump.json
 func ExampleDeploymentsClient_BeginGenerateThreadDump() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1006,7 +1044,7 @@ func ExampleDeploymentsClient_BeginGenerateThreadDump() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Deployments_StartJFR.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Deployments_StartJFR.json
 func ExampleDeploymentsClient_BeginStartJFR() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

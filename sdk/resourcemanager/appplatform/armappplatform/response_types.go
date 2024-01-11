@@ -60,6 +60,35 @@ type APIPortalsClientValidateDomainResponse struct {
 	CustomDomainValidateResult
 }
 
+// ApmsClientCreateOrUpdateResponse contains the response from method ApmsClient.BeginCreateOrUpdate.
+type ApmsClientCreateOrUpdateResponse struct {
+	// APM Resource object
+	ApmResource
+}
+
+// ApmsClientDeleteResponse contains the response from method ApmsClient.BeginDelete.
+type ApmsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ApmsClientGetResponse contains the response from method ApmsClient.Get.
+type ApmsClientGetResponse struct {
+	// APM Resource object
+	ApmResource
+}
+
+// ApmsClientListResponse contains the response from method ApmsClient.NewListPager.
+type ApmsClientListResponse struct {
+	// Object that includes an array of APM resources and a possible link for next set
+	ApmResourceCollection
+}
+
+// ApmsClientListSecretKeysResponse contains the response from method ApmsClient.ListSecretKeys.
+type ApmsClientListSecretKeysResponse struct {
+	// Keys of APM sensitive properties
+	ApmSecretKeys
+}
+
 // ApplicationAcceleratorsClientCreateOrUpdateResponse contains the response from method ApplicationAcceleratorsClient.BeginCreateOrUpdate.
 type ApplicationAcceleratorsClientCreateOrUpdateResponse struct {
 	// Application accelerator resource
@@ -235,6 +264,17 @@ type BuildServiceClientCreateOrUpdateBuildResponse struct {
 	Build
 }
 
+// BuildServiceClientCreateOrUpdateResponse contains the response from method BuildServiceClient.BeginCreateOrUpdate.
+type BuildServiceClientCreateOrUpdateResponse struct {
+	// Build service resource payload
+	BuildService
+}
+
+// BuildServiceClientDeleteBuildResponse contains the response from method BuildServiceClient.BeginDeleteBuild.
+type BuildServiceClientDeleteBuildResponse struct {
+	// placeholder for future response values
+}
+
 // BuildServiceClientGetBuildResponse contains the response from method BuildServiceClient.GetBuild.
 type BuildServiceClientGetBuildResponse struct {
 	// Build resource payload
@@ -406,10 +446,45 @@ type ConfigurationServicesClientListResponse struct {
 	ConfigurationServiceResourceCollection
 }
 
+// ConfigurationServicesClientValidateResourceResponse contains the response from method ConfigurationServicesClient.BeginValidateResource.
+type ConfigurationServicesClientValidateResourceResponse struct {
+	// Validation result for configuration service settings
+	ConfigurationServiceSettingsValidateResult
+}
+
 // ConfigurationServicesClientValidateResponse contains the response from method ConfigurationServicesClient.BeginValidate.
 type ConfigurationServicesClientValidateResponse struct {
 	// Validation result for configuration service settings
 	ConfigurationServiceSettingsValidateResult
+}
+
+// ContainerRegistriesClientCreateOrUpdateResponse contains the response from method ContainerRegistriesClient.BeginCreateOrUpdate.
+type ContainerRegistriesClientCreateOrUpdateResponse struct {
+	// Container registry resource payload.
+	ContainerRegistryResource
+}
+
+// ContainerRegistriesClientDeleteResponse contains the response from method ContainerRegistriesClient.BeginDelete.
+type ContainerRegistriesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ContainerRegistriesClientGetResponse contains the response from method ContainerRegistriesClient.Get.
+type ContainerRegistriesClientGetResponse struct {
+	// Container registry resource payload.
+	ContainerRegistryResource
+}
+
+// ContainerRegistriesClientListResponse contains the response from method ContainerRegistriesClient.NewListPager.
+type ContainerRegistriesClientListResponse struct {
+	// Collection compose of container registry resources list and a possible link for next page.
+	ContainerRegistryResourceCollection
+}
+
+// ContainerRegistriesClientValidateResponse contains the response from method ContainerRegistriesClient.BeginValidate.
+type ContainerRegistriesClientValidateResponse struct {
+	// Validation result for container registry properties
+	ContainerRegistryValidateResult
 }
 
 // CustomDomainsClientCreateOrUpdateResponse contains the response from method CustomDomainsClient.BeginCreateOrUpdate.
@@ -463,7 +538,7 @@ type CustomizedAcceleratorsClientListResponse struct {
 	CustomizedAcceleratorResourceCollection
 }
 
-// CustomizedAcceleratorsClientValidateResponse contains the response from method CustomizedAcceleratorsClient.Validate.
+// CustomizedAcceleratorsClientValidateResponse contains the response from method CustomizedAcceleratorsClient.BeginValidate.
 type CustomizedAcceleratorsClientValidateResponse struct {
 	// Validation result for customized accelerator properties
 	CustomizedAcceleratorValidateResult
@@ -656,10 +731,9 @@ type GatewaysClientListResponse struct {
 	GatewayResourceCollection
 }
 
-// GatewaysClientUpdateCapacityResponse contains the response from method GatewaysClient.BeginUpdateCapacity.
-type GatewaysClientUpdateCapacityResponse struct {
-	// Spring Cloud Gateway resource
-	GatewayResource
+// GatewaysClientRestartResponse contains the response from method GatewaysClient.BeginRestart.
+type GatewaysClientRestartResponse struct {
+	// placeholder for future response values
 }
 
 // GatewaysClientValidateDomainResponse contains the response from method GatewaysClient.ValidateDomain.
@@ -764,8 +838,18 @@ type ServicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ServicesClientDisableApmGloballyResponse contains the response from method ServicesClient.BeginDisableApmGlobally.
+type ServicesClientDisableApmGloballyResponse struct {
+	// placeholder for future response values
+}
+
 // ServicesClientDisableTestEndpointResponse contains the response from method ServicesClient.DisableTestEndpoint.
 type ServicesClientDisableTestEndpointResponse struct {
+	// placeholder for future response values
+}
+
+// ServicesClientEnableApmGloballyResponse contains the response from method ServicesClient.BeginEnableApmGlobally.
+type ServicesClientEnableApmGloballyResponse struct {
 	// placeholder for future response values
 }
 
@@ -773,6 +857,11 @@ type ServicesClientDisableTestEndpointResponse struct {
 type ServicesClientEnableTestEndpointResponse struct {
 	// Test keys payload
 	TestKeys
+}
+
+// ServicesClientFlushVnetDNSSettingResponse contains the response from method ServicesClient.BeginFlushVnetDNSSetting.
+type ServicesClientFlushVnetDNSSettingResponse struct {
+	// placeholder for future response values
 }
 
 // ServicesClientGetResponse contains the response from method ServicesClient.Get.
@@ -787,10 +876,28 @@ type ServicesClientListBySubscriptionResponse struct {
 	ServiceResourceList
 }
 
+// ServicesClientListGloballyEnabledApmsResponse contains the response from method ServicesClient.ListGloballyEnabledApms.
+type ServicesClientListGloballyEnabledApmsResponse struct {
+	// Globally enabled APMs payload
+	GloballyEnabledApms
+}
+
 // ServicesClientListResponse contains the response from method ServicesClient.NewListPager.
 type ServicesClientListResponse struct {
 	// Object that includes an array of Service resources and a possible link for next set
 	ServiceResourceList
+}
+
+// ServicesClientListSupportedApmTypesResponse contains the response from method ServicesClient.NewListSupportedApmTypesPager.
+type ServicesClientListSupportedApmTypesResponse struct {
+	// Supported APM types payload
+	SupportedApmTypes
+}
+
+// ServicesClientListSupportedServerVersionsResponse contains the response from method ServicesClient.NewListSupportedServerVersionsPager.
+type ServicesClientListSupportedServerVersionsResponse struct {
+	// Supported server versions.
+	SupportedServerVersions
 }
 
 // ServicesClientListTestKeysResponse contains the response from method ServicesClient.ListTestKeys.

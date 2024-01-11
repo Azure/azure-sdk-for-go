@@ -20,69 +20,69 @@ import (
 	"strings"
 )
 
-// APIPortalsClient contains the methods for the APIPortals group.
-// Don't use this type directly, use NewAPIPortalsClient() instead.
-type APIPortalsClient struct {
+// ApmsClient contains the methods for the Apms group.
+// Don't use this type directly, use NewApmsClient() instead.
+type ApmsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAPIPortalsClient creates a new instance of APIPortalsClient with the specified values.
+// NewApmsClient creates a new instance of ApmsClient with the specified values.
 //   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewAPIPortalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIPortalsClient, error) {
+func NewApmsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApmsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &APIPortalsClient{
+	client := &ApmsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create the default API portal or update the existing API portal.
+// BeginCreateOrUpdate - Create or update an APM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - apiPortalName - The name of API portal.
-//   - apiPortalResource - The API portal for the create or update operation
-//   - options - APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
+//   - apmName - The name of the APM
+//   - apmResource - Parameters for the create or update operation
+//   - options - ApmsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApmsClient.BeginCreateOrUpdate
 //     method.
-func (client *APIPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIPortalsClientCreateOrUpdateResponse], error) {
+func (client *ApmsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apmName string, apmResource ApmResource, options *ApmsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ApmsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiPortalName, apiPortalResource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apmName, apmResource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APIPortalsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApmsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APIPortalsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApmsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create the default API portal or update the existing API portal.
+// CreateOrUpdate - Create or update an APM.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
-func (client *APIPortalsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *ApmsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apmName string, apmResource ApmResource, options *ApmsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "APIPortalsClient.BeginCreateOrUpdate"
+	const operationName = "ApmsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, apiPortalResource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apmName, apmResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -98,8 +98,8 @@ func (client *APIPortalsClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, apiPortalResource APIPortalResource, options *APIPortalsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}"
+func (client *ApmsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apmName string, apmResource ApmResource, options *ApmsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apms/{apmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -112,10 +112,10 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiPortalName == "" {
-		return nil, errors.New("parameter apiPortalName cannot be empty")
+	if apmName == "" {
+		return nil, errors.New("parameter apmName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiPortalName}", url.PathEscape(apiPortalName))
+	urlPath = strings.ReplaceAll(urlPath, "{apmName}", url.PathEscape(apmName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -124,49 +124,50 @@ func (client *APIPortalsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, apiPortalResource); err != nil {
+	if err := runtime.MarshalAsJSON(req, apmResource); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Delete the default API portal.
+// BeginDelete - Operation to delete an APM
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - apiPortalName - The name of API portal.
-//   - options - APIPortalsClientBeginDeleteOptions contains the optional parameters for the APIPortalsClient.BeginDelete method.
-func (client *APIPortalsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (*runtime.Poller[APIPortalsClientDeleteResponse], error) {
+//   - apmName - The name of the APM
+//   - options - ApmsClientBeginDeleteOptions contains the optional parameters for the ApmsClient.BeginDelete method.
+func (client *ApmsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientBeginDeleteOptions) (*runtime.Poller[ApmsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apiPortalName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, apmName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APIPortalsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApmsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APIPortalsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApmsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete the default API portal.
+// Delete - Operation to delete an APM
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
-func (client *APIPortalsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ApmsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "APIPortalsClient.BeginDelete"
+	const operationName = "ApmsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, apmName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +175,7 @@ func (client *APIPortalsClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -182,8 +183,8 @@ func (client *APIPortalsClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}"
+func (client *ApmsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apms/{apmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -196,10 +197,10 @@ func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiPortalName == "" {
-		return nil, errors.New("parameter apiPortalName cannot be empty")
+	if apmName == "" {
+		return nil, errors.New("parameter apmName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiPortalName}", url.PathEscape(apiPortalName))
+	urlPath = strings.ReplaceAll(urlPath, "{apmName}", url.PathEscape(apmName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -211,40 +212,40 @@ func (client *APIPortalsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// Get - Get the API portal and its properties.
+// Get - Get the APM by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - apiPortalName - The name of API portal.
-//   - options - APIPortalsClientGetOptions contains the optional parameters for the APIPortalsClient.Get method.
-func (client *APIPortalsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientGetOptions) (APIPortalsClientGetResponse, error) {
+//   - apmName - The name of the APM
+//   - options - ApmsClientGetOptions contains the optional parameters for the ApmsClient.Get method.
+func (client *ApmsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientGetOptions) (ApmsClientGetResponse, error) {
 	var err error
-	const operationName = "APIPortalsClient.Get"
+	const operationName = "ApmsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, apmName, options)
 	if err != nil {
-		return APIPortalsClientGetResponse{}, err
+		return ApmsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return APIPortalsClientGetResponse{}, err
+		return ApmsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return APIPortalsClientGetResponse{}, err
+		return ApmsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, options *APIPortalsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}"
+func (client *ApmsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apms/{apmName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -257,10 +258,10 @@ func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiPortalName == "" {
-		return nil, errors.New("parameter apiPortalName cannot be empty")
+	if apmName == "" {
+		return nil, errors.New("parameter apmName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiPortalName}", url.PathEscape(apiPortalName))
+	urlPath = strings.ReplaceAll(urlPath, "{apmName}", url.PathEscape(apmName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -273,28 +274,28 @@ func (client *APIPortalsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIPortalsClient) getHandleResponse(resp *http.Response) (APIPortalsClientGetResponse, error) {
-	result := APIPortalsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalResource); err != nil {
-		return APIPortalsClientGetResponse{}, err
+func (client *ApmsClient) getHandleResponse(resp *http.Response) (ApmsClientGetResponse, error) {
+	result := ApmsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApmResource); err != nil {
+		return ApmsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Handles requests to list all resources in a Service.
+// NewListPager - Get collection of APMs.
 //
 // Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - options - APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.NewListPager method.
-func (client *APIPortalsClient) NewListPager(resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) *runtime.Pager[APIPortalsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[APIPortalsClientListResponse]{
-		More: func(page APIPortalsClientListResponse) bool {
+//   - options - ApmsClientListOptions contains the optional parameters for the ApmsClient.NewListPager method.
+func (client *ApmsClient) NewListPager(resourceGroupName string, serviceName string, options *ApmsClientListOptions) *runtime.Pager[ApmsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ApmsClientListResponse]{
+		More: func(page ApmsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *APIPortalsClientListResponse) (APIPortalsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "APIPortalsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ApmsClientListResponse) (ApmsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ApmsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -303,7 +304,7 @@ func (client *APIPortalsClient) NewListPager(resourceGroupName string, serviceNa
 				return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 			}, nil)
 			if err != nil {
-				return APIPortalsClientListResponse{}, err
+				return ApmsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -312,8 +313,8 @@ func (client *APIPortalsClient) NewListPager(resourceGroupName string, serviceNa
 }
 
 // listCreateRequest creates the List request.
-func (client *APIPortalsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIPortalsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals"
+func (client *ApmsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ApmsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apms"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -338,50 +339,48 @@ func (client *APIPortalsClient) listCreateRequest(ctx context.Context, resourceG
 }
 
 // listHandleResponse handles the List response.
-func (client *APIPortalsClient) listHandleResponse(resp *http.Response) (APIPortalsClientListResponse, error) {
-	result := APIPortalsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.APIPortalResourceCollection); err != nil {
-		return APIPortalsClientListResponse{}, err
+func (client *ApmsClient) listHandleResponse(resp *http.Response) (ApmsClientListResponse, error) {
+	result := ApmsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApmResourceCollection); err != nil {
+		return ApmsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// ValidateDomain - Check the domains are valid as well as not in use.
+// ListSecretKeys - List keys of APM sensitive properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - apiPortalName - The name of API portal.
-//   - validatePayload - Custom domain payload to be validated
-//   - options - APIPortalsClientValidateDomainOptions contains the optional parameters for the APIPortalsClient.ValidateDomain
-//     method.
-func (client *APIPortalsClient) ValidateDomain(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, validatePayload CustomDomainValidatePayload, options *APIPortalsClientValidateDomainOptions) (APIPortalsClientValidateDomainResponse, error) {
+//   - apmName - The name of the APM
+//   - options - ApmsClientListSecretKeysOptions contains the optional parameters for the ApmsClient.ListSecretKeys method.
+func (client *ApmsClient) ListSecretKeys(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientListSecretKeysOptions) (ApmsClientListSecretKeysResponse, error) {
 	var err error
-	const operationName = "APIPortalsClient.ValidateDomain"
+	const operationName = "ApmsClient.ListSecretKeys"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.validateDomainCreateRequest(ctx, resourceGroupName, serviceName, apiPortalName, validatePayload, options)
+	req, err := client.listSecretKeysCreateRequest(ctx, resourceGroupName, serviceName, apmName, options)
 	if err != nil {
-		return APIPortalsClientValidateDomainResponse{}, err
+		return ApmsClientListSecretKeysResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return APIPortalsClientValidateDomainResponse{}, err
+		return ApmsClientListSecretKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return APIPortalsClientValidateDomainResponse{}, err
+		return ApmsClientListSecretKeysResponse{}, err
 	}
-	resp, err := client.validateDomainHandleResponse(httpResp)
+	resp, err := client.listSecretKeysHandleResponse(httpResp)
 	return resp, err
 }
 
-// validateDomainCreateRequest creates the ValidateDomain request.
-func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiPortalName string, validatePayload CustomDomainValidatePayload, options *APIPortalsClientValidateDomainOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apiPortals/{apiPortalName}/validateDomain"
+// listSecretKeysCreateRequest creates the ListSecretKeys request.
+func (client *ApmsClient) listSecretKeysCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apmName string, options *ApmsClientListSecretKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apms/{apmName}/listSecretKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -394,10 +393,10 @@ func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiPortalName == "" {
-		return nil, errors.New("parameter apiPortalName cannot be empty")
+	if apmName == "" {
+		return nil, errors.New("parameter apmName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiPortalName}", url.PathEscape(apiPortalName))
+	urlPath = strings.ReplaceAll(urlPath, "{apmName}", url.PathEscape(apmName))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -406,17 +405,14 @@ func (client *APIPortalsClient) validateDomainCreateRequest(ctx context.Context,
 	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, validatePayload); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
-// validateDomainHandleResponse handles the ValidateDomain response.
-func (client *APIPortalsClient) validateDomainHandleResponse(resp *http.Response) (APIPortalsClientValidateDomainResponse, error) {
-	result := APIPortalsClientValidateDomainResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainValidateResult); err != nil {
-		return APIPortalsClientValidateDomainResponse{}, err
+// listSecretKeysHandleResponse handles the ListSecretKeys response.
+func (client *ApmsClient) listSecretKeysHandleResponse(resp *http.Response) (ApmsClientListSecretKeysResponse, error) {
+	result := ApmsClientListSecretKeysResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApmSecretKeys); err != nil {
+		return ApmsClientListSecretKeysResponse{}, err
 	}
 	return result, nil
 }

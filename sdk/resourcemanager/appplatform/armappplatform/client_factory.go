@@ -50,6 +50,12 @@ func (c *ClientFactory) NewAPIPortalsClient() *APIPortalsClient {
 	return subClient
 }
 
+// NewApmsClient creates a new instance of ApmsClient.
+func (c *ClientFactory) NewApmsClient() *ApmsClient {
+	subClient, _ := NewApmsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewApplicationAcceleratorsClient creates a new instance of ApplicationAcceleratorsClient.
 func (c *ClientFactory) NewApplicationAcceleratorsClient() *ApplicationAcceleratorsClient {
 	subClient, _ := NewApplicationAcceleratorsClient(c.subscriptionID, c.credential, c.options)
@@ -113,6 +119,12 @@ func (c *ClientFactory) NewConfigServersClient() *ConfigServersClient {
 // NewConfigurationServicesClient creates a new instance of ConfigurationServicesClient.
 func (c *ClientFactory) NewConfigurationServicesClient() *ConfigurationServicesClient {
 	subClient, _ := NewConfigurationServicesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewContainerRegistriesClient creates a new instance of ContainerRegistriesClient.
+func (c *ClientFactory) NewContainerRegistriesClient() *ContainerRegistriesClient {
+	subClient, _ := NewContainerRegistriesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

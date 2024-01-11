@@ -1,5 +1,15 @@
 # Release History
 
+## 0.1.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.1.1 (2023-01-11)
 
 * Template package validating release pipeline

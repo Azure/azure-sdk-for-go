@@ -12,5 +12,5 @@ const (
 	moduleName = "aztemplate"
 
 	// moduleVersion is the semantic version (see http://semver.org) of this module.
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.1.2"
 )

@@ -1,17 +1,16 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
-
-### Features Added
-* Added `AzureCLICredentialOptions.Subscription`
+## 1.5.0 (2024-01-16)
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.5.0-beta.1
+* Removed persistent token caching. It will return in v1.6.0-beta.1
 
 ### Bugs Fixed
-* `azidentity.doForClient` method no longer removes headers from the incoming request
+* Credentials now preserve MSAL headers e.g. X-Client-Sku
 
 ### Other Changes
-* Move to latest released versions of net, crypto, core, etc...
+* Upgraded dependencies
 
 ## 1.5.0-beta.2 (2023-11-07)
 

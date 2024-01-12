@@ -34,8 +34,8 @@ type publicClientOptions struct {
 	DisableAutomaticAuthentication bool
 	DisableInstanceDiscovery       bool
 	LoginHint, RedirectURL         string
-	Record                         AuthenticationRecord
-	TokenCachePersistenceOptions   *TokenCachePersistenceOptions
+	Record                         authenticationRecord
+	TokenCachePersistenceOptions   *tokenCachePersistenceOptions
 	Username, Password             string
 }
 
@@ -48,7 +48,7 @@ type publicClient struct {
 	host                     string
 	name                     string
 	opts                     publicClientOptions
-	record                   AuthenticationRecord
+	record                   authenticationRecord
 	azClient                 *azcore.Client
 }
 
@@ -107,19 +107,19 @@ func newPublicClient(tenantID, clientID, name string, o publicClientOptions) (*p
 	}, nil
 }
 
-func (p *publicClient) Authenticate(ctx context.Context, tro *policy.TokenRequestOptions) (AuthenticationRecord, error) {
+func (p *publicClient) Authenticate(ctx context.Context, tro *policy.TokenRequestOptions) (authenticationRecord, error) {
 	if tro == nil {
 		tro = &policy.TokenRequestOptions{}
 	}
 	if len(tro.Scopes) == 0 {
 		if p.defaultScope == nil {
-			return AuthenticationRecord{}, errScopeRequired
+			return authenticationRecord{}, errScopeRequired
 		}
 		tro.Scopes = p.defaultScope
 	}
 	client, mu, err := p.client(*tro)
 	if err != nil {
-		return AuthenticationRecord{}, err
+		return authenticationRecord{}, err
 	}
 	mu.Lock()
 	defer mu.Unlock()
@@ -152,7 +152,7 @@ func (p *publicClient) GetToken(ctx context.Context, tro policy.TokenRequestOpti
 		return p.token(ar, err)
 	}
 	if p.opts.DisableAutomaticAuthentication {
-		return azcore.AccessToken{}, ErrAuthenticationRequired
+		return azcore.AccessToken{}, errAuthenticationRequired
 	}
 	at, err := p.reqToken(ctx, client, tro)
 	if err == nil {

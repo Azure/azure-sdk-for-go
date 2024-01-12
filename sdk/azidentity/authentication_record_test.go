@@ -23,7 +23,7 @@ func TestAuthenticationRecord_MarshalUnmarshal(t *testing.T) {
 		{desc: "unsupported version", err: true, version: "42"},
 	} {
 		t.Run(test.desc, func(t *testing.T) {
-			record := AuthenticationRecord{
+			record := authenticationRecord{
 				Authority:     "authority",
 				ClientID:      "client",
 				HomeAccountID: "oid.tid",
@@ -35,7 +35,7 @@ func TestAuthenticationRecord_MarshalUnmarshal(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			var unmarshaled AuthenticationRecord
+			var unmarshaled authenticationRecord
 			err = json.Unmarshal(marshaled, &unmarshaled)
 			if err != nil {
 				if !test.err {

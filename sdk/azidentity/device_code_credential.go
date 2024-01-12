@@ -25,18 +25,18 @@ type DeviceCodeCredentialOptions struct {
 	// tokens. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant.
 	AdditionallyAllowedTenants []string
 
-	// AuthenticationRecord returned by a call to a credential's Authenticate method. Set this option
+	// authenticationRecord returned by a call to a credential's Authenticate method. Set this option
 	// to enable the credential to use data from a previous authentication.
-	AuthenticationRecord AuthenticationRecord
+	authenticationRecord authenticationRecord
 
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
 
-	// DisableAutomaticAuthentication prevents the credential from automatically prompting the user to authenticate.
+	// disableAutomaticAuthentication prevents the credential from automatically prompting the user to authenticate.
 	// When this option is true, [DeviceCodeCredential.GetToken] will return [ErrAuthenticationRequired] when user
 	// interaction is necessary to acquire a token.
-	DisableAutomaticAuthentication bool
+	disableAutomaticAuthentication bool
 
 	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
 	// private clouds such as Azure Stack. It determines whether the credential requests Microsoft Entra instance metadata
@@ -49,8 +49,8 @@ type DeviceCodeCredentialOptions struct {
 	// applications.
 	TenantID string
 
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
+	// tokenCachePersistenceOptions enables persistent token caching when not nil.
+	tokenCachePersistenceOptions *tokenCachePersistenceOptions
 
 	// UserPrompt controls how the credential presents authentication instructions. The credential calls
 	// this function with authentication details when it receives a device code. By default, the credential
@@ -103,10 +103,10 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
 		ClientOptions:                  cp.ClientOptions,
 		DeviceCodePrompt:               cp.UserPrompt,
-		DisableAutomaticAuthentication: cp.DisableAutomaticAuthentication,
+		DisableAutomaticAuthentication: cp.disableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,
-		Record:                         cp.AuthenticationRecord,
-		TokenCachePersistenceOptions:   cp.TokenCachePersistenceOptions,
+		Record:                         cp.authenticationRecord,
+		TokenCachePersistenceOptions:   cp.tokenCachePersistenceOptions,
 	}
 	c, err := newPublicClient(cp.TenantID, cp.ClientID, credNameDeviceCode, msalOpts)
 	if err != nil {
@@ -117,7 +117,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 }
 
 // Authenticate a user via the device code flow. Subsequent calls to GetToken will automatically use the returned AuthenticationRecord.
-func (c *DeviceCodeCredential) Authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (AuthenticationRecord, error) {
+func (c *DeviceCodeCredential) authenticate(ctx context.Context, opts *policy.TokenRequestOptions) (authenticationRecord, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameDeviceCode+"."+traceOpAuthenticate, c.client.azClient.Tracer(), nil)
 	defer func() { endSpan(err) }()

@@ -73,3 +73,63 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, len(locationInfo.availReadEndpointsByLocation), len(availableEndpointsByLocation)+1)
 	assert.Equal(t, len(locationInfo.availWriteEndpointsByLocation), len(availableEndpointsByLocation)+1)
 }
+
+func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+	emulatorRegionName := "South Central US"
+	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
+
+	accountProps, err := client.gem.GetAccountProperties(context.Background())
+	assert.NoError(t, err)
+
+	// Verify the expected account properties
+	expectedAccountProps := accountProperties{
+		ReadRegions:                  []accountRegion{emulatorRegion},
+		WriteRegions:                 []accountRegion{emulatorRegion},
+		EnableMultipleWriteLocations: false,
+	}
+	assert.Equal(t, expectedAccountProps, accountProps)
+
+	emulatorEndpoint, err := url.Parse("https://localhost:8081/")
+	assert.NoError(t, err)
+
+	// Verify the read endpoints
+	readEndpoints, err := client.gem.GetReadEndpoints()
+	assert.NoError(t, err)
+
+	expectedEndpoints := []url.URL{
+		*emulatorEndpoint,
+	}
+	assert.Equal(t, expectedEndpoints, readEndpoints)
+
+	// Verify the write endpoints
+	writeEndpoints, err := client.gem.GetWriteEndpoints()
+	assert.NoError(t, err)
+
+	assert.Equal(t, expectedEndpoints, writeEndpoints)
+
+	// Assert location cache is not populated until update() is called
+	locationInfo := client.gem.locationCache.locationInfo
+	availableLocation := []string{}
+	availableEndpointsByLocation := map[string]url.URL{}
+
+	assert.Equal(t, locationInfo.availReadLocations, availableLocation)
+	assert.Equal(t, locationInfo.availWriteLocations, availableLocation)
+	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
+	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
+
+	//assert that information gets populated by the gem policy after running an api request
+	database_properties := DatabaseProperties{ID: "GEMPolicyDB"}
+	_, err = client.CreateDatabase(context.Background(), database_properties, nil)
+	assert.NoError(t, err)
+
+	locationInfo = client.gem.locationCache.locationInfo
+
+	assert.Equal(t, len(locationInfo.availReadLocations), len(availableLocation)+1)
+	assert.Equal(t, len(locationInfo.availWriteLocations), len(availableLocation)+1)
+	assert.Equal(t, locationInfo.availWriteLocations[0], emulatorRegionName)
+	assert.Equal(t, locationInfo.availReadLocations[0], emulatorRegionName)
+	assert.Equal(t, len(locationInfo.availReadEndpointsByLocation), len(availableEndpointsByLocation)+1)
+	assert.Equal(t, len(locationInfo.availWriteEndpointsByLocation), len(availableEndpointsByLocation)+1)
+}

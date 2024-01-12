@@ -114,21 +114,6 @@ func PossibleMetricClassValues() []MetricClass {
 	}
 }
 
-type MetricResultType string
-
-const (
-	MetricResultTypeData     MetricResultType = "Data"
-	MetricResultTypeMetadata MetricResultType = "Metadata"
-)
-
-// PossibleMetricResultTypeValues returns the possible values for the MetricResultType const type.
-func PossibleMetricResultTypeValues() []MetricResultType {
-	return []MetricResultType{
-		MetricResultTypeData,
-		MetricResultTypeMetadata,
-	}
-}
-
 // MetricUnit - The unit of the metric.
 type MetricUnit string
 

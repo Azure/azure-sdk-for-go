@@ -184,6 +184,15 @@ directive:
   - remove-model: SubscriptionScopeMetricDefinitionCollection
   - remove-model: SubscriptionScopeMetricDefinition
   - remove-model: MetricAggregationType
+  - from: constants.go
+    where: $
+    transform: return $.replace(/type MetricResultType string/g, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/const \(\n\sMetricResultTypeData(.*\s)MetricResultType = "Data"\n\sMetricResultTypeMetadata MetricResultType = \"Metadata\"\n\)/g, "");
+  - from: constants.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func PossibleMetricResultTypeValues\(\) \[\]MetricResultType .*\{\s(?:.+\s)+\}\s/g, "");
 
   # rename metric operations to generate as a separate metrics client
   - rename-operation:

@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- System event models for Event Grid System Topics have been added to the `systemevents` package. (PR#TBD)
+- System event models for Event Grid System Topics have been added to the `systemevents` package. (PR#22242)
 
 ### Breaking Changes
 

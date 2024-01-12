@@ -61,7 +61,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
-	//update and assert available locations are now populated in location cache
+	// Run Update() and assert available locations are now populated in location cache
 	err = gem.Update(context.Background())
 	assert.NoError(t, err)
 	locationInfo = gem.locationCache.locationInfo
@@ -109,7 +109,7 @@ func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 
 	assert.Equal(t, expectedEndpoints, writeEndpoints)
 
-	// Assert location cache is not populated until update() is called
+	// Assert location cache is not populated until update() is called within the policy
 	locationInfo := client.gem.locationCache.locationInfo
 	availableLocation := []string{}
 	availableEndpointsByLocation := map[string]url.URL{}
@@ -119,8 +119,9 @@ func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
-	//assert that information gets populated by the gem policy after running an api request
-	database_properties := DatabaseProperties{ID: "GEMPolicyDB"}
+	// Assert that information gets populated by the gem policy after running an api request
+	database_id := "GEMPolicyTestDB"
+	database_properties := DatabaseProperties{ID: database_id}
 	_, err = client.CreateDatabase(context.Background(), database_properties, nil)
 	assert.NoError(t, err)
 
@@ -132,4 +133,8 @@ func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availReadLocations[0], emulatorRegionName)
 	assert.Equal(t, len(locationInfo.availReadEndpointsByLocation), len(availableEndpointsByLocation)+1)
 	assert.Equal(t, len(locationInfo.availWriteEndpointsByLocation), len(availableEndpointsByLocation)+1)
+
+	db, _ := client.NewDatabase(database_id)
+	_, err = db.Delete(context.TODO(), nil)
+	assert.NoError(t, err)
 }

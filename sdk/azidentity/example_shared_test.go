@@ -29,13 +29,3 @@ func handleError(err error) {
 
 var cred azcore.TokenCredential
 var err error
-
-type exampleServiceClient struct{}
-
-func newServiceClient(azcore.TokenCredential) (exampleServiceClient, error) {
-	return exampleServiceClient{}, nil
-}
-
-func (exampleServiceClient) Method() error {
-	return nil
-}

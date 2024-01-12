@@ -43,8 +43,8 @@ type ClientAssertionCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
+	// tokenCachePersistenceOptions enables persistent token caching when not nil.
+	tokenCachePersistenceOptions *tokenCachePersistenceOptions
 }
 
 // NewClientAssertionCredential constructs a ClientAssertionCredential. The getAssertion function must be thread safe. Pass nil for options to accept defaults.
@@ -64,7 +64,7 @@ func NewClientAssertionCredential(tenantID, clientID string, getAssertion func(c
 		AdditionallyAllowedTenants:   options.AdditionallyAllowedTenants,
 		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
-		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		tokenCachePersistenceOptions: options.tokenCachePersistenceOptions,
 	}
 	c, err := newConfidentialClient(tenantID, clientID, credNameAssertion, cred, msalOpts)
 	if err != nil {

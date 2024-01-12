@@ -42,8 +42,8 @@ type ClientCertificateCredentialOptions struct {
 	// Defaults to False.
 	SendCertificateChain bool
 
-	// TokenCachePersistenceOptions enables persistent token caching when not nil.
-	TokenCachePersistenceOptions *TokenCachePersistenceOptions
+	// tokenCachePersistenceOptions enables persistent token caching when not nil.
+	tokenCachePersistenceOptions *tokenCachePersistenceOptions
 }
 
 // ClientCertificateCredential authenticates a service principal with a certificate.
@@ -69,7 +69,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 		ClientOptions:                options.ClientOptions,
 		DisableInstanceDiscovery:     options.DisableInstanceDiscovery,
 		SendX5C:                      options.SendCertificateChain,
-		TokenCachePersistenceOptions: options.TokenCachePersistenceOptions,
+		tokenCachePersistenceOptions: options.tokenCachePersistenceOptions,
 	}
 	c, err := newConfidentialClient(tenantID, clientID, credNameCert, cred, msalOpts)
 	if err != nil {

@@ -8,7 +8,8 @@
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.6.0-beta.4
-* Removed `AzurePipelinesCredential`. It will return in v1.7.0-beta.1
+* Removed `AzurePipelinesCredential` and the persistent token caching API.
+  They will return in v1.7.0-beta.1
 
 ### Bugs Fixed
 

@@ -210,35 +210,35 @@ func TestTenantID(t *testing.T) {
 func TestUserAuthentication(t *testing.T) {
 	type authenticater interface {
 		azcore.TokenCredential
-		Authenticate(context.Context, *policy.TokenRequestOptions) (AuthenticationRecord, error)
+		authenticate(context.Context, *policy.TokenRequestOptions) (authenticationRecord, error)
 	}
 	for _, credential := range []struct {
 		name                    string
 		interactive, recordable bool
-		new                     func(*TokenCachePersistenceOptions, azcore.ClientOptions, AuthenticationRecord, bool) (authenticater, error)
+		new                     func(*tokenCachePersistenceOptions, azcore.ClientOptions, authenticationRecord, bool) (authenticater, error)
 	}{
 		{
 			name: credNameBrowser,
-			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *tokenCachePersistenceOptions, co azcore.ClientOptions, ar authenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				return NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
 					AdditionallyAllowedTenants:     []string{"*"},
-					AuthenticationRecord:           ar,
+					authenticationRecord:           ar,
 					ClientOptions:                  co,
-					DisableAutomaticAuthentication: disableAutoAuth,
-					TokenCachePersistenceOptions:   tcpo,
+					disableAutomaticAuthentication: disableAutoAuth,
+					tokenCachePersistenceOptions:   tcpo,
 				})
 			},
 			interactive: true,
 		},
 		{
 			name: credNameDeviceCode,
-			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *tokenCachePersistenceOptions, co azcore.ClientOptions, ar authenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				o := DeviceCodeCredentialOptions{
 					AdditionallyAllowedTenants:     []string{"*"},
-					AuthenticationRecord:           ar,
+					authenticationRecord:           ar,
 					ClientOptions:                  co,
-					DisableAutomaticAuthentication: disableAutoAuth,
-					TokenCachePersistenceOptions:   tcpo,
+					disableAutomaticAuthentication: disableAutoAuth,
+					tokenCachePersistenceOptions:   tcpo,
 				}
 				if recording.GetRecordMode() == recording.PlaybackMode {
 					o.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
@@ -250,12 +250,12 @@ func TestUserAuthentication(t *testing.T) {
 		},
 		{
 			name: credNameUserPassword,
-			new: func(tcpo *TokenCachePersistenceOptions, co azcore.ClientOptions, ar AuthenticationRecord, disableAutoAuth bool) (authenticater, error) {
+			new: func(tcpo *tokenCachePersistenceOptions, co azcore.ClientOptions, ar authenticationRecord, disableAutoAuth bool) (authenticater, error) {
 				opts := UsernamePasswordCredentialOptions{
 					AdditionallyAllowedTenants:   []string{"*"},
-					AuthenticationRecord:         ar,
+					authenticationRecord:         ar,
 					ClientOptions:                co,
-					TokenCachePersistenceOptions: tcpo,
+					tokenCachePersistenceOptions: tcpo,
 				}
 				return NewUsernamePasswordCredential(liveUser.tenantID, developerSignOnClientID, liveUser.username, liveUser.password, &opts)
 			},
@@ -280,15 +280,15 @@ func TestUserAuthentication(t *testing.T) {
 				}}
 
 				co := azcore.ClientOptions{Cloud: cc, Transport: &sts}
-				cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
+				cred, err := credential.new(nil, co, authenticationRecord{}, false)
 				require.NoError(t, err)
-				_, err = cred.Authenticate(context.Background(), nil)
+				_, err = cred.authenticate(context.Background(), nil)
 				require.NoError(t, err)
 
 				t.Setenv(azureAuthorityHost, cc.ActiveDirectoryAuthorityHost)
-				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
+				cred, err = credential.new(nil, azcore.ClientOptions{Transport: &sts}, authenticationRecord{}, false)
 				require.NoError(t, err)
-				_, err = cred.Authenticate(context.Background(), nil)
+				_, err = cred.authenticate(context.Background(), nil)
 				if cc.ActiveDirectoryAuthorityHost == customCloud.ActiveDirectoryAuthorityHost {
 					// Authenticate should return an error because it can't map an unknown host to a default scope
 					require.ErrorIs(t, err, errScopeRequired)
@@ -314,12 +314,12 @@ func TestUserAuthentication(t *testing.T) {
 			counter := tokenRequestCountingPolicy{}
 			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
 
-			cred, err := credential.new(nil, co, AuthenticationRecord{}, false)
+			cred, err := credential.new(nil, co, authenticationRecord{}, false)
 			require.NoError(t, err)
-			ar, err := cred.Authenticate(context.Background(), &testTRO)
+			ar, err := cred.authenticate(context.Background(), &testTRO)
 			require.NoError(t, err)
 
-			// some fields of the returned AuthenticationRecord should have specific values
+			// some fields of the returned authenticationRecord should have specific values
 			require.Equal(t, ar.ClientID, developerSignOnClientID)
 			require.Equal(t, ar.Version, supportedAuthRecordVersions[0])
 			// all others should have nonempty values
@@ -332,6 +332,7 @@ func TestUserAuthentication(t *testing.T) {
 		})
 
 		t.Run("PersistentCache_Live/"+credential.name, func(t *testing.T) {
+			t.Skip("TODO: fix this test after restoring persistent cache feature")
 			switch recording.GetRecordMode() {
 			case recording.LiveMode:
 				if credential.interactive && !runManualTests {
@@ -352,11 +353,11 @@ func TestUserAuthentication(t *testing.T) {
 			defer stop()
 			counter := tokenRequestCountingPolicy{}
 			co.PerCallPolicies = append(co.PerCallPolicies, &counter)
-			tcpo := TokenCachePersistenceOptions{Name: t.Name()}
+			tcpo := tokenCachePersistenceOptions{Name: t.Name()}
 
-			cred, err := credential.new(&tcpo, co, AuthenticationRecord{}, true)
+			cred, err := credential.new(&tcpo, co, authenticationRecord{}, true)
 			require.NoError(t, err)
-			record, err := cred.Authenticate(context.Background(), &testTRO)
+			record, err := cred.authenticate(context.Background(), &testTRO)
 			require.NoError(t, err)
 			defer os.Remove(p)
 			tk, err := cred.GetToken(context.Background(), testTRO)
@@ -372,7 +373,7 @@ func TestUserAuthentication(t *testing.T) {
 
 		if credential.interactive {
 			t.Run("DisableAutomaticAuthentication/"+credential.name, func(t *testing.T) {
-				cred, err := credential.new(nil, policy.ClientOptions{Transport: &mockSTS{}}, AuthenticationRecord{}, true)
+				cred, err := credential.new(nil, policy.ClientOptions{Transport: &mockSTS{}}, authenticationRecord{}, true)
 				require.NoError(t, err)
 				expected := policy.TokenRequestOptions{
 					Claims:    "claims",
@@ -383,12 +384,12 @@ func TestUserAuthentication(t *testing.T) {
 				_, err = cred.GetToken(context.Background(), expected)
 				require.Contains(t, err.Error(), credential.name)
 				require.Contains(t, err.Error(), "Call Authenticate")
-				var actual *AuthenticationRequiredError
+				var actual *authenticationRequiredError
 				require.ErrorAs(t, err, &actual)
 				require.Equal(t, expected, actual.TokenRequestOptions)
 
 				if credential.name != credNameBrowser || runManualTests {
-					_, err = cred.Authenticate(context.Background(), &testTRO)
+					_, err = cred.authenticate(context.Background(), &testTRO)
 					require.NoError(t, err)
 					// silent auth should succeed this time
 					_, err = cred.GetToken(context.Background(), testTRO)
@@ -396,7 +397,7 @@ func TestUserAuthentication(t *testing.T) {
 				}
 			})
 			t.Run("DisableAutomaticAuthentication/ChainedTokenCredential/"+credential.name, func(t *testing.T) {
-				cred, err := credential.new(nil, policy.ClientOptions{}, AuthenticationRecord{}, true)
+				cred, err := credential.new(nil, policy.ClientOptions{}, authenticationRecord{}, true)
 				require.NoError(t, err)
 				expected := azcore.AccessToken{ExpiresOn: time.Now().UTC(), Token: tokenValue}
 				fake := NewFakeCredential()
@@ -404,7 +405,7 @@ func TestUserAuthentication(t *testing.T) {
 				chain, err := NewChainedTokenCredential([]azcore.TokenCredential{cred, fake}, nil)
 				require.NoError(t, err)
 				// ChainedTokenCredential should continue iterating when a credential returns
-				// AuthenticationRequiredError i.e., it should call fake.GetToken() and return the expected token
+				// authenticationRequiredError i.e., it should call fake.GetToken() and return the expected token
 				actual, err := chain.GetToken(context.Background(), testTRO)
 				require.NoError(t, err)
 				require.Equal(t, expected, actual)
@@ -778,7 +779,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			c, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
 				AdditionallyAllowedTenants: test.allowed,
 				// this enables testing the credential's tenant resolution without having to authenticate
-				DisableAutomaticAuthentication: true,
+				disableAutomaticAuthentication: true,
 			})
 			require.NoError(t, err)
 			_, err = c.GetToken(context.Background(), tro)
@@ -789,7 +790,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				// tenant resolution should have succeeded because the specified tenant is allowed,
 				// however the credential should have returned a different error because automatic
 				// authentication is disabled
-				var e *AuthenticationRequiredError
+				var e *authenticationRequiredError
 				require.ErrorAs(t, err, &e)
 			}
 		})
@@ -1086,7 +1087,7 @@ func TestTokenCachePersistenceOptions(t *testing.T) {
 	t.Cleanup(func() { internal.NewCache = before })
 	for _, test := range []struct {
 		desc    string
-		options *TokenCachePersistenceOptions
+		options *tokenCachePersistenceOptions
 		err     error
 	}{
 		{
@@ -1094,11 +1095,11 @@ func TestTokenCachePersistenceOptions(t *testing.T) {
 		},
 		{
 			desc:    "default options",
-			options: &TokenCachePersistenceOptions{},
+			options: &tokenCachePersistenceOptions{},
 		},
 		{
 			desc:    "all options set",
-			options: &TokenCachePersistenceOptions{AllowUnencryptedStorage: true, Name: "name"},
+			options: &tokenCachePersistenceOptions{AllowUnencryptedStorage: true, Name: "name"},
 		},
 	} {
 		internal.NewCache = func(o *internal.TokenCachePersistenceOptions, _ bool) (cache.ExportReplace, error) {
@@ -1116,30 +1117,30 @@ func TestTokenCachePersistenceOptions(t *testing.T) {
 			return nil, nil
 		}
 		for _, subtest := range []struct {
-			ctor func(azcore.ClientOptions, *TokenCachePersistenceOptions) (azcore.TokenCredential, error)
+			ctor func(azcore.ClientOptions, *tokenCachePersistenceOptions) (azcore.TokenCredential, error)
 			env  map[string]string
 			name string
 		}{
 			{
 				name: credNameAssertion,
-				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
-					o := ClientAssertionCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+				ctor: func(co azcore.ClientOptions, tco *tokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientAssertionCredentialOptions{ClientOptions: co, tokenCachePersistenceOptions: tco}
 					return NewClientAssertionCredential(fakeTenantID, fakeClientID, func(context.Context) (string, error) { return "...", nil }, &o)
 				},
 			},
 			{
 				name: credNameCert,
-				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
-					o := ClientCertificateCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+				ctor: func(co azcore.ClientOptions, tco *tokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientCertificateCredentialOptions{ClientOptions: co, tokenCachePersistenceOptions: tco}
 					return NewClientCertificateCredential(fakeTenantID, fakeClientID, allCertTests[0].certs, allCertTests[0].key, &o)
 				},
 			},
 			{
 				name: credNameDeviceCode,
-				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+				ctor: func(co azcore.ClientOptions, tco *tokenCachePersistenceOptions) (azcore.TokenCredential, error) {
 					o := DeviceCodeCredentialOptions{
 						ClientOptions:                co,
-						TokenCachePersistenceOptions: tco,
+						tokenCachePersistenceOptions: tco,
 						UserPrompt:                   func(context.Context, DeviceCodeMessage) error { return nil },
 					}
 					return NewDeviceCodeCredential(&o)
@@ -1147,15 +1148,15 @@ func TestTokenCachePersistenceOptions(t *testing.T) {
 			},
 			{
 				name: credNameSecret,
-				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
-					o := ClientSecretCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+				ctor: func(co azcore.ClientOptions, tco *tokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := ClientSecretCredentialOptions{ClientOptions: co, tokenCachePersistenceOptions: tco}
 					return NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &o)
 				},
 			},
 			{
 				name: credNameUserPassword,
-				ctor: func(co azcore.ClientOptions, tco *TokenCachePersistenceOptions) (azcore.TokenCredential, error) {
-					o := UsernamePasswordCredentialOptions{ClientOptions: co, TokenCachePersistenceOptions: tco}
+				ctor: func(co azcore.ClientOptions, tco *tokenCachePersistenceOptions) (azcore.TokenCredential, error) {
+					o := UsernamePasswordCredentialOptions{ClientOptions: co, tokenCachePersistenceOptions: tco}
 					return NewUsernamePasswordCredential(fakeTenantID, fakeClientID, fakeUsername, "password", &o)
 				},
 			},

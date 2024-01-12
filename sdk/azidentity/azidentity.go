@@ -53,8 +53,8 @@ var (
 	errInvalidTenantID = errors.New("invalid tenantID. You can locate your tenantID by following the instructions listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names")
 )
 
-// TokenCachePersistenceOptions contains options for persistent token caching
-type TokenCachePersistenceOptions = internal.TokenCachePersistenceOptions
+// tokenCachePersistenceOptions contains options for persistent token caching
+type tokenCachePersistenceOptions = internal.TokenCachePersistenceOptions
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 //  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user

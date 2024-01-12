@@ -1,8 +1,10 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.5.0 (Unreleased)
 
 ### Features Added
+
+- System event models for Event Grid System Topics have been added to the `systemevents` package. (PR#TBD)
 
 ### Breaking Changes
 

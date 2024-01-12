@@ -1,48 +1,32 @@
 ## Go
 
 ``` yaml
-title: EventGridPublisherClient
-description: Azure Event Grid client
+title: AzureEventGridSystemEvents
+description: Azure Event Grid system events
 generated-metadata: false
 clear-output-folder: false
 go: true
 require: https://github.com/Azure/azure-rest-api-specs/blob/11bbc2b1df2e915a2227a6a1a48a27b9e67c3311/specification/eventgrid/data-plane/readme.md
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
-output-folder: ../publisher
-override-client-name: Client
+output-folder: ../systemevents
+override-client-name: ClientDeleteMe
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.52"
 version: "^3.0.0"
 slice-elements-byval: true
-# remove-non-reference-schema: true
+remove-non-reference-schema: true
 batch:
   - tag: package-2018-01
 directive:
+  - from: swagger-document
+    where: $
+    transform: $['paths'] = {}; return $;
   - from: swagger-document
     where: $.definitions.MediaJobOutput
     transform: >
       $.required.push("@odata.type");
       $["x-csharp-usage"] = "model,output";
-  - from: swagger-document
-    where: $
-    debug: true
-    transform: |
-      // the system event models aren't generated here (we have a separate package for them)
-      for (const elem in $.definitions) {
-        //if (elem.endsWith("EventData") || elem.endsWith("Properties") || elem.endsWith("Details")) {
-        if (elem !== "EventGridEvent" && elem !== "CloudEventEvent" && elem !== "CustomEventEvent") {
-          delete $.definitions[elem];
-        } else {
-          $lib.log(`Not deleting = ${elem}`);
-        }
-      }
-      return $;      
-
-  # make the endpoint a parameter of the client constructor
-  - from: swagger-document
-    where: $["x-ms-parameterized-host"]
-    transform: $.parameters[0]["x-ms-parameter-location"] = "client"
   # reference azcore/messaging/CloudEvent
   - from: client.go
     where: $
@@ -53,15 +37,7 @@ directive:
   - from: swagger-document
     where: $.definitions.CloudEventEvent
     transform: $["x-ms-external"] = true
-  # delete client name prefix from method options and response types
-  - from:
-      - client.go
-      - models.go
-      - response_types.go
-      - options.go
-    where: $
-    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
-  # delete some models that look like they're system events...
+   # delete some models that look like they're system events...
   - from: models.go
     where: $
     transform: return $.replace(/\/\/ (SubscriptionDeletedEventData|SubscriptionValidationEventData|SubscriptionValidationResponse).+?\n}/gs, "")    
@@ -93,6 +69,21 @@ directive:
       return $.replace(
         /(func \(client \*Client\) publishCloudEventsCreateRequest.+?)return req, nil/s, 
         '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")\nreturn req, nil');
+  - from: 
+      - models.go
+      - models_serde.go
+    where: $
+    transform: |
+      return $.replace(/ResourceActionCancelData/g, 'ResourceActionCancelEventData')
+        .replace(/ResourceActionFailureData/g, 'ResourceActionFailureEventData')
+        .replace(/ResourceActionSuccessData/g, 'ResourceActionSuccessEventData')
+        .replace(/ResourceDeleteCancelData/g, 'ResourceDeleteCancelEventData')
+        .replace(/ResourceDeleteFailureData/g, 'ResourceDeleteFailureEventData')
+        .replace(/ResourceDeleteSuccessData/g, 'ResourceDeleteSuccessEventData')
+        .replace(/ResourceWriteCancelData/g, 'ResourceWriteCancelEventData')
+        .replace(/ResourceWriteFailureData/g, 'ResourceWriteFailureEventData')
+        .replace(/ResourceWriteSuccessData/g, 'ResourceWriteSuccessEventData')
+
 
   # TODO:
   # missing:

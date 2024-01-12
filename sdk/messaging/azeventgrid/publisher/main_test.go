@@ -64,14 +64,6 @@ func run(m *testing.M) int {
 		return v
 	}
 
-	os.Setenv("AZURE_CLIENT_ID", getVar("AZEVENTGRID_CLIENT_ID"))
-	os.Setenv("AZURE_CLIENT_SECRET", getVar("AZEVENTGRID_CLIENT_SECRET"))
-	os.Setenv("AZURE_TENANT_ID", getVar("AZEVENTGRID_TENANT_ID"))
-
-	testVars.BlobURL = getVar("STORAGE_ACCOUNT_BLOB")
-	testVars.QueueURL = getVar("STORAGE_ACCOUNT_QUEUE")
-	testVars.QueueName = getVar("STORAGE_QUEUE_NAME")
-
 	testVars.eventGridVars = eventGridVars{
 		EG: topicVars{Name: getVar("EVENTGRID_TOPIC_NAME"),
 			Key:      getVar("EVENTGRID_TOPIC_KEY"),
@@ -82,6 +74,10 @@ func run(m *testing.M) int {
 			Endpoint: getVar("EVENTGRID_CE_TOPIC_ENDPOINT"),
 		},
 	}
+
+	os.Setenv("AZURE_CLIENT_ID", getVar("AZEVENTGRID_CLIENT_ID"))
+	os.Setenv("AZURE_CLIENT_SECRET", getVar("AZEVENTGRID_CLIENT_SECRET"))
+	os.Setenv("AZURE_TENANT_ID", getVar("AZEVENTGRID_TENANT_ID"))
 
 	sort.Strings(missingVars)
 

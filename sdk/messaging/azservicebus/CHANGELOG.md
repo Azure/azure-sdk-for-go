@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 - Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no 
-  longer leaks memory. (PR#TBD)
+  longer leaks memory. (PR#22253)
 
 ## 1.5.0 (2023-10-10)
 

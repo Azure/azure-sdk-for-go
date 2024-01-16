@@ -9,8 +9,8 @@ package aztemplate
 // Constants to identify the module
 const (
 	// moduleName is the module name that shows in telemetry.
-	moduleName = "aztemplate"
+	moduleName = "aztemplate/foo"
 
 	// moduleVersion is the semantic version (see http://semver.org) of this module.
-	moduleVersion = "v0.1.1"
+	moduleVersion = "v0.1.0"
 )

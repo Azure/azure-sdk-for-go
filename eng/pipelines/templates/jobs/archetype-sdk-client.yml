@@ -148,14 +148,21 @@ stages:
     - job: Analyze
       displayName: Analyze
       variables:
-          Codeql.Enabled: true
-          Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
-          Codeql.SkipTaskAutoInjection: false
+        - name: Codeql.Enabled
+          value: true
+        - name: Codeql.BuildIdentifier
+          value: ${{ parameters.ServiceDirectory }}
+        - name: Codeql.SkipTaskAutoInjection
+          value: false
       pool:
         name: azsdk-pool-mms-ubuntu-2004-general
 
       steps:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+
+      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+        displayName: "Component Detection"
+        condition: and(succeededOrFailed(), ne(variables['Build.Reason'],'PullRequest'))
 
       - task: GoTool@0
         inputs:

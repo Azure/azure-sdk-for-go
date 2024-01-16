@@ -5,9 +5,12 @@ variables:
   # https://docs.opensource.microsoft.com/tools/cg/index.html
   # https://github.com/microsoft/component-detection/blob/main/src/Microsoft.ComponentDetection.Detectors/go/GoComponentDetector.cs
   EnableGoCliScan: true
-  
+
   # Disable CodeQL injections except for where we specifically enable it
   Codeql.SkipTaskAutoInjection: true
 
   # Set the default value so that 'Build Performance Tests' step can resolve it
   UseAzcoreFromMain: $[eq(variables['Use.AzcoreFromMain'], 'true')]
+
+  # We enable this selectively to avoid overloading CG scanning/reporting on PR pipelines
+  skipComponentGovernanceDetection: true

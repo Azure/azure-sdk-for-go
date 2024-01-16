@@ -19,16 +19,19 @@ type authenticationClientOptions struct {
 // newAuthenticationClient creates a new instance of AuthenticationClient with the specified values.
 //   - endpoint - Registry login URL
 //   - options - Client options, pass nil to accept the default values.
-func newAuthenticationClient(endpoint string, options *authenticationClientOptions) *authenticationClient {
+func newAuthenticationClient(endpoint string, options *authenticationClientOptions) (*authenticationClient, error) {
 	if options == nil {
 		options = &authenticationClientOptions{}
 	}
 
-	pipeline := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &options.ClientOptions)
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
 
 	client := &authenticationClient{
+		internal: azcoreClient,
 		endpoint: endpoint,
-		pl:       pipeline,
 	}
-	return client
+	return client, nil
 }

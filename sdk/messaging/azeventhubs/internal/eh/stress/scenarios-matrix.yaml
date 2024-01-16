@@ -61,3 +61,7 @@ matrix:
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"
+    multibalance:
+      testTarget: multibalance
+      rounds: 20
+      verbose: ""

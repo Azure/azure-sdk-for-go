@@ -5869,3 +5869,79 @@ func TestServiceVersion(t *testing.T) {
 	_, err = client.Upload(context.Background(), streaming.NopCloser(r), nil)
 	require.NoError(t, err)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &blockblob.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	_, err = bbClientAudience.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+
+	_, err = bbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s", accountName, containerName, blobName)
+
+	options := &blockblob.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	bbClientAudience, err := blockblob.NewClient(blobURL, cred, options)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+
+	_, err = bbClientAudience.Upload(context.Background(), rsc, nil)
+	_require.NoError(err)
+
+	_, err = bbClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}

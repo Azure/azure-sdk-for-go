@@ -39,27 +39,27 @@ func Test(t *testing.T) {
 	}
 }
 
-func (s *DirectoryRecordedTestsSuite) SetupSuite() {
-	s.proxy = testcommon.SetupSuite(&s.Suite)
+func (d *DirectoryRecordedTestsSuite) SetupSuite() {
+	d.proxy = testcommon.SetupSuite(&d.Suite)
 }
 
-func (s *DirectoryRecordedTestsSuite) TearDownSuite() {
-	testcommon.TearDownSuite(&s.Suite, s.proxy)
+func (d *DirectoryRecordedTestsSuite) TearDownSuite() {
+	testcommon.TearDownSuite(&d.Suite, d.proxy)
 }
 
-func (s *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(s.T(), suite, test)
+func (d *DirectoryRecordedTestsSuite) BeforeTest(suite string, test string) {
+	testcommon.BeforeTest(d.T(), suite, test)
 }
 
-func (s *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
-	testcommon.AfterTest(s.T(), suite, test)
+func (d *DirectoryRecordedTestsSuite) AfterTest(suite string, test string) {
+	testcommon.AfterTest(d.T(), suite, test)
 }
 
-func (s *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
+func (d *DirectoryUnrecordedTestsSuite) BeforeTest(suite string, test string) {
 
 }
 
-func (s *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
+func (d *DirectoryUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
@@ -2263,4 +2263,107 @@ func (d *DirectoryRecordedTestsSuite) TestListFileDirEncodedPrefix() {
 		_require.NotNil(resp.Prefix)
 		_require.Equal(*resp.Prefix, dirName)
 	}
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryClientDefaultAudience() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{
+		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
+		Audience:          "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClientAudience, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryClientCustomAudience() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{
+		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
+	}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClientAudience, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirectoryAudienceNegative() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirURL := "https://" + accountName + ".file.core.windows.net/" + shareName + "/" + dirName
+
+	options := &directory.ClientOptions{
+		FileRequestIntent: to.Ptr(directory.ShareTokenIntentBackup),
+		Audience:          "https://badaudience.file.core.windows.net",
+	}
+	testcommon.SetClientOptions(d.T(), &options.ClientOptions)
+	dirClientAudience, err := directory.NewClient(dirURL, cred, options)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.Create(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }

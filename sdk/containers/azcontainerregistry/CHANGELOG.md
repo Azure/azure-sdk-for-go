@@ -4,9 +4,11 @@
 
 ### Features Added
 * Add `ConfigMediaType` and `MediaType` properties to `ManifestAttributes`
+* Enabled spans for distributed tracing
 
 ### Other Changes
 * Refine some logics and comments
+* Updated to latest version of azcore
 
 ## 0.2.0 (2023-06-06)
 

@@ -6,6 +6,11 @@
 
 - ReceiverOptions.TimeAfterFirstMessage lets you configure the amount of time, after the first message in a batch is received, before we return messages. (PR#22154)
 
+### Bugs Fixed
+
+- Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no 
+  longer leaks memory. (PR#TBD)
+
 ## 1.5.0 (2023-10-10)
 
 ### Features Added

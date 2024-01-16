@@ -22,6 +22,38 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestReceiverBackupSettlement(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
+		QueueProperties: &admin.QueueProperties{
+			LockDuration: to.Ptr("PT5M"),
+		},
+	})
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	}, nil)
+	require.NoError(t, err)
+
+	origReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+	defer test.RequireClose(t, origReceiver)
+
+	otherReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+	defer test.RequireClose(t, otherReceiver)
+
+	messages, err := origReceiver.ReceiveMessages(context.TODO(), 1, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, messages)
+
+	err = otherReceiver.CompleteMessage(context.Background(), messages[0], nil)
+	require.NoError(t, err)
+}
+
 func TestReceiverCancel(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()

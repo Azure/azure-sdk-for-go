@@ -41,7 +41,6 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	//need to pass in preferredRegions from options here once those changes are merged
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), o.PreferredRegions, 0)
 	if err != nil {
 		return nil, err
@@ -58,7 +57,6 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	//need to pass in preferredRegions from options here once those changes are merged
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), o.PreferredRegions, 0)
 	if err != nil {
 		return nil, err

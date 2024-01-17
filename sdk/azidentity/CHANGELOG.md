@@ -1,10 +1,15 @@
 # Release History
 
-## 1.6.0-beta.1 (2024-01-16)
+## 1.6.0-beta.1 (2024-01-17)
 
 ### Features Added
 * Restored persistent token caching API first added in v1.5.0-beta.1
 * Added `AzureCLICredentialOptions.Subscription`
+
+## 1.5.1 (2024-01-17)
+
+### Bugs Fixed
+* `InteractiveBrowserCredential` handles `AdditionallyAllowedTenants` correctly
 
 ## 1.5.0 (2024-01-16)
 

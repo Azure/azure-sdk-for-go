@@ -289,7 +289,7 @@ func ExampleClient_ArchiveSnapshot() {
 
 	snapshotName := "existing-snapshot-example"
 
-	_, err = client.ArchiveSnapshot(context.TODO(), snapshotName, &azappconfig.ArchiveSnapshotOptions{})
+	_, err = client.ArchiveSnapshot(context.TODO(), snapshotName, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -312,7 +312,7 @@ func ExampleClient_RecoverSnapshot() {
 
 	snapshotName := "existing-snapshot-example"
 
-	_, err = client.RecoverSnapshot(context.TODO(), snapshotName, &azappconfig.RecoverSnapshotOptions{})
+	_, err = client.RecoverSnapshot(context.TODO(), snapshotName, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -397,7 +397,7 @@ func ExampleClient_GetSnapshot() {
 
 	snapshotName := "snapshot-example"
 
-	snapshot, err := client.GetSnapshot(context.TODO(), snapshotName, &azappconfig.GetSnapshotOptions{})
+	snapshot, err := client.GetSnapshot(context.TODO(), snapshotName, nil)
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

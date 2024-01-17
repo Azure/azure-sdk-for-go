@@ -266,7 +266,7 @@ func ExampleClient_BeginCreateSnapshot() {
 		},
 	}
 
-	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.CreateSnapshotOptions{})
+	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

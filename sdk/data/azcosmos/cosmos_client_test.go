@@ -254,8 +254,8 @@ func TestCreateRequest(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", "", req.Raw().Header.Get(headerXmsDate))
 	}
 
-	if req.Raw().Header.Get(headerXmsVersion) != "2020-11-05" {
-		t.Errorf("Expected %v, but got %v", "2020-11-05", req.Raw().Header.Get(headerXmsVersion))
+	if req.Raw().Header.Get(headerXmsVersion) != apiVersion {
+		t.Errorf("Expected %v, but got %v", apiVersion, req.Raw().Header.Get(headerXmsVersion))
 	}
 
 	if req.Raw().Header.Get(cosmosHeaderSDKSupportedCapabilities) != supportedCapabilitiesHeaderValue {

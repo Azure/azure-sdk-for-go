@@ -36,7 +36,8 @@ type Client base.Client[generated.BlobClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := shared.NewStorageChallengePolicy(cred)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
@@ -44,7 +45,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewBlobClient(blobURL, azClient, &cred)), nil
+	return (*Client)(base.NewBlobClient(blobURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
@@ -58,7 +59,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewBlobClient(blobURL, azClient, nil)), nil
+	return (*Client)(base.NewBlobClient(blobURL, azClient, nil, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithSharedKeyCredential creates an instance of Client with the specified values.
@@ -74,7 +75,7 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential,
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewBlobClient(blobURL, azClient, cred)), nil
+	return (*Client)(base.NewBlobClient(blobURL, azClient, cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientFromConnectionString creates an instance of Client with the specified values.
@@ -112,6 +113,10 @@ func (b *Client) credential() any {
 	return base.Credential((*base.Client[generated.BlobClient])(b))
 }
 
+func (b *Client) getClientOptions() *base.ClientOptions {
+	return base.GetClientOptions((*base.Client[generated.BlobClient])(b))
+}
+
 // URL returns the URL endpoint used by the Client object.
 func (b *Client) URL() string {
 	return b.generated().Endpoint()
@@ -126,7 +131,7 @@ func (b *Client) WithSnapshot(snapshot string) (*Client, error) {
 	}
 	p.Snapshot = snapshot
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential(), b.getClientOptions())), nil
 }
 
 // WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
@@ -138,7 +143,7 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 	}
 	p.VersionID = versionID
 
-	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential())), nil
+	return (*Client)(base.NewBlobClient(p.String(), b.generated().InternalClient(), b.credential(), b.getClientOptions())), nil
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.

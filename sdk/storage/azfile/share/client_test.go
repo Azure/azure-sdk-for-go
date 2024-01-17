@@ -1627,3 +1627,108 @@ func (s *ShareRecordedTestsSuite) TestPremiumShareBandwidth() {
 	_require.NotNil(response.NextAllowedQuotaDowngradeTime)
 	_require.Greater(*response.ProvisionedBandwidthMiBps, (int32)(0))
 }
+
+func (s *ShareRecordedTestsSuite) TestShareClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	options := &share.ClientOptions{
+		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
+		Audience:          "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	// Create a permission and check that it's not empty.
+	createResp, err := shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	getResp, err := shareClientAudience.GetPermission(context.Background(), *createResp.FilePermissionKey, nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.Permission)
+	_require.NotEmpty(*getResp.Permission)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	options := &share.ClientOptions{
+		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	// Create a permission and check that it's not empty.
+	createResp, err := shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.NoError(err)
+	_require.NotNil(createResp.FilePermissionKey)
+	_require.NotEmpty(*createResp.FilePermissionKey)
+
+	getResp, err := shareClientAudience.GetPermission(context.Background(), *createResp.FilePermissionKey, nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.Permission)
+	_require.NotEmpty(*getResp.Permission)
+}
+
+func (s *ShareRecordedTestsSuite) TestShareClientAudienceNegative() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	options := &share.ClientOptions{
+		FileRequestIntent: to.Ptr(share.TokenIntentBackup),
+		Audience:          "https://badaudience.file.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	shareClientAudience, err := share.NewClient("https://"+accountName+".file.core.windows.net/"+shareName, cred, options)
+	_require.NoError(err)
+
+	// Create a permission and check that it's not empty.
+	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
+	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+}

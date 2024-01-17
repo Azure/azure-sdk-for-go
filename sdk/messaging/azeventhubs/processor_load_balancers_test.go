@@ -4,7 +4,10 @@ package azeventhubs
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
 	"sort"
+	"strconv"
 	"testing"
 	"time"
 
@@ -283,15 +286,15 @@ func TestProcessorLoadBalancers_AnyStrategy_StealsToBalance(t *testing.T) {
 func TestProcessorLoadBalancers_InvalidStrategy(t *testing.T) {
 	cps := newCheckpointStoreForTest()
 
-	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails("does not matter"), "", time.Hour)
+	lb := newProcessorLoadBalancer(cps, newTestConsumerDetails("clientid"), "", time.Hour)
 	ownerships, err := lb.LoadBalance(context.Background(), []string{"0"})
 	require.Nil(t, ownerships)
-	require.EqualError(t, err, "invalid load balancing strategy ''")
+	require.EqualError(t, err, "[clientid] invalid load balancing strategy ''")
 
-	lb = newProcessorLoadBalancer(cps, newTestConsumerDetails("does not matter"), "super-greedy", time.Hour)
+	lb = newProcessorLoadBalancer(cps, newTestConsumerDetails("clientid"), "super-greedy", time.Hour)
 	ownerships, err = lb.LoadBalance(context.Background(), []string{"0"})
 	require.Nil(t, ownerships)
-	require.EqualError(t, err, "invalid load balancing strategy 'super-greedy'")
+	require.EqualError(t, err, "[clientid] invalid load balancing strategy 'super-greedy'")
 }
 
 func TestProcessorLoadBalancers_AnyStrategy_GrabRelinquishedPartition(t *testing.T) {
@@ -326,6 +329,86 @@ func TestProcessorLoadBalancers_AnyStrategy_GrabRelinquishedPartition(t *testing
 			requireBalanced(t, cps, 5, 2)
 		})
 	}
+}
+
+func TestUnit_ProcessorLoadBalancer_Balanced(t *testing.T) {
+	for _, td := range []string{"abc", "abbc", "abbcc"} {
+		for _, ownerID := range []string{"a", "b", "c"} {
+			t.Run(fmt.Sprintf("Layout %q, with owner %q", td, ownerID), func(t *testing.T) {
+				lb, parts := createLoadBalancerForTest(t, td, ownerID)
+				lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+				require.NoError(t, err)
+				require.False(t, lbi.claimMorePartitions)
+				require.Empty(t, lbi.aboveMax)
+			})
+		}
+	}
+
+	t.Run("balanced with unequal ownership", func(t *testing.T) {
+		lb, parts := createLoadBalancerForTest(t, "aaaabbb", "a")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.False(t, lbi.claimMorePartitions)
+		require.Equal(t, 4, lbi.maxAllowed)
+		require.Empty(t, lbi.aboveMax)
+
+		lb, parts = createLoadBalancerForTest(t, "aaaabbb", "b")
+		lbi, err = lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.False(t, lbi.claimMorePartitions)
+		require.Equal(t, 4, lbi.maxAllowed)
+		require.Empty(t, lbi.aboveMax)
+	})
+}
+
+func TestUnit_ProcessorLoadBalancer_Unbalanced(t *testing.T) {
+	t.Run("new owner enters the field", func(t *testing.T) {
+		lb, parts := createLoadBalancerForTest(t, "abb", "c")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.True(t, lbi.claimMorePartitions)
+		require.Equal(t, 1, lbi.maxAllowed)
+		require.Equal(t, ".c.", greedyLoadBalance(lb, lbi, parts))
+	})
+
+	t.Run("deficit, single partition", func(t *testing.T) {
+		// existing owner, needs to steal a partition
+		lb, parts := createLoadBalancerForTest(t, "aaaabb", "b")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.True(t, lbi.claimMorePartitions)
+		require.Equal(t, 3, lbi.maxAllowed)
+		require.Equal(t, "b...bb", greedyLoadBalance(lb, lbi, parts))
+	})
+
+	t.Run("deficit, multiple partitions", func(t *testing.T) {
+		lb, parts := createLoadBalancerForTest(t, "aaabbbcccd", "d")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.True(t, lbi.claimMorePartitions)
+		require.Equal(t, 2, lbi.maxAllowed)
+		require.Equal(t, "d........d", greedyLoadBalance(lb, lbi, parts))
+	})
+
+	t.Run("deficit, multiple owners", func(t *testing.T) {
+		lb, parts := createLoadBalancerForTest(t, "aaabbbccde", "d")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.True(t, lbi.claimMorePartitions)
+		require.Equal(t, 2, lbi.maxAllowed)
+		require.Equal(t, "d.......d.", greedyLoadBalance(lb, lbi, parts))
+	})
+
+	t.Run("can grab an extra partition", func(t *testing.T) {
+		// this tests when we have met our minimum but another processor actually owns
+		// more than it should (even accounting for the extra partition).
+		lb, parts := createLoadBalancerForTest(t, "aaaabbc", "b")
+		lbi, err := lb.getAvailablePartitions(context.Background(), parts)
+		require.NoError(t, err)
+		require.True(t, lbi.claimMorePartitions)
+		require.Equal(t, 3, lbi.maxAllowed)
+		require.Equal(t, "b...bb.", greedyLoadBalance(lb, lbi, parts))
+	})
 }
 
 func mapToStrings[T any](src []T, fn func(t T) string) []string {
@@ -417,4 +500,87 @@ func groupBy[T any](src []T, fn func(t T) string) map[string][]T {
 	}
 
 	return dest
+}
+
+// ownershipsAsString converts the list of owners into a string where each character represents a partition
+// with the owner or a '.' if nobody owns a partition.
+//
+// Examples:
+//   - '..'  => two partitions, both unowned.
+//   - 'a.'  => first partition is owned by 'a', second partition is unowned.
+//   - 'ab'  => first partition is owned by 'a', second partition owned by 'b'
+func ownershipsAsString(owners []Ownership, total int) string {
+	bits := make([]rune, total)
+
+	for i := 0; i < len(bits); i++ {
+		bits[i] = '.'
+	}
+
+	for _, o := range owners {
+		idx, err := strconv.ParseInt(o.PartitionID, 10, 32)
+
+		if err != nil {
+			panic(err)
+		}
+
+		bits[int(idx)] = ([]rune(o.OwnerID))[0]
+	}
+
+	return string(bits)
+}
+
+// createLoadBalancerForTest creates a load balancer from initialState, seeding it with a consistent random
+// seed so it's safe for unit tests.
+//
+// initialState - each index in the string represents the owner for that index, which are 1:1 with partition IDs.
+// Example: ab" => a owns partition 0, b owns partition 1
+// clientID - the client ID for this load balancer. Changing this lets you test from each owners "perspective".
+func createLoadBalancerForTest(t *testing.T, initialState string, clientID string) (*processorLoadBalancer, []string) {
+	var ownerships []Ownership
+	var partitions []string
+
+	details := consumerClientDetails{
+		FullyQualifiedNamespace: "fakens.servicebus.windows.net",
+		ConsumerGroup:           DefaultConsumerGroup,
+		EventHubName:            "eventhub",
+		ClientID:                clientID,
+	}
+
+	for partNum, rn := range initialState {
+		partID := fmt.Sprintf("%d", partNum)
+		partitions = append(partitions, partID)
+
+		ownerships = append(ownerships, Ownership{
+			FullyQualifiedNamespace: details.FullyQualifiedNamespace,
+			ConsumerGroup:           details.ConsumerGroup,
+			EventHubName:            details.EventHubName,
+			PartitionID:             partID,
+			OwnerID:                 string(rn),
+		})
+	}
+
+	cps := newCheckpointStoreForTest()
+
+	claimed, err := cps.ClaimOwnership(context.Background(), ownerships, nil)
+	require.NoError(t, err)
+	require.Equal(t, len(partitions), len(claimed), "All partitions are owned")
+
+	lb := newProcessorLoadBalancer(cps, details,
+		ProcessorStrategyBalanced, // we're not claiming for this test so this is ignored.
+		time.Hour)                 // no partitions should be considered expired.
+
+	lb.rnd = rand.New(rand.NewSource(1))
+
+	return lb, partitions
+}
+
+// greedyLoadBalance runs the greedy load balancer algorithm so it's results are deterministic.
+func greedyLoadBalance(lb *processorLoadBalancer, lbi loadBalancerInfo, partitionIDs []string) string {
+	// make the results deterministic by using the same seed for RNG (taken care of in [createLoadBalancerForTest])
+	// and ensuring a consistent ordering of this slice since the greedyLoadBalancer generates permutations from it.
+	sort.Slice(lbi.aboveMax, func(i, j int) bool {
+		return lbi.aboveMax[i].PartitionID < lbi.aboveMax[j].PartitionID
+	})
+
+	return ownershipsAsString(lb.greedyLoadBalancer(context.Background(), lbi), len(partitionIDs))
 }

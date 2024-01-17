@@ -5,6 +5,7 @@ package common
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -543,11 +544,9 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 		if err != nil {
 			return err
 		}
-
 		if info.IsDir() {
 			return nil
 		}
-
 		suffix := false
 		for i := 0; i < len(suffixes) && !suffix; i++ {
 			suffix = strings.HasSuffix(info.Name(), suffixes[i])
@@ -566,9 +565,23 @@ func replaceModuleImport(path, rpName, namespaceName, previousVersion, currentVe
 				}
 			}
 		}
-
 		return nil
 	})
+}
+
+func getModuleVersion(autorestPath string) (*semver.Version, error) {
+	data, err := os.ReadFile(autorestPath)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, line := range strings.Split(string(data), "\n") {
+		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
+			return semver.NewVersion(strings.TrimSpace(line[len(autorest_md_module_version_prefix):]))
+		}
+	}
+
+	return nil, errors.New("module-version does not exist in autorest.md")
 }
 
 func existSuffixFile(path, suffix string) bool {

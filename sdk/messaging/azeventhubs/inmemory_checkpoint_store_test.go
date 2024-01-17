@@ -4,6 +4,7 @@ package azeventhubs
 
 import (
 	"context"
+	"sort"
 	"strings"
 	"sync"
 	"testing"
@@ -276,6 +277,10 @@ func (cps *testCheckpointStore) ListOwnership(ctx context.Context, fullyQualifie
 	for _, v := range cps.ownerships {
 		ownerships = append(ownerships, v)
 	}
+
+	sort.Slice(ownerships, func(i, j int) bool {
+		return ownerships[i].PartitionID < ownerships[j].PartitionID
+	})
 
 	return ownerships, nil
 }

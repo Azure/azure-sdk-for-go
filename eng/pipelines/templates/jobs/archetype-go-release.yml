@@ -74,10 +74,11 @@ stages:
                 - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                   parameters:
                     ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+                    PackageFilter: sdk/${{ parameters.ServiceDirectory }}
                     ReleaseSha: $(Build.SourceVersion)
                     RepoId: Azure/azure-sdk-for-go
                     WorkingDirectory: $(System.DefaultWorkingDirectory)
-      
+
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"

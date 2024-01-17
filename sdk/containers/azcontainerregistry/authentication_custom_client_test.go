@@ -12,6 +12,7 @@ import (
 )
 
 func Test_newAuthenticationClient(t *testing.T) {
-	client := newAuthenticationClient("test", nil)
+	client, err := newAuthenticationClient("test", nil)
+	require.NoError(t, err)
 	require.NotNil(t, client)
 }

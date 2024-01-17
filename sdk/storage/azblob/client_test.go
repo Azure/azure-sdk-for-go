@@ -80,6 +80,36 @@ func (s *AZBlobUnrecordedTestsSuite) AfterTest(suite string, test string) {
 
 }
 
+func (s *AZBlobRecordedTestsSuite) TestAzBlobClientSharedKey() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcURL := "https://" + cred.AccountName() + ".blob.core.windows.net/"
+	azClient, err := azblob.NewClientWithSharedKeyCredential(svcURL, cred, nil)
+	_require.NoError(err)
+	_require.NotNil(azClient)
+	_require.Equal(azClient.URL(), svcURL)
+}
+
+func (s *AZBlobRecordedTestsSuite) TestAzBlobClientConnectionString() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	connString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+	_require.NotNil(connString)
+
+	svcURL := "https://" + accountName + ".blob.core.windows.net/"
+	azClient, err := azblob.NewClientFromConnectionString(*connString, nil)
+	_require.NoError(err)
+	_require.NotNil(azClient)
+	_require.Equal(azClient.URL(), svcURL)
+}
+
 // create a test file
 func generateFile(fileName string, fileSize int) []byte {
 	// generate random data
@@ -755,4 +785,80 @@ func (s *AZBlobUnrecordedTestsSuite) TestDoBatchTransferWithError() {
 	// simulate closing the mmf and make sure no panic occurs (as reported in #139)
 	mmf.isClosed = true
 	time.Sleep(time.Second * 5)
+}
+
+func (s *AZBlobRecordedTestsSuite) TestAzBlobClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &azblob.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	azClientAudience, err := azblob.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = azClientAudience.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err = azClientAudience.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := azClientAudience.NewListContainersPager(&azblob.ListContainersOptions{
+		Prefix: &containerName,
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.ContainerItems), 1)
+		_require.NotNil(resp.ContainerItems[0].Name)
+		_require.Equal(*resp.ContainerItems[0].Name, containerName)
+	}
+}
+
+func (s *AZBlobRecordedTestsSuite) TestAzBlobClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &azblob.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	azClientAudience, err := azblob.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = azClientAudience.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err = azClientAudience.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := azClientAudience.NewListContainersPager(&azblob.ListContainersOptions{
+		Prefix: &containerName,
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.ContainerItems), 1)
+		_require.NotNil(resp.ContainerItems[0].Name)
+		_require.Equal(*resp.ContainerItems[0].Name, containerName)
+	}
 }

@@ -629,3 +629,66 @@ func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
 		}
 	}
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".file.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".file.core.windows.net/", nil, options)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// create service client using token credential
+	options := &service.ClientOptions{
+		FileRequestIntent: to.Ptr(service.ShareTokenIntentBackup),
+		Audience:          "https://" + accountName + ".file.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClientAudience, err := service.NewClient("https://"+accountName+".file.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	dirClientAudience := svcClientAudience.NewShareClient(shareName).NewDirectoryClient(testcommon.GenerateDirectoryName(testName))
+
+	_, err = dirClientAudience.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	_, err = dirClientAudience.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}

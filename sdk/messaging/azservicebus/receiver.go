@@ -47,7 +47,6 @@ type Receiver struct {
 	amqpLinks                internal.AMQPLinks
 	cancelReleaser           *atomic.Value
 	cleanupOnClose           func()
-	defaultTimeAfterFirstMsg time.Duration
 	entityPath               string
 	lastPeekedSequenceNumber int64
 	maxAllowedCredits        uint32
@@ -131,7 +130,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	receiver := &Receiver{
 		cancelReleaser:           &atomic.Value{},
 		cleanupOnClose:           args.cleanupOnClose,
-		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
 		lastPeekedSequenceNumber: 0,
 		maxAllowedCredits:        defaultLinkRxBuffer,
 		retryOptions:             args.retryOptions,
@@ -141,13 +139,6 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 
 	if err := applyReceiverOptions(receiver, &args.entity, options); err != nil {
 		return nil, err
-	}
-
-	if receiver.receiveMode == ReceiveModeReceiveAndDelete {
-		// TODO: there appears to be a bit more overhead when receiving messages
-		// in ReceiveAndDelete. Need to investigate if this is related to our
-		// auto-accepting logic in go-amqp.
-		receiver.defaultTimeAfterFirstMsg = time.Second
 	}
 
 	newLinkFn := receiver.newReceiverLink
@@ -181,7 +172,13 @@ func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSes
 
 // ReceiveMessagesOptions are options for the ReceiveMessages function.
 type ReceiveMessagesOptions struct {
-	// For future expansion
+	// TimeAfterFirstMessage controls how long, after a message has been received, before we return the
+	// accumulated batch of messages.
+	//
+	// Default value depends on the receive mode:
+	// - 20ms when the receiver is in ReceiveModePeekLock
+	// - 1s when the receiver is in ReceiveModeReceiveAndDelete
+	TimeAfterFirstMessage time.Duration
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
@@ -400,7 +397,15 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
 	}
 
-	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
+	timeAfterFirstMessage := 20 * time.Millisecond
+
+	if options != nil && options.TimeAfterFirstMessage > 0 {
+		timeAfterFirstMessage = options.TimeAfterFirstMessage
+	} else if r.receiveMode == ReceiveModeReceiveAndDelete {
+		timeAfterFirstMessage = time.Second
+	}
+
+	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, timeAfterFirstMessage)
 
 	r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
 

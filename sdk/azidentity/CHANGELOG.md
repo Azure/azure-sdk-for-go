@@ -1,5 +1,10 @@
 # Release History
 
+## 1.5.1 (2024-01-17)
+
+### Bugs Fixed
+* `InteractiveBrowserCredential` handles `AdditionallyAllowedTenants` correctly
+
 ## 1.5.0 (2024-01-16)
 
 ### Breaking Changes

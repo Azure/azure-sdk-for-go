@@ -81,6 +81,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	}
 	cp.init()
 	msalOpts := publicClientOptions{
+		AdditionallyAllowedTenants:     cp.AdditionallyAllowedTenants,
 		ClientOptions:                  cp.ClientOptions,
 		DisableAutomaticAuthentication: cp.disableAutomaticAuthentication,
 		DisableInstanceDiscovery:       cp.DisableInstanceDiscovery,

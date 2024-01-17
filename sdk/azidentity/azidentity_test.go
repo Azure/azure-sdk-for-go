@@ -620,6 +620,26 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				}
 			})
 		}
+
+		t.Run(credNameBrowser, func(t *testing.T) {
+			c, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+				AdditionallyAllowedTenants: test.allowed,
+				// this enables testing the credential's tenant resolution without having to authenticate
+				disableAutomaticAuthentication: true,
+			})
+			require.NoError(t, err)
+			_, err = c.GetToken(context.Background(), tro)
+			if test.err {
+				// the specified tenant isn't allowed, so the error should be about that
+				require.ErrorContains(t, err, "AdditionallyAllowedTenants")
+			} else {
+				// tenant resolution should have succeeded because the specified tenant is allowed,
+				// however the credential should have returned a different error because automatic
+				// authentication is disabled
+				require.ErrorIs(t, errAuthenticationRequired, err)
+			}
+		})
+
 		for _, credName := range []string{credNameAzureCLI, credNameAzureDeveloperCLI} {
 			t.Run(fmt.Sprintf("DefaultAzureCredential/%s/%s", credName, test.desc), func(t *testing.T) {
 				typeName := fmt.Sprintf("%T", &AzureCLICredential{})

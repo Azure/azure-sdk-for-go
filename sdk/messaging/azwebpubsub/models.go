@@ -23,29 +23,6 @@ type ClientTokenResponse struct {
 	Token *string
 }
 
-// ErrorDetail - The error object.
-type ErrorDetail struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []ErrorDetail
-	Inner   *InnerError
-
-	// A human-readable representation of the error.
-	Message *string
-
-	// The target of the error.
-	Target *string
-}
-
-// InnerError - The inner error object
-type InnerError struct {
-	// A more specific error code than was provided by the containing error.
-	Code  *string
-	Inner *InnerError
-}
-
 // RemoveFromGroupsRequest - The request object containing targets groups and a connection filter
 type RemoveFromGroupsRequest struct {
 	// An OData filter which target connections satisfy

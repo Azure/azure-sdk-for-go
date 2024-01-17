@@ -57,5 +57,11 @@ directive:
         return $.replace(
             /type InnerError struct/s, 
             "// InnerError - The inner error object\ntype InnerError struct")
-
+    # delete unused error models
+    - from: models.go
+      where: $
+      transform: return $.replace(/(?:\/\/.*\s)+type (?:ErrorDetail|InnerError).+\{(?:\s.+\s)+\}\s/g, "");
+    - from: models_serde.go
+      where: $
+      transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorDetail|InnerError)\).*\{\s(?:.+\s)+\}\s/g, "");
 ```

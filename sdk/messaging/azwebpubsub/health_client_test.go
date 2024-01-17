@@ -22,7 +22,7 @@ func TestHealthClient_GetServiceStatus(t *testing.T) {
 
 func newHealthClient(t *testing.T) *azwebpubsub.HealthClient {
 	tv, coreOptions := loadClientOptions(t)
-	options := &azwebpubsub.HealthClientOptions{
+	options := &azwebpubsub.ClientOptions{
 		ClientOptions: *coreOptions,
 	}
 	println(tv.Endpoint)

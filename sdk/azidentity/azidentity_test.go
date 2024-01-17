@@ -634,6 +634,9 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				// the specified tenant isn't allowed, so the error should be about that
 				require.ErrorContains(t, err, "AdditionallyAllowedTenants")
 			} else {
+				// tenant resolution should have succeeded because the specified tenant is allowed,
+				// however the credential should have returned a different error because automatic
+				// authentication is disabled
 				require.ErrorIs(t, ErrAuthenticationRequired, err)
 			}
 		})

@@ -63,10 +63,10 @@ const (
 )
 
 const (
-	ServiceClient   = "azfile/service.Client"
-	ShareClient     = "azfile/share.Client"
-	DirectoryClient = "azfile/directory.Client"
-	FileClient      = "azfile/file.Client"
+	ServiceClient   = "azfile.service"
+	ShareClient     = "azfile.share"
+	DirectoryClient = "azfile.directory"
+	FileClient      = "azfile.file"
 )
 
 func GetClientOptions[T any](o *T) *T {

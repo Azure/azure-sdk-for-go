@@ -85,8 +85,8 @@ type SetSettingOptions struct {
 	OnlyIfUnchanged *azcore.ETag
 }
 
-// CreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
-type CreateSnapshotOptions struct {
+// BeginCreateSnapshotOptions contains the optional parameters for the BeginCreateSnapshot method.
+type BeginCreateSnapshotOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 

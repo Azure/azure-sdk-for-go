@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2024-01-16)
+## 1.1.0 (2024-01-17)
 
 ### Features Added
 * Added support for [`Snapshots`](https://learn.microsoft.com/azure/azure-app-configuration/concept-snapshots).

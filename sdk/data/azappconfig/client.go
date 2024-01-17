@@ -382,10 +382,10 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 //
 // - snapshotName - The name of the snapshot to create.
 // - settingFilter - The filters to apply on the key-values.
-// - options - CreateSnapshotOptions contains the optional parameters to create a Snapshot
-func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, settingFilter []SettingFilter, options *CreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
+// - options - BeginCreateSnapshotOptions contains the optional parameters to create a Snapshot
+func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, settingFilter []SettingFilter, options *BeginCreateSnapshotOptions) (*runtime.Poller[CreateSnapshotResponse], error) {
 	if options == nil {
-		options = &CreateSnapshotOptions{}
+		options = &BeginCreateSnapshotOptions{}
 	}
 
 	filter := make([]generated.KeyValueFilter, len(settingFilter))

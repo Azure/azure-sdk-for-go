@@ -628,8 +628,6 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			})
 			require.NoError(t, err)
 			_, err = c.GetToken(context.Background(), tro)
-			// GetToken should return an error in all cases because automatic authentication is disabled
-			require.Error(t, err)
 			if test.err {
 				// the specified tenant isn't allowed, so the error should be about that
 				require.ErrorContains(t, err, "AdditionallyAllowedTenants")

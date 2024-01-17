@@ -147,7 +147,7 @@ comments.
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_logs_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewLogsClient
 [example_metrics_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewMetricsClient
-[example_metrics_batch_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery@v1.2.0-beta.1#example-NewMetricsBatchClient
+[example_metrics_batch_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewMetricsBatchClient
 [go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet

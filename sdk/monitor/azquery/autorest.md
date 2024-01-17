@@ -175,7 +175,7 @@ input-file:
     - https://github.com/Azure/azure-rest-api-specs/blob/0373f0edc4414fd402603fac51d0df93f1f70507/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 
 directive:
-  # Remove subscription scope operations. Functionality not currenlty exposed
+  # Remove subscription scope operations. Functionality not currently exposed
   - remove-operation: MetricDefinitions_ListAtSubscriptionScope
   - remove-operation: Metrics_ListAtSubscriptionScope
   - remove-operation: Metrics_ListAtSubscriptionScopePost

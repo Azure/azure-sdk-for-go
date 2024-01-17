@@ -3,8 +3,12 @@
 ## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added `RollUpBy` field to `MetricsBatchClientQueryBatchOptions`
+* Added `AutoAdjustTimegrain`, `RollUpBy`, and `ValidateDimensions` fields to `MetricsClientQueryResourceOptions`
 
 ### Breaking Changes
+* Changed `MetricsBatchClientQueryBatchOptions.Aggregation` from type []*AggregationType to string
+* Renamed the `MetricsBatchClient.QueryBatch` parameter `resourceIDs` to `batchRequest`
 
 ### Bugs Fixed
 

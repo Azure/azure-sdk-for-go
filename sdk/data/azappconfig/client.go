@@ -300,8 +300,6 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 			for i := range page.Items {
 				snapshot := page.Items[i]
 
-				convertedETag := azcore.ETag(*snapshot.Etag)
-
 				convertedFilters := make([]SettingFilter, len(snapshot.Filters))
 				for j := range snapshot.Filters {
 					convertedFilters[j] = SettingFilter{
@@ -316,7 +314,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 					RetentionPeriod: snapshot.RetentionPeriod,
 					Tags:            snapshot.Tags,
 					Created:         snapshot.Created,
-					ETag:            &convertedETag,
+					ETag:            (*azcore.ETag)(snapshot.Etag),
 					Expires:         snapshot.Expires,
 					ItemsCount:      snapshot.ItemsCount,
 					Name:            snapshot.Name,
@@ -343,17 +341,16 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 		options = &ListSettingsForSnapshotOptions{}
 	}
 
-	opts := generated.AzureAppConfigurationClientGetKeyValuesOptions{
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		AcceptDatetime: options.AcceptDatetime,
 		After:          options.After,
-		IfMatch:        options.IfMatch,
-		IfNoneMatch:    options.IfNoneMatch,
+		IfMatch:        (*string)(options.IfMatch),
+		IfNoneMatch:    (*string)(options.IfNoneMatch),
 		Select:         options.Select,
 		Snapshot:       &snapshotName,
 		Key:            &options.Key,
 		Label:          &options.Label,
-	}
-	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&opts)
+	})
 
 	return runtime.NewPager(runtime.PagingHandler[ListSettingsForSnapshotResponse]{
 		More: func(ListSettingsForSnapshotResponse) bool {
@@ -445,15 +442,15 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 		options = &GetSnapshotOptions{}
 	}
 
-	opts := (*generated.AzureAppConfigurationClientGetSnapshotOptions)(options)
-
-	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, opts)
+	getResp, err := c.appConfigClient.GetSnapshot(ctx, snapshotName, &generated.AzureAppConfigurationClientGetSnapshotOptions{
+		IfMatch:     (*string)(options.IfMatch),
+		IfNoneMatch: (*string)(options.IfNoneMatch),
+		Select:      options.Select,
+	})
 
 	if err != nil {
 		return GetSnapshotResponse{}, err
 	}
-
-	convertedETag := azcore.ETag(*getResp.Etag)
 
 	convertedFilters := make([]SettingFilter, len(getResp.Filters))
 	for i := range getResp.Filters {
@@ -470,7 +467,7 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 			RetentionPeriod: getResp.RetentionPeriod,
 			Tags:            getResp.Tags,
 			Created:         getResp.Created,
-			ETag:            &convertedETag,
+			ETag:            (*azcore.ETag)(getResp.Etag),
 			Expires:         getResp.Expires,
 			ItemsCount:      getResp.ItemsCount,
 			Name:            getResp.Snapshot.Name,
@@ -541,15 +538,14 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 		Status: &status,
 	}
 
-	opts := (*generated.AzureAppConfigurationClientUpdateSnapshotOptions)(options)
-
-	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, opts)
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, &generated.AzureAppConfigurationClientUpdateSnapshotOptions{
+		IfMatch:     (*string)(options.IfMatch),
+		IfNoneMatch: (*string)(options.IfNoneMatch),
+	})
 
 	if err != nil {
 		return updateSnapshotStatusResponse{}, err
 	}
-
-	convertedETag := azcore.ETag(*updateResp.Etag)
 
 	convertedFilters := make([]SettingFilter, len(updateResp.Filters))
 	for i := range updateResp.Filters {
@@ -566,7 +562,7 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 			RetentionPeriod: updateResp.RetentionPeriod,
 			Tags:            updateResp.Tags,
 			Created:         updateResp.Created,
-			ETag:            &convertedETag,
+			ETag:            (*azcore.ETag)(updateResp.Etag),
 			Expires:         updateResp.Expires,
 			ItemsCount:      updateResp.ItemsCount,
 			Name:            updateResp.Snapshot.Name,

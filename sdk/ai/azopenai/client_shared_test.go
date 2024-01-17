@@ -246,8 +246,8 @@ func initEnvVars() {
 
 		openAI.Vision = azureOpenAI.Vision
 
-		azureOpenAI.Completions = "text-davinci-003"
-		openAI.Completions = "text-davinci-003"
+		azureOpenAI.Completions = "gpt-35-turbo-instruct"
+		openAI.Completions = "gpt-3.5-turbo-instruct"
 
 		azureOpenAI.ChatCompletions = "gpt-35-turbo-0613"
 		azureOpenAI.ChatCompletionsLegacyFunctions = "gpt-4-0613"

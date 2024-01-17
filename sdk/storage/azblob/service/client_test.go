@@ -1809,3 +1809,108 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchErrors() {
 	_, err = svcClient.SubmitBatch(context.Background(), nil, nil)
 	_require.Error(err)
 }
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+	_require := require.New(s.T())
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := service.NewClientWithSharedKeyCredential("http://"+cred.AccountName()+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClientWithSharedKeyCredential("https://"+accountName+".blob.core.windows.net/", nil, options)
+	_require.NoError(err)
+
+	_, err = svcClient.GetProperties(context.Background(), nil)
+	_require.Error(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.NoAuthenticationInformation)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientDefaultAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{
+		Audience: "https://storage.azure.com/",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClientAudience, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = svcClientAudience.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err = svcClientAudience.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := svcClientAudience.NewListContainersPager(&service.ListContainersOptions{
+		Prefix: &containerName,
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.ContainerItems), 1)
+		_require.NotNil(resp.ContainerItems[0].Name)
+		_require.Equal(*resp.ContainerItems[0].Name, containerName)
+	}
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceClientCustomAudience() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{
+		Audience: "https://" + accountName + ".blob.core.windows.net",
+	}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClientAudience, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	_, err = svcClientAudience.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err = svcClientAudience.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	pager := svcClientAudience.NewListContainersPager(&service.ListContainersOptions{
+		Prefix: &containerName,
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.Equal(len(resp.ContainerItems), 1)
+		_require.NotNil(resp.ContainerItems[0].Name)
+		_require.Equal(*resp.ContainerItems[0].Name, containerName)
+	}
+}

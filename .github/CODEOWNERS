@@ -28,7 +28,7 @@
 /sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/           @ealsur @kirankumarkolli
+/sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar
 
 # PRLabel: %Tables
 /sdk/data/aztables/           @jhendrixMSFT
@@ -56,13 +56,6 @@
 
 # PRLabel: %Open Telemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
-
-################
-# Automation
-################
-
-# Git Hub integration and bot rules
-/.github/                    @benbp @jsquire @jhendrixMSFT @rickwinter @ronniegeraghty
 
 ###########
 # Eng Sys

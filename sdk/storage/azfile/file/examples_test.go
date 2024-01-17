@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -477,7 +476,7 @@ func Example_fileClient_UploadFile() {
 	handleError(err)
 
 	_, content := generateData(int(fileSize))
-	err = ioutil.WriteFile(srcFileName, content, 0644)
+	err = os.WriteFile(srcFileName, content, 0644)
 	handleError(err)
 	defer func() {
 		err = os.Remove(srcFileName)

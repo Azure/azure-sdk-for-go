@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.1 (2024-01-10)
 
 ### Features Added
 * Encryption Scope For SAS
@@ -8,12 +18,13 @@
 * Create SubDirectory Client
 * Service Version upgrade to 2021-06-08
 
-### Breaking Changes
-
 ### Bugs Fixed
 
+* Block `SharedKeyCredential` authentication mode for non TLS protected endpoints. Fixes [#21841](https://github.com/Azure/azure-sdk-for-go/issues/21841).
+
 ### Other Changes
-* Updated version of azblob to 1.2.1
+* Updated version of azblob to `1.3.0-beta.1`
+* Updated azcore version to `1.9.1` and azidentity version to `1.4.0`.
 
 ## 1.0.0 (2023-10-18)
 

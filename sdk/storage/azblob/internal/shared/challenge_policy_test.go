@@ -39,7 +39,7 @@ func TestChallengePolicyStorage(t *testing.T) {
 		require.Equal(t, []string{storageScope}, tro.Scopes)
 		return azcore.AccessToken{Token: accessToken, ExpiresOn: time.Now().Add(time.Hour)}, nil
 	})
-	p := NewStorageChallengePolicy(cred)
+	p := NewStorageChallengePolicy(cred, storageScope)
 	pl := runtime.NewPipeline("", "",
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{Transport: srv},
@@ -77,7 +77,7 @@ func TestChallengePolicyDisk(t *testing.T) {
 		attemptedAuthentication = true
 		return azcore.AccessToken{}, nil
 	})
-	p := NewStorageChallengePolicy(cred)
+	p := NewStorageChallengePolicy(cred, "https://storage.azure.com/.default")
 	pl := runtime.NewPipeline("", "",
 		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
 		&policy.ClientOptions{Transport: srv},

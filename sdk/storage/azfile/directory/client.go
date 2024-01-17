@@ -36,7 +36,8 @@ type Client base.Client[generated.DirectoryClient]
 //
 // Note that ClientOptions.FileRequestIntent is currently required for token authentication.
 func NewClient(directoryURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	audience := base.GetAudience((*base.ClientOptions)(options))
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{audience}, nil)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
 		PerRetry: []policy.Policy{authPolicy},

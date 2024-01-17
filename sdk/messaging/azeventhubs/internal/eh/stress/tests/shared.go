@@ -60,7 +60,7 @@ func (td *stressTestData) Close() {
 
 type logf func(format string, v ...any)
 
-func newStressTestData(name string, verbose bool, baggage map[string]string) (*stressTestData, error) {
+func newStressTestData(name string, baggage map[string]string) (*stressTestData, error) {
 	td := &stressTestData{
 		name:  name,
 		runID: fmt.Sprintf("%s-%d", name, time.Now().UnixNano()),
@@ -80,7 +80,7 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	variables := map[string]*string{
 		"EVENTHUB_CONNECTION_STRING":                &td.ConnectionString,
-		"EVENTHUB_NAME":                             &td.HubName,
+		"EVENTHUB_NAME_STRESS":                      &td.HubName,
 		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING": &td.StorageConnectionString,
 	}
 
@@ -96,10 +96,6 @@ func newStressTestData(name string, verbose bool, baggage map[string]string) (*s
 
 	if len(missing) > 0 {
 		return nil, fmt.Errorf("missing environment variables (%s)", strings.Join(missing, ","))
-	}
-
-	if verbose {
-		enableVerboseLogging()
 	}
 
 	tc, err := loadAppInsights()
@@ -377,13 +373,6 @@ func closeOrPanic(closeable interface {
 	}
 }
 
-func enableVerboseLogging() {
-	//azlog.SetEvents(azeventhubs.EventAuth, azeventhubs.EventConn, azeventhubs.EventConsumer)
-	azlog.SetListener(func(e azlog.Event, s string) {
-		log.Printf("[%s] %s", e, s)
-	})
-}
-
 func addSleepAfterFlag(fs *flag.FlagSet) func() {
 	var durationStr string
 	fs.StringVar(&durationStr, "sleepAfter", "0m", "Time to sleep after test completes")
@@ -400,6 +389,36 @@ func addSleepAfterFlag(fs *flag.FlagSet) func() {
 			log.Printf("Sleeping for %s", sleepAfter)
 			time.Sleep(sleepAfter)
 			log.Printf("Done sleeping for %s", sleepAfter)
+		}
+	}
+}
+
+func addVerboseLoggingFlag(fs *flag.FlagSet, customLogFn func(verbose string, e azlog.Event, s string)) func() {
+	verbose := fs.String("v", "", "Enable verbose SDK logging. Valid values are test or sdk or all")
+
+	logFn := func(e azlog.Event, s string) {
+		log.Printf("[%s] %s", e, s)
+	}
+
+	if customLogFn != nil {
+		logFn = func(e azlog.Event, s string) {
+			customLogFn(*verbose, e, s)
+		}
+	}
+
+	return func() {
+		switch *verbose {
+		case "":
+		case "test":
+			azlog.SetEvents(EventBalanceTest)
+			azlog.SetListener(logFn)
+		case "sdk":
+			azlog.SetEvents(EventBalanceTest, azeventhubs.EventConsumer, azeventhubs.EventProducer)
+			azlog.SetListener(logFn)
+		case "all":
+			azlog.SetListener(logFn)
+		default:
+			fmt.Printf("%s is not a valid logging value. Valid values are test or sdk or all", *verbose)
 		}
 	}
 }

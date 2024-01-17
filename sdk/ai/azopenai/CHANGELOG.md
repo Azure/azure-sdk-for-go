@@ -1,5 +1,12 @@
 # Release History
 
+## 0.4.1 (2024-01-16)
+
+### Bugs Fixed
+
+- `AudioTranscriptionOptions.Filename` and `AudioTranslationOptions.Filename` fields are now properly propagated, allowing 
+  for disambiguating the format of an audio file when OpenAI can't detect it. (PR#22210) 
+
 ## 0.4.0 (2023-12-11)
 
 Support for many of the features mentioned in OpenAI's November Dev Day and Microsoft's 2023 Ignite conference

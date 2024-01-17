@@ -44,6 +44,7 @@ func (client *Client) GetAudioTranscription(ctx context.Context, body AudioTrans
 	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
 
 	resp, err := client.getAudioTranscriptionInternal(ctx, getDeployment(body), audioStream, &getAudioTranscriptionInternalOptions{
+		Filename:       body.Filename,
 		Language:       body.Language,
 		Model:          body.DeploymentName,
 		Prompt:         body.Prompt,
@@ -79,6 +80,7 @@ func (client *Client) GetAudioTranslation(ctx context.Context, body AudioTransla
 	audioStream := streaming.NopCloser(bytes.NewReader(body.File))
 
 	resp, err := client.getAudioTranslationInternal(ctx, getDeployment(body), audioStream, &getAudioTranslationInternalOptions{
+		Filename:       body.Filename,
 		Model:          body.DeploymentName,
 		Prompt:         body.Prompt,
 		ResponseFormat: body.ResponseFormat,
@@ -106,7 +108,20 @@ func setMultipartFormData[T getAudioTranscriptionInternalOptions | getAudioTrans
 		return err
 	}
 
-	if err := writeContent("file", "audio.mp3", file); err != nil {
+	var filename = "audio.mp3"
+
+	switch opt := any(options).(type) {
+	case getAudioTranscriptionInternalOptions:
+		if opt.Filename != nil {
+			filename = *opt.Filename
+		}
+	case getAudioTranslationInternalOptions:
+		if opt.Filename != nil {
+			filename = *opt.Filename
+		}
+	}
+
+	if err := writeContent("file", filename, file); err != nil {
 		return err
 	}
 

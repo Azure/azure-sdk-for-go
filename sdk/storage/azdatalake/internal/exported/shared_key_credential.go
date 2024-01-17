@@ -11,7 +11,9 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"net/http"
 	"net/url"
@@ -50,6 +52,9 @@ func (c *SharedKeyCredential) AccountName() string {
 }
 
 func ConvertToBlobSharedKey(c *SharedKeyCredential) (*azblob.SharedKeyCredential, error) {
+	if c == nil {
+		return nil, errors.New("SharedKeyCredential cannot be nil")
+	}
 	cred, err := azblob.NewSharedKeyCredential(c.accountName, c.accountKeyString)
 	if err != nil {
 		return nil, err
@@ -205,6 +210,17 @@ func NewSharedKeyCredPolicy(cred *SharedKeyCredential) *SharedKeyCredPolicy {
 }
 
 func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
+	// skip adding the authorization header if no SharedKeyCredential was provided.
+	// this prevents a panic that might be hard to diagnose and allows testing
+	// against http endpoints that don't require authentication.
+	if s.cred == nil {
+		return req.Next()
+	}
+
+	if err := checkHTTPSForAuth(req); err != nil {
+		return nil, err
+	}
+
 	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
 		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	}
@@ -225,4 +241,12 @@ func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 		log.Write(azlog.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
+}
+
+// TODO: update the azblob dependency having checks for rejecting URLs that are not HTTPS
+func checkHTTPSForAuth(req *policy.Request) error {
+	if strings.ToLower(req.Raw().URL.Scheme) != "https" {
+		return errorinfo.NonRetriableError(errors.New("authenticated requests are not permitted for non TLS protected (https) endpoints"))
+	}
+	return nil
 }

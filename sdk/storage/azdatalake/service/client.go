@@ -167,7 +167,7 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 func (s *Client) NewFileSystemClient(filesystemName string) *filesystem.Client {
 	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
-	return (*filesystem.Client)(base.NewFileSystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FileSystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
+	return (*filesystem.Client)(base.NewFileSystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
 }
 
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.

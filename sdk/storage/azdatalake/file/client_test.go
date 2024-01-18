@@ -11,6 +11,9 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/binary"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"hash/crc64"
 	"io"
@@ -18,6 +21,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -82,12 +86,47 @@ type UnrecordedTestSuite struct {
 	suite.Suite
 }
 
-//func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
-//	_, err := fileClient.GetAccessControl(context.Background(), nil)
-//	_require.Error(err)
+//	func validateFileDeleted(_require *require.Assertions, fileClient *file.Client) {
+//		_, err := fileClient.GetAccessControl(context.Background(), nil)
+//		_require.Error(err)
 //
-//	testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
-//}
+//		testcommon.ValidateErrorCode(_require, err, datalakeerror.PathNotFound)
+//	}
+type userAgentTest struct{}
+
+func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
+	const userAgentHeader = "User-Agent"
+
+	currentUserAgentHeader := map[string][]string(req.Raw().Header)[userAgentHeader]
+	if strings.HasPrefix(currentUserAgentHeader[0], "azsdk-go-azdatalake/"+exported.ModuleVersion) {
+		return nil, fmt.Errorf(currentUserAgentHeader[0] + " user agent doesn't match expected agent: azsdk-go-azdatalake.service/vx.xx.xx")
+	}
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func newTelemetryTestPolicy() policy.Policy {
+	return &userAgentTest{}
+}
+
+func TestUserAgent(t *testing.T) {
+	client, err := file.NewClientWithNoCredential("https://fake/blob/testpath", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},
+		},
+	})
+
+	//_, err = client.GetProperties(context.Background(), nil)
+	client.Create(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
+}
 
 func (s *UnrecordedTestSuite) TestCreateFileAndDeleteWithConnectionString() {
 

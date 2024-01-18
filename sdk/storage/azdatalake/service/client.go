@@ -46,7 +46,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

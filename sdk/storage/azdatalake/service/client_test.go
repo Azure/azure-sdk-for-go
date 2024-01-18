@@ -9,6 +9,7 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"os"
 	"testing"
 	"time"
@@ -90,6 +91,16 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NoError(err)
 	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName), svcClient)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+}
+
+func TestUserStringTelemetryPolicy(t *testing.T) {
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	client, _ := service.NewClientWithNoCredential("https://"+accountName+".blob.core.windows.net/",
+		&service.ClientOptions{
+			ClientOptions: policy.ClientOptions{Telemetry: policy.TelemetryOptions{ApplicationID: "github.com/Azure/azure-sdk-for-go/sdk/storage/test123"}},
+		},
+	)
+
 }
 
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {

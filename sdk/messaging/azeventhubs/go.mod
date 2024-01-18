@@ -12,7 +12,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/joho/godotenv v1.4.0
 	github.com/stretchr/testify v1.8.4
-	nhooyr.io/websocket v1.8.7
+	nhooyr.io/websocket v1.8.10
 )
 
 require (
@@ -22,7 +22,6 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/klauspost/compress v1.10.3 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

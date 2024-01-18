@@ -2,7 +2,7 @@
 
 ## 0.4.2 (2022-05-16)
 ### Deprecated
-- We’re retiring the Azure Video Analyzer preview service; you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is no longer maintained and won’t work after the service is retired. To learn how to transition off, please refer to: https://aka.ms/azsdk/videoanalyzer/transitionoffguidance.
+- We’re retiring the Azure Video Analyzer preview service; you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is no longer maintained and won’t work after the service is retired. To learn how to transition off, please refer to: https://github.com/MicrosoftDocs/azure-docs/blob/4ba87bedc7b17a32903c99afb3ca4163be0dcc90/articles/azure-video-analyzer/video-analyzer-docs/transition-from-video-analyzer.md.
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

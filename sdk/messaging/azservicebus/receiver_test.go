@@ -989,7 +989,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 		bigBody := make([]byte, 1000)
 
 		// send a bunch of messages
-		for i := 0; i < 1000; i++ {
+		for i := 0; i < 10000; i++ {
 			err := batch.AddMessage(&Message{
 				Body: bigBody,
 			}, nil)

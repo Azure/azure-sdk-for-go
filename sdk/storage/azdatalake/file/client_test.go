@@ -122,8 +122,7 @@ func TestUserAgent(t *testing.T) {
 		},
 	})
 
-	//_, err = client.GetProperties(context.Background(), nil)
-	client.Create(context.Background(), nil)
+	_, err = client.Create(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 }

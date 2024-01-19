@@ -208,12 +208,13 @@ func newTelemetryTestPolicy() policy.Policy {
 	return &userAgentTest{}
 }
 
-func TestUserAgent(t *testing.T) {
+func TestUserAgentAzFile(t *testing.T) {
 	client, err := service.NewClientWithNoCredential("https://fake/blob/testpath", &service.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},
 		},
 	})
+	require.NoError(t, err)
 
 	_, err = client.GetProperties(context.Background(), nil)
 	require.NoError(t, err)

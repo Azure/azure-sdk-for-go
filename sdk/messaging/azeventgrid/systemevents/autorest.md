@@ -37,38 +37,6 @@ directive:
   - from: swagger-document
     where: $.definitions.CloudEventEvent
     transform: $["x-ms-external"] = true
-   # delete some models that look like they're system events...
-  - from: models.go
-    where: $
-    transform: return $.replace(/\/\/ (SubscriptionDeletedEventData|SubscriptionValidationEventData|SubscriptionValidationResponse).+?\n}/gs, "")    
-  - from: models_serde.go
-    where: $    
-    transform: |
-      return $
-        .replace(/\/\/ MarshalJSON implements the json.Marshaller interface for type (SubscriptionDeletedEventData|SubscriptionValidationEventData|SubscriptionValidationResponse).+?\n}/gs, "")
-        .replace(/\/\/ UnmarshalJSON implements the json.Unmarshaller interface for type (SubscriptionDeletedEventData|SubscriptionValidationEventData|SubscriptionValidationResponse).+?\n}/gs, "");
-  - from: 
-      - models.go
-      - client.go
-      - response_types.go
-      - options.go
-    where: $
-    transform: return $.replace(/CloudEventEvent/g, "CloudEvent");
-  - from: 
-      - models.go
-      - models_serde.go
-      - client.go
-      - response_types.go
-      - options.go
-    where: $
-    transform: return $.replace(/EventGridEvent/g, "Event");
-  - from: 
-      - client.go
-    where: $
-    transform: | 
-      return $.replace(
-        /(func \(client \*Client\) publishCloudEventsCreateRequest.+?)return req, nil/s, 
-        '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")\nreturn req, nil');
   - from: 
       - models.go
       - models_serde.go
@@ -83,11 +51,71 @@ directive:
         .replace(/ResourceWriteCancelData/g, 'ResourceWriteCancelEventData')
         .replace(/ResourceWriteFailureData/g, 'ResourceWriteFailureEventData')
         .replace(/ResourceWriteSuccessData/g, 'ResourceWriteSuccessEventData')
+```
 
+```yaml
+directive:
+  - from:
+      - models.go
+      - client.go
+      - response_types.go
+      - options.go
+    where: $
+    transform: return $.replace(/CloudEventEvent/g, "CloudEvent");
+  - from: 
+      - models.go
+      - models_serde.go
+      - client.go
+      - response_types.go
+      - options.go
+    where: $
+    transform: return $.replace(/EventGridEvent/g, "Event");
+```
 
-  # TODO:
-  # missing:
-  #
-  #   subscriptiondeletedeventdata
-  #   subscriptionvalidationeventdata
+```yaml
+directive:
+  - from: 
+    - models.go
+    - models_serde.go
+    where: $
+    transform: | 
+      return $
+        .replace(/ChannelLatencyMs \*string/g, "ChannelLatencyMS *string")
+        .replace(/m.ChannelLatencyMs/g, "m.ChannelLatencyMS");
+```
+
+```yaml
+directive:
+  - from: constants.go
+    where: $
+    transform: return $.replace(/EventGridMqttClientDisconnectionReason/g, "EventGridMQTTClientDisconnectionReason")
+  - from: models.go
+    where: $
+    transform: return $.replace(/DisconnectionReason \*EventGridMqttClientDisconnectionReason/, "DisconnectionReason *EventGridMQTTClientDisconnectionReason")
+```
+
+Manually map n/a to the zero value for the type for `MediaLiveEventChannelArchiveHeartbeatEventData` and `MediaLiveEventIngestHeartbeatEventData`
+
+```yaml
+directive:
+  - from: models_serde.go
+    where: $
+    transform: |
+      return $
+        .replace(/(\s+err = unpopulate\(val, "IngestDriftValue", &m.IngestDriftValue\))/, "$1\nfixNAValue(&m.IngestDriftValue)")
+        .replace(/(\s+err = unpopulate\(val, "ChannelLatencyMs", &m.ChannelLatencyMS\))/, "$1\nfixNAValue(&m.ChannelLatencyMS)");
+```
+
+Rename `AcsRouterWorkerSelector.TTLSeconds` to `TimeToLive`
+
+```yaml
+directive:
+  - from: 
+    - models.go
+    where: $
+    transform: return $.replace(/TTLSeconds \*float32/g, "TimeToLive *float32");
+  - from: 
+    - models_serde.go
+    where: $
+    transform: return $.replace(/a\.TTLSeconds/g, "a.TimeToLive");
 ```

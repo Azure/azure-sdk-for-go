@@ -40,7 +40,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "data":
-			err = unpopulate(val, "Data", &e.Data)
+			e.Data = []byte(val)
 			delete(rawMsg, key)
 		case "dataVersion":
 			err = unpopulate(val, "DataVersion", &e.DataVersion)

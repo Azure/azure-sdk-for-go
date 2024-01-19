@@ -1683,7 +1683,7 @@ type AcsRouterWorkerSelector struct {
 	State *AcsRouterWorkerSelectorState
 
 	// Router Job Worker Selector Time to Live in Seconds
-	TTLSeconds *float32
+	TimeToLive *float32
 }
 
 // AcsSmsDeliveryAttemptProperties - Schema for details of a delivery attempt
@@ -2471,7 +2471,7 @@ type EventGridMQTTClientSessionDisconnectedEventData struct {
 
 	// Reason for the disconnection of the MQTT client's session. The value could be one of the values in the disconnection reasons
 	// table.
-	DisconnectionReason *EventGridMqttClientDisconnectionReason
+	DisconnectionReason *EventGridMQTTClientDisconnectionReason
 
 	// Name of the Event Grid namespace where the MQTT client was created or updated.
 	NamespaceName *string
@@ -3450,7 +3450,7 @@ type MediaJobStateChangeEventData struct {
 // Event for a Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
 type MediaLiveEventChannelArchiveHeartbeatEventData struct {
 	// READ-ONLY; Gets the channel latency in ms.
-	ChannelLatencyMs *string
+	ChannelLatencyMS *string
 
 	// READ-ONLY; Gets the latency result code.
 	LatencyResultCode *string
@@ -4781,6 +4781,35 @@ type StorageTaskQueuedEventData struct {
 
 	// The execution id for a storage task.
 	TaskExecutionID *string
+}
+
+// SubscriptionDeletedEventData - Schema of the Data property of an Event for a Microsoft.EventGrid.SubscriptionDeletedEvent
+// event.
+type SubscriptionDeletedEventData struct {
+	// READ-ONLY; The Azure resource ID of the deleted event subscription.
+	EventSubscriptionID *string
+}
+
+// SubscriptionValidationEventData - Schema of the Data property of an Event for a Microsoft.EventGrid.SubscriptionValidationEvent
+// event.
+type SubscriptionValidationEventData struct {
+	// READ-ONLY; The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation handshake,
+	// the subscriber must either respond with this validation code as part of the
+	// validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
+	ValidationCode *string
+
+	// READ-ONLY; The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview). To complete the
+	// validation handshake, the subscriber must either respond with the validationCode as part of
+	// the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
+	ValidationURL *string
+}
+
+// SubscriptionValidationResponse - To complete an event subscription validation handshake, a subscriber can use either the
+// validationCode or the validationUrl received in a SubscriptionValidationEvent. When the validationCode is used,
+// the SubscriptionValidationResponse can be used to build the response.
+type SubscriptionValidationResponse struct {
+	// The validation response sent by the subscriber to Azure Event Grid to complete the validation of an event subscription.
+	ValidationResponse *string
 }
 
 // WebAppServicePlanUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Web.AppServicePlanUpdated

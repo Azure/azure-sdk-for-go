@@ -244,57 +244,57 @@ func PossibleDataBoxStageNameValues() []DataBoxStageName {
 	}
 }
 
-// EventGridMqttClientDisconnectionReason - Reason for the disconnection of the MQTT client's session. The value could be
+// EventGridMQTTClientDisconnectionReason - Reason for the disconnection of the MQTT client's session. The value could be
 // one of the values in the disconnection reasons table.
-type EventGridMqttClientDisconnectionReason string
+type EventGridMQTTClientDisconnectionReason string
 
 const (
-	// EventGridMqttClientDisconnectionReasonClientAuthenticationError - The client got disconnected for any authentication reasons
+	// EventGridMQTTClientDisconnectionReasonClientAuthenticationError - The client got disconnected for any authentication reasons
 	// (for example, certificate expired, client got disabled, or client configuration changed).
-	EventGridMqttClientDisconnectionReasonClientAuthenticationError EventGridMqttClientDisconnectionReason = "ClientAuthenticationError"
-	// EventGridMqttClientDisconnectionReasonClientAuthorizationError - The client got disconnected for any authorization reasons
+	EventGridMQTTClientDisconnectionReasonClientAuthenticationError EventGridMQTTClientDisconnectionReason = "ClientAuthenticationError"
+	// EventGridMQTTClientDisconnectionReasonClientAuthorizationError - The client got disconnected for any authorization reasons
 	// (for example, because of a change in the configuration of topic spaces, permission bindings, or client groups).
-	EventGridMqttClientDisconnectionReasonClientAuthorizationError EventGridMqttClientDisconnectionReason = "ClientAuthorizationError"
-	// EventGridMqttClientDisconnectionReasonClientError - The client sent a bad request or used one of the unsupported features
+	EventGridMQTTClientDisconnectionReasonClientAuthorizationError EventGridMQTTClientDisconnectionReason = "ClientAuthorizationError"
+	// EventGridMQTTClientDisconnectionReasonClientError - The client sent a bad request or used one of the unsupported features
 	// that resulted in a connection termination by the service.
-	EventGridMqttClientDisconnectionReasonClientError EventGridMqttClientDisconnectionReason = "ClientError"
-	// EventGridMqttClientDisconnectionReasonClientInitiatedDisconnect - The client initiates a graceful disconnect through a
+	EventGridMQTTClientDisconnectionReasonClientError EventGridMQTTClientDisconnectionReason = "ClientError"
+	// EventGridMQTTClientDisconnectionReasonClientInitiatedDisconnect - The client initiates a graceful disconnect through a
 	// DISCONNECT packet for MQTT or a close frame for MQTT over WebSocket.
-	EventGridMqttClientDisconnectionReasonClientInitiatedDisconnect EventGridMqttClientDisconnectionReason = "ClientInitiatedDisconnect"
-	// EventGridMqttClientDisconnectionReasonConnectionLost - The client-server connection is lost. (EXCHANGE ONLINE PROTECTION).
-	EventGridMqttClientDisconnectionReasonConnectionLost EventGridMqttClientDisconnectionReason = "ConnectionLost"
-	// EventGridMqttClientDisconnectionReasonIPForbidden - The client's IP address is blocked by IP filter or Private links configuration.
-	EventGridMqttClientDisconnectionReasonIPForbidden EventGridMqttClientDisconnectionReason = "IpForbidden"
-	// EventGridMqttClientDisconnectionReasonQuotaExceeded - The client exceeded one or more of the throttling limits that resulted
+	EventGridMQTTClientDisconnectionReasonClientInitiatedDisconnect EventGridMQTTClientDisconnectionReason = "ClientInitiatedDisconnect"
+	// EventGridMQTTClientDisconnectionReasonConnectionLost - The client-server connection is lost. (EXCHANGE ONLINE PROTECTION).
+	EventGridMQTTClientDisconnectionReasonConnectionLost EventGridMQTTClientDisconnectionReason = "ConnectionLost"
+	// EventGridMQTTClientDisconnectionReasonIPForbidden - The client's IP address is blocked by IP filter or Private links configuration.
+	EventGridMQTTClientDisconnectionReasonIPForbidden EventGridMQTTClientDisconnectionReason = "IpForbidden"
+	// EventGridMQTTClientDisconnectionReasonQuotaExceeded - The client exceeded one or more of the throttling limits that resulted
 	// in a connection termination by the service.
-	EventGridMqttClientDisconnectionReasonQuotaExceeded EventGridMqttClientDisconnectionReason = "QuotaExceeded"
-	// EventGridMqttClientDisconnectionReasonServerError - The connection got terminated due to an unexpected server error.
-	EventGridMqttClientDisconnectionReasonServerError EventGridMqttClientDisconnectionReason = "ServerError"
-	// EventGridMqttClientDisconnectionReasonServerInitiatedDisconnect - The server initiates a graceful disconnect for any operational
+	EventGridMQTTClientDisconnectionReasonQuotaExceeded EventGridMQTTClientDisconnectionReason = "QuotaExceeded"
+	// EventGridMQTTClientDisconnectionReasonServerError - The connection got terminated due to an unexpected server error.
+	EventGridMQTTClientDisconnectionReasonServerError EventGridMQTTClientDisconnectionReason = "ServerError"
+	// EventGridMQTTClientDisconnectionReasonServerInitiatedDisconnect - The server initiates a graceful disconnect for any operational
 	// reason.
-	EventGridMqttClientDisconnectionReasonServerInitiatedDisconnect EventGridMqttClientDisconnectionReason = "ServerInitiatedDisconnect"
-	// EventGridMqttClientDisconnectionReasonSessionOverflow - The client's queue for unacknowledged QoS1 messages reached its
+	EventGridMQTTClientDisconnectionReasonServerInitiatedDisconnect EventGridMQTTClientDisconnectionReason = "ServerInitiatedDisconnect"
+	// EventGridMQTTClientDisconnectionReasonSessionOverflow - The client's queue for unacknowledged QoS1 messages reached its
 	// limit, which resulted in a connection termination by the server.
-	EventGridMqttClientDisconnectionReasonSessionOverflow EventGridMqttClientDisconnectionReason = "SessionOverflow"
-	// EventGridMqttClientDisconnectionReasonSessionTakenOver - The client reconnected with the same authentication name, which
+	EventGridMQTTClientDisconnectionReasonSessionOverflow EventGridMQTTClientDisconnectionReason = "SessionOverflow"
+	// EventGridMQTTClientDisconnectionReasonSessionTakenOver - The client reconnected with the same authentication name, which
 	// resulted in the termination of the previous connection.
-	EventGridMqttClientDisconnectionReasonSessionTakenOver EventGridMqttClientDisconnectionReason = "SessionTakenOver"
+	EventGridMQTTClientDisconnectionReasonSessionTakenOver EventGridMQTTClientDisconnectionReason = "SessionTakenOver"
 )
 
-// PossibleEventGridMqttClientDisconnectionReasonValues returns the possible values for the EventGridMqttClientDisconnectionReason const type.
-func PossibleEventGridMqttClientDisconnectionReasonValues() []EventGridMqttClientDisconnectionReason {
-	return []EventGridMqttClientDisconnectionReason{
-		EventGridMqttClientDisconnectionReasonClientAuthenticationError,
-		EventGridMqttClientDisconnectionReasonClientAuthorizationError,
-		EventGridMqttClientDisconnectionReasonClientError,
-		EventGridMqttClientDisconnectionReasonClientInitiatedDisconnect,
-		EventGridMqttClientDisconnectionReasonConnectionLost,
-		EventGridMqttClientDisconnectionReasonIPForbidden,
-		EventGridMqttClientDisconnectionReasonQuotaExceeded,
-		EventGridMqttClientDisconnectionReasonServerError,
-		EventGridMqttClientDisconnectionReasonServerInitiatedDisconnect,
-		EventGridMqttClientDisconnectionReasonSessionOverflow,
-		EventGridMqttClientDisconnectionReasonSessionTakenOver,
+// PossibleEventGridMQTTClientDisconnectionReasonValues returns the possible values for the EventGridMQTTClientDisconnectionReason const type.
+func PossibleEventGridMQTTClientDisconnectionReasonValues() []EventGridMQTTClientDisconnectionReason {
+	return []EventGridMQTTClientDisconnectionReason{
+		EventGridMQTTClientDisconnectionReasonClientAuthenticationError,
+		EventGridMQTTClientDisconnectionReasonClientAuthorizationError,
+		EventGridMQTTClientDisconnectionReasonClientError,
+		EventGridMQTTClientDisconnectionReasonClientInitiatedDisconnect,
+		EventGridMQTTClientDisconnectionReasonConnectionLost,
+		EventGridMQTTClientDisconnectionReasonIPForbidden,
+		EventGridMQTTClientDisconnectionReasonQuotaExceeded,
+		EventGridMQTTClientDisconnectionReasonServerError,
+		EventGridMQTTClientDisconnectionReasonServerInitiatedDisconnect,
+		EventGridMQTTClientDisconnectionReasonSessionOverflow,
+		EventGridMQTTClientDisconnectionReasonSessionTakenOver,
 	}
 }
 

@@ -19,6 +19,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/systemevents"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
@@ -126,7 +127,7 @@ func TestSystemEventForBlobs(t *testing.T) {
 		require.Equal(t, fmt.Sprintf("/blobServices/default/containers/%s/blobs/%s", containerName, testBlobName), *ce.Subject)
 
 		switch ce.Type {
-		case string(systemevents.TypeStorageBlobCreatedEventData):
+		case string(systemevents.TypeStorageBlobCreated):
 			var blobCreated *systemevents.StorageBlobCreatedEventData
 			err = json.Unmarshal(ce.Data.([]byte), &blobCreated)
 			require.NoError(t, err)
@@ -134,7 +135,7 @@ func TestSystemEventForBlobs(t *testing.T) {
 			require.Equal(t, "PutBlob", *blobCreated.API)
 			require.Equal(t, "BlockBlob", *blobCreated.BlobType)
 
-		case string(systemevents.TypeStorageBlobDeletedEventData):
+		case string(systemevents.TypeStorageBlobDeleted):
 			var blobDeleted systemevents.StorageBlobDeletedEventData
 			err = json.Unmarshal(ce.Data.([]byte), &blobDeleted)
 			require.NoError(t, err)
@@ -143,4 +144,56 @@ func TestSystemEventForBlobs(t *testing.T) {
 			require.Equal(t, "BlockBlob", *blobDeleted.BlobType)
 		}
 	}
+}
+
+func parseManyEvents(t *testing.T, str string) []publisher.Event {
+	var events []publisher.Event
+
+	err := json.Unmarshal(([]byte)(str), &events)
+	require.NoError(t, err)
+
+	return events
+}
+
+func parseEvent(t *testing.T, str string) publisher.Event {
+	var event *publisher.Event
+
+	err := json.Unmarshal(([]byte)(str), &event)
+	require.NoError(t, err)
+
+	return *event
+}
+
+func parseManyCloudEvents(t *testing.T, str string) []messaging.CloudEvent {
+	var events []messaging.CloudEvent
+
+	err := json.Unmarshal(([]byte)(str), &events)
+	require.NoError(t, err)
+
+	return events
+}
+
+func parseCloudEvent(t *testing.T, str string) messaging.CloudEvent {
+	var event *messaging.CloudEvent
+
+	err := json.Unmarshal(([]byte)(str), &event)
+	require.NoError(t, err)
+
+	return *event
+}
+
+func deserializeSystemEvent[T any](t *testing.T, payload any) T {
+	var val *T
+
+	err := json.Unmarshal(payload.([]byte), &val)
+	require.NoError(t, err)
+
+	return *val
+}
+
+func mustParseTime(t *testing.T, str string) time.Time {
+	tm, err := time.Parse(time.RFC3339Nano, str)
+	require.NoError(t, err)
+
+	return tm
 }

@@ -93,10 +93,19 @@ directive:
       return $.replace(
         /(func \(client \*Client\) publishCloudEventsCreateRequest.+?)return req, nil/s, 
         '$1\nreq.Raw().Header.Set("Content-type", "application/cloudevents-batch+json; charset=utf-8")\nreturn req, nil');
+```
 
-  # TODO:
-  # missing:
-  #
-  #   subscriptiondeletedeventdata
-  #   subscriptionvalidationeventdata
+Fixing EventGridEvent (`publisher.Event`)
+
+```yaml
+directive:
+  - from: models_serde.go
+    where: $
+    transform: |
+      return $.replace(/err = unpopulate\(val, "Data", &e.Data\)/, "e.Data = []byte(val)")
+  # - from: models.go
+  #   where: $
+  #   debug: true
+  #   transform: |
+  #     return $.replace(/Data any/g, "	Data []byte")
 ```

@@ -97,9 +97,9 @@ type userAgentTest struct{}
 func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 	const userAgentHeader = "User-Agent"
 
-	currentUserAgentHeader := map[string][]string(req.Raw().Header)[userAgentHeader]
-	if !strings.HasPrefix(currentUserAgentHeader[0], "azsdk-go-azdatalake/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader[0] + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
+	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
+	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azdatalake/"+exported.ModuleVersion) {
+		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azdatalake/vx.xx.xx")
 	}
 
 	return &http.Response{

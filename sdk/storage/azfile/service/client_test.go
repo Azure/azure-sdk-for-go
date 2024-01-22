@@ -190,9 +190,9 @@ type userAgentTest struct{}
 func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
 	const userAgentHeader = "User-Agent"
 
-	currentUserAgentHeader := map[string][]string(req.Raw().Header)[userAgentHeader]
-	if !strings.HasPrefix(currentUserAgentHeader[0], "azsdk-go-azfile/"+exported.ModuleVersion) {
-		return nil, fmt.Errorf(currentUserAgentHeader[0] + " user agent doesn't match expected agent: azsdk-go-azfile/vx.xx.x")
+	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
+	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azfile/"+exported.ModuleVersion) {
+		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azfile/vx.xx.x")
 	}
 
 	return &http.Response{
@@ -208,7 +208,7 @@ func newTelemetryTestPolicy() policy.Policy {
 	return &userAgentTest{}
 }
 
-func TestUserAgentAzFile(t *testing.T) {
+func TestUserAgentForAzFile(t *testing.T) {
 	client, err := service.NewClientWithNoCredential("https://fake/blob/testpath", &service.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},

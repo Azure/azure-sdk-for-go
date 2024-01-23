@@ -62,13 +62,6 @@ const (
 	FileAttributesDirectory = "Directory"
 )
 
-const (
-	ServiceClient   = "azfile.service"
-	ShareClient     = "azfile.share"
-	DirectoryClient = "azfile.directory"
-	FileClient      = "azfile.file"
-)
-
 func GetClientOptions[T any](o *T) *T {
 	if o == nil {
 		return new(T)

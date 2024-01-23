@@ -45,12 +45,12 @@ const (
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
 
 const (
-	AppendBlobClient = "azblob.appendblob"
-	BlobClient       = "azblob.blob"
-	BlockBlobClient  = "azblob.blockblob"
-	ContainerClient  = "azblob.container"
-	PageBlobClient   = "azblob.pageblob"
-	ServiceClient    = "azblob.service"
+	AppendBlobClient = "azblob/appendblob.Client"
+	BlobClient       = "azblob/blob.Client"
+	BlockBlobClient  = "azblob/blockblob.Client"
+	ContainerClient  = "azblob/container.Client"
+	PageBlobClient   = "azblob/pageblob.Client"
+	ServiceClient    = "azblob/service.Client"
 )
 
 var CRC64Table = crc64.MakeTable(crc64Polynomial)

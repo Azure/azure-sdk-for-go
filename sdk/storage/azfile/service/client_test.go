@@ -9,16 +9,20 @@ package service_test
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 )
@@ -179,6 +183,42 @@ func (s *ServiceRecordedTestsSuite) TestAccountHourMetrics() {
 	}
 	_, err = svcClient.SetProperties(context.Background(), setPropertiesOptions)
 	_require.NoError(err)
+}
+
+type userAgentTest struct{}
+
+func (u userAgentTest) Do(req *policy.Request) (*http.Response, error) {
+	const userAgentHeader = "User-Agent"
+
+	currentUserAgentHeader := req.Raw().Header.Get(userAgentHeader)
+	if !strings.HasPrefix(currentUserAgentHeader, "azsdk-go-azfile/"+exported.ModuleVersion) {
+		return nil, fmt.Errorf(currentUserAgentHeader + " user agent doesn't match expected agent: azsdk-go-azfile/vx.xx.x")
+	}
+
+	return &http.Response{
+		Request:    req.Raw(),
+		Status:     "Created",
+		StatusCode: http.StatusOK,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func newTelemetryTestPolicy() policy.Policy {
+	return &userAgentTest{}
+}
+
+func TestUserAgentForAzFile(t *testing.T) {
+	client, err := service.NewClientWithNoCredential("https://fake/blob/testpath", &service.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			PerCallPolicies: []policy.Policy{newTelemetryTestPolicy()},
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = client.GetProperties(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, client)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {

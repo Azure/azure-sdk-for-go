@@ -93,6 +93,11 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 			code: http.StatusForbidden,
 			body: "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable network.",
 		},
+		{
+			desc: "Docker Desktop",
+			code: http.StatusForbidden,
+			body: "connecting to 169.254.169.254:80: connecting to 169.254.169.254:80: dial tcp 169.254.169.254:80: connectex: A socket operation was attempted to an unreachable host.",
+		},
 	} {
 		t.Run(fmt.Sprint(test.code), func(t *testing.T) {
 			srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())

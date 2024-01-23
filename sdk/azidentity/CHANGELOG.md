@@ -7,6 +7,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed more cases in which credential chains like `DefaultAzureCredential`
+  should try their next credential after attempting managed identity
+  authentication in a Docker Desktop container
 
 ### Other Changes
 

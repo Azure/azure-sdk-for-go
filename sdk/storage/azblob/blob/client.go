@@ -9,6 +9,7 @@ package blob
 import (
 	"context"
 	"io"
+	"math"
 	"os"
 	"sync"
 	"time"
@@ -469,23 +470,18 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
-	acquireBuffer := func() ([]byte, error) {
-		select {
-		case b := <-buffers.Acquire():
-			// got a buffer
-			return b, nil
-		default:
-			// no buffer available; allocate a new buffer if possible
-			if _, err := buffers.Grow(); err != nil {
-				return nil, err
-			}
 
-			// either grab the newly allocated buffer or wait for one to become available
-			return <-buffers.Acquire(), nil
+	numChunks := (count-1)/o.BlockSize + 1
+	for bufferCounter := float64(0); bufferCounter < math.Min(float64(numChunks), float64(o.Concurrency)); bufferCounter++ {
+		if _, err := buffers.Grow(); err != nil {
+			return 0, err
 		}
 	}
 
-	numChunks := uint16((count-1)/o.BlockSize) + 1
+	acquireBuffer := func() ([]byte, error) {
+		return <-buffers.Acquire(), nil
+	}
+
 	blocks := make([]chan []byte, numChunks)
 	for b := range blocks {
 		blocks[b] = make(chan []byte)
@@ -525,7 +521,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
-		NumChunks:     numChunks,
+		NumChunks:     uint16(numChunks),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			buff, err := acquireBuffer()

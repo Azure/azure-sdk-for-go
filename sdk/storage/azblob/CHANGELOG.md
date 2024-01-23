@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fix concurrency issue while DownloadFile
+
 ### Other Changes
 
 ## 1.3.0-beta.1 (2024-01-09)

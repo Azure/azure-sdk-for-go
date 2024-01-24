@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/GetVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/GetVirtualNetwork.json
 func ExampleVirtualNetworksClient_Retrieve() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,15 +43,17 @@ func ExampleVirtualNetworksClient_Retrieve() {
 	// 	Location: to.Ptr("westus"),
 	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-	// 		Type: to.Ptr("CustomLocation"),
+	// 		Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 	// 	},
 	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
 	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-	// 					SegmentName: to.Ptr("test-network"),
+	// 				Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+	// 					MocGroup: to.Ptr("target-group"),
+	// 					MocLocation: to.Ptr("MocLocation"),
+	// 					MocVnetName: to.Ptr("vnet1"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
@@ -71,7 +73,7 @@ func ExampleVirtualNetworksClient_Retrieve() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/PutVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/PutVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,15 +88,17 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("westus"),
 		ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 			Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-			Type: to.Ptr("CustomLocation"),
+			Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 		},
 		Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 			DNSServers: []*string{
 				to.Ptr("192.168.0.1")},
 			Gateway: to.Ptr("192.168.0.1"),
 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-					SegmentName: to.Ptr("test-network"),
+				Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+					MocGroup:    to.Ptr("target-group"),
+					MocLocation: to.Ptr("MocLocation"),
+					MocVnetName: to.Ptr("vnet1"),
 				},
 			},
 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
@@ -128,15 +132,17 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	// 	Location: to.Ptr("westus"),
 	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-	// 		Type: to.Ptr("CustomLocation"),
+	// 		Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 	// 	},
 	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
 	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-	// 					SegmentName: to.Ptr("test-network"),
+	// 				Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+	// 					MocGroup: to.Ptr("target-group"),
+	// 					MocLocation: to.Ptr("MocLocation"),
+	// 					MocVnetName: to.Ptr("vnet1"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
@@ -156,7 +162,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/DeleteVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/DeleteVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +183,7 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/UpdateVirtualNetwork.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/UpdateVirtualNetwork.json
 func ExampleVirtualNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,15 +219,17 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// 	},
 	// 	ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 	// 		Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-	// 		Type: to.Ptr("CustomLocation"),
+	// 		Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 	// 	},
 	// 	Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 	// 		DNSServers: []*string{
 	// 			to.Ptr("192.168.0.1")},
 	// 			Gateway: to.Ptr("192.168.0.1"),
 	// 			InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-	// 				Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-	// 					SegmentName: to.Ptr("test-network"),
+	// 				Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+	// 					MocGroup: to.Ptr("target-group"),
+	// 					MocLocation: to.Ptr("MocLocation"),
+	// 					MocVnetName: to.Ptr("vnet1"),
 	// 				},
 	// 			},
 	// 			IPAddressPrefix: to.Ptr("192.168.0.0/16"),
@@ -241,7 +249,7 @@ func ExampleVirtualNetworksClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListVirtualNetworkByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ListVirtualNetworkByResourceGroup.json
 func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,15 +280,17 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-		// 				Type: to.Ptr("CustomLocation"),
+		// 				Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 		// 			},
 		// 			Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 		// 				DNSServers: []*string{
 		// 					to.Ptr("192.168.0.1")},
 		// 					Gateway: to.Ptr("192.168.0.1"),
 		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-		// 						Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-		// 							SegmentName: to.Ptr("test-network"),
+		// 						Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+		// 							MocGroup: to.Ptr("target-group"),
+		// 							MocLocation: to.Ptr("MocLocation"),
+		// 							MocVnetName: to.Ptr("vnet1"),
 		// 						},
 		// 					},
 		// 					IPAddressPrefix: to.Ptr("192.168.0.0/16"),
@@ -302,7 +312,7 @@ func ExampleVirtualNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bb583bcb67c2bf448712f2bd1593a64a7a8f139/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/ListVirtualNetworkBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/41e4538ed7bb3ceac3c1322c9455a0812ed110ac/specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/ListVirtualNetworkBySubscription.json
 func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,15 +343,17 @@ func ExampleVirtualNetworksClient_NewListBySubscriptionPager() {
 		// 			Location: to.Ptr("westus"),
 		// 			ExtendedLocation: &armhybridcontainerservice.VirtualNetworkExtendedLocation{
 		// 				Name: to.Ptr("/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"),
-		// 				Type: to.Ptr("CustomLocation"),
+		// 				Type: to.Ptr(armhybridcontainerservice.ExtendedLocationTypesCustomLocation),
 		// 			},
 		// 			Properties: &armhybridcontainerservice.VirtualNetworkProperties{
 		// 				DNSServers: []*string{
 		// 					to.Ptr("192.168.0.1")},
 		// 					Gateway: to.Ptr("192.168.0.1"),
 		// 					InfraVnetProfile: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfile{
-		// 						Vmware: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileVmware{
-		// 							SegmentName: to.Ptr("test-network"),
+		// 						Hci: &armhybridcontainerservice.VirtualNetworkPropertiesInfraVnetProfileHci{
+		// 							MocGroup: to.Ptr("target-group"),
+		// 							MocLocation: to.Ptr("MocLocation"),
+		// 							MocVnetName: to.Ptr("vnet1"),
 		// 						},
 		// 					},
 		// 					IPAddressPrefix: to.Ptr("192.168.0.0/16"),

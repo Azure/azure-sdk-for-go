@@ -26,7 +26,7 @@ import (
 type ProvisionedClusterInstancesServer struct {
 	// BeginCreateOrUpdate is the fake for method ProvisionedClusterInstancesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance armhybridcontainerservice.ProvisionedClusters, options *armhybridcontainerservice.ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhybridcontainerservice.ProvisionedClusterInstancesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, connectedClusterResourceURI string, provisionedClusterInstance armhybridcontainerservice.ProvisionedCluster, options *armhybridcontainerservice.ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhybridcontainerservice.ProvisionedClusterInstancesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ProvisionedClusterInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
@@ -127,7 +127,7 @@ func (p *ProvisionedClusterInstancesServerTransport) dispatchBeginCreateOrUpdate
 		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armhybridcontainerservice.ProvisionedClusters](req)
+		body, err := server.UnmarshalRequestAsJSON[armhybridcontainerservice.ProvisionedCluster](req)
 		if err != nil {
 			return nil, err
 		}
@@ -221,7 +221,7 @@ func (p *ProvisionedClusterInstancesServerTransport) dispatchGet(req *http.Reque
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProvisionedClusters, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProvisionedCluster, req)
 	if err != nil {
 		return nil, err
 	}

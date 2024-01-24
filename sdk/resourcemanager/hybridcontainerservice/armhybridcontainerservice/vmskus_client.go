@@ -38,10 +38,10 @@ func NewVMSKUsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	return client, nil
 }
 
-// NewListPager - Lists the supported VM SKUs from the underlying custom location
+// NewListPager - Lists the supported VM skus for the specified custom location
 //
-// Generated from API version 2023-11-15-preview
-//   - customLocationResourceURI - The fully qualified Azure Resource manager identifier of the custom location resource.
+// Generated from API version 2024-01-01
+//   - customLocationResourceURI - The fully qualified Azure Resource Manager identifier of the custom location resource.
 //   - options - VMSKUsClientListOptions contains the optional parameters for the VMSKUsClient.NewListPager method.
 func (client *VMSKUsClient) NewListPager(customLocationResourceURI string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VMSKUsClientListResponse]{
@@ -75,7 +75,7 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, customLocatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

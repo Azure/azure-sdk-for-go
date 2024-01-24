@@ -34,6 +34,27 @@ You can create an Azure Cosmos account using:
 
 In order to interact with the Azure Cosmos DB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure Cosmos DB service.
 
+#### Logging
+
+The SDK can make use of `azcore`'s logging implementation to collect useful information for debugging your application. In order to make use of logs, one must set the environment variable `"AZURE_SDK_GO_LOGGING"` to `"all"` like outlined in this [public document](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#hdr-Built_in_Logging).
+
+Once that is done, the SDK will begin to collect diagnostics through `stdout` - printing directly to your console. If you'd like to configure a listener that acts differently, the small snippet below shows how you could do so. In this case, the listener is configured to write to a file instead of printing to the console.
+
+```go
+import (
+	"os"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+    f, err := os.Create("cosmos-log-file.txt")
+	handle(err)
+	defer f.Close()
+
+	azlog.SetListener(func(event azlog.Event, s string) {
+		f.WriteString(s + "\n")
+	})
+```
+
 ## Examples
 
 The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:

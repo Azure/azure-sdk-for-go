@@ -113,9 +113,9 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 	if options == nil {
 		options = &ClientOptions{}
 	}
-
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
@@ -135,6 +135,7 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	}
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
+			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
 				authPolicy,
 			},
@@ -480,4 +481,80 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+}
+
+func getAllowedHeaders() []string {
+	return []string{
+		cosmosHeaderRequestCharge,
+		cosmosHeaderActivityId,
+		cosmosHeaderEtag,
+		cosmosHeaderPopulateQuotaInfo,
+		cosmosHeaderPreTriggerInclude,
+		cosmosHeaderPostTriggerInclude,
+		cosmosHeaderIndexingDirective,
+		cosmosHeaderSessionToken,
+		cosmosHeaderConsistencyLevel,
+		cosmosHeaderPartitionKey,
+		cosmosHeaderPrefer,
+		cosmosHeaderIsUpsert,
+		cosmosHeaderOfferThroughput,
+		cosmosHeaderOfferAutoscale,
+		cosmosHeaderQuery,
+		cosmosHeaderOfferReplacePending,
+		cosmosHeaderOfferMinimumThroughput,
+		cosmosHeaderResponseContinuationTokenLimitInKb,
+		cosmosHeaderEnableScanInQuery,
+		cosmosHeaderMaxItemCount,
+		cosmosHeaderContinuationToken,
+		cosmosHeaderPopulateIndexMetrics,
+		cosmosHeaderPopulateQueryMetrics,
+		cosmosHeaderQueryMetrics,
+		cosmosHeaderIndexUtilization,
+		cosmosHeaderCorrelatedActivityId,
+		cosmosHeaderIsBatchRequest,
+		cosmosHeaderIsBatchAtomic,
+		cosmosHeaderIsBatchOrdered,
+		cosmosHeaderSDKSupportedCapabilities,
+		headerXmsDate,
+		headerContentType,
+		headerIfMatch,
+		headerIfNoneMatch,
+		headerXmsVersion,
+		"Content-Location",
+		"X-Ms-Gatewayversion",
+		"lsn",
+		"X-Ms-Cosmos-Llsn",
+		"X-Ms-Cosmos-Item-Llsn",
+		"X-Ms-Item-Lsn",
+		"X-Ms-Cosmos-Quorum-Acked-Llsn",
+		"X-Ms-Current-Replica-Set-Size",
+		"X-Ms-Current-Write-Quorum",
+		"X-Ms-Global-Committed-Lsn",
+		"X-Ms-Last-State-Change-Utc",
+		"X-Ms-Number-Of-Read-Regions",
+		"X-Ms-Quorum-Acked-Lsn",
+		"X-Ms-Request-Duration-Ms",
+		"X-Ms-Resource-Quota",
+		"X-Ms-Resource-Usage",
+		"X-Ms-Schemaversion",
+		"X-Ms-Serviceversion",
+		"X-Ms-Transport-Request-Id",
+		"X-Ms-Xp-Role",
+		"Collection-Partition-Index",
+		"Collection-Service-Index",
+		"X-Ms-Documentdb-Partitionkeyrangeid",
+		"X-Ms-Cosmos-Physical-Partition-Id",
+		"Strict-Transport-Security",
+		"X-Ms-Databaseaccount-Consumed-Mb",
+		"X-Ms-Databaseaccount-Provisioned-Mb",
+		"X-Ms-Databaseaccount-Reserved-Mb",
+		"X-Ms-Max-Media-Storage-Usage-Mb",
+		"X-Ms-Media-Storage-Usage-Mb",
+		"X-Ms-Content-Path",
+		"X-Ms-Alt-Content-Path",
+		"X-Ms-Cosmos-Max-Content-Length",
+		"X-Ms-Cosmos-Is-Partition-Key-Delete-Pending",
+		"X-Ms-Cosmos-Query-Execution-Info",
+		"X-Ms-Item-Count",
+	}
 }

@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/cosmos/armcosmos",
-  "Tag": "go/resourcemanager/cosmos/armcosmos_ce4b820b08"
+  "Tag": "go/resourcemanager/cosmos/armcosmos_3999eea54f"
 }

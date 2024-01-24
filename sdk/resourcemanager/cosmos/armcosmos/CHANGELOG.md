@@ -1,5 +1,40 @@
 # Release History
 
+## 2.7.0 (2024-01-26)
+### Features Added
+
+- New value `OperationTypeRecreate` added to enum type `OperationType`
+- New struct `ComputedProperty`
+- New struct `ResourceRestoreParameters`
+- New struct `RestoreParametersBase`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountGetProperties`
+- New field `CustomerManagedKeyStatus`, `EnableBurstCapacity` in struct `DatabaseAccountUpdateProperties`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinDatabaseResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinGraphGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `GremlinGraphResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBCollectionGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBCollectionResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `MongoDBDatabaseResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableGremlinGraphPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbCollectionPropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableMongodbDatabasePropertiesResource`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLContainerPropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableSQLDatabasePropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `RestorableSQLDatabasePropertiesResourceDatabase`
+- New field `CanUndelete`, `CanUndeleteReason` in struct `RestorableTablePropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `SQLContainerGetPropertiesResource`
+- New field `ComputedProperties`, `CreateMode`, `RestoreParameters` in struct `SQLContainerResource`
+- New field `CreateMode`, `RestoreParameters` in struct `SQLDatabaseGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `SQLDatabaseResource`
+- New field `CreateMode`, `RestoreParameters` in struct `TableGetPropertiesResource`
+- New field `CreateMode`, `RestoreParameters` in struct `TableResource`
+
+
 ## 3.0.0-beta.2 (2023-11-30)
 ### Features Added
 

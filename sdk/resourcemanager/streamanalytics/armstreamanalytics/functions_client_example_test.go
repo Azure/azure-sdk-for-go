@@ -15,10 +15,79 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Create_JavaScript.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Create_CSharp.json
+func ExampleFunctionsClient_CreateOrReplace_createAClrUdfFunction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFunctionsClient().CreateOrReplace(ctx, "sjrg", "sjName", "function588", armstreamanalytics.Function{
+		Properties: &armstreamanalytics.ScalarFunctionProperties{
+			Type: to.Ptr("Scalar"),
+			Properties: &armstreamanalytics.FunctionConfiguration{
+				Binding: &armstreamanalytics.CSharpFunctionBinding{
+					Type: to.Ptr("Microsoft.StreamAnalytics/CLRUdf"),
+					Properties: &armstreamanalytics.CSharpFunctionBindingProperties{
+						Method:     to.Ptr("SquareFunction"),
+						Class:      to.Ptr("ASAEdgeUDFDemo.Class1"),
+						DllPath:    to.Ptr("ASAEdgeApplication2_CodeBehind"),
+						UpdateMode: to.Ptr(armstreamanalytics.UpdateModeStatic),
+					},
+				},
+				Inputs: []*armstreamanalytics.FunctionInput{
+					{
+						DataType: to.Ptr("nvarchar(max)"),
+					}},
+				Output: &armstreamanalytics.FunctionOutput{
+					DataType: to.Ptr("nvarchar(max)"),
+				},
+			},
+		},
+	}, &armstreamanalytics.FunctionsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Function = armstreamanalytics.Function{
+	// 	Name: to.Ptr("function588"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/functions"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/functions/function588"),
+	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
+	// 		Type: to.Ptr("Scalar"),
+	// 		Properties: &armstreamanalytics.FunctionConfiguration{
+	// 			Binding: &armstreamanalytics.CSharpFunctionBinding{
+	// 				Type: to.Ptr("Microsoft.StreamAnalytics/CLRUdf"),
+	// 				Properties: &armstreamanalytics.CSharpFunctionBindingProperties{
+	// 					Method: to.Ptr("SquareFunction"),
+	// 					Class: to.Ptr("ASAEdgeUDFDemo.Class1"),
+	// 					DllPath: to.Ptr("ASAEdgeApplication2_CodeBehind"),
+	// 				},
+	// 			},
+	// 			Inputs: []*armstreamanalytics.FunctionInput{
+	// 				{
+	// 					DataType: to.Ptr("nvarchar(max)"),
+	// 			}},
+	// 			Output: &armstreamanalytics.FunctionOutput{
+	// 				DataType: to.Ptr("nvarchar(max)"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Create_JavaScript.json
 func ExampleFunctionsClient_CreateOrReplace_createAJavaScriptFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +151,102 @@ func ExampleFunctionsClient_CreateOrReplace_createAJavaScriptFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Create_AzureML.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Create_AzureMLService.json
+func ExampleFunctionsClient_CreateOrReplace_createAnAzureMlServiceFunction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFunctionsClient().CreateOrReplace(ctx, "sjrg", "sjName", "function588", armstreamanalytics.Function{
+		Properties: &armstreamanalytics.ScalarFunctionProperties{
+			Type: to.Ptr("Scalar"),
+			Properties: &armstreamanalytics.FunctionConfiguration{
+				Binding: &armstreamanalytics.AzureMachineLearningServiceFunctionBinding{
+					Type: to.Ptr("Microsoft.MachineLearningServices"),
+					Properties: &armstreamanalytics.AzureMachineLearningServiceFunctionBindingProperties{
+						APIKey:           to.Ptr("someApiKey=="),
+						BatchSize:        to.Ptr[int32](1000),
+						Endpoint:         to.Ptr("someAzureMLEndpointURL"),
+						InputRequestName: to.Ptr("Inputs"),
+						Inputs: []*armstreamanalytics.AzureMachineLearningServiceInputColumn{
+							{
+								Name:     to.Ptr("data"),
+								DataType: to.Ptr("array"),
+								MapTo:    to.Ptr[int32](0),
+							}},
+						NumberOfParallelRequests: to.Ptr[int32](1),
+						OutputResponseName:       to.Ptr("Results"),
+						Outputs: []*armstreamanalytics.AzureMachineLearningServiceOutputColumn{
+							{
+								Name:     to.Ptr("Sentiment"),
+								DataType: to.Ptr("string"),
+							}},
+					},
+				},
+				Inputs: []*armstreamanalytics.FunctionInput{
+					{
+						DataType: to.Ptr("nvarchar(max)"),
+					}},
+				Output: &armstreamanalytics.FunctionOutput{
+					DataType: to.Ptr("nvarchar(max)"),
+				},
+			},
+		},
+	}, &armstreamanalytics.FunctionsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Function = armstreamanalytics.Function{
+	// 	Name: to.Ptr("function588"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/functions"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/functions/function588"),
+	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
+	// 		Type: to.Ptr("Scalar"),
+	// 		Properties: &armstreamanalytics.FunctionConfiguration{
+	// 			Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
+	// 				Type: to.Ptr("Microsoft.MachineLearning/WebService"),
+	// 				Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
+	// 					BatchSize: to.Ptr[int32](1000),
+	// 					Endpoint: to.Ptr("someAzureMLEndpointURL"),
+	// 					Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
+	// 						Name: to.Ptr("input1"),
+	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
+	// 							{
+	// 								Name: to.Ptr("tweet"),
+	// 								DataType: to.Ptr("string"),
+	// 								MapTo: to.Ptr[int32](0),
+	// 						}},
+	// 					},
+	// 					Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
+	// 						{
+	// 							Name: to.Ptr("Sentiment"),
+	// 							DataType: to.Ptr("string"),
+	// 					}},
+	// 				},
+	// 			},
+	// 			Inputs: []*armstreamanalytics.FunctionInput{
+	// 				{
+	// 					DataType: to.Ptr("nvarchar(max)"),
+	// 			}},
+	// 			Output: &armstreamanalytics.FunctionOutput{
+	// 				DataType: to.Ptr("nvarchar(max)"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Create_AzureML.json
 func ExampleFunctionsClient_CreateOrReplace_createAnAzureMlFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,22 +261,22 @@ func ExampleFunctionsClient_CreateOrReplace_createAnAzureMlFunction() {
 		Properties: &armstreamanalytics.ScalarFunctionProperties{
 			Type: to.Ptr("Scalar"),
 			Properties: &armstreamanalytics.FunctionConfiguration{
-				Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+				Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 					Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-					Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+					Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 						APIKey:    to.Ptr("someApiKey=="),
 						BatchSize: to.Ptr[int32](1000),
 						Endpoint:  to.Ptr("someAzureMLEndpointURL"),
-						Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+						Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 							Name: to.Ptr("input1"),
-							ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+							ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 								{
 									Name:     to.Ptr("tweet"),
 									DataType: to.Ptr("string"),
 									MapTo:    to.Ptr[int32](0),
 								}},
 						},
-						Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+						Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 							{
 								Name:     to.Ptr("Sentiment"),
 								DataType: to.Ptr("string"),
@@ -144,21 +308,21 @@ func ExampleFunctionsClient_CreateOrReplace_createAnAzureMlFunction() {
 	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
 	// 		Type: to.Ptr("Scalar"),
 	// 		Properties: &armstreamanalytics.FunctionConfiguration{
-	// 			Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+	// 			Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 	// 				Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-	// 				Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+	// 				Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 	// 					BatchSize: to.Ptr[int32](1000),
 	// 					Endpoint: to.Ptr("someAzureMLEndpointURL"),
-	// 					Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+	// 					Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 	// 						Name: to.Ptr("input1"),
-	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 	// 							{
 	// 								Name: to.Ptr("tweet"),
 	// 								DataType: to.Ptr("string"),
 	// 								MapTo: to.Ptr[int32](0),
 	// 						}},
 	// 					},
-	// 					Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+	// 					Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 	// 						{
 	// 							Name: to.Ptr("Sentiment"),
 	// 							DataType: to.Ptr("string"),
@@ -177,7 +341,7 @@ func ExampleFunctionsClient_CreateOrReplace_createAnAzureMlFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Update_JavaScript.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Update_JavaScript.json
 func ExampleFunctionsClient_Update_updateAJavaScriptFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +396,7 @@ func ExampleFunctionsClient_Update_updateAJavaScriptFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Update_AzureML.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Update_AzureML.json
 func ExampleFunctionsClient_Update_updateAnAzureMlFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,9 +411,9 @@ func ExampleFunctionsClient_Update_updateAnAzureMlFunction() {
 		Properties: &armstreamanalytics.ScalarFunctionProperties{
 			Type: to.Ptr("Scalar"),
 			Properties: &armstreamanalytics.FunctionConfiguration{
-				Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+				Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 					Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-					Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+					Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 						BatchSize: to.Ptr[int32](5000),
 					},
 				},
@@ -269,21 +433,21 @@ func ExampleFunctionsClient_Update_updateAnAzureMlFunction() {
 	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
 	// 		Type: to.Ptr("Scalar"),
 	// 		Properties: &armstreamanalytics.FunctionConfiguration{
-	// 			Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+	// 			Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 	// 				Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-	// 				Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+	// 				Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 	// 					BatchSize: to.Ptr[int32](5000),
 	// 					Endpoint: to.Ptr("someAzureMLEndpointURL"),
-	// 					Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+	// 					Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 	// 						Name: to.Ptr("input1"),
-	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 	// 							{
 	// 								Name: to.Ptr("tweet"),
 	// 								DataType: to.Ptr("string"),
 	// 								MapTo: to.Ptr[int32](0),
 	// 						}},
 	// 					},
-	// 					Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+	// 					Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 	// 						{
 	// 							Name: to.Ptr("Sentiment"),
 	// 							DataType: to.Ptr("string"),
@@ -302,7 +466,7 @@ func ExampleFunctionsClient_Update_updateAnAzureMlFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Delete.json
 func ExampleFunctionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +483,7 @@ func ExampleFunctionsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Get_JavaScript.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Get_JavaScript.json
 func ExampleFunctionsClient_Get_getAJavaScriptFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +526,7 @@ func ExampleFunctionsClient_Get_getAJavaScriptFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Get_AzureML.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Get_AzureML.json
 func ExampleFunctionsClient_Get_getAnAzureMlFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,21 +551,21 @@ func ExampleFunctionsClient_Get_getAnAzureMlFunction() {
 	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
 	// 		Type: to.Ptr("Scalar"),
 	// 		Properties: &armstreamanalytics.FunctionConfiguration{
-	// 			Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+	// 			Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 	// 				Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-	// 				Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+	// 				Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 	// 					BatchSize: to.Ptr[int32](1000),
 	// 					Endpoint: to.Ptr("someAzureMLEndpointURL"),
-	// 					Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+	// 					Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 	// 						Name: to.Ptr("input1"),
-	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 	// 							{
 	// 								Name: to.Ptr("tweet"),
 	// 								DataType: to.Ptr("string"),
 	// 								MapTo: to.Ptr[int32](0),
 	// 						}},
 	// 					},
-	// 					Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+	// 					Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 	// 						{
 	// 							Name: to.Ptr("Sentiment"),
 	// 							DataType: to.Ptr("string"),
@@ -420,7 +584,7 @@ func ExampleFunctionsClient_Get_getAnAzureMlFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_ListByStreamingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_ListByStreamingJob.json
 func ExampleFunctionsClient_NewListByStreamingJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,21 +616,21 @@ func ExampleFunctionsClient_NewListByStreamingJobPager() {
 		// 				Type: to.Ptr("Scalar"),
 		// 				Etag: to.Ptr("281cbf11-cd50-4a44-b833-cf170ce74748"),
 		// 				Properties: &armstreamanalytics.FunctionConfiguration{
-		// 					Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+		// 					Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 		// 						Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-		// 						Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+		// 						Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 		// 							BatchSize: to.Ptr[int32](5000),
 		// 							Endpoint: to.Ptr("someAzureMLEndpointURL"),
-		// 							Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+		// 							Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 		// 								Name: to.Ptr("input1"),
-		// 								ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+		// 								ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 		// 									{
 		// 										Name: to.Ptr("tweet"),
 		// 										DataType: to.Ptr("string"),
 		// 										MapTo: to.Ptr[int32](0),
 		// 								}},
 		// 							},
-		// 							Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+		// 							Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 		// 								{
 		// 									Name: to.Ptr("Sentiment"),
 		// 									DataType: to.Ptr("string"),
@@ -511,7 +675,7 @@ func ExampleFunctionsClient_NewListByStreamingJobPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Test_JavaScript.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Test_JavaScript.json
 func ExampleFunctionsClient_BeginTest_testTheConnectionForAJavaScriptFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,7 +706,7 @@ func ExampleFunctionsClient_BeginTest_testTheConnectionForAJavaScriptFunction() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Test_AzureML.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_Test_AzureML.json
 func ExampleFunctionsClient_BeginTest_testTheConnectionForAnAzureMlFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +717,7 @@ func ExampleFunctionsClient_BeginTest_testTheConnectionForAnAzureMlFunction() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFunctionsClient().BeginTest(ctx, "sjrg7", "sj9093", "function588", &armstreamanalytics.FunctionsClientBeginTestOptions{Function: nil})
+	poller, err := clientFactory.NewFunctionsClient().BeginTest(ctx, "sjrg", "sjName", "function588", &armstreamanalytics.FunctionsClientBeginTestOptions{Function: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -569,7 +733,7 @@ func ExampleFunctionsClient_BeginTest_testTheConnectionForAnAzureMlFunction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_RetrieveDefaultDefinition_AzureML.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Function_RetrieveDefaultDefinition_AzureML.json
 func ExampleFunctionsClient_RetrieveDefaultDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,9 +744,9 @@ func ExampleFunctionsClient_RetrieveDefaultDefinition() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFunctionsClient().RetrieveDefaultDefinition(ctx, "sjrg7", "sj9093", "function588", &armstreamanalytics.FunctionsClientRetrieveDefaultDefinitionOptions{FunctionRetrieveDefaultDefinitionParameters: &armstreamanalytics.AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters{
+	res, err := clientFactory.NewFunctionsClient().RetrieveDefaultDefinition(ctx, "sjrg7", "sj9093", "function588", &armstreamanalytics.FunctionsClientRetrieveDefaultDefinitionOptions{FunctionRetrieveDefaultDefinitionParameters: &armstreamanalytics.AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters{
 		BindingType: to.Ptr("Microsoft.MachineLearning/WebService"),
-		BindingRetrievalProperties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingRetrievalProperties{
+		BindingRetrievalProperties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingRetrievalProperties{
 			ExecuteEndpoint: to.Ptr("someAzureMLExecuteEndpointUrl"),
 			UdfType:         to.Ptr("Scalar"),
 		},
@@ -599,21 +763,21 @@ func ExampleFunctionsClient_RetrieveDefaultDefinition() {
 	// 	Properties: &armstreamanalytics.ScalarFunctionProperties{
 	// 		Type: to.Ptr("Scalar"),
 	// 		Properties: &armstreamanalytics.FunctionConfiguration{
-	// 			Binding: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBinding{
+	// 			Binding: &armstreamanalytics.AzureMachineLearningStudioFunctionBinding{
 	// 				Type: to.Ptr("Microsoft.MachineLearning/WebService"),
-	// 				Properties: &armstreamanalytics.AzureMachineLearningWebServiceFunctionBindingProperties{
+	// 				Properties: &armstreamanalytics.AzureMachineLearningStudioFunctionBindingProperties{
 	// 					BatchSize: to.Ptr[int32](1000),
 	// 					Endpoint: to.Ptr("someAzureMLExecuteEndpointUrl"),
-	// 					Inputs: &armstreamanalytics.AzureMachineLearningWebServiceInputs{
+	// 					Inputs: &armstreamanalytics.AzureMachineLearningStudioInputs{
 	// 						Name: to.Ptr("input1"),
-	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningWebServiceInputColumn{
+	// 						ColumnNames: []*armstreamanalytics.AzureMachineLearningStudioInputColumn{
 	// 							{
 	// 								Name: to.Ptr("tweet"),
 	// 								DataType: to.Ptr("string"),
 	// 								MapTo: to.Ptr[int32](0),
 	// 						}},
 	// 					},
-	// 					Outputs: []*armstreamanalytics.AzureMachineLearningWebServiceOutputColumn{
+	// 					Outputs: []*armstreamanalytics.AzureMachineLearningStudioOutputColumn{
 	// 						{
 	// 							Name: to.Ptr("Sentiment"),
 	// 							DataType: to.Ptr("string"),

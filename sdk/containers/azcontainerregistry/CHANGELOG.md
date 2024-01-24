@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.1 (Unreleased)
+## 0.2.1 (2024-01-24)
 
 ### Features Added
 * Add `ConfigMediaType` and `MediaType` properties to `ManifestAttributes`

@@ -183,8 +183,3 @@ type ClientSendToUserOptions struct {
 type ClientUserExistsOptions struct {
 	// placeholder for future optional parameters
 }
-
-// HealthClientGetServiceStatusOptions contains the optional parameters for the HealthClient.GetServiceStatus method.
-type HealthClientGetServiceStatusOptions struct {
-	// placeholder for future optional parameters
-}

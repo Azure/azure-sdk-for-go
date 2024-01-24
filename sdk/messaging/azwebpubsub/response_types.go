@@ -123,8 +123,3 @@ type ClientSendToUserResponse struct {
 type ClientUserExistsResponse struct {
 	// placeholder for future response values
 }
-
-// HealthClientGetServiceStatusResponse contains the response from method HealthClient.GetServiceStatus.
-type HealthClientGetServiceStatusResponse struct {
-	// placeholder for future response values
-}

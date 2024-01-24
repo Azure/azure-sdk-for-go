@@ -14,10 +14,9 @@ openapi-type: "data-plane"
 output-folder: ../azwebpubsub
 use: "@autorest/go@4.0.0-preview.60"
 directive:
-    # Rename HealthAPI to Health
-    - from: swagger-document 
-      where: '$.paths["/api/health"].head'
-      transform:  $.operationId = "Health_GetServiceStatus";
+    # Remove HealthAPI
+    - from: swagger-document
+      remove-operation: 'HealthApi_GetServiceStatus'
     # Rename enum WebPubSubPermission to Permission since the package name already contains WebPubSub.
     - from: 
         - constants.go

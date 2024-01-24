@@ -15,7 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,7 +25,7 @@ import (
 type OperationServer struct {
 	// Validate is the fake for method OperationClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
-	Validate func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.ValidateOperationRequestClassification, options *armrecoveryservicesbackup.OperationClientValidateOptions) (resp azfake.Responder[armrecoveryservicesbackup.OperationClientValidateResponse], errResp azfake.ErrorResponder)
+	Validate func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.ValidateOperationRequestResource, options *armrecoveryservicesbackup.OperationClientValidateOptions) (resp azfake.Responder[armrecoveryservicesbackup.OperationClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOperationServerTransport creates a new instance of OperationServerTransport with the provided implementation.
@@ -76,11 +76,7 @@ func (o *OperationServerTransport) dispatchValidate(req *http.Request) (*http.Re
 	if matches == nil || len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	raw, err := readRequestBody(req)
-	if err != nil {
-		return nil, err
-	}
-	body, err := unmarshalValidateOperationRequestClassification(raw)
+	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.ValidateOperationRequestResource](req)
 	if err != nil {
 		return nil, err
 	}

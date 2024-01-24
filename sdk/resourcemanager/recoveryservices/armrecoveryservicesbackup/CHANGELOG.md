@@ -1,5 +1,73 @@
 # Release History
 
+## 4.0.0 (2023-12-08)
+### Breaking Changes
+
+- Function `*OperationClient.Validate` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *OperationClientValidateOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *OperationClientValidateOptions)`
+- Function `*ValidateOperationClient.BeginTrigger` parameter(s) have been changed from `(context.Context, string, string, ValidateOperationRequestClassification, *ValidateOperationClientBeginTriggerOptions)` to `(context.Context, string, string, ValidateOperationRequestResource, *ValidateOperationClientBeginTriggerOptions)`
+- Operation `*ProtectionContainersClient.Register` has been changed to LRO, use `*ProtectionContainersClient.BeginRegister` instead.
+
+### Features Added
+
+- New value `RecoveryModeRecoveryUsingSnapshot`, `RecoveryModeSnapshotAttach`, `RecoveryModeSnapshotAttachAndRecover` added to enum type `RecoveryMode`
+- New function `*ClientFactory.NewFetchTieringCostClient() *FetchTieringCostClient`
+- New function `*ClientFactory.NewGetTieringCostOperationResultClient() *GetTieringCostOperationResultClient`
+- New function `*ClientFactory.NewTieringCostOperationStatusClient() *TieringCostOperationStatusClient`
+- New function `NewFetchTieringCostClient(string, azcore.TokenCredential, *arm.ClientOptions) (*FetchTieringCostClient, error)`
+- New function `*FetchTieringCostClient.BeginPost(context.Context, string, string, FetchTieringCostInfoRequestClassification, *FetchTieringCostClientBeginPostOptions) (*runtime.Poller[FetchTieringCostClientPostResponse], error)`
+- New function `*FetchTieringCostInfoForRehydrationRequest.GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest`
+- New function `*FetchTieringCostInfoRequest.GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest`
+- New function `*FetchTieringCostSavingsInfoForPolicyRequest.GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest`
+- New function `*FetchTieringCostSavingsInfoForProtectedItemRequest.GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest`
+- New function `*FetchTieringCostSavingsInfoForVaultRequest.GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest`
+- New function `NewGetTieringCostOperationResultClient(string, azcore.TokenCredential, *arm.ClientOptions) (*GetTieringCostOperationResultClient, error)`
+- New function `*GetTieringCostOperationResultClient.Get(context.Context, string, string, string, *GetTieringCostOperationResultClientGetOptions) (GetTieringCostOperationResultClientGetResponse, error)`
+- New function `*TieringCostInfo.GetTieringCostInfo() *TieringCostInfo`
+- New function `NewTieringCostOperationStatusClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TieringCostOperationStatusClient, error)`
+- New function `*TieringCostOperationStatusClient.Get(context.Context, string, string, string, *TieringCostOperationStatusClientGetOptions) (TieringCostOperationStatusClientGetResponse, error)`
+- New function `*TieringCostRehydrationInfo.GetTieringCostInfo() *TieringCostInfo`
+- New function `*TieringCostSavingInfo.GetTieringCostInfo() *TieringCostInfo`
+- New struct `FetchTieringCostInfoForRehydrationRequest`
+- New struct `FetchTieringCostSavingsInfoForPolicyRequest`
+- New struct `FetchTieringCostSavingsInfoForProtectedItemRequest`
+- New struct `FetchTieringCostSavingsInfoForVaultRequest`
+- New struct `SnapshotBackupAdditionalDetails`
+- New struct `SnapshotRestoreParameters`
+- New struct `TieringCostRehydrationInfo`
+- New struct `TieringCostSavingInfo`
+- New struct `UserAssignedIdentityProperties`
+- New struct `UserAssignedManagedIdentityDetails`
+- New struct `ValidateOperationRequestResource`
+- New struct `VaultRetentionPolicy`
+- New field `VaultRetentionPolicy` in struct `AzureFileShareProtectionPolicy`
+- New field `VaultID` in struct `AzureFileshareProtectedItem`
+- New field `VaultID` in struct `AzureIaaSClassicComputeVMProtectedItem`
+- New field `VaultID` in struct `AzureIaaSComputeVMProtectedItem`
+- New field `VaultID` in struct `AzureIaaSVMProtectedItem`
+- New field `VaultID` in struct `AzureSQLProtectedItem`
+- New field `VaultID` in struct `AzureVMWorkloadProtectedItem`
+- New field `VaultID` in struct `AzureVMWorkloadSAPAseDatabaseProtectedItem`
+- New field `VaultID` in struct `AzureVMWorkloadSAPHanaDBInstanceProtectedItem`
+- New field `VaultID` in struct `AzureVMWorkloadSAPHanaDatabaseProtectedItem`
+- New field `VaultID` in struct `AzureVMWorkloadSQLDatabaseProtectedItem`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadPointInTimeRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSAPHanaPointInTimeRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSAPHanaRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSAPHanaRestoreWithRehydrateRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSQLPointInTimeRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSQLRestoreRequest`
+- New field `SnapshotRestoreParameters`, `TargetResourceGroupName`, `UserAssignedManagedIdentityDetails` in struct `AzureWorkloadSQLRestoreWithRehydrateRequest`
+- New field `VaultID` in struct `DPMProtectedItem`
+- New field `VaultID` in struct `GenericProtectedItem`
+- New field `ExtendedLocation` in struct `IaasVMRecoveryPoint`
+- New field `VaultID` in struct `MabFileFolderProtectedItem`
+- New field `VaultID` in struct `ProtectedItem`
+- New field `SnapshotBackupAdditionalDetails` in struct `SubProtectionPolicy`
+
+
 ## 3.1.0 (2023-11-30)
 ### Features Added
 

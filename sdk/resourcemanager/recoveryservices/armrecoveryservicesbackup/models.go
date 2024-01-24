@@ -238,6 +238,9 @@ type AzureFileShareProtectionPolicy struct {
 	// TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
 	TimeZone *string
 
+	// Retention policy with the details on hardened backup copy retention ranges.
+	VaultRetentionPolicy *VaultRetentionPolicy
+
 	// Type of workload for the backup management
 	WorkLoadType *WorkloadType
 }
@@ -403,6 +406,9 @@ type AzureFileshareProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -427,6 +433,7 @@ func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -648,6 +655,9 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
 	VirtualMachineID *string
 
@@ -686,6 +696,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		VirtualMachineID:                 a.VirtualMachineID,
 		WorkloadType:                     a.WorkloadType,
 	}
@@ -711,6 +722,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) GetProtectedItem() *ProtectedIt
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -913,6 +925,9 @@ type AzureIaaSComputeVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
 	VirtualMachineID *string
 
@@ -951,6 +966,7 @@ func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIa
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		VirtualMachineID:                 a.VirtualMachineID,
 		WorkloadType:                     a.WorkloadType,
 	}
@@ -976,6 +992,7 @@ func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -1265,6 +1282,9 @@ type AzureIaaSVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Fully qualified ARM ID of the virtual machine represented by this item.
 	VirtualMachineID *string
 
@@ -1295,6 +1315,7 @@ func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -1600,6 +1621,9 @@ type AzureSQLProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -1624,6 +1648,7 @@ func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -2169,6 +2194,9 @@ type AzureVMWorkloadProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -2198,6 +2226,7 @@ func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -2354,6 +2383,9 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -2392,6 +2424,7 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetAzureVMWorkloadProtected
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -2416,6 +2449,7 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *Protect
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -2789,6 +2823,9 @@ type AzureVMWorkloadSAPHanaDBInstanceProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -2827,6 +2864,7 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetAzureVMWorkloadProtec
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -2851,6 +2889,7 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetProtectedItem() *Prot
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -3027,6 +3066,9 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -3065,6 +3107,7 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetAzureVMWorkloadProtecte
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -3089,6 +3132,7 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *Protec
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -3620,6 +3664,9 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -3658,6 +3705,7 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetAzureVMWorkloadProtectedIte
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -3682,6 +3730,7 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedI
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 a.SourceResourceID,
+		VaultID:                          a.VaultID,
 		WorkloadType:                     a.WorkloadType,
 	}
 }
@@ -4220,26 +4269,38 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadPointInTimeRestoreRequest.
 func (a *AzureWorkloadPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4297,14 +4358,23 @@ type AzureWorkloadRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadRestoreRequest.
@@ -4394,26 +4464,38 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4427,13 +4509,16 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaP
 // AzureWorkloadSAPHanaPointInTimeRestoreRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4465,26 +4550,38 @@ type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4492,14 +4589,17 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 // interface for type AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaPointInTimeRestoreRequest() *AzureWorkloadSAPHanaPointInTimeRestoreRequest {
 	return &AzureWorkloadSAPHanaPointInTimeRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PointInTime:            a.PointInTime,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PointInTime:                        a.PointInTime,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4507,13 +4607,16 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWor
 // AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4578,26 +4681,38 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreRequest.
 func (a *AzureWorkloadSAPHanaRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4632,26 +4747,38 @@ type AzureWorkloadSAPHanaRestoreWithRehydrateRequest struct {
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4659,13 +4786,16 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadRestor
 // AzureWorkloadSAPHanaRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) GetAzureWorkloadSAPHanaRestoreRequest() *AzureWorkloadSAPHanaRestoreRequest {
 	return &AzureWorkloadSAPHanaRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4825,26 +4955,38 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4857,16 +4999,19 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLPointInTi
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
-		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		AlternateDirectoryPaths:            a.AlternateDirectoryPaths,
+		IsNonRecoverable:                   a.IsNonRecoverable,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4907,26 +5052,38 @@ type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest struct {
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -4934,33 +5091,39 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloa
 // for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLPointInTimeRestoreRequest() *AzureWorkloadSQLPointInTimeRestoreRequest {
 	return &AzureWorkloadSQLPointInTimeRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PointInTime:                      a.PointInTime,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
-		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		AlternateDirectoryPaths:            a.AlternateDirectoryPaths,
+		IsNonRecoverable:                   a.IsNonRecoverable,
+		ObjectType:                         a.ObjectType,
+		PointInTime:                        a.PointInTime,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
-		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		AlternateDirectoryPaths:            a.AlternateDirectoryPaths,
+		IsNonRecoverable:                   a.IsNonRecoverable,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -5054,26 +5217,38 @@ type AzureWorkloadSQLRestoreRequest struct {
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreRequest.
 func (a *AzureWorkloadSQLRestoreRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -5116,42 +5291,57 @@ type AzureWorkloadSQLRestoreWithRehydrateRequest struct {
 	// Default option set to true. If this is set to false, alternate data directory must be provided
 	ShouldUseAlternateTargetLocation *bool
 
+	// Additional details for snapshot recovery Currently used for snapshot for SAP Hana.
+	SnapshotRestoreParameters *SnapshotRestoreParameters
+
 	// Fully qualified ARM ID of the VM on which workload that was running is being recovered.
 	SourceResourceID *string
 
 	// Details of target database
 	TargetInfo *TargetRestoreInfo
 
+	// Defines the Resource group of the Target VM
+	TargetResourceGroupName *string
+
 	// This is the complete ARM Id of the target VM For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
 	TargetVirtualMachineID *string
+
+	// User Assigned managed identity details Currently used for snapshot.
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
 // GetAzureWorkloadRestoreRequest implements the AzureWorkloadRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadRestoreRequest() *AzureWorkloadRestoreRequest {
 	return &AzureWorkloadRestoreRequest{
-		ObjectType:             a.ObjectType,
-		PropertyBag:            a.PropertyBag,
-		RecoveryMode:           a.RecoveryMode,
-		RecoveryType:           a.RecoveryType,
-		SourceResourceID:       a.SourceResourceID,
-		TargetInfo:             a.TargetInfo,
-		TargetVirtualMachineID: a.TargetVirtualMachineID,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
 // GetAzureWorkloadSQLRestoreRequest implements the AzureWorkloadSQLRestoreRequestClassification interface for type AzureWorkloadSQLRestoreWithRehydrateRequest.
 func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) GetAzureWorkloadSQLRestoreRequest() *AzureWorkloadSQLRestoreRequest {
 	return &AzureWorkloadSQLRestoreRequest{
-		AlternateDirectoryPaths:          a.AlternateDirectoryPaths,
-		IsNonRecoverable:                 a.IsNonRecoverable,
-		ObjectType:                       a.ObjectType,
-		PropertyBag:                      a.PropertyBag,
-		RecoveryMode:                     a.RecoveryMode,
-		RecoveryType:                     a.RecoveryType,
-		ShouldUseAlternateTargetLocation: a.ShouldUseAlternateTargetLocation,
-		SourceResourceID:                 a.SourceResourceID,
-		TargetInfo:                       a.TargetInfo,
-		TargetVirtualMachineID:           a.TargetVirtualMachineID,
+		AlternateDirectoryPaths:            a.AlternateDirectoryPaths,
+		IsNonRecoverable:                   a.IsNonRecoverable,
+		ObjectType:                         a.ObjectType,
+		PropertyBag:                        a.PropertyBag,
+		RecoveryMode:                       a.RecoveryMode,
+		RecoveryType:                       a.RecoveryType,
+		ShouldUseAlternateTargetLocation:   a.ShouldUseAlternateTargetLocation,
+		SnapshotRestoreParameters:          a.SnapshotRestoreParameters,
+		SourceResourceID:                   a.SourceResourceID,
+		TargetInfo:                         a.TargetInfo,
+		TargetResourceGroupName:            a.TargetResourceGroupName,
+		TargetVirtualMachineID:             a.TargetVirtualMachineID,
+		UserAssignedManagedIdentityDetails: a.UserAssignedManagedIdentityDetails,
 	}
 }
 
@@ -5843,6 +6033,9 @@ type DPMProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -5867,6 +6060,7 @@ func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   d.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  d.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 d.SourceResourceID,
+		VaultID:                          d.VaultID,
 		WorkloadType:                     d.WorkloadType,
 	}
 }
@@ -6293,6 +6487,128 @@ type FeatureSupportRequest struct {
 // GetFeatureSupportRequest implements the FeatureSupportRequestClassification interface for type FeatureSupportRequest.
 func (f *FeatureSupportRequest) GetFeatureSupportRequest() *FeatureSupportRequest { return f }
 
+// FetchTieringCostInfoForRehydrationRequest - Request parameters for fetching cost info of rehydration
+type FetchTieringCostInfoForRehydrationRequest struct {
+	// REQUIRED; Name of the protected item container
+	ContainerName *string
+
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Name of the protectedItemName
+	ProtectedItemName *string
+
+	// REQUIRED; ID of the backup copy for rehydration cost info needs to be fetched.
+	RecoveryPointID *string
+
+	// REQUIRED; Rehydration Priority
+	RehydrationPriority *RehydrationPriority
+
+	// REQUIRED; Source tier for the request
+	SourceTierType *RecoveryPointTierType
+
+	// REQUIRED; target tier for the request
+	TargetTierType *RecoveryPointTierType
+}
+
+// GetFetchTieringCostInfoRequest implements the FetchTieringCostInfoRequestClassification interface for type FetchTieringCostInfoForRehydrationRequest.
+func (f *FetchTieringCostInfoForRehydrationRequest) GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest {
+	return &FetchTieringCostInfoRequest{
+		ObjectType:     f.ObjectType,
+		SourceTierType: f.SourceTierType,
+		TargetTierType: f.TargetTierType,
+	}
+}
+
+// FetchTieringCostInfoRequest - Base class for tiering cost request. Specific cost request types are derived from this class.
+type FetchTieringCostInfoRequest struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Source tier for the request
+	SourceTierType *RecoveryPointTierType
+
+	// REQUIRED; target tier for the request
+	TargetTierType *RecoveryPointTierType
+}
+
+// GetFetchTieringCostInfoRequest implements the FetchTieringCostInfoRequestClassification interface for type FetchTieringCostInfoRequest.
+func (f *FetchTieringCostInfoRequest) GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest {
+	return f
+}
+
+// FetchTieringCostSavingsInfoForPolicyRequest - Request parameters for tiering cost info for policy
+type FetchTieringCostSavingsInfoForPolicyRequest struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Name of the backup policy for which the cost savings information is requested
+	PolicyName *string
+
+	// REQUIRED; Source tier for the request
+	SourceTierType *RecoveryPointTierType
+
+	// REQUIRED; target tier for the request
+	TargetTierType *RecoveryPointTierType
+}
+
+// GetFetchTieringCostInfoRequest implements the FetchTieringCostInfoRequestClassification interface for type FetchTieringCostSavingsInfoForPolicyRequest.
+func (f *FetchTieringCostSavingsInfoForPolicyRequest) GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest {
+	return &FetchTieringCostInfoRequest{
+		ObjectType:     f.ObjectType,
+		SourceTierType: f.SourceTierType,
+		TargetTierType: f.TargetTierType,
+	}
+}
+
+// FetchTieringCostSavingsInfoForProtectedItemRequest - Request parameters for tiering cost info for protected item
+type FetchTieringCostSavingsInfoForProtectedItemRequest struct {
+	// REQUIRED; Name of the protected item container
+	ContainerName *string
+
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Name of the protectedItemName
+	ProtectedItemName *string
+
+	// REQUIRED; Source tier for the request
+	SourceTierType *RecoveryPointTierType
+
+	// REQUIRED; target tier for the request
+	TargetTierType *RecoveryPointTierType
+}
+
+// GetFetchTieringCostInfoRequest implements the FetchTieringCostInfoRequestClassification interface for type FetchTieringCostSavingsInfoForProtectedItemRequest.
+func (f *FetchTieringCostSavingsInfoForProtectedItemRequest) GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest {
+	return &FetchTieringCostInfoRequest{
+		ObjectType:     f.ObjectType,
+		SourceTierType: f.SourceTierType,
+		TargetTierType: f.TargetTierType,
+	}
+}
+
+// FetchTieringCostSavingsInfoForVaultRequest - Request parameters for tiering cost info for vault
+type FetchTieringCostSavingsInfoForVaultRequest struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Source tier for the request
+	SourceTierType *RecoveryPointTierType
+
+	// REQUIRED; target tier for the request
+	TargetTierType *RecoveryPointTierType
+}
+
+// GetFetchTieringCostInfoRequest implements the FetchTieringCostInfoRequestClassification interface for type FetchTieringCostSavingsInfoForVaultRequest.
+func (f *FetchTieringCostSavingsInfoForVaultRequest) GetFetchTieringCostInfoRequest() *FetchTieringCostInfoRequest {
+	return &FetchTieringCostInfoRequest{
+		ObjectType:     f.ObjectType,
+		SourceTierType: f.SourceTierType,
+		TargetTierType: f.TargetTierType,
+	}
+}
+
 // GenericContainer - Base class for generic container of backup items
 type GenericContainer struct {
 	// REQUIRED; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -6418,6 +6734,9 @@ type GenericProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -6442,6 +6761,7 @@ func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   g.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  g.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 g.SourceResourceID,
+		VaultID:                          g.VaultID,
 		WorkloadType:                     g.WorkloadType,
 	}
 }
@@ -6688,6 +7008,9 @@ func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
 type IaasVMRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string
+
+	// Extended location of the VM recovery point, should be null if VM is in public cloud
+	ExtendedLocation *ExtendedLocation
 
 	// Is the session to recover items from this backup copy still active.
 	IsInstantIlrSessionActive *bool
@@ -7376,6 +7699,9 @@ type MabFileFolderProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -7400,6 +7726,7 @@ func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
 		ResourceGuardOperationRequests:   m.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  m.SoftDeleteRetentionPeriodInDays,
 		SourceResourceID:                 m.SourceResourceID,
+		VaultID:                          m.VaultID,
 		WorkloadType:                     m.WorkloadType,
 	}
 }
@@ -8020,6 +8347,9 @@ type ProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
 	// READ-ONLY; Type of workload this item represents.
 	WorkloadType *DataSourceType
 }
@@ -8418,10 +8748,11 @@ type ResourceGuardOperationDetail struct {
 }
 
 type ResourceGuardProxyBase struct {
+	// REQUIRED
+	ResourceGuardResourceID       *string
 	Description                   *string
 	LastUpdatedTime               *string
 	ResourceGuardOperationDetails []*ResourceGuardOperationDetail
-	ResourceGuardResourceID       *string
 }
 
 type ResourceGuardProxyBaseResource struct {
@@ -8671,6 +9002,21 @@ func (s *SimpleSchedulePolicyV2) GetSchedulePolicy() *SchedulePolicy {
 	}
 }
 
+// SnapshotBackupAdditionalDetails - Snapshot Backup related fields for WorkloadType SaPHanaSystem
+type SnapshotBackupAdditionalDetails struct {
+	InstantRPDetails              *string
+	InstantRpRetentionRangeInDays *int32
+
+	// User assigned managed identity details
+	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
+}
+
+// SnapshotRestoreParameters - Encapsulates information regarding snapshot recovery for SAP Hana
+type SnapshotRestoreParameters struct {
+	LogPointInTimeForDBRecovery *string
+	SkipAttachAndMount          *bool
+}
+
 // SubProtectionPolicy - Sub-protection policy which includes schedule and retention
 type SubProtectionPolicy struct {
 	// Type of backup policy type
@@ -8681,6 +9027,9 @@ type SubProtectionPolicy struct {
 
 	// Backup schedule specified as part of backup policy.
 	SchedulePolicy SchedulePolicyClassification
+
+	// Snapshot Backup related fields for WorkloadType SaPHanaSystem
+	SnapshotBackupAdditionalDetails *SnapshotBackupAdditionalDetails
 
 	// Tiering policy to automatically move RPs to another tier. Key is Target Tier, defined in RecoveryPointTierType enum. Tiering
 	// policy specifies the criteria to move RP to the target tier.
@@ -8718,6 +9067,59 @@ type TargetRestoreInfo struct {
 
 	// Target directory location for restore as files.
 	TargetDirectoryForFileRestore *string
+}
+
+// TieringCostInfo - Base class for tiering cost response
+type TieringCostInfo struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+}
+
+// GetTieringCostInfo implements the TieringCostInfoClassification interface for type TieringCostInfo.
+func (t *TieringCostInfo) GetTieringCostInfo() *TieringCostInfo { return t }
+
+// TieringCostRehydrationInfo - Response parameters for tiering cost info for rehydration
+type TieringCostRehydrationInfo struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Rehydration size in bytes
+	RehydrationSizeInBytes *int64
+
+	// REQUIRED; Source tier to target tier rehydration cost per GB per month
+	RetailRehydrationCostPerGBPerMonth *float64
+}
+
+// GetTieringCostInfo implements the TieringCostInfoClassification interface for type TieringCostRehydrationInfo.
+func (t *TieringCostRehydrationInfo) GetTieringCostInfo() *TieringCostInfo {
+	return &TieringCostInfo{
+		ObjectType: t.ObjectType,
+	}
+}
+
+// TieringCostSavingInfo - Response parameters for tiering cost info for savings
+type TieringCostSavingInfo struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+
+	// REQUIRED; Source tier retail cost per GB per month
+	RetailSourceTierCostPerGBPerMonth *float64
+
+	// REQUIRED; Target tier retail cost per GB per month
+	RetailTargetTierCostPerGBPerMonth *float64
+
+	// REQUIRED; Source tier size reduction in bytes after moving all the recommended backup points to target tier
+	SourceTierSizeReductionInBytes *int64
+
+	// REQUIRED; Target tier size increase in bytes after moving all the recommended backup points to target tier
+	TargetTierSizeIncreaseInBytes *int64
+}
+
+// GetTieringCostInfo implements the TieringCostInfoClassification interface for type TieringCostSavingInfo.
+func (t *TieringCostSavingInfo) GetTieringCostInfo() *TieringCostInfo {
+	return &TieringCostInfo{
+		ObjectType: t.ObjectType,
+	}
 }
 
 // TieringPolicy - Tiering Policy for a target tier. If the policy is not specified for a given target tier, service retains
@@ -8782,6 +9184,27 @@ type UnlockDeleteResponse struct {
 	UnlockDeleteExpiryTime *string
 }
 
+// UserAssignedIdentityProperties - User assigned managed identity properties
+type UserAssignedIdentityProperties struct {
+	// The client ID of the assigned identity.
+	ClientID *string
+
+	// The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
+// UserAssignedManagedIdentityDetails - User assigned managed identity details
+type UserAssignedManagedIdentityDetails struct {
+	// The ARM id of the assigned identity.
+	IdentityArmID *string
+
+	// The name of the assigned identity.
+	IdentityName *string
+
+	// User assigned managed identity properties
+	UserAssignedIdentityProperties *UserAssignedIdentityProperties
+}
+
 // ValidateIaasVMRestoreOperationRequest - AzureRestoreValidation request.
 type ValidateIaasVMRestoreOperationRequest struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
@@ -8814,6 +9237,15 @@ type ValidateOperationRequest struct {
 
 // GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateOperationRequest.
 func (v *ValidateOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest { return v }
+
+// ValidateOperationRequestResource - Base class for validate operation request.
+type ValidateOperationRequestResource struct {
+	// REQUIRED; Recovery point ID.
+	ID *string
+
+	// REQUIRED; ValidateOperationRequestResource properties
+	Properties ValidateOperationRequestClassification
+}
 
 // ValidateOperationResponse - Base class for validate operation response.
 type ValidateOperationResponse struct {
@@ -8916,6 +9348,15 @@ type VaultJobErrorInfo struct {
 type VaultJobExtendedInfo struct {
 	// Job properties.
 	PropertyBag map[string]*string
+}
+
+// VaultRetentionPolicy - Vault retention policy for AzureFileShare
+type VaultRetentionPolicy struct {
+	// REQUIRED
+	SnapshotRetentionInDays *int32
+
+	// REQUIRED; Base class for retention policy.
+	VaultRetention RetentionPolicyClassification
 }
 
 // VaultStorageConfigOperationResultResponse - Operation result response for Vault Storage Config

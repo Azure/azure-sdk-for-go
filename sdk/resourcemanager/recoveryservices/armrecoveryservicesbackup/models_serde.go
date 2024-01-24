@@ -292,6 +292,7 @@ func (a AzureFileShareProtectionPolicy) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "retentionPolicy", a.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", a.SchedulePolicy)
 	populate(objectMap, "timeZone", a.TimeZone)
+	populate(objectMap, "vaultRetentionPolicy", a.VaultRetentionPolicy)
 	populate(objectMap, "workLoadType", a.WorkLoadType)
 	return json.Marshal(objectMap)
 }
@@ -322,6 +323,9 @@ func (a *AzureFileShareProtectionPolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "timeZone":
 			err = unpopulate(val, "TimeZone", &a.TimeZone)
+			delete(rawMsg, key)
+		case "vaultRetentionPolicy":
+			err = unpopulate(val, "VaultRetentionPolicy", &a.VaultRetentionPolicy)
 			delete(rawMsg, key)
 		case "workLoadType":
 			err = unpopulate(val, "WorkLoadType", &a.WorkLoadType)
@@ -494,6 +498,7 @@ func (a AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -578,6 +583,9 @@ func (a *AzureFileshareProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -778,6 +786,7 @@ func (a AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
@@ -875,6 +884,9 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, "VirtualMachineID", &a.VirtualMachineID)
@@ -1035,6 +1047,7 @@ func (a AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
@@ -1132,6 +1145,9 @@ func (a *AzureIaaSComputeVMProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, "VirtualMachineID", &a.VirtualMachineID)
@@ -1520,6 +1536,7 @@ func (a AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "virtualMachineId", a.VirtualMachineID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
@@ -1617,6 +1634,9 @@ func (a *AzureIaaSVMProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, "VirtualMachineID", &a.VirtualMachineID)
@@ -1977,6 +1997,7 @@ func (a AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", a.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -2049,6 +2070,9 @@ func (a *AzureSQLProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -2777,6 +2801,7 @@ func (a AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "serverName", a.ServerName)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -2882,6 +2907,9 @@ func (a *AzureVMWorkloadProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -3030,6 +3058,7 @@ func (a AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte, error
 	populate(objectMap, "serverName", a.ServerName)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -3135,6 +3164,9 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -3465,6 +3497,7 @@ func (a AzureVMWorkloadSAPHanaDBInstanceProtectedItem) MarshalJSON() ([]byte, er
 	populate(objectMap, "serverName", a.ServerName)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -3570,6 +3603,9 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) UnmarshalJSON(data []byt
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -3695,6 +3731,7 @@ func (a AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byte, erro
 	populate(objectMap, "serverName", a.ServerName)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -3800,6 +3837,9 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) UnmarshalJSON(data []byte)
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -4292,6 +4332,7 @@ func (a AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "serverName", a.ServerName)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", a.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
+	populate(objectMap, "vaultId", a.VaultID)
 	populate(objectMap, "workloadType", a.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -4397,6 +4438,9 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &a.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &a.WorkloadType)
@@ -5096,9 +5140,12 @@ func (a AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5126,14 +5173,23 @@ func (a *AzureWorkloadPointInTimeRestoreRequest) UnmarshalJSON(data []byte) erro
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5197,9 +5253,12 @@ func (a AzureWorkloadRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5224,14 +5283,23 @@ func (a *AzureWorkloadRestoreRequest) UnmarshalJSON(data []byte) error {
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5300,9 +5368,12 @@ func (a AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]byte, er
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5330,14 +5401,23 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreRequest) UnmarshalJSON(data []byt
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5356,9 +5436,12 @@ func (a AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) MarshalJSON(
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5389,14 +5472,23 @@ func (a *AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest) UnmarshalJS
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5460,9 +5552,12 @@ func (a AzureWorkloadSAPHanaRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5487,14 +5582,23 @@ func (a *AzureWorkloadSAPHanaRestoreRequest) UnmarshalJSON(data []byte) error {
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5512,9 +5616,12 @@ func (a AzureWorkloadSAPHanaRestoreWithRehydrateRequest) MarshalJSON() ([]byte, 
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5542,14 +5649,23 @@ func (a *AzureWorkloadSAPHanaRestoreWithRehydrateRequest) UnmarshalJSON(data []b
 		case "recoveryType":
 			err = unpopulate(val, "RecoveryType", &a.RecoveryType)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5676,9 +5792,12 @@ func (a AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte, error)
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5715,14 +5834,23 @@ func (a *AzureWorkloadSQLPointInTimeRestoreRequest) UnmarshalJSON(data []byte) e
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5744,9 +5872,12 @@ func (a AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) MarshalJSON() ([
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5786,14 +5917,23 @@ func (a *AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest) UnmarshalJSON(d
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5895,9 +6035,12 @@ func (a AzureWorkloadSQLRestoreRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "recoveryMode", a.RecoveryMode)
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5931,14 +6074,23 @@ func (a *AzureWorkloadSQLRestoreRequest) UnmarshalJSON(data []byte) error {
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5959,9 +6111,12 @@ func (a AzureWorkloadSQLRestoreWithRehydrateRequest) MarshalJSON() ([]byte, erro
 	populate(objectMap, "recoveryPointRehydrationInfo", a.RecoveryPointRehydrationInfo)
 	populate(objectMap, "recoveryType", a.RecoveryType)
 	populate(objectMap, "shouldUseAlternateTargetLocation", a.ShouldUseAlternateTargetLocation)
+	populate(objectMap, "snapshotRestoreParameters", a.SnapshotRestoreParameters)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	populate(objectMap, "targetInfo", a.TargetInfo)
+	populate(objectMap, "targetResourceGroupName", a.TargetResourceGroupName)
 	populate(objectMap, "targetVirtualMachineId", a.TargetVirtualMachineID)
+	populate(objectMap, "userAssignedManagedIdentityDetails", a.UserAssignedManagedIdentityDetails)
 	return json.Marshal(objectMap)
 }
 
@@ -5998,14 +6153,23 @@ func (a *AzureWorkloadSQLRestoreWithRehydrateRequest) UnmarshalJSON(data []byte)
 		case "shouldUseAlternateTargetLocation":
 			err = unpopulate(val, "ShouldUseAlternateTargetLocation", &a.ShouldUseAlternateTargetLocation)
 			delete(rawMsg, key)
+		case "snapshotRestoreParameters":
+			err = unpopulate(val, "SnapshotRestoreParameters", &a.SnapshotRestoreParameters)
+			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &a.SourceResourceID)
 			delete(rawMsg, key)
 		case "targetInfo":
 			err = unpopulate(val, "TargetInfo", &a.TargetInfo)
 			delete(rawMsg, key)
+		case "targetResourceGroupName":
+			err = unpopulate(val, "TargetResourceGroupName", &a.TargetResourceGroupName)
+			delete(rawMsg, key)
 		case "targetVirtualMachineId":
 			err = unpopulate(val, "TargetVirtualMachineID", &a.TargetVirtualMachineID)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &a.UserAssignedManagedIdentityDetails)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -7570,6 +7734,7 @@ func (d DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", d.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", d.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", d.SourceResourceID)
+	populate(objectMap, "vaultId", d.VaultID)
 	populate(objectMap, "workloadType", d.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -7645,6 +7810,9 @@ func (d *DPMProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &d.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &d.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &d.WorkloadType)
@@ -8560,6 +8728,209 @@ func (f *FeatureSupportRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostInfoForRehydrationRequest.
+func (f FetchTieringCostInfoForRehydrationRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "containerName", f.ContainerName)
+	objectMap["objectType"] = "FetchTieringCostInfoForRehydrationRequest"
+	populate(objectMap, "protectedItemName", f.ProtectedItemName)
+	populate(objectMap, "recoveryPointId", f.RecoveryPointID)
+	populate(objectMap, "rehydrationPriority", f.RehydrationPriority)
+	populate(objectMap, "sourceTierType", f.SourceTierType)
+	populate(objectMap, "targetTierType", f.TargetTierType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostInfoForRehydrationRequest.
+func (f *FetchTieringCostInfoForRehydrationRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "containerName":
+			err = unpopulate(val, "ContainerName", &f.ContainerName)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		case "protectedItemName":
+			err = unpopulate(val, "ProtectedItemName", &f.ProtectedItemName)
+			delete(rawMsg, key)
+		case "recoveryPointId":
+			err = unpopulate(val, "RecoveryPointID", &f.RecoveryPointID)
+			delete(rawMsg, key)
+		case "rehydrationPriority":
+			err = unpopulate(val, "RehydrationPriority", &f.RehydrationPriority)
+			delete(rawMsg, key)
+		case "sourceTierType":
+			err = unpopulate(val, "SourceTierType", &f.SourceTierType)
+			delete(rawMsg, key)
+		case "targetTierType":
+			err = unpopulate(val, "TargetTierType", &f.TargetTierType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostInfoRequest.
+func (f FetchTieringCostInfoRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = f.ObjectType
+	populate(objectMap, "sourceTierType", f.SourceTierType)
+	populate(objectMap, "targetTierType", f.TargetTierType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostInfoRequest.
+func (f *FetchTieringCostInfoRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		case "sourceTierType":
+			err = unpopulate(val, "SourceTierType", &f.SourceTierType)
+			delete(rawMsg, key)
+		case "targetTierType":
+			err = unpopulate(val, "TargetTierType", &f.TargetTierType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostSavingsInfoForPolicyRequest.
+func (f FetchTieringCostSavingsInfoForPolicyRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "FetchTieringCostSavingsInfoForPolicyRequest"
+	populate(objectMap, "policyName", f.PolicyName)
+	populate(objectMap, "sourceTierType", f.SourceTierType)
+	populate(objectMap, "targetTierType", f.TargetTierType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostSavingsInfoForPolicyRequest.
+func (f *FetchTieringCostSavingsInfoForPolicyRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		case "policyName":
+			err = unpopulate(val, "PolicyName", &f.PolicyName)
+			delete(rawMsg, key)
+		case "sourceTierType":
+			err = unpopulate(val, "SourceTierType", &f.SourceTierType)
+			delete(rawMsg, key)
+		case "targetTierType":
+			err = unpopulate(val, "TargetTierType", &f.TargetTierType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostSavingsInfoForProtectedItemRequest.
+func (f FetchTieringCostSavingsInfoForProtectedItemRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "containerName", f.ContainerName)
+	objectMap["objectType"] = "FetchTieringCostSavingsInfoForProtectedItemRequest"
+	populate(objectMap, "protectedItemName", f.ProtectedItemName)
+	populate(objectMap, "sourceTierType", f.SourceTierType)
+	populate(objectMap, "targetTierType", f.TargetTierType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostSavingsInfoForProtectedItemRequest.
+func (f *FetchTieringCostSavingsInfoForProtectedItemRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "containerName":
+			err = unpopulate(val, "ContainerName", &f.ContainerName)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		case "protectedItemName":
+			err = unpopulate(val, "ProtectedItemName", &f.ProtectedItemName)
+			delete(rawMsg, key)
+		case "sourceTierType":
+			err = unpopulate(val, "SourceTierType", &f.SourceTierType)
+			delete(rawMsg, key)
+		case "targetTierType":
+			err = unpopulate(val, "TargetTierType", &f.TargetTierType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostSavingsInfoForVaultRequest.
+func (f FetchTieringCostSavingsInfoForVaultRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "FetchTieringCostSavingsInfoForVaultRequest"
+	populate(objectMap, "sourceTierType", f.SourceTierType)
+	populate(objectMap, "targetTierType", f.TargetTierType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostSavingsInfoForVaultRequest.
+func (f *FetchTieringCostSavingsInfoForVaultRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &f.ObjectType)
+			delete(rawMsg, key)
+		case "sourceTierType":
+			err = unpopulate(val, "SourceTierType", &f.SourceTierType)
+			delete(rawMsg, key)
+		case "targetTierType":
+			err = unpopulate(val, "TargetTierType", &f.TargetTierType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GenericContainer.
 func (g GenericContainer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -8676,6 +9047,7 @@ func (g GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "softDeleteRetentionPeriodInDays", g.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceAssociations", g.SourceAssociations)
 	populate(objectMap, "sourceResourceId", g.SourceResourceID)
+	populate(objectMap, "vaultId", g.VaultID)
 	populate(objectMap, "workloadType", g.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -8757,6 +9129,9 @@ func (g *GenericProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &g.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &g.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &g.WorkloadType)
@@ -9194,6 +9569,7 @@ func (i *IaasVMILRRegistrationRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type IaasVMRecoveryPoint.
 func (i IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "extendedLocation", i.ExtendedLocation)
 	populate(objectMap, "isInstantIlrSessionActive", i.IsInstantIlrSessionActive)
 	populate(objectMap, "isManagedVirtualMachine", i.IsManagedVirtualMachine)
 	populate(objectMap, "isPrivateAccessEnabledOnAnyDisk", i.IsPrivateAccessEnabledOnAnyDisk)
@@ -9225,6 +9601,9 @@ func (i *IaasVMRecoveryPoint) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &i.ExtendedLocation)
+			delete(rawMsg, key)
 		case "isInstantIlrSessionActive":
 			err = unpopulate(val, "IsInstantIlrSessionActive", &i.IsInstantIlrSessionActive)
 			delete(rawMsg, key)
@@ -10358,6 +10737,7 @@ func (m MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", m.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", m.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", m.SourceResourceID)
+	populate(objectMap, "vaultId", m.VaultID)
 	populate(objectMap, "workloadType", m.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -10442,6 +10822,9 @@ func (m *MabFileFolderProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &m.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &m.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &m.WorkloadType)
@@ -11768,6 +12151,7 @@ func (p ProtectedItem) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceGuardOperationRequests", p.ResourceGuardOperationRequests)
 	populate(objectMap, "softDeleteRetentionPeriodInDays", p.SoftDeleteRetentionPeriodInDays)
 	populate(objectMap, "sourceResourceId", p.SourceResourceID)
+	populate(objectMap, "vaultId", p.VaultID)
 	populate(objectMap, "workloadType", p.WorkloadType)
 	return json.Marshal(objectMap)
 }
@@ -11831,6 +12215,9 @@ func (p *ProtectedItem) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sourceResourceId":
 			err = unpopulate(val, "SourceResourceID", &p.SourceResourceID)
+			delete(rawMsg, key)
+		case "vaultId":
+			err = unpopulate(val, "VaultID", &p.VaultID)
 			delete(rawMsg, key)
 		case "workloadType":
 			err = unpopulate(val, "WorkloadType", &p.WorkloadType)
@@ -13503,12 +13890,79 @@ func (s *SimpleSchedulePolicyV2) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type SnapshotBackupAdditionalDetails.
+func (s SnapshotBackupAdditionalDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "instantRPDetails", s.InstantRPDetails)
+	populate(objectMap, "instantRpRetentionRangeInDays", s.InstantRpRetentionRangeInDays)
+	populate(objectMap, "userAssignedManagedIdentityDetails", s.UserAssignedManagedIdentityDetails)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SnapshotBackupAdditionalDetails.
+func (s *SnapshotBackupAdditionalDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "instantRPDetails":
+			err = unpopulate(val, "InstantRPDetails", &s.InstantRPDetails)
+			delete(rawMsg, key)
+		case "instantRpRetentionRangeInDays":
+			err = unpopulate(val, "InstantRpRetentionRangeInDays", &s.InstantRpRetentionRangeInDays)
+			delete(rawMsg, key)
+		case "userAssignedManagedIdentityDetails":
+			err = unpopulate(val, "UserAssignedManagedIdentityDetails", &s.UserAssignedManagedIdentityDetails)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SnapshotRestoreParameters.
+func (s SnapshotRestoreParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "logPointInTimeForDBRecovery", s.LogPointInTimeForDBRecovery)
+	populate(objectMap, "skipAttachAndMount", s.SkipAttachAndMount)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SnapshotRestoreParameters.
+func (s *SnapshotRestoreParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "logPointInTimeForDBRecovery":
+			err = unpopulate(val, "LogPointInTimeForDBRecovery", &s.LogPointInTimeForDBRecovery)
+			delete(rawMsg, key)
+		case "skipAttachAndMount":
+			err = unpopulate(val, "SkipAttachAndMount", &s.SkipAttachAndMount)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SubProtectionPolicy.
 func (s SubProtectionPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "policyType", s.PolicyType)
 	populate(objectMap, "retentionPolicy", s.RetentionPolicy)
 	populate(objectMap, "schedulePolicy", s.SchedulePolicy)
+	populate(objectMap, "snapshotBackupAdditionalDetails", s.SnapshotBackupAdditionalDetails)
 	populate(objectMap, "tieringPolicy", s.TieringPolicy)
 	return json.Marshal(objectMap)
 }
@@ -13530,6 +13984,9 @@ func (s *SubProtectionPolicy) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "schedulePolicy":
 			s.SchedulePolicy, err = unmarshalSchedulePolicyClassification(val)
+			delete(rawMsg, key)
+		case "snapshotBackupAdditionalDetails":
+			err = unpopulate(val, "SnapshotBackupAdditionalDetails", &s.SnapshotBackupAdditionalDetails)
 			delete(rawMsg, key)
 		case "tieringPolicy":
 			err = unpopulate(val, "TieringPolicy", &s.TieringPolicy)
@@ -13634,6 +14091,111 @@ func (t *TargetRestoreInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetDirectoryForFileRestore":
 			err = unpopulate(val, "TargetDirectoryForFileRestore", &t.TargetDirectoryForFileRestore)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TieringCostInfo.
+func (t TieringCostInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = t.ObjectType
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TieringCostInfo.
+func (t *TieringCostInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &t.ObjectType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TieringCostRehydrationInfo.
+func (t TieringCostRehydrationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "TieringCostRehydrationInfo"
+	populate(objectMap, "rehydrationSizeInBytes", t.RehydrationSizeInBytes)
+	populate(objectMap, "retailRehydrationCostPerGBPerMonth", t.RetailRehydrationCostPerGBPerMonth)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TieringCostRehydrationInfo.
+func (t *TieringCostRehydrationInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &t.ObjectType)
+			delete(rawMsg, key)
+		case "rehydrationSizeInBytes":
+			err = unpopulate(val, "RehydrationSizeInBytes", &t.RehydrationSizeInBytes)
+			delete(rawMsg, key)
+		case "retailRehydrationCostPerGBPerMonth":
+			err = unpopulate(val, "RetailRehydrationCostPerGBPerMonth", &t.RetailRehydrationCostPerGBPerMonth)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TieringCostSavingInfo.
+func (t TieringCostSavingInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["objectType"] = "TieringCostSavingInfo"
+	populate(objectMap, "retailSourceTierCostPerGBPerMonth", t.RetailSourceTierCostPerGBPerMonth)
+	populate(objectMap, "retailTargetTierCostPerGBPerMonth", t.RetailTargetTierCostPerGBPerMonth)
+	populate(objectMap, "sourceTierSizeReductionInBytes", t.SourceTierSizeReductionInBytes)
+	populate(objectMap, "targetTierSizeIncreaseInBytes", t.TargetTierSizeIncreaseInBytes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TieringCostSavingInfo.
+func (t *TieringCostSavingInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &t.ObjectType)
+			delete(rawMsg, key)
+		case "retailSourceTierCostPerGBPerMonth":
+			err = unpopulate(val, "RetailSourceTierCostPerGBPerMonth", &t.RetailSourceTierCostPerGBPerMonth)
+			delete(rawMsg, key)
+		case "retailTargetTierCostPerGBPerMonth":
+			err = unpopulate(val, "RetailTargetTierCostPerGBPerMonth", &t.RetailTargetTierCostPerGBPerMonth)
+			delete(rawMsg, key)
+		case "sourceTierSizeReductionInBytes":
+			err = unpopulate(val, "SourceTierSizeReductionInBytes", &t.SourceTierSizeReductionInBytes)
+			delete(rawMsg, key)
+		case "targetTierSizeIncreaseInBytes":
+			err = unpopulate(val, "TargetTierSizeIncreaseInBytes", &t.TargetTierSizeIncreaseInBytes)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -13818,6 +14380,72 @@ func (u *UnlockDeleteResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type UserAssignedIdentityProperties.
+func (u UserAssignedIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "clientId", u.ClientID)
+	populate(objectMap, "principalId", u.PrincipalID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UserAssignedIdentityProperties.
+func (u *UserAssignedIdentityProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "clientId":
+			err = unpopulate(val, "ClientID", &u.ClientID)
+			delete(rawMsg, key)
+		case "principalId":
+			err = unpopulate(val, "PrincipalID", &u.PrincipalID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UserAssignedManagedIdentityDetails.
+func (u UserAssignedManagedIdentityDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "identityArmId", u.IdentityArmID)
+	populate(objectMap, "identityName", u.IdentityName)
+	populate(objectMap, "userAssignedIdentityProperties", u.UserAssignedIdentityProperties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UserAssignedManagedIdentityDetails.
+func (u *UserAssignedManagedIdentityDetails) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "identityArmId":
+			err = unpopulate(val, "IdentityArmID", &u.IdentityArmID)
+			delete(rawMsg, key)
+		case "identityName":
+			err = unpopulate(val, "IdentityName", &u.IdentityName)
+			delete(rawMsg, key)
+		case "userAssignedIdentityProperties":
+			err = unpopulate(val, "UserAssignedIdentityProperties", &u.UserAssignedIdentityProperties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ValidateIaasVMRestoreOperationRequest.
 func (v ValidateIaasVMRestoreOperationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -13867,6 +14495,37 @@ func (v *ValidateOperationRequest) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "objectType":
 			err = unpopulate(val, "ObjectType", &v.ObjectType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ValidateOperationRequestResource.
+func (v ValidateOperationRequestResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "properties", v.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ValidateOperationRequestResource.
+func (v *ValidateOperationRequestResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "properties":
+			v.Properties, err = unmarshalValidateOperationRequestClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -14085,6 +14744,37 @@ func (v *VaultJobExtendedInfo) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "propertyBag":
 			err = unpopulate(val, "PropertyBag", &v.PropertyBag)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VaultRetentionPolicy.
+func (v VaultRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "snapshotRetentionInDays", v.SnapshotRetentionInDays)
+	populate(objectMap, "vaultRetention", v.VaultRetention)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VaultRetentionPolicy.
+func (v *VaultRetentionPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "snapshotRetentionInDays":
+			err = unpopulate(val, "SnapshotRetentionInDays", &v.SnapshotRetentionInDays)
+			delete(rawMsg, key)
+		case "vaultRetention":
+			v.VaultRetention, err = unmarshalRetentionPolicyClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {

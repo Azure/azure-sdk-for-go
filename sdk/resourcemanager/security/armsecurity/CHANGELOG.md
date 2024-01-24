@@ -3,6 +3,7 @@
 ## 0.13.0 (2023-12-22)
 ### Breaking Changes
 
+- Ingestion settings related APIs have been deprecated.
 - Type of `HealthDataClassification.Scope` has been changed from `*ScopeName` to `*string`
 - Enum `ScopeName` has been removed
 - Function `NewAPICollectionClient` has been removed
@@ -16,23 +17,10 @@
 - Function `*ClientFactory.NewAPICollectionOffboardingClient` has been removed
 - Function `*ClientFactory.NewAPICollectionOnboardingClient` has been removed
 - Function `*ClientFactory.NewHealthReportClient` has been removed
-- Function `*ClientFactory.NewIngestionSettingsClient` has been removed
 - Function `NewHealthReportClient` has been removed
 - Function `*HealthReportClient.Get` has been removed
-- Function `NewIngestionSettingsClient` has been removed
-- Function `*IngestionSettingsClient.Create` has been removed
-- Function `*IngestionSettingsClient.Delete` has been removed
-- Function `*IngestionSettingsClient.Get` has been removed
-- Function `*IngestionSettingsClient.ListConnectionStrings` has been removed
-- Function `*IngestionSettingsClient.NewListPager` has been removed
-- Function `*IngestionSettingsClient.ListTokens` has been removed
 - Struct `APICollectionResponse` has been removed
 - Struct `APICollectionResponseList` has been removed
-- Struct `ConnectionStrings` has been removed
-- Struct `IngestionConnectionString` has been removed
-- Struct `IngestionSetting` has been removed
-- Struct `IngestionSettingList` has been removed
-- Struct `IngestionSettingToken` has been removed
 - Field `AdditionalData` of struct `APICollectionProperties` has been removed
 
 ### Features Added

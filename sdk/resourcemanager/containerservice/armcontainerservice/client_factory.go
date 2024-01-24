@@ -43,33 +43,15 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	return subClient
 }
 
-// NewMachinesClient creates a new instance of MachinesClient.
-func (c *ClientFactory) NewMachinesClient() *MachinesClient {
-	subClient, _ := NewMachinesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 // NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient.
 func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient {
 	subClient, _ := NewMaintenanceConfigurationsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
-// NewManagedClusterSnapshotsClient creates a new instance of ManagedClusterSnapshotsClient.
-func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
-	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 // NewManagedClustersClient creates a new instance of ManagedClustersClient.
 func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
 	subClient, _ := NewManagedClustersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-// NewOperationStatusResultClient creates a new instance of OperationStatusResultClient.
-func (c *ClientFactory) NewOperationStatusResultClient() *OperationStatusResultClient {
-	subClient, _ := NewOperationStatusResultClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

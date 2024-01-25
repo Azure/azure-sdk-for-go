@@ -117,7 +117,7 @@ func run(m *testing.M) int {
 			panic(err)
 		}
 	}
-	if recording.GetRecordMode() == recording.LiveMode {
+	if recording.GetRecordMode() == recording.LiveMode || recording.GetRecordMode() == recording.RecordingMode {
 		var clientCloud cloud.Configuration
 		if cloudEnv, ok := os.LookupEnv("AZCONTAINERREGISTRY_ENVIRONMENT"); ok {
 			if strings.EqualFold(cloudEnv, "AzureUSGovernment") {

@@ -206,7 +206,7 @@ function Verify-PackageVersion() {
         # Ignore the validation if the package is not GA version
         if ($version.IsPrerelease) {
           Write-Host "ServiceDir:$ServiceDirectory, Package $PackageName is marked with version $version, the version is a prerelease version and the validation of spec location is ignored."
-          exit 0
+          #exit 0
         }
         $continueValidation = $true
       }
@@ -247,6 +247,7 @@ try {
   $tspLocationYamlPath = Join-Path $PackageDirectory "tsp-location.yaml"
   $autorestMdPath = Join-Path $PackageDirectory "src/autorest.md"
   $swaggerReadmePath = Join-Path $PackageDirectory "swagger/README.md"
+  $autorestMdPathForGo = Join-Path $PackageDirectory "autorest.md"
   $tspLocationYaml = @{}
   if (Test-Path -Path $tspLocationYamlPath) {
     # typespec scenario

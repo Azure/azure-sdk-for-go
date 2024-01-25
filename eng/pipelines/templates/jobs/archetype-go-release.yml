@@ -64,6 +64,14 @@ stages:
                     ${{ else }}:
                       PackageName: 'sdk/${{parameters.ServiceDirectory}}'
                     ForRelease: true
+                - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                  parameters:
+                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+                    ${{ else }}:
+                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+                    ServiceDirectory: ${{parameters.ServiceDirectory}}
+                    ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
                 - task: PowerShell@2
                   displayName: 'Verify no replace directives in go.mod file'
                   inputs:

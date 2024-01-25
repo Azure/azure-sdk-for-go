@@ -163,17 +163,9 @@ var defaultAzTokenProvider azTokenProvider = func(ctx context.Context, scopes []
 
 func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
-		AccessToken      string `json:"accessToken"`
-		Authority        string `json:"_authority"`
-		ClientID         string `json:"_clientId"`
-		Expires_On       int    `json:"expires_on"`
-		ExpiresOn        string `json:"expiresOn"`
-		IdentityProvider string `json:"identityProvider"`
-		IsMRRT           bool   `json:"isMRRT"`
-		RefreshToken     string `json:"refreshToken"`
-		Resource         string `json:"resource"`
-		TokenType        string `json:"tokenType"`
-		UserID           string `json:"userId"`
+		AccessToken string `json:"accessToken"`
+		Expires_On  int    `json:"expires_on"`
+		ExpiresOn   string `json:"expiresOn"`
 	}{}
 	err := json.Unmarshal(tk, &t)
 	if err != nil {

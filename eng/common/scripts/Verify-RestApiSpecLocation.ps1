@@ -295,6 +295,7 @@ try {
       }
     }
   }
+  exit 1
 }
 catch {
   Write-Host "ServiceDir:$ServiceDirectory, PackageName:$PackageName, PackageDirectory:$PackageDirectory. Failed to validate spec location with exception:`n$_ "

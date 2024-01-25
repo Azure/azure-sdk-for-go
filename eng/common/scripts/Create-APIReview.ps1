@@ -76,6 +76,7 @@ Write-Host "Config File directory: $($ConfigFileDir)"
 $packages = @{}
 if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
 {
+    Write-Host "artifactPath:$ArtifactPath, packageName:$PackageName"
     $packages = &$FindArtifactForApiReviewFn $ArtifactPath $PackageName
 }
 else
@@ -96,6 +97,7 @@ if ($packages)
 {
     foreach($pkgPath in $packages.Values)
     {
+        Write-Host "Package path: $($pkgPath)"
         $pkg = Split-Path -Leaf $pkgPath
         $pkgPropPath = Join-Path -Path $ConfigFileDir "$PackageName.json"
         if (-Not (Test-Path $pkgPropPath))

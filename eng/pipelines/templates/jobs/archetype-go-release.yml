@@ -71,7 +71,7 @@ stages:
                     ${{ else }}:
                       PackageName: 'sdk/${{parameters.ServiceDirectory}}'
                     ServiceDirectory: ${{parameters.ServiceDirectory}}
-                    ArtifactLocation: $(Build.SourcesDirectory)
+                    ArtifactLocation: $(Build.ArtifactStagingDirectory)
                 - task: PowerShell@2
                   displayName: 'Verify no replace directives in go.mod file'
                   inputs:

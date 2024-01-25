@@ -164,7 +164,7 @@ var defaultAzTokenProvider azTokenProvider = func(ctx context.Context, scopes []
 func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
 		AccessToken string `json:"accessToken"`
-		Expires_On  int    `json:"expires_on"`
+		Expires_On  int64  `json:"expires_on"`
 		ExpiresOn   string `json:"expiresOn"`
 	}{}
 	err := json.Unmarshal(tk, &t)
@@ -172,7 +172,7 @@ func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, e
 		return azcore.AccessToken{}, err
 	}
 
-	exp := time.Unix(int64(t.Expires_On), 0)
+	exp := time.Unix(t.Expires_On, 0)
 	if t.Expires_On == 0 {
 		exp, err = time.ParseInLocation("2006-01-02 15:04:05.999999", t.ExpiresOn, time.Local)
 		if err != nil {

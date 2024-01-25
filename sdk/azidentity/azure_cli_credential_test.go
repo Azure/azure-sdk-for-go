@@ -20,7 +20,7 @@ import (
 // All versions of az return expiresOn, a local timestamp. v2.54.0+
 // additionally return expires_on, a Unix timestamp. If the expires_on
 // argument to this function is 0, the returned JSON omits expires_on.
-func azTokenOutput(expiresOn string, expires_on int) []byte {
+func azTokenOutput(expiresOn string, expires_on int64) []byte {
 	e_o := ""
 	if expires_on != 0 {
 		e_o = fmt.Sprintf(`
@@ -94,11 +94,11 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 		}
 		t.Run(name, func(t *testing.T) {
 			ExpiresOn := expectedExpiresOn.Local().Format("2006-01-02 15:04:05.999999999")
-			expires_on := 0
+			expires_on := int64(0)
 			if withExpires_on {
 				// set the wrong time for ExpiresOn so this test fails if the credential uses it
 				ExpiresOn = "2001-01-01 01:01:01.000000"
-				expires_on = int(expectedExpiresOn.Unix())
+				expires_on = expectedExpiresOn.Unix()
 			}
 			cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{
 				tokenProvider: func(context.Context, []string, string, string) ([]byte, error) {

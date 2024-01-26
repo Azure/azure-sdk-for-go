@@ -1,6 +1,6 @@
 # Azure Active Directory Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad/v2)
 
 The `armaad` module provides operations for working with Azure Active Directory.
 

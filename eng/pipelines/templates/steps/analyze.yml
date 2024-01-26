@@ -110,6 +110,14 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
+  - task: PowerShell@2
+    displayName: 'Ignore Mgmt Link'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/Ignore-Mgmt-Link.ps1
+      pwsh: true
+      arguments: 'sdk/${{parameters.ServiceDirectory}}/README.md $(Build.SourcesDirectory)/eng/ignore-links.txt'
+
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
       Directory: sdk/${{ parameters.ServiceDirectory }}

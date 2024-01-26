@@ -57,7 +57,7 @@ stages:
               steps:
                 - checkout: self
                 - download: current
-                  artifact: PackageInfo
+                  artifact: 'PackageInfo'
                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:

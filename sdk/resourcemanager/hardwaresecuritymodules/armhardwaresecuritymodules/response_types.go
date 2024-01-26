@@ -8,6 +8,64 @@
 
 package armhardwaresecuritymodules
 
+// CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.Create.
+type CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete.
+type CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CloudHsmClusterPrivateEndpointConnectionsClientGetResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.Get.
+type CloudHsmClusterPrivateEndpointConnectionsClientGetResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse contains the response from method CloudHsmClusterPrivateLinkResourcesClient.ListByCloudHsmCluster.
+type CloudHsmClusterPrivateLinkResourcesClientListByCloudHsmClusterResponse struct {
+	// A list of private link resources.
+	PrivateLinkResourceListResult
+}
+
+// CloudHsmClustersClientCreateOrUpdateResponse contains the response from method CloudHsmClustersClient.BeginCreateOrUpdate.
+type CloudHsmClustersClientCreateOrUpdateResponse struct {
+	// Resource information with extended details.
+	CloudHsmCluster
+}
+
+// CloudHsmClustersClientDeleteResponse contains the response from method CloudHsmClustersClient.BeginDelete.
+type CloudHsmClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CloudHsmClustersClientGetResponse contains the response from method CloudHsmClustersClient.Get.
+type CloudHsmClustersClientGetResponse struct {
+	// Resource information with extended details.
+	CloudHsmCluster
+}
+
+// CloudHsmClustersClientListByResourceGroupResponse contains the response from method CloudHsmClustersClient.NewListByResourceGroupPager.
+type CloudHsmClustersClientListByResourceGroupResponse struct {
+	// List of Cloud HSM Clusters
+	CloudHsmClusterListResult
+}
+
+// CloudHsmClustersClientListBySubscriptionResponse contains the response from method CloudHsmClustersClient.NewListBySubscriptionPager.
+type CloudHsmClustersClientListBySubscriptionResponse struct {
+	// List of Cloud HSM Clusters
+	CloudHsmClusterListResult
+}
+
+// CloudHsmClustersClientUpdateResponse contains the response from method CloudHsmClustersClient.BeginUpdate.
+type CloudHsmClustersClientUpdateResponse struct {
+	// Resource information with extended details.
+	CloudHsmCluster
+}
+
 // DedicatedHsmClientCreateOrUpdateResponse contains the response from method DedicatedHsmClient.BeginCreateOrUpdate.
 type DedicatedHsmClientCreateOrUpdateResponse struct {
 	// Resource information with extended details.
@@ -53,4 +111,10 @@ type DedicatedHsmClientUpdateResponse struct {
 type OperationsClientListResponse struct {
 	// Result of the request to list Dedicated HSM Provider operations. It contains a list of operations.
 	DedicatedHsmOperationListResult
+}
+
+// PrivateEndpointConnectionsClientListByCloudHsmClusterResponse contains the response from method PrivateEndpointConnectionsClient.NewListByCloudHsmClusterPager.
+type PrivateEndpointConnectionsClientListByCloudHsmClusterResponse struct {
+	// List of private endpoint connections associated with the specified resource.
+	PrivateEndpointConnectionListResult
 }

@@ -79,6 +79,12 @@ func (c *ClientFactory) NewCollectionRegionClient() *CollectionRegionClient {
 	return subClient
 }
 
+// NewDataTransferJobsClient creates a new instance of DataTransferJobsClient.
+func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
+	subClient, _ := NewDataTransferJobsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDatabaseAccountRegionClient creates a new instance of DatabaseAccountRegionClient.
 func (c *ClientFactory) NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient {
 	subClient, _ := NewDatabaseAccountRegionClient(c.subscriptionID, c.credential, c.options)
@@ -97,6 +103,12 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	return subClient
 }
 
+// NewGraphResourcesClient creates a new instance of GraphResourcesClient.
+func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
+	subClient, _ := NewGraphResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient.
 func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 	subClient, _ := NewGremlinResourcesClient(c.subscriptionID, c.credential, c.options)
@@ -106,6 +118,12 @@ func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 // NewLocationsClient creates a new instance of LocationsClient.
 func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	subClient, _ := NewLocationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewMongoClustersClient creates a new instance of MongoClustersClient.
+func (c *ClientFactory) NewMongoClustersClient() *MongoClustersClient {
+	subClient, _ := NewMongoClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 
@@ -256,5 +274,29 @@ func (c *ClientFactory) NewServiceClient() *ServiceClient {
 // NewTableResourcesClient creates a new instance of TableResourcesClient.
 func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	subClient, _ := NewTableResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolAccountClient creates a new instance of ThroughputPoolAccountClient.
+func (c *ClientFactory) NewThroughputPoolAccountClient() *ThroughputPoolAccountClient {
+	subClient, _ := NewThroughputPoolAccountClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient.
+func (c *ClientFactory) NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient {
+	subClient, _ := NewThroughputPoolAccountsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolClient creates a new instance of ThroughputPoolClient.
+func (c *ClientFactory) NewThroughputPoolClient() *ThroughputPoolClient {
+	subClient, _ := NewThroughputPoolClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolsClient creates a new instance of ThroughputPoolsClient.
+func (c *ClientFactory) NewThroughputPoolsClient() *ThroughputPoolsClient {
+	subClient, _ := NewThroughputPoolsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

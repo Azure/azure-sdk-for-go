@@ -47,7 +47,7 @@ func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create or update storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -75,7 +75,7 @@ func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create or update storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragesClient.BeginCreateOrUpdate"
@@ -121,7 +121,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageResource); err != nil {
@@ -133,7 +133,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete the storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -159,7 +159,7 @@ func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete the storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StoragesClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -214,7 +214,7 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get the storage resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -266,7 +266,7 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesCl
 
 // NewListPager - List all the storages of one Azure Spring Apps resource.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -331,7 +331,7 @@ func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

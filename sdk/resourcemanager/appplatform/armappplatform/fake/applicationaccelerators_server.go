@@ -29,7 +29,7 @@ type ApplicationAcceleratorsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, applicationAcceleratorResource armappplatform.ApplicationAcceleratorResource, options *armappplatform.ApplicationAcceleratorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappplatform.ApplicationAcceleratorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ApplicationAcceleratorsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, options *armappplatform.ApplicationAcceleratorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappplatform.ApplicationAcceleratorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ApplicationAcceleratorsClient.Get
@@ -182,9 +182,9 @@ func (a *ApplicationAcceleratorsServerTransport) dispatchBeginDelete(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)

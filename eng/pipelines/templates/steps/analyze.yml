@@ -18,7 +18,10 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: $(Build.ArtifactStagingDirectory)/PackageInfo
+      ArtifactName: 'PackageInfo'
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
   - task: Powershell@2

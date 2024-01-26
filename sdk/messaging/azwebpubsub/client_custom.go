@@ -138,7 +138,7 @@ func (c *Client) GenerateClientAccessURL(ctx context.Context, hub string, option
 			userId = &options.UserID
 		}
 		// Replace with your logic to generate the token using a webPubSub method
-		resp, err := c.generateClientToken(ctx, hub, &ClientGenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: &options.ExpirationTimeInMinutes})
+		resp, err := c.generateClientToken(ctx, hub, &GenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: &options.ExpirationTimeInMinutes})
 		if err != nil {
 			return nil, err
 		}

@@ -8,30 +8,30 @@
 
 package azwebpubsub
 
-// ClientAddConnectionToGroupOptions contains the optional parameters for the Client.AddConnectionToGroup method.
-type ClientAddConnectionToGroupOptions struct {
+// AddConnectionToGroupOptions contains the optional parameters for the Client.AddConnectionToGroup method.
+type AddConnectionToGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientAddConnectionsToGroupsOptions contains the optional parameters for the Client.AddConnectionsToGroups method.
-type ClientAddConnectionsToGroupsOptions struct {
+// AddConnectionsToGroupsOptions contains the optional parameters for the Client.AddConnectionsToGroups method.
+type AddConnectionsToGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientAddUserToGroupOptions contains the optional parameters for the Client.AddUserToGroup method.
-type ClientAddUserToGroupOptions struct {
+// AddUserToGroupOptions contains the optional parameters for the Client.AddUserToGroup method.
+type AddUserToGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientCheckPermissionOptions contains the optional parameters for the Client.CheckPermission method.
-type ClientCheckPermissionOptions struct {
+// CheckPermissionOptions contains the optional parameters for the Client.CheckPermission method.
+type CheckPermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
 	// parameter standing for the group name.
 	TargetName *string
 }
 
-// ClientCloseAllConnectionsOptions contains the optional parameters for the Client.CloseAllConnections method.
-type ClientCloseAllConnectionsOptions struct {
+// CloseAllConnectionsOptions contains the optional parameters for the Client.CloseAllConnections method.
+type CloseAllConnectionsOptions struct {
 	// Exclude these connectionIds when closing the connections in the hub.
 	Excluded []string
 
@@ -39,14 +39,14 @@ type ClientCloseAllConnectionsOptions struct {
 	Reason *string
 }
 
-// ClientCloseConnectionOptions contains the optional parameters for the Client.CloseConnection method.
-type ClientCloseConnectionOptions struct {
+// CloseConnectionOptions contains the optional parameters for the Client.CloseConnection method.
+type CloseConnectionOptions struct {
 	// The reason closing the client connection.
 	Reason *string
 }
 
-// ClientCloseGroupConnectionsOptions contains the optional parameters for the Client.CloseGroupConnections method.
-type ClientCloseGroupConnectionsOptions struct {
+// CloseGroupConnectionsOptions contains the optional parameters for the Client.CloseGroupConnections method.
+type CloseGroupConnectionsOptions struct {
 	// Exclude these connectionIds when closing the connections in the group.
 	Excluded []string
 
@@ -54,8 +54,8 @@ type ClientCloseGroupConnectionsOptions struct {
 	Reason *string
 }
 
-// ClientCloseUserConnectionsOptions contains the optional parameters for the Client.CloseUserConnections method.
-type ClientCloseUserConnectionsOptions struct {
+// CloseUserConnectionsOptions contains the optional parameters for the Client.CloseUserConnections method.
+type CloseUserConnectionsOptions struct {
 	// Exclude these connectionIds when closing the connections for the user.
 	Excluded []string
 
@@ -63,13 +63,13 @@ type ClientCloseUserConnectionsOptions struct {
 	Reason *string
 }
 
-// ClientConnectionExistsOptions contains the optional parameters for the Client.ConnectionExists method.
-type ClientConnectionExistsOptions struct {
+// ConnectionExistsOptions contains the optional parameters for the Client.ConnectionExists method.
+type ConnectionExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientGenerateClientTokenOptions contains the optional parameters for the Client.GenerateClientToken method.
-type ClientGenerateClientTokenOptions struct {
+// GenerateClientTokenOptions contains the optional parameters for the Client.GenerateClientToken method.
+type GenerateClientTokenOptions struct {
 	// Groups that the connection will join when it connects.
 	Group []string
 
@@ -83,53 +83,53 @@ type ClientGenerateClientTokenOptions struct {
 	UserID *string
 }
 
-// ClientGrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
-type ClientGrantPermissionOptions struct {
+// GrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
+type GrantPermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
 	// parameter standing for the group name.
 	TargetName *string
 }
 
-// ClientGroupExistsOptions contains the optional parameters for the Client.GroupExists method.
-type ClientGroupExistsOptions struct {
+// GroupExistsOptions contains the optional parameters for the Client.GroupExists method.
+type GroupExistsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRemoveConnectionFromAllGroupsOptions contains the optional parameters for the Client.RemoveConnectionFromAllGroups
+// RemoveConnectionFromAllGroupsOptions contains the optional parameters for the Client.RemoveConnectionFromAllGroups
 // method.
-type ClientRemoveConnectionFromAllGroupsOptions struct {
+type RemoveConnectionFromAllGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRemoveConnectionFromGroupOptions contains the optional parameters for the Client.RemoveConnectionFromGroup method.
-type ClientRemoveConnectionFromGroupOptions struct {
+// RemoveConnectionFromGroupOptions contains the optional parameters for the Client.RemoveConnectionFromGroup method.
+type RemoveConnectionFromGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRemoveConnectionsFromGroupsOptions contains the optional parameters for the Client.RemoveConnectionsFromGroups method.
-type ClientRemoveConnectionsFromGroupsOptions struct {
+// RemoveConnectionsFromGroupsOptions contains the optional parameters for the Client.RemoveConnectionsFromGroups method.
+type RemoveConnectionsFromGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRemoveUserFromAllGroupsOptions contains the optional parameters for the Client.RemoveUserFromAllGroups method.
-type ClientRemoveUserFromAllGroupsOptions struct {
+// RemoveUserFromAllGroupsOptions contains the optional parameters for the Client.RemoveUserFromAllGroups method.
+type RemoveUserFromAllGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRemoveUserFromGroupOptions contains the optional parameters for the Client.RemoveUserFromGroup method.
-type ClientRemoveUserFromGroupOptions struct {
+// RemoveUserFromGroupOptions contains the optional parameters for the Client.RemoveUserFromGroup method.
+type RemoveUserFromGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientRevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
-type ClientRevokePermissionOptions struct {
+// RevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
+type RevokePermissionOptions struct {
 	// The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required
 	// parameter standing for the group name.
 	TargetName *string
 }
 
-// ClientSendToAllOptions contains the optional parameters for the Client.SendToAll method.
-type ClientSendToAllOptions struct {
+// SendToAllOptions contains the optional parameters for the Client.SendToAll method.
+type SendToAllOptions struct {
 	// Excluded connection Ids.
 	Excluded []string
 
@@ -143,8 +143,8 @@ type ClientSendToAllOptions struct {
 	MessageTTLSeconds *int32
 }
 
-// ClientSendToConnectionOptions contains the optional parameters for the Client.SendToConnection method.
-type ClientSendToConnectionOptions struct {
+// SendToConnectionOptions contains the optional parameters for the Client.SendToConnection method.
+type SendToConnectionOptions struct {
 	// The time-to-live (TTL) value in seconds for messages sent to the service. 0 is the default value, which means the message
 	// never expires. 300 is the maximum value. If this parameter is non-zero,
 	// messages that are not consumed by the client within the specified TTL will be dropped by the service. This parameter can
@@ -152,8 +152,8 @@ type ClientSendToConnectionOptions struct {
 	MessageTTLSeconds *int32
 }
 
-// ClientSendToGroupOptions contains the optional parameters for the Client.SendToGroup method.
-type ClientSendToGroupOptions struct {
+// SendToGroupOptions contains the optional parameters for the Client.SendToGroup method.
+type SendToGroupOptions struct {
 	// Excluded connection Ids
 	Excluded []string
 
@@ -167,8 +167,8 @@ type ClientSendToGroupOptions struct {
 	MessageTTLSeconds *int32
 }
 
-// ClientSendToUserOptions contains the optional parameters for the Client.SendToUser method.
-type ClientSendToUserOptions struct {
+// SendToUserOptions contains the optional parameters for the Client.SendToUser method.
+type SendToUserOptions struct {
 	// Following OData filter syntax to filter out the subscribers receiving the messages.
 	Filter *string
 
@@ -179,7 +179,7 @@ type ClientSendToUserOptions struct {
 	MessageTTLSeconds *int32
 }
 
-// ClientUserExistsOptions contains the optional parameters for the Client.UserExists method.
-type ClientUserExistsOptions struct {
+// UserExistsOptions contains the optional parameters for the Client.UserExists method.
+type UserExistsOptions struct {
 	// placeholder for future optional parameters
 }

@@ -17,8 +17,8 @@ type AddToGroupsRequest struct {
 	Groups []string
 }
 
-// ClientTokenResponse - The response object containing the token for the client
-type ClientTokenResponse struct {
+// TokenResponse - The response object containing the token for the client
+type TokenResponse struct {
 	// The token value for the WebSocket client to connect to the service
 	Token *string
 }

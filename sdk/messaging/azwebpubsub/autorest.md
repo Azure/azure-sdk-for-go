@@ -63,4 +63,13 @@ directive:
     - from: models_serde.go
       where: $
       transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorDetail|InnerError)\).*\{\s(?:.+\s)+\}\s/g, "");
+    # delete client name prefix from method options and response types
+    - from:
+        - client.go
+        - models.go
+        - models_serde.go
+        - options.go
+        - response_types.go
+      where: $
+      transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

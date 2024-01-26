@@ -25,17 +25,17 @@ func TestClient_SendToAll(t *testing.T) {
 	hub := "hub1"
 	_, err := client.SendToAll(context.Background(), hub,
 		azwebpubsub.ContentTypeTextPlain, newStream("Hello world!"),
-		&azwebpubsub.ClientSendToAllOptions{})
+		&azwebpubsub.SendToAllOptions{})
 	require.NoError(t, err)
 
 	_, err = client.SendToAll(context.Background(), hub,
 		azwebpubsub.ContentTypeApplicationJSON, newStream("true"),
-		&azwebpubsub.ClientSendToAllOptions{})
+		&azwebpubsub.SendToAllOptions{})
 	require.NoError(t, err)
 
 	_, err = client.SendToAll(context.Background(), hub,
 		azwebpubsub.ContentTypeApplicationOctetStream, newStream("true"),
-		&azwebpubsub.ClientSendToAllOptions{})
+		&azwebpubsub.SendToAllOptions{})
 	require.NoError(t, err)
 }
 
@@ -44,11 +44,11 @@ func TestClient_ManagePermissions(t *testing.T) {
 	const hub = "chat"
 	const conn1 = "conn1"
 	group := "group1"
-	_, err := client.GrantPermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.ClientGrantPermissionOptions{
+	_, err := client.GrantPermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.GrantPermissionOptions{
 		TargetName: &group,
 	})
 	require.ErrorContains(t, err, "404 Not Found")
-	_, err = client.RevokePermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.ClientRevokePermissionOptions{
+	_, err = client.RevokePermission(context.Background(), hub, azwebpubsub.PermissionJoinLeaveGroup, conn1, &azwebpubsub.RevokePermissionOptions{
 		TargetName: &group,
 	})
 	require.NoError(t, err)
@@ -62,16 +62,16 @@ func TestClient_CloseConnections(t *testing.T) {
 	const user1 = "user1"
 	reason := "TestClient_CloseConnections"
 	_, err := client.CloseAllConnections(context.Background(),
-		hub, &azwebpubsub.ClientCloseAllConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
+		hub, &azwebpubsub.CloseAllConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
 	require.NoError(t, err)
 	_, err = client.CloseConnection(context.Background(),
-		hub, conn1, &azwebpubsub.ClientCloseConnectionOptions{Reason: &reason})
+		hub, conn1, &azwebpubsub.CloseConnectionOptions{Reason: &reason})
 	require.NoError(t, err)
 	_, err = client.CloseGroupConnections(context.Background(),
-		hub, group1, &azwebpubsub.ClientCloseGroupConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
+		hub, group1, &azwebpubsub.CloseGroupConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
 	require.NoError(t, err)
 	_, err = client.CloseUserConnections(context.Background(),
-		hub, user1, &azwebpubsub.ClientCloseUserConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
+		hub, user1, &azwebpubsub.CloseUserConnectionsOptions{Excluded: []string{conn1}, Reason: &reason})
 	require.NoError(t, err)
 }
 

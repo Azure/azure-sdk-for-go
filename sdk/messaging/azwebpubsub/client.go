@@ -37,26 +37,26 @@ type Client struct {
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
 //   - connectionID - Target connection Id
-//   - options - ClientAddConnectionToGroupOptions contains the optional parameters for the Client.AddConnectionToGroup method.
-func (client *Client) AddConnectionToGroup(ctx context.Context, hub string, group string, connectionID string, options *ClientAddConnectionToGroupOptions) (ClientAddConnectionToGroupResponse, error) {
+//   - options - AddConnectionToGroupOptions contains the optional parameters for the Client.AddConnectionToGroup method.
+func (client *Client) AddConnectionToGroup(ctx context.Context, hub string, group string, connectionID string, options *AddConnectionToGroupOptions) (AddConnectionToGroupResponse, error) {
 	var err error
 	req, err := client.addConnectionToGroupCreateRequest(ctx, hub, group, connectionID, options)
 	if err != nil {
-		return ClientAddConnectionToGroupResponse{}, err
+		return AddConnectionToGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientAddConnectionToGroupResponse{}, err
+		return AddConnectionToGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientAddConnectionToGroupResponse{}, err
+		return AddConnectionToGroupResponse{}, err
 	}
-	return ClientAddConnectionToGroupResponse{}, nil
+	return AddConnectionToGroupResponse{}, nil
 }
 
 // addConnectionToGroupCreateRequest creates the AddConnectionToGroup request.
-func (client *Client) addConnectionToGroupCreateRequest(ctx context.Context, hub string, group string, connectionID string, options *ClientAddConnectionToGroupOptions) (*policy.Request, error) {
+func (client *Client) addConnectionToGroupCreateRequest(ctx context.Context, hub string, group string, connectionID string, options *AddConnectionToGroupOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -87,26 +87,26 @@ func (client *Client) addConnectionToGroupCreateRequest(ctx context.Context, hub
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - groupsToAdd - Target groups and connection filter.
-//   - options - ClientAddConnectionsToGroupsOptions contains the optional parameters for the Client.AddConnectionsToGroups method.
-func (client *Client) AddConnectionsToGroups(ctx context.Context, hub string, groupsToAdd AddToGroupsRequest, options *ClientAddConnectionsToGroupsOptions) (ClientAddConnectionsToGroupsResponse, error) {
+//   - options - AddConnectionsToGroupsOptions contains the optional parameters for the Client.AddConnectionsToGroups method.
+func (client *Client) AddConnectionsToGroups(ctx context.Context, hub string, groupsToAdd AddToGroupsRequest, options *AddConnectionsToGroupsOptions) (AddConnectionsToGroupsResponse, error) {
 	var err error
 	req, err := client.addConnectionsToGroupsCreateRequest(ctx, hub, groupsToAdd, options)
 	if err != nil {
-		return ClientAddConnectionsToGroupsResponse{}, err
+		return AddConnectionsToGroupsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientAddConnectionsToGroupsResponse{}, err
+		return AddConnectionsToGroupsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientAddConnectionsToGroupsResponse{}, err
+		return AddConnectionsToGroupsResponse{}, err
 	}
-	return ClientAddConnectionsToGroupsResponse{}, nil
+	return AddConnectionsToGroupsResponse{}, nil
 }
 
 // addConnectionsToGroupsCreateRequest creates the AddConnectionsToGroups request.
-func (client *Client) addConnectionsToGroupsCreateRequest(ctx context.Context, hub string, groupsToAdd AddToGroupsRequest, options *ClientAddConnectionsToGroupsOptions) (*policy.Request, error) {
+func (client *Client) addConnectionsToGroupsCreateRequest(ctx context.Context, hub string, groupsToAdd AddToGroupsRequest, options *AddConnectionsToGroupsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:addToGroups"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -133,26 +133,26 @@ func (client *Client) addConnectionsToGroupsCreateRequest(ctx context.Context, h
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
 //   - userID - Target user Id.
-//   - options - ClientAddUserToGroupOptions contains the optional parameters for the Client.AddUserToGroup method.
-func (client *Client) AddUserToGroup(ctx context.Context, hub string, group string, userID string, options *ClientAddUserToGroupOptions) (ClientAddUserToGroupResponse, error) {
+//   - options - AddUserToGroupOptions contains the optional parameters for the Client.AddUserToGroup method.
+func (client *Client) AddUserToGroup(ctx context.Context, hub string, group string, userID string, options *AddUserToGroupOptions) (AddUserToGroupResponse, error) {
 	var err error
 	req, err := client.addUserToGroupCreateRequest(ctx, hub, group, userID, options)
 	if err != nil {
-		return ClientAddUserToGroupResponse{}, err
+		return AddUserToGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientAddUserToGroupResponse{}, err
+		return AddUserToGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientAddUserToGroupResponse{}, err
+		return AddUserToGroupResponse{}, err
 	}
-	return ClientAddUserToGroupResponse{}, nil
+	return AddUserToGroupResponse{}, nil
 }
 
 // addUserToGroupCreateRequest creates the AddUserToGroup request.
-func (client *Client) addUserToGroupCreateRequest(ctx context.Context, hub string, group string, userID string, options *ClientAddUserToGroupOptions) (*policy.Request, error) {
+func (client *Client) addUserToGroupCreateRequest(ctx context.Context, hub string, group string, userID string, options *AddUserToGroupOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}/groups/{group}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -184,26 +184,26 @@ func (client *Client) addUserToGroupCreateRequest(ctx context.Context, hub strin
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
-//   - options - ClientCheckPermissionOptions contains the optional parameters for the Client.checkPermission method.
-func (client *Client) checkPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientCheckPermissionOptions) (ClientCheckPermissionResponse, error) {
+//   - options - CheckPermissionOptions contains the optional parameters for the Client.checkPermission method.
+func (client *Client) checkPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *CheckPermissionOptions) (CheckPermissionResponse, error) {
 	var err error
 	req, err := client.checkPermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
-		return ClientCheckPermissionResponse{}, err
+		return CheckPermissionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCheckPermissionResponse{}, err
+		return CheckPermissionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCheckPermissionResponse{}, err
+		return CheckPermissionResponse{}, err
 	}
-	return ClientCheckPermissionResponse{}, nil
+	return CheckPermissionResponse{}, nil
 }
 
 // checkPermissionCreateRequest creates the checkPermission request.
-func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientCheckPermissionOptions) (*policy.Request, error) {
+func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *CheckPermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -235,26 +235,26 @@ func (client *Client) checkPermissionCreateRequest(ctx context.Context, hub stri
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
-//   - options - ClientCloseAllConnectionsOptions contains the optional parameters for the Client.CloseAllConnections method.
-func (client *Client) CloseAllConnections(ctx context.Context, hub string, options *ClientCloseAllConnectionsOptions) (ClientCloseAllConnectionsResponse, error) {
+//   - options - CloseAllConnectionsOptions contains the optional parameters for the Client.CloseAllConnections method.
+func (client *Client) CloseAllConnections(ctx context.Context, hub string, options *CloseAllConnectionsOptions) (CloseAllConnectionsResponse, error) {
 	var err error
 	req, err := client.closeAllConnectionsCreateRequest(ctx, hub, options)
 	if err != nil {
-		return ClientCloseAllConnectionsResponse{}, err
+		return CloseAllConnectionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCloseAllConnectionsResponse{}, err
+		return CloseAllConnectionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCloseAllConnectionsResponse{}, err
+		return CloseAllConnectionsResponse{}, err
 	}
-	return ClientCloseAllConnectionsResponse{}, nil
+	return CloseAllConnectionsResponse{}, nil
 }
 
 // closeAllConnectionsCreateRequest creates the CloseAllConnections request.
-func (client *Client) closeAllConnectionsCreateRequest(ctx context.Context, hub string, options *ClientCloseAllConnectionsOptions) (*policy.Request, error) {
+func (client *Client) closeAllConnectionsCreateRequest(ctx context.Context, hub string, options *CloseAllConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:closeConnections"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -285,26 +285,26 @@ func (client *Client) closeAllConnectionsCreateRequest(ctx context.Context, hub 
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - connectionID - Target connection Id.
-//   - options - ClientCloseConnectionOptions contains the optional parameters for the Client.CloseConnection method.
-func (client *Client) CloseConnection(ctx context.Context, hub string, connectionID string, options *ClientCloseConnectionOptions) (ClientCloseConnectionResponse, error) {
+//   - options - CloseConnectionOptions contains the optional parameters for the Client.CloseConnection method.
+func (client *Client) CloseConnection(ctx context.Context, hub string, connectionID string, options *CloseConnectionOptions) (CloseConnectionResponse, error) {
 	var err error
 	req, err := client.closeConnectionCreateRequest(ctx, hub, connectionID, options)
 	if err != nil {
-		return ClientCloseConnectionResponse{}, err
+		return CloseConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCloseConnectionResponse{}, err
+		return CloseConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCloseConnectionResponse{}, err
+		return CloseConnectionResponse{}, err
 	}
-	return ClientCloseConnectionResponse{}, nil
+	return CloseConnectionResponse{}, nil
 }
 
 // closeConnectionCreateRequest creates the CloseConnection request.
-func (client *Client) closeConnectionCreateRequest(ctx context.Context, hub string, connectionID string, options *ClientCloseConnectionOptions) (*policy.Request, error) {
+func (client *Client) closeConnectionCreateRequest(ctx context.Context, hub string, connectionID string, options *CloseConnectionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -334,26 +334,26 @@ func (client *Client) closeConnectionCreateRequest(ctx context.Context, hub stri
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
-//   - options - ClientCloseGroupConnectionsOptions contains the optional parameters for the Client.CloseGroupConnections method.
-func (client *Client) CloseGroupConnections(ctx context.Context, hub string, group string, options *ClientCloseGroupConnectionsOptions) (ClientCloseGroupConnectionsResponse, error) {
+//   - options - CloseGroupConnectionsOptions contains the optional parameters for the Client.CloseGroupConnections method.
+func (client *Client) CloseGroupConnections(ctx context.Context, hub string, group string, options *CloseGroupConnectionsOptions) (CloseGroupConnectionsResponse, error) {
 	var err error
 	req, err := client.closeGroupConnectionsCreateRequest(ctx, hub, group, options)
 	if err != nil {
-		return ClientCloseGroupConnectionsResponse{}, err
+		return CloseGroupConnectionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCloseGroupConnectionsResponse{}, err
+		return CloseGroupConnectionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCloseGroupConnectionsResponse{}, err
+		return CloseGroupConnectionsResponse{}, err
 	}
-	return ClientCloseGroupConnectionsResponse{}, nil
+	return CloseGroupConnectionsResponse{}, nil
 }
 
 // closeGroupConnectionsCreateRequest creates the CloseGroupConnections request.
-func (client *Client) closeGroupConnectionsCreateRequest(ctx context.Context, hub string, group string, options *ClientCloseGroupConnectionsOptions) (*policy.Request, error) {
+func (client *Client) closeGroupConnectionsCreateRequest(ctx context.Context, hub string, group string, options *CloseGroupConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}/:closeConnections"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -388,26 +388,26 @@ func (client *Client) closeGroupConnectionsCreateRequest(ctx context.Context, hu
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - userID - The user Id.
-//   - options - ClientCloseUserConnectionsOptions contains the optional parameters for the Client.CloseUserConnections method.
-func (client *Client) CloseUserConnections(ctx context.Context, hub string, userID string, options *ClientCloseUserConnectionsOptions) (ClientCloseUserConnectionsResponse, error) {
+//   - options - CloseUserConnectionsOptions contains the optional parameters for the Client.CloseUserConnections method.
+func (client *Client) CloseUserConnections(ctx context.Context, hub string, userID string, options *CloseUserConnectionsOptions) (CloseUserConnectionsResponse, error) {
 	var err error
 	req, err := client.closeUserConnectionsCreateRequest(ctx, hub, userID, options)
 	if err != nil {
-		return ClientCloseUserConnectionsResponse{}, err
+		return CloseUserConnectionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCloseUserConnectionsResponse{}, err
+		return CloseUserConnectionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCloseUserConnectionsResponse{}, err
+		return CloseUserConnectionsResponse{}, err
 	}
-	return ClientCloseUserConnectionsResponse{}, nil
+	return CloseUserConnectionsResponse{}, nil
 }
 
 // closeUserConnectionsCreateRequest creates the CloseUserConnections request.
-func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub string, userID string, options *ClientCloseUserConnectionsOptions) (*policy.Request, error) {
+func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub string, userID string, options *CloseUserConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}/:closeConnections"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -442,26 +442,26 @@ func (client *Client) closeUserConnectionsCreateRequest(ctx context.Context, hub
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - connectionID - The connection Id.
-//   - options - ClientConnectionExistsOptions contains the optional parameters for the Client.connectionExists method.
-func (client *Client) connectionExists(ctx context.Context, hub string, connectionID string, options *ClientConnectionExistsOptions) (ClientConnectionExistsResponse, error) {
+//   - options - ConnectionExistsOptions contains the optional parameters for the Client.connectionExists method.
+func (client *Client) connectionExists(ctx context.Context, hub string, connectionID string, options *ConnectionExistsOptions) (ConnectionExistsResponse, error) {
 	var err error
 	req, err := client.connectionExistsCreateRequest(ctx, hub, connectionID, options)
 	if err != nil {
-		return ClientConnectionExistsResponse{}, err
+		return ConnectionExistsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientConnectionExistsResponse{}, err
+		return ConnectionExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientConnectionExistsResponse{}, err
+		return ConnectionExistsResponse{}, err
 	}
-	return ClientConnectionExistsResponse{}, nil
+	return ConnectionExistsResponse{}, nil
 }
 
 // connectionExistsCreateRequest creates the connectionExists request.
-func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub string, connectionID string, options *ClientConnectionExistsOptions) (*policy.Request, error) {
+func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub string, connectionID string, options *ConnectionExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -486,27 +486,27 @@ func (client *Client) connectionExistsCreateRequest(ctx context.Context, hub str
 //
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
-//   - options - ClientGenerateClientTokenOptions contains the optional parameters for the Client.generateClientToken method.
-func (client *Client) generateClientToken(ctx context.Context, hub string, options *ClientGenerateClientTokenOptions) (ClientGenerateClientTokenResponse, error) {
+//   - options - GenerateClientTokenOptions contains the optional parameters for the Client.generateClientToken method.
+func (client *Client) generateClientToken(ctx context.Context, hub string, options *GenerateClientTokenOptions) (GenerateClientTokenResponse, error) {
 	var err error
 	req, err := client.generateClientTokenCreateRequest(ctx, hub, options)
 	if err != nil {
-		return ClientGenerateClientTokenResponse{}, err
+		return GenerateClientTokenResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGenerateClientTokenResponse{}, err
+		return GenerateClientTokenResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGenerateClientTokenResponse{}, err
+		return GenerateClientTokenResponse{}, err
 	}
-	resp, err := client.generateClientTokenHandleResponse(httpResp)
+	resp, err := client.generateTokenHandleResponse(httpResp)
 	return resp, err
 }
 
 // generateClientTokenCreateRequest creates the generateClientToken request.
-func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub string, options *ClientGenerateClientTokenOptions) (*policy.Request, error) {
+func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub string, options *GenerateClientTokenOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:generateToken"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -539,11 +539,11 @@ func (client *Client) generateClientTokenCreateRequest(ctx context.Context, hub 
 	return req, nil
 }
 
-// generateClientTokenHandleResponse handles the generateClientToken response.
-func (client *Client) generateClientTokenHandleResponse(resp *http.Response) (ClientGenerateClientTokenResponse, error) {
-	result := ClientGenerateClientTokenResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClientTokenResponse); err != nil {
-		return ClientGenerateClientTokenResponse{}, err
+// generateTokenHandleResponse handles the generateClientToken response.
+func (client *Client) generateTokenHandleResponse(resp *http.Response) (GenerateClientTokenResponse, error) {
+	result := GenerateClientTokenResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TokenResponse); err != nil {
+		return GenerateClientTokenResponse{}, err
 	}
 	return result, nil
 }
@@ -555,26 +555,26 @@ func (client *Client) generateClientTokenHandleResponse(resp *http.Response) (Cl
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
-//   - options - ClientGrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
-func (client *Client) GrantPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientGrantPermissionOptions) (ClientGrantPermissionResponse, error) {
+//   - options - GrantPermissionOptions contains the optional parameters for the Client.GrantPermission method.
+func (client *Client) GrantPermission(ctx context.Context, hub string, permission Permission, connectionID string, options *GrantPermissionOptions) (GrantPermissionResponse, error) {
 	var err error
 	req, err := client.grantPermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
-		return ClientGrantPermissionResponse{}, err
+		return GrantPermissionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGrantPermissionResponse{}, err
+		return GrantPermissionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGrantPermissionResponse{}, err
+		return GrantPermissionResponse{}, err
 	}
-	return ClientGrantPermissionResponse{}, nil
+	return GrantPermissionResponse{}, nil
 }
 
 // grantPermissionCreateRequest creates the GrantPermission request.
-func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientGrantPermissionOptions) (*policy.Request, error) {
+func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *GrantPermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -608,26 +608,26 @@ func (client *Client) grantPermissionCreateRequest(ctx context.Context, hub stri
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
-//   - options - ClientGroupExistsOptions contains the optional parameters for the Client.groupExists method.
-func (client *Client) groupExists(ctx context.Context, hub string, group string, options *ClientGroupExistsOptions) (ClientGroupExistsResponse, error) {
+//   - options - GroupExistsOptions contains the optional parameters for the Client.groupExists method.
+func (client *Client) groupExists(ctx context.Context, hub string, group string, options *GroupExistsOptions) (GroupExistsResponse, error) {
 	var err error
 	req, err := client.groupExistsCreateRequest(ctx, hub, group, options)
 	if err != nil {
-		return ClientGroupExistsResponse{}, err
+		return GroupExistsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientGroupExistsResponse{}, err
+		return GroupExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientGroupExistsResponse{}, err
+		return GroupExistsResponse{}, err
 	}
-	return ClientGroupExistsResponse{}, nil
+	return GroupExistsResponse{}, nil
 }
 
 // groupExistsCreateRequest creates the groupExists request.
-func (client *Client) groupExistsCreateRequest(ctx context.Context, hub string, group string, options *ClientGroupExistsOptions) (*policy.Request, error) {
+func (client *Client) groupExistsCreateRequest(ctx context.Context, hub string, group string, options *GroupExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -653,27 +653,27 @@ func (client *Client) groupExistsCreateRequest(ctx context.Context, hub string, 
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - connectionID - Target connection Id.
-//   - options - ClientRemoveConnectionFromAllGroupsOptions contains the optional parameters for the Client.RemoveConnectionFromAllGroups
+//   - options - RemoveConnectionFromAllGroupsOptions contains the optional parameters for the Client.RemoveConnectionFromAllGroups
 //     method.
-func (client *Client) RemoveConnectionFromAllGroups(ctx context.Context, hub string, connectionID string, options *ClientRemoveConnectionFromAllGroupsOptions) (ClientRemoveConnectionFromAllGroupsResponse, error) {
+func (client *Client) RemoveConnectionFromAllGroups(ctx context.Context, hub string, connectionID string, options *RemoveConnectionFromAllGroupsOptions) (RemoveConnectionFromAllGroupsResponse, error) {
 	var err error
 	req, err := client.removeConnectionFromAllGroupsCreateRequest(ctx, hub, connectionID, options)
 	if err != nil {
-		return ClientRemoveConnectionFromAllGroupsResponse{}, err
+		return RemoveConnectionFromAllGroupsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRemoveConnectionFromAllGroupsResponse{}, err
+		return RemoveConnectionFromAllGroupsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRemoveConnectionFromAllGroupsResponse{}, err
+		return RemoveConnectionFromAllGroupsResponse{}, err
 	}
-	return ClientRemoveConnectionFromAllGroupsResponse{}, nil
+	return RemoveConnectionFromAllGroupsResponse{}, nil
 }
 
 // removeConnectionFromAllGroupsCreateRequest creates the RemoveConnectionFromAllGroups request.
-func (client *Client) removeConnectionFromAllGroupsCreateRequest(ctx context.Context, hub string, connectionID string, options *ClientRemoveConnectionFromAllGroupsOptions) (*policy.Request, error) {
+func (client *Client) removeConnectionFromAllGroupsCreateRequest(ctx context.Context, hub string, connectionID string, options *RemoveConnectionFromAllGroupsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}/groups"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -701,27 +701,27 @@ func (client *Client) removeConnectionFromAllGroupsCreateRequest(ctx context.Con
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
 //   - connectionID - Target connection Id.
-//   - options - ClientRemoveConnectionFromGroupOptions contains the optional parameters for the Client.RemoveConnectionFromGroup
+//   - options - RemoveConnectionFromGroupOptions contains the optional parameters for the Client.RemoveConnectionFromGroup
 //     method.
-func (client *Client) RemoveConnectionFromGroup(ctx context.Context, hub string, group string, connectionID string, options *ClientRemoveConnectionFromGroupOptions) (ClientRemoveConnectionFromGroupResponse, error) {
+func (client *Client) RemoveConnectionFromGroup(ctx context.Context, hub string, group string, connectionID string, options *RemoveConnectionFromGroupOptions) (RemoveConnectionFromGroupResponse, error) {
 	var err error
 	req, err := client.removeConnectionFromGroupCreateRequest(ctx, hub, group, connectionID, options)
 	if err != nil {
-		return ClientRemoveConnectionFromGroupResponse{}, err
+		return RemoveConnectionFromGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRemoveConnectionFromGroupResponse{}, err
+		return RemoveConnectionFromGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRemoveConnectionFromGroupResponse{}, err
+		return RemoveConnectionFromGroupResponse{}, err
 	}
-	return ClientRemoveConnectionFromGroupResponse{}, nil
+	return RemoveConnectionFromGroupResponse{}, nil
 }
 
 // removeConnectionFromGroupCreateRequest creates the RemoveConnectionFromGroup request.
-func (client *Client) removeConnectionFromGroupCreateRequest(ctx context.Context, hub string, group string, connectionID string, options *ClientRemoveConnectionFromGroupOptions) (*policy.Request, error) {
+func (client *Client) removeConnectionFromGroupCreateRequest(ctx context.Context, hub string, group string, connectionID string, options *RemoveConnectionFromGroupOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -752,27 +752,27 @@ func (client *Client) removeConnectionFromGroupCreateRequest(ctx context.Context
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - groupsToRemove - Target groups and connection filter.
-//   - options - ClientRemoveConnectionsFromGroupsOptions contains the optional parameters for the Client.RemoveConnectionsFromGroups
+//   - options - RemoveConnectionsFromGroupsOptions contains the optional parameters for the Client.RemoveConnectionsFromGroups
 //     method.
-func (client *Client) RemoveConnectionsFromGroups(ctx context.Context, hub string, groupsToRemove RemoveFromGroupsRequest, options *ClientRemoveConnectionsFromGroupsOptions) (ClientRemoveConnectionsFromGroupsResponse, error) {
+func (client *Client) RemoveConnectionsFromGroups(ctx context.Context, hub string, groupsToRemove RemoveFromGroupsRequest, options *RemoveConnectionsFromGroupsOptions) (RemoveConnectionsFromGroupsResponse, error) {
 	var err error
 	req, err := client.removeConnectionsFromGroupsCreateRequest(ctx, hub, groupsToRemove, options)
 	if err != nil {
-		return ClientRemoveConnectionsFromGroupsResponse{}, err
+		return RemoveConnectionsFromGroupsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRemoveConnectionsFromGroupsResponse{}, err
+		return RemoveConnectionsFromGroupsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRemoveConnectionsFromGroupsResponse{}, err
+		return RemoveConnectionsFromGroupsResponse{}, err
 	}
-	return ClientRemoveConnectionsFromGroupsResponse{}, nil
+	return RemoveConnectionsFromGroupsResponse{}, nil
 }
 
 // removeConnectionsFromGroupsCreateRequest creates the RemoveConnectionsFromGroups request.
-func (client *Client) removeConnectionsFromGroupsCreateRequest(ctx context.Context, hub string, groupsToRemove RemoveFromGroupsRequest, options *ClientRemoveConnectionsFromGroupsOptions) (*policy.Request, error) {
+func (client *Client) removeConnectionsFromGroupsCreateRequest(ctx context.Context, hub string, groupsToRemove RemoveFromGroupsRequest, options *RemoveConnectionsFromGroupsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:removeFromGroups"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -798,27 +798,27 @@ func (client *Client) removeConnectionsFromGroupsCreateRequest(ctx context.Conte
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - userID - Target user Id.
-//   - options - ClientRemoveUserFromAllGroupsOptions contains the optional parameters for the Client.RemoveUserFromAllGroups
+//   - options - RemoveUserFromAllGroupsOptions contains the optional parameters for the Client.RemoveUserFromAllGroups
 //     method.
-func (client *Client) RemoveUserFromAllGroups(ctx context.Context, hub string, userID string, options *ClientRemoveUserFromAllGroupsOptions) (ClientRemoveUserFromAllGroupsResponse, error) {
+func (client *Client) RemoveUserFromAllGroups(ctx context.Context, hub string, userID string, options *RemoveUserFromAllGroupsOptions) (RemoveUserFromAllGroupsResponse, error) {
 	var err error
 	req, err := client.removeUserFromAllGroupsCreateRequest(ctx, hub, userID, options)
 	if err != nil {
-		return ClientRemoveUserFromAllGroupsResponse{}, err
+		return RemoveUserFromAllGroupsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRemoveUserFromAllGroupsResponse{}, err
+		return RemoveUserFromAllGroupsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRemoveUserFromAllGroupsResponse{}, err
+		return RemoveUserFromAllGroupsResponse{}, err
 	}
-	return ClientRemoveUserFromAllGroupsResponse{}, nil
+	return RemoveUserFromAllGroupsResponse{}, nil
 }
 
 // removeUserFromAllGroupsCreateRequest creates the RemoveUserFromAllGroups request.
-func (client *Client) removeUserFromAllGroupsCreateRequest(ctx context.Context, hub string, userID string, options *ClientRemoveUserFromAllGroupsOptions) (*policy.Request, error) {
+func (client *Client) removeUserFromAllGroupsCreateRequest(ctx context.Context, hub string, userID string, options *RemoveUserFromAllGroupsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}/groups"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -846,26 +846,26 @@ func (client *Client) removeUserFromAllGroupsCreateRequest(ctx context.Context, 
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
 //   - userID - Target user Id.
-//   - options - ClientRemoveUserFromGroupOptions contains the optional parameters for the Client.RemoveUserFromGroup method.
-func (client *Client) RemoveUserFromGroup(ctx context.Context, hub string, group string, userID string, options *ClientRemoveUserFromGroupOptions) (ClientRemoveUserFromGroupResponse, error) {
+//   - options - RemoveUserFromGroupOptions contains the optional parameters for the Client.RemoveUserFromGroup method.
+func (client *Client) RemoveUserFromGroup(ctx context.Context, hub string, group string, userID string, options *RemoveUserFromGroupOptions) (RemoveUserFromGroupResponse, error) {
 	var err error
 	req, err := client.removeUserFromGroupCreateRequest(ctx, hub, group, userID, options)
 	if err != nil {
-		return ClientRemoveUserFromGroupResponse{}, err
+		return RemoveUserFromGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRemoveUserFromGroupResponse{}, err
+		return RemoveUserFromGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRemoveUserFromGroupResponse{}, err
+		return RemoveUserFromGroupResponse{}, err
 	}
-	return ClientRemoveUserFromGroupResponse{}, nil
+	return RemoveUserFromGroupResponse{}, nil
 }
 
 // removeUserFromGroupCreateRequest creates the RemoveUserFromGroup request.
-func (client *Client) removeUserFromGroupCreateRequest(ctx context.Context, hub string, group string, userID string, options *ClientRemoveUserFromGroupOptions) (*policy.Request, error) {
+func (client *Client) removeUserFromGroupCreateRequest(ctx context.Context, hub string, group string, userID string, options *RemoveUserFromGroupOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}/groups/{group}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -897,26 +897,26 @@ func (client *Client) removeUserFromGroupCreateRequest(ctx context.Context, hub 
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - permission - The permission: current supported actions are joinLeaveGroup and sendToGroup.
 //   - connectionID - Target connection Id.
-//   - options - ClientRevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
-func (client *Client) RevokePermission(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientRevokePermissionOptions) (ClientRevokePermissionResponse, error) {
+//   - options - RevokePermissionOptions contains the optional parameters for the Client.RevokePermission method.
+func (client *Client) RevokePermission(ctx context.Context, hub string, permission Permission, connectionID string, options *RevokePermissionOptions) (RevokePermissionResponse, error) {
 	var err error
 	req, err := client.revokePermissionCreateRequest(ctx, hub, permission, connectionID, options)
 	if err != nil {
-		return ClientRevokePermissionResponse{}, err
+		return RevokePermissionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientRevokePermissionResponse{}, err
+		return RevokePermissionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientRevokePermissionResponse{}, err
+		return RevokePermissionResponse{}, err
 	}
-	return ClientRevokePermissionResponse{}, nil
+	return RevokePermissionResponse{}, nil
 }
 
 // revokePermissionCreateRequest creates the RevokePermission request.
-func (client *Client) revokePermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *ClientRevokePermissionOptions) (*policy.Request, error) {
+func (client *Client) revokePermissionCreateRequest(ctx context.Context, hub string, permission Permission, connectionID string, options *RevokePermissionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -951,26 +951,26 @@ func (client *Client) revokePermissionCreateRequest(ctx context.Context, hub str
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - contentType - Upload file type
 //   - message - The payload body.
-//   - options - ClientSendToAllOptions contains the optional parameters for the Client.SendToAll method.
-func (client *Client) SendToAll(ctx context.Context, hub string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToAllOptions) (ClientSendToAllResponse, error) {
+//   - options - SendToAllOptions contains the optional parameters for the Client.SendToAll method.
+func (client *Client) SendToAll(ctx context.Context, hub string, contentType ContentType, message io.ReadSeekCloser, options *SendToAllOptions) (SendToAllResponse, error) {
 	var err error
 	req, err := client.sendToAllCreateRequest(ctx, hub, contentType, message, options)
 	if err != nil {
-		return ClientSendToAllResponse{}, err
+		return SendToAllResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientSendToAllResponse{}, err
+		return SendToAllResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientSendToAllResponse{}, err
+		return SendToAllResponse{}, err
 	}
-	return ClientSendToAllResponse{}, nil
+	return SendToAllResponse{}, nil
 }
 
 // sendToAllCreateRequest creates the SendToAll request.
-func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToAllOptions) (*policy.Request, error) {
+func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, contentType ContentType, message io.ReadSeekCloser, options *SendToAllOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/:send"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -1010,26 +1010,26 @@ func (client *Client) sendToAllCreateRequest(ctx context.Context, hub string, co
 //   - connectionID - The connection Id.
 //   - contentType - Upload file type
 //   - message - The payload body.
-//   - options - ClientSendToConnectionOptions contains the optional parameters for the Client.SendToConnection method.
-func (client *Client) SendToConnection(ctx context.Context, hub string, connectionID string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToConnectionOptions) (ClientSendToConnectionResponse, error) {
+//   - options - SendToConnectionOptions contains the optional parameters for the Client.SendToConnection method.
+func (client *Client) SendToConnection(ctx context.Context, hub string, connectionID string, contentType ContentType, message io.ReadSeekCloser, options *SendToConnectionOptions) (SendToConnectionResponse, error) {
 	var err error
 	req, err := client.sendToConnectionCreateRequest(ctx, hub, connectionID, contentType, message, options)
 	if err != nil {
-		return ClientSendToConnectionResponse{}, err
+		return SendToConnectionResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientSendToConnectionResponse{}, err
+		return SendToConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientSendToConnectionResponse{}, err
+		return SendToConnectionResponse{}, err
 	}
-	return ClientSendToConnectionResponse{}, nil
+	return SendToConnectionResponse{}, nil
 }
 
 // sendToConnectionCreateRequest creates the SendToConnection request.
-func (client *Client) sendToConnectionCreateRequest(ctx context.Context, hub string, connectionID string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToConnectionOptions) (*policy.Request, error) {
+func (client *Client) sendToConnectionCreateRequest(ctx context.Context, hub string, connectionID string, contentType ContentType, message io.ReadSeekCloser, options *SendToConnectionOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/connections/{connectionId}/:send"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -1065,26 +1065,26 @@ func (client *Client) sendToConnectionCreateRequest(ctx context.Context, hub str
 //   - group - Target group name, which length should be greater than 0 and less than 1025.
 //   - contentType - Upload file type
 //   - message - The payload body.
-//   - options - ClientSendToGroupOptions contains the optional parameters for the Client.SendToGroup method.
-func (client *Client) SendToGroup(ctx context.Context, hub string, group string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToGroupOptions) (ClientSendToGroupResponse, error) {
+//   - options - SendToGroupOptions contains the optional parameters for the Client.SendToGroup method.
+func (client *Client) SendToGroup(ctx context.Context, hub string, group string, contentType ContentType, message io.ReadSeekCloser, options *SendToGroupOptions) (SendToGroupResponse, error) {
 	var err error
 	req, err := client.sendToGroupCreateRequest(ctx, hub, group, contentType, message, options)
 	if err != nil {
-		return ClientSendToGroupResponse{}, err
+		return SendToGroupResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientSendToGroupResponse{}, err
+		return SendToGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientSendToGroupResponse{}, err
+		return SendToGroupResponse{}, err
 	}
-	return ClientSendToGroupResponse{}, nil
+	return SendToGroupResponse{}, nil
 }
 
 // sendToGroupCreateRequest creates the SendToGroup request.
-func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, group string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToGroupOptions) (*policy.Request, error) {
+func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, group string, contentType ContentType, message io.ReadSeekCloser, options *SendToGroupOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/groups/{group}/:send"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -1128,26 +1128,26 @@ func (client *Client) sendToGroupCreateRequest(ctx context.Context, hub string, 
 //   - userID - The user Id.
 //   - contentType - Upload file type
 //   - message - The payload body.
-//   - options - ClientSendToUserOptions contains the optional parameters for the Client.SendToUser method.
-func (client *Client) SendToUser(ctx context.Context, hub string, userID string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToUserOptions) (ClientSendToUserResponse, error) {
+//   - options - SendToUserOptions contains the optional parameters for the Client.SendToUser method.
+func (client *Client) SendToUser(ctx context.Context, hub string, userID string, contentType ContentType, message io.ReadSeekCloser, options *SendToUserOptions) (SendToUserResponse, error) {
 	var err error
 	req, err := client.sendToUserCreateRequest(ctx, hub, userID, contentType, message, options)
 	if err != nil {
-		return ClientSendToUserResponse{}, err
+		return SendToUserResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientSendToUserResponse{}, err
+		return SendToUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientSendToUserResponse{}, err
+		return SendToUserResponse{}, err
 	}
-	return ClientSendToUserResponse{}, nil
+	return SendToUserResponse{}, nil
 }
 
 // sendToUserCreateRequest creates the SendToUser request.
-func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, userID string, contentType ContentType, message io.ReadSeekCloser, options *ClientSendToUserOptions) (*policy.Request, error) {
+func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, userID string, contentType ContentType, message io.ReadSeekCloser, options *SendToUserOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}/:send"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")
@@ -1184,26 +1184,26 @@ func (client *Client) sendToUserCreateRequest(ctx context.Context, hub string, u
 // Generated from API version 2023-07-01
 //   - hub - Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or underscore.
 //   - userID - Target user Id.
-//   - options - ClientUserExistsOptions contains the optional parameters for the Client.userExists method.
-func (client *Client) userExists(ctx context.Context, hub string, userID string, options *ClientUserExistsOptions) (ClientUserExistsResponse, error) {
+//   - options - UserExistsOptions contains the optional parameters for the Client.userExists method.
+func (client *Client) userExists(ctx context.Context, hub string, userID string, options *UserExistsOptions) (UserExistsResponse, error) {
 	var err error
 	req, err := client.userExistsCreateRequest(ctx, hub, userID, options)
 	if err != nil {
-		return ClientUserExistsResponse{}, err
+		return UserExistsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientUserExistsResponse{}, err
+		return UserExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientUserExistsResponse{}, err
+		return UserExistsResponse{}, err
 	}
-	return ClientUserExistsResponse{}, nil
+	return UserExistsResponse{}, nil
 }
 
 // userExistsCreateRequest creates the userExists request.
-func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, userID string, options *ClientUserExistsOptions) (*policy.Request, error) {
+func (client *Client) userExistsCreateRequest(ctx context.Context, hub string, userID string, options *UserExistsOptions) (*policy.Request, error) {
 	urlPath := "/api/hubs/{hub}/users/{userId}"
 	if hub == "" {
 		return nil, errors.New("parameter hub cannot be empty")

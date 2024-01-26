@@ -8,118 +8,118 @@
 
 package azwebpubsub
 
-// ClientAddConnectionToGroupResponse contains the response from method Client.AddConnectionToGroup.
-type ClientAddConnectionToGroupResponse struct {
+// AddConnectionToGroupResponse contains the response from method Client.AddConnectionToGroup.
+type AddConnectionToGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ClientAddConnectionsToGroupsResponse contains the response from method Client.AddConnectionsToGroups.
-type ClientAddConnectionsToGroupsResponse struct {
+// AddConnectionsToGroupsResponse contains the response from method Client.AddConnectionsToGroups.
+type AddConnectionsToGroupsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientAddUserToGroupResponse contains the response from method Client.AddUserToGroup.
-type ClientAddUserToGroupResponse struct {
+// AddUserToGroupResponse contains the response from method Client.AddUserToGroup.
+type AddUserToGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCheckPermissionResponse contains the response from method Client.CheckPermission.
-type ClientCheckPermissionResponse struct {
+// CheckPermissionResponse contains the response from method Client.CheckPermission.
+type CheckPermissionResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCloseAllConnectionsResponse contains the response from method Client.CloseAllConnections.
-type ClientCloseAllConnectionsResponse struct {
+// CloseAllConnectionsResponse contains the response from method Client.CloseAllConnections.
+type CloseAllConnectionsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCloseConnectionResponse contains the response from method Client.CloseConnection.
-type ClientCloseConnectionResponse struct {
+// CloseConnectionResponse contains the response from method Client.CloseConnection.
+type CloseConnectionResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCloseGroupConnectionsResponse contains the response from method Client.CloseGroupConnections.
-type ClientCloseGroupConnectionsResponse struct {
+// CloseGroupConnectionsResponse contains the response from method Client.CloseGroupConnections.
+type CloseGroupConnectionsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientCloseUserConnectionsResponse contains the response from method Client.CloseUserConnections.
-type ClientCloseUserConnectionsResponse struct {
+// CloseUserConnectionsResponse contains the response from method Client.CloseUserConnections.
+type CloseUserConnectionsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientConnectionExistsResponse contains the response from method Client.ConnectionExists.
-type ClientConnectionExistsResponse struct {
+// ConnectionExistsResponse contains the response from method Client.ConnectionExists.
+type ConnectionExistsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientGenerateClientTokenResponse contains the response from method Client.GenerateClientToken.
-type ClientGenerateClientTokenResponse struct {
+// GenerateClientTokenResponse contains the response from method Client.GenerateClientToken.
+type GenerateClientTokenResponse struct {
 	// The response object containing the token for the client
-	ClientTokenResponse
+	TokenResponse
 }
 
-// ClientGrantPermissionResponse contains the response from method Client.GrantPermission.
-type ClientGrantPermissionResponse struct {
+// GrantPermissionResponse contains the response from method Client.GrantPermission.
+type GrantPermissionResponse struct {
 	// placeholder for future response values
 }
 
-// ClientGroupExistsResponse contains the response from method Client.GroupExists.
-type ClientGroupExistsResponse struct {
+// GroupExistsResponse contains the response from method Client.GroupExists.
+type GroupExistsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRemoveConnectionFromAllGroupsResponse contains the response from method Client.RemoveConnectionFromAllGroups.
-type ClientRemoveConnectionFromAllGroupsResponse struct {
+// RemoveConnectionFromAllGroupsResponse contains the response from method Client.RemoveConnectionFromAllGroups.
+type RemoveConnectionFromAllGroupsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRemoveConnectionFromGroupResponse contains the response from method Client.RemoveConnectionFromGroup.
-type ClientRemoveConnectionFromGroupResponse struct {
+// RemoveConnectionFromGroupResponse contains the response from method Client.RemoveConnectionFromGroup.
+type RemoveConnectionFromGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRemoveConnectionsFromGroupsResponse contains the response from method Client.RemoveConnectionsFromGroups.
-type ClientRemoveConnectionsFromGroupsResponse struct {
+// RemoveConnectionsFromGroupsResponse contains the response from method Client.RemoveConnectionsFromGroups.
+type RemoveConnectionsFromGroupsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRemoveUserFromAllGroupsResponse contains the response from method Client.RemoveUserFromAllGroups.
-type ClientRemoveUserFromAllGroupsResponse struct {
+// RemoveUserFromAllGroupsResponse contains the response from method Client.RemoveUserFromAllGroups.
+type RemoveUserFromAllGroupsResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRemoveUserFromGroupResponse contains the response from method Client.RemoveUserFromGroup.
-type ClientRemoveUserFromGroupResponse struct {
+// RemoveUserFromGroupResponse contains the response from method Client.RemoveUserFromGroup.
+type RemoveUserFromGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ClientRevokePermissionResponse contains the response from method Client.RevokePermission.
-type ClientRevokePermissionResponse struct {
+// RevokePermissionResponse contains the response from method Client.RevokePermission.
+type RevokePermissionResponse struct {
 	// placeholder for future response values
 }
 
-// ClientSendToAllResponse contains the response from method Client.SendToAll.
-type ClientSendToAllResponse struct {
+// SendToAllResponse contains the response from method Client.SendToAll.
+type SendToAllResponse struct {
 	// placeholder for future response values
 }
 
-// ClientSendToConnectionResponse contains the response from method Client.SendToConnection.
-type ClientSendToConnectionResponse struct {
+// SendToConnectionResponse contains the response from method Client.SendToConnection.
+type SendToConnectionResponse struct {
 	// placeholder for future response values
 }
 
-// ClientSendToGroupResponse contains the response from method Client.SendToGroup.
-type ClientSendToGroupResponse struct {
+// SendToGroupResponse contains the response from method Client.SendToGroup.
+type SendToGroupResponse struct {
 	// placeholder for future response values
 }
 
-// ClientSendToUserResponse contains the response from method Client.SendToUser.
-type ClientSendToUserResponse struct {
+// SendToUserResponse contains the response from method Client.SendToUser.
+type SendToUserResponse struct {
 	// placeholder for future response values
 }
 
-// ClientUserExistsResponse contains the response from method Client.UserExists.
-type ClientUserExistsResponse struct {
+// UserExistsResponse contains the response from method Client.UserExists.
+type UserExistsResponse struct {
 	// placeholder for future response values
 }

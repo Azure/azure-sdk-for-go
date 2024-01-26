@@ -26,11 +26,14 @@ type ServerFactory struct {
 	CollectionPartitionServer          CollectionPartitionServer
 	CollectionPartitionRegionServer    CollectionPartitionRegionServer
 	CollectionRegionServer             CollectionRegionServer
+	DataTransferJobsServer             DataTransferJobsServer
 	DatabaseAccountRegionServer        DatabaseAccountRegionServer
 	DatabaseAccountsServer             DatabaseAccountsServer
 	DatabaseServer                     DatabaseServer
+	GraphResourcesServer               GraphResourcesServer
 	GremlinResourcesServer             GremlinResourcesServer
 	LocationsServer                    LocationsServer
+	MongoClustersServer                MongoClustersServer
 	MongoDBResourcesServer             MongoDBResourcesServer
 	NotebookWorkspacesServer           NotebookWorkspacesServer
 	OperationsServer                   OperationsServer
@@ -56,6 +59,10 @@ type ServerFactory struct {
 	SQLResourcesServer                 SQLResourcesServer
 	ServiceServer                      ServiceServer
 	TableResourcesServer               TableResourcesServer
+	ThroughputPoolAccountServer        ThroughputPoolAccountServer
+	ThroughputPoolAccountsServer       ThroughputPoolAccountsServer
+	ThroughputPoolServer               ThroughputPoolServer
+	ThroughputPoolsServer              ThroughputPoolsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -79,11 +86,14 @@ type ServerFactoryTransport struct {
 	trCollectionPartitionServer          *CollectionPartitionServerTransport
 	trCollectionPartitionRegionServer    *CollectionPartitionRegionServerTransport
 	trCollectionRegionServer             *CollectionRegionServerTransport
+	trDataTransferJobsServer             *DataTransferJobsServerTransport
 	trDatabaseAccountRegionServer        *DatabaseAccountRegionServerTransport
 	trDatabaseAccountsServer             *DatabaseAccountsServerTransport
 	trDatabaseServer                     *DatabaseServerTransport
+	trGraphResourcesServer               *GraphResourcesServerTransport
 	trGremlinResourcesServer             *GremlinResourcesServerTransport
 	trLocationsServer                    *LocationsServerTransport
+	trMongoClustersServer                *MongoClustersServerTransport
 	trMongoDBResourcesServer             *MongoDBResourcesServerTransport
 	trNotebookWorkspacesServer           *NotebookWorkspacesServerTransport
 	trOperationsServer                   *OperationsServerTransport
@@ -109,6 +119,10 @@ type ServerFactoryTransport struct {
 	trSQLResourcesServer                 *SQLResourcesServerTransport
 	trServiceServer                      *ServiceServerTransport
 	trTableResourcesServer               *TableResourcesServerTransport
+	trThroughputPoolAccountServer        *ThroughputPoolAccountServerTransport
+	trThroughputPoolAccountsServer       *ThroughputPoolAccountsServerTransport
+	trThroughputPoolServer               *ThroughputPoolServerTransport
+	trThroughputPoolsServer              *ThroughputPoolsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -157,6 +171,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCollectionRegionServerTransport(&s.srv.CollectionRegionServer)
 		})
 		resp, err = s.trCollectionRegionServer.Do(req)
+	case "DataTransferJobsClient":
+		initServer(s, &s.trDataTransferJobsServer, func() *DataTransferJobsServerTransport {
+			return NewDataTransferJobsServerTransport(&s.srv.DataTransferJobsServer)
+		})
+		resp, err = s.trDataTransferJobsServer.Do(req)
 	case "DatabaseAccountRegionClient":
 		initServer(s, &s.trDatabaseAccountRegionServer, func() *DatabaseAccountRegionServerTransport {
 			return NewDatabaseAccountRegionServerTransport(&s.srv.DatabaseAccountRegionServer)
@@ -170,6 +189,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatabaseClient":
 		initServer(s, &s.trDatabaseServer, func() *DatabaseServerTransport { return NewDatabaseServerTransport(&s.srv.DatabaseServer) })
 		resp, err = s.trDatabaseServer.Do(req)
+	case "GraphResourcesClient":
+		initServer(s, &s.trGraphResourcesServer, func() *GraphResourcesServerTransport {
+			return NewGraphResourcesServerTransport(&s.srv.GraphResourcesServer)
+		})
+		resp, err = s.trGraphResourcesServer.Do(req)
 	case "GremlinResourcesClient":
 		initServer(s, &s.trGremlinResourcesServer, func() *GremlinResourcesServerTransport {
 			return NewGremlinResourcesServerTransport(&s.srv.GremlinResourcesServer)
@@ -178,6 +202,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationsClient":
 		initServer(s, &s.trLocationsServer, func() *LocationsServerTransport { return NewLocationsServerTransport(&s.srv.LocationsServer) })
 		resp, err = s.trLocationsServer.Do(req)
+	case "MongoClustersClient":
+		initServer(s, &s.trMongoClustersServer, func() *MongoClustersServerTransport {
+			return NewMongoClustersServerTransport(&s.srv.MongoClustersServer)
+		})
+		resp, err = s.trMongoClustersServer.Do(req)
 	case "MongoDBResourcesClient":
 		initServer(s, &s.trMongoDBResourcesServer, func() *MongoDBResourcesServerTransport {
 			return NewMongoDBResourcesServerTransport(&s.srv.MongoDBResourcesServer)
@@ -295,6 +324,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTableResourcesServerTransport(&s.srv.TableResourcesServer)
 		})
 		resp, err = s.trTableResourcesServer.Do(req)
+	case "ThroughputPoolAccountClient":
+		initServer(s, &s.trThroughputPoolAccountServer, func() *ThroughputPoolAccountServerTransport {
+			return NewThroughputPoolAccountServerTransport(&s.srv.ThroughputPoolAccountServer)
+		})
+		resp, err = s.trThroughputPoolAccountServer.Do(req)
+	case "ThroughputPoolAccountsClient":
+		initServer(s, &s.trThroughputPoolAccountsServer, func() *ThroughputPoolAccountsServerTransport {
+			return NewThroughputPoolAccountsServerTransport(&s.srv.ThroughputPoolAccountsServer)
+		})
+		resp, err = s.trThroughputPoolAccountsServer.Do(req)
+	case "ThroughputPoolClient":
+		initServer(s, &s.trThroughputPoolServer, func() *ThroughputPoolServerTransport {
+			return NewThroughputPoolServerTransport(&s.srv.ThroughputPoolServer)
+		})
+		resp, err = s.trThroughputPoolServer.Do(req)
+	case "ThroughputPoolsClient":
+		initServer(s, &s.trThroughputPoolsServer, func() *ThroughputPoolsServerTransport {
+			return NewThroughputPoolsServerTransport(&s.srv.ThroughputPoolsServer)
+		})
+		resp, err = s.trThroughputPoolsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

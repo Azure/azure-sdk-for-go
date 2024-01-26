@@ -12,6 +12,7 @@
   authentication in a Docker Desktop container
 
 ### Other Changes
+* `AzureCLICredential` uses the CLI's `expires_on` value for token expiration
 
 ## 1.6.0-beta.1 (2024-01-17)
 

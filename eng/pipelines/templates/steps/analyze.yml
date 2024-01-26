@@ -18,7 +18,10 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+    parameters:
+      ArtifactPath: $(Build.ArtifactStagingDirectory)
+      ArtifactName: 'PackageInfo'
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
   - task: Powershell@2
@@ -37,7 +40,7 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: Create API review for Go
     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
-
+  
   - task: Powershell@2
     displayName: 'Dependency Check'
     condition: ne(variables['Skip.DependencyCheck'], 'true')

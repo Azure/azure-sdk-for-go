@@ -87,7 +87,7 @@ directive:
   - from: options.go
     where: $
     transform: return $.replace(/Options \*string/g, "Options *LogsQueryOptions");
-  - from: logs_client.go
+  - from: client.go
     where: $
     transform: return $.replace(/\*options\.Options/g, "options.Options.preferHeader()");
   
@@ -126,13 +126,11 @@ directive:
 
   # point the clients to the correct host url
   - from: 
-         - logs_client.go
-         - metrics_client.go
+         - client.go
     where: $
     transform: return $.replace(/host/g, "client.host");
   - from: 
-         - logs_client.go
-         - metrics_client.go
+         - client.go
     where: $
     transform: return $.replace(/internal \*azcore.Client/g, "host string\n internal *azcore.Client");
 

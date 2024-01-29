@@ -22,57 +22,8 @@ import (
 // Client contains the methods for the Logs group.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
+	host     string
 	internal *azcore.Client
-}
-
-// QueryBatch - Executes a batch of Analytics queries for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries]
-// is an example for using POST with an Analytics query.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-10-27
-//   - body - The batch request body
-//   - options - ClientQueryBatchOptions contains the optional parameters for the Client.QueryBatch method.
-func (client *Client) QueryBatch(ctx context.Context, body BatchRequest, options *ClientQueryBatchOptions) (ClientQueryBatchResponse, error) {
-	var err error
-	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryBatch", client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.queryBatchCreateRequest(ctx, body, options)
-	if err != nil {
-		return ClientQueryBatchResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientQueryBatchResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientQueryBatchResponse{}, err
-	}
-	resp, err := client.queryBatchHandleResponse(httpResp)
-	return resp, err
-}
-
-// queryBatchCreateRequest creates the QueryBatch request.
-func (client *Client) queryBatchCreateRequest(ctx context.Context, body BatchRequest, options *ClientQueryBatchOptions) (*policy.Request, error) {
-	urlPath := "/$batch"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// queryBatchHandleResponse handles the QueryBatch response.
-func (client *Client) queryBatchHandleResponse(resp *http.Response) (ClientQueryBatchResponse, error) {
-	result := ClientQueryBatchResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BatchResponse); err != nil {
-		return ClientQueryBatchResponse{}, err
-	}
-	return result, nil
 }
 
 // QueryResource - Executes an Analytics query for data in the context of a resource. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries]
@@ -108,12 +59,12 @@ func (client *Client) QueryResource(ctx context.Context, resourceID string, body
 func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID string, body QueryBody, options *ClientQueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/query"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	if options != nil && options.Options != nil {
-		req.Raw().Header["Prefer"] = []string{*options.Options}
+		req.Raw().Header["Prefer"] = []string{options.Options.preferHeader()}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -166,12 +117,12 @@ func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspace
 		return nil, errors.New("parameter workspaceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	if options != nil && options.Options != nil {
-		req.Raw().Header["Prefer"] = []string{*options.Options}
+		req.Raw().Header["Prefer"] = []string{options.Options.preferHeader()}
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -185,6 +136,56 @@ func (client *Client) queryWorkspaceHandleResponse(resp *http.Response) (ClientQ
 	result := ClientQueryWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
 		return ClientQueryWorkspaceResponse{}, err
+	}
+	return result, nil
+}
+
+// QueryWorkspaces - Executes a batch of Analytics queries for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries]
+// is an example for using POST with an Analytics query.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2022-10-27
+//   - body - The batch request body
+//   - options - ClientQueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
+func (client *Client) QueryWorkspaces(ctx context.Context, body BatchRequest, options *ClientQueryWorkspacesOptions) (ClientQueryWorkspacesResponse, error) {
+	var err error
+	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryWorkspaces", client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.queryWorkspacesCreateRequest(ctx, body, options)
+	if err != nil {
+		return ClientQueryWorkspacesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientQueryWorkspacesResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ClientQueryWorkspacesResponse{}, err
+	}
+	resp, err := client.queryWorkspacesHandleResponse(httpResp)
+	return resp, err
+}
+
+// queryWorkspacesCreateRequest creates the QueryWorkspaces request.
+func (client *Client) queryWorkspacesCreateRequest(ctx context.Context, body BatchRequest, options *ClientQueryWorkspacesOptions) (*policy.Request, error) {
+	urlPath := "/$batch"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// queryWorkspacesHandleResponse handles the QueryWorkspaces response.
+func (client *Client) queryWorkspacesHandleResponse(resp *http.Response) (ClientQueryWorkspacesResponse, error) {
+	result := ClientQueryWorkspacesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.BatchResponse); err != nil {
+		return ClientQueryWorkspacesResponse{}, err
 	}
 	return result, nil
 }

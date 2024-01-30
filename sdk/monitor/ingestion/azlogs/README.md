@@ -70,7 +70,7 @@ Get started with our examples.
 
 ## Troubleshooting
 
-See our [troubleshooting guide][troubleshooting] for details on how to diagnose various failure scenarios.
+See our troubleshooting guide for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
@@ -96,7 +96,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [data_collection_rule_structure]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure
 [data_collection_rule_tutorial]: https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#collect-information-from-the-dcr
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/azingest/TROUBLESHOOTING.md
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
 
 [cla]: https://cla.microsoft.com

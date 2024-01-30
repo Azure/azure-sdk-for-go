@@ -61,7 +61,7 @@ func run(m *testing.M) int {
 	} else {
 		tenantID := lookupEnvVar("AZLOGS_TENANT_ID")
 		clientID := lookupEnvVar("AZLOGS_CLIENT_ID")
-		secret := lookupEnvVar("AZINGEST_CLIENT_SECRET")
+		secret := lookupEnvVar("AZLOGS_CLIENT_SECRET")
 		var err error
 		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
 		if err != nil {

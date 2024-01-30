@@ -26,16 +26,6 @@ resource id 'Microsoft.Authorization/roleAssignments@2018-09-01-preview' = {
   }
 }
 
-resource applicationInsightsComponent 'Microsoft.Insights/components@2020-02-02-preview' = {
-  name: '${baseName}-appinsights-python'
-  location: location
-  kind: 'other'
-  properties: {
-    Application_Type: 'other'
-    WorkspaceResourceId: primaryWorkspace.id
-  }
-}
-
 resource dcrRoleAssignment 'Microsoft.Authorization/roleAssignments@2018-09-01-preview' = {
   name: guid(resourceGroup().id, dataCollectionRule.name, dataCollectionRule.id)
   properties: {
@@ -230,10 +220,6 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
   ]
 }
 
-output APPLICATIONINSIGHTS_CONNECTION_STRING string = applicationInsightsComponent.properties.ConnectionString
-output METRICS_RESOURCE_ID string = applicationInsightsComponent.id
-output AZURE_MONITOR_WORKSPACE_ID string = primaryWorkspace.properties.customerId
-output AZURE_MONITOR_SECONDARY_WORKSPACE_ID string = secondaryWorkspace.properties.customerId
 output AZURE_MONITOR_DCE string = dataCollectionEndpoint.properties.logsIngestion.endpoint
 output AZURE_MONITOR_DCR_ID string = dataCollectionRule.properties.immutableId
 output AZURE_MONITOR_STREAM_NAME string = streamName

@@ -18,7 +18,7 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
     condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
-  - ${{ if and(succeeded(), parameters.IsSdkLibrary) }}:
+  - ${{ if and(succeeded(), eq(parameters.IsSdkLibrary, true)) }}:
     - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
       parameters:
         ArtifactPath: $(Build.ArtifactStagingDirectory)/PackageInfo

@@ -22,6 +22,7 @@ steps:
     parameters:
       ArtifactPath: $(Build.ArtifactStagingDirectory)/PackageInfo
       ArtifactName: 'PackageInfo'
+    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
   - task: Powershell@2

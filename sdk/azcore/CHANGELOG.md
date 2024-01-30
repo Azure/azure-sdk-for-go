@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* `runtime.MarshalAsByteArray` and `runtime.MarshalAsJSON` will preserve the preexisting value of the `Content-Type` header.
+
 ### Other Changes
 
 ## 1.9.1 (2023-12-11)

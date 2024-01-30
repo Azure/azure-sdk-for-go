@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/monitor/azingest/testdata"
+const recordingDirectory = "sdk/monitor/ingestion/azlogs/testdata"
 const fakeEndpoint = "https://test.eastus-1.ingest.monitor.azure.com"
 const fakeRuleID = "Custom-TestTable_CL"
 const fakeStreamName = "dcr-testing"

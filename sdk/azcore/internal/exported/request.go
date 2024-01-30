@@ -180,7 +180,7 @@ func (pf PolicyFunc) Do(req *Request) (*http.Response, error) {
 // SetBody sets the specified ReadSeekCloser as the HTTP request body, and sets Content-Type and Content-Length accordingly.
 //   - req is the request to modify
 //   - body is the request body; if nil or empty, Content-Length won't be set
-//   - contentType is the value for the Content-Type header; if empty, Content-Length will be deleted
+//   - contentType is the value for the Content-Type header; if empty, Content-Type will be deleted
 //   - clobberContentType when true, will overwrite the existing value of Content-Type with contentType
 func SetBody(req *Request, body io.ReadSeekCloser, contentType string, clobberContentType bool) error {
 	var err error

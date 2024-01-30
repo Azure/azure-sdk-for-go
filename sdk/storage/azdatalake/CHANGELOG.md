@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Escape paths for NewDirectoryClient and New FileClient in a file system
 
 ### Other Changes
 

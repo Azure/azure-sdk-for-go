@@ -8,6 +8,7 @@ package filesystem_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"strconv"
 	"strings"
 	"testing"
@@ -1315,6 +1316,54 @@ func (s *UnrecordedTestSuite) TestSASFileSystemClient() {
 
 	// Create filesystem client with sasUrl
 	_, err = filesystem.NewClientWithNoCredential(sasUrl, nil)
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestCreateFileSystemDirectoryClientWithSpecialDirName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient("#,%,?")
+	_require.NoError(err)
+
+	response, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	_, err = dirClient.SetAccessControl(context.Background(), &file.SetAccessControlOptions{Owner: &owner})
+	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestCreateFileSystemFileClientWithSpecialFileName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileClient := fsClient.NewFileClient("#,%,?")
+	_require.NoError(err)
+
+	response, err := fileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+
+	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
+	_, err = fileClient.SetAccessControl(context.Background(), &file.SetAccessControlOptions{Owner: &owner})
 	_require.NoError(err)
 }
 

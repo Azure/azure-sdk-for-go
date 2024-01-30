@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -201,7 +202,7 @@ func (fs *Client) BlobURL() string {
 // NewDirectoryClient creates a new directory.Client object by concatenating directory path to the end of this Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
-	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
+	directoryPath = url.PathEscape(strings.ReplaceAll(directoryPath, "\\", "/"))
 	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
 	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
@@ -210,7 +211,7 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
-	filePath = strings.ReplaceAll(filePath, "\\", "/")
+	filePath = url.PathEscape(strings.ReplaceAll(filePath, "\\", "/"))
 	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
 	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))

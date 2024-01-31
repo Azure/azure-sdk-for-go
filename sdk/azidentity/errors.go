@@ -110,31 +110,37 @@ func (*AuthenticationFailedError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
-// credentialUnavailableError indicates a credential can't attempt authentication because it lacks required
-// data or state
-type credentialUnavailableError struct {
+
+type credentialUnavailableError interface {
+	error
+	credentialUnavailable()
+}
+
+type credUnavailableError struct {
 	message string
 }
 
 // newCredentialUnavailableError is an internal helper that ensures consistent error message formatting
 func newCredentialUnavailableError(credType, message string) error {
 	msg := fmt.Sprintf("%s: %s", credType, message)
-	return &credentialUnavailableError{msg}
+	return &credUnavailableError{msg}
 }
 
 // NewCredentialUnavailableError constructs an error indicating a credential can't attempt authentication
 // because it lacks required data or state. When [ChainedTokenCredential] receives this error it will try
 // its next credential, if any.
 func NewCredentialUnavailableError(message string) error {
-	return &credentialUnavailableError{message}
+	return &credUnavailableError{message}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
-func (e *credentialUnavailableError) Error() string {
+func (e *credUnavailableError) Error() string {
 	return e.message
 }
 
 // NonRetriable is a marker method indicating this error should not be retried. It has no implementation.
-func (e *credentialUnavailableError) NonRetriable() {}
+func (*credUnavailableError) NonRetriable() {}
 
-var _ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+func (*credUnavailableError) credentialUnavailable() {}
+
+var _ errorinfo.NonRetriable = (*credUnavailableError)(nil)

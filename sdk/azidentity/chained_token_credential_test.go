@@ -139,7 +139,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), testTRO)
-	if _, ok := err.(*credentialUnavailableError); !ok {
+	if _, ok := err.(credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `ChainedTokenCredential: failed to acquire a token.
@@ -186,7 +186,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	}
 	cred.name = "CustomNameCredential"
 	_, err = cred.GetToken(context.Background(), testTRO)
-	if _, ok := err.(*credentialUnavailableError); !ok {
+	if _, ok := err.(credentialUnavailableError); !ok {
 		t.Fatalf("expected credentialUnavailableError, received %T", err)
 	}
 	expectedError := `CustomNameCredential: failed to acquire a token.

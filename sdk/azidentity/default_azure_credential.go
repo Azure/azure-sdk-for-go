@@ -158,7 +158,7 @@ type defaultCredentialErrorReporter struct {
 }
 
 func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if _, ok := d.err.(*credentialUnavailableError); ok {
+	if _, ok := d.err.(credentialUnavailableError); ok {
 		return azcore.AccessToken{}, d.err
 	}
 	return azcore.AccessToken{}, newCredentialUnavailableError(d.credType, d.err.Error())

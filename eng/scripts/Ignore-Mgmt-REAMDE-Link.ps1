@@ -3,6 +3,10 @@ param (
     [string]$outputFile
 )
 
+if ($readmePath -notlike "*sdk/resourcemanager*" -or $readmePath -like "*sdk/resourcemanager/internal*") {
+    return
+}
+
 $lines = Get-Content -Path $readmePath
 
 $pattern = "(https://pkg\.go\.dev/github\.com/Azure/azure-sdk-for-go/sdk/resourcemanager/[a-zA-Z0-9_.\-/]+)"

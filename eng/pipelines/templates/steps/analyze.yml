@@ -111,10 +111,10 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - task: PowerShell@2
-    displayName: 'Ignore Mgmt Link'
+    displayName: 'Ignore Mgmt README.md Link'
     inputs:
       targetType: 'filePath'
-      filePath: ./eng/scripts/Ignore-Mgmt-Link.ps1
+      filePath: ./eng/scripts/Ignore-Mgmt-REAMDE-Link.ps1
       pwsh: true
       arguments: 'sdk/${{parameters.ServiceDirectory}}/README.md $(Build.SourcesDirectory)/eng/ignore-links.txt'
 

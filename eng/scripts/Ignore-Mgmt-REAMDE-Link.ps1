@@ -14,5 +14,6 @@ $matchPkg = $lines | Where-Object { $_ -match $pattern }
 
 foreach ($m in $matchPkg) {
     $link = [regex]::Match($m, $pattern).Groups[1].Value
+    Write-Host "Ignore Mgmt README.md Link: $link"
     $link | Out-File -FilePath $outputFile -Append
 }

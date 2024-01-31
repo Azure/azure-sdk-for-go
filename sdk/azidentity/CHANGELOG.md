@@ -5,6 +5,10 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.1
+* Replaced `ErrAuthenticationRequired` with `AuthenticationRequiredError`, a struct
+  type that carries the `TokenRequestOptions` passed to the `GetToken` call which
+  returned the error.
 
 ### Bugs Fixed
 * Fixed more cases in which credential chains like `DefaultAzureCredential`

@@ -202,8 +202,16 @@ func (fs *Client) BlobURL() string {
 // NewDirectoryClient creates a new directory.Client object by concatenating directory path to the end of this Client's URL.
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
-	directoryPath = url.PathEscape(strings.ReplaceAll(directoryPath, "\\", "/"))
-	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
+	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
+	names := strings.Split(directoryPath, "/")
+	path := ""
+	for i, name := range names {
+		if i > 0 {
+			path += "/"
+		}
+		path += url.PathEscape(name)
+	}
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), path)
 	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
@@ -211,8 +219,18 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
-	filePath = url.PathEscape(strings.ReplaceAll(filePath, "\\", "/"))
-	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
+	filePath = strings.ReplaceAll(filePath, "\\", "/")
+
+	names := strings.Split(filePath, "/")
+	path := ""
+	for i, name := range names {
+		if i > 0 {
+			path += "/"
+		}
+		path += url.PathEscape(name)
+
+	}
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), path)
 	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }

@@ -1331,15 +1331,20 @@ func (s *RecordedTestSuite) TestCreateFileSystemDirectoryClientWithSpecialDirNam
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	dirClient := fsClient.NewDirectoryClient("#,%,?")
+	dirClient := fsClient.NewDirectoryClient("#,%,?/%,#")
 	_require.NoError(err)
 
 	response, err := dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 	_require.NotNil(response)
 
+	// Perform an operation on dfs endpoint
 	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
 	_, err = dirClient.SetAccessControl(context.Background(), &file.SetAccessControlOptions{Owner: &owner})
+	_require.NoError(err)
+
+	// Perform an operation on blob endpoint
+	_, err = dirClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.NoError(err)
 }
 

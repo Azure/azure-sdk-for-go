@@ -116,7 +116,7 @@ func TestManagedIdentityClient_IMDSErrors(t *testing.T) {
 			if actual := err.Error(); !strings.Contains(actual, test.body) {
 				t.Fatalf("expected response body in error, got %q", actual)
 			}
-			var unavailableErr *credentialUnavailableError
+			var unavailableErr credentialUnavailable
 			if !errors.As(err, &unavailableErr) {
 				t.Fatalf("expected %T, got %T", unavailableErr, err)
 			}

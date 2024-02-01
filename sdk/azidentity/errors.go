@@ -125,7 +125,10 @@ func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOpti
 	}
 }
 
-var _ errorinfo.NonRetriable = (*AuthenticationRequiredError)(nil)
+var (
+	_ credentialUnavailable  = (*AuthenticationRequiredError)(nil)
+	_ errorinfo.NonRetriable = (*AuthenticationRequiredError)(nil)
+)
 
 type credentialUnavailable interface {
 	error
@@ -159,4 +162,7 @@ func (*credentialUnavailableError) NonRetriable() {}
 
 func (*credentialUnavailableError) credentialUnavailable() {}
 
-var _ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+var (
+	_ credentialUnavailable  = (*credentialUnavailableError)(nil)
+	_ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+)

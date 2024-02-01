@@ -12,12 +12,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// Helpers and variables to keep the examples tidy
+// Helpers, variables, fakes to keep the examples tidy
 
 const (
-	certPath = "testdata/certificate.pem"
-	clientID = "fake-client-id"
-	tenantID = "fake-tenant"
+	authRecordPath = "fake/path"
+	certPath       = "testdata/certificate.pem"
+	clientID       = "fake-client-id"
+	tenantID       = "fake-tenant"
 )
 
 func handleError(err error) {
@@ -28,3 +29,13 @@ func handleError(err error) {
 
 var cred azcore.TokenCredential
 var err error
+
+type exampleServiceClient struct{}
+
+func newServiceClient(azcore.TokenCredential) (exampleServiceClient, error) {
+	return exampleServiceClient{}, nil
+}
+
+func (exampleServiceClient) Method() error {
+	return nil
+}

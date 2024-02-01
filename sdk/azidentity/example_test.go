@@ -7,10 +7,48 @@
 package azidentity_test
 
 import (
+	"context"
+	"errors"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
+
+// Credentials that require user interaction such as [InteractiveBrowserCredential] and [DeviceCodeCredential]
+// can optionally return this error instead of automatically prompting for user interaction. This allows applications
+// to decide when to request user interaction. This example shows how to handle the error and authenticate a user
+// interactively. It shows [InteractiveBrowserCredential] but the same pattern applies to [DeviceCodeCredential].
+func ExampleAuthenticationRequiredError() {
+	cred, err := azidentity.NewInteractiveBrowserCredential(
+		&azidentity.InteractiveBrowserCredentialOptions{
+			// This option is useful only for applications that need to control when to prompt users to
+			// authenticate. If the timing of user interaction isn't important, don't set this option.
+			DisableAutomaticAuthentication: true,
+		},
+	)
+	if err != nil {
+		// TODO: handle error
+	}
+	// this could be any client that authenticates with an azidentity credential
+	client, err := newServiceClient(cred)
+	if err != nil {
+		// TODO: handle error
+	}
+	err = client.Method()
+	if err != nil {
+		var are *azidentity.AuthenticationRequiredError
+		if errors.As(err, &are) {
+			// The client requested a token and the credential requires user interaction. Whenever it's convenient
+			// for the application, call Authenticate to prompt the user. Pass the error's TokenRequestOptions to
+			// request a token with the parameters the client specified.
+			_, err = cred.Authenticate(context.TODO(), &are.TokenRequestOptions)
+			if err != nil {
+				// TODO: handle error
+			}
+			// TODO: retry the client method; it should succeed because the credential now has the necessary token
+		}
+	}
+}
 
 func ExampleNewOnBehalfOfCredentialWithCertificate() {
 	data, err := os.ReadFile(certPath)

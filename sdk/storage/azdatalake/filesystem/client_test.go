@@ -1360,7 +1360,7 @@ func (s *RecordedTestSuite) TestCreateFileSystemFileClientWithSpecialFileName() 
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	fileClient := fsClient.NewFileClient("#,%,?")
+	fileClient := fsClient.NewFileClient("#,%,?/#")
 	_require.NoError(err)
 
 	response, err := fileClient.Create(context.Background(), nil)
@@ -1369,6 +1369,10 @@ func (s *RecordedTestSuite) TestCreateFileSystemFileClientWithSpecialFileName() 
 
 	owner := "4cf4e284-f6a8-4540-b53e-c3469af032dc"
 	_, err = fileClient.SetAccessControl(context.Background(), &file.SetAccessControlOptions{Owner: &owner})
+	_require.NoError(err)
+
+	// Perform an operation on blob endpoint
+	_, err = fileClient.SetMetadata(context.Background(), testcommon.BasicMetadata, nil)
 	_require.NoError(err)
 }
 

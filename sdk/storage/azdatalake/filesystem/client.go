@@ -24,7 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 	"net/http"
-	"net/url"
 	"strings"
 	"time"
 )
@@ -203,15 +202,7 @@ func (fs *Client) BlobURL() string {
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
-	names := strings.Split(directoryPath, "/")
-	path := ""
-	for i, name := range names {
-		if i > 0 {
-			path += "/"
-		}
-		path += url.PathEscape(name)
-	}
-	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), path)
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), escapeSplitPaths(directoryPath))
 	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
@@ -220,17 +211,7 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
 	filePath = strings.ReplaceAll(filePath, "\\", "/")
-
-	names := strings.Split(filePath, "/")
-	path := ""
-	for i, name := range names {
-		if i > 0 {
-			path += "/"
-		}
-		path += url.PathEscape(name)
-
-	}
-	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), path)
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), escapeSplitPaths(filePath))
 	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }

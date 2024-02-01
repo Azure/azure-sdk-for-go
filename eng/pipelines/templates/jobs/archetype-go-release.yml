@@ -56,6 +56,8 @@ stages:
             deploy:
               steps:
                 - checkout: self
+                - download: current
+                  artifact: 'PackageInfo'
                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                   parameters:
@@ -64,6 +66,14 @@ stages:
                     ${{ else }}:
                       PackageName: 'sdk/${{parameters.ServiceDirectory}}'
                     ForRelease: true
+                - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                  parameters:
+                    ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+                      PackageName: "${{replace(parameters.ServiceDirectory, '../', '')}}"
+                    ${{ else }}:
+                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+                    ServiceDirectory: ${{parameters.ServiceDirectory}}
+                    ArtifactLocation: $(Pipeline.Workspace)
                 - task: PowerShell@2
                   displayName: 'Verify no replace directives in go.mod file'
                   inputs:

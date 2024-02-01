@@ -297,6 +297,8 @@ func TestUserAuthentication(t *testing.T) {
 				fake.SetResponse(expected, nil)
 				chain, err := NewChainedTokenCredential([]azcore.TokenCredential{cred, fake}, nil)
 				require.NoError(t, err)
+				// ChainedTokenCredential should continue iterating when a credential returns
+				// AuthenticationRequiredError i.e., it should call fake.GetToken() and return the expected token
 				actual, err := chain.GetToken(context.Background(), testTRO)
 				require.NoError(t, err)
 				require.Equal(t, expected, actual)

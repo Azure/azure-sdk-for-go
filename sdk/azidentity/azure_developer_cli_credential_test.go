@@ -35,7 +35,7 @@ func TestAzureDeveloperCLICredential_DefaultChainError(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err = cred.GetToken(context.Background(), testTRO)
-	var ue credentialUnavailableError
+	var ue credentialUnavailable
 	if !errors.As(err, &ue) {
 		t.Fatalf("expected credentialUnavailableError, got %T: %q", err, err)
 	}

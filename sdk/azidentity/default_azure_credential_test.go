@@ -278,7 +278,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 		// expecting credentialUnavailableError because delay exceeds the wrapper's timeout
 		_, err = chain.GetToken(context.Background(), testTRO)
 		if _, ok := err.(credentialUnavailable); !ok {
-			t.Fatalf("expected credentialUnavailableError, got %T: %v", err, err)
+			t.Fatalf("expected credentialUnavailable, got %T: %v", err, err)
 		}
 	}
 

@@ -45,7 +45,7 @@ func ExampleAuthenticationRequiredError() {
 			if err != nil {
 				// TODO: handle error
 			}
-			// TODO: retry the client method; it should succeed because the credential now has the necessary token
+			// TODO: retry the client method; it should succeed because the credential now has the required token
 		}
 	}
 }

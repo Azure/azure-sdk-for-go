@@ -301,7 +301,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), testTRO)
 		if _, ok := err.(credentialUnavailable); !ok {
-			t.Fatalf("expected credentialUnavailableError, received %T", err)
+			t.Fatalf("expected credentialUnavailable, received %T", err)
 		}
 	}
 }

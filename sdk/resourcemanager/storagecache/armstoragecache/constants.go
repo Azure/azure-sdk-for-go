@@ -10,7 +10,7 @@ package armstoragecache
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
-	moduleVersion = "v3.3.0"
+	moduleVersion = "v3.4.0-beta.1"
 )
 
 // AmlFilesystemHealthStateType - List of AML file system health states.
@@ -72,6 +72,27 @@ func PossibleAmlFilesystemProvisioningStateTypeValues() []AmlFilesystemProvision
 		AmlFilesystemProvisioningStateTypeFailed,
 		AmlFilesystemProvisioningStateTypeSucceeded,
 		AmlFilesystemProvisioningStateTypeUpdating,
+	}
+}
+
+// AmlFilesystemSquashMode - Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to the
+// provided values for all users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
+// squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and Group IDs
+// is performed for any users on any systems.
+type AmlFilesystemSquashMode string
+
+const (
+	AmlFilesystemSquashModeAll      AmlFilesystemSquashMode = "All"
+	AmlFilesystemSquashModeNone     AmlFilesystemSquashMode = "None"
+	AmlFilesystemSquashModeRootOnly AmlFilesystemSquashMode = "RootOnly"
+)
+
+// PossibleAmlFilesystemSquashModeValues returns the possible values for the AmlFilesystemSquashMode const type.
+func PossibleAmlFilesystemSquashModeValues() []AmlFilesystemSquashMode {
+	return []AmlFilesystemSquashMode{
+		AmlFilesystemSquashModeAll,
+		AmlFilesystemSquashModeNone,
+		AmlFilesystemSquashModeRootOnly,
 	}
 }
 

@@ -46,7 +46,7 @@ func NewAmlFilesystemsClient(subscriptionID string, credential azcore.TokenCrede
 // Archive - Archive data from the AML file system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - AmlFilesystemsClientArchiveOptions contains the optional parameters for the AmlFilesystemsClient.Archive method.
@@ -91,7 +91,7 @@ func (client *AmlFilesystemsClient) archiveCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ArchiveInfo != nil {
@@ -106,7 +106,7 @@ func (client *AmlFilesystemsClient) archiveCreateRequest(ctx context.Context, re
 // CancelArchive - Cancel archiving data from the AML file system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - AmlFilesystemsClientCancelArchiveOptions contains the optional parameters for the AmlFilesystemsClient.CancelArchive
@@ -152,7 +152,7 @@ func (client *AmlFilesystemsClient) cancelArchiveCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,7 +161,7 @@ func (client *AmlFilesystemsClient) cancelArchiveCreateRequest(ctx context.Conte
 // BeginCreateOrUpdate - Create or update an AML file system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - amlFilesystem - Object containing the user-selectable properties of the AML file system. If read-only properties are included,
@@ -189,7 +189,7 @@ func (client *AmlFilesystemsClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update an AML file system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 func (client *AmlFilesystemsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem AmlFilesystem, options *AmlFilesystemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AmlFilesystemsClient.BeginCreateOrUpdate"
@@ -231,7 +231,7 @@ func (client *AmlFilesystemsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, amlFilesystem); err != nil {
@@ -243,7 +243,7 @@ func (client *AmlFilesystemsClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Schedules an AML file system for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - AmlFilesystemsClientBeginDeleteOptions contains the optional parameters for the AmlFilesystemsClient.BeginDelete
@@ -269,7 +269,7 @@ func (client *AmlFilesystemsClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Schedules an AML file system for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 func (client *AmlFilesystemsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, options *AmlFilesystemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AmlFilesystemsClient.BeginDelete"
@@ -311,7 +311,7 @@ func (client *AmlFilesystemsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +320,7 @@ func (client *AmlFilesystemsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Returns an AML file system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - options - AmlFilesystemsClientGetOptions contains the optional parameters for the AmlFilesystemsClient.Get method.
@@ -366,7 +366,7 @@ func (client *AmlFilesystemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,7 +383,7 @@ func (client *AmlFilesystemsClient) getHandleResponse(resp *http.Response) (AmlF
 
 // NewListPager - Returns all AML file systems the user has access to under a subscription.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - options - AmlFilesystemsClientListOptions contains the optional parameters for the AmlFilesystemsClient.NewListPager method.
 func (client *AmlFilesystemsClient) NewListPager(options *AmlFilesystemsClientListOptions) *runtime.Pager[AmlFilesystemsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AmlFilesystemsClientListResponse]{
@@ -420,7 +420,7 @@ func (client *AmlFilesystemsClient) listCreateRequest(ctx context.Context, optio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -437,7 +437,7 @@ func (client *AmlFilesystemsClient) listHandleResponse(resp *http.Response) (Aml
 
 // NewListByResourceGroupPager - Returns all AML file systems the user has access to under a resource group.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AmlFilesystemsClientListByResourceGroupOptions contains the optional parameters for the AmlFilesystemsClient.NewListByResourceGroupPager
 //     method.
@@ -480,7 +480,7 @@ func (client *AmlFilesystemsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -498,7 +498,7 @@ func (client *AmlFilesystemsClient) listByResourceGroupHandleResponse(resp *http
 // BeginUpdate - Update an AML file system instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
 //   - amlFilesystem - Object containing the user-selectable properties of the AML file system. If read-only properties are included,
@@ -526,7 +526,7 @@ func (client *AmlFilesystemsClient) BeginUpdate(ctx context.Context, resourceGro
 // Update - Update an AML file system instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01
+// Generated from API version 2023-11-01-preview
 func (client *AmlFilesystemsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, amlFilesystem AmlFilesystemUpdate, options *AmlFilesystemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AmlFilesystemsClient.BeginUpdate"
@@ -568,7 +568,7 @@ func (client *AmlFilesystemsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01")
+	reqQP.Set("api-version", "2023-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, amlFilesystem); err != nil {

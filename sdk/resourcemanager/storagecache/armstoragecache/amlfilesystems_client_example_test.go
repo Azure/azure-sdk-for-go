@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_List.json
 func ExampleAmlFilesystemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,6 +102,13 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 					TimeOfDayUTC: to.Ptr("22:00"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+		// 				RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+		// 					Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+		// 					NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+		// 					SquashGID: to.Ptr[int64](99),
+		// 					SquashUID: to.Ptr[int64](99),
+		// 					Status: to.Ptr("nodemap.active=1"),
+		// 				},
 		// 				StorageCapacityTiB: to.Ptr[float32](16),
 		// 				ThroughputProvisionedMBps: to.Ptr[int32](500),
 		// 			},
@@ -171,6 +178,13 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 						TimeOfDayUTC: to.Ptr("22:00"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+		// 					RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+		// 						Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+		// 						NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+		// 						SquashGID: to.Ptr[int64](99),
+		// 						SquashUID: to.Ptr[int64](99),
+		// 						Status: to.Ptr("nodemap.active=1"),
+		// 					},
 		// 					StorageCapacityTiB: to.Ptr[float32](16),
 		// 					ThroughputProvisionedMBps: to.Ptr[int32](500),
 		// 				},
@@ -184,7 +198,7 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_ListByResourceGroup.json
 func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,6 +282,13 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 					TimeOfDayUTC: to.Ptr("22:00"),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+		// 				RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+		// 					Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+		// 					NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+		// 					SquashGID: to.Ptr[int64](99),
+		// 					SquashUID: to.Ptr[int64](99),
+		// 					Status: to.Ptr("nodemap.active=1"),
+		// 				},
 		// 				StorageCapacityTiB: to.Ptr[float32](16),
 		// 				ThroughputProvisionedMBps: to.Ptr[int32](500),
 		// 			},
@@ -337,6 +358,13 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 						TimeOfDayUTC: to.Ptr("22:00"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+		// 					RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+		// 						Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+		// 						NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+		// 						SquashGID: to.Ptr[int64](99),
+		// 						SquashUID: to.Ptr[int64](99),
+		// 						Status: to.Ptr("nodemap.active=1"),
+		// 					},
 		// 					StorageCapacityTiB: to.Ptr[float32](16),
 		// 					ThroughputProvisionedMBps: to.Ptr[int32](500),
 		// 				},
@@ -350,7 +378,7 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_Delete.json
 func ExampleAmlFilesystemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,7 +399,7 @@ func ExampleAmlFilesystemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_Get.json
 func ExampleAmlFilesystemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,6 +477,13 @@ func ExampleAmlFilesystemsClient_Get() {
 	// 			TimeOfDayUTC: to.Ptr("22:00"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+	// 		RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+	// 			Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+	// 			NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+	// 			SquashGID: to.Ptr[int64](99),
+	// 			SquashUID: to.Ptr[int64](99),
+	// 			Status: to.Ptr("nodemap.active=1"),
+	// 		},
 	// 		StorageCapacityTiB: to.Ptr[float32](16),
 	// 		ThroughputProvisionedMBps: to.Ptr[int32](500),
 	// 	},
@@ -460,7 +495,7 @@ func ExampleAmlFilesystemsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_CreateOrUpdate.json
 func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,6 +537,12 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 			MaintenanceWindow: &armstoragecache.AmlFilesystemPropertiesMaintenanceWindow{
 				DayOfWeek:    to.Ptr(armstoragecache.MaintenanceDayOfWeekTypeFriday),
 				TimeOfDayUTC: to.Ptr("22:00"),
+			},
+			RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+				Mode:             to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+				NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+				SquashGID:        to.Ptr[int64](99),
+				SquashUID:        to.Ptr[int64](99),
 			},
 			StorageCapacityTiB: to.Ptr[float32](16),
 		},
@@ -573,6 +614,13 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	// 			TimeOfDayUTC: to.Ptr("22:00"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+	// 		RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+	// 			Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+	// 			NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+	// 			SquashGID: to.Ptr[int64](99),
+	// 			SquashUID: to.Ptr[int64](99),
+	// 			Status: to.Ptr("nodemap.active=1"),
+	// 		},
 	// 		StorageCapacityTiB: to.Ptr[float32](16),
 	// 		ThroughputProvisionedMBps: to.Ptr[int32](500),
 	// 	},
@@ -584,7 +632,7 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_Update.json
 func ExampleAmlFilesystemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,6 +656,12 @@ func ExampleAmlFilesystemsClient_BeginUpdate() {
 			MaintenanceWindow: &armstoragecache.AmlFilesystemUpdatePropertiesMaintenanceWindow{
 				DayOfWeek:    to.Ptr(armstoragecache.MaintenanceDayOfWeekTypeFriday),
 				TimeOfDayUTC: to.Ptr("22:00"),
+			},
+			RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+				Mode:             to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+				NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+				SquashGID:        to.Ptr[int64](99),
+				SquashUID:        to.Ptr[int64](99),
 			},
 		},
 		Tags: map[string]*string{
@@ -684,6 +738,13 @@ func ExampleAmlFilesystemsClient_BeginUpdate() {
 	// 			TimeOfDayUTC: to.Ptr("22:00"),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armstoragecache.AmlFilesystemProvisioningStateTypeSucceeded),
+	// 		RootSquashSettings: &armstoragecache.AmlFilesystemRootSquashSettings{
+	// 			Mode: to.Ptr(armstoragecache.AmlFilesystemSquashModeAll),
+	// 			NoSquashNidLists: to.Ptr("10.0.0.[5-6]@tcp;10.0.1.2@tcp"),
+	// 			SquashGID: to.Ptr[int64](99),
+	// 			SquashUID: to.Ptr[int64](99),
+	// 			Status: to.Ptr("nodemap.active=1"),
+	// 		},
 	// 		StorageCapacityTiB: to.Ptr[float32](16),
 	// 		ThroughputProvisionedMBps: to.Ptr[int32](500),
 	// 	},
@@ -695,7 +756,7 @@ func ExampleAmlFilesystemsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Archive.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_Archive.json
 func ExampleAmlFilesystemsClient_Archive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -715,7 +776,7 @@ func ExampleAmlFilesystemsClient_Archive() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_CancelArchive.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/amlFilesystems_CancelArchive.json
 func ExampleAmlFilesystemsClient_CancelArchive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

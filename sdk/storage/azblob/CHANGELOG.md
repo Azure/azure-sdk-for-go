@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fix concurrency issue while Downloading File. Fixes [#22156](https://github.com/Azure/azure-sdk-for-go/issues/22156). 
 
 ### Other Changes
 

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c7f3e601fd326ca910c3d2939b516e15581e7e41/specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/UsageModels_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/73d1e6522dfdedb795f46cf997921c623011caa6/specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/UsageModels_List.json
 func ExampleUsageModelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

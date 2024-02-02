@@ -1,8 +1,6 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
-
-### Features Added
+## 1.6.0-beta.2 (2024-02-06)
 
 ### Breaking Changes
 > These changes affect only code written against a beta version such as v1.6.0-beta.1

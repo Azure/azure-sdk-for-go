@@ -201,6 +201,35 @@ func (s *RecordedTestSuite) TestGetAndCreateFileClient() {
 	_require.NoError(err)
 }
 
+func (s *RecordedTestSuite) TestGetAndCreateFileClientWithSpecialNames() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient("#,%,?")
+	_require.NoError(err)
+
+	defer testcommon.DeleteDir(context.Background(), _require, dirClient)
+
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	fileClient, err := dirClient.NewFileClient("?%#,")
+	_require.NoError(err)
+	_require.NotNil(fileClient)
+
+	_, err = fileClient.Create(context.Background(), nil)
+	_require.NoError(err)
+}
+
 func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -263,6 +292,41 @@ func (s *RecordedTestSuite) TestCreateNewSubdirectoryClient() {
 	_, err = dirFileClient.GetProperties(context.Background(), nil)
 	_require.Error(err) // we should get back a 404
 	_require.True(datalakeerror.HasCode(err, datalakeerror.PathNotFound))
+}
+
+func (s *RecordedTestSuite) TestCreateNewSubdirectoryClientWithSpecialName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := svcClient.NewFileSystemClient(fsName)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	dirClient := fsClient.NewDirectoryClient("?#%")
+
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	subdirClient, err := dirClient.NewSubdirectoryClient(",%,#,?")
+	_require.NoError(err)
+
+	perm := "r-xr-x---"
+
+	_, err = subdirClient.Create(context.Background(), &directory.CreateOptions{
+		Permissions: &perm,
+		CPKInfo:     &testcommon.TestCPKByValue,
+	})
+	_require.NoError(err)
 }
 
 func (s *RecordedTestSuite) TestCreateDirWithNilAccessConditions() {

@@ -202,7 +202,7 @@ func (fs *Client) BlobURL() string {
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
-	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(directoryPath))
 	blobURL, dirURL := shared.GetURLs(dirURL)
 	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
@@ -211,7 +211,7 @@ func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
 	filePath = strings.ReplaceAll(filePath, "\\", "/")
-	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(filePath))
 	blobURL, fileURL := shared.GetURLs(fileURL)
 	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }

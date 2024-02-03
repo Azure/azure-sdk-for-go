@@ -2936,6 +2936,9 @@ type BastionHost struct {
 	// Resource tags.
 	Tags map[string]*string
 
+	// A list of availability zones denoting where the resource needs to come from.
+	Zones []*string
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string
 

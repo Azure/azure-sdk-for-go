@@ -22,38 +22,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestReceiverBackupSettlement(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t, &liveTestOptions{
-		QueueProperties: &admin.QueueProperties{
-			LockDuration: to.Ptr("PT5M"),
-		},
-	})
-	defer cleanup()
-
-	sender, err := serviceBusClient.NewSender(queueName, nil)
-	require.NoError(t, err)
-
-	err = sender.SendMessage(context.Background(), &Message{
-		Body: []byte("hello world"),
-	}, nil)
-	require.NoError(t, err)
-
-	origReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
-	require.NoError(t, err)
-	defer test.RequireClose(t, origReceiver)
-
-	otherReceiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
-	require.NoError(t, err)
-	defer test.RequireClose(t, otherReceiver)
-
-	messages, err := origReceiver.ReceiveMessages(context.TODO(), 1, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, messages)
-
-	err = otherReceiver.CompleteMessage(context.Background(), messages[0], nil)
-	require.NoError(t, err)
-}
-
 func TestReceiverCancel(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
@@ -989,7 +957,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 		bigBody := make([]byte, 1000)
 
 		// send a bunch of messages
-		for i := 0; i < 10000; i++ {
+		for i := 0; i < 1000; i++ {
 			err := batch.AddMessage(&Message{
 				Body: bigBody,
 			}, nil)

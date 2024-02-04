@@ -45,7 +45,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +150,7 @@ func (s *Client) URL() string {
 // this Client's URL. The new container.Client uses the same request policy pipeline as the Client.
 func (s *Client) NewContainerClient(containerName string) *container.Client {
 	containerURL := runtime.JoinPaths(s.generated().Endpoint(), containerName)
-	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.credential(), s.getClientOptions()))
+	return (*container.Client)(base.NewContainerClient(containerURL, s.generated().InternalClient().WithClientName(shared.ContainerClient), s.credential(), s.getClientOptions()))
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.

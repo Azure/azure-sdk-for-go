@@ -3,6 +3,7 @@
 ## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
+* HNS Encryption Scope support
 
 ### Breaking Changes
 

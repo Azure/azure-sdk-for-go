@@ -10,172 +10,155 @@ package armhybridcontainerservice
 
 import "time"
 
-// AddonStatusProfile - Defines the addon status profile.
+// AddonStatusProfile - The status profile of the addons and other kubernetes components
 type AddonStatusProfile struct {
-	// Error message while deploying the addon
+	// Observed error message from the addon or component
 	ErrorMessage *string
 
-	// Name of the addon
+	// Name of the addon or component
 	Name *string
 
-	// Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}',
-	// 'provisioning {MSICertificateDownloaded}', 'provisioned',
-	// 'deleting', 'failed', 'upgrading'
+	// Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending', 'provisioning',
+	// 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}',
+	// 'provisioned', 'deleting', 'failed', 'upgrading'
 	Phase *AddonPhase
 
-	// Indicates whether the addon is ready
+	// Indicates whether the addon or component is ready
 	Ready *bool
 }
 
 // AgentPool - The agentPool resource definition
 type AgentPool struct {
-	// Extended Location definition
+	// Extended location pointing to the underlying infrastructure
 	ExtendedLocation *ExtendedLocation
 
-	// The resource location
-	Location   *string
+	// Properties of the agent pool resource
 	Properties *AgentPoolProperties
 
 	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource Name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; Resource Type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// AgentPoolListResult - A list of agent pool resources.
+// AgentPoolListResult - List of all agent pool resources associated with the provisioned cluster.
 type AgentPoolListResult struct {
 	NextLink *string
 	Value    []*AgentPool
 }
 
-// AgentPoolPatch - The agentPool resource patch definition
-type AgentPoolPatch struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
+// AgentPoolProperties - Properties of the agent pool resource
 type AgentPoolProperties struct {
-	// AvailabilityZones - The list of Availability zones to use for nodes. Datacenter racks modelled as zones
-	AvailabilityZones []*string
-
-	// Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default
-	// value is 1.
+	// Number of nodes in the agent pool. The default value is 1.
 	Count *int32
 
-	// The version of node image
-	NodeImageVersion *string
+	// Whether to enable auto-scaler. Default value is false
+	EnableAutoScaling *bool
+
+	// The maximum number of nodes for auto-scaling
+	MaxCount *int32
+
+	// The maximum number of pods that can run on a node.
+	MaxPods *int32
+
+	// The minimum number of nodes for auto-scaling
+	MinCount *int32
+
+	// The node labels to be persisted across all nodes in agent pool.
+	NodeLabels map[string]*string
+
+	// Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
+	NodeTaints []*string
 
 	// Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is Windows2019 when
 	// OSType is Windows.
 	OSSKU *OSSKU
 
-	// The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+	// The particular KubernetesVersion Image OS Type (Linux, Windows)
 	OSType *OsType
 
-	// Defines the observed state of the agent pool
+	// The observed status of the agent pool.
 	Status *AgentPoolProvisioningStatusStatus
 
-	// VmSize - The size of the agent pool VMs.
+	// The VM sku size of the agent pool node VMs.
 	VMSize *string
 
-	// READ-ONLY; Provisioning state of the resource
+	// READ-ONLY; Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+	// cluster.
+	KubernetesVersion *string
+
+	// READ-ONLY; The status of the latest long running operation for the agent pool.
 	ProvisioningState *ResourceProvisioningState
 }
 
-// AgentPoolProvisioningStatusOperationStatus - Contains Provisioning errors
-type AgentPoolProvisioningStatusOperationStatus struct {
-	Error       *AgentPoolProvisioningStatusOperationStatusError
-	OperationID *string
-	Status      *string
-}
-
-type AgentPoolProvisioningStatusOperationStatusError struct {
-	Code    *string
-	Message *string
-}
-
-// AgentPoolProvisioningStatusStatus - Defines the observed state of the agent pool
+// AgentPoolProvisioningStatusStatus - The observed status of the agent pool.
 type AgentPoolProvisioningStatusStatus struct {
-	// ErrorMessage - Error messages during creation of agent pool
-	ErrorMessage *string
+	// Error messages during an agent pool operation or steady state.
+	ErrorMessage  *string
+	ReadyReplicas []*AgentPoolUpdateProfile
 
-	// Contains Provisioning errors
-	OperationStatus *AgentPoolProvisioningStatusOperationStatus
-	ReadyReplicas   []*AgentPoolUpdateProfile
+	// READ-ONLY; The current state of the agent pool.
+	CurrentState *ResourceProvisioningState
 }
 
-// AgentPoolUpdateProfile - AgentPool update configuration
+// AgentPoolUpdateProfile - Profile for agent pool properties that can be updated
 type AgentPoolUpdateProfile struct {
-	// Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default
-	// value is 1.
+	// Number of nodes in the agent pool. The default value is 1.
 	Count *int32
 
-	// VmSize - The size of the agent pool VMs.
+	// The VM sku size of the agent pool node VMs.
 	VMSize *string
+
+	// READ-ONLY; Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+	// cluster.
+	KubernetesVersion *string
 }
 
-// CloudProviderProfile - The underlying cloud infra provider properties.
+// CloudProviderProfile - The profile for the underlying cloud infrastructure provider for the provisioned cluster.
 type CloudProviderProfile struct {
-	// InfraNetworkProfile - List of infra network profiles for the provisioned cluster
+	// The profile for the infrastructure networks used by the provisioned cluster
 	InfraNetworkProfile *CloudProviderProfileInfraNetworkProfile
 }
 
-// CloudProviderProfileInfraNetworkProfile - InfraNetworkProfile - List of infra network profiles for the provisioned cluster
+// CloudProviderProfileInfraNetworkProfile - The profile for the infrastructure networks used by the provisioned cluster
 type CloudProviderProfileInfraNetworkProfile struct {
-	// Array of references to azure resource corresponding to the Network object e.g.
+	// List of ARM resource Ids (maximum 1) for the infrastructure network object e.g.
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}
 	VnetSubnetIDs []*string
 }
 
-// ControlPlaneEndpointProfileControlPlaneEndpoint - API server endpoint for the control plane
-type ControlPlaneEndpointProfileControlPlaneEndpoint struct {
-	// Host IP address for API server
-	HostIP *string
-
-	// Port for the API server
-	Port *int32
+// ClusterVMAccessProfile - The SSH restricted access profile for the VMs in the provisioned cluster.
+type ClusterVMAccessProfile struct {
+	// IP Address or CIDR for SSH access to VMs in the provisioned cluster
+	AuthorizedIPRanges *string
 }
 
-// ControlPlaneProfile - The control plane properties for the provisioned cluster.
+// ControlPlaneProfile - The properties of the control plane nodes of the provisioned cluster
 type ControlPlaneProfile struct {
-	// AvailabilityZones - The list of Availability zones to use for nodes. Datacenter racks modelled as zones
-	AvailabilityZones []*string
+	// IP Address of the Kubernetes API server
+	ControlPlaneEndpoint *ControlPlaneProfileControlPlaneEndpoint
 
-	// API server endpoint for the control plane
-	ControlPlaneEndpoint *ControlPlaneEndpointProfileControlPlaneEndpoint
-
-	// Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default
-	// value is 1.
+	// Number of control plane nodes. The default value is 1, and the count should be an odd number
 	Count *int32
 
-	// Profile for Linux VMs in the container service cluster.
-	LinuxProfile *LinuxProfileProperties
-
-	// Unique name of the agent pool profile in the context of the subscription and resource group.
-	Name *string
-
-	// The version of node image
-	NodeImageVersion *string
-
-	// Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is Windows2019 when
-	// OSType is Windows.
-	OSSKU *OSSKU
-
-	// The particular KubernetesVersion's Image's OS Type (Linux, Windows)
-	OSType *OsType
-
-	// VmSize - The size of the agent pool VMs.
+	// VM sku size of the control plane nodes
 	VMSize *string
+}
+
+// ControlPlaneProfileControlPlaneEndpoint - IP Address of the Kubernetes API server
+type ControlPlaneProfileControlPlaneEndpoint struct {
+	// IP address of the Kubernetes API server
+	HostIP *string
 }
 
 // CredentialResult - The credential result response.
@@ -187,12 +170,12 @@ type CredentialResult struct {
 	Value []byte
 }
 
-// ExtendedLocation - Extended Location definition
+// ExtendedLocation - Extended location pointing to the underlying infrastructure
 type ExtendedLocation struct {
-	// The extended location name.
+	// ARM Id of the extended location.
 	Name *string
 
-	// The extended location type.
+	// The extended location type. Allowed value: 'CustomLocation'
 	Type *ExtendedLocationTypes
 }
 
@@ -223,9 +206,9 @@ type HybridIdentityMetadataList struct {
 	NextLink *string
 }
 
-// HybridIdentityMetadataProperties - Defines the resource properties.
+// HybridIdentityMetadataProperties - Defines the resource properties for the hybrid identity metadata.
 type HybridIdentityMetadataProperties struct {
-	// Onboarding public key for provisioning the Managed identity for the HybridAKS cluster.
+	// Onboarding public key for provisioning the Managed identity for the connected cluster.
 	PublicKey *string
 
 	// Unique id of the parent provisioned cluster resource.
@@ -237,21 +220,16 @@ type HybridIdentityMetadataProperties struct {
 
 // KubernetesPatchVersions - Kubernetes Patch Version profile
 type KubernetesPatchVersions struct {
-	// Whether the kubernetes version variant (Linux, Windows, Windows2022) is ready or not
+	// Indicates whether the kubernetes version image is ready or not
 	Readiness []*KubernetesVersionReadiness
 
-	// Possible upgrade path for given patch version
+	// Possible upgrade paths for given patch version
 	Upgrades []*string
-}
-
-// KubernetesVersionCapabilities - Capabilities on this kubernetes version
-type KubernetesVersionCapabilities struct {
-	SupportPlan []*string
 }
 
 // KubernetesVersionProfile - The supported kubernetes versions.
 type KubernetesVersionProfile struct {
-	// Extended Location definition
+	// Extended location pointing to the underlying infrastructure
 	ExtendedLocation *ExtendedLocation
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -270,7 +248,7 @@ type KubernetesVersionProfile struct {
 	Type *string
 }
 
-// KubernetesVersionProfileList - A list of kubernetes version resources.
+// KubernetesVersionProfileList - List of supported kubernetes versions.
 type KubernetesVersionProfileList struct {
 	NextLink *string
 	Value    []*KubernetesVersionProfile
@@ -286,9 +264,6 @@ type KubernetesVersionProfileProperties struct {
 
 // KubernetesVersionProperties - Kubernetes version profile for given major.minor release
 type KubernetesVersionProperties struct {
-	// READ-ONLY; Capabilities on this kubernetes version
-	Capabilities *KubernetesVersionCapabilities
-
 	// READ-ONLY; Whether this version is in preview mode.
 	IsPreview *bool
 
@@ -299,38 +274,37 @@ type KubernetesVersionProperties struct {
 	Version *string
 }
 
-// KubernetesVersionReadiness - Whether a particular kubernetes version's variant (CBLMariner, Windows, Windows2022) is ready
-// or not
+// KubernetesVersionReadiness - Indicates whether the kubernetes version image is ready or not
 type KubernetesVersionReadiness struct {
 	// Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is Windows2019 when
 	// OSType is Windows.
 	OSSKU *OSSKU
 
-	// READ-ONLY; If image is not ready, the error message for version not being ready
+	// READ-ONLY; The error message for version not being ready
 	ErrorMessage *string
 
-	// READ-ONLY; The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+	// READ-ONLY; The particular KubernetesVersion Image OS Type (Linux, Windows)
 	OSType *OsType
 
-	// READ-ONLY; Whether or not the given image is ready
+	// READ-ONLY; Whether the kubernetes version image is ready or not
 	Ready *bool
 }
 
-// LinuxProfileProperties - LinuxProfile - Profile for Linux VMs in the container service cluster.
+// LinuxProfileProperties - SSH profile for control plane and nodepool VMs of the provisioned cluster.
 type LinuxProfileProperties struct {
-	// SSH - SSH configuration for Linux-based VMs running on Azure.
+	// SSH configuration for VMs of the provisioned cluster.
 	SSH *LinuxProfilePropertiesSSH
 }
 
-// LinuxProfilePropertiesSSH - SSH - SSH configuration for Linux-based VMs running on Azure.
+// LinuxProfilePropertiesSSH - SSH configuration for VMs of the provisioned cluster.
 type LinuxProfilePropertiesSSH struct {
-	// PublicKeys - The list of SSH public keys used to authenticate with Linux-based VMs. Only expect one key specified.
+	// The list of SSH public keys used to authenticate with VMs. A maximum of 1 key may be specified.
 	PublicKeys []*LinuxProfilePropertiesSSHPublicKeysItem
 }
 
 type LinuxProfilePropertiesSSHPublicKeysItem struct {
-	// KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with
-	// or without headers.
+	// Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without
+	// headers.
 	KeyData *string
 }
 
@@ -362,48 +336,62 @@ type ListCredentialResponseProperties struct {
 	Kubeconfigs []*CredentialResult
 }
 
-// NamedAgentPoolProfile - Agent pool profile along with a name parameter
+// NamedAgentPoolProfile - Profile of the default agent pool along with a name parameter
 type NamedAgentPoolProfile struct {
-	// AvailabilityZones - The list of Availability zones to use for nodes. Datacenter racks modelled as zones
-	AvailabilityZones []*string
-
-	// Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default
-	// value is 1.
+	// Number of nodes in the agent pool. The default value is 1.
 	Count *int32
 
-	// Unique name of the agent pool profile in the context of the subscription and resource group.
+	// Whether to enable auto-scaler. Default value is false
+	EnableAutoScaling *bool
+
+	// The maximum number of nodes for auto-scaling
+	MaxCount *int32
+
+	// The maximum number of pods that can run on a node.
+	MaxPods *int32
+
+	// The minimum number of nodes for auto-scaling
+	MinCount *int32
+
+	// Unique name of the default agent pool in the context of the provisioned cluster. Default value is -nodepool1
 	Name *string
 
-	// The version of node image
-	NodeImageVersion *string
+	// The node labels to be persisted across all nodes in agent pool.
+	NodeLabels map[string]*string
+
+	// Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
+	NodeTaints []*string
 
 	// Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux. The default is Windows2019 when
 	// OSType is Windows.
 	OSSKU *OSSKU
 
-	// The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+	// The particular KubernetesVersion Image OS Type (Linux, Windows)
 	OSType *OsType
 
-	// VmSize - The size of the agent pool VMs.
+	// The VM sku size of the agent pool node VMs.
 	VMSize *string
+
+	// READ-ONLY; Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+	// cluster.
+	KubernetesVersion *string
 }
 
-// NetworkProfile - Profile of network configuration.
+// NetworkProfile - The network configuration profile for the provisioned cluster.
 type NetworkProfile struct {
-	// LoadBalancerProfile - Profile of the cluster load balancer.
+	// Profile of the HA Proxy load balancer.
 	LoadBalancerProfile *NetworkProfileLoadBalancerProfile
 
-	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico', 'flannel'. Default
-	// is 'calico'
+	// Network policy used for building Kubernetes network. Possible values include: 'calico'.
 	NetworkPolicy *NetworkPolicy
 
-	// PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+	// A CIDR notation IP Address range from which to assign pod IPs.
 	PodCidr *string
 }
 
-// NetworkProfileLoadBalancerProfile - LoadBalancerProfile - Profile of the cluster load balancer.
+// NetworkProfileLoadBalancerProfile - Profile of the HA Proxy load balancer.
 type NetworkProfileLoadBalancerProfile struct {
-	// Count - Number of load balancer VMs. The default value is 0.
+	// Number of HA Proxy load balancer VMs. The default value is 0.
 	Count *int32
 }
 
@@ -456,24 +444,48 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// ProvisionedCluster - The provisioned cluster resource definition.
+type ProvisionedCluster struct {
+	// Extended location pointing to the underlying infrastructure
+	ExtendedLocation *ExtendedLocation
+
+	// Properties of the provisioned cluster.
+	Properties *ProvisionedClusterProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // ProvisionedClusterLicenseProfile - The license profile of the provisioned cluster.
 type ProvisionedClusterLicenseProfile struct {
-	// Indicates whether Azure Hybrid Benefit is opted in
+	// Indicates whether Azure Hybrid Benefit is opted in. Default value is false
 	AzureHybridBenefit *AzureHybridBenefit
 }
 
-// ProvisionedClusterPoolUpgradeProfile - The list of available upgrade versions.
+// ProvisionedClusterListResult - Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
+type ProvisionedClusterListResult struct {
+	NextLink *string
+	Value    []*ProvisionedCluster
+}
+
+// ProvisionedClusterPoolUpgradeProfile - The list of available kubernetes versions for upgrade.
 type ProvisionedClusterPoolUpgradeProfile struct {
-	// List of orchestrator types and versions available for upgrade.
+	// List of available kubernetes versions for upgrade.
 	Upgrades []*ProvisionedClusterPoolUpgradeProfileProperties
 
 	// READ-ONLY; The Kubernetes version (major.minor.patch).
 	KubernetesVersion *string
 
-	// READ-ONLY; The Agent Pool name.
-	Name *string
-
-	// READ-ONLY; The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+	// READ-ONLY; The particular KubernetesVersion Image OS Type (Linux, Windows)
 	OSType *OsType
 }
 
@@ -486,61 +498,118 @@ type ProvisionedClusterPoolUpgradeProfileProperties struct {
 	KubernetesVersion *string
 }
 
-// ProvisionedClusterProperties - All properties of the provisioned cluster
+// ProvisionedClusterProperties - Properties of the provisioned cluster.
 type ProvisionedClusterProperties struct {
-	// The agent pools of the cluster.
+	// The agent pool properties for the provisioned cluster.
 	AgentPoolProfiles []*NamedAgentPoolProfile
 
-	// The underlying cloud infra provider properties.
+	// Parameters to be applied to the cluster-autoscaler when auto scaling is enabled for the provisioned cluster.
+	AutoScalerProfile *ProvisionedClusterPropertiesAutoScalerProfile
+
+	// The profile for the underlying cloud infrastructure provider for the provisioned cluster.
 	CloudProviderProfile *CloudProviderProfile
 
-	// ControlPlane - ControlPlane Configuration
+	// The SSH restricted access profile for the VMs in the provisioned cluster.
+	ClusterVMAccessProfile *ClusterVMAccessProfile
+
+	// The profile for control plane of the provisioned cluster.
 	ControlPlane *ControlPlaneProfile
 
-	// KubernetesVersion - Version of Kubernetes specified when creating the managed cluster.
+	// The version of Kubernetes in use by the provisioned cluster.
 	KubernetesVersion *string
 
 	// The license profile of the provisioned cluster.
 	LicenseProfile *ProvisionedClusterLicenseProfile
 
-	// LinuxProfile - The profile for Linux VMs in the Provisioned Cluster.
+	// The profile for Linux VMs in the provisioned cluster.
 	LinuxProfile *LinuxProfileProperties
 
-	// NetworkProfile - Profile of network configuration.
+	// The network configuration profile for the provisioned cluster.
 	NetworkProfile *NetworkProfile
 
-	// READ-ONLY; Provisioning state of the resource
+	// The storage configuration profile for the provisioned cluster.
+	StorageProfile *StorageProfile
+
+	// READ-ONLY; The status of the latest long running operation for the provisioned cluster.
 	ProvisioningState *ResourceProvisioningState
 
-	// READ-ONLY; HybridAKSClusterStatus defines the observed state of HybridAKSCluster
+	// READ-ONLY; The observed status of the provisioned cluster.
 	Status *ProvisionedClusterPropertiesStatus
 }
 
-// ProvisionedClusterPropertiesStatus - HybridAKSClusterStatus defines the observed state of HybridAKSCluster
+// ProvisionedClusterPropertiesAutoScalerProfile - Parameters to be applied to the cluster-autoscaler when auto scaling is
+// enabled for the provisioned cluster.
+type ProvisionedClusterPropertiesAutoScalerProfile struct {
+	// Valid values are 'true' and 'false'
+	BalanceSimilarNodeGroups *string
+
+	// If not specified, the default is 'random'. See expanders [https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders]
+	// for more information.
+	Expander *Expander
+
+	// The default is 10.
+	MaxEmptyBulkDelete *string
+
+	// The default is 600.
+	MaxGracefulTerminationSec *string
+
+	// The default is '15m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	MaxNodeProvisionTime *string
+
+	// The default is 45. The maximum is 100 and the minimum is 0.
+	MaxTotalUnreadyPercentage *string
+
+	// For scenarios like burst/batch scale where you don't want CA to act before the kubernetes scheduler could schedule all
+	// the pods, you can tell CA to ignore unscheduled pods before they're a certain
+	// age. The default is '0s'. Values must be an integer followed by a unit ('s' for seconds, 'm' for minutes, 'h' for hours,
+	// etc).
+	NewPodScaleUpDelay *string
+
+	// This must be an integer. The default is 3.
+	OkTotalUnreadyCount *string
+
+	// The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	ScaleDownDelayAfterAdd *string
+
+	// The default is the scan-interval. Values must be an integer followed by an 'm'. No unit of time other than minutes (m)
+	// is supported.
+	ScaleDownDelayAfterDelete *string
+
+	// The default is '3m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	ScaleDownDelayAfterFailure *string
+
+	// The default is '10m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	ScaleDownUnneededTime *string
+
+	// The default is '20m'. Values must be an integer followed by an 'm'. No unit of time other than minutes (m) is supported.
+	ScaleDownUnreadyTime *string
+
+	// The default is '0.5'.
+	ScaleDownUtilizationThreshold *string
+
+	// The default is '10'. Values must be an integer number of seconds.
+	ScanInterval *string
+
+	// The default is true.
+	SkipNodesWithLocalStorage *string
+
+	// The default is true.
+	SkipNodesWithSystemPods *string
+}
+
+// ProvisionedClusterPropertiesStatus - The observed status of the provisioned cluster.
 type ProvisionedClusterPropertiesStatus struct {
-	// Status of the control plane components
+	// The detailed status of the provisioned cluster components including addons.
 	ControlPlaneStatus []*AddonStatusProfile
 
-	// ErrorMessage - Error messages during creation of cluster
+	// Error messages during a provisioned cluster operation or steady state.
 	ErrorMessage *string
 
-	// Contains Provisioning errors
-	OperationStatus *ProvisionedClusterPropertiesStatusOperationStatus
+	// READ-ONLY; The current state of the provisioned cluster.
+	CurrentState *ResourceProvisioningState
 }
 
-// ProvisionedClusterPropertiesStatusOperationStatus - Contains Provisioning errors
-type ProvisionedClusterPropertiesStatusOperationStatus struct {
-	Error       *ProvisionedClusterPropertiesStatusOperationStatusError
-	OperationID *string
-	Status      *string
-}
-
-type ProvisionedClusterPropertiesStatusOperationStatusError struct {
-	Code    *string
-	Message *string
-}
-
-// ProvisionedClusterUpgradeProfile - The list of available upgrades for compute pools.
+// ProvisionedClusterUpgradeProfile - The list of available kubernetes version upgrades for the provisioned cluster.
 type ProvisionedClusterUpgradeProfile struct {
 	// REQUIRED; The properties of the upgrade profile.
 	Properties *ProvisionedClusterUpgradeProfileProperties
@@ -560,41 +629,32 @@ type ProvisionedClusterUpgradeProfile struct {
 
 // ProvisionedClusterUpgradeProfileProperties - Control plane and agent pool upgrade profiles.
 type ProvisionedClusterUpgradeProfileProperties struct {
-	// REQUIRED; The list of available upgrade versions for agent pools.
-	AgentPoolProfiles []*ProvisionedClusterPoolUpgradeProfile
-
-	// REQUIRED; The list of available upgrade versions for the control plane.
+	// REQUIRED; The list of available kubernetes version upgrades for the control plane.
 	ControlPlaneProfile *ProvisionedClusterPoolUpgradeProfile
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *ResourceProvisioningState
 }
 
-// ProvisionedClusters - The provisionedClusterInstances resource definition.
-type ProvisionedClusters struct {
-	// Extended Location definition
-	ExtendedLocation *ExtendedLocation
+// StorageProfile - The storage configuration profile for the provisioned cluster.
+type StorageProfile struct {
+	// NFS CSI Driver settings for the storage profile.
+	NfsCsiDriver *StorageProfileNfsCSIDriver
 
-	// All properties of the provisioned cluster
-	Properties *ProvisionedClusterProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
+	// SMB CSI Driver settings for the storage profile.
+	SmbCsiDriver *StorageProfileSmbCSIDriver
 }
 
-// ProvisionedClustersListResult - A list of provisioned clusters resources.
-type ProvisionedClustersListResult struct {
-	NextLink *string
-	Value    []*ProvisionedClusters
+// StorageProfileNfsCSIDriver - NFS CSI Driver settings for the storage profile.
+type StorageProfileNfsCSIDriver struct {
+	// Indicates whether to enable NFS CSI Driver. The default value is true.
+	Enabled *bool
+}
+
+// StorageProfileSmbCSIDriver - SMB CSI Driver settings for the storage profile.
+type StorageProfileSmbCSIDriver struct {
+	// Indicates whether to enable SMB CSI Driver. The default value is true.
+	Enabled *bool
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -618,18 +678,18 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// VMSKUCapabilities - describes the vm sku capabilities object
+// VMSKUCapabilities - Describes the VM SKU capabilities like MemoryGB, vCPUs, etc.
 type VMSKUCapabilities struct {
-	// READ-ONLY; An invariant to describe the feature
+	// READ-ONLY; Name of the VM SKU capability
 	Name *string
 
-	// READ-ONLY; An invariant if the feature is measured by quantity
+	// READ-ONLY; Value of the VM SKU capability
 	Value *string
 }
 
 // VMSKUProfile - The list of supported VM SKUs.
 type VMSKUProfile struct {
-	// Extended Location definition
+	// Extended location pointing to the underlying infrastructure
 	ExtendedLocation *ExtendedLocation
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -648,45 +708,47 @@ type VMSKUProfile struct {
 	Type *string
 }
 
-// VMSKUProfileList - A list of VM SKU resources.
+// VMSKUProfileList - The list of supported VM SKUs.
 type VMSKUProfileList struct {
 	NextLink *string
 	Value    []*VMSKUProfile
 }
 
 type VMSKUProfileProperties struct {
-	// Array of HybridAKS Support VM Skus
+	// List of supported VM SKUs.
 	Values []*VMSKUProperties
 
 	// READ-ONLY; Provisioning state of the resource
 	ProvisioningState *ResourceProvisioningState
 }
 
-// VMSKUProperties - The profile for supported VM skus
+// VMSKUProperties - The profile for supported VM SKUs
 type VMSKUProperties struct {
-	// READ-ONLY; A name value pair to describe the specific vm's capability
+	// READ-ONLY; The list of name-value pairs to describe VM SKU capabilities like MemoryGB, vCPUs, etc.
 	Capabilities []*VMSKUCapabilities
 
-	// READ-ONLY; The name of the VM Family
+	// READ-ONLY; The name of the VM SKU
 	Name *string
 
-	// READ-ONLY; The resource type of the vm
+	// READ-ONLY; The type of resource the SKU applies to.
 	ResourceType *string
 
-	// READ-ONLY; The size of the VM Family
+	// READ-ONLY; The size of the VM SKU
 	Size *string
 
-	// READ-ONLY; The tier of the VM Family
+	// READ-ONLY; The tier of the VM SKU
 	Tier *string
 }
 
-// VirtualNetwork - The virtualNetworks resource definition.
+// VirtualNetwork - The Virtual Network resource definition.
 type VirtualNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location         *string
+	Location *string
+
+	// Extended location pointing to the underlying infrastructure
 	ExtendedLocation *VirtualNetworkExtendedLocation
 
-	// HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork
+	// Properties of the virtual network resource
 	Properties *VirtualNetworkProperties
 
 	// Resource tags.
@@ -705,56 +767,51 @@ type VirtualNetwork struct {
 	Type *string
 }
 
+// VirtualNetworkExtendedLocation - Extended location pointing to the underlying infrastructure
 type VirtualNetworkExtendedLocation struct {
-	// The extended location name.
+	// ARM Id of the extended location.
 	Name *string
 
-	// The extended location type.
-	Type *string
+	// The extended location type. Allowed value: 'CustomLocation'
+	Type *ExtendedLocationTypes
 }
 
-// VirtualNetworkProperties - HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork
+// VirtualNetworkProperties - Properties of the virtual network resource
 type VirtualNetworkProperties struct {
-	// Address of the DNS servers associated with the network
+	// List of DNS server IP Addresses associated with the network
 	DNSServers []*string
 
-	// Address of the DHCP servers associated with the network
-	DhcpServers []*string
-
-	// Address of the Gateway associated with the network
+	// IP Address of the Gateway associated with the network
 	Gateway *string
 
 	// IP Address Prefix of the network
 	IPAddressPrefix  *string
 	InfraVnetProfile *VirtualNetworkPropertiesInfraVnetProfile
 
-	// Virtual IP Pool for Kubernetes
+	// Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load balancer
 	VipPool []*VirtualNetworkPropertiesVipPoolItem
 
 	// VLAN Id used by the network
 	VlanID *int32
 
-	// IP Pool for Virtual Machines
+	// Range of IP Addresses for Kubernetes node VMs
 	VmipPool []*VirtualNetworkPropertiesVmipPoolItem
 
 	// READ-ONLY
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork
+	// READ-ONLY; Status of the virtual network resource
 	Status *VirtualNetworkPropertiesStatus
 }
 
 type VirtualNetworkPropertiesInfraVnetProfile struct {
-	// Infra network profile for HCI platform
+	// Infrastructure network profile for HCI platform
 	Hci *VirtualNetworkPropertiesInfraVnetProfileHci
-
-	// Infra network profile for VMware platform
-	Vmware *VirtualNetworkPropertiesInfraVnetProfileVmware
 }
 
-// VirtualNetworkPropertiesInfraVnetProfileHci - Infra network profile for HCI platform
+// VirtualNetworkPropertiesInfraVnetProfileHci - Infrastructure network profile for HCI platform
 type VirtualNetworkPropertiesInfraVnetProfileHci struct {
-	// Resource group in MOC(Microsoft On-premises Cloud)
+	// Group in MOC(Microsoft On-premises Cloud)
 	MocGroup *string
 
 	// Location in MOC(Microsoft On-premises Cloud)
@@ -764,30 +821,30 @@ type VirtualNetworkPropertiesInfraVnetProfileHci struct {
 	MocVnetName *string
 }
 
-// VirtualNetworkPropertiesInfraVnetProfileVmware - Infra network profile for VMware platform
-type VirtualNetworkPropertiesInfraVnetProfileVmware struct {
-	// Name of the network segment in VSphere
-	SegmentName *string
-}
-
-// VirtualNetworkPropertiesStatus - HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork
+// VirtualNetworkPropertiesStatus - Status of the virtual network resource
 type VirtualNetworkPropertiesStatus struct {
-	// Contains Provisioning errors
+	// The detailed status of the long running operation.
 	OperationStatus *VirtualNetworkPropertiesStatusOperationStatus
 }
 
-// VirtualNetworkPropertiesStatusOperationStatus - Contains Provisioning errors
+// VirtualNetworkPropertiesStatusOperationStatus - The detailed status of the long running operation.
 type VirtualNetworkPropertiesStatusOperationStatus struct {
-	Error       *VirtualNetworkPropertiesStatusOperationStatusError
+	// The error if any from the operation.
+	Error *VirtualNetworkPropertiesStatusOperationStatusError
+
+	// The identifier of the operation.
 	OperationID *string
 
-	// Phase represents the current phase of the virtual network provisioning. E.g. Pending, Running, Terminating, Failed etc.
-	Phase  *string
+	// The status of the operation.
 	Status *string
 }
 
+// VirtualNetworkPropertiesStatusOperationStatusError - The error if any from the operation.
 type VirtualNetworkPropertiesStatusOperationStatusError struct {
-	Code    *string
+	// The error code from the operation.
+	Code *string
+
+	// The error message from the operation.
 	Message *string
 }
 
@@ -807,12 +864,13 @@ type VirtualNetworkPropertiesVmipPoolItem struct {
 	StartIP *string
 }
 
+// VirtualNetworksListResult - A list of virtual network resources.
 type VirtualNetworksListResult struct {
 	NextLink *string
 	Value    []*VirtualNetwork
 }
 
-// VirtualNetworksPatch - The virtualNetworks resource patch definition.
+// VirtualNetworksPatch - The Virtual Network resource patch definition.
 type VirtualNetworksPatch struct {
 	// Resource tags
 	Tags map[string]*string

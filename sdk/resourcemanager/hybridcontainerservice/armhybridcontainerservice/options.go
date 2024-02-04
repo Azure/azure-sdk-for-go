@@ -21,18 +21,12 @@ type AgentPoolClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// AgentPoolClientBeginUpdateOptions contains the optional parameters for the AgentPoolClient.BeginUpdate method.
-type AgentPoolClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // AgentPoolClientGetOptions contains the optional parameters for the AgentPoolClient.Get method.
 type AgentPoolClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.ListByProvisionedCluster
+// AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.NewListByProvisionedClusterPager
 // method.
 type AgentPoolClientListByProvisionedClusterOptions struct {
 	// placeholder for future optional parameters

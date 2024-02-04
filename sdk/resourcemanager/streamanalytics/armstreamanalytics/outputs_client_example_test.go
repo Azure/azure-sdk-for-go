@@ -15,10 +15,79 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_DocumentDB.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_DeltaLake.json
+func ExampleOutputsClient_CreateOrReplace_createADeltaLakeOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().CreateOrReplace(ctx, "sjrg", "sjName", "output1221", armstreamanalytics.Output{
+		Properties: &armstreamanalytics.OutputProperties{
+			Datasource: &armstreamanalytics.BlobOutputDataSource{
+				Type: to.Ptr("Microsoft.Storage/Blob"),
+				Properties: &armstreamanalytics.BlobOutputDataSourceProperties{
+					Container: to.Ptr("deltaoutput"),
+					StorageAccounts: []*armstreamanalytics.StorageAccount{
+						{
+							AccountKey:  to.Ptr("accountKey=="),
+							AccountName: to.Ptr("someAccountName"),
+						}},
+				},
+			},
+			Serialization: &armstreamanalytics.DeltaSerialization{
+				Type: to.Ptr(armstreamanalytics.EventSerializationTypeDelta),
+				Properties: &armstreamanalytics.DeltaSerializationProperties{
+					DeltaTablePath: to.Ptr("/folder1/table1"),
+					PartitionColumns: []*string{
+						to.Ptr("column1")},
+				},
+			},
+		},
+	}, &armstreamanalytics.OutputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("output1221"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/outputs/output1221"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.BlobOutputDataSource{
+	// 			Type: to.Ptr("Microsoft.Storage/Blob"),
+	// 			Properties: &armstreamanalytics.BlobOutputDataSourceProperties{
+	// 				Container: to.Ptr("deltaoutput"),
+	// 				StorageAccounts: []*armstreamanalytics.StorageAccount{
+	// 					{
+	// 						AccountName: to.Ptr("someAccountName"),
+	// 				}},
+	// 			},
+	// 		},
+	// 		Serialization: &armstreamanalytics.DeltaSerialization{
+	// 			Type: to.Ptr(armstreamanalytics.EventSerializationTypeDelta),
+	// 			Properties: &armstreamanalytics.DeltaSerializationProperties{
+	// 				DeltaTablePath: to.Ptr("/folder1/table1"),
+	// 				PartitionColumns: []*string{
+	// 					to.Ptr("column1")},
+	// 				},
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_DocumentDB.json
 func ExampleOutputsClient_CreateOrReplace_createADocumentDbOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,6 +105,7 @@ func ExampleOutputsClient_CreateOrReplace_createADocumentDbOutput() {
 				Properties: &armstreamanalytics.DocumentDbOutputDataSourceProperties{
 					AccountID:             to.Ptr("someAccountId"),
 					AccountKey:            to.Ptr("accountKey=="),
+					AuthenticationMode:    to.Ptr(armstreamanalytics.AuthenticationModeMsi),
 					CollectionNamePattern: to.Ptr("collection"),
 					Database:              to.Ptr("db01"),
 					DocumentID:            to.Ptr("documentId"),
@@ -71,7 +141,106 @@ func ExampleOutputsClient_CreateOrReplace_createADocumentDbOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_PowerBI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_GatewayMessageBus.json
+func ExampleOutputsClient_CreateOrReplace_createAGatewayMessageBusOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().CreateOrReplace(ctx, "sjrg7983", "sj2331", "output3022", armstreamanalytics.Output{
+		Properties: &armstreamanalytics.OutputProperties{
+			Datasource: &armstreamanalytics.GatewayMessageBusOutputDataSource{
+				Type: to.Ptr("GatewayMessageBus"),
+				Properties: &armstreamanalytics.GatewayMessageBusOutputDataSourceProperties{
+					Topic: to.Ptr("EdgeTopic1"),
+				},
+			},
+		},
+	}, &armstreamanalytics.OutputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("output3022"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg7983/providers/Microsoft.StreamAnalytics/streamingjobs/sj2331/outputs/output3022"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.GatewayMessageBusOutputDataSource{
+	// 			Type: to.Ptr("GatewayMessageBus"),
+	// 			Properties: &armstreamanalytics.GatewayMessageBusOutputDataSourceProperties{
+	// 				Topic: to.Ptr("EdgeTopic1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_PostgreSQL.json
+func ExampleOutputsClient_CreateOrReplace_createAPostgreSqlOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().CreateOrReplace(ctx, "sjrg7983", "sj2331", "output3022", armstreamanalytics.Output{
+		Properties: &armstreamanalytics.OutputProperties{
+			Datasource: &armstreamanalytics.PostgreSQLOutputDataSource{
+				Type: to.Ptr("Microsoft.DBForPostgreSQL/servers/databases"),
+				Properties: &armstreamanalytics.PostgreSQLOutputDataSourceProperties{
+					AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+					Database:           to.Ptr("someDatabase"),
+					MaxWriterCount:     to.Ptr[float32](1),
+					Password:           to.Ptr("somePassword"),
+					Server:             to.Ptr("someServer"),
+					Table:              to.Ptr("someTable"),
+					User:               to.Ptr("user"),
+				},
+			},
+		},
+	}, &armstreamanalytics.OutputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("output3022"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg7983/providers/Microsoft.StreamAnalytics/streamingjobs/sj2331/outputs/output3022"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.PostgreSQLOutputDataSource{
+	// 			Type: to.Ptr("Microsoft.DBForPostgreSQL/servers/databases"),
+	// 			Properties: &armstreamanalytics.PostgreSQLOutputDataSourceProperties{
+	// 				AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+	// 				Database: to.Ptr("someDatabase"),
+	// 				MaxWriterCount: to.Ptr[float32](1),
+	// 				Server: to.Ptr("someServer"),
+	// 				Table: to.Ptr("someTable"),
+	// 				User: to.Ptr("user"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_PowerBI.json
 func ExampleOutputsClient_CreateOrReplace_createAPowerBiOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +295,7 @@ func ExampleOutputsClient_CreateOrReplace_createAPowerBiOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_ServiceBusQueue_Avro.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_ServiceBusQueue_Avro.json
 func ExampleOutputsClient_CreateOrReplace_createAServiceBusQueueOutputWithAvroSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +362,7 @@ func ExampleOutputsClient_CreateOrReplace_createAServiceBusQueueOutputWithAvroSe
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_ServiceBusTopic_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_ServiceBusTopic_CSV.json
 func ExampleOutputsClient_CreateOrReplace_createAServiceBusTopicOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +431,7 @@ func ExampleOutputsClient_CreateOrReplace_createAServiceBusTopicOutputWithCsvSer
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_Blob_CSV.json
 func ExampleOutputsClient_CreateOrReplace_createABlobOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +455,9 @@ func ExampleOutputsClient_CreateOrReplace_createABlobOutputWithCsvSerialization(
 							AccountKey:  to.Ptr("accountKey=="),
 							AccountName: to.Ptr("someAccountName"),
 						}},
-					TimeFormat: to.Ptr("HH"),
+					TimeFormat:     to.Ptr("HH"),
+					BlobPathPrefix: to.Ptr("my/path"),
+					BlobWriteMode:  to.Ptr(armstreamanalytics.BlobWriteModeOnce),
 				},
 			},
 			Serialization: &armstreamanalytics.CSVSerialization{
@@ -335,7 +506,58 @@ func ExampleOutputsClient_CreateOrReplace_createABlobOutputWithCsvSerialization(
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureDataLakeStore_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_AzureDataExplorer.json
+func ExampleOutputsClient_CreateOrReplace_createAnAzureDataExplorerOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().CreateOrReplace(ctx, "sjrg", "sjName", "adxOutput", armstreamanalytics.Output{
+		Properties: &armstreamanalytics.OutputProperties{
+			Datasource: &armstreamanalytics.AzureDataExplorerOutputDataSource{
+				Type: to.Ptr("Microsoft.Kusto/clusters/databases"),
+				Properties: &armstreamanalytics.AzureDataExplorerOutputDataSourceProperties{
+					AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+					Cluster:            to.Ptr("https://asakustotest.eastus.kusto.windows.net"),
+					Database:           to.Ptr("dbname"),
+					Table:              to.Ptr("mytable"),
+				},
+			},
+		},
+	}, &armstreamanalytics.OutputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("adxOutput"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/7f31cba8-b597-4129-b158-8f21a7395bd0/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/outputs/adxOutput"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.AzureDataExplorerOutputDataSource{
+	// 			Type: to.Ptr("Microsoft.Kusto/clusters/databases"),
+	// 			Properties: &armstreamanalytics.AzureDataExplorerOutputDataSourceProperties{
+	// 				AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+	// 				Cluster: to.Ptr("https://asakustotest.eastus.kusto.windows.net"),
+	// 				Database: to.Ptr("dbname"),
+	// 				Table: to.Ptr("mytable"),
+	// 			},
+	// 		},
+	// 		Etag: to.Ptr("7b912929-346d-432e-9495-6972dbd63179"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_AzureDataLakeStore_JSON.json
 func ExampleOutputsClient_CreateOrReplace_createAnAzureDataLakeStoreOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +628,7 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureDataLakeStoreOutputWithJs
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_DataWarehouse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_DataWarehouse.json
 func ExampleOutputsClient_CreateOrReplace_createAnAzureDataWarehouseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,11 +644,12 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureDataWarehouseOutput() {
 			Datasource: &armstreamanalytics.AzureSynapseOutputDataSource{
 				Type: to.Ptr("Microsoft.Sql/Server/DataWarehouse"),
 				Properties: &armstreamanalytics.AzureSynapseOutputDataSourceProperties{
-					Database: to.Ptr("zhayaSQLpool"),
-					Password: to.Ptr("password123"),
-					Server:   to.Ptr("asatestserver"),
-					Table:    to.Ptr("test2"),
-					User:     to.Ptr("tolladmin"),
+					AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+					Database:           to.Ptr("zhayaSQLpool"),
+					Password:           to.Ptr("password123"),
+					Server:             to.Ptr("asatestserver"),
+					Table:              to.Ptr("test2"),
+					User:               to.Ptr("tolladmin"),
 				},
 			},
 		},
@@ -457,7 +680,7 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureDataWarehouseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureFunction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_AzureFunction.json
 func ExampleOutputsClient_CreateOrReplace_createAnAzureFunctionOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +731,7 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureFunctionOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureSQL.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_AzureSQL.json
 func ExampleOutputsClient_CreateOrReplace_createAnAzureSqlDatabaseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +782,7 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureSqlDatabaseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureTable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_AzureTable.json
 func ExampleOutputsClient_CreateOrReplace_createAnAzureTableOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +841,7 @@ func ExampleOutputsClient_CreateOrReplace_createAnAzureTableOutput() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_EventHub_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Create_EventHub_JSON.json
 func ExampleOutputsClient_CreateOrReplace_createAnEventHubOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,6 +870,10 @@ func ExampleOutputsClient_CreateOrReplace_createAnEventHubOutputWithJsonSerializ
 					Format:   to.Ptr(armstreamanalytics.JSONOutputSerializationFormatArray),
 					Encoding: to.Ptr(armstreamanalytics.EncodingUTF8),
 				},
+			},
+			WatermarkSettings: &armstreamanalytics.OutputWatermarkProperties{
+				MaxWatermarkDifferenceAcrossPartitions: to.Ptr("16:14:30"),
+				WatermarkMode:                          to.Ptr(armstreamanalytics.OutputWatermarkModeSendCurrentPartitionWatermark),
 			},
 		},
 	}, &armstreamanalytics.OutputsClientCreateOrReplaceOptions{IfMatch: nil,
@@ -683,7 +910,69 @@ func ExampleOutputsClient_CreateOrReplace_createAnEventHubOutputWithJsonSerializ
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_DocumentDB.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_DeltaLake.json
+func ExampleOutputsClient_Update_updateADeltaLakeOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().Update(ctx, "sjrg", "sjName", "output1221", armstreamanalytics.Output{
+		Properties: &armstreamanalytics.OutputProperties{
+			Datasource: &armstreamanalytics.BlobOutputDataSource{
+				Type: to.Ptr("Microsoft.Storage/Blob"),
+				Properties: &armstreamanalytics.BlobOutputDataSourceProperties{
+					Container: to.Ptr("deltaoutput2"),
+				},
+			},
+			Serialization: &armstreamanalytics.DeltaSerialization{
+				Type: to.Ptr(armstreamanalytics.EventSerializationTypeDelta),
+				Properties: &armstreamanalytics.DeltaSerializationProperties{
+					DeltaTablePath: to.Ptr("/folder1/table2"),
+					PartitionColumns: []*string{
+						to.Ptr("column2")},
+				},
+			},
+		},
+	}, &armstreamanalytics.OutputsClientUpdateOptions{IfMatch: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("output1221"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/outputs/output1221"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.BlobOutputDataSource{
+	// 			Type: to.Ptr("Microsoft.Storage/Blob"),
+	// 			Properties: &armstreamanalytics.BlobOutputDataSourceProperties{
+	// 				Container: to.Ptr("deltaoutput2"),
+	// 				StorageAccounts: []*armstreamanalytics.StorageAccount{
+	// 					{
+	// 						AccountName: to.Ptr("someAccountName"),
+	// 				}},
+	// 			},
+	// 		},
+	// 		Serialization: &armstreamanalytics.DeltaSerialization{
+	// 			Type: to.Ptr(armstreamanalytics.EventSerializationTypeDelta),
+	// 			Properties: &armstreamanalytics.DeltaSerializationProperties{
+	// 				DeltaTablePath: to.Ptr("/folder1/table2"),
+	// 				PartitionColumns: []*string{
+	// 					to.Ptr("column2")},
+	// 				},
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_DocumentDB.json
 func ExampleOutputsClient_Update_updateADocumentDbOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +1018,7 @@ func ExampleOutputsClient_Update_updateADocumentDbOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_PowerBI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_PowerBI.json
 func ExampleOutputsClient_Update_updateAPowerBiOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -776,7 +1065,7 @@ func ExampleOutputsClient_Update_updateAPowerBiOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_ServiceBusQueue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_ServiceBusQueue.json
 func ExampleOutputsClient_Update_updateAServiceBusQueueOutputWithAvroSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,7 +1126,7 @@ func ExampleOutputsClient_Update_updateAServiceBusQueueOutputWithAvroSerializati
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_ServiceBusTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_ServiceBusTopic.json
 func ExampleOutputsClient_Update_updateAServiceBusTopicOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,7 +1187,7 @@ func ExampleOutputsClient_Update_updateAServiceBusTopicOutputWithCsvSerializatio
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_Blob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_Blob.json
 func ExampleOutputsClient_Update_updateABlobOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -961,7 +1250,7 @@ func ExampleOutputsClient_Update_updateABlobOutputWithCsvSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureDataLakeStore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_AzureDataLakeStore.json
 func ExampleOutputsClient_Update_updateAnAzureDataLakeStoreOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1023,7 +1312,7 @@ func ExampleOutputsClient_Update_updateAnAzureDataLakeStoreOutputWithJsonSeriali
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_DataWarehouse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_DataWarehouse.json
 func ExampleOutputsClient_Update_updateAnAzureDataWarehouseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1068,7 +1357,7 @@ func ExampleOutputsClient_Update_updateAnAzureDataWarehouseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureFunction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_AzureFunction.json
 func ExampleOutputsClient_Update_updateAnAzureFunctionOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1113,7 +1402,7 @@ func ExampleOutputsClient_Update_updateAnAzureFunctionOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureSQL.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_AzureSQL.json
 func ExampleOutputsClient_Update_updateAnAzureSqlDatabaseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1158,7 +1447,7 @@ func ExampleOutputsClient_Update_updateAnAzureSqlDatabaseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureTable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_AzureTable.json
 func ExampleOutputsClient_Update_updateAnAzureTableOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1207,7 +1496,7 @@ func ExampleOutputsClient_Update_updateAnAzureTableOutput() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_EventHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Update_EventHub.json
 func ExampleOutputsClient_Update_updateAnEventHubOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1266,7 +1555,7 @@ func ExampleOutputsClient_Update_updateAnEventHubOutputWithJsonSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Delete.json
 func ExampleOutputsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1283,7 +1572,52 @@ func ExampleOutputsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_DocumentDB.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_DeltaLake.json
+func ExampleOutputsClient_Get_getADeltaLakeOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOutputsClient().Get(ctx, "sjrg", "sjName", "output1221", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Output = armstreamanalytics.Output{
+	// 	Name: to.Ptr("output1221"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/outputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg/providers/Microsoft.StreamAnalytics/streamingjobs/sjName/outputs/output1221"),
+	// 	Properties: &armstreamanalytics.OutputProperties{
+	// 		Datasource: &armstreamanalytics.BlobOutputDataSource{
+	// 			Type: to.Ptr("Microsoft.Storage/Blob"),
+	// 			Properties: &armstreamanalytics.BlobOutputDataSourceProperties{
+	// 				Container: to.Ptr("deltaoutput"),
+	// 				StorageAccounts: []*armstreamanalytics.StorageAccount{
+	// 					{
+	// 						AccountName: to.Ptr("someAccountName"),
+	// 				}},
+	// 			},
+	// 		},
+	// 		Serialization: &armstreamanalytics.DeltaSerialization{
+	// 			Type: to.Ptr(armstreamanalytics.EventSerializationTypeDelta),
+	// 			Properties: &armstreamanalytics.DeltaSerializationProperties{
+	// 				DeltaTablePath: to.Ptr("/folder1/table1"),
+	// 				PartitionColumns: []*string{
+	// 					to.Ptr("column1")},
+	// 				},
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_DocumentDB.json
 func ExampleOutputsClient_Get_getADocumentDbOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1320,7 +1654,7 @@ func ExampleOutputsClient_Get_getADocumentDbOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_PowerBI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_PowerBI.json
 func ExampleOutputsClient_Get_getAPowerBiOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1358,7 +1692,7 @@ func ExampleOutputsClient_Get_getAPowerBiOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_ServiceBusQueue_Avro.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_ServiceBusQueue_Avro.json
 func ExampleOutputsClient_Get_getAServiceBusQueueOutputWithAvroSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1401,7 +1735,7 @@ func ExampleOutputsClient_Get_getAServiceBusQueueOutputWithAvroSerialization() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_ServiceBusTopic_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_ServiceBusTopic_CSV.json
 func ExampleOutputsClient_Get_getAServiceBusTopicOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1446,7 +1780,7 @@ func ExampleOutputsClient_Get_getAServiceBusTopicOutputWithCsvSerialization() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_Blob_CSV.json
 func ExampleOutputsClient_Get_getABlobOutputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1493,7 +1827,7 @@ func ExampleOutputsClient_Get_getABlobOutputWithCsvSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureDataLakeStore_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_AzureDataLakeStore_JSON.json
 func ExampleOutputsClient_Get_getAnAzureDataLakeStoreOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1539,7 +1873,7 @@ func ExampleOutputsClient_Get_getAnAzureDataLakeStoreOutputWithJsonSerialization
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_DataWarehouse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_DataWarehouse.json
 func ExampleOutputsClient_Get_getAnAzureDataWarehouseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1576,7 +1910,7 @@ func ExampleOutputsClient_Get_getAnAzureDataWarehouseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureFunction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_AzureFunction.json
 func ExampleOutputsClient_Get_getAnAzureFunctionOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1613,7 +1947,7 @@ func ExampleOutputsClient_Get_getAnAzureFunctionOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureSQL.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_AzureSQL.json
 func ExampleOutputsClient_Get_getAnAzureSqlDatabaseOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1649,7 +1983,7 @@ func ExampleOutputsClient_Get_getAnAzureSqlDatabaseOutput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_AzureTable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_AzureTable.json
 func ExampleOutputsClient_Get_getAnAzureTableOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1689,7 +2023,7 @@ func ExampleOutputsClient_Get_getAnAzureTableOutput() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Get_EventHub_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Get_EventHub_JSON.json
 func ExampleOutputsClient_Get_getAnEventHubOutputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1721,6 +2055,15 @@ func ExampleOutputsClient_Get_getAnEventHubOutputWithJsonSerialization() {
 	// 				PartitionKey: to.Ptr("partitionKey"),
 	// 			},
 	// 		},
+	// 		LastOutputEventTimestamps: []*armstreamanalytics.LastOutputEventTimestamp{
+	// 			{
+	// 				LastOutputEventTime: to.Ptr("2009-06-15T13:45:30"),
+	// 				LastUpdateTime: to.Ptr("2009-06-15T13:45:30"),
+	// 			},
+	// 			{
+	// 				LastOutputEventTime: to.Ptr("2009-07-15T13:45:30"),
+	// 				LastUpdateTime: to.Ptr("2009-06-15T13:45:30"),
+	// 		}},
 	// 		Serialization: &armstreamanalytics.JSONSerialization{
 	// 			Type: to.Ptr(armstreamanalytics.EventSerializationTypeJSON),
 	// 			Properties: &armstreamanalytics.JSONSerializationProperties{
@@ -1732,7 +2075,7 @@ func ExampleOutputsClient_Get_getAnEventHubOutputWithJsonSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_ListByStreamingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_ListByStreamingJob.json
 func ExampleOutputsClient_NewListByStreamingJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1966,7 +2309,7 @@ func ExampleOutputsClient_NewListByStreamingJobPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Test.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Output_Test.json
 func ExampleOutputsClient_BeginTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

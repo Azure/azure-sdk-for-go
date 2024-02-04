@@ -1,5 +1,66 @@
 # Release History
 
+## 1.0.0 (2024-01-26)
+### Breaking Changes
+
+- Function `*ProvisionedClusterInstancesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, ProvisionedClusters, *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions)` to `(context.Context, string, ProvisionedCluster, *ProvisionedClusterInstancesClientBeginCreateOrUpdateOptions)`
+- Type of `ControlPlaneProfile.ControlPlaneEndpoint` has been changed from `*ControlPlaneEndpointProfileControlPlaneEndpoint` to `*ControlPlaneProfileControlPlaneEndpoint`
+- Type of `VirtualNetworkExtendedLocation.Type` has been changed from `*string` to `*ExtendedLocationTypes`
+- `NetworkPolicyFlannel` from enum `NetworkPolicy` has been removed
+- `ProvisioningStateCreated`, `ProvisioningStateInProgress` from enum `ProvisioningState` has been removed
+- `ResourceProvisioningStateCreated`, `ResourceProvisioningStateInProgress` from enum `ResourceProvisioningState` has been removed
+- Function `*AgentPoolClient.BeginUpdate` has been removed
+- Operation `*AgentPoolClient.ListByProvisionedCluster` has supported pagination, use `*AgentPoolClient.NewListByProvisionedClusterPager` instead.
+- Struct `AgentPoolPatch` has been removed
+- Struct `AgentPoolProvisioningStatusOperationStatus` has been removed
+- Struct `AgentPoolProvisioningStatusOperationStatusError` has been removed
+- Struct `ControlPlaneEndpointProfileControlPlaneEndpoint` has been removed
+- Struct `KubernetesVersionCapabilities` has been removed
+- Struct `ProvisionedClusterPropertiesStatusOperationStatus` has been removed
+- Struct `ProvisionedClusterPropertiesStatusOperationStatusError` has been removed
+- Struct `ProvisionedClusters` has been removed
+- Struct `ProvisionedClustersListResult` has been removed
+- Struct `VirtualNetworkPropertiesInfraVnetProfileVmware` has been removed
+- Field `Location` of struct `AgentPool` has been removed
+- Field `AvailabilityZones`, `NodeImageVersion` of struct `AgentPoolProperties` has been removed
+- Field `OperationStatus` of struct `AgentPoolProvisioningStatusStatus` has been removed
+- Field `AvailabilityZones`, `LinuxProfile`, `Name`, `NodeImageVersion`, `OSSKU`, `OSType` of struct `ControlPlaneProfile` has been removed
+- Field `Capabilities` of struct `KubernetesVersionProperties` has been removed
+- Field `AvailabilityZones`, `NodeImageVersion` of struct `NamedAgentPoolProfile` has been removed
+- Field `ProvisionedClusters` of struct `ProvisionedClusterInstancesClientCreateOrUpdateResponse` has been removed
+- Field `ProvisionedClusters` of struct `ProvisionedClusterInstancesClientGetResponse` has been removed
+- Field `ProvisionedClustersListResult` of struct `ProvisionedClusterInstancesClientListResponse` has been removed
+- Field `Name` of struct `ProvisionedClusterPoolUpgradeProfile` has been removed
+- Field `OperationStatus` of struct `ProvisionedClusterPropertiesStatus` has been removed
+- Field `AgentPoolProfiles` of struct `ProvisionedClusterUpgradeProfileProperties` has been removed
+- Field `DhcpServers` of struct `VirtualNetworkProperties` has been removed
+- Field `Vmware` of struct `VirtualNetworkPropertiesInfraVnetProfile` has been removed
+- Field `Phase` of struct `VirtualNetworkPropertiesStatusOperationStatus` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateCreating`, `ProvisioningStatePending` added to enum type `ProvisioningState`
+- New value `ResourceProvisioningStatePending` added to enum type `ResourceProvisioningState`
+- New enum type `Expander` with values `ExpanderLeastWaste`, `ExpanderMostPods`, `ExpanderPriority`, `ExpanderRandom`
+- New struct `ClusterVMAccessProfile`
+- New struct `ControlPlaneProfileControlPlaneEndpoint`
+- New struct `ProvisionedCluster`
+- New struct `ProvisionedClusterListResult`
+- New struct `ProvisionedClusterPropertiesAutoScalerProfile`
+- New struct `StorageProfile`
+- New struct `StorageProfileNfsCSIDriver`
+- New struct `StorageProfileSmbCSIDriver`
+- New field `EnableAutoScaling`, `KubernetesVersion`, `MaxCount`, `MaxPods`, `MinCount`, `NodeLabels`, `NodeTaints` in struct `AgentPoolProperties`
+- New field `CurrentState` in struct `AgentPoolProvisioningStatusStatus`
+- New field `KubernetesVersion` in struct `AgentPoolUpdateProfile`
+- New field `EnableAutoScaling`, `KubernetesVersion`, `MaxCount`, `MaxPods`, `MinCount`, `NodeLabels`, `NodeTaints` in struct `NamedAgentPoolProfile`
+- New anonymous field `ProvisionedCluster` in struct `ProvisionedClusterInstancesClientCreateOrUpdateResponse`
+- New anonymous field `ProvisionedCluster` in struct `ProvisionedClusterInstancesClientGetResponse`
+- New anonymous field `ProvisionedClusterListResult` in struct `ProvisionedClusterInstancesClientListResponse`
+- New field `AutoScalerProfile`, `ClusterVMAccessProfile`, `StorageProfile` in struct `ProvisionedClusterProperties`
+- New field `CurrentState` in struct `ProvisionedClusterPropertiesStatus`
+
+
 ## 0.3.0 (2023-11-24)
 ### Breaking Changes
 

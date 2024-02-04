@@ -59,6 +59,10 @@ type ServerFactory struct {
 	SQLResourcesServer                 SQLResourcesServer
 	ServiceServer                      ServiceServer
 	TableResourcesServer               TableResourcesServer
+	ThroughputPoolAccountServer        ThroughputPoolAccountServer
+	ThroughputPoolAccountsServer       ThroughputPoolAccountsServer
+	ThroughputPoolServer               ThroughputPoolServer
+	ThroughputPoolsServer              ThroughputPoolsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -115,6 +119,10 @@ type ServerFactoryTransport struct {
 	trSQLResourcesServer                 *SQLResourcesServerTransport
 	trServiceServer                      *ServiceServerTransport
 	trTableResourcesServer               *TableResourcesServerTransport
+	trThroughputPoolAccountServer        *ThroughputPoolAccountServerTransport
+	trThroughputPoolAccountsServer       *ThroughputPoolAccountsServerTransport
+	trThroughputPoolServer               *ThroughputPoolServerTransport
+	trThroughputPoolsServer              *ThroughputPoolsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -316,6 +324,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTableResourcesServerTransport(&s.srv.TableResourcesServer)
 		})
 		resp, err = s.trTableResourcesServer.Do(req)
+	case "ThroughputPoolAccountClient":
+		initServer(s, &s.trThroughputPoolAccountServer, func() *ThroughputPoolAccountServerTransport {
+			return NewThroughputPoolAccountServerTransport(&s.srv.ThroughputPoolAccountServer)
+		})
+		resp, err = s.trThroughputPoolAccountServer.Do(req)
+	case "ThroughputPoolAccountsClient":
+		initServer(s, &s.trThroughputPoolAccountsServer, func() *ThroughputPoolAccountsServerTransport {
+			return NewThroughputPoolAccountsServerTransport(&s.srv.ThroughputPoolAccountsServer)
+		})
+		resp, err = s.trThroughputPoolAccountsServer.Do(req)
+	case "ThroughputPoolClient":
+		initServer(s, &s.trThroughputPoolServer, func() *ThroughputPoolServerTransport {
+			return NewThroughputPoolServerTransport(&s.srv.ThroughputPoolServer)
+		})
+		resp, err = s.trThroughputPoolServer.Do(req)
+	case "ThroughputPoolsClient":
+		initServer(s, &s.trThroughputPoolsServer, func() *ThroughputPoolsServerTransport {
+			return NewThroughputPoolsServerTransport(&s.srv.ThroughputPoolsServer)
+		})
+		resp, err = s.trThroughputPoolsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

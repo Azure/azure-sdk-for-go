@@ -15,6 +15,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcontainerservice/armhybridcontainerservice"
 	"net/http"
 	"net/url"
@@ -35,13 +36,9 @@ type AgentPoolServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, options *armhybridcontainerservice.AgentPoolClientGetOptions) (resp azfake.Responder[armhybridcontainerservice.AgentPoolClientGetResponse], errResp azfake.ErrorResponder)
 
-	// ListByProvisionedCluster is the fake for method AgentPoolClient.ListByProvisionedCluster
+	// NewListByProvisionedClusterPager is the fake for method AgentPoolClient.NewListByProvisionedClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListByProvisionedCluster func(ctx context.Context, connectedClusterResourceURI string, options *armhybridcontainerservice.AgentPoolClientListByProvisionedClusterOptions) (resp azfake.Responder[armhybridcontainerservice.AgentPoolClientListByProvisionedClusterResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method AgentPoolClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool armhybridcontainerservice.AgentPoolPatch, options *armhybridcontainerservice.AgentPoolClientBeginUpdateOptions) (resp azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientUpdateResponse], errResp azfake.ErrorResponder)
+	NewListByProvisionedClusterPager func(connectedClusterResourceURI string, options *armhybridcontainerservice.AgentPoolClientListByProvisionedClusterOptions) (resp azfake.PagerResponder[armhybridcontainerservice.AgentPoolClientListByProvisionedClusterResponse])
 }
 
 // NewAgentPoolServerTransport creates a new instance of AgentPoolServerTransport with the provided implementation.
@@ -49,20 +46,20 @@ type AgentPoolServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAgentPoolServerTransport(srv *AgentPoolServer) *AgentPoolServerTransport {
 	return &AgentPoolServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientDeleteResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientUpdateResponse]](),
+		srv:                              srv,
+		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientCreateOrUpdateResponse]](),
+		beginDelete:                      newTracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientDeleteResponse]](),
+		newListByProvisionedClusterPager: newTracker[azfake.PagerResponder[armhybridcontainerservice.AgentPoolClientListByProvisionedClusterResponse]](),
 	}
 }
 
 // AgentPoolServerTransport connects instances of armhybridcontainerservice.AgentPoolClient to instances of AgentPoolServer.
 // Don't use this type directly, use NewAgentPoolServerTransport instead.
 type AgentPoolServerTransport struct {
-	srv                 *AgentPoolServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientDeleteResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientUpdateResponse]]
+	srv                              *AgentPoolServer
+	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientCreateOrUpdateResponse]]
+	beginDelete                      *tracker[azfake.PollerResponder[armhybridcontainerservice.AgentPoolClientDeleteResponse]]
+	newListByProvisionedClusterPager *tracker[azfake.PagerResponder[armhybridcontainerservice.AgentPoolClientListByProvisionedClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for AgentPoolServerTransport.
@@ -83,10 +80,8 @@ func (a *AgentPoolServerTransport) Do(req *http.Request) (*http.Response, error)
 		resp, err = a.dispatchBeginDelete(req)
 	case "AgentPoolClient.Get":
 		resp, err = a.dispatchGet(req)
-	case "AgentPoolClient.ListByProvisionedCluster":
-		resp, err = a.dispatchListByProvisionedCluster(req)
-	case "AgentPoolClient.BeginUpdate":
-		resp, err = a.dispatchBeginUpdate(req)
+	case "AgentPoolClient.NewListByProvisionedClusterPager":
+		resp, err = a.dispatchNewListByProvisionedClusterPager(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -223,79 +218,39 @@ func (a *AgentPoolServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	return resp, nil
 }
 
-func (a *AgentPoolServerTransport) dispatchListByProvisionedCluster(req *http.Request) (*http.Response, error) {
-	if a.srv.ListByProvisionedCluster == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListByProvisionedCluster not implemented")}
+func (a *AgentPoolServerTransport) dispatchNewListByProvisionedClusterPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByProvisionedClusterPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByProvisionedClusterPager not implemented")}
 	}
-	const regexStr = `/(?P<connectedClusterResourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridContainerService/provisionedClusterInstances/default/agentPools`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	connectedClusterResourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedClusterResourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ListByProvisionedCluster(req.Context(), connectedClusterResourceURIParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AgentPoolListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AgentPoolServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/(?P<connectedClusterResourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridContainerService/provisionedClusterInstances/default/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	newListByProvisionedClusterPager := a.newListByProvisionedClusterPager.get(req)
+	if newListByProvisionedClusterPager == nil {
+		const regexStr = `/(?P<connectedClusterResourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridContainerService/provisionedClusterInstances/default/agentPools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if matches == nil || len(matches) < 1 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhybridcontainerservice.AgentPoolPatch](req)
-		if err != nil {
-			return nil, err
 		}
 		connectedClusterResourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectedClusterResourceUri")])
 		if err != nil {
 			return nil, err
 		}
-		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), connectedClusterResourceURIParam, agentPoolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
+		resp := a.srv.NewListByProvisionedClusterPager(connectedClusterResourceURIParam, nil)
+		newListByProvisionedClusterPager = &resp
+		a.newListByProvisionedClusterPager.add(req, newListByProvisionedClusterPager)
+		server.PagerResponderInjectNextLinks(newListByProvisionedClusterPager, req, func(page *armhybridcontainerservice.AgentPoolClientListByProvisionedClusterResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	resp, err := server.PagerResponderNext(newListByProvisionedClusterPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByProvisionedClusterPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
+	if !server.PagerResponderMore(newListByProvisionedClusterPager) {
+		a.newListByProvisionedClusterPager.remove(req)
 	}
-
 	return resp, nil
 }

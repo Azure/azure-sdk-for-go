@@ -69,7 +69,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	}
 
 	req.Raw().Header.Set(headerXmsDate, xmsDate)
-	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.SetOperationValue(operationContext)
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 
@@ -102,7 +102,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
 	}
 
 	req.Raw().Header.Set(headerXmsDate, xmsDate)
-	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.SetOperationValue(operationContext)
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 
@@ -135,7 +135,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequestWithEscapedCharacters(t *testin
 	}
 
 	req.Raw().Header.Set(headerXmsDate, xmsDate)
-	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.SetOperationValue(operationContext)
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 

@@ -19,7 +19,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	preferredRegions := []string{}
 	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
 
-	gem, err := newGlobalEndpointManager(client, preferredRegions, 5*time.Minute)
+	gem, err := newGlobalEndpointManager(client.endpoint, client.pipeline, preferredRegions, 5*time.Minute)
 	assert.NoError(t, err)
 
 	accountProps, err := gem.GetAccountProperties(context.Background())
@@ -61,10 +61,41 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
 	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
 
-	//update and assert available locations are now populated in location cache
+	// Run Update() and assert available locations are now populated in location cache
 	err = gem.Update(context.Background())
 	assert.NoError(t, err)
 	locationInfo = gem.locationCache.locationInfo
+
+	assert.Equal(t, len(locationInfo.availReadLocations), len(availableLocation)+1)
+	assert.Equal(t, len(locationInfo.availWriteLocations), len(availableLocation)+1)
+	assert.Equal(t, locationInfo.availWriteLocations[0], emulatorRegionName)
+	assert.Equal(t, locationInfo.availReadLocations[0], emulatorRegionName)
+	assert.Equal(t, len(locationInfo.availReadEndpointsByLocation), len(availableEndpointsByLocation)+1)
+	assert.Equal(t, len(locationInfo.availWriteEndpointsByLocation), len(availableEndpointsByLocation)+1)
+}
+
+func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+	client := emulatorTests.getClient(t)
+	emulatorRegionName := "South Central US"
+
+	// Assert location cache is not populated until update() is called within the policy
+	locationInfo := client.gem.locationCache.locationInfo
+	availableLocation := []string{}
+	availableEndpointsByLocation := map[string]url.URL{}
+
+	assert.Equal(t, locationInfo.availReadLocations, availableLocation)
+	assert.Equal(t, locationInfo.availWriteLocations, availableLocation)
+	assert.Equal(t, locationInfo.availReadEndpointsByLocation, availableEndpointsByLocation)
+	assert.Equal(t, locationInfo.availWriteEndpointsByLocation, availableEndpointsByLocation)
+
+	// Assert that information gets populated by the gem policy after running an http request (read item)
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	assert.Error(t, err)
+
+	locationInfo = client.gem.locationCache.locationInfo
 
 	assert.Equal(t, len(locationInfo.availReadLocations), len(availableLocation)+1)
 	assert.Equal(t, len(locationInfo.availWriteLocations), len(availableLocation)+1)

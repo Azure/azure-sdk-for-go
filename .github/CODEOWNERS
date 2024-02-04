@@ -57,13 +57,6 @@
 # PRLabel: %Open Telemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
 
-################
-# Automation
-################
-
-# Git Hub integration and bot rules
-/.github/                    @benbp @jsquire @jhendrixMSFT @rickwinter @ronniegeraghty
-
 ###########
 # Eng Sys
 ###########

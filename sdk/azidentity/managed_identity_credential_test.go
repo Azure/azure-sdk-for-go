@@ -300,8 +300,8 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	// cred should return credentialUnavailableError when IMDS responds 400 to a token request
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), testTRO)
-		if _, ok := err.(*credentialUnavailableError); !ok {
-			t.Fatalf("expected credentialUnavailableError, received %T", err)
+		if _, ok := err.(credentialUnavailable); !ok {
+			t.Fatalf("expected credentialUnavailable, received %T", err)
 		}
 	}
 }

@@ -26,3 +26,4 @@ stages:
     parameters:
       ServiceDirectory: '../eng/tools/generator'
       NonShipping: true
+      ExcludeGoNMinus2: true

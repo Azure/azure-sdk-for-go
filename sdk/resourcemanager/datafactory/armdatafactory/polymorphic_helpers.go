@@ -231,8 +231,12 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 		b = &RestSink{}
 	case "SalesforceServiceCloudSink":
 		b = &SalesforceServiceCloudSink{}
+	case "SalesforceServiceCloudV2Sink":
+		b = &SalesforceServiceCloudV2Sink{}
 	case "SalesforceSink":
 		b = &SalesforceSink{}
+	case "SalesforceV2Sink":
+		b = &SalesforceV2Sink{}
 	case "SapCloudForCustomerSink":
 		b = &SapCloudForCustomerSink{}
 	case "SnowflakeSink":
@@ -245,6 +249,8 @@ func unmarshalCopySinkClassification(rawMsg json.RawMessage) (CopySinkClassifica
 		b = &SQLServerSink{}
 	case "SqlSink":
 		b = &SQLSink{}
+	case "WarehouseSink":
+		b = &WarehouseSink{}
 	default:
 		b = &CopySink{}
 	}
@@ -406,8 +412,12 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &SalesforceMarketingCloudSource{}
 	case "SalesforceServiceCloudSource":
 		b = &SalesforceServiceCloudSource{}
+	case "SalesforceServiceCloudV2Source":
+		b = &SalesforceServiceCloudV2Source{}
 	case "SalesforceSource":
 		b = &SalesforceSource{}
+	case "SalesforceV2Source":
+		b = &SalesforceV2Source{}
 	case "SapBwSource":
 		b = &SapBwSource{}
 	case "SapCloudForCustomerSource":
@@ -450,6 +460,8 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 		b = &TeradataSource{}
 	case "VerticaSource":
 		b = &VerticaSource{}
+	case "WarehouseSource":
+		b = &WarehouseSource{}
 	case "WebSource":
 		b = &WebSource{}
 	case "XeroSource":
@@ -700,6 +712,10 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &SalesforceObjectDataset{}
 	case "SalesforceServiceCloudObject":
 		b = &SalesforceServiceCloudObjectDataset{}
+	case "SalesforceServiceCloudV2Object":
+		b = &SalesforceServiceCloudV2ObjectDataset{}
+	case "SalesforceV2Object":
+		b = &SalesforceV2ObjectDataset{}
 	case "SapBwCube":
 		b = &SapBwCubeDataset{}
 	case "SapCloudForCustomerResource":
@@ -734,6 +750,8 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 		b = &TeradataTableDataset{}
 	case "VerticaTable":
 		b = &VerticaTableDataset{}
+	case "WarehouseTable":
+		b = &WarehouseTableDataset{}
 	case "WebTable":
 		b = &WebTableDataset{}
 	case "XeroObject":
@@ -1180,6 +1198,10 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SalesforceMarketingCloudLinkedService{}
 	case "SalesforceServiceCloud":
 		b = &SalesforceServiceCloudLinkedService{}
+	case "SalesforceServiceCloudV2":
+		b = &SalesforceServiceCloudV2LinkedService{}
+	case "SalesforceV2":
+		b = &SalesforceV2LinkedService{}
 	case "SapBW":
 		b = &SapBWLinkedService{}
 	case "SapCloudForCustomer":
@@ -1222,6 +1244,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &TwilioLinkedService{}
 	case "Vertica":
 		b = &VerticaLinkedService{}
+	case "Warehouse":
+		b = &WarehouseLinkedService{}
 	case "Web":
 		b = &WebLinkedService{}
 	case "Xero":

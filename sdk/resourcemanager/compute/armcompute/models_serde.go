@@ -2404,6 +2404,7 @@ func (c CreationData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "imageReference", c.ImageReference)
 	populate(objectMap, "logicalSectorSize", c.LogicalSectorSize)
 	populate(objectMap, "performancePlus", c.PerformancePlus)
+	populate(objectMap, "provisionedBandwidthCopySpeed", c.ProvisionedBandwidthCopySpeed)
 	populate(objectMap, "securityDataUri", c.SecurityDataURI)
 	populate(objectMap, "sourceResourceId", c.SourceResourceID)
 	populate(objectMap, "sourceUri", c.SourceURI)
@@ -2439,6 +2440,9 @@ func (c *CreationData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "performancePlus":
 			err = unpopulate(val, "PerformancePlus", &c.PerformancePlus)
+			delete(rawMsg, key)
+		case "provisionedBandwidthCopySpeed":
+			err = unpopulate(val, "ProvisionedBandwidthCopySpeed", &c.ProvisionedBandwidthCopySpeed)
 			delete(rawMsg, key)
 		case "securityDataUri":
 			err = unpopulate(val, "SecurityDataURI", &c.SecurityDataURI)

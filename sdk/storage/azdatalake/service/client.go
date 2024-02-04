@@ -46,7 +46,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.ServiceClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func (s *Client) getClientOptions() *base.ClientOptions {
 func (s *Client) NewFileSystemClient(filesystemName string) *filesystem.Client {
 	filesystemURL := runtime.JoinPaths(s.generatedServiceClientWithDFS().Endpoint(), filesystemName)
 	containerURL, filesystemURL := shared.GetURLs(filesystemURL)
-	return (*filesystem.Client)(base.NewFileSystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(shared.FileSystemClient), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
+	return (*filesystem.Client)(base.NewFileSystemClient(filesystemURL, containerURL, s.serviceClient().NewContainerClient(filesystemName), s.generatedServiceClientWithDFS().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.identityCredential(), s.getClientOptions()))
 }
 
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.

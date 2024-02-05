@@ -116,7 +116,7 @@ steps:
       targetType: 'filePath'
       filePath: ./eng/scripts/Ignore-Mgmt-REAMDE-Link.ps1
       pwsh: true
-      arguments: 'sdk/${{parameters.ServiceDirectory}}/README.md $(Build.SourcesDirectory)/eng/ignore-links.txt'
+      arguments: 'sdk/${{parameters.ServiceDirectory}} $(Build.SourcesDirectory)/eng/ignore-links.txt'
 
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:

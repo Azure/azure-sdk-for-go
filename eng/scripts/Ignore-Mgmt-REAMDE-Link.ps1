@@ -1,15 +1,15 @@
 param (
-    [string]$readmePath,
+    [string]$serviePath,
     [string]$outputFile
 )
 
-if ($readmePath -notlike "*sdk/resourcemanager*" -or $readmePath -like "*sdk/resourcemanager/internal*") {
+if ($serviePath -notlike "*sdk/resourcemanager*" -or $serviePath -like "*sdk/resourcemanager/internal*") {
     return
 }
 
-$lines = Get-Content -Path $readmePath
+$lines = Get-Content -Path $serviePath/README.md
 
-$pattern = "(https://pkg\.go\.dev/github\.com/Azure/azure-sdk-for-go/sdk/resourcemanager/[a-zA-Z0-9_.\-/]+)"
+$pattern = "(https://pkg\.go\.dev/github\.com/Azure/azure-sdk-for-go/$serviePath[a-zA-Z0-9_.\-/]*)"
 $matchPkg = $lines | Where-Object { $_ -match $pattern }
 
 foreach ($m in $matchPkg) {

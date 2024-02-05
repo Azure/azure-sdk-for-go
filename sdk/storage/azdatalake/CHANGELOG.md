@@ -34,6 +34,8 @@
 
 =======
 >>>>>>> 63ae0d232b ([azdatalake] HNS encryption scope (#22346))
+=======
+>>>>>>> 63ae0d232b ([azdatalake] HNS encryption scope (#22346))
 ## 1.1.0-beta.1 (2024-01-10)
 
 ### Features Added

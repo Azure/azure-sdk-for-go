@@ -3,6 +3,8 @@
 ## 1.1.2 (Unreleased)
 
 ### Features Added
+* Append API Bundled with Flush functionality
+* HNS Encryption Scope support
 
 ### Breaking Changes
 

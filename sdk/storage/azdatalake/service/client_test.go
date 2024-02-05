@@ -92,6 +92,35 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
 }
 
+func (s *ServiceRecordedTestsSuite) TestCreateFilesystemsWithOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	md := map[string]*string{
+		"foo": to.Ptr("foovalue"),
+		"bar": to.Ptr("barvalue"),
+	}
+	cpkScopeInfo := &testcommon.TestCPKScopeInfo
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.ServiceGetFileSystemClient(fsName, svcClient)
+
+	_, err = fsClient.Create(context.Background(), &filesystem.CreateOptions{Metadata: md, CPKScopeInfo: cpkScopeInfo})
+	defer func(fsClient *filesystem.Client, ctx context.Context, options *filesystem.DeleteOptions) {
+		_, err := fsClient.Delete(ctx, options)
+		if err != nil {
+			_require.NoError(err)
+		}
+	}(fsClient, context.Background(), nil)
+
+	_require.NoError(err)
+	resp, err := fsClient.GetProperties(context.Background(), nil)
+
+	_require.NoError(err)
+	_require.Equal(resp.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
+}
+
 func (s *ServiceRecordedTestsSuite) TestSetPropertiesLogging() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)

@@ -1,5 +1,16 @@
 # Release History
 
+## 1.1.0-beta.2 (Unreleased)
+
+### Features Added
+* HNS Encryption Scope support
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0-beta.1 (2024-01-10)
 
 ### Features Added

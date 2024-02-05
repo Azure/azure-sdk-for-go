@@ -102,8 +102,9 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
 	access := filesystem.FileSystem
 	opts := filesystem.CreateOptions{
-		Metadata: metadata,
-		Access:   &access,
+		Metadata:     metadata,
+		Access:       &access,
+		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
 	}
 	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
 	_require.NoError(err)
@@ -116,6 +117,7 @@ func (s *RecordedTestSuite) TestCreateFilesystemWithOptions() {
 	_require.NoError(err)
 	_require.NotNil(props.Metadata)
 	_require.Equal(*props.PublicAccess, filesystem.FileSystem)
+	_require.Equal(props.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
 }
 
 func (s *RecordedTestSuite) TestCreateFilesystemWithFileAccess() {
@@ -260,6 +262,34 @@ func (s *RecordedTestSuite) TestFilesystemGetPropertiesWithLease() {
 
 	_, err = fsLeaseClient.ReleaseLease(context.Background(), nil)
 	_require.NoError(err)
+}
+
+func (s *RecordedTestSuite) TestFilesystemGetPropertiesDefaultEncryptionScopeAndOverride() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	testStr := "hello"
+	metadata := map[string]*string{"foo": &testStr, "bar": &testStr}
+	access := filesystem.FileSystem
+
+	opts := filesystem.CreateOptions{
+		Metadata:     metadata,
+		Access:       &access,
+		CPKScopeInfo: &testcommon.TestCPKScopeInfo,
+	}
+	_, err = fsClient.Create(context.Background(), &opts)
+	_require.NoError(err)
+
+	resp, err := fsClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(resp.DenyEncryptionScopeOverride, to.Ptr(false))
+	_require.Equal(resp.DefaultEncryptionScope, &testcommon.TestEncryptionScope)
+
 }
 
 func (s *RecordedTestSuite) TestFilesystemDelete() {

@@ -7,6 +7,16 @@ if ($serviePath -notlike "*sdk/resourcemanager*" -or $serviePath -like "*sdk/res
     return
 }
 
+if (-not (Test-Path $serviePath/README.md)) {
+    Write-Host "$serviePath/README.md does not exist."
+    exit
+}
+
+if (-not (Test-Path $outputFile)) {
+    Write-Host "$outputFile does not exist."
+    exit
+}
+
 $lines = Get-Content -Path $serviePath/README.md
 
 $pattern = "(https://pkg\.go\.dev/github\.com/Azure/azure-sdk-for-go/$serviePath[a-zA-Z0-9_.\-/]*)"

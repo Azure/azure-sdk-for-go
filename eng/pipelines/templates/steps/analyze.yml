@@ -111,7 +111,7 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - task: PowerShell@2
-    displayName: 'Ignore Mgmt README.md Link'
+    displayName: Add module link in README.md to 'ignore-links.txt'
     inputs:
       targetType: 'filePath'
       filePath: ./eng/scripts/Ignore-Mgmt-REAMDE-Link.ps1

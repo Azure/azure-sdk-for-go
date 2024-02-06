@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/azcore
 go 1.18
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.1
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.20.0
 )
@@ -14,5 +14,3 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../internal

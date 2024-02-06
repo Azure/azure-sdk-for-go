@@ -471,7 +471,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
 
-	numChunks := (count-1)/o.BlockSize + 1
+	numChunks := uint16((count-1)/o.BlockSize + 1)
 	for bufferCounter := float64(0); bufferCounter < math.Min(float64(numChunks), float64(o.Concurrency)); bufferCounter++ {
 		if _, err := buffers.Grow(); err != nil {
 			return 0, err
@@ -521,7 +521,7 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
-		NumChunks:     uint16(numChunks),
+		NumChunks:     numChunks,
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			buff, err := acquireBuffer()

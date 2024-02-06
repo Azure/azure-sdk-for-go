@@ -8,8 +8,8 @@
 
 package azmetrics
 
-// ClientQueryResourcesOptions contains the optional parameters for the Client.QueryResources method.
-type ClientQueryResourcesOptions struct {
+// QueryResourcesOptions contains the optional parameters for the Client.QueryResources method.
+type QueryResourcesOptions struct {
 	// The list of aggregation types (comma separated) to retrieve.Examples: average, minimum, maximum
 	Aggregation *string
 

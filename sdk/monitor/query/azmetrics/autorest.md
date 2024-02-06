@@ -39,7 +39,13 @@ directive:
     where: $.definitions.MetricResults.properties.values.items
     transform: $["description"] = "Metric data values."
 
-  # fix casing, rename batch metric fields
+  # renaming or fixing the casing of struct fields and parameters
+  - from: swagger-document
+    where: $.parameters.MetricNamespaceParameter
+    transform: $["x-ms-client-name"] = "metricNamespace"
+  - from: swagger-document
+    where: $.parameters.MetricNamesParameter
+    transform: $["x-ms-client-name"] = "metricNames"
   - from: swagger-document
     where: $.parameters.StartTimeParameter
     transform: $["x-ms-client-name"] = "StartTime"
@@ -73,4 +79,12 @@ directive:
   - from: swagger-document
     where: $.parameters.RollUpByParameter
     transform: $["x-ms-client-name"] = "RollUpBy"
+
+  # delete client name prefix from method options and response types
+  - from:
+      - client.go
+      - options.go
+      - response_types.go
+    where: $
+    transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

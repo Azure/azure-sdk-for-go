@@ -8,8 +8,8 @@
 
 package azmetrics
 
-// ClientQueryResourcesResponse contains the response from method Client.QueryResources.
-type ClientQueryResourcesResponse struct {
+// QueryResourcesResponse contains the response from method Client.QueryResources.
+type QueryResourcesResponse struct {
 	// The metrics result for a resource.
 	MetricResults
 }

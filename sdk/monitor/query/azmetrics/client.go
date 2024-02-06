@@ -32,32 +32,32 @@ type Client struct {
 //
 // Generated from API version 2023-10-01
 //   - subscriptionID - The subscription identifier for the resources in this batch.
-//   - metricnamespace - Metric namespace that contains the requested metric names.
-//   - metricnames - The names of the metrics (comma separated) to retrieve.
+//   - metricNamespace - Metric namespace that contains the requested metric names.
+//   - metricNames - The names of the metrics (comma separated) to retrieve.
 //   - batchRequest - Metrics batch body including the list of resource ids
-//   - options - ClientQueryResourcesOptions contains the optional parameters for the Client.QueryResources method.
-func (client *Client) QueryResources(ctx context.Context, subscriptionID string, metricnamespace string, metricnames []string, batchRequest ResourceIDList, options *ClientQueryResourcesOptions) (ClientQueryResourcesResponse, error) {
+//   - options - QueryResourcesOptions contains the optional parameters for the Client.QueryResources method.
+func (client *Client) QueryResources(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *QueryResourcesOptions) (QueryResourcesResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryResources", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryResourcesCreateRequest(ctx, subscriptionID, metricnamespace, metricnames, batchRequest, options)
+	req, err := client.queryResourcesCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, batchRequest, options)
 	if err != nil {
-		return ClientQueryResourcesResponse{}, err
+		return QueryResourcesResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientQueryResourcesResponse{}, err
+		return QueryResourcesResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientQueryResourcesResponse{}, err
+		return QueryResourcesResponse{}, err
 	}
 	resp, err := client.queryResourcesHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryResourcesCreateRequest creates the QueryResources request.
-func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscriptionID string, metricnamespace string, metricnames []string, batchRequest ResourceIDList, options *ClientQueryResourcesOptions) (*policy.Request, error) {
+func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *QueryResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/metrics:getBatch"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -77,8 +77,8 @@ func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscript
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", *options.Interval)
 	}
-	reqQP.Set("metricnamespace", metricnamespace)
-	reqQP.Set("metricnames", strings.Join(metricnames, ","))
+	reqQP.Set("metricnamespace", metricNamespace)
+	reqQP.Set("metricnames", strings.Join(metricNames, ","))
 	if options != nil && options.Aggregation != nil {
 		reqQP.Set("aggregation", *options.Aggregation)
 	}
@@ -104,10 +104,10 @@ func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscript
 }
 
 // queryResourcesHandleResponse handles the QueryResources response.
-func (client *Client) queryResourcesHandleResponse(resp *http.Response) (ClientQueryResourcesResponse, error) {
-	result := ClientQueryResourcesResponse{}
+func (client *Client) queryResourcesHandleResponse(resp *http.Response) (QueryResourcesResponse, error) {
+	result := QueryResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricResults); err != nil {
-		return ClientQueryResourcesResponse{}, err
+		return QueryResourcesResponse{}, err
 	}
 	return result, nil
 }

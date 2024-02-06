@@ -114,7 +114,7 @@ steps:
     displayName: Add module link in README.md to 'ignore-links.txt'
     inputs:
       targetType: 'filePath'
-      filePath: ./eng/scripts/Ignore-Mgmt-REAMDE-Link.ps1
+      filePath: ./eng/scripts/Ignore-Mgmt-README-Link.ps1
       pwsh: true
       arguments: 'sdk/${{parameters.ServiceDirectory}} $(Build.SourcesDirectory)/eng/ignore-links.txt'
 

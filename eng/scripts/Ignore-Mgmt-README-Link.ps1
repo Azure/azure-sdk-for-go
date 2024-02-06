@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+  Add the Go management module link in readme.md to the 'ignore-links.txt'.
+
+.DESCRIPTION
+  This script is used to add the module link to 'ignore-links.txt' to skip it from the links verification. The reason to skip it from the validation is the module link is not available at this time during this pipeline run. It will be available after the release tag is created at Azure/azure-sdk-for-go repository.
+
+.PARAMETER servicePath
+  The path of the service.
+
+.PARAMETER outputFile
+  The path of the 'ignore-links.txt'.
+
+.EXAMPLE
+  Ignore-Mgmt-README-Link -servicePath "/home/azure-sdk-for-go/sdk/servicea" -outputFile "/home/azure-sdk-for-go/eng/ignore-links.txt"
+
+#>
+
 param (
     [ValidateNotNullOrEmpty()]
     [string]$serviePath,

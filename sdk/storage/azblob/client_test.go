@@ -396,7 +396,6 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		})
 	assert.NoError(t, errTransferred)
 	_require.NoError(err)
-	//_require.Equal(response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
@@ -443,7 +442,6 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		destBuffer = make([]byte, downloadCount)
 	}
 
-	_, err = destFile.Seek(0, 0)
 	_require.NoError(err)
 	n, err := destFile.Read(destBuffer)
 	_require.NoError(err)

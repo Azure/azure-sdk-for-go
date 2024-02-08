@@ -410,6 +410,9 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 
 	}(destFileName)
 
+	filePointer, err := file.Seek(0, io.SeekCurrent)
+	_require.NoError(err)
+
 	// Perform download
 	_, err = client.DownloadFile(context.Background(),
 		containerName,
@@ -432,6 +435,10 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 
 	// Assert download was successful
 	assert.NoError(t, errTransferred)
+	_require.NoError(err)
+
+	currPointer, err := destFile.Seek(0, io.SeekCurrent)
+	_require.Equal(filePointer, currPointer)
 	_require.NoError(err)
 
 	// Assert downloaded data is consistent

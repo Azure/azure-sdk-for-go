@@ -596,7 +596,10 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
-	filePointer, _ := file.Seek(0, io.SeekCurrent)
+	filePointer, err := file.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return 0, err
+	}
 
 	// 1. Calculate the size of the destination file
 	var size int64
@@ -627,7 +630,10 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 
 	if size > 0 {
 		writeSize, err := b.downloadFile(ctx, file, *do)
-		_, _ = file.Seek(filePointer, 0)
+		_, err = file.Seek(filePointer, io.SeekStart)
+		if err != nil {
+			return 0, err
+		}
 		return writeSize, err
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil

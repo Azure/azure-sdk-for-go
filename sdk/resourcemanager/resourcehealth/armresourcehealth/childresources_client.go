@@ -78,13 +78,13 @@ func (client *ChildResourcesClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	reqQP.Set("api-version", "2023-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -205,9 +205,9 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb *Client) ClearPages(ctx context.Context, httpRange blob.HTTPRange, options *ClearPagesOptions) (ClearPagesResponse, error) {
+func (pb *Client) ClearPages(ctx context.Context, rnge blob.HTTPRange, options *ClearPagesOptions) (ClearPagesResponse, error) {
 	clearOptions := &generated.PageBlobClientClearPagesOptions{
-		Range: exported.FormatHTTPRange(httpRange),
+		Range: exported.FormatHTTPRange(rnge),
 	}
 
 	leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()

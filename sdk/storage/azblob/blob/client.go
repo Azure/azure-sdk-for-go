@@ -596,7 +596,7 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
-	filePointer, err := file.Seek(0, io.SeekCurrent)
+	filePointer, _ := file.Seek(0, io.SeekCurrent)
 
 	// 1. Calculate the size of the destination file
 	var size int64

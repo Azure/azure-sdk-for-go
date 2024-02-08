@@ -1,10 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.3.0 (2024-02-08)
 
 ### Bugs Fixed
 * Fix concurrency issue while Downloading File. Fixes [#22156](https://github.com/Azure/azure-sdk-for-go/issues/22156). 
@@ -12,6 +8,7 @@
 * Fix file offset update after Download file. Fixes [#22297](https://github.com/Azure/azure-sdk-for-go/issues/22297).
 
 ### Other Changes
+* Updated the version of `azcore` to `1.9.2`
 
 ## 1.3.0-beta.1 (2024-01-09)
 

@@ -34,29 +34,29 @@ type Client struct {
 // Generated from API version 2022-10-27
 //   - resourceID - The identifier of the resource.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
-//   - options - ClientQueryResourceOptions contains the optional parameters for the Client.QueryResource method.
-func (client *Client) QueryResource(ctx context.Context, resourceID string, body QueryBody, options *ClientQueryResourceOptions) (ClientQueryResourceResponse, error) {
+//   - options - QueryResourceOptions contains the optional parameters for the Client.QueryResource method.
+func (client *Client) QueryResource(ctx context.Context, resourceID string, body QueryBody, options *QueryResourceOptions) (QueryResourceResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryResource", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.queryResourceCreateRequest(ctx, resourceID, body, options)
 	if err != nil {
-		return ClientQueryResourceResponse{}, err
+		return QueryResourceResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientQueryResourceResponse{}, err
+		return QueryResourceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientQueryResourceResponse{}, err
+		return QueryResourceResponse{}, err
 	}
 	resp, err := client.queryResourceHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryResourceCreateRequest creates the QueryResource request.
-func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID string, body QueryBody, options *ClientQueryResourceOptions) (*policy.Request, error) {
+func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID string, body QueryBody, options *QueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/query"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
@@ -74,10 +74,10 @@ func (client *Client) queryResourceCreateRequest(ctx context.Context, resourceID
 }
 
 // queryResourceHandleResponse handles the QueryResource response.
-func (client *Client) queryResourceHandleResponse(resp *http.Response) (ClientQueryResourceResponse, error) {
-	result := ClientQueryResourceResponse{}
+func (client *Client) queryResourceHandleResponse(resp *http.Response) (QueryResourceResponse, error) {
+	result := QueryResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
-		return ClientQueryResourceResponse{}, err
+		return QueryResourceResponse{}, err
 	}
 	return result, nil
 }
@@ -89,29 +89,29 @@ func (client *Client) queryResourceHandleResponse(resp *http.Response) (ClientQu
 // Generated from API version 2022-10-27
 //   - workspaceID - Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
-//   - options - ClientQueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
-func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, body QueryBody, options *ClientQueryWorkspaceOptions) (ClientQueryWorkspaceResponse, error) {
+//   - options - QueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
+func (client *Client) QueryWorkspace(ctx context.Context, workspaceID string, body QueryBody, options *QueryWorkspaceOptions) (QueryWorkspaceResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryWorkspace", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.queryWorkspaceCreateRequest(ctx, workspaceID, body, options)
 	if err != nil {
-		return ClientQueryWorkspaceResponse{}, err
+		return QueryWorkspaceResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientQueryWorkspaceResponse{}, err
+		return QueryWorkspaceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientQueryWorkspaceResponse{}, err
+		return QueryWorkspaceResponse{}, err
 	}
 	resp, err := client.queryWorkspaceHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryWorkspaceCreateRequest creates the QueryWorkspace request.
-func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspaceID string, body QueryBody, options *ClientQueryWorkspaceOptions) (*policy.Request, error) {
+func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspaceID string, body QueryBody, options *QueryWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/workspaces/{workspaceId}/query"
 	if workspaceID == "" {
 		return nil, errors.New("parameter workspaceID cannot be empty")
@@ -132,10 +132,10 @@ func (client *Client) queryWorkspaceCreateRequest(ctx context.Context, workspace
 }
 
 // queryWorkspaceHandleResponse handles the QueryWorkspace response.
-func (client *Client) queryWorkspaceHandleResponse(resp *http.Response) (ClientQueryWorkspaceResponse, error) {
-	result := ClientQueryWorkspaceResponse{}
+func (client *Client) queryWorkspaceHandleResponse(resp *http.Response) (QueryWorkspaceResponse, error) {
+	result := QueryWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
-		return ClientQueryWorkspaceResponse{}, err
+		return QueryWorkspaceResponse{}, err
 	}
 	return result, nil
 }
@@ -146,29 +146,29 @@ func (client *Client) queryWorkspaceHandleResponse(resp *http.Response) (ClientQ
 //
 // Generated from API version 2022-10-27
 //   - body - The batch request body
-//   - options - ClientQueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
-func (client *Client) QueryWorkspaces(ctx context.Context, body BatchRequest, options *ClientQueryWorkspacesOptions) (ClientQueryWorkspacesResponse, error) {
+//   - options - QueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
+func (client *Client) QueryWorkspaces(ctx context.Context, body BatchRequest, options *QueryWorkspacesOptions) (QueryWorkspacesResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryWorkspaces", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.queryWorkspacesCreateRequest(ctx, body, options)
 	if err != nil {
-		return ClientQueryWorkspacesResponse{}, err
+		return QueryWorkspacesResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientQueryWorkspacesResponse{}, err
+		return QueryWorkspacesResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientQueryWorkspacesResponse{}, err
+		return QueryWorkspacesResponse{}, err
 	}
 	resp, err := client.queryWorkspacesHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryWorkspacesCreateRequest creates the QueryWorkspaces request.
-func (client *Client) queryWorkspacesCreateRequest(ctx context.Context, body BatchRequest, options *ClientQueryWorkspacesOptions) (*policy.Request, error) {
+func (client *Client) queryWorkspacesCreateRequest(ctx context.Context, body BatchRequest, options *QueryWorkspacesOptions) (*policy.Request, error) {
 	urlPath := "/$batch"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
@@ -182,10 +182,10 @@ func (client *Client) queryWorkspacesCreateRequest(ctx context.Context, body Bat
 }
 
 // queryWorkspacesHandleResponse handles the QueryWorkspaces response.
-func (client *Client) queryWorkspacesHandleResponse(resp *http.Response) (ClientQueryWorkspacesResponse, error) {
-	result := ClientQueryWorkspacesResponse{}
+func (client *Client) queryWorkspacesHandleResponse(resp *http.Response) (QueryWorkspacesResponse, error) {
+	result := QueryWorkspacesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchResponse); err != nil {
-		return ClientQueryWorkspacesResponse{}, err
+		return QueryWorkspacesResponse{}, err
 	}
 	return result, nil
 }

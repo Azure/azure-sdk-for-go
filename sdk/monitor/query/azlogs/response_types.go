@@ -8,20 +8,20 @@
 
 package azlogs
 
-// ClientQueryResourceResponse contains the response from method Client.QueryResource.
-type ClientQueryResourceResponse struct {
+// QueryResourceResponse contains the response from method Client.QueryResource.
+type QueryResourceResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
 	QueryResults
 }
 
-// ClientQueryWorkspaceResponse contains the response from method Client.QueryWorkspace.
-type ClientQueryWorkspaceResponse struct {
+// QueryWorkspaceResponse contains the response from method Client.QueryWorkspace.
+type QueryWorkspaceResponse struct {
 	// Contains the tables, columns & rows resulting from a query.
 	QueryResults
 }
 
-// ClientQueryWorkspacesResponse contains the response from method Client.QueryWorkspaces.
-type ClientQueryWorkspacesResponse struct {
+// QueryWorkspacesResponse contains the response from method Client.QueryWorkspaces.
+type QueryWorkspacesResponse struct {
 	// Response to a batch query.
 	BatchResponse
 }

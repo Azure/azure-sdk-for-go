@@ -8,19 +8,19 @@
 
 package azlogs
 
-// ClientQueryResourceOptions contains the optional parameters for the Client.QueryResource method.
-type ClientQueryResourceOptions struct {
+// QueryResourceOptions contains the optional parameters for the Client.QueryResource method.
+type QueryResourceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
 	Options *LogsQueryOptions
 }
 
-// ClientQueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
-type ClientQueryWorkspaceOptions struct {
+// QueryWorkspaceOptions contains the optional parameters for the Client.QueryWorkspace method.
+type QueryWorkspaceOptions struct {
 	// Optional. The prefer header to set server timeout, query statistics and visualization information.
 	Options *LogsQueryOptions
 }
 
-// ClientQueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
-type ClientQueryWorkspacesOptions struct {
+// QueryWorkspacesOptions contains the optional parameters for the Client.QueryWorkspaces method.
+type QueryWorkspacesOptions struct {
 	// placeholder for future optional parameters
 }

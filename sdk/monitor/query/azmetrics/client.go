@@ -34,13 +34,13 @@ type Client struct {
 //   - subscriptionID - The subscription identifier for the resources in this batch.
 //   - metricNamespace - Metric namespace that contains the requested metric names.
 //   - metricNames - The names of the metrics (comma separated) to retrieve.
-//   - batchRequest - Metrics batch body including the list of resource ids
+//   - resourceIDs - Metrics batch body including the list of resource ids
 //   - options - QueryResourcesOptions contains the optional parameters for the Client.QueryResources method.
-func (client *Client) QueryResources(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *QueryResourcesOptions) (QueryResourcesResponse, error) {
+func (client *Client) QueryResources(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, resourceIDs ResourceIDList, options *QueryResourcesOptions) (QueryResourcesResponse, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.QueryResources", client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryResourcesCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, batchRequest, options)
+	req, err := client.queryResourcesCreateRequest(ctx, subscriptionID, metricNamespace, metricNames, resourceIDs, options)
 	if err != nil {
 		return QueryResourcesResponse{}, err
 	}
@@ -57,7 +57,7 @@ func (client *Client) QueryResources(ctx context.Context, subscriptionID string,
 }
 
 // queryResourcesCreateRequest creates the QueryResources request.
-func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, batchRequest ResourceIDList, options *QueryResourcesOptions) (*policy.Request, error) {
+func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscriptionID string, metricNamespace string, metricNames []string, resourceIDs ResourceIDList, options *QueryResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/metrics:getBatch"
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -97,7 +97,7 @@ func (client *Client) queryResourcesCreateRequest(ctx context.Context, subscript
 	reqQP.Set("api-version", "2023-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, batchRequest); err != nil {
+	if err := runtime.MarshalAsJSON(req, resourceIDs); err != nil {
 		return nil, err
 	}
 	return req, nil

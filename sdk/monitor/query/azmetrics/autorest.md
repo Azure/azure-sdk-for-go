@@ -41,6 +41,9 @@ directive:
 
   # renaming or fixing the casing of struct fields and parameters
   - from: swagger-document
+    where: $.definitions.Metric.properties.timeseries
+    transform: $["x-ms-client-name"] = "TimeSeries"
+  - from: swagger-document
     where: $.parameters.MetricNamespaceParameter
     transform: $["x-ms-client-name"] = "metricNamespace"
   - from: swagger-document
@@ -79,6 +82,9 @@ directive:
   - from: swagger-document
     where: $.parameters.RollUpByParameter
     transform: $["x-ms-client-name"] = "RollUpBy"
+  - from: client.go
+    where: $
+    transform: return $.replace(/batchRequest/g, "resourceIDs");
 
   # delete client name prefix from method options and response types
   - from:

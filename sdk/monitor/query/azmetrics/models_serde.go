@@ -85,7 +85,7 @@ func (m Metric) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "errorMessage", m.ErrorMessage)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "name", m.Name)
-	populate(objectMap, "timeseries", m.Timeseries)
+	populate(objectMap, "timeseries", m.TimeSeries)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "unit", m.Unit)
 	return json.Marshal(objectMap)
@@ -116,7 +116,7 @@ func (m *Metric) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &m.Name)
 			delete(rawMsg, key)
 		case "timeseries":
-			err = unpopulate(val, "Timeseries", &m.Timeseries)
+			err = unpopulate(val, "TimeSeries", &m.TimeSeries)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)

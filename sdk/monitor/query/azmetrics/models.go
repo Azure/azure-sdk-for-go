@@ -37,7 +37,7 @@ type Metric struct {
 	Name *LocalizableString
 
 	// REQUIRED; The time series returned when a data query is performed.
-	Timeseries []*TimeSeriesElement
+	TimeSeries []*TimeSeriesElement
 
 	// REQUIRED; The resource type of the metric resource.
 	Type *string

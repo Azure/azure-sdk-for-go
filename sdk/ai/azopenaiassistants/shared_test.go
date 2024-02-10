@@ -76,7 +76,7 @@ func newClient(t *testing.T, args newClientArgs) *assistants.Client {
 			err = recording.AddURISanitizer("https://openai.azure.com", strings.TrimRight(tv.OpenAIEndpoint, "/"), nil)
 			require.NoError(t, err)
 
-			err = recording.AddHeaderRegexSanitizer("Api-Key", "apikey", "", nil)
+			err = recording.AddHeaderRegexSanitizer("Api-Key", "key", "", nil)
 			require.NoError(t, err)
 		}
 
@@ -191,7 +191,14 @@ func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, err
 
 	// we'll fix up the multipart to make it more predictable for test recordings.
 	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
-	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
+
+	contentType := req.Raw().Header[http.CanonicalHeaderKey("Content-type")]
+
+	if len(contentType) == 0 {
+		return req.Next()
+	}
+
+	mediaType, params, err := mime.ParseMediaType(contentType[0])
 
 	if err != nil || mediaType != "multipart/form-data" {
 		// we'll just assume our policy doesn't apply here.

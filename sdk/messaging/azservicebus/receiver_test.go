@@ -308,7 +308,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
-	require.True(t, deferredMessages[0].deferred, "internal flag indicating it was from a deferred receiver method is set")
+	require.True(t, deferredMessages[0].settleOnMgmtLink, "deferred messages should always settle on the management link")
 
 	for _, m := range deferredMessages {
 		err = receiver.CompleteMessage(ctx, m, nil)

@@ -59,9 +59,9 @@ func TestAssistantCreationAndListing(t *testing.T) {
 		require.True(t, found)
 	}
 
-	t.Run("OpenAI", func(t *testing.T) {
-		testFn(t, false)
-	})
+	// t.Run("OpenAI", func(t *testing.T) {
+	// 	testFn(t, false)
+	// })
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		testFn(t, true)

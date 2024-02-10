@@ -36,10 +36,10 @@ func TestMain(m *testing.M) {
 	}
 
 	tv.OpenAIKey = recording.GetEnvVariable("OPENAI_API_KEY", "key")
-	tv.OpenAIEndpoint = recording.GetEnvVariable("OPENAI_ENDPOINT", "endpoint")
+	tv.OpenAIEndpoint = recording.GetEnvVariable("OPENAI_ENDPOINT", "https://openai.azure.com")
 
 	tv.AOAIKey = recording.GetEnvVariable("AOAI_ASSISTANTS_KEY", "key")
-	tv.AOAIEndpoint = recording.GetEnvVariable("AOAI_ASSISTANTS_ENDPOINT", "endpoint")
+	tv.AOAIEndpoint = recording.GetEnvVariable("AOAI_ASSISTANTS_ENDPOINT", "https://openai.azure.com")
 
 	os.Exit(run(m))
 }

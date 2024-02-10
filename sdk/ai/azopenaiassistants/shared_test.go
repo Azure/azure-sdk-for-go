@@ -7,19 +7,23 @@
 package azopenaiassistants_test
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
+	"io"
+	"mime"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	assistants "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -49,6 +53,9 @@ type newClientArgs struct {
 
 func newClient(t *testing.T, args newClientArgs) *assistants.Client {
 	var httpClient policy.Transporter
+	// var recordingPolicy
+	// PerRetryPolicies: []{&mimeTypeRecordingPolicy{}}
+	var perRetryPolicy policy.Policy
 
 	if recording.GetRecordMode() != recording.LiveMode {
 		err := recording.Start(t, RecordingDirectory, nil)
@@ -62,16 +69,19 @@ func newClient(t *testing.T, args newClientArgs) *assistants.Client {
 		tmpHttpClient, err := recording.NewRecordingHTTPClient(t, nil)
 		require.NoError(t, err)
 
-		err = recording.AddURISanitizer("endoint", strings.TrimRight(tv.AOAIEndpoint, "/"), nil)
-		require.NoError(t, err)
+		if recording.GetRecordMode() == recording.RecordingMode {
+			err = recording.AddURISanitizer("https://openai.azure.com", strings.TrimRight(tv.AOAIEndpoint, "/"), nil)
+			require.NoError(t, err)
 
-		err = recording.AddURISanitizer("endoint", strings.TrimRight(tv.OpenAIEndpoint, "/"), nil)
-		require.NoError(t, err)
+			err = recording.AddURISanitizer("https://openai.azure.com", strings.TrimRight(tv.OpenAIEndpoint, "/"), nil)
+			require.NoError(t, err)
 
-		err = recording.AddHeaderRegexSanitizer("Api-Key", "apikey", "", nil)
-		require.NoError(t, err)
+			err = recording.AddHeaderRegexSanitizer("Api-Key", "apikey", "", nil)
+			require.NoError(t, err)
+		}
 
 		httpClient = tmpHttpClient
+		perRetryPolicy = &mimeTypeRecordingPolicy{}
 	} else if os.Getenv("SSLKEYLOGFILE") != "" {
 		file, err := os.OpenFile(os.Getenv("SSLKEYLOGFILE"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0700)
 		require.NoError(t, err)
@@ -95,6 +105,10 @@ func newClient(t *testing.T, args newClientArgs) *assistants.Client {
 			},
 			Transport: httpClient,
 		},
+	}
+
+	if perRetryPolicy != nil {
+		opts.PerRetryPolicies = append(opts.PerRetryPolicies, perRetryPolicy)
 	}
 
 	if args.Azure {
@@ -121,7 +135,10 @@ func mustGetClientWithAssistant(t *testing.T, args mustGetClientWithAssistantArg
 	client := newClient(t, args.newClientArgs)
 
 	// give the assistant a random-ish name.
-	assistantName := fmt.Sprintf("go-assistant-%d", time.Now().UnixNano())
+	id, err := recording.GenerateAlphaNumericID(t, "your-assistant-name", 6+len("your-assistant-name"), true)
+	require.NoError(t, err)
+
+	assistantName := id
 
 	createResp, err := client.CreateAssistant(context.Background(), assistants.AssistantCreationBody{
 		Name:           &assistantName,
@@ -160,4 +177,51 @@ func mustUploadFile(t *testing.T, c *assistants.Client, text string) assistants.
 	})
 
 	return uploadResp
+}
+
+type mimeTypeRecordingPolicy struct{}
+
+// Do changes out the boundary for a multipart message. This makes it simpler to write
+// recordings.
+func (mrp *mimeTypeRecordingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		// this is strictly to make the IDs in the multipart body stable for test recordings.
+		return req.Next()
+	}
+
+	// we'll fix up the multipart to make it more predictable for test recordings.
+	//    Content-Type: multipart/form-data; boundary=787c880ce3dd11f9b6384d625c399c8490fc8989ceb6b7d208ec7426c12e
+	mediaType, params, err := mime.ParseMediaType(req.Raw().Header[http.CanonicalHeaderKey("Content-type")][0])
+
+	if err != nil || mediaType != "multipart/form-data" {
+		// we'll just assume our policy doesn't apply here.
+		return req.Next()
+	}
+
+	origBoundary := params["boundary"]
+
+	if origBoundary == "" {
+		return nil, errors.New("Invalid use of this policy - no boundary was passed as part of the multipart mime type")
+	}
+
+	params["boundary"] = "boundary-for-recordings"
+
+	// now let's update the body itself - we'll just do a simple string replacement. The entire purpose of the boundary string is to provide a
+	// separator, which is distinct from the content.
+	body := req.Body()
+	defer body.Close()
+
+	origBody, err := io.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	newBody := bytes.ReplaceAll(origBody, []byte(origBoundary), []byte("boundary-for-recordings"))
+
+	if err := req.SetBody(streaming.NopCloser(bytes.NewReader(newBody)), mime.FormatMediaType(mediaType, params)); err != nil {
+		return nil, err
+	}
+
+	return req.Next()
 }

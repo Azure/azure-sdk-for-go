@@ -491,7 +491,7 @@ func TestFiles(t *testing.T) {
 			Azure: azure,
 		})
 
-		textBytes := []byte("a")
+		textBytes := []byte("test text")
 		expectedLen := int32(len(textBytes))
 		uploadResp, err := client.UploadFile(context.Background(), textBytes, assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),

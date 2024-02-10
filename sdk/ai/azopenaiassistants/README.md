@@ -1,10 +1,16 @@
-# Azure OpenAI client module for Go
+# Azure OpenAI assistants client module for Go
 
 NOTE: this client can be used with Azure OpenAI and OpenAI.
 
 Azure OpenAI Service provides access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series, as well as image generation using DALL-E.
 
-[Source code][azopenaiasst_repo] | [Package (pkg.go.dev)][azopenaiasst_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
+Use this module to:
+
+- Create and manage assistants, threads, messages, and runs.
+- Configure and use tools with assistants.
+- Upload and manage files for use with assistants.
+
+[Source code][azopenaiassistants_repo] | [Package (pkg.go.dev)][azopenaiassistants_pkg_go] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 
 ## Getting started
 
@@ -84,8 +90,8 @@ comments.
 
 <!-- LINKS -->
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
-[azopenaiasst_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiassistants
-[azopenaiasst_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants
+[azopenaiassistants_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiassistants
+[azopenaiassistants_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [openai_docs]: https://learn.microsoft.com/azure/cognitive-services/openai

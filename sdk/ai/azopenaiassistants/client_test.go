@@ -59,9 +59,9 @@ func TestAssistantCreationAndListing(t *testing.T) {
 		require.True(t, found)
 	}
 
-	// t.Run("OpenAI", func(t *testing.T) {
-	// 	testFn(t, false)
-	// })
+	t.Run("OpenAI", func(t *testing.T) {
+		testFn(t, false)
+	})
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		testFn(t, true)
@@ -491,7 +491,7 @@ func TestFiles(t *testing.T) {
 			Azure: azure,
 		})
 
-		textBytes := []byte("test text")
+		textBytes := []byte("a")
 		expectedLen := int32(len(textBytes))
 		uploadResp, err := client.UploadFile(context.Background(), textBytes, assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),

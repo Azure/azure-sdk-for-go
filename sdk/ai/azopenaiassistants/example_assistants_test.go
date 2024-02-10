@@ -51,9 +51,8 @@ func Example_assistants() {
 		Name:           &assistantName,
 		DeploymentName: to.Ptr("gpt-4-1106-preview"),
 		Instructions:   to.Ptr("You are a personal math tutor. Write and run code to answer math questions."),
-		//FileIDs:        []string{*uploadedPythonFile.ID},
 		Tools: []azopenaiassistants.ToolDefinitionClassification{
-			// &azopenaiassistants.CodeInterpreterToolDefinition{},
+			&azopenaiassistants.CodeInterpreterToolDefinition{},
 			// others...
 			// &azopenaiassistants.FunctionToolDefinition{}
 			// &azopenaiassistants.RetrievalToolDefinition{}
@@ -99,8 +98,9 @@ func Example_assistants() {
 
 		printAssistantMessages(assistantMessages)
 
-		// For this example we'll just synthesize some responses so we can get a conversation and eventually just end the
-		// conversation.
+		// For this example we'll just synthesize some responses, simulating a conversation.
+		// In a real application these messages would come from the user, responding to replies
+		// from the assistant.
 		switch callIdx {
 		case 0:
 			text := "Can you help me find the y intercept for y = x +4?"

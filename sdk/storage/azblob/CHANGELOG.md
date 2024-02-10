@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0 (2024-02-08)
+## 1.3.0 (2024-02-11)
 
 ### Bugs Fixed
 * Fix concurrency issue while Downloading File. Fixes [#22156](https://github.com/Azure/azure-sdk-for-go/issues/22156). 

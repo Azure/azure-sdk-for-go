@@ -20,11 +20,22 @@ type CassandraClustersClientBeginCreateUpdateOptions struct {
 type CassandraClustersClientBeginDeallocateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
+
+	// Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster of Cluster Type Production might
+	// cause data loss
+	XMSForceDeallocate *bool
 }
 
 // CassandraClustersClientBeginDeleteOptions contains the optional parameters for the CassandraClustersClient.BeginDelete
 // method.
 type CassandraClustersClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// CassandraClustersClientBeginInvokeCommandAsyncOptions contains the optional parameters for the CassandraClustersClient.BeginInvokeCommandAsync
+// method.
+type CassandraClustersClientBeginInvokeCommandAsyncOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -54,6 +65,12 @@ type CassandraClustersClientGetBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CassandraClustersClientGetCommandAsyncOptions contains the optional parameters for the CassandraClustersClient.GetCommandAsync
+// method.
+type CassandraClustersClientGetCommandAsyncOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CassandraClustersClientGetOptions contains the optional parameters for the CassandraClustersClient.Get method.
 type CassandraClustersClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -74,6 +91,12 @@ type CassandraClustersClientListByResourceGroupOptions struct {
 // CassandraClustersClientListBySubscriptionOptions contains the optional parameters for the CassandraClustersClient.NewListBySubscriptionPager
 // method.
 type CassandraClustersClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraClustersClientListCommandOptions contains the optional parameters for the CassandraClustersClient.NewListCommandPager
+// method.
+type CassandraClustersClientListCommandOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1531,5 +1554,68 @@ type TableResourcesClientGetTableThroughputOptions struct {
 // TableResourcesClientListTablesOptions contains the optional parameters for the TableResourcesClient.NewListTablesPager
 // method.
 type TableResourcesClientListTablesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ThroughputPoolAccountClientBeginCreateOptions contains the optional parameters for the ThroughputPoolAccountClient.BeginCreate
+// method.
+type ThroughputPoolAccountClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ThroughputPoolAccountClientBeginDeleteOptions contains the optional parameters for the ThroughputPoolAccountClient.BeginDelete
+// method.
+type ThroughputPoolAccountClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ThroughputPoolAccountClientGetOptions contains the optional parameters for the ThroughputPoolAccountClient.Get method.
+type ThroughputPoolAccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ThroughputPoolAccountsClientListOptions contains the optional parameters for the ThroughputPoolAccountsClient.NewListPager
+// method.
+type ThroughputPoolAccountsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ThroughputPoolClientBeginCreateOrUpdateOptions contains the optional parameters for the ThroughputPoolClient.BeginCreateOrUpdate
+// method.
+type ThroughputPoolClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ThroughputPoolClientBeginDeleteOptions contains the optional parameters for the ThroughputPoolClient.BeginDelete method.
+type ThroughputPoolClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ThroughputPoolClientBeginUpdateOptions contains the optional parameters for the ThroughputPoolClient.BeginUpdate method.
+type ThroughputPoolClientBeginUpdateOptions struct {
+	// The parameters to provide for the current Throughput Pool.
+	Body *ThroughputPoolUpdate
+
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ThroughputPoolClientGetOptions contains the optional parameters for the ThroughputPoolClient.Get method.
+type ThroughputPoolClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ThroughputPoolsClientListByResourceGroupOptions contains the optional parameters for the ThroughputPoolsClient.NewListByResourceGroupPager
+// method.
+type ThroughputPoolsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ThroughputPoolsClientListOptions contains the optional parameters for the ThroughputPoolsClient.NewListPager method.
+type ThroughputPoolsClientListOptions struct {
 	// placeholder for future optional parameters
 }

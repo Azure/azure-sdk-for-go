@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
+## 1.6.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.2 (2024-02-06)
+
+### Breaking Changes
+> These changes affect only code written against a beta version such as v1.6.0-beta.1
+* Replaced `ErrAuthenticationRequired` with `AuthenticationRequiredError`, a struct
+  type that carries the `TokenRequestOptions` passed to the `GetToken` call which
+  returned the error.
+
+### Bugs Fixed
+* Fixed more cases in which credential chains like `DefaultAzureCredential`
+  should try their next credential after attempting managed identity
+  authentication in a Docker Desktop container
+
+### Other Changes
+* `AzureCLICredential` uses the CLI's `expires_on` value for token expiration
 
 ## 1.6.0-beta.1 (2024-01-17)
 

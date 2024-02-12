@@ -152,7 +152,7 @@ func (p *publicClient) GetToken(ctx context.Context, tro policy.TokenRequestOpti
 		return p.token(ar, err)
 	}
 	if p.opts.DisableAutomaticAuthentication {
-		return azcore.AccessToken{}, ErrAuthenticationRequired
+		return azcore.AccessToken{}, newAuthenticationRequiredError(p.name, tro)
 	}
 	at, err := p.reqToken(ctx, client, tro)
 	if err == nil {

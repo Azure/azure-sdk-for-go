@@ -1,5 +1,10 @@
 # Release History
 
+## 1.4.0-beta.2 (2024-02-07)
+### Bugs Fixed
+
+- Unmarshal time values in ISO8601 format.
+
 ## 1.4.0-beta.1 (2023-11-30)
 ### Features Added
 

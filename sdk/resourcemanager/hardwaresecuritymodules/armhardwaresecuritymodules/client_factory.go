@@ -23,8 +23,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-//     part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -38,6 +37,24 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewCloudHsmClusterPrivateEndpointConnectionsClient creates a new instance of CloudHsmClusterPrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewCloudHsmClusterPrivateEndpointConnectionsClient() *CloudHsmClusterPrivateEndpointConnectionsClient {
+	subClient, _ := NewCloudHsmClusterPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewCloudHsmClusterPrivateLinkResourcesClient creates a new instance of CloudHsmClusterPrivateLinkResourcesClient.
+func (c *ClientFactory) NewCloudHsmClusterPrivateLinkResourcesClient() *CloudHsmClusterPrivateLinkResourcesClient {
+	subClient, _ := NewCloudHsmClusterPrivateLinkResourcesClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewCloudHsmClustersClient creates a new instance of CloudHsmClustersClient.
+func (c *ClientFactory) NewCloudHsmClustersClient() *CloudHsmClustersClient {
+	subClient, _ := NewCloudHsmClustersClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 // NewDedicatedHsmClient creates a new instance of DedicatedHsmClient.
 func (c *ClientFactory) NewDedicatedHsmClient() *DedicatedHsmClient {
 	subClient, _ := NewDedicatedHsmClient(c.subscriptionID, c.credential, c.options)
@@ -47,5 +64,11 @@ func (c *ClientFactory) NewDedicatedHsmClient() *DedicatedHsmClient {
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	subClient, _ := NewOperationsClient(c.credential, c.options)
+	return subClient
+}
+
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
+	subClient, _ := NewPrivateEndpointConnectionsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

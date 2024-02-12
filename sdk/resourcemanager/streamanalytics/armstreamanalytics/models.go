@@ -48,6 +48,37 @@ func (a *AvroSerialization) GetSerialization() *Serialization {
 	}
 }
 
+// AzureDataExplorerOutputDataSource - Describes an Azure Data Explorer output data source.
+type AzureDataExplorerOutputDataSource struct {
+	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with an Azure Data Explorer output. Required on PUT (CreateOrReplace) requests.
+	Properties *AzureDataExplorerOutputDataSourceProperties
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureDataExplorerOutputDataSource.
+func (a *AzureDataExplorerOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: a.Type,
+	}
+}
+
+// AzureDataExplorerOutputDataSourceProperties - The properties that are associated with an Azure Data Explorer output.
+type AzureDataExplorerOutputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
+	// The name of the Azure Data Explorer cluster. Required on PUT (CreateOrReplace) requests.
+	Cluster *string
+
+	// The name of the Azure Data Explorer database. Required on PUT (CreateOrReplace) requests.
+	Database *string
+
+	// The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
+	Table *string
+}
+
 // AzureDataLakeStoreOutputDataSource - Describes an Azure Data Lake Store output data source.
 type AzureDataLakeStoreOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
@@ -136,46 +167,152 @@ type AzureFunctionOutputDataSourceProperties struct {
 	MaxBatchSize *float32
 }
 
-// AzureMachineLearningWebServiceFunctionBinding - The binding to an Azure Machine Learning web service.
-type AzureMachineLearningWebServiceFunctionBinding struct {
+// AzureMachineLearningServiceFunctionBinding - The binding to an Azure Machine Learning web service.
+type AzureMachineLearningServiceFunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
 	Type *string
 
 	// The binding properties associated with an Azure Machine learning web service.
-	Properties *AzureMachineLearningWebServiceFunctionBindingProperties
+	Properties *AzureMachineLearningServiceFunctionBindingProperties
 }
 
-// GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningWebServiceFunctionBinding.
-func (a *AzureMachineLearningWebServiceFunctionBinding) GetFunctionBinding() *FunctionBinding {
+// GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningServiceFunctionBinding.
+func (a *AzureMachineLearningServiceFunctionBinding) GetFunctionBinding() *FunctionBinding {
 	return &FunctionBinding{
 		Type: a.Type,
 	}
 }
 
-// AzureMachineLearningWebServiceFunctionBindingProperties - The binding properties associated with an Azure Machine learning
+// AzureMachineLearningServiceFunctionBindingProperties - The binding properties associated with an Azure Machine learning
 // web service.
-type AzureMachineLearningWebServiceFunctionBindingProperties struct {
+type AzureMachineLearningServiceFunctionBindingProperties struct {
 	// The API key used to authenticate with Request-Response endpoint.
 	APIKey *string
 
 	// Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000.
 	BatchSize *int32
 
-	// The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
+	// The Request-Response execute endpoint of the Azure Machine Learning web service.
+	Endpoint *string
+
+	// Label for the input request object.
+	InputRequestName *string
+
+	// The inputs for the Azure Machine Learning web service endpoint.
+	Inputs []*AzureMachineLearningServiceInputColumn
+
+	// The number of parallel requests that will be sent per partition of your job to the machine learning service. Default is
+	// 1.
+	NumberOfParallelRequests *int32
+
+	// Label for the output request object.
+	OutputResponseName *string
+
+	// A list of outputs from the Azure Machine Learning web service endpoint execution.
+	Outputs []*AzureMachineLearningServiceOutputColumn
+}
+
+// AzureMachineLearningServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure
+// Machine learning web service.
+type AzureMachineLearningServiceFunctionBindingRetrievalProperties struct {
+	// The Request-Response execute endpoint of the Azure Machine Learning web service.
+	ExecuteEndpoint *string
+
+	// The function type.
+	UdfType *string
+}
+
+// AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default
+// function definition for an Azure Machine Learning web service function.
+type AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters struct {
+	// REQUIRED; Indicates the function binding type.
+	BindingType *string
+
+	// The binding retrieval properties associated with an Azure Machine learning web service.
+	BindingRetrievalProperties *AzureMachineLearningServiceFunctionBindingRetrievalProperties
+}
+
+// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
+// interface for type AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters.
+func (a *AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+	return &FunctionRetrieveDefaultDefinitionParameters{
+		BindingType: a.BindingType,
+	}
+}
+
+// AzureMachineLearningServiceInputColumn - Describes an input column for the Azure Machine Learning web service endpoint.
+type AzureMachineLearningServiceInputColumn struct {
+	// The (Azure Machine Learning supported) data type of the input column.
+	DataType *string
+
+	// The zero based index of the function parameter this input maps to.
+	MapTo *int32
+
+	// The name of the input column.
+	Name *string
+}
+
+// AzureMachineLearningServiceInputs - The inputs for the Azure Machine Learning web service endpoint.
+type AzureMachineLearningServiceInputs struct {
+	// A list of input columns for the Azure Machine Learning web service endpoint.
+	ColumnNames []*AzureMachineLearningServiceInputColumn
+
+	// The name of the input. This is the name provided while authoring the endpoint.
+	Name *string
+}
+
+// AzureMachineLearningServiceOutputColumn - Describes an output column for the Azure Machine Learning web service endpoint.
+type AzureMachineLearningServiceOutputColumn struct {
+	// The (Azure Machine Learning supported) data type of the output column.
+	DataType *string
+
+	// The zero based index of the function parameter this input maps to.
+	MapTo *int32
+
+	// The name of the output column.
+	Name *string
+}
+
+// AzureMachineLearningStudioFunctionBinding - The binding to an Azure Machine Learning Studio.
+type AzureMachineLearningStudioFunctionBinding struct {
+	// REQUIRED; Indicates the function binding type.
+	Type *string
+
+	// The binding properties associated with an Azure Machine learning Studio.
+	Properties *AzureMachineLearningStudioFunctionBindingProperties
+}
+
+// GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningStudioFunctionBinding.
+func (a *AzureMachineLearningStudioFunctionBinding) GetFunctionBinding() *FunctionBinding {
+	return &FunctionBinding{
+		Type: a.Type,
+	}
+}
+
+// AzureMachineLearningStudioFunctionBindingProperties - The binding properties associated with an Azure Machine learning
+// Studio.
+type AzureMachineLearningStudioFunctionBindingProperties struct {
+	// The API key used to authenticate with Request-Response endpoint.
+	APIKey *string
+
+	// Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000.
+	BatchSize *int32
+
+	// The Request-Response execute endpoint of the Azure Machine Learning Studio. Find out more here:
 	// https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
 	Endpoint *string
 
-	// The inputs for the Azure Machine Learning web service endpoint.
-	Inputs *AzureMachineLearningWebServiceInputs
+	// The inputs for the Azure Machine Learning Studio endpoint.
+	Inputs *AzureMachineLearningStudioInputs
 
-	// A list of outputs from the Azure Machine Learning web service endpoint execution.
-	Outputs []*AzureMachineLearningWebServiceOutputColumn
+	// A list of outputs from the Azure Machine Learning Studio endpoint execution.
+	Outputs []*AzureMachineLearningStudioOutputColumn
 }
 
-// AzureMachineLearningWebServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an
-// Azure Machine learning web service.
-type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
-	// The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
+// AzureMachineLearningStudioFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure
+// Machine learning Studio.
+type AzureMachineLearningStudioFunctionBindingRetrievalProperties struct {
+	// The Request-Response execute endpoint of the Azure Machine Learning Studio. Find out more here:
 	// https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
 	ExecuteEndpoint *string
 
@@ -183,26 +320,26 @@ type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
 	UdfType *string
 }
 
-// AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default
-// function definition for an Azure Machine Learning web service function.
-type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters struct {
+// AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default function
+// definition for an Azure Machine Learning Studio function.
+type AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters struct {
 	// REQUIRED; Indicates the function binding type.
 	BindingType *string
 
-	// The binding retrieval properties associated with an Azure Machine learning web service.
-	BindingRetrievalProperties *AzureMachineLearningWebServiceFunctionBindingRetrievalProperties
+	// The binding retrieval properties associated with an Azure Machine learning Studio.
+	BindingRetrievalProperties *AzureMachineLearningStudioFunctionBindingRetrievalProperties
 }
 
 // GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
-// interface for type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
-func (a *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+// interface for type AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.
+func (a *AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
 	return &FunctionRetrieveDefaultDefinitionParameters{
 		BindingType: a.BindingType,
 	}
 }
 
-// AzureMachineLearningWebServiceInputColumn - Describes an input column for the Azure Machine Learning web service endpoint.
-type AzureMachineLearningWebServiceInputColumn struct {
+// AzureMachineLearningStudioInputColumn - Describes an input column for the Azure Machine Learning Studio endpoint.
+type AzureMachineLearningStudioInputColumn struct {
 	// The (Azure Machine Learning supported) data type of the input column. A list of valid Azure Machine Learning data types
 	// are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
 	DataType *string
@@ -214,17 +351,17 @@ type AzureMachineLearningWebServiceInputColumn struct {
 	Name *string
 }
 
-// AzureMachineLearningWebServiceInputs - The inputs for the Azure Machine Learning web service endpoint.
-type AzureMachineLearningWebServiceInputs struct {
-	// A list of input columns for the Azure Machine Learning web service endpoint.
-	ColumnNames []*AzureMachineLearningWebServiceInputColumn
+// AzureMachineLearningStudioInputs - The inputs for the Azure Machine Learning Studio endpoint.
+type AzureMachineLearningStudioInputs struct {
+	// A list of input columns for the Azure Machine Learning Studio endpoint.
+	ColumnNames []*AzureMachineLearningStudioInputColumn
 
 	// The name of the input. This is the name provided while authoring the endpoint.
 	Name *string
 }
 
-// AzureMachineLearningWebServiceOutputColumn - Describes an output column for the Azure Machine Learning web service endpoint.
-type AzureMachineLearningWebServiceOutputColumn struct {
+// AzureMachineLearningStudioOutputColumn - Describes an output column for the Azure Machine Learning Studio endpoint.
+type AzureMachineLearningStudioOutputColumn struct {
 	// The (Azure Machine Learning supported) data type of the output column. A list of valid Azure Machine Learning data types
 	// are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
 	DataType *string
@@ -322,6 +459,9 @@ func (a *AzureSQLReferenceInputDataSource) GetReferenceInputDataSource() *Refere
 // AzureSQLReferenceInputDataSourceProperties - The properties that are associated with SQL DB input containing reference
 // data. Required on PUT (CreateOrReplace) requests.
 type AzureSQLReferenceInputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
 	// This element is associated with the datasource element. This is the name of the database that output will be written to.
 	Database *string
 
@@ -348,9 +488,6 @@ type AzureSQLReferenceInputDataSourceProperties struct {
 	// will be written to.
 	Server *string
 
-	// This element is associated with the datasource element. The name of the table in the Azure SQL database..
-	Table *string
-
 	// This element is associated with the datasource element. This is the user name that will be used to connect to the SQL Database
 	// instance.
 	User *string
@@ -358,6 +495,9 @@ type AzureSQLReferenceInputDataSourceProperties struct {
 
 // AzureSynapseDataSourceProperties - The properties that are associated with an Azure SQL database data source.
 type AzureSynapseDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
 	Database *string
 
@@ -392,6 +532,9 @@ func (a *AzureSynapseOutputDataSource) GetOutputDataSource() *OutputDataSource {
 
 // AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output.
 type AzureSynapseOutputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
 	Database *string
 
@@ -497,6 +640,12 @@ type BlobOutputDataSourceProperties struct {
 	// Authentication Mode.
 	AuthenticationMode *AuthenticationMode
 
+	// Blob path prefix.
+	BlobPathPrefix *string
+
+	// Blob write mode.
+	BlobWriteMode *BlobWriteMode
+
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
 	Container *string
@@ -539,6 +688,9 @@ type BlobReferenceInputDataSourceProperties struct {
 	// Authentication Mode.
 	AuthenticationMode *AuthenticationMode
 
+	// The name of the blob input.
+	BlobName *string
+
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
 	Container *string
@@ -546,12 +698,24 @@ type BlobReferenceInputDataSourceProperties struct {
 	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
 	DateFormat *string
 
+	// The path pattern of the delta snapshot.
+	DeltaPathPattern *string
+
+	// The interval that the user generates a delta snapshot of this reference blob input data source.
+	DeltaSnapshotRefreshRate *string
+
+	// The refresh interval of the blob input data source.
+	FullSnapshotRefreshRate *string
+
 	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
 	// whether or not they should be included as input or output to the job. See
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
 	// for a more detailed explanation
 	// and example.
 	PathPattern *string
+
+	// The partition count of the blob input data source. Range 1 - 256.
+	SourcePartitionCount *int32
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
 	StorageAccounts []*StorageAccount
@@ -633,6 +797,64 @@ type CSVSerializationProperties struct {
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required
 	// on PUT (CreateOrReplace) requests.
 	FieldDelimiter *string
+}
+
+// CSharpFunctionBinding - The binding to a CSharp function.
+type CSharpFunctionBinding struct {
+	// REQUIRED; Indicates the function binding type.
+	Type *string
+
+	// The binding properties associated with a CSharp function.
+	Properties *CSharpFunctionBindingProperties
+}
+
+// GetFunctionBinding implements the FunctionBindingClassification interface for type CSharpFunctionBinding.
+func (c *CSharpFunctionBinding) GetFunctionBinding() *FunctionBinding {
+	return &FunctionBinding{
+		Type: c.Type,
+	}
+}
+
+// CSharpFunctionBindingProperties - The binding properties associated with a CSharp function.
+type CSharpFunctionBindingProperties struct {
+	// The Csharp code containing a single function definition.
+	Class *string
+
+	// The Csharp code containing a single function definition.
+	DllPath *string
+
+	// The Csharp code containing a single function definition.
+	Method *string
+
+	// Refresh modes for Stream Analytics functions.
+	UpdateMode *UpdateMode
+}
+
+// CSharpFunctionBindingRetrievalProperties - The binding retrieval properties associated with a CSharp function.
+type CSharpFunctionBindingRetrievalProperties struct {
+	// The CSharp code containing a single function definition.
+	Script *string
+
+	// The function type.
+	UdfType *string
+}
+
+// CSharpFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default function definition for
+// a CSharp function.
+type CSharpFunctionRetrieveDefaultDefinitionParameters struct {
+	// REQUIRED; Indicates the function binding type.
+	BindingType *string
+
+	// The binding retrieval properties associated with a CSharp function.
+	BindingRetrievalProperties *CSharpFunctionBindingRetrievalProperties
+}
+
+// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
+// interface for type CSharpFunctionRetrieveDefaultDefinitionParameters.
+func (c *CSharpFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
+	return &FunctionRetrieveDefaultDefinitionParameters{
+		BindingType: c.BindingType,
+	}
 }
 
 // Cluster - A Stream Analytics Cluster object
@@ -731,10 +953,81 @@ type ClusterSKU struct {
 	Name *ClusterSKUName
 }
 
+// CompileQuery - The query compilation object which defines the input, output, and transformation for the query compilation.
+type CompileQuery struct {
+	// REQUIRED; Describes the type of the job. Valid values are Cloud and 'Edge'.
+	JobType *JobType
+
+	// REQUIRED; The query to compile.
+	Query *string
+
+	// The query to compile.
+	CompatibilityLevel *CompatibilityLevel
+
+	// The functions for the query compilation.
+	Functions []*QueryFunction
+
+	// The inputs for the query compilation.
+	Inputs []*QueryInput
+}
+
 // Compression - Describes how input data is compressed
 type Compression struct {
 	// REQUIRED; Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
 	Type *CompressionType
+}
+
+// CustomClrSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
+// in custom format.
+type CustomClrSerialization struct {
+	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+	Type *EventSerializationType
+
+	// The properties that are associated with the CustomClr serialization type. Required on PUT (CreateOrReplace) requests.
+	Properties *CustomClrSerializationProperties
+}
+
+// GetSerialization implements the SerializationClassification interface for type CustomClrSerialization.
+func (c *CustomClrSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: c.Type,
+	}
+}
+
+// CustomClrSerializationProperties - The properties that are associated with the CustomClr serialization type.
+type CustomClrSerializationProperties struct {
+	// The serialization class name.
+	SerializationClassName *string
+
+	// The serialization library path.
+	SerializationDllPath *string
+}
+
+// DeltaSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
+// in Delta Lake format.
+type DeltaSerialization struct {
+	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+	Type *EventSerializationType
+
+	// The properties that are associated with the Delta Lake serialization type. Required on PUT (CreateOrReplace) requests.
+	Properties *DeltaSerializationProperties
+}
+
+// GetSerialization implements the SerializationClassification interface for type DeltaSerialization.
+func (d *DeltaSerialization) GetSerialization() *Serialization {
+	return &Serialization{
+		Type: d.Type,
+	}
+}
+
+// DeltaSerializationProperties - The properties that are associated with the Delta Lake serialization type.
+type DeltaSerializationProperties struct {
+	// REQUIRED; Specifies the path of the Delta Lake table that the output will be written to.
+	DeltaTablePath *string
+
+	// Specifies the names of the columns for which the Delta Lake table will be partitioned. We are only supporting 1 partition
+	// column, but keeping it as an array for extensibility.
+	PartitionColumns []*string
 }
 
 // DiagnosticCondition - Condition applicable to the resource, or to the job overall, that warrant customer attention.
@@ -781,6 +1074,9 @@ type DocumentDbOutputDataSourceProperties struct {
 
 	// The account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests.
 	AccountKey *string
+
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
 
 	// The collection name pattern for the collections to be used. The collection name format can be constructed using the optional
 	// {partition} token, where partitions start from 0. See the DocumentDB
@@ -842,6 +1138,38 @@ type ErrorResponse struct {
 	Message *string
 }
 
+// EventGridStreamInputDataSource - Describes an event grid input data source that contains stream data.
+type EventGridStreamInputDataSource struct {
+	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with an event grid input containing stream data.
+	Properties *EventGridStreamInputDataSourceProperties
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventGridStreamInputDataSource.
+func (e *EventGridStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: e.Type,
+	}
+}
+
+// EventGridStreamInputDataSourceProperties - The properties that are associated with an event grid input containing stream
+// data.
+type EventGridStreamInputDataSourceProperties struct {
+	// List of Event Types that are supported by the Event Grid adapter.
+	EventTypes []*string
+
+	// Indicates the Event Grid schema type.
+	Schema *EventGridEventSchemaType
+
+	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
+	StorageAccounts []*StorageAccount
+
+	// Subscribers for the Event Grid. Currently only EventHub Subscriber is supported.
+	Subscriber *EventHubV2StreamInputDataSource
+}
+
 // EventHubDataSourceProperties - The common properties that are associated with Event Hub data sources.
 type EventHubDataSourceProperties struct {
 	// Authentication Mode.
@@ -849,6 +1177,9 @@ type EventHubDataSourceProperties struct {
 
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
 	EventHubName *string
+
+	// The partition count of the event hub data source. Range 1 - 256.
+	PartitionCount *int32
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
@@ -885,6 +1216,9 @@ type EventHubOutputDataSourceProperties struct {
 
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
 	EventHubName *string
+
+	// The partition count of the event hub data source. Range 1 - 256.
+	PartitionCount *int32
 
 	// The key/column that is used to determine to which partition to send event data.
 	PartitionKey *string
@@ -933,6 +1267,12 @@ type EventHubStreamInputDataSourceProperties struct {
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
 	EventHubName *string
 
+	// The partition count of the event hub data source. Range 1 - 256.
+	PartitionCount *int32
+
+	// The number of messages that the message receiver can simultaneously request.
+	PrefetchCount *int32
+
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
 	ServiceBusNamespace *string
@@ -975,6 +1315,43 @@ func (e *EventHubV2StreamInputDataSource) GetStreamInputDataSource() *StreamInpu
 	return &StreamInputDataSource{
 		Type: e.Type,
 	}
+}
+
+// External - The storage account where the custom code artifacts are located.
+type External struct {
+	// The UserCustomCode container.
+	Container *string
+
+	// The UserCustomCode path.
+	Path *string
+
+	// The refresh parameters for any/all updatable user defined functions present in the job config.
+	RefreshConfiguration *RefreshConfiguration
+
+	// The properties that are associated with an Azure Storage account
+	StorageAccount *StorageAccount
+}
+
+// FileReferenceInputDataSource - Describes a file input data source that contains reference data.
+type FileReferenceInputDataSource struct {
+	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a file input containing reference data. Required on PUT (CreateOrReplace) requests.
+	Properties *FileReferenceInputDataSourceProperties
+}
+
+// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type FileReferenceInputDataSource.
+func (f *FileReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
+	return &ReferenceInputDataSource{
+		Type: f.Type,
+	}
+}
+
+// FileReferenceInputDataSourceProperties - The properties that are associated with a file input containing reference data.
+type FileReferenceInputDataSourceProperties struct {
+	// The path of the file.
+	Path *string
 }
 
 // Function - A function object, containing all information associated with the named function. All functions are contained
@@ -1069,16 +1446,97 @@ func (f *FunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefault
 	return f
 }
 
+// GatewayMessageBusOutputDataSource - Describes a Gateway Message Bus output data source.
+type GatewayMessageBusOutputDataSource struct {
+	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a Gateway Message Bus output. Required on PUT (CreateOrReplace) requests.
+	Properties *GatewayMessageBusOutputDataSourceProperties
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type GatewayMessageBusOutputDataSource.
+func (g *GatewayMessageBusOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: g.Type,
+	}
+}
+
+// GatewayMessageBusOutputDataSourceProperties - The properties that are associated with a Gateway Message Bus.
+type GatewayMessageBusOutputDataSourceProperties struct {
+	// The name of the Service Bus topic.
+	Topic *string
+}
+
+// GatewayMessageBusSourceProperties - The properties that are associated with a gateway message bus datasource.
+type GatewayMessageBusSourceProperties struct {
+	// The name of the Service Bus topic.
+	Topic *string
+}
+
+// GatewayMessageBusStreamInputDataSource - Describes a blob input data source that contains stream data.
+type GatewayMessageBusStreamInputDataSource struct {
+	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a gateway message bus input containing stream data.
+	Properties *GatewayMessageBusStreamInputDataSourceProperties
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type GatewayMessageBusStreamInputDataSource.
+func (g *GatewayMessageBusStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: g.Type,
+	}
+}
+
+// GatewayMessageBusStreamInputDataSourceProperties - The properties that are associated with a gateway message bus input
+// containing stream data.
+type GatewayMessageBusStreamInputDataSourceProperties struct {
+	// The name of the Service Bus topic.
+	Topic *string
+}
+
+// GetStreamingJobSKUResult - Describes an available SKU information.
+type GetStreamingJobSKUResult struct {
+	// READ-ONLY; Describes scaling information of a SKU.
+	Capacity *SKUCapacity
+
+	// READ-ONLY; The type of resource the SKU applies to.
+	ResourceType *ResourceType
+
+	// READ-ONLY; The properties that are associated with a SKU.
+	SKU *GetStreamingJobSKUResultSKU
+}
+
+// GetStreamingJobSKUResultSKU - The properties that are associated with a SKU.
+type GetStreamingJobSKUResultSKU struct {
+	// The name of the SKU.
+	Name *SKUName
+}
+
+// GetStreamingJobSKUResults - Result of the request to get streaming job SKUs.
+type GetStreamingJobSKUResults struct {
+	// The list of available SKUs that the streaming job can use.
+	Value []*GetStreamingJobSKUResult
+
+	// READ-ONLY; The link (url) to the next page of results.
+	NextLink *string
+}
+
 // Identity - Describes how identity is verified
 type Identity struct {
-	// The identity principal ID
+	// The type of identity, can be SystemAssigned or UserAssigned.
+	Type *string
+
+	// The user assigned identities associated with the streaming job resource.
+	UserAssignedIdentities map[string]any
+
+	// READ-ONLY; The principalId of the identity.
 	PrincipalID *string
 
-	// The identity tenantId
+	// READ-ONLY; The tenantId of the identity.
 	TenantID *string
-
-	// The identity type
-	Type *string
 }
 
 // Input - An input object, containing all information associated with the named input. All inputs are contained under a streaming
@@ -1121,6 +1579,9 @@ type InputProperties struct {
 	// requests.
 	Serialization SerializationClassification
 
+	// Settings which determine whether to read watermark events.
+	WatermarkSettings *InputWatermarkProperties
+
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
 	Diagnostics *Diagnostics
 
@@ -1132,6 +1593,12 @@ type InputProperties struct {
 
 // GetInputProperties implements the InputPropertiesClassification interface for type InputProperties.
 func (i *InputProperties) GetInputProperties() *InputProperties { return i }
+
+// InputWatermarkProperties - Settings which determine whether to read watermark events.
+type InputWatermarkProperties struct {
+	// The input watermark mode.
+	WatermarkMode *InputWatermarkMode
+}
 
 // IoTHubStreamInputDataSource - Describes an IoT Hub input data source that contains stream data.
 type IoTHubStreamInputDataSource struct {
@@ -1261,6 +1728,15 @@ type JobStorageAccount struct {
 	AuthenticationMode *AuthenticationMode
 }
 
+// LastOutputEventTimestamp - An output event timestamp.
+type LastOutputEventTimestamp struct {
+	// The last output event time.
+	LastOutputEventTime *string
+
+	// The time that the last update happened.
+	LastUpdateTime *string
+}
+
 // OAuthBasedDataSourceProperties - The properties that are associated with data sources that use OAuth as their authentication
 // model.
 type OAuthBasedDataSourceProperties struct {
@@ -1361,10 +1837,13 @@ type OutputProperties struct {
 	Serialization SerializationClassification
 
 	// The size window to constrain a Stream Analytics output to.
-	SizeWindow *float32
+	SizeWindow *int32
 
 	// The time frame for filtering Stream Analytics job outputs.
 	TimeWindow *string
+
+	// Settings which determine whether to send watermarks to downstream.
+	WatermarkSettings *OutputWatermarkProperties
 
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
 	Diagnostics *Diagnostics
@@ -1373,6 +1852,20 @@ type OutputProperties struct {
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
 	Etag *string
+
+	// READ-ONLY; A list of the last output event times for each output partition. The index of the array corresponds to the partition
+	// number.
+	LastOutputEventTimestamps []*LastOutputEventTimestamp
+}
+
+// OutputWatermarkProperties - Settings which determine whether to send watermarks to downstream.
+type OutputWatermarkProperties struct {
+	// Describes the maximal delta between the fastest and slowest partitions, so the out of order window that catches all necessary
+	// events in downstream jobs is well defined.
+	MaxWatermarkDifferenceAcrossPartitions *string
+
+	// The output watermark mode.
+	WatermarkMode *OutputWatermarkMode
 }
 
 // ParquetSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
@@ -1390,6 +1883,70 @@ func (p *ParquetSerialization) GetSerialization() *Serialization {
 	return &Serialization{
 		Type: p.Type,
 	}
+}
+
+// PostgreSQLDataSourceProperties - The properties that are associated with an Azure SQL database data source.
+type PostgreSQLDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
+	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Database *string
+
+	// Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests.
+	MaxWriterCount *float32
+
+	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Password *string
+
+	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Server *string
+
+	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Table *string
+
+	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	User *string
+}
+
+// PostgreSQLOutputDataSource - Describes a PostgreSQL output data source.
+type PostgreSQLOutputDataSource struct {
+	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a PostgreSQL output data source. Required on PUT (CreateOrReplace) requests.
+	Properties *PostgreSQLOutputDataSourceProperties
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type PostgreSQLOutputDataSource.
+func (p *PostgreSQLOutputDataSource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: p.Type,
+	}
+}
+
+// PostgreSQLOutputDataSourceProperties - The properties that are associated with a PostgreSQL output.
+type PostgreSQLOutputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
+
+	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Database *string
+
+	// Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests.
+	MaxWriterCount *float32
+
+	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Password *string
+
+	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Server *string
+
+	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	Table *string
+
+	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
+	User *string
 }
 
 // PowerBIOutputDataSource - Describes a Power BI output data source.
@@ -1526,6 +2083,156 @@ type ProxyResource struct {
 	Type *string
 }
 
+// QueryCompilationError - An error produced by the compiler.
+type QueryCompilationError struct {
+	// READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	EndColumn *int32
+
+	// READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	EndLine *int32
+
+	// READ-ONLY; Whether the error is not for a specific part but for the entire query.
+	IsGlobal *bool
+
+	// READ-ONLY; The content of the error message.
+	Message *string
+
+	// READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	StartColumn *int32
+
+	// READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	StartLine *int32
+}
+
+// QueryCompilationResult - The result of the query compilation request.
+type QueryCompilationResult struct {
+	// READ-ONLY; Error messages produced by the compiler.
+	Errors []*QueryCompilationError
+
+	// READ-ONLY; All function names used by the query.
+	Functions []*string
+
+	// READ-ONLY; All input names used by the query.
+	Inputs []*string
+
+	// READ-ONLY; All output names used by the query.
+	Outputs []*string
+
+	// READ-ONLY; Warning messages produced by the compiler.
+	Warnings []*string
+}
+
+// QueryFunction - A function for the query compilation.
+type QueryFunction struct {
+	// REQUIRED; The type of the function binding.
+	BindingType *string
+
+	// REQUIRED; The inputs for the function.
+	Inputs []*FunctionInput
+
+	// REQUIRED; The name of the function.
+	Name *string
+
+	// REQUIRED; An output for the function.
+	Output *FunctionOutput
+
+	// REQUIRED; The type of the function.
+	Type *string
+}
+
+// QueryInput - An input for the query compilation.
+type QueryInput struct {
+	// REQUIRED; The name of the input.
+	Name *string
+
+	// REQUIRED; The type of the input, can be Stream or Reference.
+	Type *string
+}
+
+// QueryTestingResult - The result of the query testing request.
+type QueryTestingResult struct {
+	// Error definition properties.
+	Error *ErrorError
+
+	// READ-ONLY; The SAS URL to the outputs payload.
+	OutputURI *string
+
+	// READ-ONLY; The status of the query testing request.
+	Status *QueryTestingResultStatus
+}
+
+// RawInputDatasourceProperties - The properties that are associated with a raw input.
+type RawInputDatasourceProperties struct {
+	// The JSON serialized content of the input data. Either payload or payloadUri must be set, but not both.
+	Payload *string
+
+	// The SAS URL to a blob containing the JSON serialized content of the input data. Either payload or payloadUri must be set,
+	// but not both.
+	PayloadURI *string
+}
+
+// RawOutputDatasource - Describes a raw output data source. This data source type is only applicable/usable when using the
+// query testing API. You cannot create a job with this data source type or add an output of this data
+// source type to an existing job.
+type RawOutputDatasource struct {
+	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a raw output. Required on PUT (CreateOrReplace) requests.
+	Properties *RawOutputDatasourceProperties
+}
+
+// GetOutputDataSource implements the OutputDataSourceClassification interface for type RawOutputDatasource.
+func (r *RawOutputDatasource) GetOutputDataSource() *OutputDataSource {
+	return &OutputDataSource{
+		Type: r.Type,
+	}
+}
+
+// RawOutputDatasourceProperties - The properties that are associated with a raw output.
+type RawOutputDatasourceProperties struct {
+	// The SAS URL to a blob where the output should be written. If this property is not set, output data will be written into
+	// a temporary storage, and a SAS URL to that temporary storage will be included in
+	// the result.
+	PayloadURI *string
+}
+
+// RawReferenceInputDataSource - Describes a raw input data source that contains reference data. This data source type is
+// only applicable/usable when using the query testing API. You cannot create a job with this data source type or
+// add an input of this data source type to an existing job.
+type RawReferenceInputDataSource struct {
+	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a raw input containing reference data. Required on PUT (CreateOrReplace) requests.
+	Properties *RawInputDatasourceProperties
+}
+
+// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type RawReferenceInputDataSource.
+func (r *RawReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
+	return &ReferenceInputDataSource{
+		Type: r.Type,
+	}
+}
+
+// RawStreamInputDataSource - Describes a raw input data source that contains stream data. This data source type is only applicable/usable
+// when using the query testing API. You cannot create a job with this data source type or add
+// an input of this data source type to an existing job.
+type RawStreamInputDataSource struct {
+	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
+	Type *string
+
+	// The properties that are associated with a raw input. Required on PUT (CreateOrReplace) requests.
+	Properties *RawInputDatasourceProperties
+}
+
+// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type RawStreamInputDataSource.
+func (r *RawStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
+	return &StreamInputDataSource{
+		Type: r.Type,
+	}
+}
+
 // ReferenceInputDataSource - Describes an input data source that contains reference data.
 type ReferenceInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
@@ -1553,6 +2260,9 @@ type ReferenceInputProperties struct {
 	// requests.
 	Serialization SerializationClassification
 
+	// Settings which determine whether to read watermark events.
+	WatermarkSettings *InputWatermarkProperties
+
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
 	Diagnostics *Diagnostics
 
@@ -1565,13 +2275,36 @@ type ReferenceInputProperties struct {
 // GetInputProperties implements the InputPropertiesClassification interface for type ReferenceInputProperties.
 func (r *ReferenceInputProperties) GetInputProperties() *InputProperties {
 	return &InputProperties{
-		Compression:   r.Compression,
-		Diagnostics:   r.Diagnostics,
-		Etag:          r.Etag,
-		PartitionKey:  r.PartitionKey,
-		Serialization: r.Serialization,
-		Type:          r.Type,
+		Compression:       r.Compression,
+		Diagnostics:       r.Diagnostics,
+		Etag:              r.Etag,
+		PartitionKey:      r.PartitionKey,
+		Serialization:     r.Serialization,
+		Type:              r.Type,
+		WatermarkSettings: r.WatermarkSettings,
 	}
+}
+
+// RefreshConfiguration - The refresh parameters for any/all updatable user defined functions present in the job config.
+type RefreshConfiguration struct {
+	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
+	DateFormat *string
+
+	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
+	// whether or not they should be included as input or output to the job. See
+	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
+	// for a more detailed explanation
+	// and example.
+	PathPattern *string
+
+	// The refresh interval.
+	RefreshInterval *string
+
+	// This property indicates which data refresh option to use, Blocking or Nonblocking.
+	RefreshType *UpdatableUdfRefreshType
+
+	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
+	TimeFormat *string
 }
 
 // Resource - The base resource definition
@@ -1597,8 +2330,63 @@ type ResourceTestStatus struct {
 
 // SKU - The properties that are associated with a SKU.
 type SKU struct {
+	// The capacity of the SKU.
+	Capacity *int32
+
 	// The name of the SKU. Required on PUT (CreateOrReplace) requests.
 	Name *SKUName
+}
+
+// SKUCapacity - Describes scaling information of a SKU.
+type SKUCapacity struct {
+	// READ-ONLY; Specifies the valid streaming units a streaming job can scale to.
+	AllowedValues []*int32
+
+	// READ-ONLY; Specifies the default streaming units that the streaming job can use.
+	Default *int32
+
+	// READ-ONLY; Specifies the maximum streaming units that the streaming job can use.
+	Maximum *int32
+
+	// READ-ONLY; Specifies the minimum streaming units that the streaming job can use.
+	Minimum *int32
+
+	// READ-ONLY; The scale type applicable to the SKU.
+	ScaleType *SKUCapacityScaleType
+}
+
+// SampleInput - The stream analytics input to sample.
+type SampleInput struct {
+	// Defaults to the default ASA job compatibility level. Today it is 1.2
+	CompatibilityLevel *string
+
+	// Defaults to en-US.
+	DataLocale *string
+
+	// The SAS URI of the storage blob for service to write the sampled events to. If this parameter is not provided, service
+	// will write events to he system account and share a temporary SAS URI to it.
+	EventsURI *string
+
+	// The stream analytics input to sample.
+	Input *Input
+}
+
+// SampleInputResult - The result of the sample input request.
+type SampleInputResult struct {
+	// Error definition properties.
+	Error *ErrorError
+
+	// READ-ONLY; Diagnostics messages. E.g. message indicating some partitions from the input have no data.
+	Diagnostics []*string
+
+	// READ-ONLY; A SAS URL to download the sampled input data.
+	EventsDownloadURL *string
+
+	// READ-ONLY; The timestamp for the last event in the data. It is in DateTime format.
+	LastArrivalTime *string
+
+	// READ-ONLY; The status of the sample input request.
+	Status *SampleInputResultStatus
 }
 
 // ScalarFunctionProperties - The properties that are associated with a scalar function.
@@ -1763,6 +2551,9 @@ type StorageAccount struct {
 
 	// The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
 	AccountName *string
+
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode
 }
 
 // StreamInputDataSource - Describes an input data source that contains stream data.
@@ -1792,6 +2583,9 @@ type StreamInputProperties struct {
 	// requests.
 	Serialization SerializationClassification
 
+	// Settings which determine whether to read watermark events.
+	WatermarkSettings *InputWatermarkProperties
+
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
 	Diagnostics *Diagnostics
 
@@ -1804,18 +2598,19 @@ type StreamInputProperties struct {
 // GetInputProperties implements the InputPropertiesClassification interface for type StreamInputProperties.
 func (s *StreamInputProperties) GetInputProperties() *InputProperties {
 	return &InputProperties{
-		Compression:   s.Compression,
-		Diagnostics:   s.Diagnostics,
-		Etag:          s.Etag,
-		PartitionKey:  s.PartitionKey,
-		Serialization: s.Serialization,
-		Type:          s.Type,
+		Compression:       s.Compression,
+		Diagnostics:       s.Diagnostics,
+		Etag:              s.Etag,
+		PartitionKey:      s.PartitionKey,
+		Serialization:     s.Serialization,
+		Type:              s.Type,
+		WatermarkSettings: s.WatermarkSettings,
 	}
 }
 
 // StreamingJob - A streaming job object, containing all information associated with the named streaming job.
 type StreamingJob struct {
-	// Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs and outputs.
+	// Describes the managed identity assigned to this job that can be used to authenticate with inputs and outputs.
 	Identity *Identity
 
 	// The geo-location where the resource lives
@@ -1823,6 +2618,9 @@ type StreamingJob struct {
 
 	// The properties that are associated with a streaming job. Required on PUT (CreateOrReplace) requests.
 	Properties *StreamingJobProperties
+
+	// Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
+	SKU *SKU
 
 	// Resource tags.
 	Tags map[string]*string
@@ -1873,6 +2671,9 @@ type StreamingJobProperties struct {
 
 	// Indicates the policy to apply to events that arrive out of order in the input event stream.
 	EventsOutOfOrderPolicy *EventsOutOfOrderPolicy
+
+	// The storage account where the custom code artifacts are located.
+	Externals *External
 
 	// A list of one or more functions for the streaming job. The name property for each function is required when specifying
 	// this property in a PUT request. This property cannot be modify via a PATCH
@@ -1983,6 +2784,45 @@ type SubscriptionQuotaProperties struct {
 type SubscriptionQuotasListResult struct {
 	// READ-ONLY; List of quotas for the subscription in a particular region.
 	Value []*SubscriptionQuota
+}
+
+// TestDatasourceResult - The result of the test input or output request.
+type TestDatasourceResult struct {
+	// Error definition properties.
+	Error *ErrorError
+
+	// READ-ONLY; The status of the sample output request.
+	Status *TestDatasourceResultStatus
+}
+
+// TestInput - A stream analytics input.
+type TestInput struct {
+	// REQUIRED; The stream analytics input to test.
+	Input *Input
+}
+
+// TestOutput - A stream analytics output.
+type TestOutput struct {
+	// REQUIRED; The stream analytics output to test.
+	Output *Output
+}
+
+// TestQuery - The request object for query testing.
+type TestQuery struct {
+	// REQUIRED; Stream analytics job object which defines the input, output, and transformation for the query testing.
+	StreamingJob *StreamingJob
+
+	// Diagnostics information related to query testing.
+	Diagnostics *TestQueryDiagnostics
+}
+
+// TestQueryDiagnostics - Diagnostics information related to query testing.
+type TestQueryDiagnostics struct {
+	// REQUIRED; The SAS URI to the container or directory.
+	WriteURI *string
+
+	// The path to the subdirectory.
+	Path *string
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource

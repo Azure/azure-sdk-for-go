@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.2 (Unreleased)
+## 1.5.3 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,17 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.5.2 (2024-02-06)
+
+### Bugs Fixed
+
 * Prevent `exported.Payload` from panicking in the rare event `*http.Response.Body` is `nil`.
 
 ### Other Changes
+
+* Update dependencies.
 
 ## 1.5.1 (2023-12-06)
 

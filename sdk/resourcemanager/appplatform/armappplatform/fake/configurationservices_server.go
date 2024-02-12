@@ -43,6 +43,10 @@ type ConfigurationServicesServer struct {
 	// BeginValidate is the fake for method ConfigurationServicesClient.BeginValidate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidate func(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, settings armappplatform.ConfigurationServiceSettings, options *armappplatform.ConfigurationServicesClientBeginValidateOptions) (resp azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateResource is the fake for method ConfigurationServicesClient.BeginValidateResource
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidateResource func(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, configurationServiceResource armappplatform.ConfigurationServiceResource, options *armappplatform.ConfigurationServicesClientBeginValidateResourceOptions) (resp azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResourceResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationServicesServerTransport creates a new instance of ConfigurationServicesServerTransport with the provided implementation.
@@ -50,22 +54,24 @@ type ConfigurationServicesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConfigurationServicesServerTransport(srv *ConfigurationServicesServer) *ConfigurationServicesServerTransport {
 	return &ConfigurationServicesServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armappplatform.ConfigurationServicesClientListResponse]](),
-		beginValidate:       newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResponse]](),
+		srv:                   srv,
+		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientCreateOrUpdateResponse]](),
+		beginDelete:           newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientDeleteResponse]](),
+		newListPager:          newTracker[azfake.PagerResponder[armappplatform.ConfigurationServicesClientListResponse]](),
+		beginValidate:         newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResponse]](),
+		beginValidateResource: newTracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResourceResponse]](),
 	}
 }
 
 // ConfigurationServicesServerTransport connects instances of armappplatform.ConfigurationServicesClient to instances of ConfigurationServicesServer.
 // Don't use this type directly, use NewConfigurationServicesServerTransport instead.
 type ConfigurationServicesServerTransport struct {
-	srv                 *ConfigurationServicesServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armappplatform.ConfigurationServicesClientListResponse]]
-	beginValidate       *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResponse]]
+	srv                   *ConfigurationServicesServer
+	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientCreateOrUpdateResponse]]
+	beginDelete           *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientDeleteResponse]]
+	newListPager          *tracker[azfake.PagerResponder[armappplatform.ConfigurationServicesClientListResponse]]
+	beginValidate         *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResponse]]
+	beginValidateResource *tracker[azfake.PollerResponder[armappplatform.ConfigurationServicesClientValidateResourceResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationServicesServerTransport.
@@ -90,6 +96,8 @@ func (c *ConfigurationServicesServerTransport) Do(req *http.Request) (*http.Resp
 		resp, err = c.dispatchNewListPager(req)
 	case "ConfigurationServicesClient.BeginValidate":
 		resp, err = c.dispatchBeginValidate(req)
+	case "ConfigurationServicesClient.BeginValidateResource":
+		resp, err = c.dispatchBeginValidateResource(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -326,6 +334,58 @@ func (c *ConfigurationServicesServerTransport) dispatchBeginValidate(req *http.R
 	}
 	if !server.PollerResponderMore(beginValidate) {
 		c.beginValidate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConfigurationServicesServerTransport) dispatchBeginValidateResource(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginValidateResource == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateResource not implemented")}
+	}
+	beginValidateResource := c.beginValidateResource.get(req)
+	if beginValidateResource == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurationServices/(?P<configurationServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateResource`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappplatform.ConfigurationServiceResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginValidateResource(req.Context(), resourceGroupNameParam, serviceNameParam, configurationServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateResource = &respr
+		c.beginValidateResource.add(req, beginValidateResource)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateResource, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginValidateResource.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateResource) {
+		c.beginValidateResource.remove(req)
 	}
 
 	return resp, nil

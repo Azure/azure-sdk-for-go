@@ -40,12 +40,13 @@ func NewAgentPoolClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates the agent pool in the Hybrid AKS provisioned cluster instance
+// BeginCreateOrUpdate - Creates or updates the agent pool in the provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
-//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster.
+//   - agentPool - Agent Pool resource definition
 //   - options - AgentPoolClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentPoolClient.BeginCreateOrUpdate
 //     method.
 func (client *AgentPoolClient) BeginCreateOrUpdate(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentPoolClientCreateOrUpdateResponse], error) {
@@ -66,10 +67,10 @@ func (client *AgentPoolClient) BeginCreateOrUpdate(ctx context.Context, connecte
 	}
 }
 
-// CreateOrUpdate - Creates the agent pool in the Hybrid AKS provisioned cluster instance
+// CreateOrUpdate - Creates or updates the agent pool in the provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *AgentPoolClient) createOrUpdate(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool AgentPool, options *AgentPoolClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolClient.BeginCreateOrUpdate"
@@ -104,7 +105,7 @@ func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, agentPool); err != nil {
@@ -113,12 +114,12 @@ func (client *AgentPoolClient) createOrUpdateCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// BeginDelete - Deletes the agent pool in the Hybrid AKS provisioned cluster instance
+// BeginDelete - Deletes the specified agent pool in the provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
-//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster.
 //   - options - AgentPoolClientBeginDeleteOptions contains the optional parameters for the AgentPoolClient.BeginDelete method.
 func (client *AgentPoolClient) BeginDelete(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, options *AgentPoolClientBeginDeleteOptions) (*runtime.Poller[AgentPoolClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -138,10 +139,10 @@ func (client *AgentPoolClient) BeginDelete(ctx context.Context, connectedCluster
 	}
 }
 
-// Delete - Deletes the agent pool in the Hybrid AKS provisioned cluster instance
+// Delete - Deletes the specified agent pool in the provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
+// Generated from API version 2024-01-01
 func (client *AgentPoolClient) deleteOperation(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, options *AgentPoolClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolClient.BeginDelete"
@@ -176,18 +177,18 @@ func (client *AgentPoolClient) deleteCreateRequest(ctx context.Context, connecte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets the agent pool in the Hybrid AKS provisioned cluster instance
+// Get - Gets the specified agent pool in the provisioned cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
-//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster.
 //   - options - AgentPoolClientGetOptions contains the optional parameters for the AgentPoolClient.Get method.
 func (client *AgentPoolClient) Get(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, options *AgentPoolClientGetOptions) (AgentPoolClientGetResponse, error) {
 	var err error
@@ -224,7 +225,7 @@ func (client *AgentPoolClient) getCreateRequest(ctx context.Context, connectedCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,33 +240,33 @@ func (client *AgentPoolClient) getHandleResponse(resp *http.Response) (AgentPool
 	return result, nil
 }
 
-// ListByProvisionedCluster - Gets the agent pools in the Hybrid AKS provisioned cluster instance
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListByProvisionedClusterPager - Gets the list of agent pools in the specified provisioned cluster
 //
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
-//   - options - AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.ListByProvisionedCluster
+// Generated from API version 2024-01-01
+//   - connectedClusterResourceURI - The fully qualified Azure Resource Manager identifier of the connected cluster resource.
+//   - options - AgentPoolClientListByProvisionedClusterOptions contains the optional parameters for the AgentPoolClient.NewListByProvisionedClusterPager
 //     method.
-func (client *AgentPoolClient) ListByProvisionedCluster(ctx context.Context, connectedClusterResourceURI string, options *AgentPoolClientListByProvisionedClusterOptions) (AgentPoolClientListByProvisionedClusterResponse, error) {
-	var err error
-	const operationName = "AgentPoolClient.ListByProvisionedCluster"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listByProvisionedClusterCreateRequest(ctx, connectedClusterResourceURI, options)
-	if err != nil {
-		return AgentPoolClientListByProvisionedClusterResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AgentPoolClientListByProvisionedClusterResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentPoolClientListByProvisionedClusterResponse{}, err
-	}
-	resp, err := client.listByProvisionedClusterHandleResponse(httpResp)
-	return resp, err
+func (client *AgentPoolClient) NewListByProvisionedClusterPager(connectedClusterResourceURI string, options *AgentPoolClientListByProvisionedClusterOptions) *runtime.Pager[AgentPoolClientListByProvisionedClusterResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AgentPoolClientListByProvisionedClusterResponse]{
+		More: func(page AgentPoolClientListByProvisionedClusterResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AgentPoolClientListByProvisionedClusterResponse) (AgentPoolClientListByProvisionedClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AgentPoolClient.NewListByProvisionedClusterPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByProvisionedClusterCreateRequest(ctx, connectedClusterResourceURI, options)
+			}, nil)
+			if err != nil {
+				return AgentPoolClientListByProvisionedClusterResponse{}, err
+			}
+			return client.listByProvisionedClusterHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
 // listByProvisionedClusterCreateRequest creates the ListByProvisionedCluster request.
@@ -277,7 +278,7 @@ func (client *AgentPoolClient) listByProvisionedClusterCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
+	reqQP.Set("api-version", "2024-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,76 +291,4 @@ func (client *AgentPoolClient) listByProvisionedClusterHandleResponse(resp *http
 		return AgentPoolClientListByProvisionedClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates the agent pool in the Hybrid AKS provisioned cluster instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15-preview
-//   - connectedClusterResourceURI - The fully qualified Azure Resource manager identifier of the connected cluster resource.
-//   - agentPoolName - Parameter for the name of the agent pool in the provisioned cluster
-//   - options - AgentPoolClientBeginUpdateOptions contains the optional parameters for the AgentPoolClient.BeginUpdate method.
-func (client *AgentPoolClient) BeginUpdate(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool AgentPoolPatch, options *AgentPoolClientBeginUpdateOptions) (*runtime.Poller[AgentPoolClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, connectedClusterResourceURI, agentPoolName, agentPool, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AgentPoolClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the agent pool in the Hybrid AKS provisioned cluster instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-15-preview
-func (client *AgentPoolClient) update(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool AgentPoolPatch, options *AgentPoolClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AgentPoolClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, connectedClusterResourceURI, agentPoolName, agentPool, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AgentPoolClient) updateCreateRequest(ctx context.Context, connectedClusterResourceURI string, agentPoolName string, agentPool AgentPoolPatch, options *AgentPoolClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{connectedClusterResourceUri}/providers/Microsoft.HybridContainerService/provisionedClusterInstances/default/agentPools/{agentPoolName}"
-	urlPath = strings.ReplaceAll(urlPath, "{connectedClusterResourceUri}", connectedClusterResourceURI)
-	if agentPoolName == "" {
-		return nil, errors.New("parameter agentPoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, agentPool); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -46,7 +46,7 @@ func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrReplace - Creates an output or replaces an already existing output under an existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - outputName - The name of the output.
@@ -99,7 +99,7 @@ func (client *OutputsClient) createOrReplaceCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -129,7 +129,7 @@ func (client *OutputsClient) createOrReplaceHandleResponse(resp *http.Response) 
 // Delete - Deletes an output from the streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - outputName - The name of the output.
@@ -179,7 +179,7 @@ func (client *OutputsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *OutputsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Gets details about the specified output.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - outputName - The name of the output.
@@ -239,7 +239,7 @@ func (client *OutputsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsClie
 
 // NewListByStreamingJobPager - Lists all of the outputs under the specified streaming job.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - OutputsClientListByStreamingJobOptions contains the optional parameters for the OutputsClient.NewListByStreamingJobPager
@@ -310,7 +310,7 @@ func (client *OutputsClient) listByStreamingJobCreateRequest(ctx context.Context
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +328,7 @@ func (client *OutputsClient) listByStreamingJobHandleResponse(resp *http.Respons
 // BeginTest - Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - outputName - The name of the output.
@@ -353,7 +353,7 @@ func (client *OutputsClient) BeginTest(ctx context.Context, resourceGroupName st
 // Test - Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *OutputsClient) test(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutputsClient.BeginTest"
@@ -399,7 +399,7 @@ func (client *OutputsClient) testCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Output != nil {
@@ -415,7 +415,7 @@ func (client *OutputsClient) testCreateRequest(ctx context.Context, resourceGrou
 // or two properties) an output without affecting the rest the job or output definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - outputName - The name of the output.
@@ -470,7 +470,7 @@ func (client *OutputsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

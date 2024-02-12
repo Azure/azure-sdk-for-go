@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCreate.json
 func ExampleDataTransferJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,7 @@ func ExampleDataTransferJobsClient_Create() {
 	// 			ContainerName: to.Ptr("blob_container"),
 	// 			EndpointURL: to.Ptr("https://blob.windows.net"),
 	// 		},
+	// 		Duration: to.Ptr("00:00:00"),
 	// 		JobName: to.Ptr("j1"),
 	// 		LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T11:10:55.278Z"); return t}()),
 	// 		ProcessedCount: to.Ptr[int64](0),
@@ -72,7 +73,7 @@ func ExampleDataTransferJobsClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
 func ExampleDataTransferJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,6 +100,7 @@ func ExampleDataTransferJobsClient_Get() {
 	// 			ContainerName: to.Ptr("blob_container"),
 	// 			EndpointURL: to.Ptr("https://blob.windows.net"),
 	// 		},
+	// 		Duration: to.Ptr("01:23:56"),
 	// 		JobName: to.Ptr("j1"),
 	// 		LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T12:04:23.153Z"); return t}()),
 	// 		ProcessedCount: to.Ptr[int64](50),
@@ -113,7 +115,7 @@ func ExampleDataTransferJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
 func ExampleDataTransferJobsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,6 +142,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	// 			ContainerName: to.Ptr("blob_container"),
 	// 			EndpointURL: to.Ptr("https://blob.windows.net"),
 	// 		},
+	// 		Duration: to.Ptr("00:11:25"),
 	// 		JobName: to.Ptr("j1"),
 	// 		LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T11:10:55.278Z"); return t}()),
 	// 		ProcessedCount: to.Ptr[int64](20),
@@ -154,7 +157,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
 func ExampleDataTransferJobsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,6 +184,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	// 			ContainerName: to.Ptr("blob_container"),
 	// 			EndpointURL: to.Ptr("https://blob.windows.net"),
 	// 		},
+	// 		Duration: to.Ptr("00:21:50"),
 	// 		JobName: to.Ptr("j1"),
 	// 		LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T11:10:55.278Z"); return t}()),
 	// 		ProcessedCount: to.Ptr[int64](20),
@@ -195,7 +199,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
 func ExampleDataTransferJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,6 +226,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	// 			ContainerName: to.Ptr("blob_container"),
 	// 			EndpointURL: to.Ptr("https://blob.windows.net"),
 	// 		},
+	// 		Duration: to.Ptr("00:34:10"),
 	// 		JobName: to.Ptr("j1"),
 	// 		LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T11:10:55.278Z"); return t}()),
 	// 		ProcessedCount: to.Ptr[int64](20),
@@ -236,7 +241,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobFeed.json
 func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,6 +274,7 @@ func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 		// 					ContainerName: to.Ptr("blob_container"),
 		// 					EndpointURL: to.Ptr("https://blob.windows.net"),
 		// 				},
+		// 				Duration: to.Ptr("00:00:00"),
 		// 				JobName: to.Ptr("j1"),
 		// 				LastUpdatedUTCTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-12T12:04:23.153Z"); return t}()),
 		// 				ProcessedCount: to.Ptr[int64](100),

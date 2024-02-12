@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -46,7 +46,7 @@ type StreamingJobsServer struct {
 	NewListByResourceGroupPager func(resourceGroupName string, options *armstreamanalytics.StreamingJobsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armstreamanalytics.StreamingJobsClientListByResourceGroupResponse])
 
 	// BeginScale is the fake for method StreamingJobsClient.BeginScale
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginScale func(ctx context.Context, resourceGroupName string, jobName string, options *armstreamanalytics.StreamingJobsClientBeginScaleOptions) (resp azfake.PollerResponder[armstreamanalytics.StreamingJobsClientScaleResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method StreamingJobsClient.BeginStart
@@ -418,9 +418,9 @@ func (s *StreamingJobsServerTransport) dispatchBeginScale(req *http.Request) (*h
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginScale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginScale) {
 		s.beginScale.remove(req)

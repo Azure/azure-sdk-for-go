@@ -252,6 +252,11 @@ type PrivateEndpointsClientListByClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SKUClientListOptions contains the optional parameters for the SKUClient.NewListPager method.
+type SKUClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StreamingJobsClientBeginCreateOrReplaceOptions contains the optional parameters for the StreamingJobsClient.BeginCreateOrReplace
 // method.
 type StreamingJobsClientBeginCreateOrReplaceOptions struct {
@@ -327,6 +332,37 @@ type StreamingJobsClientUpdateOptions struct {
 	// The ETag of the streaming job. Omit this value to always overwrite the current record set. Specify the last-seen ETag value
 	// to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
+}
+
+// SubscriptionsClientBeginSampleInputOptions contains the optional parameters for the SubscriptionsClient.BeginSampleInput
+// method.
+type SubscriptionsClientBeginSampleInputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginTestInputOptions contains the optional parameters for the SubscriptionsClient.BeginTestInput method.
+type SubscriptionsClientBeginTestInputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginTestOutputOptions contains the optional parameters for the SubscriptionsClient.BeginTestOutput
+// method.
+type SubscriptionsClientBeginTestOutputOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientBeginTestQueryOptions contains the optional parameters for the SubscriptionsClient.BeginTestQuery method.
+type SubscriptionsClientBeginTestQueryOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// SubscriptionsClientCompileQueryOptions contains the optional parameters for the SubscriptionsClient.CompileQuery method.
+type SubscriptionsClientCompileQueryOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SubscriptionsClientListQuotasOptions contains the optional parameters for the SubscriptionsClient.ListQuotas method.

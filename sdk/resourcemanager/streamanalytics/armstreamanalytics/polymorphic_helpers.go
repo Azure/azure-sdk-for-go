@@ -21,7 +21,11 @@ func unmarshalFunctionBindingClassification(rawMsg json.RawMessage) (FunctionBin
 	var b FunctionBindingClassification
 	switch m["type"] {
 	case "Microsoft.MachineLearning/WebService":
-		b = &AzureMachineLearningWebServiceFunctionBinding{}
+		b = &AzureMachineLearningStudioFunctionBinding{}
+	case "Microsoft.MachineLearningServices":
+		b = &AzureMachineLearningServiceFunctionBinding{}
+	case "Microsoft.StreamAnalytics/CLRUdf":
+		b = &CSharpFunctionBinding{}
 	case "Microsoft.StreamAnalytics/JavascriptUdf":
 		b = &JavaScriptFunctionBinding{}
 	default:
@@ -89,12 +93,18 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 	}
 	var b OutputDataSourceClassification
 	switch m["type"] {
+	case "GatewayMessageBus":
+		b = &GatewayMessageBusOutputDataSource{}
 	case "Microsoft.AzureFunction":
 		b = &AzureFunctionOutputDataSource{}
+	case "Microsoft.DBForPostgreSQL/servers/databases":
+		b = &PostgreSQLOutputDataSource{}
 	case "Microsoft.DataLake/Accounts":
 		b = &AzureDataLakeStoreOutputDataSource{}
 	case "Microsoft.EventHub/EventHub":
 		b = &EventHubV2OutputDataSource{}
+	case "Microsoft.Kusto/clusters/databases":
+		b = &AzureDataExplorerOutputDataSource{}
 	case "Microsoft.ServiceBus/EventHub":
 		b = &EventHubOutputDataSource{}
 	case "Microsoft.ServiceBus/Queue":
@@ -113,6 +123,8 @@ func unmarshalOutputDataSourceClassification(rawMsg json.RawMessage) (OutputData
 		b = &AzureTableOutputDataSource{}
 	case "PowerBI":
 		b = &PowerBIOutputDataSource{}
+	case "Raw":
+		b = &RawOutputDatasource{}
 	default:
 		b = &OutputDataSource{}
 	}
@@ -132,10 +144,14 @@ func unmarshalReferenceInputDataSourceClassification(rawMsg json.RawMessage) (Re
 	}
 	var b ReferenceInputDataSourceClassification
 	switch m["type"] {
+	case "File":
+		b = &FileReferenceInputDataSource{}
 	case "Microsoft.Sql/Server/Database":
 		b = &AzureSQLReferenceInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobReferenceInputDataSource{}
+	case "Raw":
+		b = &RawReferenceInputDataSource{}
 	default:
 		b = &ReferenceInputDataSource{}
 	}
@@ -159,6 +175,10 @@ func unmarshalSerializationClassification(rawMsg json.RawMessage) (Serialization
 		b = &AvroSerialization{}
 	case string(EventSerializationTypeCSV):
 		b = &CSVSerialization{}
+	case string(EventSerializationTypeCustomClr):
+		b = &CustomClrSerialization{}
+	case string(EventSerializationTypeDelta):
+		b = &DeltaSerialization{}
 	case string(EventSerializationTypeJSON):
 		b = &JSONSerialization{}
 	case string(EventSerializationTypeParquet):
@@ -182,14 +202,20 @@ func unmarshalStreamInputDataSourceClassification(rawMsg json.RawMessage) (Strea
 	}
 	var b StreamInputDataSourceClassification
 	switch m["type"] {
+	case "GatewayMessageBus":
+		b = &GatewayMessageBusStreamInputDataSource{}
 	case "Microsoft.Devices/IotHubs":
 		b = &IoTHubStreamInputDataSource{}
+	case "Microsoft.EventGrid/EventSubscriptions":
+		b = &EventGridStreamInputDataSource{}
 	case "Microsoft.EventHub/EventHub":
 		b = &EventHubV2StreamInputDataSource{}
 	case "Microsoft.ServiceBus/EventHub":
 		b = &EventHubStreamInputDataSource{}
 	case "Microsoft.Storage/Blob":
 		b = &BlobStreamInputDataSource{}
+	case "Raw":
+		b = &RawStreamInputDataSource{}
 	default:
 		b = &StreamInputDataSource{}
 	}

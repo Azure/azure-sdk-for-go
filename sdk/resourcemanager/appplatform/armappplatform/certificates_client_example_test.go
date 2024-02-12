@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Certificates_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,6 +61,7 @@ func ExampleCertificatesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armappplatform.CertificateResourceProvisioningStateSucceeded),
 	// 			SubjectName: to.Ptr("mysubjectname"),
 	// 			Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
+	// 			AutoSync: to.Ptr(armappplatform.KeyVaultCertificateAutoSyncDisabled),
 	// 			CertVersion: to.Ptr("08a219d06d874795a96db47e06fbb01e"),
 	// 			ExcludePrivateKey: to.Ptr(false),
 	// 			KeyVaultCertName: to.Ptr("mycert"),
@@ -69,7 +70,7 @@ func ExampleCertificatesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Certificates_CreateOrUpdate.json
 func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,6 +84,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewCertificatesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myservice", "mycertificate", armappplatform.CertificateResource{
 		Properties: &armappplatform.KeyVaultCertificateProperties{
 			Type:             to.Ptr("KeyVaultCertificate"),
+			AutoSync:         to.Ptr(armappplatform.KeyVaultCertificateAutoSyncEnabled),
 			CertVersion:      to.Ptr("08a219d06d874795a96db47e06fbb01e"),
 			KeyVaultCertName: to.Ptr("mycert"),
 			VaultURI:         to.Ptr("https://myvault.vault.azure.net"),
@@ -122,6 +124,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	// 			Issuer: to.Ptr("mydomain.com"),
 	// 			SubjectName: to.Ptr("mysubjectname"),
 	// 			Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
+	// 			AutoSync: to.Ptr(armappplatform.KeyVaultCertificateAutoSyncEnabled),
 	// 			CertVersion: to.Ptr("08a219d06d874795a96db47e06fbb01e"),
 	// 			ExcludePrivateKey: to.Ptr(false),
 	// 			KeyVaultCertName: to.Ptr("mycert"),
@@ -130,7 +133,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Certificates_Delete.json
 func ExampleCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +154,7 @@ func ExampleCertificatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Certificates_List.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,6 +203,7 @@ func ExampleCertificatesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr(armappplatform.CertificateResourceProvisioningStateSucceeded),
 		// 					SubjectName: to.Ptr("mysubjectname"),
 		// 					Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
+		// 					AutoSync: to.Ptr(armappplatform.KeyVaultCertificateAutoSyncDisabled),
 		// 					CertVersion: to.Ptr("08a219d06d874795a96db47e06fbb01e"),
 		// 					ExcludePrivateKey: to.Ptr(false),
 		// 					KeyVaultCertName: to.Ptr("mycert"),

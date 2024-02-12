@@ -1,14 +1,10 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.0 (2024-02-12)
 
 ### Other Changes
+
+* Updated `azcore` version to `1.9.2`.
 
 ## 1.2.0-beta.1 (2024-01-09)
 

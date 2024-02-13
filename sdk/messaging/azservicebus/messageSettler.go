@@ -60,6 +60,9 @@ func (ms *messageSettler) CompleteMessage(ctx context.Context, message *Received
 		if shouldSettleOnReceiver(message) {
 			ms.notifySettleOnLink(message)
 			err = receiver.AcceptMessage(ctx, message.RawAMQPMessage.inner)
+
+			// NOTE: we're intentionally falling through. If we failed to settle
+			// we might be able to attempt to settle against the management link.
 		}
 
 		if shouldSettleOnMgmtLink(err, message) {
@@ -99,6 +102,9 @@ func (ms *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedM
 				UndeliverableHere: false,
 				Annotations:       annotations,
 			})
+
+			// NOTE: we're intentionally falling through. If we failed to settle
+			// we might be able to attempt to settle against the management link.
 		}
 
 		if shouldSettleOnMgmtLink(err, message) {
@@ -148,6 +154,9 @@ func (ms *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMes
 					UndeliverableHere: true,
 					Annotations:       annotations,
 				})
+
+			// NOTE: we're intentionally falling through. If we failed to settle
+			// we might be able to attempt to settle against the management link.
 		}
 
 		if shouldSettleOnMgmtLink(err, message) {
@@ -223,6 +232,9 @@ func (ms *messageSettler) DeadLetterMessage(ctx context.Context, message *Receiv
 			}
 
 			err = receiver.RejectMessage(ctx, message.RawAMQPMessage.inner, &amqpErr)
+
+			// NOTE: we're intentionally falling through. If we failed to settle
+			// we might be able to attempt to settle against the management link.
 		}
 
 		if shouldSettleOnMgmtLink(err, message) {
@@ -266,11 +278,16 @@ func newAnnotations(propertiesToModify map[string]any) amqp.Annotations {
 	return annotations
 }
 
+// shouldSettleOnReceiver determines if a message can be settled on an AMQP
+// link or should only be settled on the management link.
 func shouldSettleOnReceiver(message *ReceivedMessage) bool {
 	// deferred messages always go through the management link
 	return !message.settleOnMgmtLink
 }
 
+// shouldSettleOnMgmtLink checks if we can fallback to settling on the management
+// link (if `err` was a connection/link failure) or if the message always needs
+// to be settled on the management link, like with deferred messages.
 func shouldSettleOnMgmtLink(settlementErr error, message *ReceivedMessage) bool {
 	if message.settleOnMgmtLink {
 		// deferred messages always go through the management link

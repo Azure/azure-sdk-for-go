@@ -19,7 +19,8 @@ func TestMain(m *testing.M) {
 	err := shared.LoadEnvironment()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Failed to load env file, benchmarks will not run: %s", err)
+		return
 	}
 
 	os.Exit(m.Run())

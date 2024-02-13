@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0
 
 ### Features Added
 
@@ -10,6 +10,8 @@
 * Escape paths for NewDirectoryClient and NewFileClient in a file system. Fixes [#22281](https://github.com/Azure/azure-sdk-for-go/issues/22281).
 
 ### Other Changes
+* Updated version of azblob to `1.3.0`
+* Updated azcore version to `1.9.2` and azidentity version to `1.5.1`.
 
 ## 1.1.0-beta.1 (2024-01-10)
 

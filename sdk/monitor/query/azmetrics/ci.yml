@@ -28,4 +28,4 @@ stages:
     ServiceDirectory: 'monitor/query/azmetrics'
     RunLiveTests: true
     UsePipelineProxy: false
-    SupportedClouds: 'Public,UsGov,China'
+    SupportedClouds: 'Public'

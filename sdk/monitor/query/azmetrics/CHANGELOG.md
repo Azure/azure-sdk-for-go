@@ -1,11 +1,5 @@
 # Release History
 
-## 0.1.0 (Unreleased)
+## 0.1.0 (2024-02-13)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* This is the initial release of the `azmetrics` module

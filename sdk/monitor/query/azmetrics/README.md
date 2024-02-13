@@ -6,7 +6,7 @@ Source code | Package (pkg.go.dev) | [REST API documentation][monitor_rest_docs]
 
 ### Prerequisites
 
-* Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
+* Go version 1.18 or higher - [Install Go](https://go.dev/doc/install)
 * Azure subscription - [Create a free account][azure_sub]
 * The resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
 
@@ -19,7 +19,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/monitor/query/azmetrics
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 
-The [azidentity][azure_identity] module is used for Azure Active Directory authentication during client construction.
+The [azidentity][azure_identity] module is used for client authentication.
 
 ### Authentication
 
@@ -64,7 +64,6 @@ comments.
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
-[context]: https://pkg.go.dev/context
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)

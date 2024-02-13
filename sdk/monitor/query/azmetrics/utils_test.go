@@ -23,10 +23,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const recordingDirectory = "sdk/monitor/query/azmetrics/testdata"
-const fakeResourceURI = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
-const fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
-const fakeRegion = "westus"
+const (
+	recordingDirectory  = "sdk/monitor/query/azmetrics/testdata"
+	fakeResourceURI     = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a451va7b87/resourceGroups/rg-example/providers/Microsoft.AppConfiguration/configurationStores/example"
+	fakeSubscrtiptionID = "faa080af-c1d8-40ad-9cce-e1a451va7b87"
+	fakeRegion          = "westus"
+)
 
 var (
 	credential     azcore.TokenCredential
@@ -90,9 +92,7 @@ func startTest(t *testing.T) *azmetrics.Client {
 	opts := &azmetrics.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	endpoint := "https://" + region + ".metrics.monitor.azure.com"
 	client, err := azmetrics.NewClient(endpoint, credential, opts)
-	if err != nil {
-		panic(err)
-	}
+	require.NoError(t, err)
 	return client
 }
 

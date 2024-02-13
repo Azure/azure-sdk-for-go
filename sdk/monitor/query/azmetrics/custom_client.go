@@ -30,7 +30,7 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://metrics.monitor.azure.com" + "/.default"}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{"https://metrics.monitor.azure.com/.default"}, nil)
 	azcoreClient, err := azcore.NewClient(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err

@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"hash/crc64"
 	"io"
+	"log"
 	"math/rand"
 	"os"
 	"testing"
@@ -242,6 +243,46 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 		}
 	}
 }
+
+func (s *PageBlobRecordedTestsSuite) TestGetPageRangesWithNilOptionsBag() {
+
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlobWithSize(context.Background(), _require, blobName, containerClient,
+		pageblob.PageBytes*2000000)
+
+	for i := 0; i < 10002; i++ {
+		println(i)
+		count := int64(1024)
+		reader, _ := testcommon.GenerateData(1024)
+		putResp, err := pbClient.UploadPages(context.Background(), reader,
+			blob.HTTPRange{Offset: int64(i) * count, Count: count}, nil)
+		_require.NoError(err)
+		_require.NotNil(putResp.LastModified)
+	}
+
+	pager := pbClient.NewGetPageRangesPager(nil)
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, pr := range resp.PageList.PageRange {
+			fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+		}
+	}
+}
+
 
 func (s *PageBlobRecordedTestsSuite) TestBlobTierInferred() {
 	_require := require.New(s.T())

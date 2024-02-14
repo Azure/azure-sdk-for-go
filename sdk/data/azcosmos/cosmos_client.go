@@ -49,7 +49,8 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), gem, o), gem: gem}, nil
+
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), gem, newSessionContainer(), o), gem: gem}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -70,7 +71,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		return nil, err
 	}
 
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, o), gem: gem}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), gem, newSessionContainer(), o), gem: gem}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -109,9 +110,17 @@ func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*
 	return NewClientWithKey(endpoint, cred, o)
 }
 
-func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *ClientOptions) azruntime.Pipeline {
+func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, sc *sessionContainer, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
+	}
+
+	perRetryPolicies := []policy.Policy{
+		authPolicy,
+	}
+
+	if options.EnableSessionConsistency {
+		perRetryPolicies = append(perRetryPolicies, &sessionPolicy{sc: sc})
 	}
 
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
@@ -122,9 +131,7 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 				},
 				&globalEndpointManagerPolicy{gem: gem},
 			},
-			PerRetry: []policy.Policy{
-				authPolicy,
-			},
+			PerRetry: perRetryPolicies,
 		},
 		&options.ClientOptions)
 }

@@ -171,3 +171,11 @@ func createLink(parentPath string, pathSegment string, id string) string {
 	completePath.WriteString(url.PathEscape(id))
 	return completePath.String()
 }
+
+func getContainerPath(path string) (string, error) {
+	segments := strings.Split(strings.Trim(path, "/"), "/")
+	if len(segments) < 4 || segments[0] != pathSegmentDatabase || segments[2] != pathSegmentCollection {
+		return "", fmt.Errorf("%s is not a valid container link", path)
+	}
+	return strings.Join(segments[:4], "/"), nil
+}

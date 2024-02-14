@@ -3,6 +3,7 @@
 ## 0.3.7 (Unreleased)
 
 ### Features Added
+* Session consistency tokens are automatically managed when `EnableSessionConsistency` is set
 
 ### Breaking Changes
 

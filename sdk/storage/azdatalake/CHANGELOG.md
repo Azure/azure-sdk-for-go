@@ -1,10 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.0 (2024-02-14)
 
 ### Bugs Fixed
 * Escape paths for NewDirectoryClient and NewFileClient in a file system. Fixes [#22281](https://github.com/Azure/azure-sdk-for-go/issues/22281).

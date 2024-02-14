@@ -361,8 +361,6 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
-	// require.ErrorAs(t, err, &asSBError)
-	// require.Equal(t, CodeConnectionLost, asSBError.Code)
 
 	receiveErr = internal.RPCError{Resp: &amqpwrap.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
 
@@ -372,8 +370,10 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	msg := &ReceivedMessage{
 		LockToken: id,
 		RawAMQPMessage: &AMQPAnnotatedMessage{
-			linkName: "linkName",
+			inner: &amqp.Message{},
 		},
+		linkName:         "link-name",
+		settleOnMgmtLink: true,
 	}
 
 	err = receiver.AbandonMessage(context.Background(), msg, nil)

@@ -63,12 +63,8 @@ comments.
 <!-- LINKS -->
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
-[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
 [cloud_documentation]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
-[go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
-[metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
-[metric_namespaces]: https://learn.microsoft.com/azure/azure-monitor/reference/supported-metrics/metrics-index#metrics-by-resource-provider
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
 [monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
 [multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics

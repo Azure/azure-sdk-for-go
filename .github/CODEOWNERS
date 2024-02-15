@@ -35,7 +35,7 @@
 # AzureSDKOwners: @jhendrixMSFT 
 # ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter
+/sdk/data/azappconfig/        @jhendrixMSFT @rickwinter
 
 # AzureSDKOwners: @jhendrixMSFT
 # ServiceOwner: @ealsur

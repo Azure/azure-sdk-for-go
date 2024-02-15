@@ -77,7 +77,7 @@ func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWr
 }
 
 func ResetLocationCache() *locationCache {
-	lc := newLocationCache(prefLocs, *defaultEndpoint)
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true)
 	lc.enableEndpointDiscovery = true
 	return lc
 }
@@ -247,7 +247,6 @@ func TestGetEndpointsByLocation(t *testing.T) {
 func TestGetPrefAvailableEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	lc.enableMultipleWriteLocations = true
-	lc.useMultipleWriteLocations = true
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	// will set write locations to loc1, loc2, loc3
 	err := lc.databaseAccountRead(dbAcct)
@@ -322,7 +321,6 @@ func TestReadEndpoints(t *testing.T) {
 func TestWriteEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	lc.enableMultipleWriteLocations = true
-	lc.useMultipleWriteLocations = true
 	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)

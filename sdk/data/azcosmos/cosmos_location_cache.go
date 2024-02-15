@@ -50,7 +50,6 @@ type locationCache struct {
 	locationInfo                      databaseAccountLocationsInfo
 	defaultEndpoint                   url.URL
 	enableEndpointDiscovery           bool
-	useMultipleWriteLocations         bool
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
 	lastUpdateTime                    time.Time
@@ -58,12 +57,13 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func newLocationCache(prefLocations []string, defaultEndpoint url.URL) *locationCache {
+func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableEndpointDiscovery bool) *locationCache {
 	return &locationCache{
 		defaultEndpoint:                   defaultEndpoint,
 		locationInfo:                      *newDatabaseAccountLocationsInfo(prefLocations, defaultEndpoint),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
+		enableEndpointDiscovery:           enableEndpointDiscovery,
 	}
 }
 
@@ -100,6 +100,25 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	lc.locationInfo = nextLoc
 	// TODO: log
 	return nil
+}
+
+func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation bool) url.URL {
+	if isWriteOperation && !lc.canUseMultipleWriteLocs() {
+		if lc.enableEndpointDiscovery {
+			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
+			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]
+			return lc.locationInfo.availWriteEndpointsByLocation[writeLocation]
+		}
+		return lc.defaultEndpoint
+	}
+
+	endpoints := []url.URL{}
+	if isWriteOperation {
+		endpoints = lc.locationInfo.writeEndpoints
+	} else {
+		endpoints = lc.locationInfo.readEndpoints
+	}
+	return endpoints[locationIndex%len(endpoints)]
 }
 
 func (lc *locationCache) readEndpoints() ([]url.URL, error) {
@@ -152,7 +171,7 @@ func (lc *locationCache) getLocation(endpoint url.URL) string {
 }
 
 func (lc *locationCache) canUseMultipleWriteLocs() bool {
-	return lc.useMultipleWriteLocations && lc.enableMultipleWriteLocations
+	return lc.enableMultipleWriteLocations
 }
 
 func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) error {

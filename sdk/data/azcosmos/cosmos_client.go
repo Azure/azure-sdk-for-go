@@ -42,10 +42,11 @@ func (c *Client) Endpoint() string {
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
 	preferredRegions := []string{}
+	enableEndpointDiscovery := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableEndpointDiscovery)
 	if err != nil {
 		return nil, err
 	}
@@ -62,10 +63,11 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 		return nil, err
 	}
 	preferredRegions := []string{}
+	enableEndpointDiscovery := true
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 	}
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableEndpointDiscovery)
 	if err != nil {
 		return nil, err
 	}
@@ -124,6 +126,7 @@ func newPipeline(authPolicy policy.Policy, gem *globalEndpointManager, options *
 			},
 			PerRetry: []policy.Policy{
 				authPolicy,
+				&clientRetryPolicy{gem: gem},
 			},
 		},
 		&options.ClientOptions)

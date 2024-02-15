@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync"
 	"time"
 
@@ -26,7 +27,7 @@ type globalEndpointManager struct {
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableEndpointDiscovery bool) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
@@ -40,7 +41,7 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		clientEndpoint:      clientEndpoint,
 		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableEndpointDiscovery),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
@@ -82,6 +83,29 @@ func (gem *globalEndpointManager) RefreshStaleEndpoints() {
 
 func (gem *globalEndpointManager) ShouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
+}
+
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation)
+}
+
+func (gem *globalEndpointManager) GetPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
+	endpointString := currentUrl.String()
+	location := gem.preferredLocations[preferredLocationIndex]
+	endpointParts := strings.Split(endpointString, ".")
+	if len(endpointParts) > 0 {
+		databaseAccountName := endpointParts[0]
+		locationalDatabaseAccountName := databaseAccountName + "-" + strings.ToLower(strings.ReplaceAll(location, " ", ""))
+		endpointParts[0] = locationalDatabaseAccountName
+		locationalString := strings.Join(endpointParts, ".")
+		locationalURL, err := url.Parse(locationalString)
+		if err != nil {
+			// error parsing the new url
+			return currentUrl
+		}
+		return *locationalURL
+	}
+	return currentUrl
 }
 
 func (gem *globalEndpointManager) Update(ctx context.Context) error {

@@ -12,48 +12,80 @@
 # Samples
 /sdk/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceLabel: %Azure.Core
 # PRLabel: %Azure.Core
 /sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
+# AzureSDKOwners: @chlowell
+# ServiceLabel: %Azure.Identity
 # PRLabel: %Azure.Identity
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter @Azure/azure-sdk-write-identity
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %OpenAI
 # PRLable: %OpenAI
 /sdk/ai                       @richardpark-msft @jhendrixMSFT
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceLabel: %Internal
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
+# AzureSDKOwners: @antkmsft
+# ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
 /sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceOwner: @ealsur
+# ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli @simorenoh @kushagraThapar
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceLabel: %Tables
 # PRLabel: %Tables
 /sdk/data/aztables/           @jhendrixMSFT
 
+# AzureSDKOwners: @gracewilcox
+# ServiceLabel: %KeyVault
 # PRLabel: %KeyVault
 /sdk/security/keyvault/       @chlowell @jhendrixMSFT @gracewilcox
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %Service Bus
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus/  @richardpark-msft @jhendrixMSFT
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %%Event Grid
 # PRLabel: %Event Grid
 /sdk/messaging/azeventgrid/   @richardpark-msft @jhendrixMSFT
 
+# AzureSDKOwners: @richardpark-msft
+# ServiceLabel: %%Event Hubs
 # PRLabel: %Event Hubs
 /sdk/messaging/azeventhubs/   @richardpark-msft @jhendrixMSFT
 
+# AzureSDKOwners: @gracewilcox
+# ServiceLabel: %Monitor
 # PRLabel: %Monitor
 /sdk/monitor/                 @gracewilcox @chlowell @jhendrixMSFT @Azure/azure-sdk-write-monitor-data-plane
 
+# AzureSDKOwners: @lirenhe
+# ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceOwner: @siminsavani-msft
+# ServiceLabel: %Azure.Core
 # PRLabel: %Storage
 /sdk/storage/                 @siminsavani-msft @souravgupta-msft @tasherif-msft @jhendrixMSFT @gapra-msft @vibhansa-msft @tanyasethi-msft
 
+# AzureSDKOwners: @jhendrixMSFT
+# ServiceLabel: %Open Telemetry
 # PRLabel: %Open Telemetry
 /sdk/tracing/azotel           @jhendrixMSFT @rickwinter
 
@@ -62,6 +94,8 @@
 ###########
 /eng/                         @benbp @weshaggard
 
+# AzureSDKOwners: @benbp
+# ServiceLabel: %EngSys
 # PRLabel: %EngSys
 /sdk/template/                @benbp @weshaggard
 

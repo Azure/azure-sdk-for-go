@@ -32,7 +32,7 @@
 # PRLabel: %Internal
 /sdk/internal/                @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
-# AzureSDKOwners: @antkmsft
+# AzureSDKOwners: @jhendrixMSFT 
 # ServiceLabel: %App Configuration
 # PRLabel: %App Configuration
 /sdk/data/azappconfig/        @antkmsft @jhendrixMSFT @rickwinter

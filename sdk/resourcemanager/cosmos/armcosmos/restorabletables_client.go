@@ -47,7 +47,7 @@ func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCre
 // table was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2023-03-15-preview
+// Generated from API version 2023-11-15-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.NewListPager
@@ -96,7 +96,7 @@ func (client *RestorableTablesClient) listCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-15-preview")
+	reqQP.Set("api-version", "2023-11-15-preview")
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}

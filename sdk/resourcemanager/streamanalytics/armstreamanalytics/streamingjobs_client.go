@@ -46,7 +46,7 @@ func NewStreamingJobsClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrReplace - Creates a streaming job or replaces an already existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - streamingJob - The definition of the streaming job that will be used to create a new streaming job or replace the existing
@@ -73,7 +73,7 @@ func (client *StreamingJobsClient) BeginCreateOrReplace(ctx context.Context, res
 // CreateOrReplace - Creates a streaming job or replaces an already existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *StreamingJobsClient) createOrReplace(ctx context.Context, resourceGroupName string, jobName string, streamingJob StreamingJob, options *StreamingJobsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StreamingJobsClient.BeginCreateOrReplace"
@@ -115,7 +115,7 @@ func (client *StreamingJobsClient) createOrReplaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -133,7 +133,7 @@ func (client *StreamingJobsClient) createOrReplaceCreateRequest(ctx context.Cont
 // BeginDelete - Deletes a streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - StreamingJobsClientBeginDeleteOptions contains the optional parameters for the StreamingJobsClient.BeginDelete
@@ -158,7 +158,7 @@ func (client *StreamingJobsClient) BeginDelete(ctx context.Context, resourceGrou
 // Delete - Deletes a streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *StreamingJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StreamingJobsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *StreamingJobsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *StreamingJobsClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets details about the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - StreamingJobsClientGetOptions contains the optional parameters for the StreamingJobsClient.Get method.
@@ -258,7 +258,7 @@ func (client *StreamingJobsClient) getCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *StreamingJobsClient) getHandleResponse(resp *http.Response) (Strea
 
 // NewListPager - Lists all of the streaming jobs in the given subscription.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - options - StreamingJobsClientListOptions contains the optional parameters for the StreamingJobsClient.NewListPager method.
 func (client *StreamingJobsClient) NewListPager(options *StreamingJobsClientListOptions) *runtime.Pager[StreamingJobsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StreamingJobsClientListResponse]{
@@ -318,7 +318,7 @@ func (client *StreamingJobsClient) listCreateRequest(ctx context.Context, option
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,7 +335,7 @@ func (client *StreamingJobsClient) listHandleResponse(resp *http.Response) (Stre
 
 // NewListByResourceGroupPager - Lists all of the streaming jobs in the specified resource group.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StreamingJobsClientListByResourceGroupOptions contains the optional parameters for the StreamingJobsClient.NewListByResourceGroupPager
 //     method.
@@ -381,7 +381,7 @@ func (client *StreamingJobsClient) listByResourceGroupCreateRequest(ctx context.
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -399,7 +399,7 @@ func (client *StreamingJobsClient) listByResourceGroupHandleResponse(resp *http.
 // BeginScale - Scales a streaming job when the job is running.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - StreamingJobsClientBeginScaleOptions contains the optional parameters for the StreamingJobsClient.BeginScale
@@ -424,7 +424,7 @@ func (client *StreamingJobsClient) BeginScale(ctx context.Context, resourceGroup
 // Scale - Scales a streaming job when the job is running.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *StreamingJobsClient) scale(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsClientBeginScaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StreamingJobsClient.BeginScale"
@@ -439,7 +439,7 @@ func (client *StreamingJobsClient) scale(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -466,7 +466,7 @@ func (client *StreamingJobsClient) scaleCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ScaleJobParameters != nil {
@@ -481,7 +481,7 @@ func (client *StreamingJobsClient) scaleCreateRequest(ctx context.Context, resou
 // BeginStart - Starts a streaming job. Once a job is started it will start processing input events and produce output.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - StreamingJobsClientBeginStartOptions contains the optional parameters for the StreamingJobsClient.BeginStart
@@ -506,7 +506,7 @@ func (client *StreamingJobsClient) BeginStart(ctx context.Context, resourceGroup
 // Start - Starts a streaming job. Once a job is started it will start processing input events and produce output.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *StreamingJobsClient) start(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StreamingJobsClient.BeginStart"
@@ -548,7 +548,7 @@ func (client *StreamingJobsClient) startCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.StartJobParameters != nil {
@@ -564,7 +564,7 @@ func (client *StreamingJobsClient) startCreateRequest(ctx context.Context, resou
 // producing output.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - StreamingJobsClientBeginStopOptions contains the optional parameters for the StreamingJobsClient.BeginStop method.
@@ -589,7 +589,7 @@ func (client *StreamingJobsClient) BeginStop(ctx context.Context, resourceGroupN
 // output.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *StreamingJobsClient) stop(ctx context.Context, resourceGroupName string, jobName string, options *StreamingJobsClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StreamingJobsClient.BeginStop"
@@ -631,7 +631,7 @@ func (client *StreamingJobsClient) stopCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -641,7 +641,7 @@ func (client *StreamingJobsClient) stopCreateRequest(ctx context.Context, resour
 // job without affecting the rest the job definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - streamingJob - A streaming job object. The properties specified here will overwrite the corresponding properties in the
@@ -691,7 +691,7 @@ func (client *StreamingJobsClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

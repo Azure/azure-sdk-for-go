@@ -14,6 +14,9 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: ExcludeGoNMinus2
+    type: boolean
+    default: false
 
 
 stages:
@@ -25,30 +28,32 @@ stages:
         - template: /eng/pipelines/templates/variables/globals.yml
       strategy:
         matrix:
-          Linux_Go118:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.18.10'
-          Windows_Go118:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
-            go.version: '1.18.10'
-          Linux_Go120:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.20.7'
-          Windows_Go120:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
-            go.version: '1.20.7'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Linux_Go118:
+              pool.name: azsdk-pool-mms-ubuntu-2004-general
+              image.name: MMSUbuntu20.04
+              go.version: '1.18.10'
+          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+            Windows_Go118:
+              pool.name: azsdk-pool-mms-win-2022-general
+              image.name: MMS2022
+              go.version: '1.18.10'
           Linux_Go121:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
-            go.version: '1.21.0'
+            go.version: '1.21.7'
           Windows_Go121:
             pool.name: azsdk-pool-mms-win-2022-general
             image.name: MMS2022
-            go.version: '1.21.0'
+            go.version: '1.21.7'
+          Linux_Go122:
+            pool.name: azsdk-pool-mms-ubuntu-2004-general
+            image.name: MMSUbuntu20.04
+            go.version: '1.22.0'
+          Windows_Go122:
+            pool.name: azsdk-pool-mms-win-2022-general
+            image.name: MMS2022
+            go.version: '1.22.0'
             generate.bom: true
       pool:
         name: $(pool.name)
@@ -87,7 +92,7 @@ stages:
 
       - task: GoTool@0
         inputs:
-          version: '1.21.0'
+          version: '1.22.0'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml

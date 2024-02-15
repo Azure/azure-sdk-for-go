@@ -25,16 +25,10 @@ type AgentPoolClientGetResponse struct {
 	AgentPool
 }
 
-// AgentPoolClientListByProvisionedClusterResponse contains the response from method AgentPoolClient.ListByProvisionedCluster.
+// AgentPoolClientListByProvisionedClusterResponse contains the response from method AgentPoolClient.NewListByProvisionedClusterPager.
 type AgentPoolClientListByProvisionedClusterResponse struct {
-	// A list of agent pool resources.
+	// List of all agent pool resources associated with the provisioned cluster.
 	AgentPoolListResult
-}
-
-// AgentPoolClientUpdateResponse contains the response from method AgentPoolClient.BeginUpdate.
-type AgentPoolClientUpdateResponse struct {
-	// The agentPool resource definition
-	AgentPool
 }
 
 // ClientDeleteKubernetesVersionsResponse contains the response from method Client.BeginDeleteKubernetesVersions.
@@ -96,7 +90,7 @@ type HybridIdentityMetadataClientPutResponse struct {
 
 // KubernetesVersionsClientListResponse contains the response from method KubernetesVersionsClient.NewListPager.
 type KubernetesVersionsClientListResponse struct {
-	// A list of kubernetes version resources.
+	// List of supported kubernetes versions.
 	KubernetesVersionProfileList
 }
 
@@ -108,8 +102,8 @@ type OperationsClientListResponse struct {
 
 // ProvisionedClusterInstancesClientCreateOrUpdateResponse contains the response from method ProvisionedClusterInstancesClient.BeginCreateOrUpdate.
 type ProvisionedClusterInstancesClientCreateOrUpdateResponse struct {
-	// The provisionedClusterInstances resource definition.
-	ProvisionedClusters
+	// The provisioned cluster resource definition.
+	ProvisionedCluster
 }
 
 // ProvisionedClusterInstancesClientDeleteResponse contains the response from method ProvisionedClusterInstancesClient.BeginDelete.
@@ -119,13 +113,13 @@ type ProvisionedClusterInstancesClientDeleteResponse struct {
 
 // ProvisionedClusterInstancesClientGetResponse contains the response from method ProvisionedClusterInstancesClient.Get.
 type ProvisionedClusterInstancesClientGetResponse struct {
-	// The provisionedClusterInstances resource definition.
-	ProvisionedClusters
+	// The provisioned cluster resource definition.
+	ProvisionedCluster
 }
 
 // ProvisionedClusterInstancesClientGetUpgradeProfileResponse contains the response from method ProvisionedClusterInstancesClient.GetUpgradeProfile.
 type ProvisionedClusterInstancesClientGetUpgradeProfileResponse struct {
-	// The list of available upgrades for compute pools.
+	// The list of available kubernetes version upgrades for the provisioned cluster.
 	ProvisionedClusterUpgradeProfile
 }
 
@@ -137,8 +131,8 @@ type ProvisionedClusterInstancesClientListAdminKubeconfigResponse struct {
 
 // ProvisionedClusterInstancesClientListResponse contains the response from method ProvisionedClusterInstancesClient.NewListPager.
 type ProvisionedClusterInstancesClientListResponse struct {
-	// A list of provisioned clusters resources.
-	ProvisionedClustersListResult
+	// Lists the ProvisionedClusterInstance resource associated with the ConnectedCluster.
+	ProvisionedClusterListResult
 }
 
 // ProvisionedClusterInstancesClientListUserKubeconfigResponse contains the response from method ProvisionedClusterInstancesClient.BeginListUserKubeconfig.
@@ -149,13 +143,13 @@ type ProvisionedClusterInstancesClientListUserKubeconfigResponse struct {
 
 // VMSKUsClientListResponse contains the response from method VMSKUsClient.NewListPager.
 type VMSKUsClientListResponse struct {
-	// A list of VM SKU resources.
+	// The list of supported VM SKUs.
 	VMSKUProfileList
 }
 
 // VirtualNetworksClientCreateOrUpdateResponse contains the response from method VirtualNetworksClient.BeginCreateOrUpdate.
 type VirtualNetworksClientCreateOrUpdateResponse struct {
-	// The virtualNetworks resource definition.
+	// The Virtual Network resource definition.
 	VirtualNetwork
 }
 
@@ -166,22 +160,24 @@ type VirtualNetworksClientDeleteResponse struct {
 
 // VirtualNetworksClientListByResourceGroupResponse contains the response from method VirtualNetworksClient.NewListByResourceGroupPager.
 type VirtualNetworksClientListByResourceGroupResponse struct {
+	// A list of virtual network resources.
 	VirtualNetworksListResult
 }
 
 // VirtualNetworksClientListBySubscriptionResponse contains the response from method VirtualNetworksClient.NewListBySubscriptionPager.
 type VirtualNetworksClientListBySubscriptionResponse struct {
+	// A list of virtual network resources.
 	VirtualNetworksListResult
 }
 
 // VirtualNetworksClientRetrieveResponse contains the response from method VirtualNetworksClient.Retrieve.
 type VirtualNetworksClientRetrieveResponse struct {
-	// The virtualNetworks resource definition.
+	// The Virtual Network resource definition.
 	VirtualNetwork
 }
 
 // VirtualNetworksClientUpdateResponse contains the response from method VirtualNetworksClient.BeginUpdate.
 type VirtualNetworksClientUpdateResponse struct {
-	// The virtualNetworks resource definition.
+	// The Virtual Network resource definition.
 	VirtualNetwork
 }

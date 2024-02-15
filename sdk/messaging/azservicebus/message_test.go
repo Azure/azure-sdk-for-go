@@ -9,7 +9,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
 	"github.com/Azure/go-amqp"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -48,9 +50,14 @@ func TestMessageUnitTest(t *testing.T) {
 }
 
 func TestAMQPMessageToReceivedMessage(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	receiver := mock.NewMockAMQPReceiver(ctrl)
+	receiver.EXPECT().LinkName().Return("receiving_link").AnyTimes()
+
 	t.Run("empty_message", func(t *testing.T) {
 		// nothing should blow up.
-		rm := newReceivedMessage(&amqp.Message{}, "receiving_link")
+
+		rm := newReceivedMessage(&amqp.Message{}, receiver)
 		require.NotNil(t, rm)
 	})
 
@@ -73,7 +80,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			},
 		}
 
-		receivedMessage := newReceivedMessage(amqpMessage, "receiving_link")
+		receivedMessage := newReceivedMessage(amqpMessage, receiver)
 
 		require.Equal(t, []byte("hello"), receivedMessage.Body)
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
@@ -134,7 +141,11 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		Data: [][]byte{[]byte("foo")},
 	}
 
-	msg := newReceivedMessage(amqpMsg, "receiving_link")
+	ctrl := gomock.NewController(t)
+	receiver := mock.NewMockAMQPReceiver(ctrl)
+	receiver.EXPECT().LinkName().Return("receiving_link").AnyTimes()
+
+	msg := newReceivedMessage(amqpMsg, receiver)
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
@@ -159,6 +170,10 @@ func TestAMQPMessageToMessage(t *testing.T) {
 }
 
 func TestMessageState(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	receiver := mock.NewMockAMQPReceiver(ctrl)
+	receiver.EXPECT().LinkName().Return("receiving_link").AnyTimes()
+
 	testData := []struct {
 		PropValue any
 		Expected  MessageState
@@ -179,7 +194,7 @@ func TestMessageState(t *testing.T) {
 				Annotations: amqp.Annotations{
 					messageStateAnnotation: td.PropValue,
 				},
-			}, "receiving_link")
+			}, receiver)
 			require.EqualValues(t, td.Expected, m.State)
 		})
 	}
@@ -187,25 +202,29 @@ func TestMessageState(t *testing.T) {
 	t.Run("NoAnnotations", func(t *testing.T) {
 		m := newReceivedMessage(&amqp.Message{
 			Annotations: nil,
-		}, "receiving_link")
+		}, receiver)
 		require.EqualValues(t, MessageStateActive, m.State)
 	})
 }
 
 func TestMessageWithIncorrectBody(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	receiver := mock.NewMockAMQPReceiver(ctrl)
+	receiver.EXPECT().LinkName().Return("receiving_link").AnyTimes()
+
 	// these are cases where the simple ReceivedMessage can't represent the AMQP message's
 	// payload.
-	message := newReceivedMessage(&amqp.Message{}, "receiving_link")
+	message := newReceivedMessage(&amqp.Message{}, receiver)
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
 		Value: "hello",
-	}, "receiving_link")
+	}, receiver)
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
 		Sequence: [][]any{},
-	}, "receiving_link")
+	}, receiver)
 	require.Nil(t, message.Body)
 
 	message = newReceivedMessage(&amqp.Message{
@@ -213,7 +232,7 @@ func TestMessageWithIncorrectBody(t *testing.T) {
 			[]byte("hello"),
 			[]byte("world"),
 		},
-	}, "receiving_link")
+	}, receiver)
 	require.Nil(t, message.Body)
 }
 

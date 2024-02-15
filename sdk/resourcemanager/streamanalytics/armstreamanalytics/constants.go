@@ -10,7 +10,7 @@ package armstreamanalytics
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // AuthenticationMode - Authentication Mode. Valid modes are ConnectionString, Msi and 'UserToken'.
@@ -28,6 +28,22 @@ func PossibleAuthenticationModeValues() []AuthenticationMode {
 		AuthenticationModeConnectionString,
 		AuthenticationModeMsi,
 		AuthenticationModeUserToken,
+	}
+}
+
+// BlobWriteMode - Determines whether blob blocks are either committed automatically or appended.
+type BlobWriteMode string
+
+const (
+	BlobWriteModeAppend BlobWriteMode = "Append"
+	BlobWriteModeOnce   BlobWriteMode = "Once"
+)
+
+// PossibleBlobWriteModeValues returns the possible values for the BlobWriteMode const type.
+func PossibleBlobWriteModeValues() []BlobWriteMode {
+	return []BlobWriteMode{
+		BlobWriteModeAppend,
+		BlobWriteModeOnce,
 	}
 }
 
@@ -137,15 +153,33 @@ func PossibleEncodingValues() []Encoding {
 	}
 }
 
+// EventGridEventSchemaType - Supported Event Grid schema types.
+type EventGridEventSchemaType string
+
+const (
+	EventGridEventSchemaTypeCloudEventSchema     EventGridEventSchemaType = "CloudEventSchema"
+	EventGridEventSchemaTypeEventGridEventSchema EventGridEventSchemaType = "EventGridEventSchema"
+)
+
+// PossibleEventGridEventSchemaTypeValues returns the possible values for the EventGridEventSchemaType const type.
+func PossibleEventGridEventSchemaTypeValues() []EventGridEventSchemaType {
+	return []EventGridEventSchemaType{
+		EventGridEventSchemaTypeCloudEventSchema,
+		EventGridEventSchemaTypeEventGridEventSchema,
+	}
+}
+
 // EventSerializationType - Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace)
 // requests.
 type EventSerializationType string
 
 const (
-	EventSerializationTypeAvro    EventSerializationType = "Avro"
-	EventSerializationTypeCSV     EventSerializationType = "Csv"
-	EventSerializationTypeJSON    EventSerializationType = "Json"
-	EventSerializationTypeParquet EventSerializationType = "Parquet"
+	EventSerializationTypeAvro      EventSerializationType = "Avro"
+	EventSerializationTypeCSV       EventSerializationType = "Csv"
+	EventSerializationTypeCustomClr EventSerializationType = "CustomClr"
+	EventSerializationTypeDelta     EventSerializationType = "Delta"
+	EventSerializationTypeJSON      EventSerializationType = "Json"
+	EventSerializationTypeParquet   EventSerializationType = "Parquet"
 )
 
 // PossibleEventSerializationTypeValues returns the possible values for the EventSerializationType const type.
@@ -153,6 +187,8 @@ func PossibleEventSerializationTypeValues() []EventSerializationType {
 	return []EventSerializationType{
 		EventSerializationTypeAvro,
 		EventSerializationTypeCSV,
+		EventSerializationTypeCustomClr,
+		EventSerializationTypeDelta,
 		EventSerializationTypeJSON,
 		EventSerializationTypeParquet,
 	}
@@ -171,6 +207,22 @@ func PossibleEventsOutOfOrderPolicyValues() []EventsOutOfOrderPolicy {
 	return []EventsOutOfOrderPolicy{
 		EventsOutOfOrderPolicyAdjust,
 		EventsOutOfOrderPolicyDrop,
+	}
+}
+
+// InputWatermarkMode - The input watermark mode.
+type InputWatermarkMode string
+
+const (
+	InputWatermarkModeNone          InputWatermarkMode = "None"
+	InputWatermarkModeReadWatermark InputWatermarkMode = "ReadWatermark"
+)
+
+// PossibleInputWatermarkModeValues returns the possible values for the InputWatermarkMode const type.
+func PossibleInputWatermarkModeValues() []InputWatermarkMode {
+	return []InputWatermarkMode{
+		InputWatermarkModeNone,
+		InputWatermarkModeReadWatermark,
 	}
 }
 
@@ -287,6 +339,54 @@ func PossibleOutputStartModeValues() []OutputStartMode {
 	}
 }
 
+// OutputWatermarkMode - The output watermark mode.
+type OutputWatermarkMode string
+
+const (
+	OutputWatermarkModeNone                                OutputWatermarkMode = "None"
+	OutputWatermarkModeSendCurrentPartitionWatermark       OutputWatermarkMode = "SendCurrentPartitionWatermark"
+	OutputWatermarkModeSendLowestWatermarkAcrossPartitions OutputWatermarkMode = "SendLowestWatermarkAcrossPartitions"
+)
+
+// PossibleOutputWatermarkModeValues returns the possible values for the OutputWatermarkMode const type.
+func PossibleOutputWatermarkModeValues() []OutputWatermarkMode {
+	return []OutputWatermarkMode{
+		OutputWatermarkModeNone,
+		OutputWatermarkModeSendCurrentPartitionWatermark,
+		OutputWatermarkModeSendLowestWatermarkAcrossPartitions,
+	}
+}
+
+// QueryTestingResultStatus - The status of the query testing request.
+type QueryTestingResultStatus string
+
+const (
+	// QueryTestingResultStatusCompilerError - The query testing operation failed due to a compiler error.
+	QueryTestingResultStatusCompilerError QueryTestingResultStatus = "CompilerError"
+	// QueryTestingResultStatusRuntimeError - The query testing operation failed due to a runtime error.
+	QueryTestingResultStatusRuntimeError QueryTestingResultStatus = "RuntimeError"
+	// QueryTestingResultStatusStarted - The query testing operation was initiated.
+	QueryTestingResultStatusStarted QueryTestingResultStatus = "Started"
+	// QueryTestingResultStatusSuccess - The query testing operation succeeded.
+	QueryTestingResultStatusSuccess QueryTestingResultStatus = "Success"
+	// QueryTestingResultStatusTimeout - The query testing operation failed due to a timeout.
+	QueryTestingResultStatusTimeout QueryTestingResultStatus = "Timeout"
+	// QueryTestingResultStatusUnknownError - The query testing operation failed due to an unknown error .
+	QueryTestingResultStatusUnknownError QueryTestingResultStatus = "UnknownError"
+)
+
+// PossibleQueryTestingResultStatusValues returns the possible values for the QueryTestingResultStatus const type.
+func PossibleQueryTestingResultStatusValues() []QueryTestingResultStatus {
+	return []QueryTestingResultStatus{
+		QueryTestingResultStatusCompilerError,
+		QueryTestingResultStatusRuntimeError,
+		QueryTestingResultStatusStarted,
+		QueryTestingResultStatusSuccess,
+		QueryTestingResultStatusTimeout,
+		QueryTestingResultStatusUnknownError,
+	}
+}
+
 // RefreshType - Indicates the type of data refresh option.
 type RefreshType string
 
@@ -305,6 +405,41 @@ func PossibleRefreshTypeValues() []RefreshType {
 	}
 }
 
+// ResourceType - The type of resource the SKU applies to.
+type ResourceType string
+
+const (
+	ResourceTypeMicrosoftStreamAnalyticsStreamingjobs ResourceType = "Microsoft.StreamAnalytics/streamingjobs"
+)
+
+// PossibleResourceTypeValues returns the possible values for the ResourceType const type.
+func PossibleResourceTypeValues() []ResourceType {
+	return []ResourceType{
+		ResourceTypeMicrosoftStreamAnalyticsStreamingjobs,
+	}
+}
+
+// SKUCapacityScaleType - The scale type applicable to the SKU.
+type SKUCapacityScaleType string
+
+const (
+	// SKUCapacityScaleTypeAutomatic - Supported scale type automatic.
+	SKUCapacityScaleTypeAutomatic SKUCapacityScaleType = "automatic"
+	// SKUCapacityScaleTypeManual - Supported scale type manual.
+	SKUCapacityScaleTypeManual SKUCapacityScaleType = "manual"
+	// SKUCapacityScaleTypeNone - Scaling not supported.
+	SKUCapacityScaleTypeNone SKUCapacityScaleType = "none"
+)
+
+// PossibleSKUCapacityScaleTypeValues returns the possible values for the SKUCapacityScaleType const type.
+func PossibleSKUCapacityScaleTypeValues() []SKUCapacityScaleType {
+	return []SKUCapacityScaleType{
+		SKUCapacityScaleTypeAutomatic,
+		SKUCapacityScaleTypeManual,
+		SKUCapacityScaleTypeNone,
+	}
+}
+
 // SKUName - The name of the SKU. Required on PUT (CreateOrReplace) requests.
 type SKUName string
 
@@ -316,5 +451,76 @@ const (
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameStandard,
+	}
+}
+
+// SampleInputResultStatus - The status of the sample input request.
+type SampleInputResultStatus string
+
+const (
+	// SampleInputResultStatusErrorConnectingToInput - The sample input operation failed to connect to the input.
+	SampleInputResultStatusErrorConnectingToInput SampleInputResultStatus = "ErrorConnectingToInput"
+	// SampleInputResultStatusNoEventsFoundInRange - The sample input operation found no events in the range.
+	SampleInputResultStatusNoEventsFoundInRange SampleInputResultStatus = "NoEventsFoundInRange"
+	// SampleInputResultStatusReadAllEventsInRange - The sample input operation successfully read all the events in the range.
+	SampleInputResultStatusReadAllEventsInRange SampleInputResultStatus = "ReadAllEventsInRange"
+)
+
+// PossibleSampleInputResultStatusValues returns the possible values for the SampleInputResultStatus const type.
+func PossibleSampleInputResultStatusValues() []SampleInputResultStatus {
+	return []SampleInputResultStatus{
+		SampleInputResultStatusErrorConnectingToInput,
+		SampleInputResultStatusNoEventsFoundInRange,
+		SampleInputResultStatusReadAllEventsInRange,
+	}
+}
+
+// TestDatasourceResultStatus - The status of the test input or output request.
+type TestDatasourceResultStatus string
+
+const (
+	// TestDatasourceResultStatusTestFailed - The test datasource operation failed.
+	TestDatasourceResultStatusTestFailed TestDatasourceResultStatus = "TestFailed"
+	// TestDatasourceResultStatusTestSucceeded - The test datasource operation succeeded.
+	TestDatasourceResultStatusTestSucceeded TestDatasourceResultStatus = "TestSucceeded"
+)
+
+// PossibleTestDatasourceResultStatusValues returns the possible values for the TestDatasourceResultStatus const type.
+func PossibleTestDatasourceResultStatusValues() []TestDatasourceResultStatus {
+	return []TestDatasourceResultStatus{
+		TestDatasourceResultStatusTestFailed,
+		TestDatasourceResultStatusTestSucceeded,
+	}
+}
+
+// UpdatableUdfRefreshType - This property indicates which data refresh option to use, Blocking or Nonblocking.
+type UpdatableUdfRefreshType string
+
+const (
+	UpdatableUdfRefreshTypeBlocking    UpdatableUdfRefreshType = "Blocking"
+	UpdatableUdfRefreshTypeNonblocking UpdatableUdfRefreshType = "Nonblocking"
+)
+
+// PossibleUpdatableUdfRefreshTypeValues returns the possible values for the UpdatableUdfRefreshType const type.
+func PossibleUpdatableUdfRefreshTypeValues() []UpdatableUdfRefreshType {
+	return []UpdatableUdfRefreshType{
+		UpdatableUdfRefreshTypeBlocking,
+		UpdatableUdfRefreshTypeNonblocking,
+	}
+}
+
+// UpdateMode - Refresh modes for Stream Analytics functions.
+type UpdateMode string
+
+const (
+	UpdateModeRefreshable UpdateMode = "Refreshable"
+	UpdateModeStatic      UpdateMode = "Static"
+)
+
+// PossibleUpdateModeValues returns the possible values for the UpdateMode const type.
+func PossibleUpdateModeValues() []UpdateMode {
+	return []UpdateMode{
+		UpdateModeRefreshable,
+		UpdateModeStatic,
 	}
 }

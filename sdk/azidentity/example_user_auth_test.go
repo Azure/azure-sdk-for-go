@@ -9,65 +9,64 @@ package azidentity_test
 import (
 	"context"
 	"encoding/json"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
+	// importing the cache module registers the cache implementation for the current platform
+	_ "github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache"
 )
 
-// This example shows how to authenticate a user with [InteractiveBrowserCredential], enabling persistent
-// caching so that the user doesn't need to authenticate interactively the next time the application runs.
-func Example_userAuthentication() {
-	cred, err := azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
-		// By default, credentials begin interactive authentication whenever necessary. To instead control when
-		// a credential prompts for user interaction, set this option true. The credential will then return
-		// azidentity.ErrAuthenticationRequired instead of prompting for authentication. The application
-		// can then call the credential's Authenticate method when it's convenient to prompt the user.
-		DisableAutomaticAuthentication: true,
-
-		// By default, credentials cache in memory. Set TokenCachePersistenceOptions to enable persistent caching.
-		TokenCachePersistenceOptions: &azidentity.TokenCachePersistenceOptions{
-			// optionally set Name to isolate this credential's cache from other applications
-			Name: "myapp",
-		},
-	})
-	if err != nil {
-		// TODO: handle error
+// this example shows file storage but any form of byte storage would work
+func retrieveRecord() (azidentity.AuthenticationRecord, error) {
+	record := azidentity.AuthenticationRecord{}
+	b, err := os.ReadFile(authRecordPath)
+	if err == nil {
+		err = json.Unmarshal(b, &record)
 	}
+	return record, err
+}
 
-	// The Authenticate method begins interactive authentication. Call it whenever it's convenient for
-	// your application to authenticate a user. If Authenticate succeeds, the credential is ready for
-	// use with a client.
-	record, err := cred.Authenticate(context.TODO(), nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	// The record contains no authentication secrets. You can marshal it for storage.
+func storeRecord(record azidentity.AuthenticationRecord) error {
 	b, err := json.Marshal(record)
+	if err == nil {
+		err = os.WriteFile(authRecordPath, b, 0600)
+	}
+	return err
+}
+
+// This example shows how to cache authentication data persistently so a user doesn't need to authenticate
+// interactively every time the application runs. The example uses [InteractiveBrowserCredential], however
+// [DeviceCodeCredential] has the same API. The key steps are:
+//
+//  1. Enable persistent caching by importing "github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache" and
+//     setting [TokenCachePersistenceOptions]
+//  2. Call Authenticate to acquire an [AuthenticationRecord] and store that for future use. An [AuthenticationRecord]
+//     enables credentials to access data in the persistent cache. The record contains no authentication secrets.
+//  3. Add the [AuthenticationRecord] to the credential's options
+func Example_persistentUserAuthentication() {
+	record, err := retrieveRecord()
 	if err != nil {
 		// TODO: handle error
 	}
-	// TODO: store bytes
-	_ = b
-
-	// An authentication record stored by your application enables other credentials to access data from
-	// past authentications. If the cache contains sufficient data, your application won't need to prompt
-	// for authentication.
-	var unmarshaled azidentity.AuthenticationRecord
-	err = json.Unmarshal(b, &unmarshaled)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	// this credential will be able to access authentication data cached by cred above, even in another process
-	newCred, err := azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
-		AuthenticationRecord:           unmarshaled,
-		DisableAutomaticAuthentication: true,
-		TokenCachePersistenceOptions: &azidentity.TokenCachePersistenceOptions{
-			Name: "myapp",
-		},
+	cred, err := azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{
+		AuthenticationRecord: record,
+		// Credentials cache in memory by default. Set TokenCachePersistenceOptions to enable persistent caching.
+		TokenCachePersistenceOptions: &azidentity.TokenCachePersistenceOptions{},
 	})
 	if err != nil {
 		// TODO: handle error
 	}
-	_ = newCred
+
+	if record == (azidentity.AuthenticationRecord{}) {
+		// No stored record; call Authenticate to acquire one
+		record, err = cred.Authenticate(context.TODO(), nil)
+		if err != nil {
+			// TODO: handle error
+		}
+		err = storeRecord(record)
+		if err != nil {
+			// TODO: handle error
+		}
+	}
 }

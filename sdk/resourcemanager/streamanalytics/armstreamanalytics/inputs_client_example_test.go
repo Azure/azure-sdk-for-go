@@ -15,10 +15,56 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Create_Reference_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_GatewayMessageBus.json
+func ExampleInputsClient_CreateOrReplace_createAGatewayMessageBusInput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInputsClient().CreateOrReplace(ctx, "sjrg3467", "sj9742", "input7970", armstreamanalytics.Input{
+		Properties: &armstreamanalytics.StreamInputProperties{
+			Type: to.Ptr("Stream"),
+			Datasource: &armstreamanalytics.GatewayMessageBusStreamInputDataSource{
+				Type: to.Ptr("GatewayMessageBus"),
+				Properties: &armstreamanalytics.GatewayMessageBusStreamInputDataSourceProperties{
+					Topic: to.Ptr("EdgeTopic1"),
+				},
+			},
+		},
+	}, &armstreamanalytics.InputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Input = armstreamanalytics.Input{
+	// 	Name: to.Ptr("input7970"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/inputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg3467/providers/Microsoft.StreamAnalytics/streamingjobs/sj9742/inputs/input7970"),
+	// 	Properties: &armstreamanalytics.StreamInputProperties{
+	// 		Type: to.Ptr("Stream"),
+	// 		Datasource: &armstreamanalytics.GatewayMessageBusStreamInputDataSource{
+	// 			Type: to.Ptr("GatewayMessageBus"),
+	// 			Properties: &armstreamanalytics.GatewayMessageBusStreamInputDataSourceProperties{
+	// 				Topic: to.Ptr("EdgeTopic1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_Reference_Blob_CSV.json
 func ExampleInputsClient_CreateOrReplace_createAReferenceBlobInputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +96,12 @@ func ExampleInputsClient_CreateOrReplace_createAReferenceBlobInputWithCsvSeriali
 							AccountKey:  to.Ptr("someAccountKey=="),
 							AccountName: to.Ptr("someAccountName"),
 						}},
-					TimeFormat: to.Ptr("HH"),
+					TimeFormat:               to.Ptr("HH"),
+					BlobName:                 to.Ptr("myblobinput"),
+					DeltaPathPattern:         to.Ptr("/testBlob/{date}/delta/{time}/"),
+					DeltaSnapshotRefreshRate: to.Ptr("16:14:30"),
+					FullSnapshotRefreshRate:  to.Ptr("16:14:30"),
+					SourcePartitionCount:     to.Ptr[int32](16),
 				},
 			},
 		},
@@ -93,7 +144,53 @@ func ExampleInputsClient_CreateOrReplace_createAReferenceBlobInputWithCsvSeriali
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Create_Stream_EventHub_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_Reference_File.json
+func ExampleInputsClient_CreateOrReplace_createAReferenceFileInput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInputsClient().CreateOrReplace(ctx, "sjrg8440", "sj9597", "input7225", armstreamanalytics.Input{
+		Properties: &armstreamanalytics.ReferenceInputProperties{
+			Type: to.Ptr("Reference"),
+			Datasource: &armstreamanalytics.FileReferenceInputDataSource{
+				Type: to.Ptr("File"),
+				Properties: &armstreamanalytics.FileReferenceInputDataSourceProperties{
+					Path: to.Ptr("my/path"),
+				},
+			},
+		},
+	}, &armstreamanalytics.InputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Input = armstreamanalytics.Input{
+	// 	Name: to.Ptr("input7225"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/inputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg8440/providers/Microsoft.StreamAnalytics/streamingjobs/sj9597/inputs/input7225"),
+	// 	Properties: &armstreamanalytics.ReferenceInputProperties{
+	// 		Type: to.Ptr("Reference"),
+	// 		Datasource: &armstreamanalytics.FileReferenceInputDataSource{
+	// 			Type: to.Ptr("File"),
+	// 			Properties: &armstreamanalytics.FileReferenceInputDataSourceProperties{
+	// 				Path: to.Ptr("my/path"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_Stream_EventHub_JSON.json
 func ExampleInputsClient_CreateOrReplace_createAStreamEventHubInputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,6 +209,9 @@ func ExampleInputsClient_CreateOrReplace_createAStreamEventHubInputWithJsonSeria
 				Properties: &armstreamanalytics.JSONSerializationProperties{
 					Encoding: to.Ptr(armstreamanalytics.EncodingUTF8),
 				},
+			},
+			WatermarkSettings: &armstreamanalytics.InputWatermarkProperties{
+				WatermarkMode: to.Ptr(armstreamanalytics.InputWatermarkModeReadWatermark),
 			},
 			Datasource: &armstreamanalytics.EventHubStreamInputDataSource{
 				Type: to.Ptr("Microsoft.ServiceBus/EventHub"),
@@ -158,7 +258,7 @@ func ExampleInputsClient_CreateOrReplace_createAStreamEventHubInputWithJsonSeria
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Create_Stream_IoTHub_Avro.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_Stream_IoTHub_Avro.json
 func ExampleInputsClient_CreateOrReplace_createAStreamIoTHubInputWithAvroSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +319,7 @@ func ExampleInputsClient_CreateOrReplace_createAStreamIoTHubInputWithAvroSeriali
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Create_Stream_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_Stream_Blob_CSV.json
 func ExampleInputsClient_CreateOrReplace_createAStreamBlobInputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +396,91 @@ func ExampleInputsClient_CreateOrReplace_createAStreamBlobInputWithCsvSerializat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Reference_Blob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Create_EventGrid.json
+func ExampleInputsClient_CreateOrReplace_createAnEventGridInput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstreamanalytics.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInputsClient().CreateOrReplace(ctx, "sjrg3467", "sj9742", "input7970", armstreamanalytics.Input{
+		Properties: &armstreamanalytics.StreamInputProperties{
+			Type: to.Ptr("Stream"),
+			Datasource: &armstreamanalytics.EventGridStreamInputDataSource{
+				Type: to.Ptr("Microsoft.EventGrid/EventSubscriptions"),
+				Properties: &armstreamanalytics.EventGridStreamInputDataSourceProperties{
+					Schema: to.Ptr(armstreamanalytics.EventGridEventSchemaTypeCloudEventSchema),
+					EventTypes: []*string{
+						to.Ptr("Microsoft.Storage.BlobCreated")},
+					StorageAccounts: []*armstreamanalytics.StorageAccount{
+						{
+							AccountKey:         to.Ptr("myaccountkey"),
+							AccountName:        to.Ptr("myaccount"),
+							AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+						}},
+					Subscriber: &armstreamanalytics.EventHubV2StreamInputDataSource{
+						Type: to.Ptr("Microsoft.EventHub/EventHub"),
+						Properties: &armstreamanalytics.EventHubStreamInputDataSourceProperties{
+							AuthenticationMode:     to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+							ServiceBusNamespace:    to.Ptr("sdktest"),
+							SharedAccessPolicyKey:  to.Ptr("someSharedAccessPolicyKey=="),
+							SharedAccessPolicyName: to.Ptr("RootManageSharedAccessKey"),
+							EventHubName:           to.Ptr("sdkeventhub"),
+							PartitionCount:         to.Ptr[int32](16),
+							ConsumerGroupName:      to.Ptr("sdkconsumergroup"),
+						},
+					},
+				},
+			},
+		},
+	}, &armstreamanalytics.InputsClientCreateOrReplaceOptions{IfMatch: nil,
+		IfNoneMatch: nil,
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Input = armstreamanalytics.Input{
+	// 	Name: to.Ptr("input7970"),
+	// 	Type: to.Ptr("Microsoft.StreamAnalytics/streamingjobs/inputs"),
+	// 	ID: to.Ptr("/subscriptions/56b5e0a9-b645-407d-99b0-c64f86013e3d/resourceGroups/sjrg3467/providers/Microsoft.StreamAnalytics/streamingjobs/sj9742/inputs/input7970"),
+	// 	Properties: &armstreamanalytics.StreamInputProperties{
+	// 		Type: to.Ptr("Stream"),
+	// 		Datasource: &armstreamanalytics.EventGridStreamInputDataSource{
+	// 			Type: to.Ptr("Microsoft.EventGrid/EventSubscriptions"),
+	// 			Properties: &armstreamanalytics.EventGridStreamInputDataSourceProperties{
+	// 				Schema: to.Ptr(armstreamanalytics.EventGridEventSchemaTypeCloudEventSchema),
+	// 				EventTypes: []*string{
+	// 					to.Ptr("Microsoft.Storage.BlobCreated")},
+	// 					StorageAccounts: []*armstreamanalytics.StorageAccount{
+	// 						{
+	// 							AccountName: to.Ptr("myaccount"),
+	// 							AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+	// 					}},
+	// 					Subscriber: &armstreamanalytics.EventHubV2StreamInputDataSource{
+	// 						Type: to.Ptr("Microsoft.EventHub/EventHub"),
+	// 						Properties: &armstreamanalytics.EventHubStreamInputDataSourceProperties{
+	// 							AuthenticationMode: to.Ptr(armstreamanalytics.AuthenticationModeMsi),
+	// 							ServiceBusNamespace: to.Ptr("sdktest"),
+	// 							SharedAccessPolicyName: to.Ptr("RootManageSharedAccessKey"),
+	// 							EventHubName: to.Ptr("sdkeventhub"),
+	// 							PartitionCount: to.Ptr[int32](16),
+	// 							ConsumerGroupName: to.Ptr("sdkconsumergroup"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Update_Reference_Blob.json
 func ExampleInputsClient_Update_updateAReferenceBlobInput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +545,7 @@ func ExampleInputsClient_Update_updateAReferenceBlobInput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_EventHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Update_Stream_EventHub.json
 func ExampleInputsClient_Update_updateAStreamEventHubInput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +600,7 @@ func ExampleInputsClient_Update_updateAStreamEventHubInput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_IoTHub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Update_Stream_IoTHub.json
 func ExampleInputsClient_Update_updateAStreamIoTHubInput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +661,7 @@ func ExampleInputsClient_Update_updateAStreamIoTHubInput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Update_Stream_Blob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Update_Stream_Blob.json
 func ExampleInputsClient_Update_updateAStreamBlobInput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -543,7 +727,7 @@ func ExampleInputsClient_Update_updateAStreamBlobInput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Delete.json
 func ExampleInputsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -560,7 +744,7 @@ func ExampleInputsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Get_Reference_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Get_Reference_Blob_CSV.json
 func ExampleInputsClient_Get_getAReferenceBlobInputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +792,7 @@ func ExampleInputsClient_Get_getAReferenceBlobInputWithCsvSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Get_Stream_EventHub_JSON.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Get_Stream_EventHub_JSON.json
 func ExampleInputsClient_Get_getAStreamEventHubInputWithJsonSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +835,7 @@ func ExampleInputsClient_Get_getAStreamEventHubInputWithJsonSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Get_Stream_IoTHub_Avro.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Get_Stream_IoTHub_Avro.json
 func ExampleInputsClient_Get_getAStreamIoTHubInputWithAvroSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,7 +877,7 @@ func ExampleInputsClient_Get_getAStreamIoTHubInputWithAvroSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Get_Stream_Blob_CSV.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Get_Stream_Blob_CSV.json
 func ExampleInputsClient_Get_getAStreamBlobInputWithCsvSerialization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -742,7 +926,7 @@ func ExampleInputsClient_Get_getAStreamBlobInputWithCsvSerialization() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_ListByStreamingJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_ListByStreamingJob.json
 func ExampleInputsClient_NewListByStreamingJobPager_listAllInputsInAStreamingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -877,7 +1061,7 @@ func ExampleInputsClient_NewListByStreamingJobPager_listAllInputsInAStreamingJob
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_ListByStreamingJob_Diagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_ListByStreamingJob_Diagnostics.json
 func ExampleInputsClient_NewListByStreamingJobPager_listAllInputsInAStreamingJobAndIncludeDiagnosticInformationUsingTheSelectODataQueryParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -939,7 +1123,7 @@ func ExampleInputsClient_NewListByStreamingJobPager_listAllInputsInAStreamingJob
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Test.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fa469a1157c33837a46c9bcd524527e94125189a/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/Input_Test.json
 func ExampleInputsClient_BeginTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

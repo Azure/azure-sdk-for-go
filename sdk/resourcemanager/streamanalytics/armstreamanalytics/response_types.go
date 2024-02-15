@@ -227,6 +227,12 @@ type PrivateEndpointsClientListByClusterResponse struct {
 	PrivateEndpointListResult
 }
 
+// SKUClientListResponse contains the response from method SKUClient.NewListPager.
+type SKUClientListResponse struct {
+	// Result of the request to get streaming job SKUs.
+	GetStreamingJobSKUResults
+}
+
 // StreamingJobsClientCreateOrReplaceResponse contains the response from method StreamingJobsClient.BeginCreateOrReplace.
 type StreamingJobsClientCreateOrReplaceResponse struct {
 	// A streaming job object, containing all information associated with the named streaming job.
@@ -283,10 +289,40 @@ type StreamingJobsClientUpdateResponse struct {
 	ETag *string
 }
 
+// SubscriptionsClientCompileQueryResponse contains the response from method SubscriptionsClient.CompileQuery.
+type SubscriptionsClientCompileQueryResponse struct {
+	// The result of the query compilation request.
+	QueryCompilationResult
+}
+
 // SubscriptionsClientListQuotasResponse contains the response from method SubscriptionsClient.ListQuotas.
 type SubscriptionsClientListQuotasResponse struct {
 	// Result of the GetQuotas operation. It contains a list of quotas for the subscription in a particular region.
 	SubscriptionQuotasListResult
+}
+
+// SubscriptionsClientSampleInputResponse contains the response from method SubscriptionsClient.BeginSampleInput.
+type SubscriptionsClientSampleInputResponse struct {
+	// The result of the sample input request.
+	SampleInputResult
+}
+
+// SubscriptionsClientTestInputResponse contains the response from method SubscriptionsClient.BeginTestInput.
+type SubscriptionsClientTestInputResponse struct {
+	// The result of the test input or output request.
+	TestDatasourceResult
+}
+
+// SubscriptionsClientTestOutputResponse contains the response from method SubscriptionsClient.BeginTestOutput.
+type SubscriptionsClientTestOutputResponse struct {
+	// The result of the test input or output request.
+	TestDatasourceResult
+}
+
+// SubscriptionsClientTestQueryResponse contains the response from method SubscriptionsClient.BeginTestQuery.
+type SubscriptionsClientTestQueryResponse struct {
+	// The result of the query testing request.
+	QueryTestingResult
 }
 
 // TransformationsClientCreateOrReplaceResponse contains the response from method TransformationsClient.CreateOrReplace.

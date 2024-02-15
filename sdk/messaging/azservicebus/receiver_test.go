@@ -308,7 +308,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
-	require.True(t, deferredMessages[0].deferred, "internal flag indicating it was from a deferred receiver method is set")
+	require.True(t, deferredMessages[0].settleOnMgmtLink, "deferred messages should always settle on the management link")
 
 	for _, m := range deferredMessages {
 		err = receiver.CompleteMessage(ctx, m, nil)
@@ -989,7 +989,7 @@ func TestReceiveWithDifferentWaitTime(t *testing.T) {
 		bigBody := make([]byte, 1000)
 
 		// send a bunch of messages
-		for i := 0; i < 1000; i++ {
+		for i := 0; i < 10000; i++ {
 			err := batch.AddMessage(&Message{
 				Body: bigBody,
 			}, nil)

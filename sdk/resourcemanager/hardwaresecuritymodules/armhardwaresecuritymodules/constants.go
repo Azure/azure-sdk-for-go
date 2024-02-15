@@ -10,8 +10,58 @@ package armhardwaresecuritymodules
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hardwaresecuritymodules/armhardwaresecuritymodules"
-	moduleVersion = "v1.2.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
+
+// CloudHsmClusterSKUFamily - Sku family of the Cloud HSM Cluster
+type CloudHsmClusterSKUFamily string
+
+const (
+	CloudHsmClusterSKUFamilyB CloudHsmClusterSKUFamily = "B"
+)
+
+// PossibleCloudHsmClusterSKUFamilyValues returns the possible values for the CloudHsmClusterSKUFamily const type.
+func PossibleCloudHsmClusterSKUFamilyValues() []CloudHsmClusterSKUFamily {
+	return []CloudHsmClusterSKUFamily{
+		CloudHsmClusterSKUFamilyB,
+	}
+}
+
+// CloudHsmClusterSKUName - Sku name of the Cloud HSM Cluster
+type CloudHsmClusterSKUName string
+
+const (
+	CloudHsmClusterSKUNameStandardB1  CloudHsmClusterSKUName = "Standard_B1"
+	CloudHsmClusterSKUNameStandardB10 CloudHsmClusterSKUName = "Standard B10"
+)
+
+// PossibleCloudHsmClusterSKUNameValues returns the possible values for the CloudHsmClusterSKUName const type.
+func PossibleCloudHsmClusterSKUNameValues() []CloudHsmClusterSKUName {
+	return []CloudHsmClusterSKUName{
+		CloudHsmClusterSKUNameStandardB1,
+		CloudHsmClusterSKUNameStandardB10,
+	}
+}
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
 
 // IdentityType - The type of identity.
 type IdentityType string
@@ -63,6 +113,92 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 		JSONWebKeyTypeFailed,
 		JSONWebKeyTypeProvisioning,
 		JSONWebKeyTypeSucceeded,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCanceled      PrivateEndpointConnectionProvisioningState = "Canceled"
+	PrivateEndpointConnectionProvisioningStateCreating      PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting      PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed        PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateInternalError PrivateEndpointConnectionProvisioningState = "InternalError"
+	PrivateEndpointConnectionProvisioningStateSucceeded     PrivateEndpointConnectionProvisioningState = "Succeeded"
+	PrivateEndpointConnectionProvisioningStateUpdating      PrivateEndpointConnectionProvisioningState = "Updating"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCanceled,
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateInternalError,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+		PrivateEndpointConnectionProvisioningStateUpdating,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// ProvisioningState - The Cloud HSM Cluster's provisioningState
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled     ProvisioningState = "Canceled"
+	ProvisioningStateDeleting     ProvisioningState = "Deleting"
+	ProvisioningStateFailed       ProvisioningState = "Failed"
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateProvisioning,
+		ProvisioningStateSucceeded,
 	}
 }
 

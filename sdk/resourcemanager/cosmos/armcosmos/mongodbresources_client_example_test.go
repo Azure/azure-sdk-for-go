@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbDatabaseCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseRestore.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbDatabaseRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,15 +245,17 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +305,7 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +344,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +380,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseRetrieveThroughputDistribution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseRetrieveThroughputDistribution.json
 func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistribution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +431,7 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistrib
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabaseRedistributeThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabaseRedistributeThroughput.json
 func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +501,7 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionRetrieveThroughputDistribution.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionRetrieveThroughputDistribution.json
 func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistribution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -550,7 +552,7 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistri
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionRedistributeThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionRedistributeThroughput.json
 func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +622,7 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +678,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -727,7 +729,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbCollectionCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -815,7 +817,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionRestore.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbCollectionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -887,7 +889,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +910,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBDatabasePartitionMerge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBDatabasePartitionMerge.json
 func ExampleMongoDBResourcesClient_BeginMongoDBDatabasePartitionMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -969,7 +971,7 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabasePartitionMerge() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionPartitionMerge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionPartitionMerge.json
 func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1030,7 +1032,7 @@ func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1060,15 +1062,17 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			InstantMaximumThroughput: to.Ptr("10000"),
 	// 			MinimumThroughput: to.Ptr("400"),
 	// 			OfferReplacePending: to.Ptr("true"),
+	// 			SoftAllowedMaximumThroughput: to.Ptr("1000000"),
 	// 			Throughput: to.Ptr[int32](400),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1118,7 +1122,7 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1157,7 +1161,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1193,7 +1197,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBRoleDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBRoleDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1238,7 +1242,7 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1307,7 +1311,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBRoleDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBRoleDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1328,7 +1332,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBRoleDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBRoleDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1381,7 +1385,7 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBUserDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBUserDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1417,7 +1421,7 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1470,7 +1474,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBUserDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBUserDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1491,7 +1495,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBUserDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBUserDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1535,7 +1539,7 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1b33e81bbdc28fcd6644a1315b8d7b1b6d030590/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-15-preview/examples/CosmosDBMongoDBCollectionBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6f8faf5da91b5b9af5f3512fe609e22e99383d41/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-11-15-preview/examples/CosmosDBMongoDBCollectionBackupInformation.json
 func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

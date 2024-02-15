@@ -43,6 +43,8 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 	}
 	var b DataTransferDataSourceSinkClassification
 	switch m["component"] {
+	case "BaseCosmosDataTransferDataSourceSink":
+		b = &BaseCosmosDataTransferDataSourceSink{}
 	case string(DataTransferComponentAzureBlobStorage):
 		b = &AzureBlobDataTransferDataSourceSink{}
 	case string(DataTransferComponentCosmosDBCassandra):

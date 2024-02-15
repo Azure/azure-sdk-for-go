@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/DevToolPortals_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/DevToolPortals_List.json
 func ExampleDevToolPortalsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,6 +55,20 @@ func ExampleDevToolPortalsClient_NewListPager() {
 		// 				LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 		// 			},
 		// 			Properties: &armappplatform.DevToolPortalProperties{
+		// 				Components: []*armappplatform.DevToolPortalComponent{
+		// 					{
+		// 						Name: to.Ptr("server"),
+		// 						Instances: []*armappplatform.DevToolPortalInstance{
+		// 							{
+		// 								Name: to.Ptr("dev-tool-portal-server-name"),
+		// 								Status: to.Ptr("Running"),
+		// 						}},
+		// 						ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
+		// 							CPU: to.Ptr("1"),
+		// 							InstanceCount: to.Ptr[int32](1),
+		// 							Memory: to.Ptr("1Gi"),
+		// 						},
+		// 				}},
 		// 				Features: &armappplatform.DevToolPortalFeatureSettings{
 		// 					ApplicationAccelerator: &armappplatform.DevToolPortalFeatureDetail{
 		// 						Route: to.Ptr("create"),
@@ -65,21 +79,11 @@ func ExampleDevToolPortalsClient_NewListPager() {
 		// 						State: to.Ptr(armappplatform.DevToolPortalFeatureStateEnabled),
 		// 					},
 		// 				},
-		// 				Instances: []*armappplatform.DevToolPortalInstance{
-		// 					{
-		// 						Name: to.Ptr("app-live-view-server-name"),
-		// 						Status: to.Ptr("Running"),
-		// 				}},
 		// 				ProvisioningState: to.Ptr(armappplatform.DevToolPortalProvisioningStateSucceeded),
 		// 				Public: to.Ptr(true),
-		// 				ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
-		// 					CPU: to.Ptr("1"),
-		// 					InstanceCount: to.Ptr[int32](1),
-		// 					Memory: to.Ptr("1Gi"),
-		// 				},
 		// 				SsoProperties: &armappplatform.DevToolPortalSsoProperties{
 		// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					MetadataURL: to.Ptr("https://login.microsoft.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
+		// 					MetadataURL: to.Ptr("https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
 		// 					Scopes: []*string{
 		// 						to.Ptr("openid")},
 		// 					},
@@ -90,7 +94,7 @@ func ExampleDevToolPortalsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/DevToolPortals_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/DevToolPortals_Get.json
 func ExampleDevToolPortalsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,6 +125,20 @@ func ExampleDevToolPortalsClient_Get() {
 	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 	// 	},
 	// 	Properties: &armappplatform.DevToolPortalProperties{
+	// 		Components: []*armappplatform.DevToolPortalComponent{
+	// 			{
+	// 				Name: to.Ptr("server"),
+	// 				Instances: []*armappplatform.DevToolPortalInstance{
+	// 					{
+	// 						Name: to.Ptr("dev-tool-portal-server-name"),
+	// 						Status: to.Ptr("Running"),
+	// 				}},
+	// 				ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
+	// 					CPU: to.Ptr("1"),
+	// 					InstanceCount: to.Ptr[int32](1),
+	// 					Memory: to.Ptr("1Gi"),
+	// 				},
+	// 		}},
 	// 		Features: &armappplatform.DevToolPortalFeatureSettings{
 	// 			ApplicationAccelerator: &armappplatform.DevToolPortalFeatureDetail{
 	// 				Route: to.Ptr("create"),
@@ -131,21 +149,11 @@ func ExampleDevToolPortalsClient_Get() {
 	// 				State: to.Ptr(armappplatform.DevToolPortalFeatureStateEnabled),
 	// 			},
 	// 		},
-	// 		Instances: []*armappplatform.DevToolPortalInstance{
-	// 			{
-	// 				Name: to.Ptr("app-live-view-server-name"),
-	// 				Status: to.Ptr("Running"),
-	// 		}},
 	// 		ProvisioningState: to.Ptr(armappplatform.DevToolPortalProvisioningStateSucceeded),
 	// 		Public: to.Ptr(true),
-	// 		ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
-	// 			CPU: to.Ptr("1"),
-	// 			InstanceCount: to.Ptr[int32](1),
-	// 			Memory: to.Ptr("1Gi"),
-	// 		},
 	// 		SsoProperties: &armappplatform.DevToolPortalSsoProperties{
 	// 			ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			MetadataURL: to.Ptr("https://login.microsoft.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
+	// 			MetadataURL: to.Ptr("https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
 	// 			Scopes: []*string{
 	// 				to.Ptr("openid")},
 	// 			},
@@ -154,7 +162,7 @@ func ExampleDevToolPortalsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/DevToolPortals_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/DevToolPortals_CreateOrUpdate.json
 func ExampleDevToolPortalsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +187,7 @@ func ExampleDevToolPortalsClient_BeginCreateOrUpdate() {
 			SsoProperties: &armappplatform.DevToolPortalSsoProperties{
 				ClientID:     to.Ptr("00000000-0000-0000-0000-000000000000"),
 				ClientSecret: to.Ptr("xxxxx"),
-				MetadataURL:  to.Ptr("https://login.microsoft.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
+				MetadataURL:  to.Ptr("https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
 				Scopes: []*string{
 					to.Ptr("openid")},
 			},
@@ -208,6 +216,20 @@ func ExampleDevToolPortalsClient_BeginCreateOrUpdate() {
 	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 	// 	},
 	// 	Properties: &armappplatform.DevToolPortalProperties{
+	// 		Components: []*armappplatform.DevToolPortalComponent{
+	// 			{
+	// 				Name: to.Ptr("server"),
+	// 				Instances: []*armappplatform.DevToolPortalInstance{
+	// 					{
+	// 						Name: to.Ptr("dev-tool-portal-server-name"),
+	// 						Status: to.Ptr("Running"),
+	// 				}},
+	// 				ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
+	// 					CPU: to.Ptr("1"),
+	// 					InstanceCount: to.Ptr[int32](1),
+	// 					Memory: to.Ptr("1Gi"),
+	// 				},
+	// 		}},
 	// 		Features: &armappplatform.DevToolPortalFeatureSettings{
 	// 			ApplicationAccelerator: &armappplatform.DevToolPortalFeatureDetail{
 	// 				Route: to.Ptr("create"),
@@ -218,21 +240,11 @@ func ExampleDevToolPortalsClient_BeginCreateOrUpdate() {
 	// 				State: to.Ptr(armappplatform.DevToolPortalFeatureStateEnabled),
 	// 			},
 	// 		},
-	// 		Instances: []*armappplatform.DevToolPortalInstance{
-	// 			{
-	// 				Name: to.Ptr("app-live-view-server-name"),
-	// 				Status: to.Ptr("Running"),
-	// 		}},
 	// 		ProvisioningState: to.Ptr(armappplatform.DevToolPortalProvisioningStateSucceeded),
 	// 		Public: to.Ptr(true),
-	// 		ResourceRequests: &armappplatform.DevToolPortalResourceRequests{
-	// 			CPU: to.Ptr("1"),
-	// 			InstanceCount: to.Ptr[int32](1),
-	// 			Memory: to.Ptr("1Gi"),
-	// 		},
 	// 		SsoProperties: &armappplatform.DevToolPortalSsoProperties{
 	// 			ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			MetadataURL: to.Ptr("https://login.microsoft.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
+	// 			MetadataURL: to.Ptr("https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0/.well-known/openid-configuration"),
 	// 			Scopes: []*string{
 	// 				to.Ptr("openid")},
 	// 			},
@@ -241,7 +253,7 @@ func ExampleDevToolPortalsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/DevToolPortal_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/685aad3f33d355c1d9c89d493ee9398865367bd8/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/DevToolPortal_Delete.json
 func ExampleDevToolPortalsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

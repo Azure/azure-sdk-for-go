@@ -9,6 +9,7 @@ package blob
 import (
 	"context"
 	"io"
+	"math"
 	"os"
 	"sync"
 	"time"
@@ -41,7 +42,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(shared.BlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +56,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient(shared.BlobClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +72,7 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential,
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(shared.BlobClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -469,23 +470,18 @@ func (b *Client) downloadFile(ctx context.Context, writer io.Writer, o downloadO
 
 	buffers := shared.NewMMBPool(int(o.Concurrency), o.BlockSize)
 	defer buffers.Free()
-	acquireBuffer := func() ([]byte, error) {
-		select {
-		case b := <-buffers.Acquire():
-			// got a buffer
-			return b, nil
-		default:
-			// no buffer available; allocate a new buffer if possible
-			if _, err := buffers.Grow(); err != nil {
-				return nil, err
-			}
 
-			// either grab the newly allocated buffer or wait for one to become available
-			return <-buffers.Acquire(), nil
+	numChunks := uint16((count-1)/o.BlockSize + 1)
+	for bufferCounter := float64(0); bufferCounter < math.Min(float64(numChunks), float64(o.Concurrency)); bufferCounter++ {
+		if _, err := buffers.Grow(); err != nil {
+			return 0, err
 		}
 	}
 
-	numChunks := uint16((count-1)/o.BlockSize) + 1
+	acquireBuffer := func() ([]byte, error) {
+		return <-buffers.Acquire(), nil
+	}
+
 	blocks := make([]chan []byte, numChunks)
 	for b := range blocks {
 		blocks[b] = make(chan []byte)
@@ -600,6 +596,11 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
+	filePointer, err := file.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return 0, err
+	}
+
 	// 1. Calculate the size of the destination file
 	var size int64
 
@@ -628,7 +629,15 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	if size > 0 {
-		return b.downloadFile(ctx, file, *do)
+		writeSize, err := b.downloadFile(ctx, file, *do)
+		if err != nil {
+			return 0, err
+		}
+		_, err = file.Seek(filePointer, io.SeekStart)
+		if err != nil {
+			return 0, err
+		}
+		return writeSize, nil
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}

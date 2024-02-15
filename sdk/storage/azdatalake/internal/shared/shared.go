@@ -25,13 +25,6 @@ const (
 )
 
 const (
-	ServiceClient    = "azdatalake/service.Client"
-	FileSystemClient = "azdatalake/filesystem.Client"
-	DirectoryClient  = "azdatalake/directory.Client"
-	FileClient       = "azdatalake/file.Client"
-)
-
-const (
 	HeaderAuthorization     = "Authorization"
 	HeaderXmsDate           = "x-ms-date"
 	HeaderContentLength     = "Content-Length"
@@ -246,4 +239,15 @@ func IsIPEndpointStyle(host string) bool {
 		host = host[1 : len(host)-1]
 	}
 	return net.ParseIP(host) != nil
+}
+
+// EscapeSplitPaths is utility function to escape the individual strings by eliminating "/" in the path
+func EscapeSplitPaths(filePath string) string {
+	names := strings.Split(filePath, "/")
+	path := make([]string, len(names))
+	for i, name := range names {
+		path[i] = url.PathEscape(name)
+	}
+	escapedPathUrl := strings.Join(path, "/")
+	return escapedPathUrl
 }

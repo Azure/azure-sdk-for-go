@@ -58,6 +58,27 @@ func unmarshalCertificatePropertiesClassification(rawMsg json.RawMessage) (Certi
 	return b, nil
 }
 
+func unmarshalContainerRegistryCredentialsClassification(rawMsg json.RawMessage) (ContainerRegistryCredentialsClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ContainerRegistryCredentialsClassification
+	switch m["type"] {
+	case "BasicAuth":
+		b = &ContainerRegistryBasicCredentials{}
+	default:
+		b = &ContainerRegistryCredentials{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessage) (CustomPersistentDiskPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -147,6 +168,8 @@ func unmarshalUserSourceInfoClassification(rawMsg json.RawMessage) (UserSourceIn
 		b = &SourceUploadedUserSourceInfo{}
 	case "UploadedUserSourceInfo":
 		b = &UploadedUserSourceInfo{}
+	case "War":
+		b = &WarUploadedUserSourceInfo{}
 	default:
 		b = &UserSourceInfo{}
 	}

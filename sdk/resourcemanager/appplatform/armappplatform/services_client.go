@@ -47,7 +47,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 // CheckNameAvailability - Checks that the resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - location - the region
 //   - availabilityParameters - Parameters supplied to the operation.
 //   - options - ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -90,7 +90,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, availabilityParameters); err != nil {
@@ -111,7 +111,7 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // BeginCreateOrUpdate - Create a new Service or update an exiting Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -138,7 +138,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a new Service or update an exiting Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginCreateOrUpdate"
@@ -180,7 +180,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -192,7 +192,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Operation to delete a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -217,7 +217,7 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Operation to delete a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginDelete"
@@ -259,16 +259,98 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDisableApmGlobally - Disable an APM globally.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - apm - The target APM for the disable operation
+//   - options - ServicesClientBeginDisableApmGloballyOptions contains the optional parameters for the ServicesClient.BeginDisableApmGlobally
+//     method.
+func (client *ServicesClient) BeginDisableApmGlobally(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginDisableApmGloballyOptions) (*runtime.Poller[ServicesClientDisableApmGloballyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.disableApmGlobally(ctx, resourceGroupName, serviceName, apm, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientDisableApmGloballyResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientDisableApmGloballyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DisableApmGlobally - Disable an APM globally.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+func (client *ServicesClient) disableApmGlobally(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginDisableApmGloballyOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ServicesClient.BeginDisableApmGlobally"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.disableApmGloballyCreateRequest(ctx, resourceGroupName, serviceName, apm, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// disableApmGloballyCreateRequest creates the DisableApmGlobally request.
+func (client *ServicesClient) disableApmGloballyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginDisableApmGloballyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/disableApmGlobally"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, apm); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
 // DisableTestEndpoint - Disable test endpoint functionality for a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -315,16 +397,98 @@ func (client *ServicesClient) disableTestEndpointCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginEnableApmGlobally - Enable an APM globally.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - apm - The target APM for the enable operation
+//   - options - ServicesClientBeginEnableApmGloballyOptions contains the optional parameters for the ServicesClient.BeginEnableApmGlobally
+//     method.
+func (client *ServicesClient) BeginEnableApmGlobally(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginEnableApmGloballyOptions) (*runtime.Poller[ServicesClientEnableApmGloballyResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.enableApmGlobally(ctx, resourceGroupName, serviceName, apm, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientEnableApmGloballyResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientEnableApmGloballyResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// EnableApmGlobally - Enable an APM globally.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+func (client *ServicesClient) enableApmGlobally(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginEnableApmGloballyOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ServicesClient.BeginEnableApmGlobally"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.enableApmGloballyCreateRequest(ctx, resourceGroupName, serviceName, apm, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// enableApmGloballyCreateRequest creates the EnableApmGlobally request.
+func (client *ServicesClient) enableApmGloballyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apm ApmReference, options *ServicesClientBeginEnableApmGloballyOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/enableApmGlobally"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, apm); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
 // EnableTestEndpoint - Enable test endpoint functionality for a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -372,7 +536,7 @@ func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,10 +551,88 @@ func (client *ServicesClient) enableTestEndpointHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// BeginFlushVnetDNSSetting - Flush Virtual Network DNS settings for a VNET injected Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ServicesClientBeginFlushVnetDNSSettingOptions contains the optional parameters for the ServicesClient.BeginFlushVnetDNSSetting
+//     method.
+func (client *ServicesClient) BeginFlushVnetDNSSetting(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginFlushVnetDNSSettingOptions) (*runtime.Poller[ServicesClientFlushVnetDNSSettingResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.flushVnetDNSSetting(ctx, resourceGroupName, serviceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientFlushVnetDNSSettingResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientFlushVnetDNSSettingResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// FlushVnetDNSSetting - Flush Virtual Network DNS settings for a VNET injected Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+func (client *ServicesClient) flushVnetDNSSetting(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginFlushVnetDNSSettingOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ServicesClient.BeginFlushVnetDNSSetting"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.flushVnetDNSSettingCreateRequest(ctx, resourceGroupName, serviceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// flushVnetDNSSettingCreateRequest creates the FlushVnetDNSSetting request.
+func (client *ServicesClient) flushVnetDNSSettingCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginFlushVnetDNSSettingOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/flushVirtualNetworkDnsSettings"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Get a Service and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -437,7 +679,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,7 +696,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListPager - Handles requests to list all resources in a resource group.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - options - ServicesClientListOptions contains the optional parameters for the ServicesClient.NewListPager method.
@@ -497,7 +739,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -514,7 +756,7 @@ func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesC
 
 // NewListBySubscriptionPager - Handles requests to list all resources in a subscription.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
@@ -552,7 +794,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -567,10 +809,208 @@ func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// ListGloballyEnabledApms - List globally enabled APMs for a Service.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ServicesClientListGloballyEnabledApmsOptions contains the optional parameters for the ServicesClient.ListGloballyEnabledApms
+//     method.
+func (client *ServicesClient) ListGloballyEnabledApms(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientListGloballyEnabledApmsOptions) (ServicesClientListGloballyEnabledApmsResponse, error) {
+	var err error
+	const operationName = "ServicesClient.ListGloballyEnabledApms"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listGloballyEnabledApmsCreateRequest(ctx, resourceGroupName, serviceName, options)
+	if err != nil {
+		return ServicesClientListGloballyEnabledApmsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ServicesClientListGloballyEnabledApmsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ServicesClientListGloballyEnabledApmsResponse{}, err
+	}
+	resp, err := client.listGloballyEnabledApmsHandleResponse(httpResp)
+	return resp, err
+}
+
+// listGloballyEnabledApmsCreateRequest creates the ListGloballyEnabledApms request.
+func (client *ServicesClient) listGloballyEnabledApmsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientListGloballyEnabledApmsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/listGloballyEnabledApms"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGloballyEnabledApmsHandleResponse handles the ListGloballyEnabledApms response.
+func (client *ServicesClient) listGloballyEnabledApmsHandleResponse(resp *http.Response) (ServicesClientListGloballyEnabledApmsResponse, error) {
+	result := ServicesClientListGloballyEnabledApmsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GloballyEnabledApms); err != nil {
+		return ServicesClientListGloballyEnabledApmsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListSupportedApmTypesPager - List supported APM types for a Service.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ServicesClientListSupportedApmTypesOptions contains the optional parameters for the ServicesClient.NewListSupportedApmTypesPager
+//     method.
+func (client *ServicesClient) NewListSupportedApmTypesPager(resourceGroupName string, serviceName string, options *ServicesClientListSupportedApmTypesOptions) *runtime.Pager[ServicesClientListSupportedApmTypesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServicesClientListSupportedApmTypesResponse]{
+		More: func(page ServicesClientListSupportedApmTypesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ServicesClientListSupportedApmTypesResponse) (ServicesClientListSupportedApmTypesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServicesClient.NewListSupportedApmTypesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSupportedApmTypesCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
+			if err != nil {
+				return ServicesClientListSupportedApmTypesResponse{}, err
+			}
+			return client.listSupportedApmTypesHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listSupportedApmTypesCreateRequest creates the ListSupportedApmTypes request.
+func (client *ServicesClient) listSupportedApmTypesCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientListSupportedApmTypesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/supportedApmTypes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSupportedApmTypesHandleResponse handles the ListSupportedApmTypes response.
+func (client *ServicesClient) listSupportedApmTypesHandleResponse(resp *http.Response) (ServicesClientListSupportedApmTypesResponse, error) {
+	result := ServicesClientListSupportedApmTypesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedApmTypes); err != nil {
+		return ServicesClientListSupportedApmTypesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListSupportedServerVersionsPager - Lists all of the available server versions supported by Microsoft.AppPlatform provider.
+//
+// Generated from API version 2023-12-01
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ServicesClientListSupportedServerVersionsOptions contains the optional parameters for the ServicesClient.NewListSupportedServerVersionsPager
+//     method.
+func (client *ServicesClient) NewListSupportedServerVersionsPager(resourceGroupName string, serviceName string, options *ServicesClientListSupportedServerVersionsOptions) *runtime.Pager[ServicesClientListSupportedServerVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServicesClientListSupportedServerVersionsResponse]{
+		More: func(page ServicesClientListSupportedServerVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ServicesClientListSupportedServerVersionsResponse) (ServicesClientListSupportedServerVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServicesClient.NewListSupportedServerVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listSupportedServerVersionsCreateRequest(ctx, resourceGroupName, serviceName, options)
+			}, nil)
+			if err != nil {
+				return ServicesClientListSupportedServerVersionsResponse{}, err
+			}
+			return client.listSupportedServerVersionsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listSupportedServerVersionsCreateRequest creates the ListSupportedServerVersions request.
+func (client *ServicesClient) listSupportedServerVersionsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientListSupportedServerVersionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/supportedServerVersions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2023-12-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSupportedServerVersionsHandleResponse handles the ListSupportedServerVersions response.
+func (client *ServicesClient) listSupportedServerVersionsHandleResponse(resp *http.Response) (ServicesClientListSupportedServerVersionsResponse, error) {
+	result := ServicesClientListSupportedServerVersionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedServerVersions); err != nil {
+		return ServicesClientListSupportedServerVersionsResponse{}, err
+	}
+	return result, nil
+}
+
 // ListTestKeys - List test keys for a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -617,7 +1057,7 @@ func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -635,7 +1075,7 @@ func (client *ServicesClient) listTestKeysHandleResponse(resp *http.Response) (S
 // RegenerateTestKey - Regenerate a test key for a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -684,7 +1124,7 @@ func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, regenerateTestKeyRequest); err != nil {
@@ -705,7 +1145,7 @@ func (client *ServicesClient) regenerateTestKeyHandleResponse(resp *http.Respons
 // BeginStart - Start a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -730,7 +1170,7 @@ func (client *ServicesClient) BeginStart(ctx context.Context, resourceGroupName 
 // Start - Start a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *ServicesClient) start(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginStart"
@@ -772,7 +1212,7 @@ func (client *ServicesClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -781,7 +1221,7 @@ func (client *ServicesClient) startCreateRequest(ctx context.Context, resourceGr
 // BeginStop - Stop a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -806,7 +1246,7 @@ func (client *ServicesClient) BeginStop(ctx context.Context, resourceGroupName s
 // Stop - Stop a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *ServicesClient) stop(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesClientBeginStopOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginStop"
@@ -848,7 +1288,7 @@ func (client *ServicesClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -857,7 +1297,7 @@ func (client *ServicesClient) stopCreateRequest(ctx context.Context, resourceGro
 // BeginUpdate - Operation to update an exiting Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -883,7 +1323,7 @@ func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Operation to update an exiting Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServicesClient.BeginUpdate"
@@ -925,7 +1365,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {

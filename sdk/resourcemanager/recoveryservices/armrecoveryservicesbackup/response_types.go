@@ -8,6 +8,8 @@
 
 package armrecoveryservicesbackup
 
+import "encoding/json"
+
 // BMSPrepareDataMoveOperationResultClientGetResponse contains the response from method BMSPrepareDataMoveOperationResultClient.Get.
 type BMSPrepareDataMoveOperationResultClientGetResponse struct {
 	// Operation result response for Vault Storage Config
@@ -190,6 +192,43 @@ type FeatureSupportClientValidateResponse struct {
 	AzureVMResourceFeatureSupportResponse
 }
 
+// FetchTieringCostClientPostResponse contains the response from method FetchTieringCostClient.BeginPost.
+type FetchTieringCostClientPostResponse struct {
+	// Base class for tiering cost response
+	TieringCostInfoClassification
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FetchTieringCostClientPostResponse.
+func (f FetchTieringCostClientPostResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(f.TieringCostInfoClassification)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FetchTieringCostClientPostResponse.
+func (f *FetchTieringCostClientPostResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalTieringCostInfoClassification(data)
+	if err != nil {
+		return err
+	}
+	f.TieringCostInfoClassification = res
+	return nil
+}
+
+// GetTieringCostOperationResultClientGetResponse contains the response from method GetTieringCostOperationResultClient.Get.
+type GetTieringCostOperationResultClientGetResponse struct {
+	// Base class for tiering cost response
+	TieringCostInfoClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GetTieringCostOperationResultClientGetResponse.
+func (g *GetTieringCostOperationResultClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalTieringCostInfoClassification(data)
+	if err != nil {
+		return err
+	}
+	g.TieringCostInfoClassification = res
+	return nil
+}
+
 // ItemLevelRecoveryConnectionsClientProvisionResponse contains the response from method ItemLevelRecoveryConnectionsClient.Provision.
 type ItemLevelRecoveryConnectionsClientProvisionResponse struct {
 	// placeholder for future response values
@@ -317,7 +356,7 @@ type ProtectionContainersClientRefreshResponse struct {
 	// placeholder for future response values
 }
 
-// ProtectionContainersClientRegisterResponse contains the response from method ProtectionContainersClient.Register.
+// ProtectionContainersClientRegisterResponse contains the response from method ProtectionContainersClient.BeginRegister.
 type ProtectionContainersClientRegisterResponse struct {
 	// Base class for container with backup items. Containers with specific workloads are derived from this class.
 	ProtectionContainerResource
@@ -434,6 +473,12 @@ type RestoresClientTriggerResponse struct {
 type SecurityPINsClientGetResponse struct {
 	// The token information details.
 	TokenInformation
+}
+
+// TieringCostOperationStatusClientGetResponse contains the response from method TieringCostOperationStatusClient.Get.
+type TieringCostOperationStatusClientGetResponse struct {
+	// Operation status.
+	OperationStatus
 }
 
 // ValidateOperationClientTriggerResponse contains the response from method ValidateOperationClient.BeginTrigger.

@@ -23,7 +23,7 @@ stages:
 
           - task: GoTool@0
             inputs:
-              version: '1.21.0'
+              version: '1.22.0'
 
           - task: ShellScript@2
             inputs:

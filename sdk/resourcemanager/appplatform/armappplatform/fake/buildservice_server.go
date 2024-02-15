@@ -24,9 +24,17 @@ import (
 
 // BuildServiceServer is a fake server for instances of the armappplatform.BuildServiceClient type.
 type BuildServiceServer struct {
+	// BeginCreateOrUpdate is the fake for method BuildServiceClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, buildService armappplatform.BuildService, options *armappplatform.BuildServiceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappplatform.BuildServiceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdateBuild is the fake for method BuildServiceClient.CreateOrUpdateBuild
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdateBuild func(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, buildName string, buildParam armappplatform.Build, options *armappplatform.BuildServiceClientCreateOrUpdateBuildOptions) (resp azfake.Responder[armappplatform.BuildServiceClientCreateOrUpdateBuildResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteBuild is the fake for method BuildServiceClient.BeginDeleteBuild
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	BeginDeleteBuild func(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *armappplatform.BuildServiceClientBeginDeleteBuildOptions) (resp azfake.PollerResponder[armappplatform.BuildServiceClientDeleteBuildResponse], errResp azfake.ErrorResponder)
 
 	// GetBuild is the fake for method BuildServiceClient.GetBuild
 	// HTTP status codes to indicate success: http.StatusOK
@@ -83,6 +91,8 @@ type BuildServiceServer struct {
 func NewBuildServiceServerTransport(srv *BuildServiceServer) *BuildServiceServerTransport {
 	return &BuildServiceServerTransport{
 		srv:                       srv,
+		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armappplatform.BuildServiceClientCreateOrUpdateResponse]](),
+		beginDeleteBuild:          newTracker[azfake.PollerResponder[armappplatform.BuildServiceClientDeleteBuildResponse]](),
 		newListBuildResultsPager:  newTracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildResultsResponse]](),
 		newListBuildServicesPager: newTracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildServicesResponse]](),
 		newListBuildsPager:        newTracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildsResponse]](),
@@ -93,6 +103,8 @@ func NewBuildServiceServerTransport(srv *BuildServiceServer) *BuildServiceServer
 // Don't use this type directly, use NewBuildServiceServerTransport instead.
 type BuildServiceServerTransport struct {
 	srv                       *BuildServiceServer
+	beginCreateOrUpdate       *tracker[azfake.PollerResponder[armappplatform.BuildServiceClientCreateOrUpdateResponse]]
+	beginDeleteBuild          *tracker[azfake.PollerResponder[armappplatform.BuildServiceClientDeleteBuildResponse]]
 	newListBuildResultsPager  *tracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildResultsResponse]]
 	newListBuildServicesPager *tracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildServicesResponse]]
 	newListBuildsPager        *tracker[azfake.PagerResponder[armappplatform.BuildServiceClientListBuildsResponse]]
@@ -110,8 +122,12 @@ func (b *BuildServiceServerTransport) Do(req *http.Request) (*http.Response, err
 	var err error
 
 	switch method {
+	case "BuildServiceClient.BeginCreateOrUpdate":
+		resp, err = b.dispatchBeginCreateOrUpdate(req)
 	case "BuildServiceClient.CreateOrUpdateBuild":
 		resp, err = b.dispatchCreateOrUpdateBuild(req)
+	case "BuildServiceClient.BeginDeleteBuild":
+		resp, err = b.dispatchBeginDeleteBuild(req)
 	case "BuildServiceClient.GetBuild":
 		resp, err = b.dispatchGetBuild(req)
 	case "BuildServiceClient.GetBuildResult":
@@ -142,6 +158,58 @@ func (b *BuildServiceServerTransport) Do(req *http.Request) (*http.Response, err
 
 	if err != nil {
 		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (b *BuildServiceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buildServices/(?P<buildServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappplatform.BuildService](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		buildServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("buildServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, serviceNameParam, buildServiceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		b.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		b.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		b.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -189,6 +257,58 @@ func (b *BuildServiceServerTransport) dispatchCreateOrUpdateBuild(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (b *BuildServiceServerTransport) dispatchBeginDeleteBuild(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginDeleteBuild == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteBuild not implemented")}
+	}
+	beginDeleteBuild := b.beginDeleteBuild.get(req)
+	if beginDeleteBuild == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/buildServices/(?P<buildServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<buildName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		buildServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("buildServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		buildNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("buildName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := b.srv.BeginDeleteBuild(req.Context(), resourceGroupNameParam, serviceNameParam, buildServiceNameParam, buildNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteBuild = &respr
+		b.beginDeleteBuild.add(req, beginDeleteBuild)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteBuild, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		b.beginDeleteBuild.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteBuild) {
+		b.beginDeleteBuild.remove(req)
+	}
+
 	return resp, nil
 }
 

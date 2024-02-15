@@ -30,7 +30,7 @@ func MustGenerateMessages(sc *StressContext, sender *TrackingSender, messageLimi
 
 	log.Printf("Sending %d messages", messageLimit)
 
-	streamingBatch, err := NewStreamingMessageBatch(ctx, &senderWrapper{inner: sender})
+	streamingBatch, err := NewStreamingMessageBatch(ctx, &senderWrapper{inner: sender}, messageLimit)
 	sc.PanicOnError("failed to create streaming batch", err)
 
 	extraBytes := make([]byte, numExtraBytes)

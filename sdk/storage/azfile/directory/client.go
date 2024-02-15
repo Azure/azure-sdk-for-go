@@ -44,7 +44,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Cl
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.DirectoryClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (d *Client) NewSubdirectoryClient(subDirectoryName string) *Client {
 func (d *Client) NewFileClient(fileName string) *file.Client {
 	fileName = url.PathEscape(fileName)
 	fileURL := runtime.JoinPaths(d.URL(), fileName)
-	return (*file.Client)(base.NewFileClient(fileURL, d.generated().InternalClient().WithClientName(shared.FileClient), d.sharedKey(), d.getClientOptions()))
+	return (*file.Client)(base.NewFileClient(fileURL, d.generated().InternalClient().WithClientName(exported.ModuleName), d.sharedKey(), d.getClientOptions()))
 }
 
 // Create operation creates a new directory under the specified share or parent directory.

@@ -276,3 +276,27 @@ func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	subClient, _ := NewTableResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+// NewThroughputPoolAccountClient creates a new instance of ThroughputPoolAccountClient.
+func (c *ClientFactory) NewThroughputPoolAccountClient() *ThroughputPoolAccountClient {
+	subClient, _ := NewThroughputPoolAccountClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient.
+func (c *ClientFactory) NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient {
+	subClient, _ := NewThroughputPoolAccountsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolClient creates a new instance of ThroughputPoolClient.
+func (c *ClientFactory) NewThroughputPoolClient() *ThroughputPoolClient {
+	subClient, _ := NewThroughputPoolClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+// NewThroughputPoolsClient creates a new instance of ThroughputPoolsClient.
+func (c *ClientFactory) NewThroughputPoolsClient() *ThroughputPoolsClient {
+	subClient, _ := NewThroughputPoolsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

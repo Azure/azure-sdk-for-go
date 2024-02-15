@@ -47,7 +47,7 @@ func NewBuildpackBindingClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Create or update a buildpack binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -77,7 +77,7 @@ func (client *BuildpackBindingClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Create or update a buildpack binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *BuildpackBindingClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, buildpackBindingName string, buildpackBinding BuildpackBindingResource, options *BuildpackBindingClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BuildpackBindingClient.BeginCreateOrUpdate"
@@ -131,7 +131,7 @@ func (client *BuildpackBindingClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, buildpackBinding); err != nil {
@@ -143,7 +143,7 @@ func (client *BuildpackBindingClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Operation to delete a Buildpack Binding
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -172,7 +172,7 @@ func (client *BuildpackBindingClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Operation to delete a Buildpack Binding
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 func (client *BuildpackBindingClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, builderName string, buildpackBindingName string, options *BuildpackBindingClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BuildpackBindingClient.BeginDelete"
@@ -226,7 +226,7 @@ func (client *BuildpackBindingClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,7 +235,7 @@ func (client *BuildpackBindingClient) deleteCreateRequest(ctx context.Context, r
 // Get - Get a buildpack binding by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -297,7 +297,7 @@ func (client *BuildpackBindingClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +314,7 @@ func (client *BuildpackBindingClient) getHandleResponse(resp *http.Response) (Bu
 
 // NewListPager - Handles requests to list all buildpack bindings in a builder.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -373,7 +373,7 @@ func (client *BuildpackBindingClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,7 +390,7 @@ func (client *BuildpackBindingClient) listHandleResponse(resp *http.Response) (B
 
 // NewListForClusterPager - Get collection of buildpack bindings under all builders.
 //
-// Generated from API version 2023-01-01-preview
+// Generated from API version 2023-12-01
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
@@ -439,7 +439,7 @@ func (client *BuildpackBindingClient) listForClusterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01-preview")
+	reqQP.Set("api-version", "2023-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

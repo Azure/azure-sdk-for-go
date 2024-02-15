@@ -1,8 +1,8 @@
 module github.com/Azure/azure-sdk-for-go/eng/tools/smoketests
 
-go 1.17
+go 1.18
 
-require github.com/spf13/cobra v1.6.1
+require github.com/spf13/cobra v1.8.0
 
 require (
 	github.com/Masterminds/semver v1.5.0

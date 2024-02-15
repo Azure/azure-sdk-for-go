@@ -46,7 +46,7 @@ func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrReplace - Creates a function or replaces an already existing function under an existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -100,7 +100,7 @@ func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -130,7 +130,7 @@ func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response
 // Delete - Deletes a function from the streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -180,7 +180,7 @@ func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets details about the specified function.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -240,7 +240,7 @@ func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +260,7 @@ func (client *FunctionsClient) getHandleResponse(resp *http.Response) (Functions
 
 // NewListByStreamingJobPager - Lists all of the functions under the specified streaming job.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - options - FunctionsClientListByStreamingJobOptions contains the optional parameters for the FunctionsClient.NewListByStreamingJobPager
@@ -311,7 +311,7 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -329,7 +329,7 @@ func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Respo
 // RetrieveDefaultDefinition - Retrieves the default definition of a function based on the parameters specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -381,7 +381,7 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.FunctionRetrieveDefaultDefinitionParameters != nil {
@@ -407,7 +407,7 @@ func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *htt
 // syntactically correct.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -434,7 +434,7 @@ func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName 
 // syntactically correct.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 func (client *FunctionsClient) test(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FunctionsClient.BeginTest"
@@ -480,7 +480,7 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Function != nil {
@@ -497,7 +497,7 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 // definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-03-01
+// Generated from API version 2021-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - The name of the streaming job.
 //   - functionName - The name of the function.
@@ -552,7 +552,7 @@ func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

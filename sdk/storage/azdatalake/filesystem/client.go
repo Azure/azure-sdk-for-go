@@ -47,7 +47,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 	plOpts := runtime.PipelineOptions{}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
-	azClient, err := azcore.NewClient(shared.FileSystemClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -202,18 +202,18 @@ func (fs *Client) BlobURL() string {
 // The new directory.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewDirectoryClient(directoryPath string) *directory.Client {
 	directoryPath = strings.ReplaceAll(directoryPath, "\\", "/")
-	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), directoryPath)
+	dirURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(directoryPath))
 	blobURL, dirURL := shared.GetURLs(dirURL)
-	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.DirectoryClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
+	return (*directory.Client)(base.NewPathClient(dirURL, blobURL, fs.containerClient().NewBlockBlobClient(directoryPath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
 // NewFileClient creates a new file.Client object by concatenating file path to the end of this Client's URL.
 // The new file.Client uses the same request policy pipeline as the Client.
 func (fs *Client) NewFileClient(filePath string) *file.Client {
 	filePath = strings.ReplaceAll(filePath, "\\", "/")
-	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), filePath)
+	fileURL := runtime.JoinPaths(fs.generatedFSClientWithDFS().Endpoint(), shared.EscapeSplitPaths(filePath))
 	blobURL, fileURL := shared.GetURLs(fileURL)
-	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(shared.FileClient), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
+	return (*file.Client)(base.NewPathClient(fileURL, blobURL, fs.containerClient().NewBlockBlobClient(filePath), fs.generatedFSClientWithDFS().InternalClient().WithClientName(exported.ModuleName), fs.sharedKey(), fs.identityCredential(), fs.getClientOptions()))
 }
 
 // Create creates a new filesystem under the specified account.

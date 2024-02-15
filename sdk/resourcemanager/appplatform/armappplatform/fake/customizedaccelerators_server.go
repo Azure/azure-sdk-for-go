@@ -29,7 +29,7 @@ type CustomizedAcceleratorsServer struct {
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, customizedAcceleratorName string, customizedAcceleratorResource armappplatform.CustomizedAcceleratorResource, options *armappplatform.CustomizedAcceleratorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CustomizedAcceleratorsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, customizedAcceleratorName string, options *armappplatform.CustomizedAcceleratorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CustomizedAcceleratorsClient.Get
@@ -40,9 +40,9 @@ type CustomizedAcceleratorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, serviceName string, applicationAcceleratorName string, options *armappplatform.CustomizedAcceleratorsClientListOptions) (resp azfake.PagerResponder[armappplatform.CustomizedAcceleratorsClientListResponse])
 
-	// Validate is the fake for method CustomizedAcceleratorsClient.Validate
+	// BeginValidate is the fake for method CustomizedAcceleratorsClient.BeginValidate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Validate func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, customizedAcceleratorName string, properties armappplatform.CustomizedAcceleratorProperties, options *armappplatform.CustomizedAcceleratorsClientValidateOptions) (resp azfake.Responder[armappplatform.CustomizedAcceleratorsClientValidateResponse], errResp azfake.ErrorResponder)
+	BeginValidate func(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, customizedAcceleratorName string, properties armappplatform.CustomizedAcceleratorProperties, options *armappplatform.CustomizedAcceleratorsClientBeginValidateOptions) (resp azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCustomizedAcceleratorsServerTransport creates a new instance of CustomizedAcceleratorsServerTransport with the provided implementation.
@@ -54,6 +54,7 @@ func NewCustomizedAcceleratorsServerTransport(srv *CustomizedAcceleratorsServer)
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientDeleteResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armappplatform.CustomizedAcceleratorsClientListResponse]](),
+		beginValidate:       newTracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientValidateResponse]](),
 	}
 }
 
@@ -64,6 +65,7 @@ type CustomizedAcceleratorsServerTransport struct {
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientDeleteResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armappplatform.CustomizedAcceleratorsClientListResponse]]
+	beginValidate       *tracker[azfake.PollerResponder[armappplatform.CustomizedAcceleratorsClientValidateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CustomizedAcceleratorsServerTransport.
@@ -86,8 +88,8 @@ func (c *CustomizedAcceleratorsServerTransport) Do(req *http.Request) (*http.Res
 		resp, err = c.dispatchGet(req)
 	case "CustomizedAcceleratorsClient.NewListPager":
 		resp, err = c.dispatchNewListPager(req)
-	case "CustomizedAcceleratorsClient.Validate":
-		resp, err = c.dispatchValidate(req)
+	case "CustomizedAcceleratorsClient.BeginValidate":
+		resp, err = c.dispatchBeginValidate(req)
 	default:
 		err = fmt.Errorf("unhandled API %s", method)
 	}
@@ -196,9 +198,9 @@ func (c *CustomizedAcceleratorsServerTransport) dispatchBeginDelete(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
@@ -293,47 +295,58 @@ func (c *CustomizedAcceleratorsServerTransport) dispatchNewListPager(req *http.R
 	return resp, nil
 }
 
-func (c *CustomizedAcceleratorsServerTransport) dispatchValidate(req *http.Request) (*http.Response, error) {
-	if c.srv.Validate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
+func (c *CustomizedAcceleratorsServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginValidate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationAccelerators/(?P<applicationAcceleratorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customizedAccelerators/(?P<customizedAcceleratorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginValidate := c.beginValidate.get(req)
+	if beginValidate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppPlatform/Spring/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applicationAccelerators/(?P<applicationAcceleratorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customizedAccelerators/(?P<customizedAcceleratorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if matches == nil || len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappplatform.CustomizedAcceleratorProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationAcceleratorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationAcceleratorName")])
+		if err != nil {
+			return nil, err
+		}
+		customizedAcceleratorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customizedAcceleratorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginValidate(req.Context(), resourceGroupNameParam, serviceNameParam, applicationAcceleratorNameParam, customizedAcceleratorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidate = &respr
+		c.beginValidate.add(req, beginValidate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armappplatform.CustomizedAcceleratorProperties](req)
+
+	resp, err := server.PollerResponderNext(beginValidate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginValidate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginValidate) {
+		c.beginValidate.remove(req)
 	}
-	applicationAcceleratorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationAcceleratorName")])
-	if err != nil {
-		return nil, err
-	}
-	customizedAcceleratorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("customizedAcceleratorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Validate(req.Context(), resourceGroupNameParam, serviceNameParam, applicationAcceleratorNameParam, customizedAcceleratorNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CustomizedAcceleratorValidateResult, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }

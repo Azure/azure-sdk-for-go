@@ -270,5 +270,27 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 	assert.NoError(t, err)
 	callCount = countPolicy.callCount
 	assert.Equal(t, callCount, 2)
+}
 
+func TestGlobalEndpointManagerGetPreferredLocationEndpoint(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	assert.NoError(t, err)
+
+	testUrl, err := url.Parse("https://contoso.documents.azure.com:443/")
+	assert.NoError(t, err)
+
+	expectedWestLocationalEndpoint := "https://contoso-westus.documents.azure.com:443/"
+	expectedCentralLocationalEndpoint := "https://contoso-centralus.documents.azure.com:443/"
+
+	westLocationalEndpoint := gem.getPreferredLocationEndpoint(0, *testUrl)
+	centralLocationalEndpoint := gem.getPreferredLocationEndpoint(1, *testUrl)
+
+	assert.Equal(t, expectedWestLocationalEndpoint, westLocationalEndpoint.String())
+	assert.Equal(t, expectedCentralLocationalEndpoint, centralLocationalEndpoint.String())
 }

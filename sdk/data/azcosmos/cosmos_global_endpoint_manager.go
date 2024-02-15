@@ -89,7 +89,7 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWr
 	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation)
 }
 
-func (gem *globalEndpointManager) GetPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
+func (gem *globalEndpointManager) getPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
 	endpointString := currentUrl.String()
 	location := gem.preferredLocations[preferredLocationIndex]
 	endpointParts := strings.Split(endpointString, ".")

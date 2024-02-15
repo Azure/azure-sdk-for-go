@@ -123,13 +123,13 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request
 	}
 	if isWriteOperation {
 		if p.gem.CanUseMultipleWriteLocations() {
-			locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
+			locationalEndpoint := p.gem.getPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
 			req.Raw().URL = &locationalEndpoint
 		} else {
 			return false
 		}
 	} else {
-		locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
+		locationalEndpoint := p.gem.getPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
 		req.Raw().URL = &locationalEndpoint
 	}
 	p.preferredLocationIndex += 1

@@ -12,8 +12,25 @@
     },
     "GoVersion": [
       "1.18.10",
-      "1.21.7",
-      "1.22.0"
+      "1.21.7"
     ]
-  }
+  },
+  "include": [
+    {
+      "Agent": {
+        "ubuntu-20.04": {
+          "OSVmImage": "MMSUbuntu20.04",
+          "Pool": "azsdk-pool-mms-ubuntu-2004-general"
+        },
+        "windows-2022": {
+          "OSVmImage": "MMS2022",
+          "Pool": "azsdk-pool-mms-win-2022-general",
+        }
+      },
+      "GOEXPERIMENT": "nocoverageredesign",
+      "GoVersion": [
+        "1.22.0"
+      ]
+    }
+  ]
 }

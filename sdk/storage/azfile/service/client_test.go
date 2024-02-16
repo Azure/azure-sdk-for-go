@@ -670,7 +670,7 @@ func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientWithHTTP() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientWithHTTP() {
 	_require := require.New(s.T())
 
 	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)

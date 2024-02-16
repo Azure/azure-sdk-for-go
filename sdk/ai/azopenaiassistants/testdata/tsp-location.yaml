@@ -1,6 +1,4 @@
 #location: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/cacb3dc095486d8691c47dea944fc9ed0f4d0e32/specification/ai/OpenAI.Assistants/client.tsp
 directory: specification/ai/OpenAI.Assistants
-#commit: cacb3dc095486d8691c47dea944fc9ed0f4d0e32
-# https://github.com/Azure/azure-rest-api-specs/compare/main...openai-assistants-fix-message-image-file-details
 commit: 0e987fd18418118dbeb904a49107c251e37154a5
 repo: Azure/azure-rest-api-specs

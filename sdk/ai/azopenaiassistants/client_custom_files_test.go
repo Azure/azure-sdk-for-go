@@ -61,7 +61,7 @@ func TestDownloadFileContent(t *testing.T) {
 				require.NotEmpty(t, fileBytes)
 				fileFound = true
 
-				t.Logf("[%s] image file ID: %s, first 10 bytes: %0X", *m.Role, *v.ImageFile.FileID, fileBytes[0:10])
+				t.Logf("[%s] image file ID: %s, file is %d bytes", *m.Role, *v.ImageFile.FileID, len(fileBytes))
 				break
 			case *azopenaiassistants.MessageTextContent:
 				t.Logf("[%s] %s", *m.Role, *v.Text.Value)

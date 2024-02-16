@@ -39,12 +39,12 @@ The [azidentity][azure_identity] module is used for Azure Active Directory authe
 
 Azure OpenAI clients can authenticate using Azure Active Directory or with an API key:
 
-* Using Azure Active Directory, with a TokenCredential: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClient)
-* Using an API key: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClientWithKeyCredential)
+* Using Azure Active Directory, with a TokenCredential: [example][azopenaiassistants_example_tokencredential]
+* Using an API key: [example][azopenaiassistants_example_keycredential]
 
 #### OpenAI
 
-OpenAI supports connecting using an API key: [example](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#example-NewClientForOpenAI)
+OpenAI supports connecting using an API key: [example][azopenaiassistants_example_openai].
 
 ## Key concepts
 
@@ -52,7 +52,7 @@ See [Key concepts][openai_key_concepts_assistants] in the product documentation 
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenaiassistants](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiassistants).
+Examples for various scenarios can be found on [pkg.go.dev][azopenaiassistants_examples] or in the example*_test.go files in our GitHub repo for [azopenaiassistants](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiassistants).
 
 ## Troubleshooting
 
@@ -91,10 +91,15 @@ comments.
 <!-- LINKS -->
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azopenaiassistants_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/ai/azopenaiassistants
-<!-- [azopenaiassistants_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants 
-TODO: will replace once the link is actually available.
--->
+
+<!-- TODO: BEGIN: will replace once the link is actually available. -->
 [azopenaiassistants_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
+[azopenaiassistants_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#pkg-examples
+[azopenaiassistants_example_tokencredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClient
+[azopenaiassistants_example_keycredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClientWithKeyCredential
+[azopenaiassistants_example_openai]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClientForOpenAI
+<!-- TODO: END: will replace once the link is actually available. -->
+
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [openai_docs]: https://learn.microsoft.com/azure/cognitive-services/openai

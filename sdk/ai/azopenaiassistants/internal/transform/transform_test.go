@@ -8,20 +8,25 @@ package main
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestFixAnonymousModels(t *testing.T) {
+func loadFile(t *testing.T, path string) string {
+	data, err := os.ReadFile(path)
+	require.NoError(t, err)
 
+	str := string(data)
+
+	return strings.ReplaceAll(str, "\r\n", "\n")
 }
 
 func TestFunction(t *testing.T) {
-	fileBytes, err := os.ReadFile("testdata/update_func.txt")
-	require.NoError(t, err)
+	text := loadFile(t, "testdata/update_func.txt")
 
-	newText, err := updateFunction(string(fileBytes), "Client", "uploadFileCreateRequest", func(text string) (string, error) {
+	newText, err := updateFunction(text, "Client", "uploadFileCreateRequest", func(text string) (string, error) {
 		return "MIDDLE", nil
 	}, &updateFunctionOptions{
 		IgnoreComment: true,
@@ -29,7 +34,7 @@ func TestFunction(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "BEGIN\n// uploadFileCreateRequest creates the UploadFile request.\n// another line of documentation.\nMIDDLE\nEND\n", newText)
 
-	newText, err = updateFunction(string(fileBytes), "Client", "uploadFileCreateRequest", func(text string) (string, error) {
+	newText, err = updateFunction(text, "Client", "uploadFileCreateRequest", func(text string) (string, error) {
 		return "MIDDLE", nil
 	}, &updateFunctionOptions{
 		IgnoreComment: false,
@@ -39,10 +44,9 @@ func TestFunction(t *testing.T) {
 }
 
 func TestFunctionRemove(t *testing.T) {
-	fileBytes, err := os.ReadFile("testdata/remove_func.txt")
-	require.NoError(t, err)
+	text := loadFile(t, "testdata/remove_func.txt")
 
-	newText, err := removeFunction(string(fileBytes), "Client", "uploadFileCreateRequest")
+	newText, err := removeFunction(text, "Client", "uploadFileCreateRequest")
 	require.NoError(t, err)
 
 	require.Equal(t, "SOME TEXT BEFORE\n\n"+
@@ -53,19 +57,17 @@ func TestFunctionRemove(t *testing.T) {
 }
 
 func TestSnipModel(t *testing.T) {
-	modelsBytes, err := os.ReadFile("testdata/remove_type_models.txt")
-	require.NoError(t, err)
-
-	modelsSerdeBytes, err := os.ReadFile("testdata/remove_type_models_serde.txt")
-	require.NoError(t, err)
+	modelsText := loadFile(t, "testdata/remove_type_models.txt")
+	modelsSerdeText := loadFile(t, "testdata/remove_type_models_serde.txt")
 
 	fileCache := &FileCache{
 		files: map[string]string{
-			"models.go":       string(modelsBytes),
-			"models_serde.go": string(modelsSerdeBytes),
+			"models.go":       modelsText,
+			"models_serde.go": modelsSerdeText,
 		},
 	}
-	err = removeType(fileCache, "Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema")
+
+	err := removeType(fileCache, "Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema")
 	require.NoError(t, err)
 
 	require.Equal(t, map[string]string{

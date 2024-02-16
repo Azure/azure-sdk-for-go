@@ -8,6 +8,12 @@ Param(
 
 $ErrorActionPreference = 'Stop'
 
+Write-Host "BBP ENV VARS"
+$trace = [System.Environment]::GetEnvironmentVariable("GOTRACEBACK")
+Write-Host "Trace '$trace'"
+$exp = [System.Environment]::GetEnvironmentVariable("GOEXPERIMENT")
+Write-Host "Experiment '$exp'"
+
 Push-Location sdk/$serviceDirectory
 Write-Host "##[command] Executing 'go test -timeout $testTimeout -v -coverprofile coverage.txt ./...' in sdk/$serviceDirectory"
 

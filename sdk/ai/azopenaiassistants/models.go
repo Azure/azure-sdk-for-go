@@ -138,88 +138,6 @@ type AssistantThreadCreationOptions struct {
 	Metadata map[string]*string
 }
 
-// CodeInterpreterImageOutput - A representation of an image output emitted by a code interpreter tool in response to a tool
-// call by the model.
-type CodeInterpreterImageOutput struct {
-	// REQUIRED; Referential information for the image associated with this output.
-	Image *CodeInterpreterImageReference
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetCodeInterpreterToolCallOutput implements the CodeInterpreterToolCallOutputClassification interface for type CodeInterpreterImageOutput.
-func (c *CodeInterpreterImageOutput) GetCodeInterpreterToolCallOutput() *CodeInterpreterToolCallOutput {
-	return &CodeInterpreterToolCallOutput{
-		Type: c.Type,
-	}
-}
-
-// CodeInterpreterImageReference - An image reference emitted by a code interpreter tool in response to a tool call by the
-// model.
-type CodeInterpreterImageReference struct {
-	// REQUIRED; The ID of the file associated with this image.
-	FileID *string
-}
-
-// CodeInterpreterLogOutput - A representation of a log output emitted by a code interpreter tool in response to a tool call
-// by the model.
-type CodeInterpreterLogOutput struct {
-	// REQUIRED; The serialized log output emitted by the code interpreter.
-	Logs *string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetCodeInterpreterToolCallOutput implements the CodeInterpreterToolCallOutputClassification interface for type CodeInterpreterLogOutput.
-func (c *CodeInterpreterLogOutput) GetCodeInterpreterToolCallOutput() *CodeInterpreterToolCallOutput {
-	return &CodeInterpreterToolCallOutput{
-		Type: c.Type,
-	}
-}
-
-// CodeInterpreterToolCall - A record of a call to a code interpreter tool, issued by the model in evaluation of a defined
-// tool, that represents inputs and outputs consumed and emitted by the code interpreter.
-type CodeInterpreterToolCall struct {
-	// REQUIRED; The details of the tool call to the code interpreter tool.
-	CodeInterpreter *CodeInterpreterToolCallDetails
-
-	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
-	ID *string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetToolCall implements the ToolCallClassification interface for type CodeInterpreterToolCall.
-func (c *CodeInterpreterToolCall) GetToolCall() *ToolCall {
-	return &ToolCall{
-		Type: c.Type,
-		ID:   c.ID,
-	}
-}
-
-// CodeInterpreterToolCallDetails - The detailed information about a code interpreter invocation by the model.
-type CodeInterpreterToolCallDetails struct {
-	// REQUIRED; The input provided by the model to the code interpreter tool.
-	Input *string
-
-	// REQUIRED; The outputs produced by the code interpreter tool back to the model in response to the tool call.
-	Outputs []CodeInterpreterToolCallOutputClassification
-}
-
-// CodeInterpreterToolCallOutput - An abstract representation of an emitted output from a code interpreter tool.
-type CodeInterpreterToolCallOutput struct {
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetCodeInterpreterToolCallOutput implements the CodeInterpreterToolCallOutputClassification interface for type CodeInterpreterToolCallOutput.
-func (c *CodeInterpreterToolCallOutput) GetCodeInterpreterToolCallOutput() *CodeInterpreterToolCallOutput {
-	return c
-}
-
 // CodeInterpreterToolDefinition - The input definition information for a code interpreter tool as used to configure an assistant.
 type CodeInterpreterToolDefinition struct {
 	// REQUIRED; The object type.
@@ -313,39 +231,6 @@ type FunctionDefinition struct {
 	Description *string
 }
 
-// FunctionToolCall - A record of a call to a function tool, issued by the model in evaluation of a defined tool, that represents
-// the inputs and output consumed and emitted by the specified function.
-type FunctionToolCall struct {
-	// REQUIRED; The detailed information about the function called by the model.
-	Function *FunctionToolCallDetails
-
-	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
-	ID *string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetToolCall implements the ToolCallClassification interface for type FunctionToolCall.
-func (f *FunctionToolCall) GetToolCall() *ToolCall {
-	return &ToolCall{
-		Type: f.Type,
-		ID:   f.ID,
-	}
-}
-
-// FunctionToolCallDetails - The detailed information about the function called by the model.
-type FunctionToolCallDetails struct {
-	// REQUIRED; The arguments that the model requires are provided to the named function.
-	Arguments *string
-
-	// REQUIRED; The name of the function.
-	Name *string
-
-	// REQUIRED; The output of the function, only populated for function calls that have already have had their outputs submitted.
-	Output *string
-}
-
 // FunctionToolDefinition - The input definition information for a function tool as used to configure an assistant.
 type FunctionToolDefinition struct {
 	// REQUIRED; The definition of the concrete function that the function tool should call.
@@ -405,12 +290,6 @@ func (m *MessageImageFileContent) GetMessageContent() *MessageContent {
 // MessageImageFileDetails - An image reference, as represented in thread message content.
 type MessageImageFileDetails struct {
 	// REQUIRED; The ID for the file associated with this image.
-	FileID *MessageImageFileIDDetails
-}
-
-// MessageImageFileIDDetails - An encapsulation of an image file ID, as used by message image content.
-type MessageImageFileIDDetails struct {
-	// REQUIRED; The ID of the specific image file.
 	FileID *string
 }
 
@@ -725,7 +604,7 @@ func (r *RequiredAction) GetRequiredAction() *RequiredAction { return r }
 // of a run.
 type RequiredFunctionToolCall struct {
 	// REQUIRED; Detailed information about the function to be executed by the tool that includes name and arguments.
-	Function *FunctionDefinition
+	Function *RequiredFunctionToolCallDetails
 
 	// REQUIRED; The ID of the tool call. This ID must be referenced when submitting tool outputs.
 	ID *string
@@ -742,6 +621,17 @@ func (r *RequiredFunctionToolCall) GetRequiredToolCall() *RequiredToolCall {
 	}
 }
 
+// RequiredFunctionToolCallDetails - The detailed information for a function invocation, as provided by a required action
+// invoking a function tool, that includes the name of and arguments to the function.
+type RequiredFunctionToolCallDetails struct {
+	// REQUIRED; The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a
+	// JSON document that should be validated and parsed for evaluation.
+	Arguments *string
+
+	// REQUIRED; The name of the function.
+	Name *string
+}
+
 // RequiredToolCall - An abstract representation a a tool invocation needed by the model to continue a run.
 type RequiredToolCall struct {
 	// REQUIRED; The ID of the tool call. This ID must be referenced when submitting tool outputs.
@@ -753,27 +643,6 @@ type RequiredToolCall struct {
 
 // GetRequiredToolCall implements the RequiredToolCallClassification interface for type RequiredToolCall.
 func (r *RequiredToolCall) GetRequiredToolCall() *RequiredToolCall { return r }
-
-// RetrievalToolCall - A record of a call to a retrieval tool, issued by the model in evaluation of a defined tool, that represents
-// executed retrieval actions.
-type RetrievalToolCall struct {
-	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
-	ID *string
-
-	// REQUIRED; The key/value pairs produced by the retrieval tool.
-	Retrieval map[string]*string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetToolCall implements the ToolCallClassification interface for type RetrievalToolCall.
-func (r *RetrievalToolCall) GetToolCall() *ToolCall {
-	return &ToolCall{
-		Type: r.Type,
-		ID:   r.ID,
-	}
-}
 
 // RetrievalToolDefinition - The input definition information for a retrieval tool as used to configure an assistant.
 type RetrievalToolDefinition struct {
@@ -847,6 +716,91 @@ type RunStep struct {
 	Type *RunStepType
 }
 
+// RunStepCodeInterpreterImageOutput - A representation of an image output emitted by a code interpreter tool in response
+// to a tool call by the model.
+type RunStepCodeInterpreterImageOutput struct {
+	// REQUIRED; Referential information for the image associated with this output.
+	Image *RunStepCodeInterpreterImageReference
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepCodeInterpreterToolCallOutput implements the RunStepCodeInterpreterToolCallOutputClassification interface for
+// type RunStepCodeInterpreterImageOutput.
+func (r *RunStepCodeInterpreterImageOutput) GetRunStepCodeInterpreterToolCallOutput() *RunStepCodeInterpreterToolCallOutput {
+	return &RunStepCodeInterpreterToolCallOutput{
+		Type: r.Type,
+	}
+}
+
+// RunStepCodeInterpreterImageReference - An image reference emitted by a code interpreter tool in response to a tool call
+// by the model.
+type RunStepCodeInterpreterImageReference struct {
+	// REQUIRED; The ID of the file associated with this image.
+	FileID *string
+}
+
+// RunStepCodeInterpreterLogOutput - A representation of a log output emitted by a code interpreter tool in response to a
+// tool call by the model.
+type RunStepCodeInterpreterLogOutput struct {
+	// REQUIRED; The serialized log output emitted by the code interpreter.
+	Logs *string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepCodeInterpreterToolCallOutput implements the RunStepCodeInterpreterToolCallOutputClassification interface for
+// type RunStepCodeInterpreterLogOutput.
+func (r *RunStepCodeInterpreterLogOutput) GetRunStepCodeInterpreterToolCallOutput() *RunStepCodeInterpreterToolCallOutput {
+	return &RunStepCodeInterpreterToolCallOutput{
+		Type: r.Type,
+	}
+}
+
+// RunStepCodeInterpreterToolCall - A record of a call to a code interpreter tool, issued by the model in evaluation of a
+// defined tool, that represents inputs and outputs consumed and emitted by the code interpreter.
+type RunStepCodeInterpreterToolCall struct {
+	// REQUIRED; The details of the tool call to the code interpreter tool.
+	CodeInterpreter *RunStepCodeInterpreterToolCallDetails
+
+	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
+	ID *string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepCodeInterpreterToolCall.
+func (r *RunStepCodeInterpreterToolCall) GetRunStepToolCall() *RunStepToolCall {
+	return &RunStepToolCall{
+		Type: r.Type,
+		ID:   r.ID,
+	}
+}
+
+// RunStepCodeInterpreterToolCallDetails - The detailed information about a code interpreter invocation by the model.
+type RunStepCodeInterpreterToolCallDetails struct {
+	// REQUIRED; The input provided by the model to the code interpreter tool.
+	Input *string
+
+	// REQUIRED; The outputs produced by the code interpreter tool back to the model in response to the tool call.
+	Outputs []RunStepCodeInterpreterToolCallOutputClassification
+}
+
+// RunStepCodeInterpreterToolCallOutput - An abstract representation of an emitted output from a code interpreter tool.
+type RunStepCodeInterpreterToolCallOutput struct {
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepCodeInterpreterToolCallOutput implements the RunStepCodeInterpreterToolCallOutputClassification interface for
+// type RunStepCodeInterpreterToolCallOutput.
+func (r *RunStepCodeInterpreterToolCallOutput) GetRunStepCodeInterpreterToolCallOutput() *RunStepCodeInterpreterToolCallOutput {
+	return r
+}
+
 // RunStepDetails - An abstract representation of the details for a run step.
 type RunStepDetails struct {
 	// REQUIRED; The object type.
@@ -863,6 +817,39 @@ type RunStepError struct {
 
 	// REQUIRED; The human-readable text associated with this error.
 	Message *string
+}
+
+// RunStepFunctionToolCall - A record of a call to a function tool, issued by the model in evaluation of a defined tool, that
+// represents the inputs and output consumed and emitted by the specified function.
+type RunStepFunctionToolCall struct {
+	// REQUIRED; The detailed information about the function called by the model.
+	Function *RunStepFunctionToolCallDetails
+
+	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
+	ID *string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepFunctionToolCall.
+func (r *RunStepFunctionToolCall) GetRunStepToolCall() *RunStepToolCall {
+	return &RunStepToolCall{
+		Type: r.Type,
+		ID:   r.ID,
+	}
+}
+
+// RunStepFunctionToolCallDetails - The detailed information about the function called by the model.
+type RunStepFunctionToolCallDetails struct {
+	// REQUIRED; The arguments that the model requires are provided to the named function.
+	Arguments *string
+
+	// REQUIRED; The name of the function.
+	Name *string
+
+	// REQUIRED; The output of the function, only populated for function calls that have already have had their outputs submitted.
+	Output *string
 }
 
 // RunStepLastError - If applicable, information about the last error encountered by this run step.
@@ -896,10 +883,43 @@ type RunStepMessageCreationReference struct {
 	MessageID *string
 }
 
+// RunStepRetrievalToolCall - A record of a call to a retrieval tool, issued by the model in evaluation of a defined tool,
+// that represents executed retrieval actions.
+type RunStepRetrievalToolCall struct {
+	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
+	ID *string
+
+	// REQUIRED; The key/value pairs produced by the retrieval tool.
+	Retrieval map[string]*string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepRetrievalToolCall.
+func (r *RunStepRetrievalToolCall) GetRunStepToolCall() *RunStepToolCall {
+	return &RunStepToolCall{
+		Type: r.Type,
+		ID:   r.ID,
+	}
+}
+
+// RunStepToolCall - An abstract representation of a detailed tool call as recorded within a run step for an existing run.
+type RunStepToolCall struct {
+	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
+	ID *string
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepToolCall.
+func (r *RunStepToolCall) GetRunStepToolCall() *RunStepToolCall { return r }
+
 // RunStepToolCallDetails - The detailed information associated with a run step calling tools.
 type RunStepToolCallDetails struct {
 	// REQUIRED; A list of tool call details for this run step.
-	ToolCalls []ToolCallClassification
+	ToolCalls []RunStepToolCallClassification
 
 	// REQUIRED; The object type.
 	Type *RunStepType
@@ -1083,18 +1103,6 @@ func (t *ThreadRunRequiredAction) GetRequiredAction() *RequiredAction {
 		Type: t.Type,
 	}
 }
-
-// ToolCall - An abstract representation of a detailed tool call as recorded within a run step for an existing run.
-type ToolCall struct {
-	// REQUIRED; The ID of the tool call. This ID must be referenced when you submit tool outputs.
-	ID *string
-
-	// REQUIRED; The object type.
-	Type *string
-}
-
-// GetToolCall implements the ToolCallClassification interface for type ToolCall.
-func (t *ToolCall) GetToolCall() *ToolCall { return t }
 
 // ToolDefinition - An abstract representation of an input tool definition that an assistant can use.
 type ToolDefinition struct {

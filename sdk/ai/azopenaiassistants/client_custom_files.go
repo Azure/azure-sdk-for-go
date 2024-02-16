@@ -1,13 +1,21 @@
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package azopenaiassistants
 
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+	"net/url"
 	"path/filepath"
 	"strings"
 
@@ -34,6 +42,55 @@ func (client *Client) uploadFileCreateRequest(ctx context.Context, file []byte, 
 	}
 
 	return req, nil
+}
+
+type GetFileContentResponse struct {
+	// Content is the content of the file that's been downloaded.
+	// NOTE: this must be Close()'d to avoid leaking resources.
+	Content io.ReadCloser
+}
+
+type GetFileContentOptions struct {
+	// For future expansion
+}
+
+// GetFile - Returns content for a specific file.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+//   - fileID - The ID of the file to retrieve.
+//   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
+func (client *Client) GetFileContent(ctx context.Context, fileID string, options *GetFileContentOptions) (GetFileContentResponse, error) {
+	var err error
+
+	req, err := func() (*policy.Request, error) {
+		urlPath := client.formatURL("/files/{fileId}/content")
+		if fileID == "" {
+			return nil, errors.New("parameter fileID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fileId}", url.PathEscape(fileID))
+		req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+		if err != nil {
+			return nil, err
+		}
+		req.Raw().Header["Accept"] = []string{"application/octet-stream"}
+		return req, nil
+	}()
+
+	if err != nil {
+		return GetFileContentResponse{}, err
+	}
+
+	runtime.SkipBodyDownload(req)
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetFileContentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GetFileContentResponse{}, err
+	}
+
+	return GetFileContentResponse{Content: httpResp.Body}, nil
 }
 
 func writeMultipart(req *policy.Request, fileContents []byte, filename string, purpose FilePurpose) error {

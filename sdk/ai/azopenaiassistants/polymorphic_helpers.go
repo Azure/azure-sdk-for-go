@@ -10,48 +10,6 @@ package azopenaiassistants
 
 import "encoding/json"
 
-func unmarshalCodeInterpreterToolCallOutputClassification(rawMsg json.RawMessage) (CodeInterpreterToolCallOutputClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b CodeInterpreterToolCallOutputClassification
-	switch m["type"] {
-	case "image":
-		b = &CodeInterpreterImageOutput{}
-	case "logs":
-		b = &CodeInterpreterLogOutput{}
-	default:
-		b = &CodeInterpreterToolCallOutput{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
-func unmarshalCodeInterpreterToolCallOutputClassificationArray(rawMsg json.RawMessage) ([]CodeInterpreterToolCallOutputClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
-		return nil, err
-	}
-	fArray := make([]CodeInterpreterToolCallOutputClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalCodeInterpreterToolCallOutputClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
-	}
-	return fArray, nil
-}
-
 func unmarshalMessageContentClassification(rawMsg json.RawMessage) (MessageContentClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -176,6 +134,48 @@ func unmarshalRequiredToolCallClassificationArray(rawMsg json.RawMessage) ([]Req
 	return fArray, nil
 }
 
+func unmarshalRunStepCodeInterpreterToolCallOutputClassification(rawMsg json.RawMessage) (RunStepCodeInterpreterToolCallOutputClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RunStepCodeInterpreterToolCallOutputClassification
+	switch m["type"] {
+	case "image":
+		b = &RunStepCodeInterpreterImageOutput{}
+	case "logs":
+		b = &RunStepCodeInterpreterLogOutput{}
+	default:
+		b = &RunStepCodeInterpreterToolCallOutput{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRunStepCodeInterpreterToolCallOutputClassificationArray(rawMsg json.RawMessage) ([]RunStepCodeInterpreterToolCallOutputClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]RunStepCodeInterpreterToolCallOutputClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalRunStepCodeInterpreterToolCallOutputClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalRunStepDetailsClassification(rawMsg json.RawMessage) (RunStepDetailsClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -199,7 +199,7 @@ func unmarshalRunStepDetailsClassification(rawMsg json.RawMessage) (RunStepDetai
 	return b, nil
 }
 
-func unmarshalToolCallClassification(rawMsg json.RawMessage) (ToolCallClassification, error) {
+func unmarshalRunStepToolCallClassification(rawMsg json.RawMessage) (RunStepToolCallClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -207,16 +207,16 @@ func unmarshalToolCallClassification(rawMsg json.RawMessage) (ToolCallClassifica
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b ToolCallClassification
+	var b RunStepToolCallClassification
 	switch m["type"] {
 	case "code_interpreter":
-		b = &CodeInterpreterToolCall{}
+		b = &RunStepCodeInterpreterToolCall{}
 	case "function":
-		b = &FunctionToolCall{}
+		b = &RunStepFunctionToolCall{}
 	case "retrieval":
-		b = &RetrievalToolCall{}
+		b = &RunStepRetrievalToolCall{}
 	default:
-		b = &ToolCall{}
+		b = &RunStepToolCall{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -224,7 +224,7 @@ func unmarshalToolCallClassification(rawMsg json.RawMessage) (ToolCallClassifica
 	return b, nil
 }
 
-func unmarshalToolCallClassificationArray(rawMsg json.RawMessage) ([]ToolCallClassification, error) {
+func unmarshalRunStepToolCallClassificationArray(rawMsg json.RawMessage) ([]RunStepToolCallClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -232,9 +232,9 @@ func unmarshalToolCallClassificationArray(rawMsg json.RawMessage) ([]ToolCallCla
 	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
 		return nil, err
 	}
-	fArray := make([]ToolCallClassification, len(rawMessages))
+	fArray := make([]RunStepToolCallClassification, len(rawMessages))
 	for index, rawMessage := range rawMessages {
-		f, err := unmarshalToolCallClassification(rawMessage)
+		f, err := unmarshalRunStepToolCallClassification(rawMessage)
 		if err != nil {
 			return nil, err
 		}

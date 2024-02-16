@@ -8,15 +8,6 @@
 
 package azopenaiassistants
 
-// CodeInterpreterToolCallOutputClassification provides polymorphic access to related types.
-// Call the interface's GetCodeInterpreterToolCallOutput() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *CodeInterpreterImageOutput, *CodeInterpreterLogOutput, *CodeInterpreterToolCallOutput
-type CodeInterpreterToolCallOutputClassification interface {
-	// GetCodeInterpreterToolCallOutput returns the CodeInterpreterToolCallOutput content of the underlying type.
-	GetCodeInterpreterToolCallOutput() *CodeInterpreterToolCallOutput
-}
-
 // MessageContentClassification provides polymorphic access to related types.
 // Call the interface's GetMessageContent() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -53,6 +44,15 @@ type RequiredToolCallClassification interface {
 	GetRequiredToolCall() *RequiredToolCall
 }
 
+// RunStepCodeInterpreterToolCallOutputClassification provides polymorphic access to related types.
+// Call the interface's GetRunStepCodeInterpreterToolCallOutput() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *RunStepCodeInterpreterImageOutput, *RunStepCodeInterpreterLogOutput, *RunStepCodeInterpreterToolCallOutput
+type RunStepCodeInterpreterToolCallOutputClassification interface {
+	// GetRunStepCodeInterpreterToolCallOutput returns the RunStepCodeInterpreterToolCallOutput content of the underlying type.
+	GetRunStepCodeInterpreterToolCallOutput() *RunStepCodeInterpreterToolCallOutput
+}
+
 // RunStepDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetRunStepDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -62,13 +62,13 @@ type RunStepDetailsClassification interface {
 	GetRunStepDetails() *RunStepDetails
 }
 
-// ToolCallClassification provides polymorphic access to related types.
-// Call the interface's GetToolCall() method to access the common type.
+// RunStepToolCallClassification provides polymorphic access to related types.
+// Call the interface's GetRunStepToolCall() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CodeInterpreterToolCall, *FunctionToolCall, *RetrievalToolCall, *ToolCall
-type ToolCallClassification interface {
-	// GetToolCall returns the ToolCall content of the underlying type.
-	GetToolCall() *ToolCall
+// - *RunStepCodeInterpreterToolCall, *RunStepFunctionToolCall, *RunStepRetrievalToolCall, *RunStepToolCall
+type RunStepToolCallClassification interface {
+	// GetRunStepToolCall returns the RunStepToolCall content of the underlying type.
+	GetRunStepToolCall() *RunStepToolCall
 }
 
 // ToolDefinitionClassification provides polymorphic access to related types.

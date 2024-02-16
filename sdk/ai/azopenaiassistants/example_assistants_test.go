@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -93,49 +94,51 @@ func Example_assistants() {
 
 	// This is just a simplified example of how you could handle a conversation - `assistantMessages` are the messages that
 	// are responses from the assistant, and you return messages from here that are then added to the conversation.
-	handleConversation := func(assistantMessages []azopenaiassistants.ThreadMessage) []azopenaiassistants.CreateMessageBody {
+	handleConversation := func(ctx context.Context, assistantMessages []azopenaiassistants.ThreadMessage) ([]azopenaiassistants.CreateMessageBody, error) {
 		callIdx++
 
-		printAssistantMessages(assistantMessages)
+		if err := printAssistantMessages(ctx, client, assistantMessages); err != nil {
+			return nil, err
+		}
 
 		// For this example we'll just synthesize some responses, simulating a conversation.
 		// In a real application these messages would come from the user, responding to replies
 		// from the assistant.
 		switch callIdx {
 		case 0:
-			text := "Can you help me find the y intercept for y = x +4?"
+			text := "Can you help me find the y intercept for y = x + 4?"
 			fmt.Fprintf(os.Stderr, "[ME] %s\n", text)
 
 			return []azopenaiassistants.CreateMessageBody{
 				{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: &text},
-			}
+			}, nil
 		case 1:
 			text := "Can you explain it with a Python program?"
 			fmt.Fprintf(os.Stderr, "[ME] %s\n", text)
 
 			return []azopenaiassistants.CreateMessageBody{
 				{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: &text},
-			}
+			}, nil
 		case 2:
 			text := "Can you give me the result if that Python program had 'x' set to 10"
 			fmt.Fprintf(os.Stderr, "[ME] %s\n", text)
 
 			return []azopenaiassistants.CreateMessageBody{
 				{Role: to.Ptr(azopenaiassistants.MessageRoleUser), Content: &text},
-			}
+			}, nil
 		default:
 			stopAssistant()
 		}
-		return nil
+		return nil, nil
 	}
 
 	if err = assistantLoop(assistantCtx, client, *assistantID, *threadID, handleConversation); err != nil {
 		// if this is a cancellation error it's just us trying to stop the assistant loop.
 		if errors.Is(err, context.Canceled) {
-			fmt.Fprintf(os.Stderr, "Assistant stopped cleanly")
+			fmt.Fprintf(os.Stderr, "Assistant stopped cleanly\n")
 		} else {
 			//  TODO: Update the following line with your application specific error handling logic
-			log.Fatalf("ERROR: %s", err)
+			log.Fatalf("ERROR: %s\n", err)
 		}
 	}
 
@@ -145,7 +148,7 @@ func Example_assistants() {
 // conversationHandler takes responses from an assistant and returns our reply messages. Returns the responses
 // based on the contents of assistantMessages
 // - assistantMessages - messages that have arrived since our last read of the thread.
-type conversationHandler func(assistantMessages []azopenaiassistants.ThreadMessage) []azopenaiassistants.CreateMessageBody
+type conversationHandler func(ctx context.Context, assistantMessages []azopenaiassistants.ThreadMessage) ([]azopenaiassistants.CreateMessageBody, error)
 
 func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 	assistantID string, threadID string,
@@ -156,7 +159,11 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 	var lastAssistantResponses []azopenaiassistants.ThreadMessage
 
 	for {
-		yourResponses := handleConversation(lastAssistantResponses)
+		yourResponses, err := handleConversation(ctx, lastAssistantResponses)
+
+		if err != nil {
+			return err
+		}
 
 		var lastMessageID *string
 
@@ -188,8 +195,6 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 			return err
 		}
 
-		log.Printf("====> %s\n", *lastMessageID)
-
 		lastAssistantResponses = nil
 
 		// get all the messages that were added after our most recently added message.
@@ -210,19 +215,36 @@ func assistantLoop(ctx context.Context, client *azopenaiassistants.Client,
 	}
 }
 
-func printAssistantMessages(threadMessages []azopenaiassistants.ThreadMessage) {
+func printAssistantMessages(ctx context.Context, client *azopenaiassistants.Client, threadMessages []azopenaiassistants.ThreadMessage) error {
 	// print out the response contents for debugging.
 	for _, response := range threadMessages {
 		for _, content := range response.Content {
-
 			switch v := content.(type) {
 			case *azopenaiassistants.MessageImageFileContent:
-				fmt.Fprintf(os.Stderr, "[ASSISTANT] %s: Image response, file ID: %s\n", *response.ID, *v.ImageFile.FileID.FileID)
+				fmt.Fprintf(os.Stderr, "[ASSISTANT] Image response, file ID: %s\n", *v.ImageFile.FileID)
+
+				// Download the contents of the file through the returned reader.
+				fileContentResp, err := client.GetFileContent(ctx, *v.ImageFile.FileID, nil)
+
+				if err != nil {
+					return err
+				}
+
+				fileBytes, err := io.ReadAll(fileContentResp.Content)
+				fileContentResp.Content.Close()
+
+				if err != nil {
+					return err
+				}
+
+				fmt.Fprintf(os.Stderr, "  File contents downloaded, length %d\n", len(fileBytes))
 			case *azopenaiassistants.MessageTextContent:
 				fmt.Fprintf(os.Stderr, "[ASSISTANT] %s: Text response: %s\n", *response.ID, *v.Text.Value)
 			}
 		}
 	}
+
+	return nil
 }
 
 func pollRunEnd(ctx context.Context, client *azopenaiassistants.Client, threadID string, runID string) error {

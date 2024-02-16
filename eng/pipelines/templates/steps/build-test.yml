@@ -80,7 +80,8 @@ steps:
       ${{ insert }}: ${{ parameters.EnvVars }}
       GOTRACEBACK: all
       AZURE_SDK_GO_LOGGING: all
-      GOEXPERIMENT: nocoverageredesign
+      - ${{ if eq(parameters.GoVersion, '1.22.0') }}:
+        GOEXPERIMENT: nocoverageredesign
 
   - task: PowerShell@2
     displayName: 'Build Performance Tests'

@@ -670,7 +670,7 @@ func (s *ServiceRecordedTestsSuite) TestPremiumAccountListShares() {
 	}
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+func (s *ServiceRecordedTestsSuite) TestServiceClientWithHTTP() {
 	_require := require.New(s.T())
 
 	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
@@ -681,6 +681,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
 
 	_, err = svcClient.GetProperties(context.Background(), nil)
 	_require.Error(err)
+	testcommon.ValidateFileErrorCode(_require, err, "AccountRequiresHttps")
 }
 
 func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {

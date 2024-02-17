@@ -433,6 +433,7 @@ type OpenAIFile struct {
 	Purpose *FilePurpose
 }
 
+// UpdateMessageBody - The request details to use when updating a message.
 type UpdateMessageBody struct {
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and
@@ -440,6 +441,7 @@ type UpdateMessageBody struct {
 	Metadata map[string]*string
 }
 
+// SubmitToolOutputsToRunBody - The request details to use when submitting tool outputs.
 type SubmitToolOutputsToRunBody struct {
 	// REQUIRED; The list of tool outputs requested by tool calls from the specified run.
 	ToolOutputs []ToolOutput
@@ -482,6 +484,7 @@ type AssistantsPage struct {
 	Object *string
 }
 
+// CreateAssistantFileBody - The request details to use when creating an assistant file.
 type CreateAssistantFileBody struct {
 	// REQUIRED; The ID of the previously uploaded file to attach.
 	FileID *string
@@ -506,6 +509,7 @@ type MessagesPage struct {
 	Object *string
 }
 
+// UpdateRunBody - The request details to use when updating a run.
 type UpdateRunBody struct {
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and
@@ -513,6 +517,7 @@ type UpdateRunBody struct {
 	Metadata map[string]*string
 }
 
+// UpdateThreadBody - The request details to use when creating a thread.
 type UpdateThreadBody struct {
 	// A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that
 	// object in a structured format. Keys may be up to 64 characters in length and
@@ -557,6 +562,7 @@ type RunStepsPage struct {
 	Object *string
 }
 
+// CreateMessageBody - The request details to use when creating a message.
 type CreateMessageBody struct {
 	// REQUIRED; The textual content for the new message.
 	Content *string

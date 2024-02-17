@@ -36,6 +36,7 @@ func (t *transformer) Do() error {
 		t.renameModelToDeploymentName,
 		t.hackFixTimestamps,
 		t.fixFiles,
+		t.addMissingDocComments,
 	}
 
 	for _, tr := range transforms {
@@ -260,5 +261,27 @@ func (t *transformer) fixFiles() error {
 			text,
 			"func (client *Client) UploadFile(ctx context.Context, file io.ReadSeekCloser, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {",
 			"func (client *Client) UploadFile(ctx context.Context, file io.ReadSeeker, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {", 1), nil
+	}, nil)
+}
+
+func (t *transformer) addMissingDocComments() error {
+
+	return transformFiles(t.fileCache, "addMissingDocComments", []string{"models.go"}, func(text string) (string, error) {
+		tokens := map[string]string{
+			"CreateAssistantFileBody":    "// CreateAssistantFileBody - The request details to use when creating an assistant file.",
+			"CreateMessageBody":          "// CreateMessageBody - The request details to use when creating a message.",
+			"SubmitToolOutputsToRunBody": "// SubmitToolOutputsToRunBody - The request details to use when submitting tool outputs.",
+			"UpdateMessageBody":          "// UpdateMessageBody - The request details to use when updating a message.",
+			"UpdateRunBody":              "// UpdateRunBody - The request details to use when updating a run.",
+			"UpdateThreadBody":           "// UpdateThreadBody - The request details to use when creating a thread.",
+		}
+
+		// TODO: need to track down why these types don't have comments.
+		for goType, comment := range tokens {
+			origStructLine := fmt.Sprintf("type %s struct {", goType)
+			text = strings.Replace(text, origStructLine, comment+"\n"+origStructLine, 1)
+		}
+
+		return text, nil
 	}, nil)
 }

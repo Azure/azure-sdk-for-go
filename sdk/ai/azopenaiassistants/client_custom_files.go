@@ -50,12 +50,14 @@ func (client *Client) uploadFileCreateRequest(ctx context.Context, file io.ReadS
 	return req, nil
 }
 
+// GetFileContentResponse contains the response from the [Client.GetFileContent] function.
 type GetFileContentResponse struct {
 	// Content is the content of the file that's been downloaded.
 	// NOTE: this must be Close()'d to avoid leaking resources.
 	Content io.ReadCloser
 }
 
+// GetFileContentOptions contains the options for the [Client.GetFileContent] function.
 type GetFileContentOptions struct {
 	// For future expansion
 }

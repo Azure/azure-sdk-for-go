@@ -264,7 +264,7 @@ func getConstantValues(reader io.ReadCloser) (map[string]constant, error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		if commentText, found := strings.CutPrefix(line, "// "); found {
+		if commentText, found := cutPrefix(line, "// "); found {
 			currentComment = append(currentComment, commentText)
 		} else if len(currentComment) > 0 && strings.HasPrefix(line, "type ") {
 			comments = append(comments, struct {
@@ -394,3 +394,11 @@ func readLines(path string) (map[string]bool, error) {
 "SubscriptionDeletedEventData" => "EventGridSubscriptionDeleted",
 "SubscriptionValidationEventData" => "EventGridSubscriptionValidation",
 */
+
+// copy of strings.CutPrefix, which doesn't exist in our oldest support compiler (1.18)
+func cutPrefix(s, prefix string) (after string, found bool) {
+	if !strings.HasPrefix(s, prefix) {
+		return s, false
+	}
+	return s[len(prefix):], true
+}

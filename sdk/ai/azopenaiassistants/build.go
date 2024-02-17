@@ -10,5 +10,6 @@ package azopenaiassistants
 //go:generate autorest ./autorest.md
 //go:generate goimports -w ./..
 //go:generate go run ./internal/transform
+
 //go:generate goimports -w ./..
 //go:generate go mod tidy

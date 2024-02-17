@@ -18,7 +18,7 @@ import (
 // doesn't appear to be propagating the date/time format attribute for all
 // attributes, resulting in Unix timestamps failing to deserialized as RFC1139.
 func (t *transformer) hackFixTimestamps() error {
-	return transformFiles(t.fileCache, []string{"models_serde.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "fix timestamps", []string{"models_serde.go"}, func(text string) (string, error) {
 		fixes := []struct {
 			JSONFieldName string
 			FieldName     string

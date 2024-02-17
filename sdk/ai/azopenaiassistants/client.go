@@ -11,6 +11,7 @@ package azopenaiassistants
 import (
 	"context"
 	"errors"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -1694,7 +1695,7 @@ func (client *Client) updateThreadHandleResponse(resp *http.Response) (UpdateThr
 //   - file - The file data (not filename) to upload.
 //   - purpose - The intended purpose of the file.
 //   - options - UploadFileOptions contains the optional parameters for the Client.UploadFile method.
-func (client *Client) UploadFile(ctx context.Context, file []byte, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {
+func (client *Client) UploadFile(ctx context.Context, file io.ReadSeeker, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {
 	var err error
 	req, err := client.uploadFileCreateRequest(ctx, file, purpose, options)
 	if err != nil {

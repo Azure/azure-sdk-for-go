@@ -8,7 +8,9 @@
 
 package azopenaiassistants
 
-import "time"
+import (
+	"time"
+)
 
 // Assistant - Represents an assistant that can call the model and use tools.
 type Assistant struct {

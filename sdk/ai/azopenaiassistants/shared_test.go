@@ -218,7 +218,7 @@ func mustRunThread(ctx context.Context, t *testing.T, args runThreadArgs) (*azop
 func mustUploadFile(t *testing.T, c *assistants.Client, text string) azopenaiassistants.UploadFileResponse {
 	textBytes := []byte(text)
 
-	uploadResp, err := c.UploadFile(context.Background(), textBytes, azopenaiassistants.FilePurposeAssistants, &assistants.UploadFileOptions{
+	uploadResp, err := c.UploadFile(context.Background(), bytes.NewReader(textBytes), azopenaiassistants.FilePurposeAssistants, &assistants.UploadFileOptions{
 		Filename: to.Ptr("a.txt"),
 	})
 	require.NoError(t, err)

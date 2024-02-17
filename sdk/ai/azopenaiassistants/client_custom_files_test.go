@@ -23,7 +23,7 @@ func TestDownloadFileContent(t *testing.T) {
 	args := runThreadArgs{
 		Assistant: azopenaiassistants.AssistantCreationBody{
 			DeploymentName: &assistantsModel,
-			Instructions:   to.Ptr("You are a helpful image generating assistant"),
+			Instructions:   to.Ptr("You are a helpful assistant that always draws images."),
 			Tools: []azopenaiassistants.ToolDefinitionClassification{
 				&azopenaiassistants.CodeInterpreterToolDefinition{},
 			},
@@ -33,7 +33,7 @@ func TestDownloadFileContent(t *testing.T) {
 				Messages: []azopenaiassistants.ThreadInitializationMessage{
 					{
 						Role:    to.Ptr(azopenaiassistants.MessageRoleUser),
-						Content: to.Ptr("Can you draw an image of two boxes, connected by a line, as a PNG file?"),
+						Content: to.Ptr("Draw an image of two squares, connected by a line, as a PNG file"),
 					},
 				},
 			},

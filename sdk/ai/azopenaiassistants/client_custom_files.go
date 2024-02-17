@@ -24,7 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
-func (client *Client) uploadFileCreateRequest(ctx context.Context, file []byte, purpose FilePurpose, options *UploadFileOptions) (*policy.Request, error) {
+func (client *Client) uploadFileCreateRequest(ctx context.Context, file io.ReadSeeker, purpose FilePurpose, options *UploadFileOptions) (*policy.Request, error) {
 	urlPath := client.formatURL("/files")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -37,7 +37,13 @@ func (client *Client) uploadFileCreateRequest(ctx context.Context, file []byte, 
 		fileName = *options.Filename
 	}
 
-	if err := writeMultipart(req, file, fileName, purpose); err != nil {
+	fileBytes, err := io.ReadAll(file)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := writeMultipart(req, fileBytes, fileName, purpose); err != nil {
 		return nil, err
 	}
 

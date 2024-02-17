@@ -46,7 +46,7 @@ func TestFunction(t *testing.T) {
 func TestFunctionRemove(t *testing.T) {
 	text := loadFile(t, "testdata/remove_func.txt")
 
-	newText, err := removeFunction(text, "Client", "uploadFileCreateRequest")
+	newText, err := removeFunctions(text, "Client", "uploadFileCreateRequest")
 	require.NoError(t, err)
 
 	require.Equal(t, "SOME TEXT BEFORE\n\n"+
@@ -62,16 +62,47 @@ func TestSnipModel(t *testing.T) {
 
 	fileCache := &FileCache{
 		files: map[string]string{
-			"models.go":       modelsText,
-			"models_serde.go": modelsSerdeText,
+			"models.go":         modelsText,
+			"models_serde.go":   modelsSerdeText,
+			"response_types.go": "ignored",
+			"options.go":        "ignored",
 		},
 	}
 
-	err := removeType(fileCache, "Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema")
+	err := removeTypes(fileCache, []string{"Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema"}, &removeTypesOptions{
+		IgnoreComment: true,
+	})
 	require.NoError(t, err)
 
 	require.Equal(t, map[string]string{
-		"models.go":       "//Before that function\n\n\n//After that function\n",
-		"models_serde.go": "import (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n\n//Before that model\n\n\n\n\n//After that model\n",
+		"models.go":         "//Before that function\n\n\n//After that function\n",
+		"models_serde.go":   "import (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n\n//Before that model\n\n\n\n\n//After that model\n",
+		"response_types.go": "ignored",
+		"options.go":        "ignored",
+	}, fileCache.files)
+}
+
+func TestSnipResponseType(t *testing.T) {
+	fileCache := &FileCache{
+		files: map[string]string{
+			"models.go":       "ignored",
+			"models_serde.go": "ignored",
+			"response_types.go": "hello\n// GetFileContentResponse contains the response from method Client.GetFileContent.\n" +
+				"type GetFileContentResponse struct {\n" +
+				"  Value []byte\n" +
+				"}\n" +
+				" world",
+			"options.go": "ignored",
+		},
+	}
+
+	err := removeTypes(fileCache, []string{"GetFileContentResponse"}, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, map[string]string{
+		"models.go":         "ignored",
+		"models_serde.go":   "ignored",
+		"response_types.go": "hello\n\n world",
+		"options.go":        "ignored",
 	}, fileCache.files)
 }

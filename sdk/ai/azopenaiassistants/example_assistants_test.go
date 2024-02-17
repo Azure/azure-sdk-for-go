@@ -230,14 +230,13 @@ func printAssistantMessages(ctx context.Context, client *azopenaiassistants.Clie
 					return err
 				}
 
-				fileBytes, err := io.ReadAll(fileContentResp.Content)
-				fileContentResp.Content.Close()
+				contents, err := io.ReadAll(fileContentResp.Content)
 
 				if err != nil {
 					return err
 				}
 
-				fmt.Fprintf(os.Stderr, "  File contents downloaded, length %d\n", len(fileBytes))
+				fmt.Fprintf(os.Stderr, "  File contents downloaded, length %d\n", len(contents))
 			case *azopenaiassistants.MessageTextContent:
 				fmt.Fprintf(os.Stderr, "[ASSISTANT] %s: Text response: %s\n", *response.ID, *v.Text.Value)
 			}
@@ -256,7 +255,11 @@ func pollRunEnd(ctx context.Context, client *azopenaiassistants.Client, threadID
 		}
 
 		if *lastGetRunResp.Status != azopenaiassistants.RunStatusQueued && *lastGetRunResp.Status != azopenaiassistants.RunStatusInProgress {
-			return nil
+			if *lastGetRunResp.Status == azopenaiassistants.RunStatusCompleted {
+				return nil
+			}
+
+			return fmt.Errorf("run ended but status was not complete: %s", *lastGetRunResp.Status)
 		}
 
 		select {

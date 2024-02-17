@@ -1,4 +1,4 @@
 #location: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/cacb3dc095486d8691c47dea944fc9ed0f4d0e32/specification/ai/OpenAI.Assistants/client.tsp
 directory: specification/ai/OpenAI.Assistants
-commit: 0e987fd18418118dbeb904a49107c251e37154a5
+commit: 535e1873207e0f8fb1358f08a3e18c298c2e5a44
 repo: Azure/azure-rest-api-specs

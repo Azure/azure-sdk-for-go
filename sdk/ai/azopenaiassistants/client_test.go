@@ -7,6 +7,7 @@
 package azopenaiassistants_test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"testing"
@@ -84,7 +85,7 @@ func TestAssistantMessages(t *testing.T) {
 
 		threadID := threadResp.ID
 
-		uploadResp, err := client.UploadFile(context.Background(), []byte("hello world"), assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
+		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader([]byte("hello world")), assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),
 		})
 		require.NoError(t, err)
@@ -493,7 +494,8 @@ func TestFiles(t *testing.T) {
 
 		textBytes := []byte("test text")
 		expectedLen := int32(len(textBytes))
-		uploadResp, err := client.UploadFile(context.Background(), textBytes, assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
+
+		uploadResp, err := client.UploadFile(context.Background(), bytes.NewReader(textBytes), assistants.FilePurposeAssistants, &assistants.UploadFileOptions{
 			Filename: to.Ptr("a.txt"),
 		})
 		require.NoError(t, err)

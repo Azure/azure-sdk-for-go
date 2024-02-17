@@ -27,21 +27,15 @@ type transformer struct {
 
 func (t *transformer) Do() error {
 	transforms := []func() error{
+		t.removeClientPrefix,
 		t.injectClientData,
 		t.injectFormatURLHelper,
 		t.hideListFunctions,
 		t.fixBodyArgs,
-		t.removeUnusedMultipartModel,
 		t.renameInnerPageObjects,
 		t.renameModelToDeploymentName,
-		t.fixNilCheck,
 		t.hackFixTimestamps,
-		// /files changes
-		t.fixMultipart,
-		t.fixFilenameType,
-		//t.fixFileName,
-
-		t.removeClientPrefix,
+		t.fixFiles,
 	}
 
 	for _, tr := range transforms {
@@ -62,7 +56,7 @@ func (t *transformer) injectFormatURLHelper() error {
 	// urlPath := "/threads/{threadId}/runs/{runId}/cancel"
 	re := regexp.MustCompile(`(?m)^\s+urlPath := (.+)$`)
 
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "injectFormatURLHelper", []string{"client.go"}, func(text string) (string, error) {
 		return re.ReplaceAllString(text, "urlPath := client.formatURL($1)"), nil
 	}, nil)
 }
@@ -70,7 +64,7 @@ func (t *transformer) injectFormatURLHelper() error {
 // injectClientData adds in our own user-defined struct so we don't have to keep
 // editing client.go just to add in a new field we need.
 func (t *transformer) injectClientData() error {
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "injectClientData", []string{"client.go"}, func(text string) (string, error) {
 		newText := strings.Replace(text, "type Client struct {\n", "type Client struct {\nclientData\n", 1)
 
 		return newText, nil
@@ -83,7 +77,7 @@ func (t *transformer) renameModelToDeploymentName() error {
 	// Fix the names of the structs
 	// Model *string
 
-	err := transformFiles(t.fileCache, []string{"models.go"}, func(text string) (string, error) {
+	err := transformFiles(t.fileCache, "renameModelToDeploymentName", []string{"models.go"}, func(text string) (string, error) {
 		return strings.Replace(text, "Model *string", "DeploymentName *string", -1), nil
 	}, nil)
 
@@ -97,7 +91,7 @@ func (t *transformer) renameModelToDeploymentName() error {
 	popRE := regexp.MustCompile(`(?m)^\s+populate\(objectMap, "model", ([a-zA-Z]).Model\)`)
 	unpopRE := regexp.MustCompile(`(?m)^\s+err = unpopulate\(val, "Model", &([a-zA-Z]).Model\)`)
 
-	return transformFiles(t.fileCache, []string{"models_serde.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "renameModelToDeploymentName", []string{"models_serde.go"}, func(text string) (string, error) {
 		text = popRE.ReplaceAllString(text, `populate(objectMap, "model", $1.DeploymentName)`)
 		text = unpopRE.ReplaceAllString(text, `err = unpopulate(val, "Model", &$1.DeploymentName)`)
 		return text, nil
@@ -107,7 +101,7 @@ func (t *transformer) renameModelToDeploymentName() error {
 // hideListFunctions hides all the lists since we're supposed to expose pagers
 // for these. (they don't fit the standard Azure pager pattern so aren't auto-generated)
 func (t *transformer) hideListFunctions() error {
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "hideListFunctions", []string{"client.go"}, func(text string) (string, error) {
 		funcsToHide := []string{
 			"ListAssistantFiles",
 			"ListAssistants",
@@ -138,7 +132,7 @@ func (t *transformer) fixBodyArgs() error {
 	// PathsWsxzpAssistantsAssistantidFilesGetResponses200ContentApplicationJSONSchema style name.
 	anonModelRE := regexp.MustCompile(`(?m)^func \(client \*Client\) ([A-Z].+?)\(ctx.+body (Paths[^,]+),`)
 
-	err := transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	err := transformFiles(t.fileCache, "fixBodyArgs", []string{"client.go"}, func(text string) (string, error) {
 		matches := anonModelRE.FindAllStringSubmatch(text, -1)
 
 		for _, match := range matches {
@@ -157,7 +151,7 @@ func (t *transformer) fixBodyArgs() error {
 		return err
 	}
 
-	err = transformFiles(t.fileCache, []string{"models.go", "models_serde.go"}, func(text string) (string, error) {
+	err = transformFiles(t.fileCache, "fixBodyArgs", []string{"models.go", "models_serde.go"}, func(text string) (string, error) {
 		for oldName, newName := range replacements {
 			text = strings.Replace(text, oldName, newName, -1)
 		}
@@ -169,7 +163,7 @@ func (t *transformer) fixBodyArgs() error {
 	}
 
 	// We have a few that have to be replaced manually.
-	err = transformFiles(t.fileCache, []string{"models.go", "models_serde.go"}, func(text string) (string, error) {
+	err = transformFiles(t.fileCache, "fixBodyArgs", []string{"models.go", "models_serde.go"}, func(text string) (string, error) {
 		// rename the types so they're 'Body' instead of 'Options' (these weren't the Options bag types for the function)
 		text = strings.Replace(text, "CreateRunOptions", "CreateRunBody", -1)
 		text = strings.Replace(text, "UpdateAssistantOptions", "UpdateAssistantBody", -1)
@@ -181,7 +175,7 @@ func (t *transformer) fixBodyArgs() error {
 		return err
 	}
 
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "fixBodyArgs", []string{"client.go"}, func(text string) (string, error) {
 		text = strings.Replace(text, "createRunOptions CreateRunOptions", "body CreateRunBody", -1)
 		text = strings.ReplaceAll(text,
 			`req, err := client.createRunCreateRequest(ctx, threadID, createRunOptions, options)`,
@@ -210,24 +204,10 @@ func (t *transformer) renameInnerPageObjects() error {
 		"PathsMc8ByoThreadsThreadidRunsGetResponses200ContentApplicationJSONSchema":                    "ThreadRunsPage",
 	}
 
-	return transformFiles(t.fileCache, []string{"client.go", "models.go", "models_serde.go", "response_types.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "renameInnerPageObjects", []string{"client.go", "models.go", "models_serde.go", "response_types.go"}, func(text string) (string, error) {
 		for search, replace := range renames {
 			text = strings.ReplaceAll(text, search, replace)
 		}
-		return text, nil
-	}, nil)
-}
-
-func (t *transformer) fixNilCheck() error {
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
-		text = strings.ReplaceAll(text,
-			`func (client *Client) uploadFileCreateRequest(ctx context.Context, file string, purpose FilePurpose, options *UploadFileOptions) (*policy.Request, error) {`,
-			"func (client *Client) uploadFileCreateRequest(ctx context.Context, file string, purpose FilePurpose, options *UploadFileOptions) (*policy.Request, error) {\nvar fileName *string\nif options == nil { fileName = options.Filename }\n")
-
-		text = strings.ReplaceAll(text,
-			`"Filename": options.Filename,`,
-			`"Filename": fileName,`)
-
 		return text, nil
 	}, nil)
 }
@@ -236,26 +216,49 @@ func (t *transformer) fixNilCheck() error {
 func (t *transformer) removeClientPrefix() error {
 	re := regexp.MustCompile(`Client([A-Z][A-Za-z]+)`)
 
-	return transformFiles(t.fileCache, []string{"client.go", "models.go", "models_serde.go", "options.go", "response_types.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "removeClientPrefix", []string{"client.go", "models.go", "models_serde.go", "options.go", "response_types.go"}, func(text string) (string, error) {
 		return re.ReplaceAllString(text, "$1"), nil
 	}, nil)
 }
 
-func (t *transformer) removeUnusedMultipartModel() error {
-	return removeType(t.fileCache, "Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema")
-}
+func (t *transformer) fixFiles() error {
+	err := transformFiles(t.fileCache, "fixFiles", []string{"client.go"}, func(text string) (string, error) {
+		text, err := removeFunctions(text, "Client", "uploadFileCreateRequest")
 
-func (t *transformer) fixMultipart() error {
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
-		return removeFunction(text, "Client", "uploadFileCreateRequest")
+		if err != nil {
+			return "", err
+		}
+
+		// removing these for now - the TypeSpec -> OpenAPI2 -> go generation is causing us to treat the `bytes`
+		// field in TypeSpec as a deserialized []byte, instead of returning the Body's stream.
+		getFileContentFunctions := []string{
+			"getFileContentCreateRequest",
+			"getFileContentHandleResponse",
+			"GetFileContent",
+		}
+
+		return removeFunctions(text, "Client", getFileContentFunctions...)
 	}, nil)
-}
 
-func (t *transformer) fixFilenameType() error {
-	return transformFiles(t.fileCache, []string{"client.go"}, func(text string) (string, error) {
+	if err != nil {
+		return err
+	}
+
+	if err := removeTypes(t.fileCache, []string{"Paths1Filz8PFilesPostRequestbodyContentMultipartFormDataSchema"}, &removeTypesOptions{
+		// this auto-gen'd type doesn't have a comment
+		IgnoreComment: true,
+	}); err != nil {
+		return err
+	}
+
+	if err := removeTypes(t.fileCache, []string{"GetFileContentResponse", "GetFileContentOptions"}, nil); err != nil {
+		return err
+	}
+
+	return transformFiles(t.fileCache, "fixFiles", []string{"client.go"}, func(text string) (string, error) {
 		return strings.Replace(
 			text,
-			"func (client *Client) UploadFile(ctx context.Context, file string",
-			"func (client *Client) UploadFile(ctx context.Context, file []byte", 1), nil
+			"func (client *Client) UploadFile(ctx context.Context, file io.ReadSeekCloser, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {",
+			"func (client *Client) UploadFile(ctx context.Context, file io.ReadSeeker, purpose FilePurpose, options *UploadFileOptions) (UploadFileResponse, error) {", 1), nil
 	}, nil)
 }

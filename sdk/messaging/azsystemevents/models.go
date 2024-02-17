@@ -10,7 +10,7 @@ package azsystemevents
 
 import "time"
 
-// APIManagementAPICreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APICreated
+// APIManagementAPICreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APICreated
 // event.
 type APIManagementAPICreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -19,7 +19,7 @@ type APIManagementAPICreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementAPIDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIDeleted
+// APIManagementAPIDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APIDeleted
 // event.
 type APIManagementAPIDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -28,7 +28,7 @@ type APIManagementAPIDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementAPIReleaseCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseCreated
+// APIManagementAPIReleaseCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APIReleaseCreated
 // event.
 type APIManagementAPIReleaseCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -37,7 +37,7 @@ type APIManagementAPIReleaseCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementAPIReleaseDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseDeleted
+// APIManagementAPIReleaseDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APIReleaseDeleted
 // event.
 type APIManagementAPIReleaseDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -46,7 +46,7 @@ type APIManagementAPIReleaseDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementAPIReleaseUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIReleaseUpdated
+// APIManagementAPIReleaseUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APIReleaseUpdated
 // event.
 type APIManagementAPIReleaseUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -55,7 +55,7 @@ type APIManagementAPIReleaseUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementAPIUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.APIUpdated
+// APIManagementAPIUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.APIUpdated
 // event.
 type APIManagementAPIUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -64,7 +64,7 @@ type APIManagementAPIUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayAPIAddedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayAPIAdded
+// APIManagementGatewayAPIAddedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded
 // event.
 type APIManagementGatewayAPIAddedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -73,7 +73,7 @@ type APIManagementGatewayAPIAddedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayAPIRemovedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayAPIRemoved
+// APIManagementGatewayAPIRemovedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayAPIRemoved
 // event.
 type APIManagementGatewayAPIRemovedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -82,7 +82,7 @@ type APIManagementGatewayAPIRemovedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayCertificateAuthorityCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityCreated
+// APIManagementGatewayCertificateAuthorityCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityCreated
 // event.
 type APIManagementGatewayCertificateAuthorityCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -91,7 +91,7 @@ type APIManagementGatewayCertificateAuthorityCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayCertificateAuthorityDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted
+// APIManagementGatewayCertificateAuthorityDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted
 // event.
 type APIManagementGatewayCertificateAuthorityDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -100,7 +100,7 @@ type APIManagementGatewayCertificateAuthorityDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayCertificateAuthorityUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated
+// APIManagementGatewayCertificateAuthorityUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated
 // event.
 type APIManagementGatewayCertificateAuthorityUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -109,7 +109,7 @@ type APIManagementGatewayCertificateAuthorityUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayCreated
+// APIManagementGatewayCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayCreated
 // event.
 type APIManagementGatewayCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -118,7 +118,7 @@ type APIManagementGatewayCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayDeleted
+// APIManagementGatewayDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayDeleted
 // event.
 type APIManagementGatewayDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -127,7 +127,7 @@ type APIManagementGatewayDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayHostnameConfigurationCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationCreated
+// APIManagementGatewayHostnameConfigurationCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayHostnameConfigurationCreated
 // event.
 type APIManagementGatewayHostnameConfigurationCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -136,7 +136,7 @@ type APIManagementGatewayHostnameConfigurationCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayHostnameConfigurationDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted
+// APIManagementGatewayHostnameConfigurationDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted
 // event.
 type APIManagementGatewayHostnameConfigurationDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -145,7 +145,7 @@ type APIManagementGatewayHostnameConfigurationDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayHostnameConfigurationUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated
+// APIManagementGatewayHostnameConfigurationUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated
 // event.
 type APIManagementGatewayHostnameConfigurationUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -154,7 +154,7 @@ type APIManagementGatewayHostnameConfigurationUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementGatewayUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.GatewayUpdated
+// APIManagementGatewayUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated
 // event.
 type APIManagementGatewayUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -163,7 +163,7 @@ type APIManagementGatewayUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementProductCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductCreated
+// APIManagementProductCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.ProductCreated
 // event.
 type APIManagementProductCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -172,7 +172,7 @@ type APIManagementProductCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementProductDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductDeleted
+// APIManagementProductDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.ProductDeleted
 // event.
 type APIManagementProductDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -181,7 +181,7 @@ type APIManagementProductDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementProductUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.ProductUpdated
+// APIManagementProductUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.ProductUpdated
 // event.
 type APIManagementProductUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -190,7 +190,7 @@ type APIManagementProductUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementSubscriptionCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionCreated
+// APIManagementSubscriptionCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.SubscriptionCreated
 // event.
 type APIManagementSubscriptionCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -199,7 +199,7 @@ type APIManagementSubscriptionCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementSubscriptionDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionDeleted
+// APIManagementSubscriptionDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.SubscriptionDeleted
 // event.
 type APIManagementSubscriptionDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -208,7 +208,7 @@ type APIManagementSubscriptionDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementSubscriptionUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.SubscriptionUpdated
+// APIManagementSubscriptionUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.SubscriptionUpdated
 // event.
 type APIManagementSubscriptionUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -217,7 +217,7 @@ type APIManagementSubscriptionUpdatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementUserCreatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserCreated
+// APIManagementUserCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.UserCreated
 // event.
 type APIManagementUserCreatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -226,7 +226,7 @@ type APIManagementUserCreatedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementUserDeletedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserDeleted
+// APIManagementUserDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.UserDeleted
 // event.
 type APIManagementUserDeletedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -235,7 +235,7 @@ type APIManagementUserDeletedEventData struct {
 	ResourceURI *string
 }
 
-// APIManagementUserUpdatedEventData - Schema of the Data property of an Event for a Microsoft.ApiManagement.UserUpdated
+// APIManagementUserUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ApiManagement.UserUpdated
 // event.
 type APIManagementUserUpdatedEventData struct {
 	// The fully qualified ID of the resource that the compliance state change is for, including the resource name and resource
@@ -265,7 +265,7 @@ type AcsChatEventInThreadBaseProperties struct {
 	TransactionID *string
 }
 
-// AcsChatMessageDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageDeleted
+// AcsChatMessageDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeleted
 // event.
 type AcsChatMessageDeletedEventData struct {
 	// The original compose time of the message
@@ -299,7 +299,7 @@ type AcsChatMessageDeletedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageDeletedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageDeletedInThread
+// AcsChatMessageDeletedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread
 // event.
 type AcsChatMessageDeletedInThreadEventData struct {
 	// The original compose time of the message
@@ -330,7 +330,7 @@ type AcsChatMessageDeletedInThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageEditedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageEdited
+// AcsChatMessageEditedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEdited
 // event.
 type AcsChatMessageEditedEventData struct {
 	// The original compose time of the message
@@ -370,7 +370,7 @@ type AcsChatMessageEditedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageEditedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageEditedInThread
+// AcsChatMessageEditedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread
 // event.
 type AcsChatMessageEditedInThreadEventData struct {
 	// The original compose time of the message
@@ -464,7 +464,7 @@ type AcsChatMessageEventInThreadBaseProperties struct {
 	Version *int64
 }
 
-// AcsChatMessageReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageReceived
+// AcsChatMessageReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceived
 // event.
 type AcsChatMessageReceivedEventData struct {
 	// The original compose time of the message
@@ -501,7 +501,7 @@ type AcsChatMessageReceivedEventData struct {
 	Version *int64
 }
 
-// AcsChatMessageReceivedInThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatMessageReceivedInThread
+// AcsChatMessageReceivedInThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread
 // event.
 type AcsChatMessageReceivedInThreadEventData struct {
 	// The original compose time of the message
@@ -535,7 +535,7 @@ type AcsChatMessageReceivedInThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantAddedToThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadParticipantAdded
+// AcsChatParticipantAddedToThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded
 // event.
 type AcsChatParticipantAddedToThreadEventData struct {
 	// The communication identifier of the user who added the user
@@ -557,7 +557,7 @@ type AcsChatParticipantAddedToThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantAddedToThreadWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
+// AcsChatParticipantAddedToThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantAddedToThreadWithUser
 // event.
 type AcsChatParticipantAddedToThreadWithUserEventData struct {
 	// The communication identifier of the user who added the user
@@ -585,7 +585,7 @@ type AcsChatParticipantAddedToThreadWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantRemovedFromThreadEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadParticipantRemoved
+// AcsChatParticipantRemovedFromThreadEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadParticipantRemoved
 // event.
 type AcsChatParticipantRemovedFromThreadEventData struct {
 	// The details of the user who was removed
@@ -607,7 +607,7 @@ type AcsChatParticipantRemovedFromThreadEventData struct {
 	Version *int64
 }
 
-// AcsChatParticipantRemovedFromThreadWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser
+// AcsChatParticipantRemovedFromThreadWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser
 // event.
 type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
 	// The original creation time of the thread
@@ -635,7 +635,7 @@ type AcsChatParticipantRemovedFromThreadWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadCreatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadCreated
+// AcsChatThreadCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreated
 // event.
 type AcsChatThreadCreatedEventData struct {
 	// The original creation time of the thread
@@ -660,7 +660,7 @@ type AcsChatThreadCreatedEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadCreatedWithUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadCreatedWithUser
+// AcsChatThreadCreatedWithUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadCreatedWithUser
 // event.
 type AcsChatThreadCreatedWithUserEventData struct {
 	// The original creation time of the thread
@@ -691,7 +691,7 @@ type AcsChatThreadCreatedWithUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadDeleted
+// AcsChatThreadDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadDeleted
 // event.
 type AcsChatThreadDeletedEventData struct {
 	// The original creation time of the thread
@@ -758,7 +758,7 @@ type AcsChatThreadParticipantProperties struct {
 	ParticipantCommunicationIdentifier *CommunicationIdentifierModel
 }
 
-// AcsChatThreadPropertiesUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadPropertiesUpdated
+// AcsChatThreadPropertiesUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated
 // event.
 type AcsChatThreadPropertiesUpdatedEventData struct {
 	// The original creation time of the thread
@@ -786,7 +786,7 @@ type AcsChatThreadPropertiesUpdatedEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadPropertiesUpdatedPerUserEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+// AcsChatThreadPropertiesUpdatedPerUserEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
 // event.
 type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
 	// The original creation time of the thread
@@ -817,7 +817,7 @@ type AcsChatThreadPropertiesUpdatedPerUserEventData struct {
 	Version *int64
 }
 
-// AcsChatThreadWithUserDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.ChatThreadWithUserDeleted
+// AcsChatThreadWithUserDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted
 // event.
 type AcsChatThreadWithUserDeletedEventData struct {
 	// The original creation time of the thread
@@ -842,7 +842,7 @@ type AcsChatThreadWithUserDeletedEventData struct {
 	Version *int64
 }
 
-// AcsEmailDeliveryReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.EmailDeliveryReportReceived
+// AcsEmailDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived
 // event.
 type AcsEmailDeliveryReportReceivedEventData struct {
 	// The time at which the email delivery report received timestamp
@@ -870,7 +870,7 @@ type AcsEmailDeliveryReportStatusDetails struct {
 	StatusMessage *string
 }
 
-// AcsEmailEngagementTrackingReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.EmailEngagementTrackingReportReceived
+// AcsEmailEngagementTrackingReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.EmailEngagementTrackingReportReceived
 // event.
 type AcsEmailEngagementTrackingReportReceivedEventData struct {
 	// The type of engagement user have with email
@@ -904,7 +904,7 @@ type AcsIncomingCallCustomContext struct {
 	VoipHeaders map[string]*string
 }
 
-// AcsIncomingCallEventData - Schema of the Data property of an Event for an Microsoft.Communication.IncomingCall
+// AcsIncomingCallEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.IncomingCall
 // event
 type AcsIncomingCallEventData struct {
 	// Display name of caller.
@@ -950,7 +950,7 @@ type AcsRecordingChunkInfoProperties struct {
 	MetadataLocation *string
 }
 
-// AcsRecordingFileStatusUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RecordingFileStatusUpdated
+// AcsRecordingFileStatusUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated
 // event.
 type AcsRecordingFileStatusUpdatedEventData struct {
 	// The recording channel type - Mixed, Unmixed
@@ -1023,7 +1023,7 @@ type AcsRouterEventData struct {
 	JobID *string
 }
 
-// AcsRouterJobCancelledEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobCancelled
+// AcsRouterJobCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCancelled
 // event
 type AcsRouterJobCancelledEventData struct {
 	// Router Event Channel ID
@@ -1051,7 +1051,7 @@ type AcsRouterJobCancelledEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClassificationFailedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClassificationFailed
+// AcsRouterJobClassificationFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassificationFailed
 // event
 type AcsRouterJobClassificationFailedEventData struct {
 	// Router Event Channel ID
@@ -1079,7 +1079,7 @@ type AcsRouterJobClassificationFailedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClassifiedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClassified
+// AcsRouterJobClassifiedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClassified
 // event
 type AcsRouterJobClassifiedEventData struct {
 	// Router Job Attached Worker Selector
@@ -1113,7 +1113,7 @@ type AcsRouterJobClassifiedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobClosedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobClosed
+// AcsRouterJobClosedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobClosed
 // event
 type AcsRouterJobClosedEventData struct {
 	// Router Job Closed Assignment Id
@@ -1144,7 +1144,7 @@ type AcsRouterJobClosedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobCompletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobCompleted
+// AcsRouterJobCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobCompleted
 // event
 type AcsRouterJobCompletedEventData struct {
 	// Router Job Completed Assignment Id
@@ -1172,7 +1172,7 @@ type AcsRouterJobCompletedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobDeleted
+// AcsRouterJobDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobDeleted
 // event
 type AcsRouterJobDeletedEventData struct {
 	// Router Event Channel ID
@@ -1215,7 +1215,7 @@ type AcsRouterJobEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobExceptionTriggeredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobExceptionTriggered
+// AcsRouterJobExceptionTriggeredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered
 // event
 type AcsRouterJobExceptionTriggeredEventData struct {
 	// Router Event Channel ID
@@ -1243,7 +1243,7 @@ type AcsRouterJobExceptionTriggeredEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobQueuedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobQueued
+// AcsRouterJobQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobQueued
 // event
 type AcsRouterJobQueuedEventData struct {
 	// Router Job Queued Attached Worker Selector
@@ -1274,7 +1274,7 @@ type AcsRouterJobQueuedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobReceived
+// AcsRouterJobReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobReceived
 // event
 type AcsRouterJobReceivedEventData struct {
 	// REQUIRED; Unavailable For Matching for Router Job Received
@@ -1314,7 +1314,7 @@ type AcsRouterJobReceivedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobSchedulingFailedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobSchedulingFailed
+// AcsRouterJobSchedulingFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed
 // event
 type AcsRouterJobSchedulingFailedEventData struct {
 	// Router Event Channel ID
@@ -1351,7 +1351,7 @@ type AcsRouterJobSchedulingFailedEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobUnassignedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobUnassigned
+// AcsRouterJobUnassignedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobUnassigned
 // event
 type AcsRouterJobUnassignedEventData struct {
 	// Router Job Unassigned Assignment Id
@@ -1379,7 +1379,7 @@ type AcsRouterJobUnassignedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterJobWaitingForActivationEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobWaitingForActivation
+// AcsRouterJobWaitingForActivationEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWaitingForActivation
 // event
 type AcsRouterJobWaitingForActivationEventData struct {
 	// REQUIRED; Router Job Waiting For Activation Unavailable For Matching
@@ -1416,7 +1416,7 @@ type AcsRouterJobWaitingForActivationEventData struct {
 	Tags map[string]*string
 }
 
-// AcsRouterJobWorkerSelectorsExpiredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
+// AcsRouterJobWorkerSelectorsExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
 // event
 type AcsRouterJobWorkerSelectorsExpiredEventData struct {
 	// Router Event Channel ID
@@ -1456,7 +1456,7 @@ type AcsRouterQueueDetails struct {
 	Name *string
 }
 
-// AcsRouterWorkerDeletedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerDeleted
+// AcsRouterWorkerDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted
 // event
 type AcsRouterWorkerDeletedEventData struct {
 	// Router Event Channel ID
@@ -1472,7 +1472,7 @@ type AcsRouterWorkerDeletedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerDeregisteredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerDeregistered
+// AcsRouterWorkerDeregisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered
 // event
 type AcsRouterWorkerDeregisteredEventData struct {
 	// Router Worker Deregistered Worker Id
@@ -1494,7 +1494,7 @@ type AcsRouterWorkerEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferAcceptedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferAccepted
+// AcsRouterWorkerOfferAcceptedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted
 // event
 type AcsRouterWorkerOfferAcceptedEventData struct {
 	// Router Worker Offer Accepted Assignment Id
@@ -1534,7 +1534,7 @@ type AcsRouterWorkerOfferAcceptedEventData struct {
 	WorkerTags map[string]*string
 }
 
-// AcsRouterWorkerOfferDeclinedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferDeclined
+// AcsRouterWorkerOfferDeclinedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined
 // event
 type AcsRouterWorkerOfferDeclinedEventData struct {
 	// Router Event Channel ID
@@ -1556,7 +1556,7 @@ type AcsRouterWorkerOfferDeclinedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferExpiredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferExpired
+// AcsRouterWorkerOfferExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferExpired
 // event
 type AcsRouterWorkerOfferExpiredEventData struct {
 	// Router Event Channel ID
@@ -1578,7 +1578,7 @@ type AcsRouterWorkerOfferExpiredEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerOfferIssuedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferIssued
+// AcsRouterWorkerOfferIssuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferIssued
 // event
 type AcsRouterWorkerOfferIssuedEventData struct {
 	// Router Event Channel ID
@@ -1621,7 +1621,7 @@ type AcsRouterWorkerOfferIssuedEventData struct {
 	WorkerTags map[string]*string
 }
 
-// AcsRouterWorkerOfferRevokedEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerOfferRevoked
+// AcsRouterWorkerOfferRevokedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked
 // event
 type AcsRouterWorkerOfferRevokedEventData struct {
 	// Router Event Channel ID
@@ -1643,7 +1643,7 @@ type AcsRouterWorkerOfferRevokedEventData struct {
 	WorkerID *string
 }
 
-// AcsRouterWorkerRegisteredEventData - Schema of the Data property of an Event for a Microsoft.Communication.RouterWorkerRegistered
+// AcsRouterWorkerRegisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered
 // event
 type AcsRouterWorkerRegisteredEventData struct {
 	// Router Worker Registered Channel Configuration
@@ -1698,7 +1698,7 @@ type AcsSmsDeliveryAttemptProperties struct {
 	Timestamp *time.Time
 }
 
-// AcsSmsDeliveryReportReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.SMSDeliveryReportReceived
+// AcsSmsDeliveryReportReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived
 // event.
 type AcsSmsDeliveryReportReceivedEventData struct {
 	// List of details of delivery attempts made
@@ -1738,7 +1738,7 @@ type AcsSmsEventBaseProperties struct {
 	To *string
 }
 
-// AcsSmsReceivedEventData - Schema of the Data property of an Event for a Microsoft.Communication.SMSReceived event.
+// AcsSmsReceivedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Communication.SMSReceived event.
 type AcsSmsReceivedEventData struct {
 	// The identity of SMS message sender
 	From *string
@@ -1756,14 +1756,14 @@ type AcsSmsReceivedEventData struct {
 	To *string
 }
 
-// AcsUserDisconnectedEventData - Schema of the Data property of an Event for an Microsoft.Communication.UserDisconnected
+// AcsUserDisconnectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Communication.UserDisconnected
 // event.
 type AcsUserDisconnectedEventData struct {
 	// The communication identifier of the user who was disconnected
 	UserCommunicationIdentifier *CommunicationIdentifierModel
 }
 
-// AppConfigurationKeyValueDeletedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.KeyValueDeleted
+// AppConfigurationKeyValueDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted
 // event.
 type AppConfigurationKeyValueDeletedEventData struct {
 	// The etag representing the key-value that was deleted.
@@ -1779,7 +1779,7 @@ type AppConfigurationKeyValueDeletedEventData struct {
 	SyncToken *string
 }
 
-// AppConfigurationKeyValueModifiedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.KeyValueModified
+// AppConfigurationKeyValueModifiedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified
 // event.
 type AppConfigurationKeyValueModifiedEventData struct {
 	// The etag representing the new state of the key-value.
@@ -1795,7 +1795,7 @@ type AppConfigurationKeyValueModifiedEventData struct {
 	SyncToken *string
 }
 
-// AppConfigurationSnapshotCreatedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.SnapshotCreated
+// AppConfigurationSnapshotCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated
 // event.
 type AppConfigurationSnapshotCreatedEventData struct {
 	// The etag representing the new state of the snapshot.
@@ -1820,7 +1820,7 @@ type AppConfigurationSnapshotEventData struct {
 	SyncToken *string
 }
 
-// AppConfigurationSnapshotModifiedEventData - Schema of the Data property of an Event for a Microsoft.AppConfiguration.SnapshotModified
+// AppConfigurationSnapshotModifiedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified
 // event.
 type AppConfigurationSnapshotModifiedEventData struct {
 	// The etag representing the new state of the snapshot.
@@ -1919,7 +1919,7 @@ type ContainerRegistryArtifactEventTarget struct {
 	Version *string
 }
 
-// ContainerRegistryChartDeletedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ChartDeleted
+// ContainerRegistryChartDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted
 // event.
 type ContainerRegistryChartDeletedEventData struct {
 	// The action that encompasses the provided event.
@@ -1941,7 +1941,7 @@ type ContainerRegistryChartDeletedEventData struct {
 	Timestamp *time.Time
 }
 
-// ContainerRegistryChartPushedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ChartPushed
+// ContainerRegistryChartPushedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerRegistry.ChartPushed
 // event.
 type ContainerRegistryChartPushedEventData struct {
 	// The action that encompasses the provided event.
@@ -2061,7 +2061,7 @@ type ContainerRegistryEventTarget struct {
 	URL *string
 }
 
-// ContainerRegistryImageDeletedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ImageDeleted
+// ContainerRegistryImageDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerRegistry.ImageDeleted
 // event.
 type ContainerRegistryImageDeletedEventData struct {
 	// The action that encompasses the provided event.
@@ -2093,7 +2093,7 @@ type ContainerRegistryImageDeletedEventData struct {
 	Timestamp *time.Time
 }
 
-// ContainerRegistryImagePushedEventData - Schema of the Data property of an Event for a Microsoft.ContainerRegistry.ImagePushed
+// ContainerRegistryImagePushedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerRegistry.ImagePushed
 // event.
 type ContainerRegistryImagePushedEventData struct {
 	// The action that encompasses the provided event.
@@ -2125,14 +2125,14 @@ type ContainerRegistryImagePushedEventData struct {
 	Timestamp *time.Time
 }
 
-// ContainerServiceClusterSupportEndedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.ClusterSupportEnded
+// ContainerServiceClusterSupportEndedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnded
 // event
 type ContainerServiceClusterSupportEndedEventData struct {
 	// The Kubernetes version of the ManagedCluster resource
 	KubernetesVersion *string
 }
 
-// ContainerServiceClusterSupportEndingEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.ClusterSupportEnding
+// ContainerServiceClusterSupportEndingEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnding
 // event
 type ContainerServiceClusterSupportEndingEventData struct {
 	// The Kubernetes version of the ManagedCluster resource
@@ -2145,7 +2145,7 @@ type ContainerServiceClusterSupportEventData struct {
 	KubernetesVersion *string
 }
 
-// ContainerServiceNewKubernetesVersionAvailableEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+// ContainerServiceNewKubernetesVersionAvailableEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
 // event
 type ContainerServiceNewKubernetesVersionAvailableEventData struct {
 	// The highest PATCH Kubernetes version considered preview for the ManagedCluster resource. There might not be any version
@@ -2168,28 +2168,28 @@ type ContainerServiceNodePoolRollingEventData struct {
 	NodePoolName *string
 }
 
-// ContainerServiceNodePoolRollingFailedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingFailed
+// ContainerServiceNodePoolRollingFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed
 // event
 type ContainerServiceNodePoolRollingFailedEventData struct {
 	// The name of the node pool in the ManagedCluster resource
 	NodePoolName *string
 }
 
-// ContainerServiceNodePoolRollingStartedEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingStarted
+// ContainerServiceNodePoolRollingStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.NodePoolRollingStarted
 // event
 type ContainerServiceNodePoolRollingStartedEventData struct {
 	// The name of the node pool in the ManagedCluster resource
 	NodePoolName *string
 }
 
-// ContainerServiceNodePoolRollingSucceededEventData - Schema of the Data property of an Event for a Microsoft.ContainerService.NodePoolRollingSucceeded
+// ContainerServiceNodePoolRollingSucceededEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ContainerService.NodePoolRollingSucceeded
 // event
 type ContainerServiceNodePoolRollingSucceededEventData struct {
 	// The name of the node pool in the ManagedCluster resource
 	NodePoolName *string
 }
 
-// DataBoxCopyCompletedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.CopyCompleted
+// DataBoxCopyCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.DataBox.CopyCompleted
 // event.
 type DataBoxCopyCompletedEventData struct {
 	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
@@ -2202,7 +2202,7 @@ type DataBoxCopyCompletedEventData struct {
 	StageTime *time.Time
 }
 
-// DataBoxCopyStartedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.CopyStarted event.
+// DataBoxCopyStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.DataBox.CopyStarted event.
 type DataBoxCopyStartedEventData struct {
 	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
 	SerialNumber *string
@@ -2214,7 +2214,7 @@ type DataBoxCopyStartedEventData struct {
 	StageTime *time.Time
 }
 
-// DataBoxOrderCompletedEventData - Schema of the Data property of an Event for a Microsoft.DataBox.OrderCompleted
+// DataBoxOrderCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.DataBox.OrderCompleted
 // event.
 type DataBoxOrderCompletedEventData struct {
 	// Serial Number of the device associated with the event. The list is comma separated if more than one serial number is associated.
@@ -2235,7 +2235,7 @@ type DeviceConnectionStateEventInfo struct {
 	SequenceNumber *string
 }
 
-// DeviceConnectionStateEventProperties - Schema of the Data property of an Event for a device connection state event
+// DeviceConnectionStateEventProperties - Schema of the Data property of an CloudEvent/EventGridEvent for a device connection state event
 // (DeviceConnected, DeviceDisconnected).
 type DeviceConnectionStateEventProperties struct {
 	// Information about the device connection state event.
@@ -2255,7 +2255,7 @@ type DeviceConnectionStateEventProperties struct {
 	ModuleID *string
 }
 
-// DeviceLifeCycleEventProperties - Schema of the Data property of an Event for a device life cycle event (DeviceCreated,
+// DeviceLifeCycleEventProperties - Schema of the Data property of an CloudEvent/EventGridEvent for a device life cycle event (DeviceCreated,
 // DeviceDeleted).
 type DeviceLifeCycleEventProperties struct {
 	// The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit
@@ -2270,7 +2270,7 @@ type DeviceLifeCycleEventProperties struct {
 	Twin *DeviceTwinInfo
 }
 
-// DeviceTelemetryEventProperties - Schema of the Data property of an Event for a device telemetry event (DeviceTelemetry).
+// DeviceTelemetryEventProperties - Schema of the Data property of an CloudEvent/EventGridEvent for a device telemetry event (DeviceTelemetry).
 type DeviceTelemetryEventProperties struct {
 	// The content of the message from the device.
 	Body any
@@ -2356,8 +2356,8 @@ type DeviceTwinProperties struct {
 	Version *float32
 }
 
-// Event - Properties of an event published to an Event Grid topic using the EventGrid Schema.
-type Event struct {
+// EventGridEvent - Properties of an event published to an Event Grid topic using the EventGrid Schema.
+type EventGridEvent struct {
 	// REQUIRED; Event data specific to the event type.
 	Data any
 
@@ -2422,7 +2422,7 @@ type EventGridMQTTClientDeletedEventData struct {
 	NamespaceName *string
 }
 
-// EventGridMQTTClientEventData - Schema of the Data property of an Event for MQTT Client state changes.
+// EventGridMQTTClientEventData - Schema of the Data property of an CloudEvent/EventGridEvent for MQTT Client state changes.
 type EventGridMQTTClientEventData struct {
 	// Unique identifier for the MQTT client that the client presents to the service for authentication. This case-sensitive string
 	// can be up to 128 characters long, and supports UTF-8 characters.
@@ -2481,7 +2481,7 @@ type EventGridMQTTClientSessionDisconnectedEventData struct {
 	SequenceNumber *int64
 }
 
-// EventHubCaptureFileCreatedEventData - Schema of the Data property of an Event for a Microsoft.EventHub.CaptureFileCreated
+// EventHubCaptureFileCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.EventHub.CaptureFileCreated
 // event.
 type EventHubCaptureFileCreatedEventData struct {
 	// The number of events in the file.
@@ -2512,7 +2512,7 @@ type EventHubCaptureFileCreatedEventData struct {
 	SizeInBytes *int32
 }
 
-// HealthcareDicomImageCreatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageCreated
+// HealthcareDicomImageCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated
 // event.
 type HealthcareDicomImageCreatedEventData struct {
 	// Unique identifier for the Series
@@ -2535,7 +2535,7 @@ type HealthcareDicomImageCreatedEventData struct {
 	ServiceHostName *string
 }
 
-// HealthcareDicomImageDeletedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageDeleted
+// HealthcareDicomImageDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted
 // event.
 type HealthcareDicomImageDeletedEventData struct {
 	// Unique identifier for the Series
@@ -2558,7 +2558,7 @@ type HealthcareDicomImageDeletedEventData struct {
 	ServiceHostName *string
 }
 
-// HealthcareDicomImageUpdatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.DicomImageUpdated
+// HealthcareDicomImageUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.DicomImageUpdated
 // event.
 type HealthcareDicomImageUpdatedEventData struct {
 	// Unique identifier for the Series
@@ -2581,7 +2581,7 @@ type HealthcareDicomImageUpdatedEventData struct {
 	ServiceHostName *string
 }
 
-// HealthcareFhirResourceCreatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceCreated
+// HealthcareFhirResourceCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated
 // event.
 type HealthcareFhirResourceCreatedEventData struct {
 	// Id of HL7 FHIR resource.
@@ -2597,7 +2597,7 @@ type HealthcareFhirResourceCreatedEventData struct {
 	FhirServiceHostName *string
 }
 
-// HealthcareFhirResourceDeletedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceDeleted
+// HealthcareFhirResourceDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted
 // event.
 type HealthcareFhirResourceDeletedEventData struct {
 	// Id of HL7 FHIR resource.
@@ -2613,7 +2613,7 @@ type HealthcareFhirResourceDeletedEventData struct {
 	FhirServiceHostName *string
 }
 
-// HealthcareFhirResourceUpdatedEventData - Schema of the Data property of an Event for a Microsoft.HealthcareApis.FhirResourceUpdated
+// HealthcareFhirResourceUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated
 // event.
 type HealthcareFhirResourceUpdatedEventData struct {
 	// Id of HL7 FHIR resource.
@@ -2707,7 +2707,7 @@ type IotHubDeviceTelemetryEventData struct {
 	SystemProperties map[string]*string
 }
 
-// KeyVaultAccessPolicyChangedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.VaultAccessPolicyChanged
+// KeyVaultAccessPolicyChangedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.VaultAccessPolicyChanged
 // event.
 type KeyVaultAccessPolicyChangedEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2732,7 +2732,7 @@ type KeyVaultAccessPolicyChangedEventData struct {
 	Version *string
 }
 
-// KeyVaultCertificateExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateExpired
+// KeyVaultCertificateExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.CertificateExpired
 // event.
 type KeyVaultCertificateExpiredEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2757,7 +2757,7 @@ type KeyVaultCertificateExpiredEventData struct {
 	Version *string
 }
 
-// KeyVaultCertificateNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateNearExpiry
+// KeyVaultCertificateNearExpiryEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.CertificateNearExpiry
 // event.
 type KeyVaultCertificateNearExpiryEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2782,7 +2782,7 @@ type KeyVaultCertificateNearExpiryEventData struct {
 	Version *string
 }
 
-// KeyVaultCertificateNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.CertificateNewVersionCreated
+// KeyVaultCertificateNewVersionCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.CertificateNewVersionCreated
 // event.
 type KeyVaultCertificateNewVersionCreatedEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2807,7 +2807,7 @@ type KeyVaultCertificateNewVersionCreatedEventData struct {
 	Version *string
 }
 
-// KeyVaultKeyExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyExpired event.
+// KeyVaultKeyExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.KeyExpired event.
 type KeyVaultKeyExpiredEventData struct {
 	// The expiration date of the object that triggered this event
 	EXP *float32
@@ -2831,7 +2831,7 @@ type KeyVaultKeyExpiredEventData struct {
 	Version *string
 }
 
-// KeyVaultKeyNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyNearExpiry
+// KeyVaultKeyNearExpiryEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.KeyNearExpiry
 // event.
 type KeyVaultKeyNearExpiryEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2856,7 +2856,7 @@ type KeyVaultKeyNearExpiryEventData struct {
 	Version *string
 }
 
-// KeyVaultKeyNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.KeyNewVersionCreated
+// KeyVaultKeyNewVersionCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.KeyNewVersionCreated
 // event.
 type KeyVaultKeyNewVersionCreatedEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2881,7 +2881,7 @@ type KeyVaultKeyNewVersionCreatedEventData struct {
 	Version *string
 }
 
-// KeyVaultSecretExpiredEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretExpired
+// KeyVaultSecretExpiredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.SecretExpired
 // event.
 type KeyVaultSecretExpiredEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2906,7 +2906,7 @@ type KeyVaultSecretExpiredEventData struct {
 	Version *string
 }
 
-// KeyVaultSecretNearExpiryEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretNearExpiry
+// KeyVaultSecretNearExpiryEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.SecretNearExpiry
 // event.
 type KeyVaultSecretNearExpiryEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2931,7 +2931,7 @@ type KeyVaultSecretNearExpiryEventData struct {
 	Version *string
 }
 
-// KeyVaultSecretNewVersionCreatedEventData - Schema of the Data property of an Event for a Microsoft.KeyVault.SecretNewVersionCreated
+// KeyVaultSecretNewVersionCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.KeyVault.SecretNewVersionCreated
 // event.
 type KeyVaultSecretNewVersionCreatedEventData struct {
 	// The expiration date of the object that triggered this event
@@ -2956,7 +2956,7 @@ type KeyVaultSecretNewVersionCreatedEventData struct {
 	Version *string
 }
 
-// MachineLearningServicesDatasetDriftDetectedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.DatasetDriftDetected
+// MachineLearningServicesDatasetDriftDetectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected
 // event.
 type MachineLearningServicesDatasetDriftDetectedEventData struct {
 	// The ID of the base Dataset used to detect drift.
@@ -2984,7 +2984,7 @@ type MachineLearningServicesDatasetDriftDetectedEventData struct {
 	TargetDatasetID *string
 }
 
-// MachineLearningServicesModelDeployedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.ModelDeployed
+// MachineLearningServicesModelDeployedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.MachineLearningServices.ModelDeployed
 // event.
 type MachineLearningServicesModelDeployedEventData struct {
 	// A common separated list of model IDs. The IDs of the models deployed in the service.
@@ -3003,7 +3003,7 @@ type MachineLearningServicesModelDeployedEventData struct {
 	ServiceTags any
 }
 
-// MachineLearningServicesModelRegisteredEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.ModelRegistered
+// MachineLearningServicesModelRegisteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered
 // event.
 type MachineLearningServicesModelRegisteredEventData struct {
 	// The name of the model that was registered.
@@ -3019,7 +3019,7 @@ type MachineLearningServicesModelRegisteredEventData struct {
 	ModelVersion *string
 }
 
-// MachineLearningServicesRunCompletedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.RunCompleted
+// MachineLearningServicesRunCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted
 // event.
 type MachineLearningServicesRunCompletedEventData struct {
 	// The ID of the experiment that the run belongs to.
@@ -3041,7 +3041,7 @@ type MachineLearningServicesRunCompletedEventData struct {
 	RunType *string
 }
 
-// MachineLearningServicesRunStatusChangedEventData - Schema of the Data property of an Event for a Microsoft.MachineLearningServices.RunStatusChanged
+// MachineLearningServicesRunStatusChangedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.MachineLearningServices.RunStatusChanged
 // event.
 type MachineLearningServicesRunStatusChangedEventData struct {
 	// The ID of the experiment that the Machine Learning Run belongs to.
@@ -3066,7 +3066,7 @@ type MachineLearningServicesRunStatusChangedEventData struct {
 	RunType *string
 }
 
-// MapsGeofenceEnteredEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceEntered event.
+// MapsGeofenceEnteredEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Maps.GeofenceEntered event.
 type MapsGeofenceEnteredEventData struct {
 	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
 	ExpiredGeofenceGeometryID []string
@@ -3083,7 +3083,7 @@ type MapsGeofenceEnteredEventData struct {
 	IsEventPublished *bool
 }
 
-// MapsGeofenceEventProperties - Schema of the Data property of an Event for a Geofence event (GeofenceEntered, GeofenceExited,
+// MapsGeofenceEventProperties - Schema of the Data property of an CloudEvent/EventGridEvent for a Geofence event (GeofenceEntered, GeofenceExited,
 // GeofenceResult).
 type MapsGeofenceEventProperties struct {
 	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
@@ -3101,7 +3101,7 @@ type MapsGeofenceEventProperties struct {
 	IsEventPublished *bool
 }
 
-// MapsGeofenceExitedEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceExited event.
+// MapsGeofenceExitedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Maps.GeofenceExited event.
 type MapsGeofenceExitedEventData struct {
 	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
 	ExpiredGeofenceGeometryID []string
@@ -3145,7 +3145,7 @@ type MapsGeofenceGeometry struct {
 	UdID *string
 }
 
-// MapsGeofenceResultEventData - Schema of the Data property of an Event for a Microsoft.Maps.GeofenceResult event.
+// MapsGeofenceResultEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Maps.GeofenceResult event.
 type MapsGeofenceResultEventData struct {
 	// Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
 	ExpiredGeofenceGeometryID []string
@@ -3162,7 +3162,7 @@ type MapsGeofenceResultEventData struct {
 	IsEventPublished *bool
 }
 
-// MediaJobCanceledEventData - Job canceled event data. Schema of the data property of an Event for a Microsoft.Media.JobCanceled
+// MediaJobCanceledEventData - Job canceled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceled
 // event.
 type MediaJobCanceledEventData struct {
 	// Gets the Job correlation data.
@@ -3178,7 +3178,7 @@ type MediaJobCanceledEventData struct {
 	State *MediaJobState
 }
 
-// MediaJobCancelingEventData - Job canceling event data. Schema of the data property of an Event for a Microsoft.Media.JobCanceling
+// MediaJobCancelingEventData - Job canceling event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceling
 // event.
 type MediaJobCancelingEventData struct {
 	// Gets the Job correlation data.
@@ -3219,7 +3219,7 @@ type MediaJobErrorDetail struct {
 	Message *string
 }
 
-// MediaJobErroredEventData - Job error state event data. Schema of the data property of an Event for a Microsoft.Media.JobErrored
+// MediaJobErroredEventData - Job error state event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobErrored
 // event.
 type MediaJobErroredEventData struct {
 	// Gets the Job correlation data.
@@ -3235,7 +3235,7 @@ type MediaJobErroredEventData struct {
 	State *MediaJobState
 }
 
-// MediaJobFinishedEventData - Job finished event data. Schema of the data property of an Event for a Microsoft.Media.JobFinished
+// MediaJobFinishedEventData - Job finished event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobFinished
 // event.
 type MediaJobFinishedEventData struct {
 	// Gets the Job correlation data.
@@ -3304,7 +3304,7 @@ func (m *MediaJobOutputAsset) GetMediaJobOutput() *MediaJobOutput {
 	}
 }
 
-// MediaJobOutputCanceledEventData - Job output canceled event data. Schema of the data property of an Event for
+// MediaJobOutputCanceledEventData - Job output canceled event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobOutputCanceled event.
 type MediaJobOutputCanceledEventData struct {
 	// Gets the Job correlation data.
@@ -3317,7 +3317,7 @@ type MediaJobOutputCanceledEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputCancelingEventData - Job output canceling event data. Schema of the data property of an Event for
+// MediaJobOutputCancelingEventData - Job output canceling event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobOutputCanceling event.
 type MediaJobOutputCancelingEventData struct {
 	// Gets the Job correlation data.
@@ -3330,7 +3330,7 @@ type MediaJobOutputCancelingEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputErroredEventData - Job output error event data. Schema of the data property of an Event for a Microsoft.Media.JobOutputErrored
+// MediaJobOutputErroredEventData - Job output error event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobOutputErrored
 // event.
 type MediaJobOutputErroredEventData struct {
 	// Gets the Job correlation data.
@@ -3343,7 +3343,7 @@ type MediaJobOutputErroredEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputFinishedEventData - Job output finished event data. Schema of the data property of an Event for
+// MediaJobOutputFinishedEventData - Job output finished event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobOutputFinished event.
 type MediaJobOutputFinishedEventData struct {
 	// Gets the Job correlation data.
@@ -3356,7 +3356,7 @@ type MediaJobOutputFinishedEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputProcessingEventData - Job output processing event data. Schema of the data property of an Event
+// MediaJobOutputProcessingEventData - Job output processing event data. Schema of the data property of an EventGridEvent
 // for a Microsoft.Media.JobOutputProcessing event.
 type MediaJobOutputProcessingEventData struct {
 	// Gets the Job correlation data.
@@ -3369,7 +3369,7 @@ type MediaJobOutputProcessingEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputProgressEventData - Job Output Progress Event Data. Schema of the Data property of an Event for
+// MediaJobOutputProgressEventData - Job Output Progress Event Data. Schema of the Data property of an CloudEvent/EventGridEvent for
 // a Microsoft.Media.JobOutputProgress event.
 type MediaJobOutputProgressEventData struct {
 	// Gets the Job correlation data.
@@ -3382,7 +3382,7 @@ type MediaJobOutputProgressEventData struct {
 	Progress *int64
 }
 
-// MediaJobOutputScheduledEventData - Job output scheduled event data. Schema of the data property of an Event for
+// MediaJobOutputScheduledEventData - Job output scheduled event data. Schema of the data property of an EventGridEvent for
 // a Microsoft.Media.JobOutputScheduled event.
 type MediaJobOutputScheduledEventData struct {
 	// Gets the Job correlation data.
@@ -3395,7 +3395,7 @@ type MediaJobOutputScheduledEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobOutputStateChangeEventData - Schema of the Data property of an Event for a Microsoft.Media.JobOutputStateChange
+// MediaJobOutputStateChangeEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Media.JobOutputStateChange
 // event.
 type MediaJobOutputStateChangeEventData struct {
 	// Gets the Job correlation data.
@@ -3408,7 +3408,7 @@ type MediaJobOutputStateChangeEventData struct {
 	PreviousState *MediaJobState
 }
 
-// MediaJobProcessingEventData - Job processing event data. Schema of the data property of an Event for a Microsoft.Media.JobProcessing
+// MediaJobProcessingEventData - Job processing event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobProcessing
 // event.
 type MediaJobProcessingEventData struct {
 	// Gets the Job correlation data.
@@ -3421,7 +3421,7 @@ type MediaJobProcessingEventData struct {
 	State *MediaJobState
 }
 
-// MediaJobScheduledEventData - Job scheduled event data. Schema of the data property of an Event for a Microsoft.Media.JobScheduled
+// MediaJobScheduledEventData - Job scheduled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobScheduled
 // event.
 type MediaJobScheduledEventData struct {
 	// Gets the Job correlation data.
@@ -3434,7 +3434,7 @@ type MediaJobScheduledEventData struct {
 	State *MediaJobState
 }
 
-// MediaJobStateChangeEventData - Schema of the Data property of an Event for a Microsoft.Media.JobStateChange event.
+// MediaJobStateChangeEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Media.JobStateChange event.
 type MediaJobStateChangeEventData struct {
 	// Gets the Job correlation data.
 	CorrelationData map[string]*string
@@ -3447,7 +3447,7 @@ type MediaJobStateChangeEventData struct {
 }
 
 // MediaLiveEventChannelArchiveHeartbeatEventData - Channel Archive heartbeat event data. Schema of the data property of an
-// Event for a Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
+// EventGridEvent for a Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
 type MediaLiveEventChannelArchiveHeartbeatEventData struct {
 	// READ-ONLY; Gets the channel latency in ms.
 	ChannelLatencyMS *string
@@ -3456,7 +3456,7 @@ type MediaLiveEventChannelArchiveHeartbeatEventData struct {
 	LatencyResultCode *string
 }
 
-// MediaLiveEventConnectionRejectedEventData - Encoder connection rejected event data. Schema of the data property of an Event
+// MediaLiveEventConnectionRejectedEventData - Encoder connection rejected event data. Schema of the data property of an EventGridEvent
 // for a Microsoft.Media.LiveEventConnectionRejected event.
 type MediaLiveEventConnectionRejectedEventData struct {
 	// READ-ONLY; Gets the remote IP.
@@ -3475,7 +3475,7 @@ type MediaLiveEventConnectionRejectedEventData struct {
 	StreamID *string
 }
 
-// MediaLiveEventEncoderConnectedEventData - Encoder connect event data. Schema of the data property of an Event
+// MediaLiveEventEncoderConnectedEventData - Encoder connect event data. Schema of the data property of an EventGridEvent
 // for a Microsoft.Media.LiveEventEncoderConnected event.
 type MediaLiveEventEncoderConnectedEventData struct {
 	// READ-ONLY; Gets the remote IP.
@@ -3491,7 +3491,7 @@ type MediaLiveEventEncoderConnectedEventData struct {
 	StreamID *string
 }
 
-// MediaLiveEventEncoderDisconnectedEventData - Encoder disconnected event data. Schema of the Data property of an Event
+// MediaLiveEventEncoderDisconnectedEventData - Encoder disconnected event data. Schema of the Data property of an CloudEvent/EventGridEvent
 // for a Microsoft.Media.LiveEventEncoderDisconnected event.
 type MediaLiveEventEncoderDisconnectedEventData struct {
 	// READ-ONLY; Gets the remote IP.
@@ -3511,7 +3511,7 @@ type MediaLiveEventEncoderDisconnectedEventData struct {
 }
 
 // MediaLiveEventIncomingDataChunkDroppedEventData - Ingest fragment dropped event data. Schema of the data property of an
-// Event for a Microsoft.Media.LiveEventIncomingDataChunkDropped event.
+// EventGridEvent for a Microsoft.Media.LiveEventIncomingDataChunkDropped event.
 type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	// READ-ONLY; Gets the bitrate of the track.
 	Bitrate *int64
@@ -3532,7 +3532,7 @@ type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	TrackType *string
 }
 
-// MediaLiveEventIncomingStreamReceivedEventData - Encoder connect event data. Schema of the data property of an Event
+// MediaLiveEventIncomingStreamReceivedEventData - Encoder connect event data. Schema of the data property of an EventGridEvent
 // for a Microsoft.Media.LiveEventIncomingStreamReceived event.
 type MediaLiveEventIncomingStreamReceivedEventData struct {
 	// READ-ONLY; Gets the bitrate of the track.
@@ -3564,7 +3564,7 @@ type MediaLiveEventIncomingStreamReceivedEventData struct {
 }
 
 // MediaLiveEventIncomingStreamsOutOfSyncEventData - Incoming streams out of sync event data. Schema of the data property
-// of an Event for a Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
+// of an EventGridEvent for a Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
 type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
 	// READ-ONLY; Gets the maximum timestamp among all the tracks (audio or video).
 	MaxLastTimestamp *string
@@ -3586,7 +3586,7 @@ type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
 }
 
 // MediaLiveEventIncomingVideoStreamsOutOfSyncEventData - Incoming video stream out of sync event data. Schema of the data
-// property of an Event for a Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
+// property of an EventGridEvent for a Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
 type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	// READ-ONLY; Gets the duration of the data chunk with first timestamp.
 	FirstDuration *string
@@ -3604,7 +3604,7 @@ type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	Timescale *string
 }
 
-// MediaLiveEventIngestHeartbeatEventData - Ingest heartbeat event data. Schema of the data property of an Event
+// MediaLiveEventIngestHeartbeatEventData - Ingest heartbeat event data. Schema of the data property of an EventGridEvent
 // for a Microsoft.Media.LiveEventIngestHeartbeat event.
 type MediaLiveEventIngestHeartbeatEventData struct {
 	// READ-ONLY; Gets the bitrate of the track.
@@ -3657,7 +3657,7 @@ type MediaLiveEventIngestHeartbeatEventData struct {
 }
 
 // MediaLiveEventTrackDiscontinuityDetectedEventData - Ingest track discontinuity detected event data. Schema of the data
-// property of an Event for a Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
+// property of an EventGridEvent for a Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
 type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	// READ-ONLY; Gets the bitrate.
 	Bitrate *int64
@@ -3699,7 +3699,7 @@ type PhoneNumberIdentifierModel struct {
 	Value *string
 }
 
-// PolicyInsightsPolicyStateChangedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateChanged
+// PolicyInsightsPolicyStateChangedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged
 // event.
 type PolicyInsightsPolicyStateChangedEventData struct {
 	// The compliance reason code. May be empty.
@@ -3725,7 +3725,7 @@ type PolicyInsightsPolicyStateChangedEventData struct {
 	Timestamp *time.Time
 }
 
-// PolicyInsightsPolicyStateCreatedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateCreated
+// PolicyInsightsPolicyStateCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.PolicyInsights.PolicyStateCreated
 // event.
 type PolicyInsightsPolicyStateCreatedEventData struct {
 	// The compliance reason code. May be empty.
@@ -3751,7 +3751,7 @@ type PolicyInsightsPolicyStateCreatedEventData struct {
 	Timestamp *time.Time
 }
 
-// PolicyInsightsPolicyStateDeletedEventData - Schema of the Data property of an Event for a Microsoft.PolicyInsights.PolicyStateDeleted
+// PolicyInsightsPolicyStateDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.PolicyInsights.PolicyStateDeleted
 // event.
 type PolicyInsightsPolicyStateDeletedEventData struct {
 	// The compliance reason code. May be empty.
@@ -3777,7 +3777,7 @@ type PolicyInsightsPolicyStateDeletedEventData struct {
 	Timestamp *time.Time
 }
 
-// RedisExportRDBCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ExportRDBCompleted
+// RedisExportRDBCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Cache.ExportRDBCompleted
 // event.
 type RedisExportRDBCompletedEventData struct {
 	// The name of this event.
@@ -3790,7 +3790,7 @@ type RedisExportRDBCompletedEventData struct {
 	Timestamp *time.Time
 }
 
-// RedisImportRDBCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ImportRDBCompleted
+// RedisImportRDBCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Cache.ImportRDBCompleted
 // event.
 type RedisImportRDBCompletedEventData struct {
 	// The name of this event.
@@ -3803,7 +3803,7 @@ type RedisImportRDBCompletedEventData struct {
 	Timestamp *time.Time
 }
 
-// RedisPatchingCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.PatchingCompleted
+// RedisPatchingCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Cache.PatchingCompleted
 // event.
 type RedisPatchingCompletedEventData struct {
 	// The name of this event.
@@ -3816,7 +3816,7 @@ type RedisPatchingCompletedEventData struct {
 	Timestamp *time.Time
 }
 
-// RedisScalingCompletedEventData - Schema of the Data property of an Event for a Microsoft.Cache.ScalingCompleted
+// RedisScalingCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Cache.ScalingCompleted
 // event.
 type RedisScalingCompletedEventData struct {
 	// The name of this event.
@@ -3829,7 +3829,7 @@ type RedisScalingCompletedEventData struct {
 	Timestamp *time.Time
 }
 
-// ResourceActionCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionCancel
+// ResourceActionCancelEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceActionCancel
 // event. This is raised when a resource action operation is canceled.
 type ResourceActionCancelEventData struct {
 	// The requested authorization for the operation.
@@ -3866,7 +3866,7 @@ type ResourceActionCancelEventData struct {
 	TenantID *string
 }
 
-// ResourceActionFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionFailure
+// ResourceActionFailureEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceActionFailure
 // event. This is raised when a resource action operation fails.
 type ResourceActionFailureEventData struct {
 	// The requested authorization for the operation.
@@ -3903,7 +3903,7 @@ type ResourceActionFailureEventData struct {
 	TenantID *string
 }
 
-// ResourceActionSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceActionSuccess
+// ResourceActionSuccessEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceActionSuccess
 // event. This is raised when a resource action operation succeeds.
 type ResourceActionSuccessEventData struct {
 	// The requested authorization for the operation.
@@ -3952,7 +3952,7 @@ type ResourceAuthorization struct {
 	Scope *string
 }
 
-// ResourceDeleteCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteCancel
+// ResourceDeleteCancelEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceDeleteCancel
 // event. This is raised when a resource delete operation is canceled.
 type ResourceDeleteCancelEventData struct {
 	// The requested authorization for the operation.
@@ -3989,7 +3989,7 @@ type ResourceDeleteCancelEventData struct {
 	TenantID *string
 }
 
-// ResourceDeleteFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteFailure
+// ResourceDeleteFailureEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceDeleteFailure
 // event. This is raised when a resource delete operation fails.
 type ResourceDeleteFailureEventData struct {
 	// The requested authorization for the operation.
@@ -4026,7 +4026,7 @@ type ResourceDeleteFailureEventData struct {
 	TenantID *string
 }
 
-// ResourceDeleteSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceDeleteSuccess
+// ResourceDeleteSuccessEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceDeleteSuccess
 // event. This is raised when a resource delete operation succeeds.
 type ResourceDeleteSuccessEventData struct {
 	// The requested authorization for the operation.
@@ -4078,7 +4078,7 @@ type ResourceHTTPRequest struct {
 	URL *string
 }
 
-// ResourceNotificationsHealthResourcesAnnotatedEventData - Schema of the Data property of an Event for a Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated
+// ResourceNotificationsHealthResourcesAnnotatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated
 // event.
 type ResourceNotificationsHealthResourcesAnnotatedEventData struct {
 	// api version of the resource properties bag
@@ -4091,7 +4091,7 @@ type ResourceNotificationsHealthResourcesAnnotatedEventData struct {
 	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 }
 
-// ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData - Schema of the Data property of an Event
+// ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData - Schema of the Data property of an CloudEvent/EventGridEvent
 // for a Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged event.
 type ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData struct {
 	// api version of the resource properties bag
@@ -4133,7 +4133,7 @@ type ResourceNotificationsResourceDeletedEventData struct {
 	ResourceDetails *ResourceNotificationsResourceDeletedDetails
 }
 
-// ResourceNotificationsResourceManagementCreatedOrUpdatedEventData - Schema of the Data property of an Event for
+// ResourceNotificationsResourceManagementCreatedOrUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for
 // a Microsoft.ResourceNotifications.Resources.CreatedOrUpdated event.
 type ResourceNotificationsResourceManagementCreatedOrUpdatedEventData struct {
 	// api version of the resource properties bag
@@ -4146,7 +4146,7 @@ type ResourceNotificationsResourceManagementCreatedOrUpdatedEventData struct {
 	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 }
 
-// ResourceNotificationsResourceManagementDeletedEventData - Schema of the Data property of an Event for a Microsoft.ResourceNotifications.Resources.Deleted
+// ResourceNotificationsResourceManagementDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ResourceNotifications.Resources.Deleted
 // event.
 type ResourceNotificationsResourceManagementDeletedEventData struct {
 	// details about operational info
@@ -4191,7 +4191,7 @@ type ResourceNotificationsResourceUpdatedEventData struct {
 	ResourceDetails *ResourceNotificationsResourceUpdatedDetails
 }
 
-// ResourceWriteCancelEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteCancel
+// ResourceWriteCancelEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceWriteCancel
 // event. This is raised when a resource create or update operation is canceled.
 type ResourceWriteCancelEventData struct {
 	// The requested authorization for the operation.
@@ -4228,7 +4228,7 @@ type ResourceWriteCancelEventData struct {
 	TenantID *string
 }
 
-// ResourceWriteFailureEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteFailure
+// ResourceWriteFailureEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceWriteFailure
 // event. This is raised when a resource create or update operation fails.
 type ResourceWriteFailureEventData struct {
 	// The requested authorization for the operation.
@@ -4265,7 +4265,7 @@ type ResourceWriteFailureEventData struct {
 	TenantID *string
 }
 
-// ResourceWriteSuccessEventData - Schema of the Data property of an Event for a Microsoft.Resources.ResourceWriteSuccess
+// ResourceWriteSuccessEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Resources.ResourceWriteSuccess
 // event. This is raised when a resource create or update operation succeeds.
 type ResourceWriteSuccessEventData struct {
 	// The requested authorization for the operation.
@@ -4302,7 +4302,7 @@ type ResourceWriteSuccessEventData struct {
 	TenantID *string
 }
 
-// ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an Event for
+// ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an CloudEvent/EventGridEvent for
 // a Microsoft.ServiceBus.ActiveMessagesAvailablePeriodicNotifications event.
 type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
 	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
@@ -4325,7 +4325,7 @@ type ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData struct {
 	TopicName *string
 }
 
-// ServiceBusActiveMessagesAvailableWithNoListenersEventData - Schema of the Data property of an Event for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners
+// ServiceBusActiveMessagesAvailableWithNoListenersEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.ServiceBus.ActiveMessagesAvailableWithNoListeners
 // event.
 type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
 	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
@@ -4348,7 +4348,7 @@ type ServiceBusActiveMessagesAvailableWithNoListenersEventData struct {
 	TopicName *string
 }
 
-// ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an Event
+// ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData - Schema of the Data property of an CloudEvent/EventGridEvent
 // for a Microsoft.ServiceBus.DeadletterMessagesAvailablePeriodicNotifications event.
 type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct {
 	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
@@ -4371,7 +4371,7 @@ type ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData struct 
 	TopicName *string
 }
 
-// ServiceBusDeadletterMessagesAvailableWithNoListenersEventData - Schema of the Data property of an Event for a
+// ServiceBusDeadletterMessagesAvailableWithNoListenersEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a
 // Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
 type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
 	// The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
@@ -4394,7 +4394,7 @@ type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
 	TopicName *string
 }
 
-// SignalRServiceClientConnectionConnectedEventData - Schema of the Data property of an Event for a Microsoft.SignalRService.ClientConnectionConnected
+// SignalRServiceClientConnectionConnectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.SignalRService.ClientConnectionConnected
 // event.
 type SignalRServiceClientConnectionConnectedEventData struct {
 	// The connection Id of connected client connection.
@@ -4410,7 +4410,7 @@ type SignalRServiceClientConnectionConnectedEventData struct {
 	UserID *string
 }
 
-// SignalRServiceClientConnectionDisconnectedEventData - Schema of the Data property of an Event for a Microsoft.SignalRService.ClientConnectionDisconnected
+// SignalRServiceClientConnectionDisconnectedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.SignalRService.ClientConnectionDisconnected
 // event.
 type SignalRServiceClientConnectionDisconnectedEventData struct {
 	// The connection Id of connected client connection.
@@ -4429,7 +4429,7 @@ type SignalRServiceClientConnectionDisconnectedEventData struct {
 	UserID *string
 }
 
-// StorageAsyncOperationInitiatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.AsyncOperationInitiated
+// StorageAsyncOperationInitiatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.AsyncOperationInitiated
 // event.
 type StorageAsyncOperationInitiatedEventData struct {
 	// The name of the API/operation that triggered this event.
@@ -4466,7 +4466,7 @@ type StorageAsyncOperationInitiatedEventData struct {
 	URL *string
 }
 
-// StorageBlobCreatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobCreated event.
+// StorageBlobCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.BlobCreated event.
 type StorageBlobCreatedEventData struct {
 	// The name of the API/operation that triggered this event.
 	API *string
@@ -4508,7 +4508,7 @@ type StorageBlobCreatedEventData struct {
 	URL *string
 }
 
-// StorageBlobDeletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobDeleted event.
+// StorageBlobDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.BlobDeleted event.
 type StorageBlobDeletedEventData struct {
 	// The name of the API/operation that triggered this event.
 	API *string
@@ -4541,7 +4541,7 @@ type StorageBlobDeletedEventData struct {
 	URL *string
 }
 
-// StorageBlobInventoryPolicyCompletedEventData - Schema of the Data property of an Event for an Microsoft.Storage.BlobInventoryPolicyCompleted
+// StorageBlobInventoryPolicyCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted
 // event.
 type StorageBlobInventoryPolicyCompletedEventData struct {
 	// The account name for which inventory policy is registered.
@@ -4566,7 +4566,7 @@ type StorageBlobInventoryPolicyCompletedEventData struct {
 	ScheduleDateTime *time.Time
 }
 
-// StorageBlobRenamedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobRenamed event.
+// StorageBlobRenamedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.BlobRenamed event.
 type StorageBlobRenamedEventData struct {
 	// The name of the API/operation that triggered this event.
 	API *string
@@ -4596,7 +4596,7 @@ type StorageBlobRenamedEventData struct {
 	StorageDiagnostics any
 }
 
-// StorageBlobTierChangedEventData - Schema of the Data property of an Event for a Microsoft.Storage.BlobTierChanged
+// StorageBlobTierChangedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.BlobTierChanged
 // event.
 type StorageBlobTierChangedEventData struct {
 	// The name of the API/operation that triggered this event.
@@ -4633,7 +4633,7 @@ type StorageBlobTierChangedEventData struct {
 	URL *string
 }
 
-// StorageDirectoryCreatedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryCreated
+// StorageDirectoryCreatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.DirectoryCreated
 // event.
 type StorageDirectoryCreatedEventData struct {
 	// The name of the API/operation that triggered this event.
@@ -4664,7 +4664,7 @@ type StorageDirectoryCreatedEventData struct {
 	URL *string
 }
 
-// StorageDirectoryDeletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryDeleted
+// StorageDirectoryDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.DirectoryDeleted
 // event.
 type StorageDirectoryDeletedEventData struct {
 	// The name of the API/operation that triggered this event.
@@ -4695,7 +4695,7 @@ type StorageDirectoryDeletedEventData struct {
 	URL *string
 }
 
-// StorageDirectoryRenamedEventData - Schema of the Data property of an Event for a Microsoft.Storage.DirectoryRenamed
+// StorageDirectoryRenamedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.DirectoryRenamed
 // event.
 type StorageDirectoryRenamedEventData struct {
 	// The name of the API/operation that triggered this event.
@@ -4738,7 +4738,7 @@ type StorageLifecyclePolicyActionSummaryDetail struct {
 	TotalObjectsCount *int64
 }
 
-// StorageLifecyclePolicyCompletedEventData - Schema of the Data property of an Event for a Microsoft.Storage.LifecyclePolicyCompleted
+// StorageLifecyclePolicyCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Storage.LifecyclePolicyCompleted
 // event.
 type StorageLifecyclePolicyCompletedEventData struct {
 	// Execution statistics of a specific policy action in a Blob Management cycle.
@@ -4754,7 +4754,7 @@ type StorageLifecyclePolicyCompletedEventData struct {
 	TierToCoolSummary *StorageLifecyclePolicyActionSummaryDetail
 }
 
-// StorageTaskCompletedEventData - Schema of the Data property of an Event for an Microsoft.Storage.StorageTaskCompleted
+// StorageTaskCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskCompleted
 // event.
 type StorageTaskCompletedEventData struct {
 	// The time at which a storage task was completed.
@@ -4773,7 +4773,7 @@ type StorageTaskCompletedEventData struct {
 	TaskName *string
 }
 
-// StorageTaskQueuedEventData - Schema of the Data property of an Event for an Microsoft.Storage.StorageTaskQueued
+// StorageTaskQueuedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for an Microsoft.Storage.StorageTaskQueued
 // event.
 type StorageTaskQueuedEventData struct {
 	// The time at which a storage task was queued.
@@ -4783,14 +4783,14 @@ type StorageTaskQueuedEventData struct {
 	TaskExecutionID *string
 }
 
-// SubscriptionDeletedEventData - Schema of the Data property of an Event for a Microsoft.EventGrid.SubscriptionDeletedEvent
+// SubscriptionDeletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent
 // event.
 type SubscriptionDeletedEventData struct {
 	// READ-ONLY; The Azure resource ID of the deleted event subscription.
 	EventSubscriptionID *string
 }
 
-// SubscriptionValidationEventData - Schema of the Data property of an Event for a Microsoft.EventGrid.SubscriptionValidationEvent
+// SubscriptionValidationEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent
 // event.
 type SubscriptionValidationEventData struct {
 	// READ-ONLY; The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation handshake,
@@ -4812,7 +4812,7 @@ type SubscriptionValidationResponse struct {
 	ValidationResponse *string
 }
 
-// WebAppServicePlanUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Web.AppServicePlanUpdated
+// WebAppServicePlanUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.AppServicePlanUpdated
 // event.
 type WebAppServicePlanUpdatedEventData struct {
 	// HTTP request URL of this operation.
@@ -4858,7 +4858,7 @@ type WebAppServicePlanUpdatedEventDataSKU struct {
 	Tier *string
 }
 
-// WebAppUpdatedEventData - Schema of the Data property of an Event for a Microsoft.Web.AppUpdated event.
+// WebAppUpdatedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.AppUpdated event.
 type WebAppUpdatedEventData struct {
 	// HTTP request URL of this operation.
 	Address *string
@@ -4882,7 +4882,7 @@ type WebAppUpdatedEventData struct {
 	Verb *string
 }
 
-// WebBackupOperationCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationCompleted
+// WebBackupOperationCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.BackupOperationCompleted
 // event.
 type WebBackupOperationCompletedEventData struct {
 	// HTTP request URL of this operation.
@@ -4907,7 +4907,7 @@ type WebBackupOperationCompletedEventData struct {
 	Verb *string
 }
 
-// WebBackupOperationFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationFailed
+// WebBackupOperationFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.BackupOperationFailed
 // event.
 type WebBackupOperationFailedEventData struct {
 	// HTTP request URL of this operation.
@@ -4932,7 +4932,7 @@ type WebBackupOperationFailedEventData struct {
 	Verb *string
 }
 
-// WebBackupOperationStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.BackupOperationStarted
+// WebBackupOperationStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.BackupOperationStarted
 // event.
 type WebBackupOperationStartedEventData struct {
 	// HTTP request URL of this operation.
@@ -4957,7 +4957,7 @@ type WebBackupOperationStartedEventData struct {
 	Verb *string
 }
 
-// WebRestoreOperationCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationCompleted
+// WebRestoreOperationCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.RestoreOperationCompleted
 // event.
 type WebRestoreOperationCompletedEventData struct {
 	// HTTP request URL of this operation.
@@ -4982,7 +4982,7 @@ type WebRestoreOperationCompletedEventData struct {
 	Verb *string
 }
 
-// WebRestoreOperationFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationFailed
+// WebRestoreOperationFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.RestoreOperationFailed
 // event.
 type WebRestoreOperationFailedEventData struct {
 	// HTTP request URL of this operation.
@@ -5007,7 +5007,7 @@ type WebRestoreOperationFailedEventData struct {
 	Verb *string
 }
 
-// WebRestoreOperationStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.RestoreOperationStarted
+// WebRestoreOperationStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.RestoreOperationStarted
 // event.
 type WebRestoreOperationStartedEventData struct {
 	// HTTP request URL of this operation.
@@ -5032,7 +5032,7 @@ type WebRestoreOperationStartedEventData struct {
 	Verb *string
 }
 
-// WebSlotSwapCompletedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapCompleted
+// WebSlotSwapCompletedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.SlotSwapCompleted
 // event.
 type WebSlotSwapCompletedEventData struct {
 	// HTTP request URL of this operation.
@@ -5057,7 +5057,7 @@ type WebSlotSwapCompletedEventData struct {
 	Verb *string
 }
 
-// WebSlotSwapFailedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapFailed event.
+// WebSlotSwapFailedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.SlotSwapFailed event.
 type WebSlotSwapFailedEventData struct {
 	// HTTP request URL of this operation.
 	Address *string
@@ -5081,7 +5081,7 @@ type WebSlotSwapFailedEventData struct {
 	Verb *string
 }
 
-// WebSlotSwapStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapStarted event.
+// WebSlotSwapStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.SlotSwapStarted event.
 type WebSlotSwapStartedEventData struct {
 	// HTTP request URL of this operation.
 	Address *string
@@ -5105,7 +5105,7 @@ type WebSlotSwapStartedEventData struct {
 	Verb *string
 }
 
-// WebSlotSwapWithPreviewCancelledEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapWithPreviewCancelled
+// WebSlotSwapWithPreviewCancelledEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewCancelled
 // event.
 type WebSlotSwapWithPreviewCancelledEventData struct {
 	// HTTP request URL of this operation.
@@ -5130,7 +5130,7 @@ type WebSlotSwapWithPreviewCancelledEventData struct {
 	Verb *string
 }
 
-// WebSlotSwapWithPreviewStartedEventData - Schema of the Data property of an Event for a Microsoft.Web.SlotSwapWithPreviewStarted
+// WebSlotSwapWithPreviewStartedEventData - Schema of the Data property of an CloudEvent/EventGridEvent for a Microsoft.Web.SlotSwapWithPreviewStarted
 // event.
 type WebSlotSwapWithPreviewStartedEventData struct {
 	// HTTP request URL of this operation.

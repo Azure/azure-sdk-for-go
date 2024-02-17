@@ -69,7 +69,7 @@ directive:
       - response_types.go
       - options.go
     where: $
-    transform: return $.replace(/EventGridEvent/g, "Event");
+    transform: return $.replace(/Schema of the Data property of an EventGridEvent/g, "Schema of the Data property of an CloudEvent/EventGridEvent");
 ```
 
 ```yaml

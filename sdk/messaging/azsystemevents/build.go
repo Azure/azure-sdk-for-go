@@ -6,7 +6,7 @@
 
 //go:generate autorest ./autorest.md
 //go:generate goimports -w ./..
-//go:generate go run ./internal generate
+//go:generate go run ./internal/generate generate
 //go:generate goimports -w ./..
 
 package azsystemevents

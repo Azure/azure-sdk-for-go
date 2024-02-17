@@ -20,14 +20,19 @@ import (
 	"strings"
 )
 
-const clientFileToDelete = "clientdeleteme_client.go"
+var filesToDelete = []string{
+	"options.go",
+	"response_types.go",
+	"clientdeleteme_client.go",
+}
+
 const systemEventsPath = "system_events.go"
 const goModelsFile = "models.go"
 
-const tsOutputPath = "./internal/testdata/tsevents.txt"
-const javaOutputPath = "./internal/testdata/javaevents.txt"
-const pyOutputPath = "./internal/testdata/pyevents.txt"
-const goOutputPath = "./internal/testdata/goevents.txt"
+const tsOutputPath = "./internal/generate/testdata/tsevents.txt"
+const javaOutputPath = "./internal/generate/testdata/javaevents.txt"
+const pyOutputPath = "./internal/generate/testdata/pyevents.txt"
+const goOutputPath = "./internal/generate/testdata/goevents.txt"
 
 const header = `//go:build go1.18
 // +build go1.18
@@ -174,8 +179,15 @@ func generateConstants() error {
 		log.Fatalf("Failed to write constants file %s: %s", systemEventsPath, err)
 	}
 
-	if _, err := os.Stat(clientFileToDelete); err == nil {
-		return os.Remove(clientFileToDelete)
+	// we don't need these files since we're (intentionally) not exporting a Client from this
+	// package.
+	for _, file := range filesToDelete {
+		log.Printf("Deleting %s since it only has client types", file)
+		if _, err := os.Stat(file); err == nil {
+			if err := os.Remove(file); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil

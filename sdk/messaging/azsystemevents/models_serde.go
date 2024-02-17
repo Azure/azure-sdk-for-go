@@ -5417,8 +5417,8 @@ func (d *DeviceTwinProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Event.
-func (e Event) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EventGridEvent.
+func (e EventGridEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "data", e.Data)
 	populate(objectMap, "dataVersion", e.DataVersion)
@@ -5431,8 +5431,8 @@ func (e Event) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Event.
-func (e *Event) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventGridEvent.
+func (e *EventGridEvent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)

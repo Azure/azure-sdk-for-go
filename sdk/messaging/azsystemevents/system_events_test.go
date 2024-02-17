@@ -61,8 +61,8 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func parseManyEvents(t *testing.T, str string) []azsystemevents.Event {
-	var events []azsystemevents.Event
+func parseManyEvents(t *testing.T, str string) []azsystemevents.EventGridEvent {
+	var events []azsystemevents.EventGridEvent
 
 	err := json.Unmarshal(([]byte)(str), &events)
 	require.NoError(t, err)
@@ -70,8 +70,8 @@ func parseManyEvents(t *testing.T, str string) []azsystemevents.Event {
 	return events
 }
 
-func parseEvent(t *testing.T, str string) azsystemevents.Event {
-	var event *azsystemevents.Event
+func parseEvent(t *testing.T, str string) azsystemevents.EventGridEvent {
+	var event *azsystemevents.EventGridEvent
 
 	err := json.Unmarshal(([]byte)(str), &event)
 	require.NoError(t, err)

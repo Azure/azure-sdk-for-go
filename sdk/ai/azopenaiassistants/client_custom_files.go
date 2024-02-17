@@ -60,11 +60,11 @@ type GetFileContentOptions struct {
 	// For future expansion
 }
 
-// GetFile - Returns content for a specific file.
+// GetFileContent - Returns content for a specific file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 //   - fileID - The ID of the file to retrieve.
-//   - options - GetFileOptions contains the optional parameters for the Client.GetFile method.
+//   - options - GetFileContentOptions contains the optional parameters for the Client.GetFileContent method.
 func (client *Client) GetFileContent(ctx context.Context, fileID string, options *GetFileContentOptions) (GetFileContentResponse, error) {
 	var err error
 

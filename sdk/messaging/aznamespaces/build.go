@@ -6,4 +6,4 @@
 //go:generate autorest ./autorest.md
 //go:generate goimports -w .
 
-package azeventgrid
+package aznamespaces

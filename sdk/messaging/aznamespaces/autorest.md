@@ -11,7 +11,7 @@ input-file:
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
 openapi-type: "data-plane"
-output-folder: ../azeventgrid
+output-folder: ../aznamespaces
 override-client-name: Client
 security: "AADToken"
 use: "@autorest/go@4.0.0-preview.52"

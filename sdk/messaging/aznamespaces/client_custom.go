@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azeventgrid
+package aznamespaces
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/aznamespaces/internal"
 )
 
 // ClientOptions contains optional settings for [Client]

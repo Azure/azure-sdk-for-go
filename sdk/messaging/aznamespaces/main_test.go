@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azeventgrid_test
+package aznamespaces_test
 
 import (
 	"context"

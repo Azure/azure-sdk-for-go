@@ -50,10 +50,12 @@ stages:
             pool.name: azsdk-pool-mms-ubuntu-2004-general
             image.name: MMSUbuntu20.04
             go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
           Windows_Go122:
             pool.name: azsdk-pool-mms-win-2022-general
             image.name: MMS2022
             go.version: '1.22.0'
+            GOEXPERIMENT: nocoverageredesign
             generate.bom: true
       pool:
         name: $(pool.name)

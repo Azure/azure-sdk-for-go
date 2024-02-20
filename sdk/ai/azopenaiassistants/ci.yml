@@ -31,13 +31,13 @@ stages:
       TimeoutInMinutes: 35
       TestRunTime: 30m
       ServiceDirectory: "ai/azopenaiassistants"
-      RunLiveTests: true
+      RunLiveTests: false
       UsePipelineProxy: false
       CloudConfig:
         Public:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-openai-test-resources) # TestSecrets-openai
+            # - $(sub-config-openai-test-resources) # TestSecrets-openai
       EnvVars:
         AZURE_TEST_RUN_LIVE: "true" # use when utilizing the New-TestResources Script
         AZURE_CLIENT_ID: $(AZOPENAIASSISTANTS_CLIENT_ID)

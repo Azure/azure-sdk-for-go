@@ -479,9 +479,9 @@ func TestNilResponseBody(t *testing.T) {
 func TestLogResponseErrorCodeInBody(t *testing.T) {
 	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
 	require.NoError(t, err)
-	rawlog := map[log.Event]string{}
+	rawlog := map[log.Event][]string{}
 	log.SetListener(func(cls log.Event, s string) {
-		rawlog[cls] = s
+		rawlog[cls] = append(rawlog[cls], s)
 	})
 	defer log.SetListener(nil)
 	_ = NewResponseError(&http.Response{
@@ -508,15 +508,16 @@ ERROR CODE: ErrorItsBroken
 `
 	msg, ok := rawlog[azlog.EventResponseError]
 	require.True(t, ok)
-	require.EqualValues(t, want, msg)
+	require.Len(t, msg, 1)
+	require.EqualValues(t, want, msg[0])
 }
 
 func TestLogResponseErrorCodeInHeader(t *testing.T) {
 	fakeURL, err := url.Parse("https://fakeurl.com/the/path?qp=removed")
 	require.NoError(t, err)
-	rawlog := map[log.Event]string{}
+	rawlog := map[log.Event][]string{}
 	log.SetListener(func(cls log.Event, s string) {
-		rawlog[cls] = s
+		rawlog[cls] = append(rawlog[cls], s)
 	})
 	defer log.SetListener(nil)
 	respHeader := http.Header{}
@@ -544,5 +545,6 @@ ERROR CODE: ErrorTooManyCheats
 `
 	msg, ok := rawlog[azlog.EventResponseError]
 	require.True(t, ok)
-	require.EqualValues(t, want, msg)
+	require.Len(t, msg, 1)
+	require.EqualValues(t, want, msg[0])
 }

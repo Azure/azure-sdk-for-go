@@ -12,24 +12,30 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"reflect"
 	"strings"
 	"testing"
 )
 
 // Optional parameters for the SetBodilessMatcher operation
 type MatcherOptions struct {
+	RecordingOptions
 }
 
 // SetBodilessMatcher adjusts the "match" operation to exclude the body when matching a request to a recording's entries.
 // Pass in `nil` for `t` if you want the bodiless matcher to apply everywhere
 func SetBodilessMatcher(t *testing.T, options *MatcherOptions) error {
 	f := false
-	return SetDefaultMatcher(t, &SetDefaultMatcherOptions{
-		CompareBodies: &f,
-	})
+	o := SetDefaultMatcherOptions{CompareBodies: &f}
+	if options != nil {
+		o.RecordingOptions = options.RecordingOptions
+	}
+	return SetDefaultMatcher(t, &o)
 }
 
 type SetDefaultMatcherOptions struct {
+	RecordingOptions
+
 	CompareBodies       *bool
 	ExcludedHeaders     []string
 	IgnoredHeaders      []string
@@ -52,6 +58,9 @@ func (s *SetDefaultMatcherOptions) fillOptions() {
 	}
 	if s.IgnoreQueryOrdering == nil {
 		s.IgnoreQueryOrdering = &f
+	}
+	if reflect.ValueOf(s.RecordingOptions).IsZero() {
+		s.RecordingOptions = *defaultOptions()
 	}
 }
 
@@ -77,7 +86,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 		return nil
 	}
 	options.fillOptions()
-	url := fmt.Sprintf("%s/Admin/SetMatcher", defaultOptions().baseURL())
+	url := fmt.Sprintf("%s/Admin/SetMatcher", options.baseURL())
 	req, err := http.NewRequest("POST", url, http.NoBody)
 	if err != nil {
 		panic(err)

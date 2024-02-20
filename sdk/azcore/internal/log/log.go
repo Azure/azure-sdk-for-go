@@ -15,10 +15,11 @@ import (
 type Event = log.Event
 
 const (
-	EventRequest     = azlog.EventRequest
-	EventResponse    = azlog.EventResponse
-	EventRetryPolicy = azlog.EventRetryPolicy
-	EventLRO         = azlog.EventLRO
+	EventRequest       = azlog.EventRequest
+	EventResponse      = azlog.EventResponse
+	EventResponseError = azlog.EventResponseError
+	EventRetryPolicy   = azlog.EventRetryPolicy
+	EventLRO           = azlog.EventLRO
 )
 
 func Write(cls log.Event, msg string) {

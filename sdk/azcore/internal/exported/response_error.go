@@ -29,7 +29,7 @@ func NewResponseError(resp *http.Response) error {
 	// if we didn't get x-ms-error-code, check in the response body
 	body, err := exported.Payload(resp, nil)
 	if err != nil {
-		// since we're not return the ResponseError in this
+		// since we're not returning the ResponseError in this
 		// case we also don't want to write it to the log.
 		return err
 	}
@@ -54,9 +54,7 @@ func NewResponseErrorWithErrorCode(resp *http.Response, errorCode string) error 
 		StatusCode:  resp.StatusCode,
 		RawResponse: resp,
 	}
-	if log.Should(log.EventResponseError) {
-		log.Write(log.EventResponseError, respErr.Error())
-	}
+	log.Write(log.EventResponseError, respErr.Error())
 	return respErr
 }
 

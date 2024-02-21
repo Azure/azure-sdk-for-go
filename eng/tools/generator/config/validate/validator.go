@@ -5,6 +5,7 @@ package validate
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"path/filepath"
 	"strconv"
@@ -13,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
-	"github.com/hashicorp/go-multierror"
 )
 
 type Validator interface {
@@ -38,7 +38,7 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 		for _, request := range track2Request {
 			service, err := common.ReadV2ModuleNameToGetNamespace(filepath.Join(specRoot, getReadmeGoFromReadme(readme)))
 			if err != nil {
-				errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
+				errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
 				continue
 			}
 

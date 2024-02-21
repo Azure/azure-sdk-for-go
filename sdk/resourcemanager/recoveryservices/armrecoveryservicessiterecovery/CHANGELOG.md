@@ -1,5 +1,15 @@
 # Release History
 
+## 2.3.0 (2024-02-23)
+### Features Added
+
+- New function `*ReplicationFabricsClient.BeginRemoveInfra(context.Context, string, string, string, *ReplicationFabricsClientBeginRemoveInfraOptions) (*runtime.Poller[ReplicationFabricsClientRemoveInfraResponse], error)`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New field `AutoProtectionOfDataDisk` in struct `A2AEnableProtectionInput`
+
+
 ## 2.2.0 (2023-11-30)
 ### Features Added
 

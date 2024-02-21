@@ -4,9 +4,6 @@
 ### Features Added
 
 - New function `*ReplicationFabricsClient.BeginRemoveInfra(context.Context, string, string, string, *ReplicationFabricsClientBeginRemoveInfraOptions) (*runtime.Poller[ReplicationFabricsClientRemoveInfraResponse], error)`
-- New struct `ErrorAdditionalInfo`
-- New struct `ErrorDetail`
-- New struct `ErrorResponse`
 - New field `AutoProtectionOfDataDisk` in struct `A2AEnableProtectionInput`
 
 

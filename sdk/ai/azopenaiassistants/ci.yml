@@ -31,7 +31,7 @@ stages:
       TimeoutInMinutes: 35
       TestRunTime: 30m
       ServiceDirectory: "ai/azopenaiassistants"
-      RunLiveTests: false
+      RunLiveTests: true
       UsePipelineProxy: false
       CloudConfig:
         Public:

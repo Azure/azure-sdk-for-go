@@ -52,7 +52,7 @@ See [Key concepts][openai_key_concepts_assistants] in the product documentation 
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev][azopenaiassistants_examples] or in the example*_test.go files in our GitHub repo for [azopenaiassistants](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenaiassistants).
+Examples for various scenarios can be found on [pkg.go.dev][azopenaiassistants_examples] or in the example*_test.go files in our GitHub repo for [azopenaiassistants][azopenaiassistants_github].
 
 ## Troubleshooting
 
@@ -98,6 +98,7 @@ comments.
 [azopenaiassistants_example_tokencredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClient
 [azopenaiassistants_example_keycredential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClientWithKeyCredential
 [azopenaiassistants_example_openai]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai#example-NewClientForOpenAI
+[azopenaiassistants_github]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai
 <!-- TODO: END: will replace once the link is actually available. -->
 
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity

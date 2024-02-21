@@ -1,8 +1,11 @@
 # Release History
 
-## 1.9.3 (Unreleased)
+## 1.10.0 (Unreleased)
 
 ### Features Added
+
+* Added logging event `log.EventResponseError` that will contain the contents of `ResponseError.Error()` whenever an `azcore.ResponseError` is created.
+* Added `runtime.NewResponseErrorWithErrorCode` for creating an `azcore.ResponseError` with a caller-supplied error code.
 
 ### Breaking Changes
 

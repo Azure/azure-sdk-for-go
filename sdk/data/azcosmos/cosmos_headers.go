@@ -7,6 +7,7 @@ const (
 	cosmosHeaderRequestCharge                      string = "x-ms-request-charge"
 	cosmosHeaderActivityId                         string = "x-ms-activity-id"
 	cosmosHeaderEtag                               string = "etag"
+	cosmosHeaderSubstatus                          string = "x-ms-substatus"
 	cosmosHeaderPopulateQuotaInfo                  string = "x-ms-documentdb-populatequotainfo"
 	cosmosHeaderPreTriggerInclude                  string = "x-ms-documentdb-pre-trigger-include"
 	cosmosHeaderPostTriggerInclude                 string = "x-ms-documentdb-post-trigger-include"

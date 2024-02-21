@@ -75,9 +75,7 @@ func TestNewClientFromConnStrSuccess(t *testing.T) {
 }
 
 func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
-	someError := &cosmosErrorResponse{
-		Code: "SomeCode",
-	}
+	someError := map[string]string{"Code": "SomeCode"}
 
 	jsonString, err := json.Marshal(someError)
 	if err != nil {
@@ -102,8 +100,8 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	}
 
 	asError := err.(*azcore.ResponseError)
-	if asError.ErrorCode != someError.Code {
-		t.Errorf("Expected %v, but got %v", someError.Code, asError.ErrorCode)
+	if asError.ErrorCode != "404 Not Found" {
+		t.Errorf("Expected %v, but got %v", "404 Not Found", asError.ErrorCode)
 	}
 
 	if err.Error() != asError.Error() {

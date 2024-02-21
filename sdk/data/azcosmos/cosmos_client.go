@@ -472,7 +472,7 @@ func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http
 		return response, nil
 	}
 
-	return nil, newCosmosError(response)
+	return nil, azruntime.NewResponseErrorWithErrorCode(response, response.Status)
 }
 
 type pipelineRequestOptions struct {
@@ -488,6 +488,7 @@ func getAllowedHeaders() []string {
 		cosmosHeaderRequestCharge,
 		cosmosHeaderActivityId,
 		cosmosHeaderEtag,
+		cosmosHeaderSubstatus,
 		cosmosHeaderPopulateQuotaInfo,
 		cosmosHeaderPreTriggerInclude,
 		cosmosHeaderPostTriggerInclude,

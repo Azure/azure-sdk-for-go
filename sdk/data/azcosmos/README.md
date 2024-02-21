@@ -55,8 +55,9 @@ azlog.SetListener(func(event azlog.Event, s string) {
 	f.WriteString(s + "\n")
 })
 
-// Filter the types of events you'd like to log by removing the ones you're not interested in
-azlog.SetEvents(azlog.EventRequest, azlog.EventResponse, azlog.EventRetryPolicy) 
+// Filter the types of events you'd like to log by removing the ones you're not interested in (if any)
+// If filtering we recommend *always* including `azlog.EventResponseError` since this is the event type that will help with debugging errors
+azlog.SetEvents(azlog.EventRequest, azlog.EventResponse, azlog.EventRetryPolicy, azlog.EventResponseError) 
 ```
 
 ## Examples

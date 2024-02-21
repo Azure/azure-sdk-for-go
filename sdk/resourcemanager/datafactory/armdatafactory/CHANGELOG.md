@@ -1,5 +1,32 @@
 # Release History
 
+## 6.0.0 (2024-02-23)
+### Breaking Changes
+
+- Type of `AzureFunctionActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Type of `WebActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Type of `WebHookActivityTypeProperties.Headers` has been changed from `any` to `map[string]*string`
+- Field `ReadBehavior` of struct `SalesforceServiceCloudV2Source` has been removed
+- Field `ReadBehavior` of struct `SalesforceV2Source` has been removed
+
+### Features Added
+
+- New enum type `SnowflakeAuthenticationType` with values `SnowflakeAuthenticationTypeAADServicePrincipal`, `SnowflakeAuthenticationTypeBasic`, `SnowflakeAuthenticationTypeKeyPair`
+- New function `*SnowflakeV2Dataset.GetDataset() *Dataset`
+- New function `*SnowflakeV2LinkedService.GetLinkedService() *LinkedService`
+- New function `*SnowflakeV2Sink.GetCopySink() *CopySink`
+- New function `*SnowflakeV2Source.GetCopySource() *CopySource`
+- New struct `SnowflakeLinkedV2ServiceTypeProperties`
+- New struct `SnowflakeV2Dataset`
+- New struct `SnowflakeV2LinkedService`
+- New struct `SnowflakeV2Sink`
+- New struct `SnowflakeV2Source`
+- New field `AuthenticationType` in struct `SalesforceServiceCloudV2LinkedServiceTypeProperties`
+- New field `IncludeDeletedObjects` in struct `SalesforceServiceCloudV2Source`
+- New field `AuthenticationType` in struct `SalesforceV2LinkedServiceTypeProperties`
+- New field `IncludeDeletedObjects` in struct `SalesforceV2Source`
+
+
 ## 5.0.0 (2024-01-26)
 ### Breaking Changes
 

@@ -102,10 +102,10 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pipeline); err != nil {
 		return nil, err
 	}
@@ -176,11 +176,11 @@ func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resou
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	if options != nil && options.ReferencePipelineRunID != nil {
-		reqQP.Set("referencePipelineRunId", *options.ReferencePipelineRunID)
-	}
 	if options != nil && options.IsRecovery != nil {
 		reqQP.Set("isRecovery", strconv.FormatBool(*options.IsRecovery))
+	}
+	if options != nil && options.ReferencePipelineRunID != nil {
+		reqQP.Set("referencePipelineRunId", *options.ReferencePipelineRunID)
 	}
 	if options != nil && options.StartActivityName != nil {
 		reqQP.Set("startActivityName", *options.StartActivityName)
@@ -323,10 +323,10 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

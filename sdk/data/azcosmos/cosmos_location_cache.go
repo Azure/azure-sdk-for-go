@@ -49,7 +49,7 @@ type accountProperties struct {
 type locationCache struct {
 	locationInfo                      databaseAccountLocationsInfo
 	defaultEndpoint                   url.URL
-	enableEndpointDiscovery           bool
+	enableCrossRegionRetries          bool
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
 	lastUpdateTime                    time.Time
@@ -57,13 +57,13 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableEndpointDiscovery bool) *locationCache {
+func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool) *locationCache {
 	return &locationCache{
 		defaultEndpoint:                   defaultEndpoint,
 		locationInfo:                      *newDatabaseAccountLocationsInfo(prefLocations, defaultEndpoint),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
-		enableEndpointDiscovery:           enableEndpointDiscovery,
+		enableCrossRegionRetries:          enableCrossRegionRetries,
 	}
 }
 
@@ -104,7 +104,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 
 func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation bool) url.URL {
 	if isWriteOperation && !lc.canUseMultipleWriteLocs() {
-		if lc.enableEndpointDiscovery {
+		if lc.enableCrossRegionRetries {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
 			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]
 			return lc.locationInfo.availWriteEndpointsByLocation[writeLocation]
@@ -228,7 +228,7 @@ func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOp
 
 func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
-	if lc.enableEndpointDiscovery {
+	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
 			unavailEndpoints := make([]url.URL, 0)
 			unavailEndpoints = append(unavailEndpoints, fallbackEndpoint)

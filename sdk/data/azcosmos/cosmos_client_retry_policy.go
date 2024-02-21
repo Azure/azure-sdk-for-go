@@ -26,6 +26,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	o := pipelineRequestOptions{}
 	req.OperationValue(&o)
 	for {
+		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+		req.Raw().Host = resolvedEndpoint.Host
+		req.Raw().URL.Host = resolvedEndpoint.Host
+		response, err = req.Next()
 		subStatus := response.Header.Get("x-ms-substatus")
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			fmt.Println("Policy TIME")
@@ -65,8 +69,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
 	if (status == 403 && (subStatus == "3" || subStatus == "1008")) ||
 		(status == 404 && subStatus == "1002") ||
-		(status == 403 && subStatus == "3") ||
-		(status == 503) || status == 409 { // remove 409 for real policy
+		(status == 503) {
 		return true
 	}
 	return false
@@ -83,9 +86,6 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	}
 	p.gem.Update(req.Raw().Context())
 
-	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, isWriteOperation)
-	req.Raw().Host = resolvedEndpoint.Host
-	req.Raw().URL.Host = resolvedEndpoint.Host
 	p.retryCount += 1
 	time.Sleep(defaultBackoff * time.Second)
 	return true
@@ -102,9 +102,6 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request
 		if p.sessionRetryCount >= len(endpoints) {
 			return false
 		}
-		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, isWriteOperation)
-		req.Raw().Host = resolvedEndpoint.Host
-		req.Raw().URL.Host = resolvedEndpoint.Host
 	} else {
 		if p.sessionRetryCount > 0 {
 			return false
@@ -123,13 +120,13 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request
 	}
 	if isWriteOperation {
 		if p.gem.CanUseMultipleWriteLocations() {
-			locationalEndpoint := p.gem.getPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
+			locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
 			req.Raw().URL = &locationalEndpoint
 		} else {
 			return false
 		}
 	} else {
-		locationalEndpoint := p.gem.getPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
+		locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
 		req.Raw().URL = &locationalEndpoint
 	}
 	p.preferredLocationIndex += 1

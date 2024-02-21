@@ -27,7 +27,7 @@ type globalEndpointManager struct {
 	lastUpdateTime      time.Time
 }
 
-func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableEndpointDiscovery bool) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
@@ -41,7 +41,7 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		clientEndpoint:      clientEndpoint,
 		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint, enableEndpointDiscovery),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
@@ -89,7 +89,7 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWr
 	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation)
 }
 
-func (gem *globalEndpointManager) getPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
+func (gem *globalEndpointManager) GetPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
 	endpointString := currentUrl.String()
 	location := gem.preferredLocations[preferredLocationIndex]
 	endpointParts := strings.Split(endpointString, ".")

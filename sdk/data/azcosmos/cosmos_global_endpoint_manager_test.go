@@ -288,8 +288,8 @@ func TestGlobalEndpointManagerGetPreferredLocationEndpoint(t *testing.T) {
 	expectedWestLocationalEndpoint := "https://contoso-westus.documents.azure.com:443/"
 	expectedCentralLocationalEndpoint := "https://contoso-centralus.documents.azure.com:443/"
 
-	westLocationalEndpoint := gem.getPreferredLocationEndpoint(0, *testUrl)
-	centralLocationalEndpoint := gem.getPreferredLocationEndpoint(1, *testUrl)
+	westLocationalEndpoint := gem.GetPreferredLocationEndpoint(0, *testUrl)
+	centralLocationalEndpoint := gem.GetPreferredLocationEndpoint(1, *testUrl)
 
 	assert.Equal(t, expectedWestLocationalEndpoint, westLocationalEndpoint.String())
 	assert.Equal(t, expectedCentralLocationalEndpoint, centralLocationalEndpoint.String())

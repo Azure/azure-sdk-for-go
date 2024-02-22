@@ -25,58 +25,53 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
 	o := pipelineRequestOptions{}
 	req.OperationValue(&o)
-	for {
-		resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
-		req.Raw().Host = resolvedEndpoint.Host
-		req.Raw().URL.Host = resolvedEndpoint.Host
-		response, err = req.Next()
-		subStatus := response.Header.Get("x-ms-substatus")
-		if p.shouldRetryStatus(response.StatusCode, subStatus) {
-			fmt.Println("Policy TIME")
-			if response.StatusCode == 403 {
-				if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
-					p.retryCount = 0
-					p.sessionRetryCount = 0
-					break
+	subStatus := response.Header.Get(cosmosHeaderSubstatus)
+	if p.shouldRetryStatus(response.StatusCode, subStatus) {
+		p.retryCount = 0
+		p.sessionRetryCount = 0
+		for {
+			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+			req.Raw().Host = resolvedEndpoint.Host
+			req.Raw().URL.Host = resolvedEndpoint.Host
+			subStatus = response.Header.Get(cosmosHeaderSubstatus)
+			if p.shouldRetryStatus(response.StatusCode, subStatus) {
+				fmt.Println("Policy TIME")
+				if response.StatusCode == statusForbidden {
+					if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
+						break
+					}
+				} else if response.StatusCode == statusNotFound {
+					if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
+						break
+					}
+				} else if response.StatusCode == statusServiceUnavailable {
+					if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
+						break
+					}
 				}
-			} else if response.StatusCode == 404 {
-				if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
-					p.retryCount = 0
-					p.sessionRetryCount = 0
-					break
-				}
-			} else if response.StatusCode == 503 {
-				if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
-					p.retryCount = 0
-					p.sessionRetryCount = 0
-					break
-				}
+				fmt.Println("bout to retry this")
+			} else {
+				fmt.Println("supposed to break this")
+				break
 			}
-			fmt.Println("bout to retry this")
 			response, err = req.Next()
 			fmt.Println("should have retried")
-		} else {
-			fmt.Println("supposed to break this")
-			p.retryCount = 0
-			p.sessionRetryCount = 0
-			break
 		}
 	}
-
 	return response, err
 }
 
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
-	if (status == 403 && (subStatus == "3" || subStatus == "1008")) ||
-		(status == 404 && subStatus == "1002") ||
-		(status == 503) {
+	if (status == statusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
+		(status == statusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
+		(status == statusServiceUnavailable) {
 		return true
 	}
 	return false
 }
 
 func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool) bool {
-	if (p.retryCount > maxRetryCount) || !p.gem.locationCache.enableEndpointDiscovery {
+	if (p.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
 		return false
 	}
 	if isWriteOperation {
@@ -115,7 +110,7 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request
 	//On HTTP 503 response, if it's a read request and preferredRegions > 1,
 	//retry on the next preferredRegion. If it's a write request and account is multi master
 	//and preferredRegions > 1, retry on the next preferredRegion.
-	if !p.gem.locationCache.enableEndpointDiscovery || p.preferredLocationIndex >= len(p.gem.preferredLocations) {
+	if !p.gem.locationCache.enableCrossRegionRetries || p.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false
 	}
 	if isWriteOperation {

@@ -221,7 +221,7 @@ func (c *Client) CreateDatabase(
 // NewQueryDatabasesPager executes query for databases.
 // query - The SQL query to execute.
 // o - Options for the operation.
-func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *runtime.Pager[QueryDatabasesResponse] {
+func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) *azruntime.Pager[QueryDatabasesResponse] {
 	queryOptions := &QueryDatabasesOptions{}
 	if o != nil {
 		originalOptions := *o
@@ -235,7 +235,7 @@ func (c *Client) NewQueryDatabasesPager(query string, o *QueryDatabasesOptions) 
 
 	path, _ := generatePathForNameBased(resourceTypeDatabase, operationContext.resourceAddress, true)
 
-	return runtime.NewPager(runtime.PagingHandler[QueryDatabasesResponse]{
+	return azruntime.NewPager(azruntime.PagingHandler[QueryDatabasesResponse]{
 		More: func(page QueryDatabasesResponse) bool {
 			return page.ContinuationToken != ""
 		},

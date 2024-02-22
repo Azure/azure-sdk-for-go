@@ -78,7 +78,7 @@ func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWr
 
 func ResetLocationCache() *locationCache {
 	lc := newLocationCache(prefLocs, *defaultEndpoint, true)
-	lc.enableEndpointDiscovery = true
+	lc.enableCrossRegionRetries = true
 	return lc
 }
 

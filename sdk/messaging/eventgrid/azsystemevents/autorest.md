@@ -12,8 +12,9 @@ openapi-type: "data-plane"
 output-folder: ../azsystemevents
 override-client-name: ClientDeleteMe
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.52"
+use: "@autorest/go@4.0.0-preview.63"
 version: "^3.0.0"
+module: github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents
 slice-elements-byval: true
 remove-non-reference-schema: true
 batch:
@@ -27,13 +28,6 @@ directive:
     transform: >
       $.required.push("@odata.type");
       $["x-csharp-usage"] = "model,output";
-  # reference azcore/messaging/CloudEvent
-  - from: client.go
-    where: $
-    transform: return $.replace(/\[\]CloudEvent/g, "[]messaging.CloudEvent");
-  - from: client.go
-    where: $
-    transform: return $.replace(/func \(client \*Client\) PublishCloudEventEvents\(/g, "func (client *Client) internalPublishCloudEventEvents(");  
   - from: swagger-document
     where: $.definitions.CloudEventEvent
     transform: $["x-ms-external"] = true
@@ -57,16 +51,14 @@ directive:
 directive:
   - from:
       - models.go
-      - client.go
-      - response_types.go
+      - responses.go
       - options.go
     where: $
     transform: return $.replace(/CloudEventEvent/g, "CloudEvent");
   - from: 
       - models.go
       - models_serde.go
-      - client.go
-      - response_types.go
+      - responses.go
       - options.go
     where: $
     transform: return $.replace(/Schema of the Data property of an EventGridEvent/g, "Schema of the Data property of an CloudEvent/EventGridEvent");

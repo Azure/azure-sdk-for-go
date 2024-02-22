@@ -22,7 +22,7 @@ import (
 
 var filesToDelete = []string{
 	"options.go",
-	"response_types.go",
+	"responses.go",
 	"clientdeleteme_client.go",
 }
 

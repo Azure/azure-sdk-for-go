@@ -1,4 +1,4 @@
-module azsystemevents
+module github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents
 
 go 1.18
 

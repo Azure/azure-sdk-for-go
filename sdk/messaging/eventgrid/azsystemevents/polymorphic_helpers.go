@@ -11,7 +11,7 @@ package azsystemevents
 import "encoding/json"
 
 func unmarshalMediaJobOutputClassification(rawMsg json.RawMessage) (MediaJobOutputClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -32,7 +32,7 @@ func unmarshalMediaJobOutputClassification(rawMsg json.RawMessage) (MediaJobOutp
 }
 
 func unmarshalMediaJobOutputClassificationArray(rawMsg json.RawMessage) ([]MediaJobOutputClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

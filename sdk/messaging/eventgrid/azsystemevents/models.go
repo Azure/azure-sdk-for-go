@@ -3296,9 +3296,9 @@ type MediaJobOutputAsset struct {
 // GetMediaJobOutput implements the MediaJobOutputClassification interface for type MediaJobOutputAsset.
 func (m *MediaJobOutputAsset) GetMediaJobOutput() *MediaJobOutput {
 	return &MediaJobOutput{
-		ODataType: m.ODataType,
 		Error:     m.Error,
 		Label:     m.Label,
+		ODataType: m.ODataType,
 		Progress:  m.Progress,
 		State:     m.State,
 	}

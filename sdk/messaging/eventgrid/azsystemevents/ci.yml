@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/messaging/azsystemevents
+      - sdk/messaging/eventgrid/azsystemevents
       - eng/
 
 pr:
@@ -20,12 +20,12 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/messaging/azsystemevents
+      - sdk/messaging/eventgrid/azsystemevents
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: "messaging/azsystemevents"
+      ServiceDirectory: "messaging/eventgrid/azsystemevents"
       RunLiveTests: true
       UsePipelineProxy: false
       Location: westus2

@@ -6,7 +6,9 @@
 
 package main
 
-import "os"
+import (
+	"os"
+)
 
 type FileCache struct {
 	files map[string]string

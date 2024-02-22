@@ -14,12 +14,17 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 )
 
 func TestDownloadFileContent(t *testing.T) {
+	if recording.GetRecordMode() == recording.LiveMode {
+		t.Skip("Skipping non-deterministic test for live tests. Only runs in record/playback.")
+	}
+
 	args := runThreadArgs{
 		Assistant: azopenaiassistants.AssistantCreationBody{
 			DeploymentName: &assistantsModel,

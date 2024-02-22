@@ -11,7 +11,7 @@ package azopenaiassistants
 import "encoding/json"
 
 func unmarshalMessageContentClassification(rawMsg json.RawMessage) (MessageContentClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalMessageContentClassification(rawMsg json.RawMessage) (MessageConte
 }
 
 func unmarshalMessageContentClassificationArray(rawMsg json.RawMessage) ([]MessageContentClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -53,7 +53,7 @@ func unmarshalMessageContentClassificationArray(rawMsg json.RawMessage) ([]Messa
 }
 
 func unmarshalMessageTextAnnotationClassification(rawMsg json.RawMessage) (MessageTextAnnotationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -76,7 +76,7 @@ func unmarshalMessageTextAnnotationClassification(rawMsg json.RawMessage) (Messa
 }
 
 func unmarshalMessageTextAnnotationClassificationArray(rawMsg json.RawMessage) ([]MessageTextAnnotationClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -95,7 +95,7 @@ func unmarshalMessageTextAnnotationClassificationArray(rawMsg json.RawMessage) (
 }
 
 func unmarshalRequiredToolCallClassification(rawMsg json.RawMessage) (RequiredToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -116,7 +116,7 @@ func unmarshalRequiredToolCallClassification(rawMsg json.RawMessage) (RequiredTo
 }
 
 func unmarshalRequiredToolCallClassificationArray(rawMsg json.RawMessage) ([]RequiredToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -135,7 +135,7 @@ func unmarshalRequiredToolCallClassificationArray(rawMsg json.RawMessage) ([]Req
 }
 
 func unmarshalRunStepCodeInterpreterToolCallOutputClassification(rawMsg json.RawMessage) (RunStepCodeInterpreterToolCallOutputClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -158,7 +158,7 @@ func unmarshalRunStepCodeInterpreterToolCallOutputClassification(rawMsg json.Raw
 }
 
 func unmarshalRunStepCodeInterpreterToolCallOutputClassificationArray(rawMsg json.RawMessage) ([]RunStepCodeInterpreterToolCallOutputClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -177,7 +177,7 @@ func unmarshalRunStepCodeInterpreterToolCallOutputClassificationArray(rawMsg jso
 }
 
 func unmarshalRunStepDetailsClassification(rawMsg json.RawMessage) (RunStepDetailsClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -200,7 +200,7 @@ func unmarshalRunStepDetailsClassification(rawMsg json.RawMessage) (RunStepDetai
 }
 
 func unmarshalRunStepToolCallClassification(rawMsg json.RawMessage) (RunStepToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -225,7 +225,7 @@ func unmarshalRunStepToolCallClassification(rawMsg json.RawMessage) (RunStepTool
 }
 
 func unmarshalRunStepToolCallClassificationArray(rawMsg json.RawMessage) ([]RunStepToolCallClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -244,7 +244,7 @@ func unmarshalRunStepToolCallClassificationArray(rawMsg json.RawMessage) ([]RunS
 }
 
 func unmarshalToolDefinitionClassification(rawMsg json.RawMessage) (ToolDefinitionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -269,7 +269,7 @@ func unmarshalToolDefinitionClassification(rawMsg json.RawMessage) (ToolDefiniti
 }
 
 func unmarshalToolDefinitionClassificationArray(rawMsg json.RawMessage) ([]ToolDefinitionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

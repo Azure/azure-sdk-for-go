@@ -76,7 +76,7 @@ func removeTypes(fileCache *FileCache, typeNames []string, options *removeTypesO
 
 		re := regexp.MustCompile(reText)
 
-		err := transformFiles(fileCache, purpose, []string{"models.go", "response_types.go", "options.go"}, func(text string) (string, error) {
+		err := transformFiles(fileCache, purpose, []string{"models.go", "responses.go", "options.go"}, func(text string) (string, error) {
 			return re.ReplaceAllString(text, ""), nil
 		}, nil)
 

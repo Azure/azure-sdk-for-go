@@ -39,7 +39,7 @@ func (t *transformer) hackFixTimestamps() error {
 		}
 
 		for _, fix := range fixes {
-			searchStr := fmt.Sprintf(`populateTimeRFC3339(objectMap, "%s", %s.%s)`, fix.JSONFieldName, fix.ObjectName, fix.FieldName)
+			searchStr := fmt.Sprintf(`populateDateTimeRFC3339(objectMap, "%s", %s.%s)`, fix.JSONFieldName, fix.ObjectName, fix.FieldName)
 			newData := strings.Replace(text,
 				searchStr,
 				fmt.Sprintf(`populateTimeUnix(objectMap, "%s", %s.%s)`, fix.JSONFieldName, fix.ObjectName, fix.FieldName), -1)
@@ -50,7 +50,7 @@ func (t *transformer) hackFixTimestamps() error {
 
 			text = newData
 
-			searchStr = fmt.Sprintf(`err = unpopulateTimeRFC3339(val, "%s", &%s.%s)`, fix.FieldName, fix.ObjectName, fix.FieldName)
+			searchStr = fmt.Sprintf(`err = unpopulateDateTimeRFC3339(val, "%s", &%s.%s)`, fix.FieldName, fix.ObjectName, fix.FieldName)
 
 			newData = strings.Replace(text,
 				searchStr,

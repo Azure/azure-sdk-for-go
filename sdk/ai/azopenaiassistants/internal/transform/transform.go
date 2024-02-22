@@ -205,7 +205,7 @@ func (t *transformer) renameInnerPageObjects() error {
 		"PathsMc8ByoThreadsThreadidRunsGetResponses200ContentApplicationJSONSchema":                    "ThreadRunsPage",
 	}
 
-	return transformFiles(t.fileCache, "renameInnerPageObjects", []string{"client.go", "models.go", "models_serde.go", "response_types.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "renameInnerPageObjects", []string{"client.go", "models.go", "models_serde.go", "responses.go"}, func(text string) (string, error) {
 		for search, replace := range renames {
 			text = strings.ReplaceAll(text, search, replace)
 		}
@@ -217,7 +217,7 @@ func (t *transformer) renameInnerPageObjects() error {
 func (t *transformer) removeClientPrefix() error {
 	re := regexp.MustCompile(`Client([A-Z][A-Za-z]+)`)
 
-	return transformFiles(t.fileCache, "removeClientPrefix", []string{"client.go", "models.go", "models_serde.go", "options.go", "response_types.go"}, func(text string) (string, error) {
+	return transformFiles(t.fileCache, "removeClientPrefix", []string{"client.go", "models.go", "models_serde.go", "options.go", "responses.go"}, func(text string) (string, error) {
 		return re.ReplaceAllString(text, "$1"), nil
 	}, nil)
 }
@@ -252,7 +252,7 @@ func (t *transformer) fixFiles() error {
 		return err
 	}
 
-	if err := removeTypes(t.fileCache, []string{"GetFileContentResponse", "GetFileContentOptions"}, nil); err != nil {
+	if err := removeTypes(t.fileCache, []string{"GetFileContentOptions", "GetFileContentResponse"}, nil); err != nil {
 		return err
 	}
 

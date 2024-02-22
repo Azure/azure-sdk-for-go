@@ -361,10 +361,10 @@ type MessageTextFileCitationAnnotation struct {
 // GetMessageTextAnnotation implements the MessageTextAnnotationClassification interface for type MessageTextFileCitationAnnotation.
 func (m *MessageTextFileCitationAnnotation) GetMessageTextAnnotation() *MessageTextAnnotation {
 	return &MessageTextAnnotation{
-		Type:       m.Type,
-		Text:       m.Text,
-		StartIndex: m.StartIndex,
 		EndIndex:   m.EndIndex,
+		StartIndex: m.StartIndex,
+		Text:       m.Text,
+		Type:       m.Type,
 	}
 }
 
@@ -399,10 +399,10 @@ type MessageTextFilePathAnnotation struct {
 // GetMessageTextAnnotation implements the MessageTextAnnotationClassification interface for type MessageTextFilePathAnnotation.
 func (m *MessageTextFilePathAnnotation) GetMessageTextAnnotation() *MessageTextAnnotation {
 	return &MessageTextAnnotation{
-		Type:       m.Type,
-		Text:       m.Text,
-		StartIndex: m.StartIndex,
 		EndIndex:   m.EndIndex,
+		StartIndex: m.StartIndex,
+		Text:       m.Text,
+		Type:       m.Type,
 	}
 }
 
@@ -624,8 +624,8 @@ type RequiredFunctionToolCall struct {
 // GetRequiredToolCall implements the RequiredToolCallClassification interface for type RequiredFunctionToolCall.
 func (r *RequiredFunctionToolCall) GetRequiredToolCall() *RequiredToolCall {
 	return &RequiredToolCall{
-		Type: r.Type,
 		ID:   r.ID,
+		Type: r.Type,
 	}
 }
 
@@ -783,8 +783,8 @@ type RunStepCodeInterpreterToolCall struct {
 // GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepCodeInterpreterToolCall.
 func (r *RunStepCodeInterpreterToolCall) GetRunStepToolCall() *RunStepToolCall {
 	return &RunStepToolCall{
-		Type: r.Type,
 		ID:   r.ID,
+		Type: r.Type,
 	}
 }
 
@@ -843,8 +843,8 @@ type RunStepFunctionToolCall struct {
 // GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepFunctionToolCall.
 func (r *RunStepFunctionToolCall) GetRunStepToolCall() *RunStepToolCall {
 	return &RunStepToolCall{
-		Type: r.Type,
 		ID:   r.ID,
+		Type: r.Type,
 	}
 }
 
@@ -907,8 +907,8 @@ type RunStepRetrievalToolCall struct {
 // GetRunStepToolCall implements the RunStepToolCallClassification interface for type RunStepRetrievalToolCall.
 func (r *RunStepRetrievalToolCall) GetRunStepToolCall() *RunStepToolCall {
 	return &RunStepToolCall{
-		Type: r.Type,
 		ID:   r.ID,
+		Type: r.Type,
 	}
 }
 

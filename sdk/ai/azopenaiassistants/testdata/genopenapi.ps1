@@ -23,3 +23,15 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Pop-Location
+
+autorest ./autorest.md
+
+if ($LASTEXITCODE -ne 0) {
+    Exit 1
+}
+
+goimports -w ./..
+
+if ($LASTEXITCODE -ne 0) {
+    Exit 1
+}

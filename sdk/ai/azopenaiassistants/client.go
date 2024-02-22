@@ -1028,17 +1028,17 @@ func (client *Client) listAssistantFilesCreateRequest(ctx context.Context, assis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1085,17 +1085,17 @@ func (client *Client) listAssistantsCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1200,17 +1200,17 @@ func (client *Client) listMessageFilesCreateRequest(ctx context.Context, threadI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1262,17 +1262,17 @@ func (client *Client) listMessagesCreateRequest(ctx context.Context, threadID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1329,17 +1329,17 @@ func (client *Client) listRunStepsCreateRequest(ctx context.Context, threadID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1391,17 +1391,17 @@ func (client *Client) listRunsCreateRequest(ctx context.Context, threadID string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Limit != nil {
-		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
-	}
-	if options != nil && options.Order != nil {
-		reqQP.Set("order", string(*options.Order))
-	}
 	if options != nil && options.After != nil {
 		reqQP.Set("after", *options.After)
 	}
 	if options != nil && options.Before != nil {
 		reqQP.Set("before", *options.Before)
+	}
+	if options != nil && options.Limit != nil {
+		reqQP.Set("limit", strconv.FormatInt(int64(*options.Limit), 10))
+	}
+	if options != nil && options.Order != nil {
+		reqQP.Set("order", string(*options.Order))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

@@ -14,7 +14,7 @@ license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
 title: "OpenAIAssistants"
-use: "@autorest/go@4.0.0-preview.52"
+use: "@autorest/go@4.0.0-preview.63"
 slice-elements-byval: true
 # can't use this since it removes an innererror type that we want ()
 # remove-non-reference-schema: true

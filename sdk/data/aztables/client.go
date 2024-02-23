@@ -190,13 +190,17 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 			if err != nil {
 				return ListEntitiesResponse{}, err
 			}
-			marshalledValue := make([][]byte, 0)
-			for _, e := range resp.TableEntityQueryResponse.Value {
-				m, err := json.Marshal(e)
-				if err != nil {
-					return ListEntitiesResponse{}, err
+
+			var marshalledValue [][]byte
+			if len(resp.TableEntityQueryResponse.Value) > 0 {
+				marshalledValue = make([][]byte, len(resp.TableEntityQueryResponse.Value))
+				for i := range resp.TableEntityQueryResponse.Value {
+					m, err := json.Marshal(resp.TableEntityQueryResponse.Value[i])
+					if err != nil {
+						return ListEntitiesResponse{}, err
+					}
+					marshalledValue[i] = m
 				}
-				marshalledValue = append(marshalledValue, m)
 			}
 
 			return ListEntitiesResponse{

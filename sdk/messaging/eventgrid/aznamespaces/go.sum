@@ -4,8 +4,6 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1 h1:sO0/P7g68FrryJzljemN+
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1/go.mod h1:h8hyGFDsU5HMivxiS2iYFZsgDbU9OnnJ163x5UGVKYo=
 github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2 h1:LqbJ/WzJUwBf8UiaSzgX7aMclParm9/5Vgp+TY51uBQ=
 github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2/go.mod h1:yInRyqWXAuaPrgI7p70+lDDgh3mlBohis29jGMISnmc=
-github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid v0.4.0 h1:d7S13DPk63SvBJfSUiMJJ26tRsvrBumkLPEfQEAarGk=
-github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid v0.4.0/go.mod h1:7e/gsXp4INB4k/vg0h3UOkYpDK6oZqctxr+L05FGybg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2 v2.2.0-beta.1 h1:FgTgykkGbJGoc5qnADIM84YAXLdqKNmnQHws085Rovo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2 v2.2.0-beta.1/go.mod h1:ZHJdpjiGjZBBILAyAUTP93YSLF/Foo1J72HSx30gMeQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.1.2 h1:mLY+pNLjCUeKhgnAJWAKhEUQM+RJQo2H1fuGSw1Ky1E=

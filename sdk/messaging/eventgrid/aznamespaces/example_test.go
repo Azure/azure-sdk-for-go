@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 )
 
 func ExampleNewClientWithSharedKeyCredential() {
@@ -23,7 +23,7 @@ func ExampleNewClientWithSharedKeyCredential() {
 		return
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
+	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -89,7 +89,7 @@ func ExampleClient_ReceiveCloudEvents() {
 	topic := os.Getenv("EVENTGRID_TOPIC")
 	subscription := os.Getenv("EVENTGRID_SUBSCRIPTION")
 
-	resp, err := client.ReceiveCloudEvents(context.TODO(), topic, subscription, &azeventgrid.ReceiveCloudEventsOptions{
+	resp, err := client.ReceiveCloudEvents(context.TODO(), topic, subscription, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10), // in seconds
 	})
@@ -124,7 +124,7 @@ func ExampleClient_ReceiveCloudEvents() {
 	// Output:
 }
 
-func getEventGridClient() *azeventgrid.Client {
+func getEventGridClient() *aznamespaces.Client {
 	endpoint := os.Getenv("EVENTGRID_ENDPOINT")
 	sharedKey := os.Getenv("EVENTGRID_KEY")
 
@@ -132,7 +132,7 @@ func getEventGridClient() *azeventgrid.Client {
 		return nil
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
+	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(sharedKey), nil)
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

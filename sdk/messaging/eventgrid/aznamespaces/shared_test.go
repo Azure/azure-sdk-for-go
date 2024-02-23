@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
 )
 
@@ -73,7 +73,7 @@ func loadEnv() (testVars, error) {
 }
 
 type clientWrapper struct {
-	*azeventgrid.Client
+	*aznamespaces.Client
 	TestVars testVars
 }
 
@@ -82,7 +82,7 @@ type clientWrapperOptions struct {
 }
 
 func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
-	var client *azeventgrid.Client
+	var client *aznamespaces.Client
 	var tv testVars
 
 	if recording.GetRecordMode() != recording.PlaybackMode {
@@ -93,7 +93,7 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		tv = fakeTestVars
 	}
 
-	var options *azeventgrid.ClientOptions
+	var options *aznamespaces.ClientOptions
 
 	if recording.GetRecordMode() == recording.LiveMode {
 		if tv.KeyLogPath != "" {
@@ -107,14 +107,14 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 				KeyLogWriter: keyLogWriter,
 			}
 
-			options = &azeventgrid.ClientOptions{
+			options = &aznamespaces.ClientOptions{
 				ClientOptions: azcore.ClientOptions{
 					Transport: &http.Client{Transport: tp},
 				},
 			}
 		}
 	} else {
-		options = &azeventgrid.ClientOptions{
+		options = &aznamespaces.ClientOptions{
 			ClientOptions: azcore.ClientOptions{
 				Transport: newRecordingTransporter(t, tv),
 			},
@@ -127,7 +127,7 @@ func newClientWrapper(t *testing.T, opts *clientWrapperOptions) clientWrapper {
 		}
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
+	client, err := aznamespaces.NewClientWithSharedKeyCredential(tv.Endpoint, azcore.NewKeyCredential(tv.Key), options)
 	require.NoError(t, err)
 
 	return clientWrapper{

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 )
 
 func Example_publishAndReceiveCloudEvents() {
@@ -26,7 +26,7 @@ func Example_publishAndReceiveCloudEvents() {
 		return
 	}
 
-	client, err := azeventgrid.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
+	client, err := aznamespaces.NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential(key), nil)
 
 	if err != nil {
 		panic(err)
@@ -92,13 +92,13 @@ func Example_publishAndReceiveCloudEvents() {
 	// Output:
 }
 
-func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscriptionName string, dataContentType string, payload any) (azeventgrid.ReceiveDetails, error) {
+func publishAndReceiveEvent(client *aznamespaces.Client, topicName string, subscriptionName string, dataContentType string, payload any) (aznamespaces.ReceiveDetails, error) {
 	event, err := messaging.NewCloudEvent("source", "eventType", payload, &messaging.CloudEventOptions{
 		DataContentType: &dataContentType,
 	})
 
 	if err != nil {
-		return azeventgrid.ReceiveDetails{}, err
+		return aznamespaces.ReceiveDetails{}, err
 	}
 
 	eventsToSend := []messaging.CloudEvent{
@@ -110,10 +110,10 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	_, err = client.PublishCloudEvents(context.TODO(), topicName, eventsToSend, nil)
 
 	if err != nil {
-		return azeventgrid.ReceiveDetails{}, err
+		return aznamespaces.ReceiveDetails{}, err
 	}
 
-	events, err := client.ReceiveCloudEvents(context.TODO(), topicName, subscriptionName, &azeventgrid.ReceiveCloudEventsOptions{
+	events, err := client.ReceiveCloudEvents(context.TODO(), topicName, subscriptionName, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents: to.Ptr(int32(1)),
 
 		// Wait for 60 seconds for events.
@@ -121,11 +121,11 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	})
 
 	if err != nil {
-		return azeventgrid.ReceiveDetails{}, err
+		return aznamespaces.ReceiveDetails{}, err
 	}
 
 	if len(events.Value) == 0 {
-		return azeventgrid.ReceiveDetails{}, errors.New("no events received")
+		return aznamespaces.ReceiveDetails{}, errors.New("no events received")
 	}
 
 	// We can (optionally) renew the lock (multiple times) if we want to continue to
@@ -135,7 +135,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	}, nil)
 
 	if err != nil {
-		return azeventgrid.ReceiveDetails{}, err
+		return aznamespaces.ReceiveDetails{}, err
 	}
 
 	// This acknowledges the event and causes it to be deleted from the subscription.
@@ -149,7 +149,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 	}, nil)
 
 	if err != nil {
-		return azeventgrid.ReceiveDetails{}, err
+		return aznamespaces.ReceiveDetails{}, err
 	}
 
 	if len(ackResp.FailedLockTokens) > 0 {
@@ -158,7 +158,7 @@ func publishAndReceiveEvent(client *azeventgrid.Client, topicName string, subscr
 			fmt.Printf("Failed to acknowledge event with lock token %s: %s\n", *failed.LockToken, failed.Error)
 		}
 
-		return azeventgrid.ReceiveDetails{}, errors.New("failed to acknowledge event")
+		return aznamespaces.ReceiveDetails{}, errors.New("failed to acknowledge event")
 	}
 
 	return events.Value[0], nil

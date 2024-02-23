@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces"
 	"github.com/stretchr/testify/require"
 )
 
@@ -31,7 +31,7 @@ func TestFailedAck(t *testing.T) {
 	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce}, nil)
 	require.NoError(t, err)
 
-	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+	recvResp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
@@ -81,7 +81,7 @@ func TestPartialAckFailure(t *testing.T) {
 	_, err = c.PublishCloudEvents(context.Background(), c.TestVars.Topic, []messaging.CloudEvent{ce, ce2}, nil)
 	require.NoError(t, err)
 
-	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+	events, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents: to.Ptr[int32](2),
 	})
 	require.NoError(t, err)
@@ -134,7 +134,7 @@ func TestReject(t *testing.T) {
 	require.Empty(t, rejectResp.FailedLockTokens)
 	t.Logf("Done rejecting cloud events")
 
-	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+	events, err = c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr[int32](1),
 		MaxWaitTime: to.Ptr[int32](10),
 	})
@@ -299,7 +299,7 @@ func TestPublishingAndReceivingMultipleCloudEvents(t *testing.T) {
 
 	t.Logf("\n\n\n=====> starting our test, receiving\n\n\n")
 
-	resp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &azeventgrid.ReceiveCloudEventsOptions{
+	resp, err := c.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, &aznamespaces.ReceiveCloudEventsOptions{
 		MaxEvents:   to.Ptr(int32(len(batch))),
 		MaxWaitTime: to.Ptr(int32(60)),
 	})
@@ -365,8 +365,8 @@ func TestReleaseWithDelay(t *testing.T) {
 	recvResp, err := c.Client.ReceiveCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, nil)
 	require.NoError(t, err)
 
-	releaseResp, err := c.Client.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, &azeventgrid.ReleaseCloudEventsOptions{
-		ReleaseDelayInSeconds: to.Ptr(azeventgrid.ReleaseDelayBy10Seconds),
+	releaseResp, err := c.Client.ReleaseCloudEvents(context.Background(), c.TestVars.Topic, c.TestVars.Subscription, []string{*recvResp.Value[0].BrokerProperties.LockToken}, &aznamespaces.ReleaseCloudEventsOptions{
+		ReleaseDelayInSeconds: to.Ptr(aznamespaces.ReleaseDelayBy10Seconds),
 	})
 	require.NoError(t, err)
 	require.Empty(t, releaseResp.FailedLockTokens)
@@ -397,7 +397,7 @@ func mustCreateEvent(t *testing.T, source string, eventType string, data any, op
 	return event
 }
 
-func requireFailedLockTokens(t *testing.T, lockTokens []string, flts []azeventgrid.FailedLockToken) {
+func requireFailedLockTokens(t *testing.T, lockTokens []string, flts []aznamespaces.FailedLockToken) {
 	for i, flt := range flts {
 		// make sure the lock tokens line up
 		require.Equal(t, lockTokens[i], *flt.LockToken)

@@ -7,7 +7,6 @@
 package azsystemevents_test
 
 import (
-	"azsystemevents"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -15,6 +14,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/joho/godotenv"

@@ -7,11 +7,12 @@
 package azsystemevents_test
 
 import (
-	"azsystemevents"
 	"encoding/json"
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
 	"github.com/stretchr/testify/require"
 )

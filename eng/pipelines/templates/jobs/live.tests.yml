@@ -31,6 +31,8 @@ parameters:
   - name: TestRunTime
     type: string
     default: '600s'
+  - name: OSName
+    type: string
 
 jobs:
   - job:
@@ -49,6 +51,7 @@ jobs:
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
+      os: ${{ parameters.OSName }}
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 

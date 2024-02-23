@@ -1,3 +1,10 @@
+resources:
+  repositories:
+    - repository: 1ESPipelineTemplates
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
+
 parameters:
   - name: ServiceDirectory
     type: string
@@ -78,168 +85,156 @@ parameters:
     type: boolean
     default: true
 
+extends:
+  ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    settings:
+      skipBuildTagsForGitHubPullRequests: true
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      sdl:
+        sourceAnalysisPool:
+          name: azsdk-pool-mms-win-2022-general
+          image: azsdk-pool-mms-win-2022-1espt
+          os: windows
+        sourceRepositoriesToScan:
+          exclude:
+            - repository: azure-sdk-build-tools
+        eslint:
+          enabled: false
+          justificationForDisabling: "ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746&"
+        codeql:
+          compiled:
+            enabled: false
+            justificationForDisabling: "CodeQL times our pipelines out by running for 2+ hours before being force canceled."
+        psscriptanalyzer:
+          compiled: true
+          break: true
+        policy: M365
+        credscan:
+          suppressionsFile: '$(Build.SourcesDirectory)/eng/CredScanSuppression.json'
+          toolVersion: '2.3.12.23'
+    stages:
+      - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml@self
+        jobs:
+          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml@self
+            parameters:
+              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml@self
+              MatrixConfigs:
+                - ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
+                    - Name: ci_test_base
+                      Path: eng/pipelines/templates/stages/ci-platform-matrix-complete.json
+                      Selection: all
+                      GenerateVMJobs: true
+                - ${{ else }}:
+                    - Name: ci_test_base
+                      Path: eng/pipelines/templates/stages/ci-platform-matrix.json
+                      Selection: all
+                      GenerateVMJobs: true
+              AdditionalParameters:
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                TestRunTime: ${{ parameters.TestRunTime }}
+                UsePipelineProxy: ${{ parameters.UsePipelineProxy }}
 
-stages:
-  - stage: Build
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-    jobs:
-    - job: Test
-      displayName: Build and Test on
-      strategy:
-        matrix:
-          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
-            Linux_Go118:
-              pool.name: azsdk-pool-mms-ubuntu-2004-general
-              image.name: MMSUbuntu20.04
-              go.version: '1.18.10'
-          ${{ if eq(parameters.ExcludeGoNMinus2, false) }}:
-            Windows_Go118:
-              pool.name: azsdk-pool-mms-win-2022-general
-              image.name: MMS2022
-              go.version: '1.18.10'
-          Linux_Go121:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.21.7'
-          Windows_Go121:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
-            go.version: '1.21.7'
-          Linux_Go122:
-            pool.name: azsdk-pool-mms-ubuntu-2004-general
-            image.name: MMSUbuntu20.04
-            go.version: '1.22.0'
-            GOEXPERIMENT: nocoverageredesign
-          Windows_Go122:
-            pool.name: azsdk-pool-mms-win-2022-general
-            image.name: MMS2022
-            go.version: '1.22.0'
-            GOEXPERIMENT: nocoverageredesign
-            generate.bom: true
-      pool:
-        name: $(pool.name)
-        vmImage: $(image.name)
-      steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
-        parameters:
-          AgentImage: $(image.name)
-
-      - task: GoTool@0
-        inputs:
-          version: '$(go.version)'
-        displayName: "Select Go Version"
-
-      - template: ../steps/create-go-workspace.yml
-
-      - template: ../steps/build-test.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          Image: $(vm.image)
-          GoVersion: $(go.version)
-          TestProxy: ${{ parameters.UsePipelineProxy }}
-          TestRunTime: ${{ parameters.TestRunTime }}
-          EnvVars:
-            AZURE_RECORD_MODE: 'playback'
-
-    - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal')) }}:
-      - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-
-    - job: Analyze
-      displayName: Analyze
-      variables:
-        - name: Codeql.Enabled
-          value: true
-        - name: Codeql.BuildIdentifier
-          value: ${{ parameters.ServiceDirectory }}
-        - name: Codeql.SkipTaskAutoInjection
-          value: false
-      pool:
-        name: azsdk-pool-mms-ubuntu-2004-general
-
-      steps:
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-
-      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-        displayName: "Component Detection"
-        condition: and(succeededOrFailed(), ne(variables['Build.Reason'],'PullRequest'))
-
-      - task: GoTool@0
-        inputs:
-          version: '1.22.0'
-        displayName: "Select Go Version"
-
-      - template: ../steps/create-go-workspace.yml
-
-      - template: ../steps/analyze.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          LintVersion: $(GoLintCLIVersion)
-          NonShipping: ${{ parameters.NonShipping }}
-          LicenseCheck: ${{ parameters.LicenseCheck }}
-
-  # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
-  - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
-    - ${{ each cloud in parameters.CloudConfig }}:
-      # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
-      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-        - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-          - stage: ${{ cloud.key }}
+          - job: Analyze
+            displayName: Analyze
             variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
-            displayName: Live Test ${{ cloud.key }}
-            dependsOn: []
-            jobs:
-            - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-              parameters:
-                JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-                AdditionalParameters:
-                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                  EnvVars: ${{ parameters.EnvVars }}
-                  TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-                  TestRunTime: ${{ parameters.TestRunTime }}
-                  Location: ${{ parameters.Location }}
-                  PreSteps:
-                    - ${{ parameters.PreSteps }}
-                  PostSteps:
-                    - ${{ parameters.PostSteps }}
-                MatrixConfigs:
-                  # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
-                  - ${{ each config in parameters.MatrixConfigs }}:
-                    -  ${{ config }}
-                  - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    -  ${{ config }}
-                MatrixFilters:
-                  - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
-                    - ${{ cloudFilter }}
-                  - ${{ parameters.MatrixFilters }}
-                MatrixReplace:
-                  - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
-                    - ${{ cloudReplace }}
-                  - ${{ parameters.MatrixReplace }}
-                CloudConfig:
-                  SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
-                  SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-                  Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
-                  Cloud: ${{ cloud.key }}
+              - name: Codeql.Enabled
+                value: true
+              - name: Codeql.BuildIdentifier
+                value: ${{ parameters.ServiceDirectory }}
+              - name: Codeql.SkipTaskAutoInjection
+                value: false
+            pool:
+              name: azsdk-pool-mms-ubuntu-2004-1es-pt
+              vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+              os: linux
 
-  # The Prerelease and Release stages are conditioned on:
-  # 1. Internal trigger, not Pull Request trigger
-  # 2. Not weekly build
-  # 3. Manual trigger or force IncludeRelease
-  - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
-    - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
-      - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
-        - template: archetype-go-release.yml
-          parameters:
-            DependsOn:
-              - Build
-              # Copy cloud conditional logic from live test stage
-              - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
-                - ${{ each cloud in parameters.CloudConfig }}:
-                  - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
-                      - ${{ cloud.key }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            steps:
+              - template: /eng/common/pipelines/templates/steps/check-spelling.yml@self
+
+              - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+                displayName: "Component Detection"
+                condition: and(succeededOrFailed(), ne(variables['Build.Reason'],'PullRequest'))
+
+              - task: GoTool@0
+                inputs:
+                  version: '1.22.0'
+                displayName: "Select Go Version"
+
+              - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+
+              - template: /eng/pipelines/templates/steps/analyze.yml@self
+                parameters:
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                  LintVersion: $(GoLintCLIVersion)
+                  NonShipping: ${{ parameters.NonShipping }}
+                  LicenseCheck: ${{ parameters.LicenseCheck }}
+
+      # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
+      - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+          - ${{ each cloud in parameters.CloudConfig }}:
+              # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
+              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                  - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                      - stage: ${{ cloud.key }}
+                        variables:
+                          - template: /eng/pipelines/templates/variables/globals.yml@self
+                        displayName: Live Test ${{ cloud.key }}
+                        dependsOn: []
+                        jobs:
+                          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml@self
+                            parameters:
+                              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml@self
+                              AdditionalParameters:
+                                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                                EnvVars: ${{ parameters.EnvVars }}
+                                TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                                TestRunTime: ${{ parameters.TestRunTime }}
+                                Location: ${{ parameters.Location }}
+                                PreSteps:
+                                  - ${{ parameters.PreSteps }}
+                                PostSteps:
+                                  - ${{ parameters.PostSteps }}
+                              MatrixConfigs:
+                                # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
+                                - ${{ each config in parameters.MatrixConfigs }}:
+                                    - ${{ config }}
+                                - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                                    - ${{ config }}
+                              MatrixFilters:
+                                - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                                    - ${{ cloudFilter }}
+                                - ${{ parameters.MatrixFilters }}
+                              MatrixReplace:
+                                - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
+                                    - ${{ cloudReplace }}
+                                - ${{ parameters.MatrixReplace }}
+                              CloudConfig:
+                                SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+                                SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
+                                Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
+                                Cloud: ${{ cloud.key }}
+
+      # The Prerelease and Release stages are conditioned on:
+      # 1. Internal trigger, not Pull Request trigger
+      # 2. Not weekly build
+      # 3. Manual trigger or force IncludeRelease
+      - ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
+          - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
+              - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+                  - template: archetype-go-release.yml@self
+                    parameters:
+                      DependsOn:
+                        - Build
+                        # Copy cloud conditional logic from live test stage
+                        - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+                            - ${{ each cloud in parameters.CloudConfig }}:
+                                - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                                    - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                                        - ${{ cloud.key }}
+                      ServiceDirectory: ${{ parameters.ServiceDirectory }}

@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- This module has been moved from it's previous location in `azeventgrid` to this location (`github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces`).
+
 ### Bugs Fixed
 
 ### Other Changes

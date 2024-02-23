@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/messaging/aznamespaces
+module github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 
 go 1.20
 

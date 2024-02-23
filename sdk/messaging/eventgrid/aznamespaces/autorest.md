@@ -9,12 +9,12 @@ go: true
 input-file: 
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2264262e0c7575a794cc395609d2342c7e598149/specification/eventgrid/data-plane/Microsoft.EventGrid/preview/2023-10-01-preview/EventGrid.json
 license-header: MICROSOFT_MIT_NO_VERSION
-module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
+module: github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 openapi-type: "data-plane"
 output-folder: ../aznamespaces
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.52"
+use: "@autorest/go@4.0.0-preview.63"
 version: "^3.0.0"
 slice-elements-byval: true
 remove-non-reference-schema: true
@@ -82,7 +82,7 @@ Trim out the 'Interface any' for types that are empty.
 
 ```yaml
 directive:
-  - from: response_types.go
+  - from: responses.go
     where: $
     transform: $.replace(/\s+\/\/ Anything\s+Interface any/sg, "$1");
 ```
@@ -113,7 +113,7 @@ directive:
   - from:
       - client.go
       - models.go
-      - response_types.go
+      - responses.go
       - options.go
     where: $
     transform: |
@@ -131,7 +131,7 @@ directive:
   - from:
       - client.go
       - models.go
-      - response_types.go
+      - responses.go
       - options.go
     where: $
     transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");

@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/messaging/aznamespaces
+      - sdk/messaging/eventgrid/aznamespaces
       - eng/
 
 pr:
@@ -20,17 +20,17 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/messaging/aznamespaces
+      - sdk/messaging/eventgrid/aznamespaces
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: "messaging/aznamespaces"
+    ServiceDirectory: "messaging/eventgrid/aznamespaces"
     RunLiveTests: true
     UsePipelineProxy: false
     Location: westus2
     EnvVars:
-      AZURE_CLIENT_ID: $(AZEVENTGRID_CLIENT_ID)
-      AZURE_TENANT_ID: $(AZEVENTGRID_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(AZEVENTGRID_CLIENT_SECRET)
-      AZURE_SUBSCRIPTION_ID: $(AZEVENTGRID_SUBSCRIPTION_ID)
+      AZURE_CLIENT_ID: $(AZNAMESPACES_CLIENT_ID)
+      AZURE_TENANT_ID: $(AZNAMESPACES_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(AZNAMESPACES_CLIENT_SECRET)
+      AZURE_SUBSCRIPTION_ID: $(AZNAMESPACES_SUBSCRIPTION_ID)

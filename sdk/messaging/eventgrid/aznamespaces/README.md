@@ -1,10 +1,10 @@
-# Azure Event Grid Client Module for Go
+# Azure Event Grid Namespaces Client Module for Go
 
 [Azure Event Grid](https://learn.microsoft.com/azure/event-grid/overview) is a highly scalable, fully managed Pub Sub message distribution service that offers flexible message consumption patterns. For more information about Event Grid see: [link](https://learn.microsoft.com/azure/event-grid/overview).
 
 This client module allows you to publish events and receive events using the [Pull delivery](https://learn.microsoft.com/azure/event-grid/pull-delivery-overview) API.
 
-> NOTE: This client does not work with Event Grid topics. Use the [publisher.Client][godoc_publisher_client] in the `publisher` sub-package instead.
+> NOTE: This client does not work with Event Grid Basic. Use the [publisher.Client][godoc_publisher_client] in the `publisher` sub-package instead.
 
 Key links:
 - [Source code][source]
@@ -16,10 +16,10 @@ Key links:
 
 ### Install the package
 
-Install the Azure Event Grid client module for Go with `go get`:
+Install the Azure Event Grid Namespaces client module for Go with `go get`:
 
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
+go get github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/aznamespaces
 ```
 
 ### Prerequisites
@@ -43,7 +43,7 @@ Namespaces also offer access using MQTT, although that is not covered in this pa
 
 # Examples
 
-Examples for various scenarios can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples) or in the example*_test.go files in our GitHub repo for [azeventgrid](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventgrid).
+Examples for various scenarios can be found on [pkg.go.dev][godoc_examples] or in the example*_test.go files in our GitHub repo for [aznamespaces][source].
 
 # Troubleshooting
 
@@ -112,20 +112,17 @@ Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-
 [azure_sub]: https://azure.microsoft.com/free/
 [cloud_shell]: https://docs.microsoft.com/azure/cloud-shell/overview
 [cloud_shell_bash]: https://shell.azure.com/bash
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azeventgrid
-[godoc]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid
-[godoc_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/#Client
-[godoc_client_publish]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.PublishCloudEvents
-[godoc_client_receive]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#Client.ReceiveCloudEvents
-[godoc_examples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#pkg-examples
-[godoc_example_newclient]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid#example-NewClientWithSharedKeyCredential
+[source]: https://aka.ms/azsdk/go/namespaces/src
+[godoc]: https://aka.ms/azsdk/go/namespaces/pkg
+[godoc_client]: https://aka.ms/azsdk/go/namespaces/pkg/#Client
+[godoc_client_publish]: https://aka.ms/azsdk/go/namespaces/pkg#Client.PublishCloudEvents
+[godoc_client_receive]: https://aka.ms/azsdk/go/namespaces/pkg#Client.ReceiveCloudEvents
+[godoc_examples]: https://aka.ms/azsdk/go/namespaces/pkg#pkg-examples
+[godoc_example_newclient]: https://aka.ms/azsdk/go/namespaces/pkg#example-NewClientWithSharedKeyCredential
+[godoc_publisher_client]: https://aka.ms/azsdk/go/eventgrid/pkg/#Client
 [ms_pulldelivery]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery
 [ms_namespace]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespaces
 [ms_topic]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#namespace-topics
 [ms_subscription]: https://learn.microsoft.com/azure/event-grid/concepts-pull-delivery#event-subscriptions
 [ms_create_namespace]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespaces
 [ms_create_topic]: https://learn.microsoft.com/azure/event-grid/create-view-manage-namespace-topics
-
-<!-- Temporary until we get it in main -->
-[godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/#Client
-<!-- [godoc_publisher_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventgrid/publisher#Client -->

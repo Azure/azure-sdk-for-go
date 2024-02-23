@@ -365,7 +365,7 @@ func (client *Client) releaseCloudEventsCreateRequest(ctx context.Context, topic
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.ReleaseDelayInSeconds != nil {
-		reqQP.Set("releaseDelayInSeconds", fmt.Sprintf("%d", *options.ReleaseDelayInSeconds))
+		reqQP.Set("releaseDelayInSeconds", fmt.Sprintf("%v", *options.ReleaseDelayInSeconds))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

@@ -108,18 +108,6 @@ func parseURL(serviceURL string) (string, string, error) {
 	return rawServiceURL, tableName, nil
 }
 
-// CreateTableResponse contains response fields for Client.Create and ServiceClient.CreateTable
-type CreateTableResponse struct {
-	// The name of the table.
-	TableName *string `json:"TableName,omitempty"`
-}
-
-func createTableResponseFromGen(g *generated.TableClientCreateResponse) CreateTableResponse {
-	return CreateTableResponse{
-		TableName: g.TableName,
-	}
-}
-
 // CreateTable creates the table with the tableName specified when NewClient was called. If the service returns a non-successful
 // HTTP status code, the function returns an *azcore.ResponseError type. Specify nil for options if you want to use the default options.
 // NOTE: creating a table with the same name as a table that's in the process of being deleted will return an *azcore.ResponseError
@@ -136,7 +124,9 @@ func (t *Client) CreateTable(ctx context.Context, options *CreateTableOptions) (
 	if err != nil {
 		return CreateTableResponse{}, err
 	}
-	return createTableResponseFromGen(&resp), err
+	return CreateTableResponse{
+		TableName: resp.TableName,
+	}, nil
 }
 
 // Delete deletes the table with the tableName specified when NewClient was called. If the service returns a non-successful HTTP status
@@ -150,68 +140,6 @@ func (t *Client) Delete(ctx context.Context, options *DeleteTableOptions) (Delet
 
 	resp, err := t.service.DeleteTable(ctx, t.name, options)
 	return resp, err
-}
-
-// ListEntitiesOptions contains optional parameters for Table.Query
-type ListEntitiesOptions struct {
-	// OData filter expression.
-	Filter *string
-
-	// Select expression using OData notation. Limits the columns on each record
-	// to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
-	Select *string
-
-	// Maximum number of records to return.
-	Top *int32
-
-	// The NextPartitionKey to start paging from
-	NextPartitionKey *string
-
-	// The NextRowKey to start paging from
-	NextRowKey *string
-}
-
-func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
-	if l == nil {
-		return &generated.QueryOptions{}
-	}
-
-	return &generated.QueryOptions{
-		Filter: l.Filter,
-		Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata),
-		Select: l.Select,
-		Top:    l.Top,
-	}
-}
-
-// ListEntitiesResponse contains response fields for ListEntitiesPager.NextPage
-type ListEntitiesResponse struct {
-	// NextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	NextPartitionKey *string
-
-	// NextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	NextRowKey *string
-
-	// List of table entities.
-	Entities [][]byte
-}
-
-// transforms a generated query response into the ListEntitiesPaged
-func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListEntitiesResponse, error) {
-	marshalledValue := make([][]byte, 0)
-	for _, e := range resp.TableEntityQueryResponse.Value {
-		m, err := json.Marshal(e)
-		if err != nil {
-			return ListEntitiesResponse{}, err
-		}
-		marshalledValue = append(marshalledValue, m)
-	}
-
-	return ListEntitiesResponse{
-		NextPartitionKey: resp.XMSContinuationNextPartitionKey,
-		NextRowKey:       resp.XMSContinuationNextRowKey,
-		Entities:         marshalledValue,
-	}, nil
 }
 
 // NewListEntitiesPager queries the entities using the specified ListEntitiesOptions.
@@ -262,45 +190,23 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 			if err != nil {
 				return ListEntitiesResponse{}, err
 			}
-			return newListEntitiesPage(resp)
+			marshalledValue := make([][]byte, 0)
+			for _, e := range resp.TableEntityQueryResponse.Value {
+				m, err := json.Marshal(e)
+				if err != nil {
+					return ListEntitiesResponse{}, err
+				}
+				marshalledValue = append(marshalledValue, m)
+			}
+
+			return ListEntitiesResponse{
+				NextPartitionKey: resp.XMSContinuationNextPartitionKey,
+				NextRowKey:       resp.XMSContinuationNextRowKey,
+				Entities:         marshalledValue,
+			}, nil
 		},
 		Tracer: t.client.Tracer(),
 	})
-}
-
-// GetEntityOptions contains optional parameters for Client.GetEntity
-type GetEntityOptions struct {
-	// placeholder for future optional parameters
-}
-
-func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
-	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata)}
-}
-
-// GetEntityResponse contains response fields for Client.GetEntity
-type GetEntityResponse struct {
-	// ETag contains the information returned from the ETag header response.
-	ETag azcore.ETag
-
-	// The properties of the table entity.
-	Value []byte
-}
-
-// newGetEntityResponse transforms a generated response to the GetEntityResponse type
-func newGetEntityResponse(g generated.TableClientQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
-	marshalledValue, err := json.Marshal(g.Value)
-	if err != nil {
-		return GetEntityResponse{}, err
-	}
-
-	var ETag azcore.ETag
-	if g.ETag != nil {
-		ETag = azcore.ETag(*g.ETag)
-	}
-	return GetEntityResponse{
-		ETag:  ETag,
-		Value: marshalledValue,
-	}, nil
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values. If
@@ -320,32 +226,19 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
-	entityResp, err := newGetEntityResponse(resp)
-	return entityResp, err
-}
-
-// AddEntityOptions contains optional parameters for Client.AddEntity
-type AddEntityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AddEntityResponse contains response fields for Client.AddEntityResponse
-type AddEntityResponse struct {
-	ETag azcore.ETag
-}
-
-func addEntityResponseFromGenerated(g *generated.TableClientInsertEntityResponse) AddEntityResponse {
-	if g == nil {
-		return AddEntityResponse{}
+	marshalledValue, err := json.Marshal(resp.Value)
+	if err != nil {
+		return GetEntityResponse{}, err
 	}
 
 	var ETag azcore.ETag
-	if g.ETag != nil {
-		ETag = azcore.ETag(*g.ETag)
+	if resp.ETag != nil {
+		ETag = azcore.ETag(*resp.ETag)
 	}
-	return AddEntityResponse{
-		ETag: ETag,
-	}
+	return GetEntityResponse{
+		ETag:  ETag,
+		Value: marshalledValue,
+	}, nil
 }
 
 // AddEntity adds an entity (described by a byte slice) to the table. This method returns an error if an entity with
@@ -367,25 +260,14 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
 	}
-	return addEntityResponseFromGenerated(&resp), err
-}
 
-// DeleteEntityOptions contains optional parameters for Client.DeleteEntity
-type DeleteEntityOptions struct {
-	IfMatch *azcore.ETag
-}
-
-func (d *DeleteEntityOptions) toGenerated() *generated.TableClientDeleteEntityOptions {
-	return &generated.TableClientDeleteEntityOptions{}
-}
-
-// DeleteEntityResponse contains response fields for Client.DeleteEntity
-type DeleteEntityResponse struct {
-	// placeholder for future optional response fields
-}
-
-func deleteEntityResponseFromGenerated(g *generated.TableClientDeleteEntityResponse) DeleteEntityResponse {
-	return DeleteEntityResponse{}
+	var ETag azcore.ETag
+	if resp.ETag != nil {
+		ETag = azcore.ETag(*resp.ETag)
+	}
+	return AddEntityResponse{
+		ETag: ETag,
+	}, nil
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table. If the service returns a non-successful HTTP
@@ -402,70 +284,8 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 		nilEtag := azcore.ETag("*")
 		options.IfMatch = &nilEtag
 	}
-	resp, err := t.client.DeleteEntity(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
-	if err != nil {
-		return DeleteEntityResponse{}, err
-	}
-	return deleteEntityResponseFromGenerated(&resp), err
-}
-
-// UpdateEntityOptions contains optional parameters for Client.UpdateEntity
-type UpdateEntityOptions struct {
-	IfMatch    *azcore.ETag
-	UpdateMode UpdateMode
-}
-
-func (u *UpdateEntityOptions) toGeneratedMergeEntity(m map[string]any) *generated.TableClientMergeEntityOptions {
-	if u == nil {
-		return &generated.TableClientMergeEntityOptions{}
-	}
-	return &generated.TableClientMergeEntityOptions{
-		IfMatch:               (*string)(u.IfMatch),
-		TableEntityProperties: m,
-	}
-}
-
-func (u *UpdateEntityOptions) toGeneratedUpdateEntity(m map[string]any) *generated.TableClientUpdateEntityOptions {
-	if u == nil {
-		return &generated.TableClientUpdateEntityOptions{}
-	}
-	return &generated.TableClientUpdateEntityOptions{
-		IfMatch:               (*string)(u.IfMatch),
-		TableEntityProperties: m,
-	}
-}
-
-// UpdateEntityResponse contains response fields for Client.UpdateEntity
-type UpdateEntityResponse struct {
-	ETag azcore.ETag
-}
-
-func updateEntityResponseFromMergeGenerated(g *generated.TableClientMergeEntityResponse) UpdateEntityResponse {
-	if g == nil {
-		return UpdateEntityResponse{}
-	}
-
-	var ETag azcore.ETag
-	if g.ETag != nil {
-		ETag = azcore.ETag(*g.ETag)
-	}
-	return UpdateEntityResponse{
-		ETag: ETag,
-	}
-}
-
-func updateEntityResponseFromUpdateGenerated(g *generated.TableClientUpdateEntityResponse) UpdateEntityResponse {
-	if g == nil {
-		return UpdateEntityResponse{}
-	}
-
-	var ETag azcore.ETag
-	if g.ETag != nil {
-		ETag = azcore.ETag(*g.ETag)
-	}
-	return UpdateEntityResponse{
-		ETag: ETag,
-	}
+	_, err = t.client.DeleteEntity(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
+	return DeleteEntityResponse{}, err
 }
 
 // UpdateEntity updates the specified table entity if it exists.
@@ -516,7 +336,13 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		if err != nil {
 			return UpdateEntityResponse{}, err
 		}
-		return updateEntityResponseFromMergeGenerated(&resp), err
+		var ETag azcore.ETag
+		if resp.ETag != nil {
+			ETag = azcore.ETag(*resp.ETag)
+		}
+		return UpdateEntityResponse{
+			ETag: ETag,
+		}, nil
 	case UpdateModeReplace:
 		var resp generated.TableClientUpdateEntityResponse
 		resp, err = t.client.UpdateEntity(
@@ -530,7 +356,13 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		if err != nil {
 			return UpdateEntityResponse{}, err
 		}
-		return updateEntityResponseFromUpdateGenerated(&resp), err
+		var ETag azcore.ETag
+		if resp.ETag != nil {
+			ETag = azcore.ETag(*resp.ETag)
+		}
+		return UpdateEntityResponse{
+			ETag: ETag,
+		}, nil
 	}
 	if pk == "" || rk == "" {
 		err = errPartitionKeyRowKeyError
@@ -538,21 +370,6 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 		err = errInvalidUpdateMode
 	}
 	return UpdateEntityResponse{}, err
-}
-
-// UpsertEntityOptions contains optional parameters for Client.InsertEntity
-type UpsertEntityOptions struct {
-	// ETag is the optional etag for the Table
-	ETag azcore.ETag
-
-	// UpdateMode is the desired mode for the Update. Use UpdateModeReplace to replace fields on
-	// the entity, use UpdateModeMerge to merge fields of the entity.
-	UpdateMode UpdateMode
-}
-
-// UpsertEntityResponse contains response fields for Client.InsertEntity
-type UpsertEntityResponse struct {
-	ETag azcore.ETag
 }
 
 func insertEntityFromGeneratedMerge(g *generated.TableClientMergeEntityResponse) UpsertEntityResponse {
@@ -649,34 +466,6 @@ func (t *Client) UpsertEntity(ctx context.Context, entity []byte, options *Upser
 	return UpsertEntityResponse{}, err
 }
 
-// GetAccessPolicyOptions contains optional parameters for Client.GetAccessPolicy
-type GetAccessPolicyOptions struct {
-	// placeholder for future optional parameters
-}
-
-func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPolicyOptions {
-	return &generated.TableClientGetAccessPolicyOptions{}
-}
-
-// GetAccessPolicyResponse contains response fields for Client.GetAccessPolicy
-type GetAccessPolicyResponse struct {
-	SignedIdentifiers []*SignedIdentifier
-}
-
-func getAccessPolicyResponseFromGenerated(g *generated.TableClientGetAccessPolicyResponse) GetAccessPolicyResponse {
-	if g == nil {
-		return GetAccessPolicyResponse{}
-	}
-
-	var sis []*SignedIdentifier
-	for _, s := range g.SignedIdentifiers {
-		sis = append(sis, fromGeneratedSignedIdentifier(s))
-	}
-	return GetAccessPolicyResponse{
-		SignedIdentifiers: sis,
-	}
-}
-
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature.
 // If the service returns a non-successful HTTP status code, the function returns an *azcore.ResponseError type.
 // Specify nil for options if you want to use the default options.
@@ -689,31 +478,16 @@ func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOp
 	if err != nil {
 		return GetAccessPolicyResponse{}, err
 	}
-	return getAccessPolicyResponseFromGenerated(&resp), err
-}
-
-// SetAccessPolicyOptions contains optional parameters for Client.SetAccessPolicy
-type SetAccessPolicyOptions struct {
-	TableACL []*SignedIdentifier
-}
-
-// SetAccessPolicyResponse contains response fields for Client.SetAccessPolicy
-type SetAccessPolicyResponse struct {
-	// placeholder for future optional parameters
-}
-
-func setAccessPolicyResponseFromGenerated(g *generated.TableClientSetAccessPolicyResponse) SetAccessPolicyResponse {
-	return SetAccessPolicyResponse{}
-}
-
-func (s *SetAccessPolicyOptions) toGenerated() *generated.TableClientSetAccessPolicyOptions {
-	var sis []*generated.SignedIdentifier
-	for _, t := range s.TableACL {
-		sis = append(sis, toGeneratedSignedIdentifier(t))
+	if len(resp.SignedIdentifiers) == 0 {
+		return GetAccessPolicyResponse{}, nil
 	}
-	return &generated.TableClientSetAccessPolicyOptions{
-		TableACL: sis,
+	sis := make([]*SignedIdentifier, len(resp.SignedIdentifiers))
+	for i := range resp.SignedIdentifiers {
+		sis[i] = fromGeneratedSignedIdentifier(resp.SignedIdentifiers[i])
 	}
+	return GetAccessPolicyResponse{
+		SignedIdentifiers: sis,
+	}, nil
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature.
@@ -727,14 +501,11 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 	if options == nil {
 		options = &SetAccessPolicyOptions{}
 	}
-	response, err := t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
+	_, err = t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
 	if err != nil && len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
 	}
-	if err != nil {
-		return SetAccessPolicyResponse{}, err
-	}
-	return setAccessPolicyResponseFromGenerated(&response), err
+	return SetAccessPolicyResponse{}, err
 }
 
 // GetTableSASURL is a convenience method for generating a SAS token for a specific table.

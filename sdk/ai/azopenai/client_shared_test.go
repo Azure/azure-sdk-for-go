@@ -203,7 +203,7 @@ func initEnvVars() {
 
 		azureOpenAI.Whisper = endpointWithModel{
 			Endpoint: azureOpenAI.Endpoint,
-			Model:    "whisper-deployment",
+			Model:    "whisper",
 		}
 
 		azureOpenAI.ChatCompletionsRAI = endpointWithModel{
@@ -385,12 +385,12 @@ func newClientOptionsForTest(t *testing.T) *azopenai.ClientOptions {
 	return co
 }
 
-func newAzureOpenAIClientForTest(t *testing.T, tv testVars) *azopenai.Client {
-	return newTestClient(t, tv.Endpoint)
+func newAzureOpenAIClientForTest(t *testing.T, tv testVars, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, tv.Endpoint, options...)
 }
 
-func newOpenAIClientForTest(t *testing.T) *azopenai.Client {
-	return newTestClient(t, openAI.Endpoint)
+func newOpenAIClientForTest(t *testing.T, options ...testClientOption) *azopenai.Client {
+	return newTestClient(t, openAI.Endpoint, options...)
 }
 
 // newBogusAzureOpenAIClient creates a client that uses an invalid key, which will cause Azure OpenAI to return

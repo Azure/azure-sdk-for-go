@@ -229,7 +229,7 @@ func TestClient_GetChatCompletionsStream_Error(t *testing.T) {
 	})
 }
 
-func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
+func TestClient_GetChatCompletions_Vision(t *testing.T) {
 	testFn := func(t *testing.T, chatClient *azopenai.Client, deploymentName string) {
 		imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 
@@ -263,7 +263,7 @@ func TestClient_OpenAI_GetChatCompletions_Vision(t *testing.T) {
 		testFn(t, chatClient, openAI.Vision.Model)
 	})
 
-	t.Run("AOAI", func(t *testing.T) {
+	t.Run("AzureOpenAI", func(t *testing.T) {
 		chatClient := newTestClient(t, azureOpenAI.Vision.Endpoint)
 		testFn(t, chatClient, azureOpenAI.Vision.Model)
 	})

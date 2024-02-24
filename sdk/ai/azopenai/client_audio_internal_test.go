@@ -16,23 +16,18 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 )
-
-func newSeekableBytes(data []byte) io.ReadSeekCloser {
-	return streaming.NopCloser(bytes.NewReader(data))
-}
 
 func TestSetMultipartFormData(t *testing.T) {
 	t.Run("getAudioTranscriptionInternalOptions", func(t *testing.T) {
 		req, err := runtime.NewRequest(context.Background(), "POST", "http://localhost")
 		require.NoError(t, err)
 
-		err = setMultipartFormData(req, newSeekableBytes([]byte{1, 2, 3}), getAudioTranscriptionInternalOptions{
+		err = setMultipartFormData(req, []byte{1, 2, 3}, getAudioTranscriptionInternalOptions{
 			Language:       to.Ptr("en"),
-			Model:          to.Ptr("hello"),
+			DeploymentName: to.Ptr("hello"),
 			Prompt:         to.Ptr("my prompt"),
 			ResponseFormat: to.Ptr(AudioTranscriptionFormatJSON),
 			Temperature:    to.Ptr[float32](1.0),
@@ -58,8 +53,8 @@ func TestSetMultipartFormData(t *testing.T) {
 		req, err := runtime.NewRequest(context.Background(), "POST", "http://localhost")
 		require.NoError(t, err)
 
-		err = setMultipartFormData(req, newSeekableBytes([]byte{1, 2, 3}), getAudioTranslationInternalOptions{
-			Model:          to.Ptr("hello"),
+		err = setMultipartFormData(req, []byte{1, 2, 3}, getAudioTranslationInternalOptions{
+			DeploymentName: to.Ptr("hello"),
 			Prompt:         to.Ptr("my prompt"),
 			ResponseFormat: to.Ptr(AudioTranslationFormatJSON),
 			Temperature:    to.Ptr[float32](1.0),

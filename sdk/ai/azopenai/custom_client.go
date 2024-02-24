@@ -192,14 +192,7 @@ func (client *Client) GetCompletionsStream(ctx context.Context, body Completions
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - GetCompletionsOptions contains the optional parameters for the Client.GetCompletions method.
 func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsStreamOptions) (GetChatCompletionsStreamResponse, error) {
-	var req *policy.Request
-	var err error
-
-	if hasAzureExtensions(body) {
-		req, err = client.getChatCompletionsWithAzureExtensionsCreateRequest(ctx, body, &GetChatCompletionsWithAzureExtensionsOptions{})
-	} else {
-		req, err = client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
-	}
+	req, err := client.getChatCompletionsCreateRequest(ctx, body, &GetChatCompletionsOptions{})
 
 	if err != nil {
 		return GetChatCompletionsStreamResponse{}, err
@@ -229,24 +222,6 @@ func (client *Client) GetChatCompletionsStream(ctx context.Context, body ChatCom
 	}, nil
 }
 
-// GetChatCompletions - Gets chat completions for the provided chat messages. Completions support a wide variety of tasks
-// and generate text that continues from or "completes" provided prompt data.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) GetChatCompletions(ctx context.Context, body ChatCompletionsOptions, options *GetChatCompletionsOptions) (GetChatCompletionsResponse, error) {
-	if hasAzureExtensions(body) {
-		resp, err := client.getChatCompletionsWithAzureExtensions(ctx, body, nil)
-
-		// convert
-		if err != nil {
-			return GetChatCompletionsResponse{}, err
-		}
-
-		return GetChatCompletionsResponse(resp), nil
-	} else {
-		return client.getChatCompletions(ctx, body, nil)
-	}
-}
-
 func (client *Client) formatURL(path string, deploymentID string) string {
 	switch path {
 	// https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#image-generation
@@ -271,10 +246,12 @@ type clientData struct {
 	azure    bool
 }
 
-func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
+func getDeployment[T AudioSpeechOptions | AudioTranscriptionOptions | AudioTranslationOptions | ChatCompletionsOptions | CompletionsOptions | EmbeddingsOptions | *getAudioTranscriptionInternalOptions | *getAudioTranslationInternalOptions | ImageGenerationOptions](v T) string {
 	var p *string
 
 	switch a := any(v).(type) {
+	case AudioSpeechOptions:
+		p = a.DeploymentName
 	case AudioTranscriptionOptions:
 		p = a.DeploymentName
 	case AudioTranslationOptions:
@@ -286,9 +263,9 @@ func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatC
 	case EmbeddingsOptions:
 		p = a.DeploymentName
 	case *getAudioTranscriptionInternalOptions:
-		p = a.Model
+		p = a.DeploymentName
 	case *getAudioTranslationInternalOptions:
-		p = a.Model
+		p = a.DeploymentName
 	case ImageGenerationOptions:
 		p = a.DeploymentName
 	}
@@ -298,10 +275,6 @@ func getDeployment[T AudioTranscriptionOptions | AudioTranslationOptions | ChatC
 	}
 
 	return ""
-}
-
-func hasAzureExtensions(body ChatCompletionsOptions) bool {
-	return body.AzureExtensionsOptions != nil && len(body.AzureExtensionsOptions) > 0
 }
 
 // ChatRequestUserMessageContent contains the user prompt - either as a single string

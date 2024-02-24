@@ -43,7 +43,7 @@ type testVars struct {
 	ChatCompletions                string
 	ChatCompletionsLegacyFunctions string
 	Embeddings                     string
-	Cognitive                      azopenai.AzureCognitiveSearchChatExtensionConfiguration
+	Cognitive                      azopenai.AzureSearchChatExtensionConfiguration
 	Whisper                        endpointWithModel
 	DallE                          endpointWithModel
 	Vision                         endpointWithModel
@@ -158,8 +158,8 @@ func newTestVars(prefix string) testVars {
 		ChatCompletionsLegacyFunctions: getRequired(prefix + "_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS"),
 		Embeddings:                     getRequired(prefix + "_EMBEDDINGS_MODEL"),
 
-		Cognitive: azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		Cognitive: azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(getRequired("COGNITIVE_SEARCH_API_ENDPOINT")),
 				IndexName: to.Ptr(getRequired("COGNITIVE_SEARCH_API_INDEX")),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{
@@ -257,8 +257,8 @@ func initEnvVars() {
 		openAI.Embeddings = "text-embedding-ada-002"
 		azureOpenAI.Embeddings = "text-embedding-ada-002"
 
-		azureOpenAI.Cognitive = azopenai.AzureCognitiveSearchChatExtensionConfiguration{
-			Parameters: &azopenai.AzureCognitiveSearchChatExtensionParameters{
+		azureOpenAI.Cognitive = azopenai.AzureSearchChatExtensionConfiguration{
+			Parameters: &azopenai.AzureSearchChatExtensionParameters{
 				Endpoint:  to.Ptr(fakeCognitiveEndpoint),
 				IndexName: to.Ptr(fakeCognitiveIndexName),
 				Authentication: &azopenai.OnYourDataAPIKeyAuthenticationOptions{

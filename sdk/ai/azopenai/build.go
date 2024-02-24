@@ -3,6 +3,7 @@
 //go:build go1.18
 // +build go1.18
 
+//go:generate pwsh ./testdata/genopenapi.ps1
 //go:generate autorest  ./autorest.md
 //go:generate go mod tidy
 //go:generate goimports -w .

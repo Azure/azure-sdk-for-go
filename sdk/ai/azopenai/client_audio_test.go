@@ -9,6 +9,7 @@ package azopenai_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"testing"
@@ -77,6 +78,40 @@ func TestClient_GetAudioTranslation_OpenAI(t *testing.T) {
 			require.NotEmpty(t, transcriptResp.Task)
 		})
 	}
+}
+
+func TestClient_GetAudioSpeech(t *testing.T) {
+	client := newOpenAIClientForTest(t)
+
+	audioResp, err := client.GetAudioSpeech(context.Background(), azopenai.AudioSpeechOptions{
+		Input:          to.Ptr("i am a computer"),
+		Voice:          to.Ptr(azopenai.AudioSpeechVoiceAlloy),
+		ResponseFormat: to.Ptr(azopenai.AudioSpeechOutputFormatFlac),
+		DeploymentName: to.Ptr("tts-1"),
+	}, nil)
+	require.NoError(t, err)
+
+	audioBytes, err := io.ReadAll(audioResp.Body)
+	require.NoError(t, err)
+
+	require.NotEmpty(t, audioBytes)
+	require.Equal(t, "fLaC", string(audioBytes[0:4]))
+
+	// now send _it_ back through the transcription API and see if we can get something useful.
+	transcriptionResp, err := client.GetAudioTranscription(context.Background(), azopenai.AudioTranscriptionOptions{
+		Filename:       to.Ptr("test.flac"),
+		File:           audioBytes,
+		ResponseFormat: to.Ptr(azopenai.AudioTranscriptionFormatVerboseJSON),
+		DeploymentName: &openAI.Whisper.Model,
+		Temperature:    to.Ptr[float32](0.0),
+	}, nil)
+	require.NoError(t, err)
+
+	require.NotZero(t, *transcriptionResp.Duration)
+
+	// it occasionally comes back with different punctuation or makes a complete sentence but
+	// the major words always come through.
+	require.Contains(t, *transcriptionResp.Text, "computer")
 }
 
 func runTranscriptionTests(t *testing.T, client *azopenai.Client, model string) {

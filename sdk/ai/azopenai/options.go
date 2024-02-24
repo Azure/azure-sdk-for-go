@@ -8,9 +8,8 @@
 
 package azopenai
 
-// GetAudioTranscriptionAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranscriptionAsPlainText
-// method.
-type GetAudioTranscriptionAsPlainTextOptions struct {
+// GetAudioSpeechOptions contains the optional parameters for the Client.GetAudioSpeech method.
+type GetAudioSpeechOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -26,7 +25,7 @@ type getAudioTranscriptionInternalOptions struct {
 	Language *string
 
 	// The model to use for this transcription request.
-	Model *string
+	DeploymentName *string
 
 	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
 	// should match the primary spoken language of the audio data.
@@ -41,19 +40,13 @@ type getAudioTranscriptionInternalOptions struct {
 	Temperature *float32
 }
 
-// GetAudioTranslationAsPlainTextOptions contains the optional parameters for the Client.GetAudioTranslationAsPlainText
-// method.
-type GetAudioTranslationAsPlainTextOptions struct {
-	// placeholder for future optional parameters
-}
-
 // getAudioTranslationInternalOptions contains the optional parameters for the Client.getAudioTranslationInternal method.
 type getAudioTranslationInternalOptions struct {
 	// The optional filename or descriptive identifier to associate with with the audio data.
 	Filename *string
 
 	// The model to use for this translation request.
-	Model *string
+	DeploymentName *string
 
 	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
 	// should match the primary spoken language of the audio data.
@@ -70,12 +63,6 @@ type getAudioTranslationInternalOptions struct {
 
 // GetChatCompletionsOptions contains the optional parameters for the Client.GetChatCompletions method.
 type GetChatCompletionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GetChatCompletionsWithAzureExtensionsOptions contains the optional parameters for the Client.GetChatCompletionsWithAzureExtensions
-// method.
-type GetChatCompletionsWithAzureExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 

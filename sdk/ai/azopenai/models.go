@@ -8,9 +8,31 @@
 
 package azopenai
 
-import (
-	"time"
-)
+import "time"
+
+// AudioSpeechOptions - Specifies the request for speech synthesis.
+type AudioSpeechOptions struct {
+	// REQUIRED; The text to synthesize audio for. The maximum length is 4096 characters.
+	Input *string
+
+	// REQUIRED; The voice to use for speech synthesis.
+	Voice *AudioSpeechVoice
+
+	// The model to use for this request.
+	DeploymentName *string
+
+	// The format to synthesize the audio in.
+	ResponseFormat *AudioSpeechOutputFormat
+
+	// The speed of the synthesize audio. Select a value from 0.25 to 4.0. 1.0 is the default.
+	Speed *float32
+}
+
+// AudioSpeechResponse - Represents the response for speech synthesis.
+type AudioSpeechResponse struct {
+	// REQUIRED; The synthesized audio.
+	Audio []byte
+}
 
 // AudioTranscription - Result information for an operation that transcribed spoken audio into written text.
 type AudioTranscription struct {
@@ -37,9 +59,6 @@ type AudioTranscriptionOptions struct {
 	// flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 	File []byte
 
-	// The model to use for this transcription request.
-	DeploymentName *string
-
 	// The optional filename or descriptive identifier to associate with with the audio data.
 	Filename *string
 
@@ -47,6 +66,9 @@ type AudioTranscriptionOptions struct {
 	// as 'en' or 'fr'. Providing this known input language is optional but may improve
 	// the accuracy and/or latency of transcription.
 	Language *string
+
+	// The model to use for this transcription request.
+	DeploymentName *string
 
 	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
 	// should match the primary spoken language of the audio data.
@@ -124,11 +146,11 @@ type AudioTranslationOptions struct {
 	// flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
 	File []byte
 
-	// The model to use for this translation request.
-	DeploymentName *string
-
 	// The optional filename or descriptive identifier to associate with with the audio data.
 	Filename *string
+
+	// The model to use for this translation request.
+	DeploymentName *string
 
 	// An optional hint to guide the model's style or continue from a prior audio segment. The written language of the prompt
 	// should match the primary spoken language of the audio data.
@@ -211,15 +233,39 @@ func (a *AzureChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *
 	return a
 }
 
+// AzureChatExtensionDataSourceResponseCitation - A single instance of additional context information available when Azure
+// OpenAI chat extensions are involved in the generation of a corresponding chat completions response. This context information
+// is
+// only populated when using an Azure OpenAI request configured to use a matching extension.
+type AzureChatExtensionDataSourceResponseCitation struct {
+	// REQUIRED; The content of the citation.
+	Content *string
+
+	// The chunk ID of the citation.
+	ChunkID *string
+
+	// The file path of the citation.
+	Filepath *string
+
+	// The title of the citation.
+	Title *string
+
+	// The URL of the citation.
+	URL *string
+}
+
 // AzureChatExtensionsMessageContext - A representation of the additional context information available when Azure OpenAI
 // chat extensions are involved in the generation of a corresponding chat completions response. This context information
 // is only populated when using an Azure OpenAI request configured to use a matching extension.
 type AzureChatExtensionsMessageContext struct {
-	// The contextual message payload associated with the Azure chat extensions used for a chat completions request. These messages
-	// describe the data source retrievals, plugin invocations, and other
-	// intermediate steps taken in the course of generating a chat completions response that was augmented by capabilities from
-	// Azure OpenAI chat extensions.
-	Messages []ChatResponseMessage
+	// The contextual information associated with the Azure chat extensions used for a chat completions request. These messages
+	// describe the data source retrievals, plugin invocations, and other intermediate
+	// steps taken in the course of generating a chat completions response that was augmented by capabilities from Azure OpenAI
+	// chat extensions.
+	Citations []AzureChatExtensionDataSourceResponseCitation
+
+	// The detected intent from the chat history, used to pass to the next turn to carry over the context.
+	Intent *string
 }
 
 // AzureChatGroundingEnhancementConfiguration - A representation of the available options for the Azure OpenAI grounding enhancement.
@@ -235,95 +281,7 @@ type AzureChatOCREnhancementConfiguration struct {
 	Enabled *bool
 }
 
-// AzureCognitiveSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Cognitive
-// Search when using it as an Azure OpenAI chat extension.
-type AzureCognitiveSearchChatExtensionConfiguration struct {
-	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
-	// chat extensions are only compatible with Azure OpenAI.
-	configType *AzureChatExtensionType
-
-	// REQUIRED; The parameters to use when configuring Azure Cognitive Search.
-	Parameters *AzureCognitiveSearchChatExtensionParameters
-}
-
-// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureCognitiveSearchChatExtensionConfiguration.
-func (a *AzureCognitiveSearchChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
-	return &AzureChatExtensionConfiguration{
-		configType: a.configType,
-	}
-}
-
-// AzureCognitiveSearchChatExtensionParameters - Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension.
-type AzureCognitiveSearchChatExtensionParameters struct {
-	// REQUIRED; The absolute endpoint path for the Azure Cognitive Search resource to use.
-	Endpoint *string
-
-	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
-	IndexName *string
-
-	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
-	// of available authentication methods; please see the documentation of the data
-	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
-	// credential) authentication.
-	Authentication OnYourDataAuthenticationOptionsClassification
-
-	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataVectorizationSourceClassification
-
-	// Customized field mapping behavior to use when interacting with the search index.
-	FieldsMapping *AzureCognitiveSearchIndexFieldMappingOptions
-
-	// Search filter.
-	Filter *string
-
-	// Whether queries should be restricted to use of indexed data.
-	InScope *bool
-
-	// The query type to use with Azure Cognitive Search.
-	QueryType *AzureCognitiveSearchQueryType
-
-	// Give the model instructions about how it should behave and any context it should reference when generating a response.
-	// You can describe the assistant's personality and tell it how to format responses.
-	// There's a 100 token limit for it, and it counts against the overall token limit.
-	RoleInformation *string
-
-	// The additional semantic configuration for the query.
-	SemanticConfiguration *string
-
-	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
-	// lower recall of the answer.
-	Strictness *int32
-
-	// The configured top number of documents to feature for the configured query.
-	TopNDocuments *int32
-}
-
-// AzureCognitiveSearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured
-// Azure Cognitive Search resource.
-type AzureCognitiveSearchIndexFieldMappingOptions struct {
-	// The names of index fields that should be treated as content.
-	ContentFields []string
-
-	// The separator pattern that content fields should use.
-	ContentFieldsSeparator *string
-
-	// The name of the index field to use as a filepath.
-	FilepathField *string
-
-	// The names of fields that represent image vector data.
-	ImageVectorFields []string
-
-	// The name of the index field to use as a title.
-	TitleField *string
-
-	// The name of the index field to use as a URL.
-	URLField *string
-
-	// The names of fields that represent vector data.
-	VectorFields []string
-}
-
-// AzureCosmosDBChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using
+// AzureCosmosDBChatExtensionConfiguration - A specific representation of configurable options for Azure Cosmos DB when using
 // it as an Azure OpenAI chat extension.
 type AzureCosmosDBChatExtensionConfiguration struct {
 	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
@@ -342,13 +300,16 @@ func (a *AzureCosmosDBChatExtensionConfiguration) GetAzureChatExtensionConfigura
 }
 
 // AzureCosmosDBChatExtensionParameters - Parameters to use when configuring Azure OpenAI On Your Data chat extensions when
-// using Azure Cosmos DB for MongoDB vCore.
+// using Azure Cosmos DB for MongoDB vCore. The supported authentication type is ConnectionString.
 type AzureCosmosDBChatExtensionParameters struct {
 	// REQUIRED; The name of the Azure Cosmos DB resource container.
 	ContainerName *string
 
 	// REQUIRED; The MongoDB vCore database name to use with Azure Cosmos DB.
 	DatabaseName *string
+
+	// REQUIRED; The embedding dependency for vector search.
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// REQUIRED; Customized field mapping behavior to use when interacting with the search index.
 	FieldsMapping *AzureCosmosDBFieldMappingOptions
@@ -361,9 +322,6 @@ type AzureCosmosDBChatExtensionParameters struct {
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
 	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
-
-	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
@@ -384,8 +342,23 @@ type AzureCosmosDBChatExtensionParameters struct {
 // AzureCosmosDBFieldMappingOptions - Optional settings to control how fields are processed when using a configured Azure
 // Cosmos DB resource.
 type AzureCosmosDBFieldMappingOptions struct {
+	// REQUIRED; The names of index fields that should be treated as content.
+	ContentFields []string
+
 	// REQUIRED; The names of fields that represent vector data.
 	VectorFields []string
+
+	// The separator pattern that content fields should use.
+	ContentFieldsSeparator *string
+
+	// The name of the index field to use as a filepath.
+	FilepathField *string
+
+	// The name of the index field to use as a title.
+	TitleField *string
+
+	// The name of the index field to use as a URL.
+	URLField *string
 }
 
 // AzureGroundingEnhancement - The grounding enhancement that returns the bounding box of the objects detected in the image.
@@ -448,6 +421,7 @@ func (a *AzureMachineLearningIndexChatExtensionConfiguration) GetAzureChatExtens
 }
 
 // AzureMachineLearningIndexChatExtensionParameters - Parameters for the Azure Machine Learning vector index chat extension.
+// The supported authentication types are AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
 type AzureMachineLearningIndexChatExtensionParameters struct {
 	// REQUIRED; The Azure Machine Learning vector index name.
 	Name *string
@@ -483,6 +457,95 @@ type AzureMachineLearningIndexChatExtensionParameters struct {
 	TopNDocuments *int32
 }
 
+// AzureSearchChatExtensionConfiguration - A specific representation of configurable options for Azure Search when using it
+// as an Azure OpenAI chat extension.
+type AzureSearchChatExtensionConfiguration struct {
+	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
+	// chat extensions are only compatible with Azure OpenAI.
+	configType *AzureChatExtensionType
+
+	// REQUIRED; The parameters to use when configuring Azure Search.
+	Parameters *AzureSearchChatExtensionParameters
+}
+
+// GetAzureChatExtensionConfiguration implements the AzureChatExtensionConfigurationClassification interface for type AzureSearchChatExtensionConfiguration.
+func (a *AzureSearchChatExtensionConfiguration) GetAzureChatExtensionConfiguration() *AzureChatExtensionConfiguration {
+	return &AzureChatExtensionConfiguration{
+		configType: a.configType,
+	}
+}
+
+// AzureSearchChatExtensionParameters - Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension.
+// The supported authentication types are APIKey, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+type AzureSearchChatExtensionParameters struct {
+	// REQUIRED; The absolute endpoint path for the Azure Cognitive Search resource to use.
+	Endpoint *string
+
+	// REQUIRED; The name of the index to use as available in the referenced Azure Cognitive Search resource.
+	IndexName *string
+
+	// The authentication method to use when accessing the defined data source. Each data source type supports a specific set
+	// of available authentication methods; please see the documentation of the data
+	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
+	// credential) authentication.
+	Authentication OnYourDataAuthenticationOptionsClassification
+
+	// The embedding dependency for vector search.
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
+
+	// Customized field mapping behavior to use when interacting with the search index.
+	FieldsMapping *AzureSearchIndexFieldMappingOptions
+
+	// Search filter.
+	Filter *string
+
+	// Whether queries should be restricted to use of indexed data.
+	InScope *bool
+
+	// The query type to use with Azure Cognitive Search.
+	QueryType *AzureSearchQueryType
+
+	// Give the model instructions about how it should behave and any context it should reference when generating a response.
+	// You can describe the assistant's personality and tell it how to format responses.
+	// There's a 100 token limit for it, and it counts against the overall token limit.
+	RoleInformation *string
+
+	// The additional semantic configuration for the query.
+	SemanticConfiguration *string
+
+	// The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but
+	// lower recall of the answer.
+	Strictness *int32
+
+	// The configured top number of documents to feature for the configured query.
+	TopNDocuments *int32
+}
+
+// AzureSearchIndexFieldMappingOptions - Optional settings to control how fields are processed when using a configured Azure
+// Search resource.
+type AzureSearchIndexFieldMappingOptions struct {
+	// The names of index fields that should be treated as content.
+	ContentFields []string
+
+	// The separator pattern that content fields should use.
+	ContentFieldsSeparator *string
+
+	// The name of the index field to use as a filepath.
+	FilepathField *string
+
+	// The names of fields that represent image vector data.
+	ImageVectorFields []string
+
+	// The name of the index field to use as a title.
+	TitleField *string
+
+	// The name of the index field to use as a URL.
+	URLField *string
+
+	// The names of fields that represent vector data.
+	VectorFields []string
+}
+
 // ChatChoice - The representation of a single prompt completion as part of an overall chat completions request. Generally,
 // n choices are generated per provided prompt with a default value of 1. Token limits and
 // other settings may limit the number of choices generated.
@@ -492,6 +555,9 @@ type ChatChoice struct {
 
 	// REQUIRED; The ordered index associated with this chat completions choice.
 	Index *int32
+
+	// REQUIRED; The log probability information for this choice, as enabled via the 'logprobs' request option.
+	LogProbs *ChatChoiceLogProbs
 
 	// Information about the content filtering category (hate, sexual, violence, selfharm), if it has been detected, as well as
 	// the severity level (verylow, low, medium, high-scale that determines the
@@ -512,6 +578,20 @@ type ChatChoice struct {
 
 	// The chat message for a given chat completions prompt.
 	Message *ChatResponseMessage
+}
+
+// ChatChoiceLogProbabilityInfo - Log probability information for a choice, as requested via 'logprobs' and 'top_logprobs'.
+type ChatChoiceLogProbabilityInfo struct {
+	// REQUIRED; The list of log probability information entries for the choice's message content tokens, as requested via the
+	// 'logprobs' option.
+	Content []ChatTokenLogProbabilityResult
+}
+
+// ChatChoiceLogProbs - The log probability information for this choice, as enabled via the 'logprobs' request option.
+type ChatChoiceLogProbs struct {
+	// REQUIRED; The list of log probability information entries for the choice's message content tokens, as requested via the
+	// 'logprobs' option.
+	Content []ChatTokenLogProbabilityResult
 }
 
 // ChatCompletionRequestMessageContentPart - represents either an image URL or text content for a prompt
@@ -584,16 +664,16 @@ type ChatCompletions struct {
 	// REQUIRED; A unique identifier associated with this chat completions response.
 	ID *string
 
-	// REQUIRED; Can be used in conjunction with the seed request parameter to understand when backend changes have been made
-	// that might impact determinism.
-	SystemFingerprint *string
-
 	// REQUIRED; Usage information for tokens processed and generated as part of this completions operation.
 	Usage *CompletionsUsage
 
 	// Content filtering results for zero or more prompts in the request. In a streaming request, results for different prompts
 	// may arrive at different times or in different orders.
 	PromptFilterResults []ContentFilterResultsForPrompt
+
+	// Can be used in conjunction with the seed request parameter to understand when backend changes have been made that might
+	// impact determinism.
+	SystemFingerprint *string
 }
 
 // ChatCompletionsFunctionToolCall - A tool call to a function tool, issued by the model in evaluation of a configured function
@@ -612,8 +692,8 @@ type ChatCompletionsFunctionToolCall struct {
 // GetChatCompletionsToolCall implements the ChatCompletionsToolCallClassification interface for type ChatCompletionsFunctionToolCall.
 func (c *ChatCompletionsFunctionToolCall) GetChatCompletionsToolCall() *ChatCompletionsToolCall {
 	return &ChatCompletionsToolCall{
-		Type: c.Type,
 		ID:   c.ID,
+		Type: c.Type,
 	}
 }
 
@@ -634,6 +714,13 @@ func (c *ChatCompletionsFunctionToolDefinition) GetChatCompletionsToolDefinition
 	}
 }
 
+// ChatCompletionsFunctionToolSelection - A tool selection of a specific, named function tool that will limit chat completions
+// to using the named function.
+type ChatCompletionsFunctionToolSelection struct {
+	// REQUIRED; The name of the function that should be called.
+	Name *string
+}
+
 // ChatCompletionsJSONResponseFormat - A response format for Chat Completions that restricts responses to emitting valid JSON
 // objects.
 type ChatCompletionsJSONResponseFormat struct {
@@ -648,6 +735,37 @@ func (c *ChatCompletionsJSONResponseFormat) GetChatCompletionsResponseFormat() *
 	}
 }
 
+// ChatCompletionsNamedFunctionToolSelection - A tool selection of a specific, named function tool that will limit chat completions
+// to using the named function.
+type ChatCompletionsNamedFunctionToolSelection struct {
+	// REQUIRED; The function that should be called.
+	Function *ChatCompletionsFunctionToolSelection
+
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetChatCompletionsNamedToolSelection implements the ChatCompletionsNamedToolSelectionClassification interface for type
+// ChatCompletionsNamedFunctionToolSelection.
+func (c *ChatCompletionsNamedFunctionToolSelection) GetChatCompletionsNamedToolSelection() *ChatCompletionsNamedToolSelection {
+	return &ChatCompletionsNamedToolSelection{
+		Type: c.Type,
+	}
+}
+
+// ChatCompletionsNamedToolSelection - An abstract representation of an explicit, named tool selection to use for a chat completions
+// request.
+type ChatCompletionsNamedToolSelection struct {
+	// REQUIRED; The object type.
+	Type *string
+}
+
+// GetChatCompletionsNamedToolSelection implements the ChatCompletionsNamedToolSelectionClassification interface for type
+// ChatCompletionsNamedToolSelection.
+func (c *ChatCompletionsNamedToolSelection) GetChatCompletionsNamedToolSelection() *ChatCompletionsNamedToolSelection {
+	return c
+}
+
 // ChatCompletionsOptions - The configuration information for a chat completions request. Completions support a wide variety
 // of tasks and generate text that continues from or "completes" provided prompt data.
 type ChatCompletionsOptions struct {
@@ -659,10 +777,6 @@ type ChatCompletionsOptions struct {
 	// The configuration entries for Azure OpenAI chat extensions that use them. This additional specification is only compatible
 	// with Azure OpenAI.
 	AzureExtensionsOptions []AzureChatExtensionConfigurationClassification
-
-	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
-	// should be included in the Azure resource URI that's connected to.
-	DeploymentName *string
 
 	// If provided, the configuration options for available Azure OpenAI chat enhancements.
 	Enhancements *AzureChatEnhancementConfiguration
@@ -689,8 +803,17 @@ type ChatCompletionsOptions struct {
 	// by model.
 	LogitBias map[string]*int32
 
+	// Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output
+	// token returned in the content of message. This option is currently not available
+	// on the gpt-4-vision-preview model.
+	LogProbs *bool
+
 	// The maximum number of tokens to generate.
 	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
 
 	// The number of chat completions choices that should be generated for a chat completions response. Because this setting can
 	// generate many completions, it may quickly consume your token quota. Use
@@ -724,6 +847,11 @@ type ChatCompletionsOptions struct {
 
 	// The available tool definitions that the chat completions request can use, including caller-defined functions.
 	Tools []ChatCompletionsToolDefinitionClassification
+
+	// An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated
+	// log probability. logprobs must be set to true if this parameter is
+	// used.
+	TopLogProbs *int32
 
 	// An alternative to sampling with temperature called nucleus sampling. This value causes the model to consider the results
 	// of tokens with the provided probability mass. As an example, a value of 0.15
@@ -796,6 +924,56 @@ type ChatFinishDetails struct {
 // GetChatFinishDetails implements the ChatFinishDetailsClassification interface for type ChatFinishDetails.
 func (c *ChatFinishDetails) GetChatFinishDetails() *ChatFinishDetails { return c }
 
+// ChatMessageContentItem - An abstract representation of a structured content item within a chat message.
+type ChatMessageContentItem struct {
+	// REQUIRED; The discriminated object type.
+	Type *string
+}
+
+// GetChatMessageContentItem implements the ChatMessageContentItemClassification interface for type ChatMessageContentItem.
+func (c *ChatMessageContentItem) GetChatMessageContentItem() *ChatMessageContentItem { return c }
+
+// ChatMessageImageContentItem - A structured chat content item containing an image reference.
+type ChatMessageImageContentItem struct {
+	// REQUIRED; An internet location, which must be accessible to the model,from which the image may be retrieved.
+	ImageURL *ChatMessageImageURL
+
+	// REQUIRED; The discriminated object type.
+	Type *string
+}
+
+// GetChatMessageContentItem implements the ChatMessageContentItemClassification interface for type ChatMessageImageContentItem.
+func (c *ChatMessageImageContentItem) GetChatMessageContentItem() *ChatMessageContentItem {
+	return &ChatMessageContentItem{
+		Type: c.Type,
+	}
+}
+
+// ChatMessageImageURL - An internet location from which the model may retrieve an image.
+type ChatMessageImageURL struct {
+	// REQUIRED; The URL of the image.
+	URL *string
+
+	// The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and accuracy.
+	Detail *ChatMessageImageDetailLevel
+}
+
+// ChatMessageTextContentItem - A structured chat content item containing plain text.
+type ChatMessageTextContentItem struct {
+	// REQUIRED; The content of the message.
+	Text *string
+
+	// REQUIRED; The discriminated object type.
+	Type *string
+}
+
+// GetChatMessageContentItem implements the ChatMessageContentItemClassification interface for type ChatMessageTextContentItem.
+func (c *ChatMessageTextContentItem) GetChatMessageContentItem() *ChatMessageContentItem {
+	return &ChatMessageContentItem{
+		Type: c.Type,
+	}
+}
+
 // ChatRequestAssistantMessage - A request chat message representing response or action from the assistant.
 type ChatRequestAssistantMessage struct {
 	// REQUIRED; The content of the message.
@@ -803,6 +981,10 @@ type ChatRequestAssistantMessage struct {
 
 	// REQUIRED; The chat role associated with this message.
 	role *ChatRole
+
+	// The function call that must be resolved and have its output appended to subsequent input messages for the chat completions
+	// request to resolve as configured.
+	FunctionCall *FunctionCall
 
 	// An optional name for the participant.
 	Name *string
@@ -814,6 +996,25 @@ type ChatRequestAssistantMessage struct {
 
 // GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestAssistantMessage.
 func (c *ChatRequestAssistantMessage) GetChatRequestMessage() *ChatRequestMessage {
+	return &ChatRequestMessage{
+		role: c.role,
+	}
+}
+
+// ChatRequestFunctionMessage - A request chat message representing requested output from a configured function.
+type ChatRequestFunctionMessage struct {
+	// REQUIRED; The output of the function as requested by the function call.
+	Content *string
+
+	// REQUIRED; The chat role associated with this message.
+	role *ChatRole
+
+	// REQUIRED; The name of the function that was called to produce output.
+	Name *string
+}
+
+// GetChatRequestMessage implements the ChatRequestMessageClassification interface for type ChatRequestFunctionMessage.
+func (c *ChatRequestFunctionMessage) GetChatRequestMessage() *ChatRequestMessage {
 	return &ChatRequestMessage{
 		role: c.role,
 	}
@@ -907,6 +1108,38 @@ type ChatResponseMessage struct {
 	ToolCalls []ChatCompletionsToolCallClassification
 }
 
+// ChatTokenLogProbabilityInfo - A representation of the log probability information for a single message content token.
+type ChatTokenLogProbabilityInfo struct {
+	// REQUIRED; A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters
+	// are represented by multiple tokens and their byte representations must be combined to
+	// generate the correct text representation. Can be null if there is no bytes representation for the token.
+	Bytes []int32
+
+	// REQUIRED; The log probability of the message content token.
+	Logprob *float32
+
+	// REQUIRED; The message content token.
+	Token *string
+}
+
+// ChatTokenLogProbabilityResult - A representation of the log probability information for a single content token, including
+// a list of most likely tokens if 'top_logprobs' were requested.
+type ChatTokenLogProbabilityResult struct {
+	// REQUIRED; A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters
+	// are represented by multiple tokens and their byte representations must be combined to
+	// generate the correct text representation. Can be null if there is no bytes representation for the token.
+	Bytes []int32
+
+	// REQUIRED; The log probability of the message content token.
+	Logprob *float32
+
+	// REQUIRED; The message content token.
+	Token *string
+
+	// REQUIRED; The list of most likely tokens and their log probability information, as requested via 'top_logprobs'.
+	TopLogProbs []ChatTokenLogProbabilityInfo
+}
+
 // Choice - The representation of a single prompt completion as part of an overall completions request. Generally, n choices
 // are generated per provided prompt with a default value of 1. Token limits and other
 // settings may limit the number of choices generated.
@@ -994,10 +1227,6 @@ type CompletionsOptions struct {
 	// and ensure reasonable settings for maxtokens and stop.
 	BestOf *int32
 
-	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
-	// should be included in the Azure resource URI that's connected to.
-	DeploymentName *string
-
 	// A value specifying whether completions responses should include input prompts as prefixes to their generated output.
 	Echo *bool
 
@@ -1019,6 +1248,10 @@ type CompletionsOptions struct {
 
 	// The maximum number of tokens to generate.
 	MaxTokens *int32
+
+	// The model name to provide as part of this completions request. Not applicable to Azure OpenAI, where deployment information
+	// should be included in the Azure resource URI that's connected to.
+	DeploymentName *string
 
 	// The number of completions choices that should be generated per provided prompt as part of an overall completions response.
 	// Because this setting can generate many completions, it may quickly consume
@@ -1204,6 +1437,7 @@ func (e *ElasticsearchChatExtensionConfiguration) GetAzureChatExtensionConfigura
 }
 
 // ElasticsearchChatExtensionParameters - Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
+// The supported authentication types are KeyAndKeyId and EncodedAPIKey.
 type ElasticsearchChatExtensionParameters struct {
 	// REQUIRED; The endpoint of Elasticsearch®.
 	Endpoint *string
@@ -1294,6 +1528,9 @@ type EmbeddingsOptions struct {
 	// inferior results when newlines are present.
 	Input []string
 
+	// REQUIRED; type of embedding search to use
+	InputType *string
+
 	// The model name to provide as part of this embeddings request. Not applicable to Azure OpenAI, where deployment information
 	// should be included in the Azure resource URI that's connected to.
 	DeploymentName *string
@@ -1343,6 +1580,13 @@ type FunctionDefinition struct {
 
 	// The parameters the function accepts, described as a JSON Schema object.
 	Parameters any
+}
+
+// FunctionName - A structure that specifies the exact name of a specific, request-provided function to use when processing
+// a chat completions operation.
+type FunctionName struct {
+	// REQUIRED; The name of the function to call.
+	Name *string
 }
 
 // ImageGenerationData - A representation of a single generated image, provided as either base64-encoded data or as a URL
@@ -1428,6 +1672,23 @@ func (o *OnYourDataAPIKeyAuthenticationOptions) GetOnYourDataAuthenticationOptio
 	}
 }
 
+// OnYourDataAccessTokenAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using access
+// token.
+type OnYourDataAccessTokenAuthenticationOptions struct {
+	// REQUIRED; The access token to use for authentication.
+	AccessToken *string
+
+	// REQUIRED; The authentication type.
+	configType *OnYourDataAuthenticationType
+}
+
+// GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataAccessTokenAuthenticationOptions.
+func (o *OnYourDataAccessTokenAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
+	return &OnYourDataAuthenticationOptions{
+		configType: o.configType,
+	}
+}
+
 // OnYourDataAuthenticationOptions - The authentication options for Azure OpenAI On Your Data.
 type OnYourDataAuthenticationOptions struct {
 	// REQUIRED; The authentication type.
@@ -1471,6 +1732,23 @@ type OnYourDataDeploymentNameVectorizationSource struct {
 func (o *OnYourDataDeploymentNameVectorizationSource) GetOnYourDataVectorizationSource() *OnYourDataVectorizationSource {
 	return &OnYourDataVectorizationSource{
 		Type: o.Type,
+	}
+}
+
+// OnYourDataEncodedAPIKeyAuthenticationOptions - The authentication options for Azure OpenAI On Your Data when using an Elasticsearch
+// encoded API key.
+type OnYourDataEncodedAPIKeyAuthenticationOptions struct {
+	// REQUIRED; The encoded API key to use for authentication.
+	EncodedAPIKey *string
+
+	// REQUIRED; The authentication type.
+	configType *OnYourDataAuthenticationType
+}
+
+// GetOnYourDataAuthenticationOptions implements the OnYourDataAuthenticationOptionsClassification interface for type OnYourDataEncodedAPIKeyAuthenticationOptions.
+func (o *OnYourDataEncodedAPIKeyAuthenticationOptions) GetOnYourDataAuthenticationOptions() *OnYourDataAuthenticationOptions {
+	return &OnYourDataAuthenticationOptions{
+		configType: o.configType,
 	}
 }
 
@@ -1576,8 +1854,8 @@ func (o *OnYourDataVectorizationSource) GetOnYourDataVectorizationSource() *OnYo
 	return o
 }
 
-// PineconeChatExtensionConfiguration - A specific representation of configurable options for Elasticsearch when using it
-// as an Azure OpenAI chat extension.
+// PineconeChatExtensionConfiguration - A specific representation of configurable options for Pinecone when using it as an
+// Azure OpenAI chat extension.
 type PineconeChatExtensionConfiguration struct {
 	// REQUIRED; The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource. Azure
 	// chat extensions are only compatible with Azure OpenAI.
@@ -1594,8 +1872,12 @@ func (p *PineconeChatExtensionConfiguration) GetAzureChatExtensionConfiguration(
 	}
 }
 
-// PineconeChatExtensionParameters - Parameters for configuring Azure OpenAI Pinecone chat extensions.
+// PineconeChatExtensionParameters - Parameters for configuring Azure OpenAI Pinecone chat extensions. The supported authentication
+// type is APIKey.
 type PineconeChatExtensionParameters struct {
+	// REQUIRED; The embedding dependency for vector search.
+	EmbeddingDependency OnYourDataVectorizationSourceClassification
+
 	// REQUIRED; The environment name of Pinecone.
 	Environment *string
 
@@ -1610,9 +1892,6 @@ type PineconeChatExtensionParameters struct {
 	// source for supported mechanisms. If not otherwise provided, On Your Data will attempt to use System Managed Identity (default
 	// credential) authentication.
 	Authentication OnYourDataAuthenticationOptionsClassification
-
-	// The embedding dependency for vector search.
-	EmbeddingDependency OnYourDataVectorizationSourceClassification
 
 	// Whether queries should be restricted to use of indexed data.
 	InScope *bool
@@ -1632,7 +1911,7 @@ type PineconeChatExtensionParameters struct {
 
 // PineconeFieldMappingOptions - Optional settings to control how fields are processed when using a configured Pinecone resource.
 type PineconeFieldMappingOptions struct {
-	// The names of index fields that should be treated as content.
+	// REQUIRED; The names of index fields that should be treated as content.
 	ContentFields []string
 
 	// The separator pattern that content fields should use.
@@ -1641,17 +1920,11 @@ type PineconeFieldMappingOptions struct {
 	// The name of the index field to use as a filepath.
 	FilepathField *string
 
-	// The names of fields that represent image vector data.
-	ImageVectorFields []string
-
 	// The name of the index field to use as a title.
 	TitleField *string
 
 	// The name of the index field to use as a URL.
 	URLField *string
-
-	// The names of fields that represent vector data.
-	VectorFields []string
 }
 
 // StopFinishDetails - A structured representation of a stop reason that signifies natural termination by the model.

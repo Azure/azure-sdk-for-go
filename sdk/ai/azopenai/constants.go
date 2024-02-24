@@ -8,6 +8,60 @@
 
 package azopenai
 
+// AudioSpeechOutputFormat - Represents the output format for speech synthesis.
+type AudioSpeechOutputFormat string
+
+const (
+	// AudioSpeechOutputFormatAac - Use aac as output format.
+	AudioSpeechOutputFormatAac AudioSpeechOutputFormat = "aac"
+	// AudioSpeechOutputFormatFlac - Use flac as output format.
+	AudioSpeechOutputFormatFlac AudioSpeechOutputFormat = "flac"
+	// AudioSpeechOutputFormatMp3 - Use mp3 as output format.
+	AudioSpeechOutputFormatMp3 AudioSpeechOutputFormat = "mp3"
+	// AudioSpeechOutputFormatOpus - Use opus as output format.
+	AudioSpeechOutputFormatOpus AudioSpeechOutputFormat = "opus"
+)
+
+// PossibleAudioSpeechOutputFormatValues returns the possible values for the AudioSpeechOutputFormat const type.
+func PossibleAudioSpeechOutputFormatValues() []AudioSpeechOutputFormat {
+	return []AudioSpeechOutputFormat{
+		AudioSpeechOutputFormatAac,
+		AudioSpeechOutputFormatFlac,
+		AudioSpeechOutputFormatMp3,
+		AudioSpeechOutputFormatOpus,
+	}
+}
+
+// AudioSpeechVoice - Represents a voice for speech synthesis.
+type AudioSpeechVoice string
+
+const (
+	// AudioSpeechVoiceAlloy - The Alloy voice.
+	AudioSpeechVoiceAlloy AudioSpeechVoice = "alloy"
+	// AudioSpeechVoiceEcho - The Echo voice.
+	AudioSpeechVoiceEcho AudioSpeechVoice = "echo"
+	// AudioSpeechVoiceFable - The Fable voice.
+	AudioSpeechVoiceFable AudioSpeechVoice = "fable"
+	// AudioSpeechVoiceNova - The Nova voice.
+	AudioSpeechVoiceNova AudioSpeechVoice = "nova"
+	// AudioSpeechVoiceOnyx - The Onyx voice.
+	AudioSpeechVoiceOnyx AudioSpeechVoice = "onyx"
+	// AudioSpeechVoiceShimmer - The Shimmer voice.
+	AudioSpeechVoiceShimmer AudioSpeechVoice = "shimmer"
+)
+
+// PossibleAudioSpeechVoiceValues returns the possible values for the AudioSpeechVoice const type.
+func PossibleAudioSpeechVoiceValues() []AudioSpeechVoice {
+	return []AudioSpeechVoice{
+		AudioSpeechVoiceAlloy,
+		AudioSpeechVoiceEcho,
+		AudioSpeechVoiceFable,
+		AudioSpeechVoiceNova,
+		AudioSpeechVoiceOnyx,
+		AudioSpeechVoiceShimmer,
+	}
+}
+
 // AudioTaskLabel - Defines the possible descriptors for available audio operation responses.
 type AudioTaskLabel string
 
@@ -92,15 +146,15 @@ func PossibleAudioTranslationFormatValues() []AudioTranslationFormat {
 type AzureChatExtensionType string
 
 const (
-	// AzureChatExtensionTypeAzureCognitiveSearch - Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension.
-	AzureChatExtensionTypeAzureCognitiveSearch AzureChatExtensionType = "AzureCognitiveSearch"
 	// AzureChatExtensionTypeAzureCosmosDB - Represents the use of Azure Cosmos DB as an Azure OpenAI chat extension.
-	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "AzureCosmosDB"
+	AzureChatExtensionTypeAzureCosmosDB AzureChatExtensionType = "azure_cosmos_db"
 	// AzureChatExtensionTypeAzureMachineLearningIndex - Represents the use of Azure Machine Learning index as an Azure OpenAI
 	// chat extension.
-	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "AzureMLIndex"
+	AzureChatExtensionTypeAzureMachineLearningIndex AzureChatExtensionType = "azure_ml_index"
+	// AzureChatExtensionTypeAzureSearch - Represents the use of Azure Cognitive Search as an Azure OpenAI chat extension.
+	AzureChatExtensionTypeAzureSearch AzureChatExtensionType = "azure_search"
 	// AzureChatExtensionTypeElasticsearch - Represents the use of Elasticsearch® index as an Azure OpenAI chat extension.
-	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "Elasticsearch"
+	AzureChatExtensionTypeElasticsearch AzureChatExtensionType = "elasticsearch"
 	// AzureChatExtensionTypePinecone - Represents the use of Pinecone index as an Azure OpenAI chat extension.
 	AzureChatExtensionTypePinecone AzureChatExtensionType = "Pinecone"
 )
@@ -108,39 +162,39 @@ const (
 // PossibleAzureChatExtensionTypeValues returns the possible values for the AzureChatExtensionType const type.
 func PossibleAzureChatExtensionTypeValues() []AzureChatExtensionType {
 	return []AzureChatExtensionType{
-		AzureChatExtensionTypeAzureCognitiveSearch,
 		AzureChatExtensionTypeAzureCosmosDB,
 		AzureChatExtensionTypeAzureMachineLearningIndex,
+		AzureChatExtensionTypeAzureSearch,
 		AzureChatExtensionTypeElasticsearch,
 		AzureChatExtensionTypePinecone,
 	}
 }
 
-// AzureCognitiveSearchQueryType - The type of Azure Cognitive Search retrieval query that should be executed when using it
-// as an Azure OpenAI chat extension.
-type AzureCognitiveSearchQueryType string
+// AzureSearchQueryType - The type of Azure Search retrieval query that should be executed when using it as an Azure OpenAI
+// chat extension.
+type AzureSearchQueryType string
 
 const (
-	// AzureCognitiveSearchQueryTypeSemantic - Represents the semantic query parser for advanced semantic modeling.
-	AzureCognitiveSearchQueryTypeSemantic AzureCognitiveSearchQueryType = "semantic"
-	// AzureCognitiveSearchQueryTypeSimple - Represents the default, simple query parser.
-	AzureCognitiveSearchQueryTypeSimple AzureCognitiveSearchQueryType = "simple"
-	// AzureCognitiveSearchQueryTypeVector - Represents vector search over computed data.
-	AzureCognitiveSearchQueryTypeVector AzureCognitiveSearchQueryType = "vector"
-	// AzureCognitiveSearchQueryTypeVectorSemanticHybrid - Represents a combination of semantic search and vector data querying.
-	AzureCognitiveSearchQueryTypeVectorSemanticHybrid AzureCognitiveSearchQueryType = "vectorSemanticHybrid"
-	// AzureCognitiveSearchQueryTypeVectorSimpleHybrid - Represents a combination of the simple query strategy with vector data.
-	AzureCognitiveSearchQueryTypeVectorSimpleHybrid AzureCognitiveSearchQueryType = "vectorSimpleHybrid"
+	// AzureSearchQueryTypeSemantic - Represents the semantic query parser for advanced semantic modeling.
+	AzureSearchQueryTypeSemantic AzureSearchQueryType = "semantic"
+	// AzureSearchQueryTypeSimple - Represents the default, simple query parser.
+	AzureSearchQueryTypeSimple AzureSearchQueryType = "simple"
+	// AzureSearchQueryTypeVector - Represents vector search over computed data.
+	AzureSearchQueryTypeVector AzureSearchQueryType = "vector"
+	// AzureSearchQueryTypeVectorSemanticHybrid - Represents a combination of semantic search and vector data querying.
+	AzureSearchQueryTypeVectorSemanticHybrid AzureSearchQueryType = "vector_semantic_hybrid"
+	// AzureSearchQueryTypeVectorSimpleHybrid - Represents a combination of the simple query strategy with vector data.
+	AzureSearchQueryTypeVectorSimpleHybrid AzureSearchQueryType = "vector_simple_hybrid"
 )
 
-// PossibleAzureCognitiveSearchQueryTypeValues returns the possible values for the AzureCognitiveSearchQueryType const type.
-func PossibleAzureCognitiveSearchQueryTypeValues() []AzureCognitiveSearchQueryType {
-	return []AzureCognitiveSearchQueryType{
-		AzureCognitiveSearchQueryTypeSemantic,
-		AzureCognitiveSearchQueryTypeSimple,
-		AzureCognitiveSearchQueryTypeVector,
-		AzureCognitiveSearchQueryTypeVectorSemanticHybrid,
-		AzureCognitiveSearchQueryTypeVectorSimpleHybrid,
+// PossibleAzureSearchQueryTypeValues returns the possible values for the AzureSearchQueryType const type.
+func PossibleAzureSearchQueryTypeValues() []AzureSearchQueryType {
+	return []AzureSearchQueryType{
+		AzureSearchQueryTypeSemantic,
+		AzureSearchQueryTypeSimple,
+		AzureSearchQueryTypeVector,
+		AzureSearchQueryTypeVectorSemanticHybrid,
+		AzureSearchQueryTypeVectorSimpleHybrid,
 	}
 }
 
@@ -178,6 +232,55 @@ func PossibleChatCompletionRequestMessageContentPartTypeValues() []ChatCompletio
 	return []ChatCompletionRequestMessageContentPartType{
 		ChatCompletionRequestMessageContentPartTypeImageURL,
 		ChatCompletionRequestMessageContentPartTypeText,
+	}
+}
+
+// ChatCompletionsToolSelectionPreset - Represents a generic policy for how a chat completions tool may be selected.
+type ChatCompletionsToolSelectionPreset string
+
+const (
+	// ChatCompletionsToolSelectionPresetAuto - Specifies that the model may either use any of the tools provided in this chat
+	// completions request or
+	// instead return a standard chat completions response as if no tools were provided.
+	ChatCompletionsToolSelectionPresetAuto ChatCompletionsToolSelectionPreset = "auto"
+	// ChatCompletionsToolSelectionPresetNone - Specifies that the model should not respond with a tool call and should instead
+	// provide a standard chat
+	// completions response. Response content may still be influenced by the provided tool definitions.
+	ChatCompletionsToolSelectionPresetNone ChatCompletionsToolSelectionPreset = "none"
+)
+
+// PossibleChatCompletionsToolSelectionPresetValues returns the possible values for the ChatCompletionsToolSelectionPreset const type.
+func PossibleChatCompletionsToolSelectionPresetValues() []ChatCompletionsToolSelectionPreset {
+	return []ChatCompletionsToolSelectionPreset{
+		ChatCompletionsToolSelectionPresetAuto,
+		ChatCompletionsToolSelectionPresetNone,
+	}
+}
+
+// ChatMessageImageDetailLevel - A representation of the possible image detail levels for image-based chat completions message
+// content.
+type ChatMessageImageDetailLevel string
+
+const (
+	// ChatMessageImageDetailLevelAuto - Specifies that the model should determine which detail level to apply using heuristics
+	// like image size.
+	ChatMessageImageDetailLevelAuto ChatMessageImageDetailLevel = "auto"
+	// ChatMessageImageDetailLevelHigh - Specifies that image evaluation should enable the 'high-res' model that may be more accurate
+	// for highly detailed
+	// images but may also be slower and consume more tokens.
+	ChatMessageImageDetailLevelHigh ChatMessageImageDetailLevel = "high"
+	// ChatMessageImageDetailLevelLow - Specifies that image evaluation should be constrained to the 'low-res' model that may
+	// be faster and consume fewer
+	// tokens but may also be less accurate for highly detailed images.
+	ChatMessageImageDetailLevelLow ChatMessageImageDetailLevel = "low"
+)
+
+// PossibleChatMessageImageDetailLevelValues returns the possible values for the ChatMessageImageDetailLevel const type.
+func PossibleChatMessageImageDetailLevelValues() []ChatMessageImageDetailLevel {
+	return []ChatMessageImageDetailLevel{
+		ChatMessageImageDetailLevelAuto,
+		ChatMessageImageDetailLevelHigh,
+		ChatMessageImageDetailLevelLow,
 	}
 }
 
@@ -289,6 +392,29 @@ func PossibleElasticsearchQueryTypeValues() []ElasticsearchQueryType {
 	}
 }
 
+// FunctionCallPreset - The collection of predefined behaviors for handling request-provided function information in a chat
+// completions operation.
+type FunctionCallPreset string
+
+const (
+	// FunctionCallPresetAuto - Specifies that the model may either use any of the functions provided in this chat completions
+	// request or
+	// instead return a standard chat completions response as if no functions were provided.
+	FunctionCallPresetAuto FunctionCallPreset = "auto"
+	// FunctionCallPresetNone - Specifies that the model should not respond with a function call and should instead provide a
+	// standard chat
+	// completions response. Response content may still be influenced by the provided function information.
+	FunctionCallPresetNone FunctionCallPreset = "none"
+)
+
+// PossibleFunctionCallPresetValues returns the possible values for the FunctionCallPreset const type.
+func PossibleFunctionCallPresetValues() []FunctionCallPreset {
+	return []FunctionCallPreset{
+		FunctionCallPresetAuto,
+		FunctionCallPresetNone,
+	}
+}
+
 // ImageGenerationQuality - An image generation configuration that specifies how the model should prioritize quality, cost,
 // and speed. Only configurable with dall-e-3 models.
 type ImageGenerationQuality string
@@ -385,22 +511,28 @@ type OnYourDataAuthenticationType string
 
 const (
 	// OnYourDataAuthenticationTypeAPIKey - Authentication via API key.
-	OnYourDataAuthenticationTypeAPIKey OnYourDataAuthenticationType = "APIKey"
+	OnYourDataAuthenticationTypeAPIKey OnYourDataAuthenticationType = "api_key"
+	// OnYourDataAuthenticationTypeAccessToken - Authentication via access token.
+	OnYourDataAuthenticationTypeAccessToken OnYourDataAuthenticationType = "access_token"
 	// OnYourDataAuthenticationTypeConnectionString - Authentication via connection string.
-	OnYourDataAuthenticationTypeConnectionString OnYourDataAuthenticationType = "ConnectionString"
+	OnYourDataAuthenticationTypeConnectionString OnYourDataAuthenticationType = "connection_string"
+	// OnYourDataAuthenticationTypeEncodedAPIKey - Authentication via encoded API key.
+	OnYourDataAuthenticationTypeEncodedAPIKey OnYourDataAuthenticationType = "encoded_api_key"
 	// OnYourDataAuthenticationTypeKeyAndKeyID - Authentication via key and key ID pair.
-	OnYourDataAuthenticationTypeKeyAndKeyID OnYourDataAuthenticationType = "KeyAndKeyId"
+	OnYourDataAuthenticationTypeKeyAndKeyID OnYourDataAuthenticationType = "key_and_key_id"
 	// OnYourDataAuthenticationTypeSystemAssignedManagedIdentity - Authentication via system-assigned managed identity.
-	OnYourDataAuthenticationTypeSystemAssignedManagedIdentity OnYourDataAuthenticationType = "SystemAssignedManagedIdentity"
+	OnYourDataAuthenticationTypeSystemAssignedManagedIdentity OnYourDataAuthenticationType = "system_assigned_managed_identity"
 	// OnYourDataAuthenticationTypeUserAssignedManagedIdentity - Authentication via user-assigned managed identity.
-	OnYourDataAuthenticationTypeUserAssignedManagedIdentity OnYourDataAuthenticationType = "UserAssignedManagedIdentity"
+	OnYourDataAuthenticationTypeUserAssignedManagedIdentity OnYourDataAuthenticationType = "user_assigned_managed_identity"
 )
 
 // PossibleOnYourDataAuthenticationTypeValues returns the possible values for the OnYourDataAuthenticationType const type.
 func PossibleOnYourDataAuthenticationTypeValues() []OnYourDataAuthenticationType {
 	return []OnYourDataAuthenticationType{
 		OnYourDataAuthenticationTypeAPIKey,
+		OnYourDataAuthenticationTypeAccessToken,
 		OnYourDataAuthenticationTypeConnectionString,
+		OnYourDataAuthenticationTypeEncodedAPIKey,
 		OnYourDataAuthenticationTypeKeyAndKeyID,
 		OnYourDataAuthenticationTypeSystemAssignedManagedIdentity,
 		OnYourDataAuthenticationTypeUserAssignedManagedIdentity,
@@ -416,13 +548,13 @@ const (
 	// must be in the same Azure OpenAI resource, but
 	// On Your Data will use this model deployment via an internal call rather than a public one, which enables vector
 	// search even in private networks.
-	OnYourDataVectorizationSourceTypeDeploymentName OnYourDataVectorizationSourceType = "DeploymentName"
+	OnYourDataVectorizationSourceTypeDeploymentName OnYourDataVectorizationSourceType = "deployment_name"
 	// OnYourDataVectorizationSourceTypeEndpoint - Represents vectorization performed by public service calls to an Azure OpenAI
 	// embedding model.
-	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "Endpoint"
+	OnYourDataVectorizationSourceTypeEndpoint OnYourDataVectorizationSourceType = "endpoint"
 	// OnYourDataVectorizationSourceTypeModelID - Represents a specific embedding model ID as defined in the search service.
 	// Currently only supported by Elasticsearch®.
-	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "ModelId"
+	OnYourDataVectorizationSourceTypeModelID OnYourDataVectorizationSourceType = "model_id"
 )
 
 // PossibleOnYourDataVectorizationSourceTypeValues returns the possible values for the OnYourDataVectorizationSourceType const type.

@@ -328,8 +328,8 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(
-			fmt.Sprintf(`"indexName": "%s"`, fakeCognitiveIndexName),
-			fmt.Sprintf(`"indexName":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
+			fmt.Sprintf(`"index_name": "%s"`, fakeCognitiveIndexName),
+			fmt.Sprintf(`"index_name":\s*"%s"`, *azureOpenAI.Cognitive.Parameters.IndexName), nil)
 		require.NoError(t, err)
 
 		err = recording.AddGeneralRegexSanitizer(

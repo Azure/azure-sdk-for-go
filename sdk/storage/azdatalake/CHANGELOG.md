@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Exposing x-ms-resource-type response header in GetProperties API for file and directory.
 
 * Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
 

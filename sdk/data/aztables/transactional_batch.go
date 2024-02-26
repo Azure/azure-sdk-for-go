@@ -55,16 +55,6 @@ type TransactionAction struct {
 	IfMatch    *azcore.ETag
 }
 
-// TransactionResponse contains response fields for Client.TransactionResponse
-type TransactionResponse struct {
-	// placeholder for future response fields
-}
-
-// SubmitTransactionOptions contains optional parameters for Client.SubmitTransaction
-type SubmitTransactionOptions struct {
-	// placeholder for future optional parameters
-}
-
 // SubmitTransaction submits the table transactional batch according to the slice of TransactionActions provided.
 // All transactionActions must be for entities with the same PartitionKey. There can only be one transaction action
 // for a RowKey, a duplicated row key will return an error. A storage account will return a 202 Accepted response

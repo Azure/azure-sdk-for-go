@@ -91,9 +91,12 @@ func (t *ServiceProperties) toGenerated() *generated.TableServiceProperties {
 }
 
 func toGeneratedCorsRules(corsRules []*CorsRule) []*generated.CorsRule {
-	var ret []*generated.CorsRule
-	for _, c := range corsRules {
-		ret = append(ret, c.toGenerated())
+	if len(corsRules) == 0 {
+		return nil
+	}
+	ret := make([]*generated.CorsRule, len(corsRules))
+	for i := range corsRules {
+		ret[i] = corsRules[i].toGenerated()
 	}
 	return ret
 }

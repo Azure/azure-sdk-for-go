@@ -24,30 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-// TransactionType is the type for a specific transaction operation.
-type TransactionType string
-
-const (
-	TransactionTypeAdd           TransactionType = "add"
-	TransactionTypeUpdateMerge   TransactionType = "updatemerge"
-	TransactionTypeUpdateReplace TransactionType = "updatereplace"
-	TransactionTypeDelete        TransactionType = "delete"
-	TransactionTypeInsertMerge   TransactionType = "insertmerge"
-	TransactionTypeInsertReplace TransactionType = "insertreplace"
-)
-
-// PossibleTransactionTypeValues returns the possible values for the TransactionType const type.
-func PossibleTransactionTypeValues() []TransactionType {
-	return []TransactionType{
-		TransactionTypeAdd,
-		TransactionTypeUpdateMerge,
-		TransactionTypeUpdateReplace,
-		TransactionTypeDelete,
-		TransactionTypeInsertMerge,
-		TransactionTypeInsertReplace,
-	}
-}
-
 // TransactionAction represents a single action within a Transaction
 type TransactionAction struct {
 	ActionType TransactionType

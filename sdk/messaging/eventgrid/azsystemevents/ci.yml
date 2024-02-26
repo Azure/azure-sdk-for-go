@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/messaging/eventgrid/azsystemevents
-      - eng/
 
 pr:
   branches:

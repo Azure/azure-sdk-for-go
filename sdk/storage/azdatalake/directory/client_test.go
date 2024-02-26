@@ -2765,7 +2765,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
-	_require.Equal("directory", respFromCtxDir.Header.Get("x-ms-resource-type"))
+	_require.Equal("directory", *resp2.ResourceType)
 
 	// This tests filesystem.NewClient
 	dirClient = fsClient.NewDirectoryClient(dirName)
@@ -2775,7 +2775,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
-	_require.Equal("directory", respFromCtxFs.Header.Get("x-ms-resource-type"))
+	_require.Equal("directory", *resp2.ResourceType)
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -2788,7 +2788,7 @@ func (s *RecordedTestSuite) TestDirGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
-	_require.Equal("directory", respFromCtxService.Header.Get("x-ms-resource-type"))
+	_require.Equal("directory", *resp2.ResourceType)
 }
 
 func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {

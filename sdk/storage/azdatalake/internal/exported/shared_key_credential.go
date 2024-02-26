@@ -13,7 +13,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"net/http"
 	"net/url"
@@ -217,10 +216,6 @@ func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 		return req.Next()
 	}
 
-	if err := checkHTTPSForAuth(req); err != nil {
-		return nil, err
-	}
-
 	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
 		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	}
@@ -241,12 +236,4 @@ func (s *SharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 		log.Write(azlog.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
-}
-
-// TODO: update the azblob dependency having checks for rejecting URLs that are not HTTPS
-func checkHTTPSForAuth(req *policy.Request) error {
-	if strings.ToLower(req.Raw().URL.Scheme) != "https" {
-		return errorinfo.NonRetriableError(errors.New("authenticated requests are not permitted for non TLS protected (https) endpoints"))
-	}
-	return nil
 }

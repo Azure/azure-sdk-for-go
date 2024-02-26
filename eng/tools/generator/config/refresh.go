@@ -5,11 +5,11 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
-	"github.com/hashicorp/go-multierror"
 )
 
 type RefreshInfo struct {
@@ -44,7 +44,7 @@ func parseAdditionalOptions(input []string) ([]model.Option, error) {
 	for _, f := range input {
 		o, err := model.NewOption(f)
 		if err != nil {
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 			continue
 		}
 		options = append(options, o)

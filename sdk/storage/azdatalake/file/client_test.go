@@ -12,9 +12,6 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -24,6 +21,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -3180,6 +3181,7 @@ func (s *RecordedTestSuite) TestTinyFileUploadFile() {
 	gResp2, err := fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 	_require.Equal(*gResp2.ContentLength, fileSize)
+	_require.Equal(*gResp2.ResourceType, "file")
 
 	dResp, err := fClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
@@ -4867,7 +4869,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFile) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxFile.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests filesystem.NewClient
 	fClient = fsClient.NewFileClient(dirName + "/" + fileName)
@@ -4877,7 +4879,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxFs) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxFs.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests service.NewClient
 	serviceClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
@@ -4892,7 +4894,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxService) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxService.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 
 	// This tests directory.NewClient
 	var respFromCtxDir *http.Response
@@ -4905,7 +4907,7 @@ func (s *RecordedTestSuite) TestFileGetPropertiesResponseCapture() {
 	_require.NoError(err)
 	_require.NotNil(resp2)
 	_require.NotNil(respFromCtxDir) // validate that the respFromCtx is actually populated
-	_require.Equal("file", respFromCtxDir.Header.Get("x-ms-resource-type"))
+	_require.Equal("file", *resp2.ResourceType)
 }
 
 func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {

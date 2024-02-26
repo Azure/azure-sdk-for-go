@@ -4,6 +4,7 @@
 package refresh
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"path/filepath"
@@ -20,7 +21,6 @@ import (
 	sdkutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/hashicorp/go-multierror"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -226,15 +226,15 @@ func (c *CommandContext) generate(infoMap GenerationMap, additionalOptions []mod
 	var errResult error
 	for commit, infoList := range infoMap {
 		errorsOnCommit := c.generateOnCommit(commit, infoList, additionalOptions)
-		if len(errorsOnCommit) > 0 {
-			errResult = multierror.Append(errResult, errorsOnCommit...)
+		if errorsOnCommit != nil {
+			errResult = errors.Join(errResult, errorsOnCommit)
 		}
 	}
 
 	return errResult
 }
 
-func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationInfo, additionalOptions []model.Option) []error {
+func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationInfo, additionalOptions []model.Option) error {
 	log.Printf("Regenerate on commit %s starts", commit)
 	// first we checkout the spec repo to that commit
 	log.Printf("Checking out to commit %s...", commit)
@@ -246,15 +246,17 @@ func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationIn
 			return item.String()
 		}).ToSlice(&messages)
 		log.Printf("Error in checking out to '%s' which contains the following packages: \n%s", commit, strings.Join(messages, "\n"))
-		return []error{fmt.Errorf("cannot checkout to commit '%s': %+v", commit, err)}
+		return error(fmt.Errorf("cannot checkout to commit '%s': %+v", commit, err))
 	}
-	var errors []error
+	var errResult error
+	var errCount int
 	for _, info := range infoList {
 		log.Printf("start generation task (readme '%s' / tag '%s')", info.Readme, info.Tag)
 		// build the options from the metadata
 		options, err := c.buildOptions(info.GenerationMetadata)
 		if err != nil {
-			errors = append(errors, err)
+			errResult = errors.Join(errResult, err)
+			errCount++
 			continue
 		}
 		options = options.MergeOptions(additionalOptions...)
@@ -269,13 +271,14 @@ func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationIn
 		_, err = generateCtx.generate(info)
 		if err != nil {
 			log.Printf("fails in generation task (readme %s / tag %s): %+v", info.Readme, info.Tag, err)
-			errors = append(errors, fmt.Errorf("generate on commit %s failed: %+v", commit, err))
+			errResult = errors.Join(errResult, fmt.Errorf("generate on commit %s failed: %+v", commit, err))
+			errCount++
 			continue
 		}
 		log.Printf("done generation of generation task %v (%v)", info, time.Since(start))
 	}
-	log.Printf("Regenerate on commit %s finished with %d errors", commit, len(errors))
-	return errors
+	log.Printf("Regenerate on commit %s finished with %d errors", commit, errCount)
+	return errResult
 }
 
 func (c *CommandContext) buildOptions(metadata autorest.GenerationMetadata) (model.Options, error) {

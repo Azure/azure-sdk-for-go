@@ -4,6 +4,7 @@
 package validate
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/ahmetb/go-linq/v3"
-	"github.com/hashicorp/go-multierror"
 )
 
 type localValidator struct {
@@ -24,24 +24,24 @@ func (v *localValidator) Validate(cfg config.Config) error {
 	var errResult error
 	for readme, infoMap := range cfg.Track1Requests {
 		if err := v.validateReadmeExistence(readme); err != nil {
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 			continue // readme file cannot pass validation, we just skip the validations
 		}
 		// get content of the readme
 		contentOfReadme, err := getReadmeContent(v.specRoot, readme)
 		if err != nil {
-			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
+			errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
 			continue
 		}
 		// validate the existence of readme.go.md
 		if err := v.validateReadmeExistence(getReadmeGoFromReadme(readme)); err != nil {
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 			continue // readme.go.md is mandatory
 		}
 		// get content of the readme.go.md
 		contentOfReadmeGo, err := getReadmeContent(v.specRoot, getReadmeGoFromReadme(readme))
 		if err != nil {
-			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
+			errResult = errors.Join(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
 			continue
 		}
 		// get the keys from infoMap, which is the tags
@@ -51,10 +51,10 @@ func (v *localValidator) Validate(cfg config.Config) error {
 		}).ToSlice(&tags)
 		// check the tags one by one
 		if err := validateTagsInReadme(contentOfReadme, readme, tags...); err != nil {
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 		}
 		if err := validateTagsInReadmeGo(contentOfReadmeGo, readme, tags...); err != nil {
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 		}
 	}
 	return errResult

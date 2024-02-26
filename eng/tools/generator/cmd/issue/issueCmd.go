@@ -6,6 +6,7 @@ package issue
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -16,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
 	"github.com/google/go-github/v53/github"
-	"github.com/hashicorp/go-multierror"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -233,7 +233,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		}
 		if isInconsistentTag(issue) {
 			log.Printf("[ERROR] %s Readme tag is inconsistent with default tag\n", issue.GetHTMLURL())
-			errResult = multierror.Append(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
+			errResult = errors.Join(errResult, fmt.Errorf("%s: readme tag is inconsistent with default tag", issue.GetHTMLURL()))
 			continue
 		}
 
@@ -243,7 +243,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		})
 		if err != nil {
 			log.Printf("[ERROR] Cannot parse release request %s: %+v", issue.GetHTMLURL(), err)
-			errResult = multierror.Append(errResult, err)
+			errResult = errors.Join(errResult, err)
 			continue
 		}
 		if req == nil {

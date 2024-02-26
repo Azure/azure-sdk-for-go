@@ -10,7 +10,7 @@ package armastro
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/astro/armastro"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

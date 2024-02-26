@@ -152,32 +152,15 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.TargetResource != nil {
-		reqQP.Set("targetResource", *options.TargetResource)
-	}
-	if options != nil && options.TargetResourceType != nil {
-		reqQP.Set("targetResourceType", *options.TargetResourceType)
-	}
-	if options != nil && options.TargetResourceGroup != nil {
-		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
-	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
+	if options != nil && options.AlertRule != nil {
+		reqQP.Set("alertRule", *options.AlertRule)
 	}
 	if options != nil && options.AlertState != nil {
 		reqQP.Set("alertState", string(*options.AlertState))
 	}
-	if options != nil && options.AlertRule != nil {
-		reqQP.Set("alertRule", *options.AlertRule)
-	}
-	if options != nil && options.SmartGroupID != nil {
-		reqQP.Set("smartGroupId", *options.SmartGroupID)
+	reqQP.Set("api-version", "2019-05-05-preview")
+	if options != nil && options.CustomTimeRange != nil {
+		reqQP.Set("customTimeRange", *options.CustomTimeRange)
 	}
 	if options != nil && options.IncludeContext != nil {
 		reqQP.Set("includeContext", strconv.FormatBool(*options.IncludeContext))
@@ -185,8 +168,23 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 	if options != nil && options.IncludeEgressConfig != nil {
 		reqQP.Set("includeEgressConfig", strconv.FormatBool(*options.IncludeEgressConfig))
 	}
+	if options != nil && options.MonitorCondition != nil {
+		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+	}
+	if options != nil && options.MonitorService != nil {
+		reqQP.Set("monitorService", string(*options.MonitorService))
+	}
 	if options != nil && options.PageCount != nil {
 		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("select", *options.Select)
+	}
+	if options != nil && options.Severity != nil {
+		reqQP.Set("severity", string(*options.Severity))
+	}
+	if options != nil && options.SmartGroupID != nil {
+		reqQP.Set("smartGroupId", *options.SmartGroupID)
 	}
 	if options != nil && options.SortBy != nil {
 		reqQP.Set("sortBy", string(*options.SortBy))
@@ -194,16 +192,18 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *Al
 	if options != nil && options.SortOrder != nil {
 		reqQP.Set("sortOrder", string(*options.SortOrder))
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("select", *options.Select)
+	if options != nil && options.TargetResource != nil {
+		reqQP.Set("targetResource", *options.TargetResource)
+	}
+	if options != nil && options.TargetResourceGroup != nil {
+		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
+	}
+	if options != nil && options.TargetResourceType != nil {
+		reqQP.Set("targetResourceType", *options.TargetResourceType)
 	}
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	if options != nil && options.CustomTimeRange != nil {
-		reqQP.Set("customTimeRange", *options.CustomTimeRange)
-	}
-	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,41 +379,41 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("groupby", string(groupby))
-	if options != nil && options.IncludeSmartGroupsCount != nil {
-		reqQP.Set("includeSmartGroupsCount", strconv.FormatBool(*options.IncludeSmartGroupsCount))
-	}
-	if options != nil && options.TargetResource != nil {
-		reqQP.Set("targetResource", *options.TargetResource)
-	}
-	if options != nil && options.TargetResourceType != nil {
-		reqQP.Set("targetResourceType", *options.TargetResourceType)
-	}
-	if options != nil && options.TargetResourceGroup != nil {
-		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
-	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
+	if options != nil && options.AlertRule != nil {
+		reqQP.Set("alertRule", *options.AlertRule)
 	}
 	if options != nil && options.AlertState != nil {
 		reqQP.Set("alertState", string(*options.AlertState))
 	}
-	if options != nil && options.AlertRule != nil {
-		reqQP.Set("alertRule", *options.AlertRule)
+	reqQP.Set("api-version", "2019-05-05-preview")
+	if options != nil && options.CustomTimeRange != nil {
+		reqQP.Set("customTimeRange", *options.CustomTimeRange)
+	}
+	reqQP.Set("groupby", string(groupby))
+	if options != nil && options.IncludeSmartGroupsCount != nil {
+		reqQP.Set("includeSmartGroupsCount", strconv.FormatBool(*options.IncludeSmartGroupsCount))
+	}
+	if options != nil && options.MonitorCondition != nil {
+		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+	}
+	if options != nil && options.MonitorService != nil {
+		reqQP.Set("monitorService", string(*options.MonitorService))
+	}
+	if options != nil && options.Severity != nil {
+		reqQP.Set("severity", string(*options.Severity))
+	}
+	if options != nil && options.TargetResource != nil {
+		reqQP.Set("targetResource", *options.TargetResource)
+	}
+	if options != nil && options.TargetResourceGroup != nil {
+		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
+	}
+	if options != nil && options.TargetResourceType != nil {
+		reqQP.Set("targetResourceType", *options.TargetResourceType)
 	}
 	if options != nil && options.TimeRange != nil {
 		reqQP.Set("timeRange", string(*options.TimeRange))
 	}
-	if options != nil && options.CustomTimeRange != nil {
-		reqQP.Set("customTimeRange", *options.CustomTimeRange)
-	}
-	reqQP.Set("api-version", "2019-05-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

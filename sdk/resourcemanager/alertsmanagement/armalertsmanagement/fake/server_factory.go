@@ -19,10 +19,13 @@ import (
 
 // ServerFactory is a fake server for instances of the armalertsmanagement.ClientFactory type.
 type ServerFactory struct {
-	AlertProcessingRulesServer AlertProcessingRulesServer
-	AlertsServer               AlertsServer
-	OperationsServer           OperationsServer
-	SmartGroupsServer          SmartGroupsServer
+	AlertProcessingRulesServer     AlertProcessingRulesServer
+	AlertRuleRecommendationsServer AlertRuleRecommendationsServer
+	AlertsServer                   AlertsServer
+	OperationsServer               OperationsServer
+	PrometheusRuleGroupsServer     PrometheusRuleGroupsServer
+	SmartGroupsServer              SmartGroupsServer
+	TenantActivityLogAlertsServer  TenantActivityLogAlertsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,12 +40,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armalertsmanagement.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                          *ServerFactory
-	trMu                         sync.Mutex
-	trAlertProcessingRulesServer *AlertProcessingRulesServerTransport
-	trAlertsServer               *AlertsServerTransport
-	trOperationsServer           *OperationsServerTransport
-	trSmartGroupsServer          *SmartGroupsServerTransport
+	srv                              *ServerFactory
+	trMu                             sync.Mutex
+	trAlertProcessingRulesServer     *AlertProcessingRulesServerTransport
+	trAlertRuleRecommendationsServer *AlertRuleRecommendationsServerTransport
+	trAlertsServer                   *AlertsServerTransport
+	trOperationsServer               *OperationsServerTransport
+	trPrometheusRuleGroupsServer     *PrometheusRuleGroupsServerTransport
+	trSmartGroupsServer              *SmartGroupsServerTransport
+	trTenantActivityLogAlertsServer  *TenantActivityLogAlertsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -63,15 +69,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAlertProcessingRulesServerTransport(&s.srv.AlertProcessingRulesServer)
 		})
 		resp, err = s.trAlertProcessingRulesServer.Do(req)
+	case "AlertRuleRecommendationsClient":
+		initServer(s, &s.trAlertRuleRecommendationsServer, func() *AlertRuleRecommendationsServerTransport {
+			return NewAlertRuleRecommendationsServerTransport(&s.srv.AlertRuleRecommendationsServer)
+		})
+		resp, err = s.trAlertRuleRecommendationsServer.Do(req)
 	case "AlertsClient":
 		initServer(s, &s.trAlertsServer, func() *AlertsServerTransport { return NewAlertsServerTransport(&s.srv.AlertsServer) })
 		resp, err = s.trAlertsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrometheusRuleGroupsClient":
+		initServer(s, &s.trPrometheusRuleGroupsServer, func() *PrometheusRuleGroupsServerTransport {
+			return NewPrometheusRuleGroupsServerTransport(&s.srv.PrometheusRuleGroupsServer)
+		})
+		resp, err = s.trPrometheusRuleGroupsServer.Do(req)
 	case "SmartGroupsClient":
 		initServer(s, &s.trSmartGroupsServer, func() *SmartGroupsServerTransport { return NewSmartGroupsServerTransport(&s.srv.SmartGroupsServer) })
 		resp, err = s.trSmartGroupsServer.Do(req)
+	case "TenantActivityLogAlertsClient":
+		initServer(s, &s.trTenantActivityLogAlertsServer, func() *TenantActivityLogAlertsServerTransport {
+			return NewTenantActivityLogAlertsServerTransport(&s.srv.TenantActivityLogAlertsServer)
+		})
+		resp, err = s.trTenantActivityLogAlertsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -46,7 +46,7 @@ func NewReplicationRecoveryPlansClient(subscriptionID string, credential azcore.
 // BeginCreate - The operation to create a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -73,7 +73,7 @@ func (client *ReplicationRecoveryPlansClient) BeginCreate(ctx context.Context, r
 // Create - The operation to create a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) create(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input CreateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Co
 // BeginDelete - Delete a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -157,7 +157,7 @@ func (client *ReplicationRecoveryPlansClient) BeginDelete(ctx context.Context, r
 // Delete - Delete a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -211,7 +211,7 @@ func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Co
 // BeginFailoverCancel - The operation to cancel the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -237,7 +237,7 @@ func (client *ReplicationRecoveryPlansClient) BeginFailoverCancel(ctx context.Co
 // FailoverCancel - The operation to cancel the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) failoverCancel(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginFailoverCancel"
@@ -283,7 +283,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +292,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx co
 // BeginFailoverCommit - The operation to commit the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -318,7 +318,7 @@ func (client *ReplicationRecoveryPlansClient) BeginFailoverCommit(ctx context.Co
 // FailoverCommit - The operation to commit the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) failoverCommit(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginFailoverCommitOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginFailoverCommit"
@@ -364,7 +364,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -373,7 +373,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx co
 // Get - Gets the details of the recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Name of the recovery plan.
@@ -425,7 +425,7 @@ func (client *ReplicationRecoveryPlansClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -442,7 +442,7 @@ func (client *ReplicationRecoveryPlansClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Lists the recovery plans in the vault.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - ReplicationRecoveryPlansClientListOptions contains the optional parameters for the ReplicationRecoveryPlansClient.NewListPager
@@ -490,7 +490,7 @@ func (client *ReplicationRecoveryPlansClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -508,7 +508,7 @@ func (client *ReplicationRecoveryPlansClient) listHandleResponse(resp *http.Resp
 // BeginPlannedFailover - The operation to start the planned failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -535,7 +535,7 @@ func (client *ReplicationRecoveryPlansClient) BeginPlannedFailover(ctx context.C
 // PlannedFailover - The operation to start the planned failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) plannedFailover(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginPlannedFailover"
@@ -581,7 +581,7 @@ func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -593,7 +593,7 @@ func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx c
 // BeginReprotect - The operation to reprotect(reverse replicate) a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -619,7 +619,7 @@ func (client *ReplicationRecoveryPlansClient) BeginReprotect(ctx context.Context
 // Reprotect - The operation to reprotect(reverse replicate) a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) reprotect(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginReprotect"
@@ -665,7 +665,7 @@ func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -674,7 +674,7 @@ func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context
 // BeginTestFailover - The operation to start the test failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -701,7 +701,7 @@ func (client *ReplicationRecoveryPlansClient) BeginTestFailover(ctx context.Cont
 // TestFailover - The operation to start the test failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) testFailover(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailover"
@@ -747,7 +747,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -759,7 +759,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx cont
 // BeginTestFailoverCleanup - The operation to cleanup test failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -786,7 +786,7 @@ func (client *ReplicationRecoveryPlansClient) BeginTestFailoverCleanup(ctx conte
 // TestFailoverCleanup - The operation to cleanup test failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) testFailoverCleanup(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailoverCleanup"
@@ -832,7 +832,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -844,7 +844,7 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(c
 // BeginUnplannedFailover - The operation to start the unplanned failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -871,7 +871,7 @@ func (client *ReplicationRecoveryPlansClient) BeginUnplannedFailover(ctx context
 // UnplannedFailover - The operation to start the unplanned failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) unplannedFailover(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginUnplannedFailover"
@@ -917,7 +917,7 @@ func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -929,7 +929,7 @@ func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx
 // BeginUpdate - The operation to update a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - recoveryPlanName - Recovery plan name.
@@ -956,7 +956,7 @@ func (client *ReplicationRecoveryPlansClient) BeginUpdate(ctx context.Context, r
 // Update - The operation to update a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 func (client *ReplicationRecoveryPlansClient) update(ctx context.Context, resourceName string, resourceGroupName string, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationRecoveryPlansClient.BeginUpdate"
@@ -1002,7 +1002,7 @@ func (client *ReplicationRecoveryPlansClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {

@@ -10,15 +10,66 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
 	assistants "github.com/Azure/azure-sdk-for-go/sdk/ai/azopenaiassistants"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
 var assistantsModel = "gpt-4-1106-preview"
+
+func Test_UsingIdentity(t *testing.T) {
+	if os.Getenv("USE_TOKEN_CREDS") != "true" || recording.GetRecordMode() != recording.LiveMode {
+		t.Skip("WARNING: Not testing token credentials")
+	}
+
+	testFn := func(t *testing.T) {
+		client, createResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
+			newClientArgs: newClientArgs{
+				Azure:       true,
+				UseIdentity: true,
+			},
+		})
+
+		found := false
+
+		pager := client.NewListAssistantsPager(&assistants.ListAssistantsOptions{
+			Limit: to.Ptr(int32(100)),
+		})
+
+		// let's find our assistant in the list
+	PagingLoop:
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+
+			for _, a := range page.Data {
+				name := "<none>"
+
+				if a.Name != nil {
+					name = *a.Name
+				}
+
+				fmt.Printf("[%s] %s\n", *a.ID, name)
+
+				if *a.ID == *createResp.ID {
+					found = true
+					break PagingLoop
+				}
+			}
+		}
+
+		require.True(t, found)
+	}
+
+	t.Run("AzureOpenAI", func(t *testing.T) {
+		testFn(t)
+	})
+}
 
 func TestAssistantCreationAndListing(t *testing.T) {
 	testFn := func(t *testing.T, azure bool) {

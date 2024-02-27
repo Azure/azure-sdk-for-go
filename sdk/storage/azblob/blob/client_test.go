@@ -3751,13 +3751,14 @@ func (s *BlobRecordedTestsSuite) TestBlobClientCustomAudience() {
 
 type fakeDownloadBlob struct {
 	contentSize int64
-	numChunks   atomic.Uint64
+	numChunks   uint64
 }
 
+// nolint
 func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 	// check how many times range based get blob is called
 	if _, ok := req.Header["x-ms-range"]; ok {
-		f.numChunks.Add(1)
+		atomic.AddUint64(&f.numChunks, 1)
 	}
 	return &http.Response{
 		Request:    req,
@@ -3793,14 +3794,14 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
 	_require.NoError(err)
 
-	_require.Equal(fbb.numChunks.Load(), numChunks)
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 
 	// reset counter
-	fbb.numChunks.Store(0)
+	atomic.StoreUint64(&fbb.numChunks, 0)
 
 	buff := make([]byte, fileSize)
 	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{BlockSize: blockSize})
 	_require.NoError(err)
 
-	_require.Equal(fbb.numChunks.Load(), numChunks)
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }

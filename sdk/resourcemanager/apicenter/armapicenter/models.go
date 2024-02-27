@@ -10,6 +10,330 @@ package armapicenter
 
 import "time"
 
+// API entity.
+type API struct {
+	// The resource-specific properties for this resource.
+	Properties *APIProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// APIDefinition - API definition entity.
+type APIDefinition struct {
+	// The resource-specific properties for this resource.
+	Properties *APIDefinitionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// APIDefinitionListResult - The response of a ApiDefinition list operation.
+type APIDefinitionListResult struct {
+	// READ-ONLY; The ApiDefinition items on this page
+	Value []*APIDefinition
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// APIDefinitionProperties - API definition properties entity.
+type APIDefinitionProperties struct {
+	// REQUIRED; API definition title.
+	Title *string
+
+	// API definition description.
+	Description *string
+
+	// READ-ONLY; API specification details.
+	Specification *APIDefinitionPropertiesSpecification
+}
+
+// APIDefinitionPropertiesSpecification - API specification details.
+type APIDefinitionPropertiesSpecification struct {
+	// Specification name.
+	Name *string
+
+	// Specification version.
+	Version *string
+}
+
+// APIListResult - The response of a Api list operation.
+type APIListResult struct {
+	// READ-ONLY; The Api items on this page
+	Value []*API
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// APIProperties - API properties.
+type APIProperties struct {
+	// REQUIRED; Kind of API. For example, REST or GraphQL.
+	Kind *APIKind
+
+	// REQUIRED; API title.
+	Title *string
+
+	// The set of contacts
+	Contacts []*Contact
+
+	// The custom metadata defined for API catalog entities.
+	CustomProperties any
+
+	// Description of the API.
+	Description *string
+
+	// The set of external documentation
+	ExternalDocumentation []*ExternalDocumentation
+
+	// The license information for the API.
+	License *License
+
+	// Short description of the API.
+	Summary *string
+
+	// Terms of service for the API.
+	TermsOfService *TermsOfService
+
+	// READ-ONLY; Current lifecycle stage of the API.
+	LifecycleStage *LifecycleStage
+}
+
+// APISpecExportResult - The API specification export result.
+type APISpecExportResult struct {
+	// The format of exported result
+	Format *APISpecExportResultFormat
+
+	// The result of the export operation.
+	Value *string
+}
+
+// APISpecImportRequest - The API specification source entity properties.
+type APISpecImportRequest struct {
+	// Format of the API specification source.
+	Format *APISpecImportSourceFormat
+
+	// API specification details.
+	Specification *APISpecImportRequestSpecification
+
+	// Value of the API specification source.
+	Value *string
+}
+
+// APISpecImportRequestSpecification - API specification details.
+type APISpecImportRequestSpecification struct {
+	// Specification name.
+	Name *string
+
+	// Specification version.
+	Version *string
+}
+
+// APIVersion - API version entity.
+type APIVersion struct {
+	// The resource-specific properties for this resource.
+	Properties *APIVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// APIVersionListResult - The response of a ApiVersion list operation.
+type APIVersionListResult struct {
+	// READ-ONLY; The ApiVersion items on this page
+	Value []*APIVersion
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// APIVersionProperties - API version properties entity.
+type APIVersionProperties struct {
+	// REQUIRED; Current lifecycle stage of the API.
+	LifecycleStage *LifecycleStage
+
+	// REQUIRED; API version title.
+	Title *string
+}
+
+// Contact information
+type Contact struct {
+	// Email address of the contact.
+	Email *string
+
+	// Name of the contact.
+	Name *string
+
+	// URL for the contact.
+	URL *string
+}
+
+// Deployment - API deployment entity.
+type Deployment struct {
+	// The resource-specific properties for this resource.
+	Properties *DeploymentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DeploymentListResult - The response of a Deployment list operation.
+type DeploymentListResult struct {
+	// READ-ONLY; The Deployment items on this page
+	Value []*Deployment
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// DeploymentProperties - API deployment entity properties.
+type DeploymentProperties struct {
+	// The custom metadata defined for API catalog entities.
+	CustomProperties any
+
+	// API center-scoped definition resource ID.
+	DefinitionID *string
+
+	// Description of the deployment.
+	Description *string
+
+	// API center-scoped environment resource ID.
+	EnvironmentID *string
+
+	// The deployment server
+	Server *DeploymentServer
+
+	// State of API deployment.
+	State *DeploymentState
+
+	// API deployment title
+	Title *string
+}
+
+// DeploymentServer - Server
+type DeploymentServer struct {
+	// Base runtime URLs for this deployment.
+	RuntimeURI []*string
+}
+
+// Environment entity.
+type Environment struct {
+	// The resource-specific properties for this resource.
+	Properties *EnvironmentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EnvironmentListResult - The response of a Environment list operation.
+type EnvironmentListResult struct {
+	// READ-ONLY; The Environment items on this page
+	Value []*Environment
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// EnvironmentProperties - Environment properties entity.
+type EnvironmentProperties struct {
+	// REQUIRED; Environment kind.
+	Kind *EnvironmentKind
+
+	// REQUIRED; Environment title.
+	Title *string
+
+	// The custom metadata defined for API catalog entities.
+	CustomProperties any
+
+	// The environment description.
+	Description *string
+
+	// Environment onboarding information
+	Onboarding *Onboarding
+
+	// Server information of the environment.
+	Server *EnvironmentServer
+}
+
+// EnvironmentServer - Server information of the environment.
+type EnvironmentServer struct {
+	// The location of the management portal
+	ManagementPortalURI []*string
+
+	// Type of the server that represents the environment.
+	Type *EnvironmentServerType
+}
+
+// ExternalDocumentation - Additional, external documentation for the API.
+type ExternalDocumentation struct {
+	// REQUIRED; URL pointing to the documentation.
+	URL *string
+
+	// Description of the documentation.
+	Description *string
+
+	// Title of the documentation.
+	Title *string
+}
+
+// License - The license information for the API.
+type License struct {
+	// SPDX license information for the API. The identifier field is mutually exclusive of the URL field.
+	Identifier *string
+
+	// Name of the license.
+	Name *string
+
+	// URL pointing to the license details. The URL field is mutually exclusive of the identifier field.
+	URL *string
+}
+
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
@@ -28,6 +352,78 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
+}
+
+// MetadataAssignment - Assignment metadata
+type MetadataAssignment struct {
+	// Deprecated assignment
+	Deprecated *bool
+
+	// The entities this metadata schema component gets applied to.
+	Entity *MetadataAssignmentEntity
+
+	// Required assignment
+	Required *bool
+}
+
+// MetadataSchema - Metadata schema entity. Used to define metadata for the entities in API catalog.
+type MetadataSchema struct {
+	// The resource-specific properties for this resource.
+	Properties *MetadataSchemaProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MetadataSchemaExportRequest - The metadata schema export request.
+type MetadataSchemaExportRequest struct {
+	// An entity the metadata schema is requested for.
+	AssignedTo *MetadataAssignmentEntity
+}
+
+// MetadataSchemaExportResult - The metadata schema export result.
+type MetadataSchemaExportResult struct {
+	// The export format for the schema
+	Format *MetadataSchemaExportFormat
+
+	// The result of the export operation.
+	Value *string
+}
+
+// MetadataSchemaListResult - The response of a MetadataSchema list operation.
+type MetadataSchemaListResult struct {
+	// READ-ONLY; The MetadataSchema items on this page
+	Value []*MetadataSchema
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// MetadataSchemaProperties - Metadata schema properties.
+type MetadataSchemaProperties struct {
+	// REQUIRED; The schema defining the type.
+	Schema *string
+
+	// The assignees
+	AssignedTo []*MetadataAssignment
+}
+
+// Onboarding information
+type Onboarding struct {
+	// The location of the development portal
+	DeveloperPortalURI []*string
+
+	// Onboarding guide.
+	Instructions *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
@@ -84,10 +480,10 @@ type Service struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// The identity of the service.
+	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-	// The properties of the service.
+	// The resource-specific properties for this resource.
 	Properties *ServiceProperties
 
 	// Resource tags.
@@ -106,25 +502,28 @@ type Service struct {
 	Type *string
 }
 
-// ServiceCollection - The response of a Service list operation.
-type ServiceCollection struct {
-	// REQUIRED; The Service items on this page
+// ServiceListResult - The response of a Service list operation.
+type ServiceListResult struct {
+	// READ-ONLY; The Service items on this page
 	Value []*Service
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
 // ServiceProperties - The properties of the service.
 type ServiceProperties struct {
-	// READ-ONLY; The status of the last operation.
+	// READ-ONLY; Provisioning state of the service.
 	ProvisioningState *ProvisioningState
 }
 
-// ServiceUpdate - The service properties to be updated.
+// ServiceUpdate - The type used for update operations of the Service.
 type ServiceUpdate struct {
-	// The properties of the service.
-	Properties *ServiceProperties
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -148,6 +547,12 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TermsOfService - Terms of service for the API.
+type TermsOfService struct {
+	// REQUIRED; URL pointing to the terms of service.
+	URL *string
+}
+
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
@@ -155,4 +560,40 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// Workspace entity.
+type Workspace struct {
+	// The resource-specific properties for this resource.
+	Properties *WorkspaceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceListResult - The response of a Workspace list operation.
+type WorkspaceListResult struct {
+	// READ-ONLY; The Workspace items on this page
+	Value []*Workspace
+
+	// READ-ONLY; The link to the next page of items
+	NextLink *string
+}
+
+// WorkspaceProperties - Workspace properties.
+type WorkspaceProperties struct {
+	// REQUIRED; Workspace title.
+	Title *string
+
+	// Workspace description.
+	Description *string
 }

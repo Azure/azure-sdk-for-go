@@ -340,7 +340,7 @@ func TestEncodeQueryParams(t *testing.T) {
 	nextLink, err = EncodeQueryParams(testURL)
 	require.NoError(t, err)
 	require.EqualValues(t, testURL, nextLink)
-	nextLink, err = EncodeQueryParams(testURL + "query?invalid=;semicolon")
-	require.Error(t, err)
-	require.Empty(t, nextLink)
+	nextLink, err = EncodeQueryParams(testURL + "query?compound=thing1;thing2;thing3")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?compound=thing1%3Bthing2%3Bthing3", nextLink)
 }

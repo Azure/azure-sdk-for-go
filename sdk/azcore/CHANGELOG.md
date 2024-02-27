@@ -12,6 +12,7 @@
 ### Bugs Fixed
 
 * Fixed a potential race condition between `NullValue` and `IsNullValue`.
+* `runtime.EncodeQueryParams` will escape semicolons before calling `url.ParseQuery`.
 
 ### Other Changes
 

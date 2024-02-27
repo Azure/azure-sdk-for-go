@@ -11,7 +11,7 @@ package armnetwork
 import "encoding/json"
 
 func unmarshalActiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessage) (ActiveBaseSecurityAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -34,7 +34,7 @@ func unmarshalActiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessage) 
 }
 
 func unmarshalActiveBaseSecurityAdminRuleClassificationArray(rawMsg json.RawMessage) ([]ActiveBaseSecurityAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -53,7 +53,7 @@ func unmarshalActiveBaseSecurityAdminRuleClassificationArray(rawMsg json.RawMess
 }
 
 func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (BaseAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -76,7 +76,7 @@ func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (BaseAdminRule
 }
 
 func unmarshalBaseAdminRuleClassificationArray(rawMsg json.RawMessage) ([]BaseAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -95,7 +95,7 @@ func unmarshalBaseAdminRuleClassificationArray(rawMsg json.RawMessage) ([]BaseAd
 }
 
 func unmarshalEffectiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessage) (EffectiveBaseSecurityAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -118,7 +118,7 @@ func unmarshalEffectiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessag
 }
 
 func unmarshalEffectiveBaseSecurityAdminRuleClassificationArray(rawMsg json.RawMessage) ([]EffectiveBaseSecurityAdminRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -137,7 +137,7 @@ func unmarshalEffectiveBaseSecurityAdminRuleClassificationArray(rawMsg json.RawM
 }
 
 func unmarshalFirewallPolicyRuleClassification(rawMsg json.RawMessage) (FirewallPolicyRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -162,7 +162,7 @@ func unmarshalFirewallPolicyRuleClassification(rawMsg json.RawMessage) (Firewall
 }
 
 func unmarshalFirewallPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]FirewallPolicyRuleClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage
@@ -181,7 +181,7 @@ func unmarshalFirewallPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]F
 }
 
 func unmarshalFirewallPolicyRuleCollectionClassification(rawMsg json.RawMessage) (FirewallPolicyRuleCollectionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var m map[string]any
@@ -204,7 +204,7 @@ func unmarshalFirewallPolicyRuleCollectionClassification(rawMsg json.RawMessage)
 }
 
 func unmarshalFirewallPolicyRuleCollectionClassificationArray(rawMsg json.RawMessage) ([]FirewallPolicyRuleCollectionClassification, error) {
-	if rawMsg == nil {
+	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
 	var rawMessages []json.RawMessage

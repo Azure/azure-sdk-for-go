@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -244,13 +245,17 @@ func TestClient_GetChatCompletions_Vision(t *testing.T) {
 			},
 		})
 
-		resp, err := chatClient.GetChatCompletions(context.Background(), azopenai.ChatCompletionsOptions{
+		ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+		defer cancel()
+
+		resp, err := chatClient.GetChatCompletions(ctx, azopenai.ChatCompletionsOptions{
 			Messages: []azopenai.ChatRequestMessageClassification{
 				&azopenai.ChatRequestUserMessage{
 					Content: content,
 				},
 			},
 			DeploymentName: to.Ptr(deploymentName),
+			MaxTokens:      to.Ptr[int32](512),
 		}, nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, resp.Choices[0].Message.Content)

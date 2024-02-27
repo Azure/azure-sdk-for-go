@@ -5945,3 +5945,73 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobClientCustomAudience() {
 	_, err = bbClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+
+	// create local file
+	var fileSize int64 = 401 * 1024 * 1024
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	srcHash := md5.New()
+	_, err = io.Copy(srcHash, fh)
+	_require.NoError(err)
+	contentMD5 := srcHash.Sum(nil)
+
+	_, err = bbClient.UploadFile(context.Background(), fh, &blockblob.UploadFileOptions{
+		Concurrency: 5,
+		BlockSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	// download to a temp file and verify contents
+	tmp, err := os.CreateTemp("", "")
+	_require.NoError(err)
+	defer tmp.Close()
+
+	n, err := bbClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: 4 * 1024 * 1024})
+	_require.NoError(err)
+	_require.Equal(fileSize, n)
+
+	stat, err := tmp.Stat()
+	_require.NoError(err)
+	_require.Equal(fileSize, stat.Size())
+
+	destHash := md5.New()
+	_, err = io.Copy(destHash, tmp)
+	_require.NoError(err)
+	downloadedContentMD5 := destHash.Sum(nil)
+
+	_require.EqualValues(contentMD5, downloadedContentMD5)
+
+	gResp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.ContentLength)
+	_require.Equal(fileSize, *gResp.ContentLength)
+}

@@ -62,10 +62,10 @@ func TestSnipModel(t *testing.T) {
 
 	fileCache := &FileCache{
 		files: map[string]string{
-			"models.go":         modelsText,
-			"models_serde.go":   modelsSerdeText,
-			"response_types.go": "ignored",
-			"options.go":        "ignored",
+			"models.go":       modelsText,
+			"models_serde.go": modelsSerdeText,
+			"responses.go":    "ignored",
+			"options.go":      "ignored",
 		},
 	}
 
@@ -75,10 +75,10 @@ func TestSnipModel(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, map[string]string{
-		"models.go":         "//Before that function\n\n\n//After that function\n",
-		"models_serde.go":   "import (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n\n//Before that model\n\n\n\n\n//After that model\n",
-		"response_types.go": "ignored",
-		"options.go":        "ignored",
+		"models.go":       "//Before that function\n\n\n//After that function\n",
+		"models_serde.go": "import (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n\n//Before that model\n\n\n\n\n//After that model\n",
+		"responses.go":    "ignored",
+		"options.go":      "ignored",
 	}, fileCache.files)
 }
 
@@ -87,7 +87,7 @@ func TestSnipResponseType(t *testing.T) {
 		files: map[string]string{
 			"models.go":       "ignored",
 			"models_serde.go": "ignored",
-			"response_types.go": "hello\n// GetFileContentResponse contains the response from method Client.GetFileContent.\n" +
+			"responses.go": "hello\n// GetFileContentResponse contains the response from method Client.GetFileContent.\n" +
 				"type GetFileContentResponse struct {\n" +
 				"  Value []byte\n" +
 				"}\n" +
@@ -100,9 +100,9 @@ func TestSnipResponseType(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, map[string]string{
-		"models.go":         "ignored",
-		"models_serde.go":   "ignored",
-		"response_types.go": "hello\n\n world",
-		"options.go":        "ignored",
+		"models.go":       "ignored",
+		"models_serde.go": "ignored",
+		"responses.go":    "hello\n\n world",
+		"options.go":      "ignored",
 	}, fileCache.files)
 }

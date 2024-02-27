@@ -3,6 +3,7 @@
 
 package azcosmos
 
+// Headers
 const (
 	cosmosHeaderRequestCharge                      string = "x-ms-request-charge"
 	cosmosHeaderActivityId                         string = "x-ms-activity-id"
@@ -48,12 +49,14 @@ const (
 	cosmosHeaderValuesQuery         string = "application/query+json"
 )
 
+// Status Codes
 const (
 	statusForbidden          int = 403
 	statusNotFound           int = 404
 	statusServiceUnavailable int = 503
 )
 
+// Substatus Codes
 const (
 	subStatusWriteForbidden          string = "3"
 	subStatusDatabaseAccountNotFound string = "1008"

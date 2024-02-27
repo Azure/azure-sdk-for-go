@@ -18,21 +18,24 @@ type clientRetryPolicy struct {
 	preferredLocationIndex int
 }
 
-const maxRetryCount = 10 // this number needs to be higher, keeping low for testing purposes right now
+const maxRetryCount = 120
 const defaultBackoff = 1
 
 func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
-	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
 	o := pipelineRequestOptions{}
-	req.OperationValue(&o)
+	if !req.OperationValue(&o) {
+		return nil, fmt.Errorf("Failed to obtain request options, please check request being sent: %s", req.Body())
+	}
+	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+	req.Raw().Host = resolvedEndpoint.Host
+	req.Raw().URL.Host = resolvedEndpoint.Host
+	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
 	subStatus := response.Header.Get(cosmosHeaderSubstatus)
+	fmt.Println(response.StatusCode)
 	if p.shouldRetryStatus(response.StatusCode, subStatus) {
 		p.retryCount = 0
 		p.sessionRetryCount = 0
 		for {
-			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
-			req.Raw().Host = resolvedEndpoint.Host
-			req.Raw().URL.Host = resolvedEndpoint.Host
 			subStatus = response.Header.Get(cosmosHeaderSubstatus)
 			if p.shouldRetryStatus(response.StatusCode, subStatus) {
 				fmt.Println("Policy TIME")
@@ -54,10 +57,19 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				fmt.Println("supposed to break this")
 				break
 			}
+			err = req.RewindBody()
+			if err != nil {
+				return response, err
+			}
+			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+			req.Raw().Host = resolvedEndpoint.Host
+			req.Raw().URL.Host = resolvedEndpoint.Host
+			fmt.Println("retryngggg")
 			response, err = req.Next()
 			fmt.Println("should have retried")
 		}
 	}
+	fmt.Println("returning response from policy")
 	return response, err
 }
 
@@ -103,6 +115,7 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request
 		}
 	}
 	p.sessionRetryCount += 1
+	p.retryCount += 1
 	return true
 }
 

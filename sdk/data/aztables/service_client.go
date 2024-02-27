@@ -148,9 +148,7 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 		Fetcher: func(ctx context.Context, page *ListTablesResponse) (ListTablesResponse, error) {
 			var tableName *string
 			if page != nil {
-				if page.NextTableName != nil {
-					tableName = page.NextTableName
-				}
+				tableName = page.NextTableName
 			} else {
 				tableName = listOptions.NextTableName
 			}

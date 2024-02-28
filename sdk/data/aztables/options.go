@@ -5,13 +5,14 @@ package aztables
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
 // AddEntityOptions contains optional parameters for Client.AddEntity
 type AddEntityOptions struct {
-	// placeholder for future optional parameters
+	// Format specifies the amount of metadata returned.
+	// The default is MetadataFormatMinimal.
+	Format *MetadataFormat
 }
 
 // CreateTableOptions contains optional parameters for Client.Create and ServiceClient.CreateTable
@@ -52,11 +53,9 @@ func (g *GetAccessPolicyOptions) toGenerated() *generated.TableClientGetAccessPo
 
 // GetEntityOptions contains optional parameters for Client.GetEntity
 type GetEntityOptions struct {
-	// placeholder for future optional parameters
-}
-
-func (g *GetEntityOptions) toGenerated() (*generated.TableClientQueryEntityWithPartitionAndRowKeyOptions, *generated.QueryOptions) {
-	return &generated.TableClientQueryEntityWithPartitionAndRowKeyOptions{}, &generated.QueryOptions{Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata)}
+	// Format specifies the amount of metadata returned.
+	// The default is MetadataFormatMinimal.
+	Format *MetadataFormat
 }
 
 // GetPropertiesOptions contains optional parameters for Client.GetProperties
@@ -94,6 +93,10 @@ type ListEntitiesOptions struct {
 
 	// The NextRowKey to start paging from
 	NextRowKey *string
+
+	// Format specifies the amount of metadata returned.
+	// The default is MetadataFormatMinimal.
+	Format *MetadataFormat
 }
 
 func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
@@ -103,7 +106,7 @@ func (l *ListEntitiesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata),
+		Format: l.Format,
 		Select: l.Select,
 		Top:    l.Top,
 	}
@@ -122,6 +125,10 @@ type ListTablesOptions struct {
 
 	// NextTableName is the continuation token for the next table to page from
 	NextTableName *string
+
+	// Format specifies the amount of metadata returned.
+	// The default is MetadataFormatMinimal.
+	Format *MetadataFormat
 }
 
 func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
@@ -131,7 +138,7 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 
 	return &generated.QueryOptions{
 		Filter: l.Filter,
-		Format: to.Ptr(generated.ODataMetadataFormatApplicationJSONODataMinimalmetadata),
+		Format: l.Format,
 		Select: l.Select,
 		Top:    l.Top,
 	}

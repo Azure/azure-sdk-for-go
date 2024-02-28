@@ -6,6 +6,7 @@
 
 * Added logging event `log.EventResponseError` that will contain the contents of `ResponseError.Error()` whenever an `azcore.ResponseError` is created.
 * Added `runtime.NewResponseErrorWithErrorCode` for creating an `azcore.ResponseError` with a caller-supplied error code.
+* Added type `MatchConditions` for use in conditional requests.
 
 ### Breaking Changes
 

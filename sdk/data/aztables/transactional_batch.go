@@ -54,7 +54,7 @@ func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []Tra
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions []TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
+func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions []TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, _ *SubmitTransactionOptions) (TransactionResponse, error) {
 	if len(transactionActions) == 0 {
 		return TransactionResponse{}, errEmptyTransaction
 	}
@@ -104,11 +104,11 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 
-	return buildTransactionResponse(req, resp, len(transactionActions))
+	return buildTransactionResponse(req, resp)
 }
 
 // create the transaction response. This will read the inner responses
-func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (TransactionResponse, error) {
+func buildTransactionResponse(req *policy.Request, resp *http.Response) (TransactionResponse, error) {
 	bytesBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return TransactionResponse{}, err

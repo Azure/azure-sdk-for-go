@@ -14,7 +14,7 @@ file-prefix: "zz_"
 output-folder: generated
 openapi-type: "data-plane"
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.59"
+use: "@autorest/go@4.0.0-preview.63"
 slice-elements-byval: true
 modelerfour:
   lenient-model-deduplication: true

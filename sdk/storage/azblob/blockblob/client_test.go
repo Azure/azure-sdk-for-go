@@ -5742,7 +5742,6 @@ func TestUploadLogEvent(t *testing.T) {
 	listnercalled := false
 	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)
 	log.SetListener(func(cls log.Event, msg string) {
-		t.Logf("%s: %s\n", cls, msg)
 		if cls == azblob.EventUpload {
 			listnercalled = true
 			require.Equal(t, msg, "blob name path1/path2 actual size 270000000 block-size 4194304 block-count 65")
@@ -5795,7 +5794,6 @@ func TestRequestIDGeneration(t *testing.T) {
 	requestIdMatch := false
 	log.SetEvents(log.EventRequest)
 	log.SetListener(func(cls log.Event, msg string) {
-		t.Logf("%s: %s\n", cls, msg)
 		require.Contains(t, msg, "X-Ms-Client-Request-Id: azblob-test-request-id")
 		require.Contains(t, msg, "User-Agent: testApp/1.0.0-preview.2")
 		requestIdMatch = true

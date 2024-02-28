@@ -13,6 +13,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"io"
 	"net/http"
@@ -3778,6 +3779,9 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	fbb := &fakeDownloadBlob{
 		contentSize: fileSize,
 	}
+
+	log.SetListener(nil) // no logging
+
 	blobClient, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: fbb,

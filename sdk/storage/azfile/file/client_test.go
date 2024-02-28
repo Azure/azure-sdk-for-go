@@ -13,6 +13,7 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -34,6 +35,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -4622,6 +4624,66 @@ func (f *FileRecordedTestsSuite) TestFileClientAudienceNegative() {
 	_, err = fileClientAudience.Create(context.Background(), 2048, nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
+}
+
+type fakeDownloadFile struct {
+	contentSize int64
+	numChunks   uint64
+}
+
+// nolint
+func (f *fakeDownloadFile) Do(req *http.Request) (*http.Response, error) {
+	// check how many times range based get blob is called
+	if _, ok := req.Header["x-ms-range"]; ok {
+		atomic.AddUint64(&f.numChunks, 1)
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Length": []string{fmt.Sprintf("%v", f.contentSize)}},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestDownloadSmallChunkSize(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(100 * 1024 * 1024)
+	chunkSize := int64(1024)
+	numChunks := uint64(((fileSize - 1) / chunkSize) + 1)
+	fbb := &fakeDownloadFile{
+		contentSize: fileSize,
+	}
+
+	log.SetListener(nil) // no logging
+
+	fileClient, err := file.NewClientWithNoCredential("https://fake/file/path", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(fileClient)
+
+	// download to a temp file and verify contents
+	tmp, err := os.CreateTemp("", "")
+	_require.NoError(err)
+	defer tmp.Close()
+
+	_, err = fileClient.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+
+	// reset counter
+	atomic.StoreUint64(&fbb.numChunks, 0)
+
+	buff := make([]byte, fileSize)
+	_, err = fileClient.DownloadBuffer(context.Background(), buff, &file.DownloadBufferOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }
 
 // TODO: Add tests for retry header options

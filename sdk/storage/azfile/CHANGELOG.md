@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+* Updated `azidentity` version to `1.5.1`.
+
 ## 1.2.0 (2024-02-12)
 
 ### Other Changes

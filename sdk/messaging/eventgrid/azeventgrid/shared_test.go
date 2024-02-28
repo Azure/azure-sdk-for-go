@@ -20,6 +20,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid"
 	"github.com/stretchr/testify/require"
@@ -141,19 +142,33 @@ func newTestVars(t *testing.T) eventGridVars {
 	return egVars
 }
 
-func newClientOptionsForTest(t *testing.T) *azeventgrid.ClientOptions {
+func newClientOptionsForTest(t *testing.T) struct {
+	EG  *azeventgrid.ClientOptions
+	DAC *azidentity.DefaultAzureCredentialOptions
+} {
+	var ret = struct {
+		EG  *azeventgrid.ClientOptions
+		DAC *azidentity.DefaultAzureCredentialOptions
+	}{}
+
 	if recording.GetRecordMode() != recording.LiveMode {
 		recordingClient, err := recording.NewRecordingHTTPClient(t, nil)
 		require.NoError(t, err)
 
-		return &azeventgrid.ClientOptions{
-			ClientOptions: azcore.ClientOptions{
-				Transport: recordingClient,
-			},
+		clientOptions := azcore.ClientOptions{
+			Transport: recordingClient,
+		}
+
+		ret.DAC = &azidentity.DefaultAzureCredentialOptions{
+			ClientOptions: clientOptions,
+		}
+
+		ret.EG = &azeventgrid.ClientOptions{
+			ClientOptions: clientOptions,
 		}
 	}
 
-	return nil
+	return ret
 }
 
 type dumpFullPolicy struct {

@@ -44,14 +44,14 @@ func TestPublishEvent(t *testing.T) {
 
 	t.Run("sas", func(t *testing.T) {
 		vars := newTestVars(t)
-		client, err := azeventgrid.NewClientWithSAS(vars.EG.Endpoint, azcore.NewSASCredential(vars.EG.SAS), newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClientWithSAS(vars.EG.Endpoint, azcore.NewSASCredential(vars.EG.SAS), newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
 
 	t.Run("sharedkey", func(t *testing.T) {
 		vars := newTestVars(t)
-		client, err := azeventgrid.NewClientWithSharedKeyCredential(vars.EG.Endpoint, azcore.NewKeyCredential(vars.EG.Key), newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClientWithSharedKeyCredential(vars.EG.Endpoint, azcore.NewKeyCredential(vars.EG.Key), newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -60,12 +60,10 @@ func TestPublishEvent(t *testing.T) {
 		vars := newTestVars(t)
 
 		// note you need the "Event Grid sender" role.
-		cred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: newClientOptionsForTest(t).ClientOptions,
-		})
+		cred, err := azidentity.NewDefaultAzureCredential(newClientOptionsForTest(t).DAC)
 		require.NoError(t, err)
 
-		client, err := azeventgrid.NewClient(vars.EG.Endpoint, cred, newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClient(vars.EG.Endpoint, cred, newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -86,7 +84,7 @@ func TestPublishCloudEvent(t *testing.T) {
 	t.Run("sas", func(t *testing.T) {
 		vars := newTestVars(t)
 
-		client, err := azeventgrid.NewClientWithSAS(vars.CE.Endpoint, azcore.NewSASCredential(vars.CE.SAS), newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClientWithSAS(vars.CE.Endpoint, azcore.NewSASCredential(vars.CE.SAS), newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -94,7 +92,7 @@ func TestPublishCloudEvent(t *testing.T) {
 	t.Run("sharedkey", func(t *testing.T) {
 		vars := newTestVars(t)
 
-		client, err := azeventgrid.NewClientWithSharedKeyCredential(vars.CE.Endpoint, azcore.NewKeyCredential(vars.CE.Key), newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClientWithSharedKeyCredential(vars.CE.Endpoint, azcore.NewKeyCredential(vars.CE.Key), newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})
@@ -102,12 +100,10 @@ func TestPublishCloudEvent(t *testing.T) {
 	t.Run("tokencredential", func(t *testing.T) {
 		vars := newTestVars(t)
 
-		tokenCred, err := azidentity.NewDefaultAzureCredential(&azidentity.DefaultAzureCredentialOptions{
-			ClientOptions: newClientOptionsForTest(t).ClientOptions,
-		})
+		tokenCred, err := azidentity.NewDefaultAzureCredential(newClientOptionsForTest(t).DAC)
 		require.NoError(t, err)
 
-		client, err := azeventgrid.NewClient(vars.CE.Endpoint, tokenCred, newClientOptionsForTest(t))
+		client, err := azeventgrid.NewClient(vars.CE.Endpoint, tokenCred, newClientOptionsForTest(t).EG)
 		require.NoError(t, err)
 		testPublish(t, client)
 	})

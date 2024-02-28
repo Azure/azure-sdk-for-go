@@ -75,8 +75,7 @@ func TestAssistantCreationAndListing(t *testing.T) {
 	testFn := func(t *testing.T, azure bool) {
 		client, createResp := mustGetClientWithAssistant(t, mustGetClientWithAssistantArgs{
 			newClientArgs: newClientArgs{
-				Azure:       azure,
-				UseIdentity: true,
+				Azure: azure,
 			},
 		})
 

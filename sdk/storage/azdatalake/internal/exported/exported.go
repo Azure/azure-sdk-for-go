@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"strconv"
 	"strings"
 )
@@ -21,6 +22,8 @@ const SnapshotTimeFormat = "2006-01-02T15:04:05.0000000Z07:00"
 // ending at offset+count. A zero-value HTTPRange indicates the entire resource. An HTTPRange
 // which has an offset and zero value count indicates from the offset to the resource's end.
 type HTTPRange = blob.HTTPRange
+
+type LeaseAction = generated.LeaseAction
 
 // FormatHTTPRange converts an HTTPRange to its string format.
 func FormatHTTPRange(r HTTPRange) *string {

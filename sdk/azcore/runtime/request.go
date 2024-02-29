@@ -48,7 +48,7 @@ func EncodeQueryParams(u string) (string, error) {
 	if !found {
 		return u, nil
 	}
-	// staring in Go 1.17, url.ParseQuery will reject semicolons in query params.
+	// starting in Go 1.17, url.ParseQuery will reject semicolons in query params.
 	// so, we must escape them first. note that this assumes that semicolons aren't
 	// being used as query param separators which is per the current RFC.
 	// for more info:

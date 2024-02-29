@@ -74,6 +74,13 @@ var BasicHeaders = file.HTTPHeaders{
 	ContentEncoding:    &DatalakeContentEncoding,
 }
 
+var (
+	TestLeaseActionAcquire        = file.LeaseAction("acquire")
+	TestLeaseActionRelease        = file.LeaseAction("release")
+	TestLeaseActionRenew          = file.LeaseAction("auto-renew")
+	TestLeaseActionAcquireRelease = file.LeaseAction("acquire-release")
+)
+
 type TestAccountType string
 
 const (

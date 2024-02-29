@@ -3,6 +3,8 @@
 ## 1.1.1 (Unreleased)
 
 ### Features Added
+* Append with acquire, release lease and renewal of lease.
+* Flush with release lease
 
 ### Breaking Changes
 

@@ -206,10 +206,10 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}
@@ -268,10 +268,10 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
+	reqQP.Set("api-version", "2023-10-01-preview")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}

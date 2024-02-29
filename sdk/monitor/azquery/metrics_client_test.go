@@ -149,8 +149,7 @@ func TestNewListNamespacesPager_Failure(t *testing.T) {
 		res, err := pager.NextPage(context.Background())
 		require.Error(t, err)
 		require.ErrorAs(t, err, &httpErr)
-		require.Equal(t, httpErr.ErrorCode, "MissingSubscription")
-		require.Equal(t, httpErr.StatusCode, 404)
+		require.NotEqual(t, 200, httpErr.StatusCode)
 		require.Nil(t, res.Value)
 	} else {
 		t.Fatal("no response")

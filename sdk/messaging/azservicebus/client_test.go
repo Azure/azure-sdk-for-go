@@ -76,13 +76,12 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 
 	receiver, err := client.NewReceiverForQueue(queue, nil)
 	require.NoError(t, err)
-	actualSettler, _ := receiver.settler.(*messageSettler)
-	actualSettler.onlyDoBackupSettlement = true // this'll also exercise the management link
 
 	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
+	forceManagementSettlement(t, messages)
 
 	for _, m := range messages {
 		err = receiver.CompleteMessage(context.TODO(), m, nil)
@@ -550,7 +549,7 @@ func TestNewClientUnitTests(t *testing.T) {
 			MaxRetryDelay: 12 * time.Hour,
 		}, receiver.retryOptions)
 
-		actualSettler := receiver.settler.(*messageSettler)
+		actualSettler := receiver.settler
 
 		require.Equal(t, RetryOptions{
 			MaxRetries:    101,
@@ -579,4 +578,10 @@ func assertRPCNotFound(t *testing.T, err error) {
 
 	require.ErrorAs(t, err, &rpcError)
 	require.Equal(t, http.StatusNotFound, rpcError.RPCCode())
+}
+
+func forceManagementSettlement(t *testing.T, messages []*ReceivedMessage) {
+	for _, m := range messages {
+		m.settleOnMgmtLink = true
+	}
 }

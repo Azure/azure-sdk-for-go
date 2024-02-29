@@ -246,6 +246,9 @@ type AmlFilesystemProperties struct {
 	// Hydration and archive settings and status
 	Hsm *AmlFilesystemPropertiesHsm
 
+	// Specifies root squash settings of the AML file system.
+	RootSquashSettings *AmlFilesystemRootSquashSettings
+
 	// READ-ONLY; Client information for the AML file system.
 	ClientInfo *AmlFilesystemClientInfo
 
@@ -275,6 +278,27 @@ type AmlFilesystemPropertiesMaintenanceWindow struct {
 
 	// The time of day (in UTC) to start the maintenance window.
 	TimeOfDayUTC *string
+}
+
+// AmlFilesystemRootSquashSettings - AML file system squash settings.
+type AmlFilesystemRootSquashSettings struct {
+	// Squash mode of the AML file system. 'All': User and Group IDs on files will be squashed to the provided values for all
+	// users on non-trusted systems. 'RootOnly': User and Group IDs on files will be
+	// squashed to provided values for solely the root user on non-trusted systems. 'None': No squashing of User and Group IDs
+	// is performed for any users on any systems.
+	Mode *AmlFilesystemSquashMode
+
+	// Semicolon separated NID IP Address list(s) to be added to the TrustedSystems.
+	NoSquashNidLists *string
+
+	// Group ID to squash to.
+	SquashGID *int64
+
+	// User ID to squash to.
+	SquashUID *int64
+
+	// READ-ONLY; AML file system squash status.
+	Status *string
 }
 
 // AmlFilesystemSubnetInfo - Information required to validate the subnet that will be used in AML file system create
@@ -309,6 +333,9 @@ type AmlFilesystemUpdateProperties struct {
 
 	// Start time of a 30-minute weekly maintenance window.
 	MaintenanceWindow *AmlFilesystemUpdatePropertiesMaintenanceWindow
+
+	// Specifies root squash settings of the AML file system.
+	RootSquashSettings *AmlFilesystemRootSquashSettings
 }
 
 // AmlFilesystemUpdatePropertiesMaintenanceWindow - Start time of a 30-minute weekly maintenance window.

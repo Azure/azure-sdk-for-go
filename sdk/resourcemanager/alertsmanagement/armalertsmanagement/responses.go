@@ -59,6 +59,18 @@ type AlertProcessingRulesClientUpdateResponse struct {
 	XMSRequestID *string
 }
 
+// AlertRuleRecommendationsClientListByResourceResponse contains the response from method AlertRuleRecommendationsClient.NewListByResourcePager.
+type AlertRuleRecommendationsClientListByResourceResponse struct {
+	// List of alert rule recommendations.
+	AlertRuleRecommendationsListResponse
+}
+
+// AlertRuleRecommendationsClientListByTargetTypeResponse contains the response from method AlertRuleRecommendationsClient.NewListByTargetTypePager.
+type AlertRuleRecommendationsClientListByTargetTypeResponse struct {
+	// List of alert rule recommendations.
+	AlertRuleRecommendationsListResponse
+}
+
 // AlertsClientChangeStateResponse contains the response from method AlertsClient.ChangeState.
 type AlertsClientChangeStateResponse struct {
 	// An alert created in alert management service.
@@ -101,6 +113,41 @@ type OperationsClientListResponse struct {
 	OperationsList
 }
 
+// PrometheusRuleGroupsClientCreateOrUpdateResponse contains the response from method PrometheusRuleGroupsClient.CreateOrUpdate.
+type PrometheusRuleGroupsClientCreateOrUpdateResponse struct {
+	// The Prometheus rule group resource.
+	PrometheusRuleGroupResource
+}
+
+// PrometheusRuleGroupsClientDeleteResponse contains the response from method PrometheusRuleGroupsClient.Delete.
+type PrometheusRuleGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrometheusRuleGroupsClientGetResponse contains the response from method PrometheusRuleGroupsClient.Get.
+type PrometheusRuleGroupsClientGetResponse struct {
+	// The Prometheus rule group resource.
+	PrometheusRuleGroupResource
+}
+
+// PrometheusRuleGroupsClientListByResourceGroupResponse contains the response from method PrometheusRuleGroupsClient.NewListByResourceGroupPager.
+type PrometheusRuleGroupsClientListByResourceGroupResponse struct {
+	// Represents a collection of alert rule resources.
+	PrometheusRuleGroupResourceCollection
+}
+
+// PrometheusRuleGroupsClientListBySubscriptionResponse contains the response from method PrometheusRuleGroupsClient.NewListBySubscriptionPager.
+type PrometheusRuleGroupsClientListBySubscriptionResponse struct {
+	// Represents a collection of alert rule resources.
+	PrometheusRuleGroupResourceCollection
+}
+
+// PrometheusRuleGroupsClientUpdateResponse contains the response from method PrometheusRuleGroupsClient.Update.
+type PrometheusRuleGroupsClientUpdateResponse struct {
+	// The Prometheus rule group resource.
+	PrometheusRuleGroupResource
+}
+
 // SmartGroupsClientChangeStateResponse contains the response from method SmartGroupsClient.ChangeState.
 type SmartGroupsClientChangeStateResponse struct {
 	// Set of related alerts grouped together smartly by AMS.
@@ -129,4 +176,39 @@ type SmartGroupsClientGetByIDResponse struct {
 type SmartGroupsClientGetHistoryResponse struct {
 	// Alert Modification details
 	SmartGroupModification
+}
+
+// TenantActivityLogAlertsClientCreateOrUpdateResponse contains the response from method TenantActivityLogAlertsClient.CreateOrUpdate.
+type TenantActivityLogAlertsClientCreateOrUpdateResponse struct {
+	// A Tenant Activity Log Alert rule resource.
+	TenantActivityLogAlertResource
+}
+
+// TenantActivityLogAlertsClientDeleteResponse contains the response from method TenantActivityLogAlertsClient.Delete.
+type TenantActivityLogAlertsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TenantActivityLogAlertsClientGetResponse contains the response from method TenantActivityLogAlertsClient.Get.
+type TenantActivityLogAlertsClientGetResponse struct {
+	// A Tenant Activity Log Alert rule resource.
+	TenantActivityLogAlertResource
+}
+
+// TenantActivityLogAlertsClientListByManagementGroupResponse contains the response from method TenantActivityLogAlertsClient.NewListByManagementGroupPager.
+type TenantActivityLogAlertsClientListByManagementGroupResponse struct {
+	// A list of Tenant Activity Log Alert rules.
+	TenantAlertRuleList
+}
+
+// TenantActivityLogAlertsClientListByTenantResponse contains the response from method TenantActivityLogAlertsClient.NewListByTenantPager.
+type TenantActivityLogAlertsClientListByTenantResponse struct {
+	// A list of Tenant Activity Log Alert rules.
+	TenantAlertRuleList
+}
+
+// TenantActivityLogAlertsClientUpdateResponse contains the response from method TenantActivityLogAlertsClient.Update.
+type TenantActivityLogAlertsClientUpdateResponse struct {
+	// A Tenant Activity Log Alert rule resource.
+	TenantActivityLogAlertResource
 }

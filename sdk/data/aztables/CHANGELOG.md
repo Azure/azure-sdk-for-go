@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed an issue that could cause `Client.NewListEntitiesPager` to skip pages in some cases.
 
 ### Other Changes
 

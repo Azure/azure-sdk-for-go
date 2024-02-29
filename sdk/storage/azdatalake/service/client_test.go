@@ -830,7 +830,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountListFilesystemsEmptyPrefix() {
 	_require.GreaterOrEqual(count, 2)
 }
 
-func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
+func (s *ServiceUnrecordedTestsSuite) TestServiceClientWithHTTP() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -847,6 +847,7 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientRejectHTTP() {
 
 	_, err = fileClient.Create(context.Background(), nil)
 	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, "AccountRequiresHttps")
 }
 
 func (s *ServiceRecordedTestsSuite) TestServiceClientWithNilSharedKey() {

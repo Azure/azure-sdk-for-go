@@ -1,5 +1,16 @@
 # Release History
 
+## 1.6.0 (Unreleased)
+
+### Features Added
+* Options types for `SetBodilessMatcher` and `SetDefaultMatcher` now embed `RecordingOptions`
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.5.2 (2024-02-06)
 
 ### Bugs Fixed

@@ -396,7 +396,6 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		})
 	assert.NoError(t, errTransferred)
 	_require.NoError(err)
-	//_require.Equal(response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
@@ -410,6 +409,9 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		_ = os.Remove(name)
 
 	}(destFileName)
+
+	filePointer, err := file.Seek(0, io.SeekCurrent)
+	_require.NoError(err)
 
 	// Perform download
 	_, err = client.DownloadFile(context.Background(),
@@ -435,6 +437,10 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 	assert.NoError(t, errTransferred)
 	_require.NoError(err)
 
+	currPointer, err := destFile.Seek(0, io.SeekCurrent)
+	_require.Equal(filePointer, currPointer)
+	_require.NoError(err)
+
 	// Assert downloaded data is consistent
 	var destBuffer []byte
 	if downloadCount == blob.CountToEnd {
@@ -443,8 +449,6 @@ func performUploadAndDownloadFileTest(t *testing.T, _require *require.Assertions
 		destBuffer = make([]byte, downloadCount)
 	}
 
-	_, err = destFile.Seek(0, 0)
-	_require.NoError(err)
 	n, err := destFile.Read(destBuffer)
 	_require.NoError(err)
 
@@ -703,9 +707,9 @@ func (s *AZBlobUnrecordedTestsSuite) TestBasicDoBatchTransfer() {
 		totalSizeCount := int64(0)
 		runCount := int64(0)
 
-		numChunks := uint16(0)
+		numChunks := uint64(0)
 		if test.chunkSize != 0 {
-			numChunks = uint16(((test.transferSize - 1) / test.chunkSize) + 1)
+			numChunks = uint64(((test.transferSize - 1) / test.chunkSize) + 1)
 		}
 
 		err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{

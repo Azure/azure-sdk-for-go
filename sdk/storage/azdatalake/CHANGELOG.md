@@ -12,6 +12,7 @@
 * Re-enabled `SharedKeyCredential` authentication mode for non TLS protected endpoints.
 
 ### Other Changes
+* Updated version of azblob to `1.3.1`
 
 ## 1.1.0 (2024-02-14)
 

@@ -12,6 +12,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -19,6 +20,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -4985,4 +4987,79 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 
 	_, err = fClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+}
+
+type fakeUploadBlob struct {
+	numChunks uint64
+}
+
+// nolint
+func (f *fakeUploadBlob) Do(req *http.Request) (*http.Response, error) {
+	statusCode := http.StatusOK
+
+	// check how many times append data is called
+	if val, ok := req.URL.Query()["action"]; ok {
+		if val[0] == "append" {
+			statusCode = http.StatusAccepted
+			atomic.AddUint64(&f.numChunks, 1)
+		}
+	}
+
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: statusCode,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestUploadSmallChunkSize(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(100 * 1024 * 1024)
+	chunkSize := int64(1024)
+	numChunks := uint64(((fileSize - 1) / chunkSize) + 1)
+	fbb := &fakeUploadBlob{}
+
+	log.SetListener(nil) // no logging
+
+	fClient, err := file.NewClientWithNoCredential("https://fake/blob/path", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fbb,
+		},
+	})
+	_require.NoError(err)
+	_require.NotNil(fClient)
+
+	// create local file
+	_, content := generateData(int(fileSize))
+	err = os.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+
+	// reset counter
+	atomic.StoreUint64(&fbb.numChunks, 0)
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{ChunkSize: chunkSize})
+	_require.NoError(err)
+
+	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }

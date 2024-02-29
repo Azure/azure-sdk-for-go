@@ -257,8 +257,6 @@ type AppendDataOptions struct {
 	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
-	// If file should be flushed after append
-	Flush *bool
 	// LeaseAction Describes actions that can be performed on a lease.
 	LeaseAction *LeaseAction
 	// LeaseDuration specifies the duration of the lease, in seconds, or negative one

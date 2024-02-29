@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/url"
 	"testing"
 	"time"
@@ -27,10 +28,10 @@ func TestSessionNotAvailableSingleMaster(t *testing.T) {
 	defer gemClose()
 	gemServer.SetResponse(mock.WithStatusCode(200))
 
-	internalPipeline := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
 	gem := &globalEndpointManager{
-		clientEndpoint:      srv.URL(),
+		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
 		preferredLocations:  []string{},
 		locationCache:       CreateMockLC(*defaultEndpoint, false),
@@ -113,13 +114,13 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 	defer gemClose()
 	gemServer.SetResponse(mock.WithStatusCode(200))
 
-	internalPipeline := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
 	gem := &globalEndpointManager{
-		clientEndpoint:      srv.URL(),
+		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
 		preferredLocations:  []string{},
-		locationCache:       CreateMockLC(*defaultEndpoint, true),
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
 		refreshTimeInterval: defaultExpirationTime,
 		lastUpdateTime:      time.Time{},
 	}
@@ -209,7 +210,7 @@ func TestSessionNotAvailableMultiMaster(t *testing.T) {
 	assert.True(t, retryPolicy.sessionRetryCount == 2)
 }
 
-func TestEndpointFailure(t *testing.T) {
+func TestReadEndpointFailure(t *testing.T) {
 	srv, closeFunc := mock.NewTLSServer()
 	defer closeFunc()
 
@@ -220,10 +221,10 @@ func TestEndpointFailure(t *testing.T) {
 	defer gemClose()
 	gemServer.SetResponse(mock.WithStatusCode(200))
 
-	internalPipeline := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
 	gem := &globalEndpointManager{
-		clientEndpoint:      srv.URL(),
+		clientEndpoint:      gemServer.URL(),
 		pipeline:            internalPipeline,
 		preferredLocations:  []string{},
 		locationCache:       CreateMockLC(*defaultEndpoint, false),
@@ -235,14 +236,7 @@ func TestEndpointFailure(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{retryPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	// Setting up responses for retrying with each error code and then succeeding
-	// Since we run a gem.Update() method within the retry policy, we need to send responses for those requests as well
-	srv.AppendResponse(
-		mock.WithHeader("x-ms-substatus", "3"),
-		mock.WithStatusCode(403))
-	srv.AppendResponse(
-		mock.WithHeader("x-ms-substatus", "3"),
-		mock.WithStatusCode(403))
+	// Setting up responses for retrying twice
 	srv.AppendResponse(
 		mock.WithHeader("x-ms-substatus", "1008"),
 		mock.WithStatusCode(403))
@@ -256,7 +250,7 @@ func TestEndpointFailure(t *testing.T) {
 	db, _ := client.NewDatabase("database_id")
 	container, _ := db.NewContainer("container_id")
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
-	// Request should retry twice and then succeed
+
 	assert.NoError(t, err)
 	assert.True(t, retryPolicy.retryCount == 2)
 	// Verify region is marked as read unavailable
@@ -266,11 +260,38 @@ func TestEndpointFailure(t *testing.T) {
 		locationKeys = append(locationKeys, k)
 	}
 	assert.True(t, gem.locationCache.locationUnavailabilityInfoMap[locationKeys[0]].unavailableOps == 1)
+}
 
-	// Reset location cache
-	client.gem.locationCache = CreateMockLC(*defaultEndpoint, false)
+func TestWriteEndpointFailure(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
 
-	// Testing write requests
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
 	item := map[string]interface{}{
 		"id":    "1",
 		"value": "2",
@@ -280,35 +301,179 @@ func TestEndpointFailure(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Setting up responses for retrying with each error code and then succeeding
-	// Since we run a gem.Update() method within the retry policy, we need to send responses for those requests as well
+	// Setting up responses for retrying twice
 	srv.AppendResponse(
 		mock.WithHeader("x-ms-substatus", "3"),
 		mock.WithStatusCode(403))
 	srv.AppendResponse(
 		mock.WithHeader("x-ms-substatus", "3"),
-		mock.WithStatusCode(403))
-	srv.AppendResponse(
-		mock.WithHeader("x-ms-substatus", "1008"),
-		mock.WithStatusCode(403))
-	srv.AppendResponse(
-		mock.WithHeader("x-ms-substatus", "1008"),
 		mock.WithStatusCode(403))
 	srv.AppendResponse(
 		mock.WithStatusCode(200))
 
 	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
-	// Request should retry twice and then succeed
+
 	assert.NoError(t, err)
 	assert.True(t, retryPolicy.retryCount == 2)
 	// Verify region is marked as write unavailable
-	assert.True(t, len(gem.locationCache.locationUnavailabilityInfoMap) == 1)
-	locationKeys = []url.URL{}
+	locationKeys := []url.URL{}
 	for k, _ := range gem.locationCache.locationUnavailabilityInfoMap {
 		locationKeys = append(locationKeys, k)
 	}
 	assert.True(t, gem.locationCache.locationUnavailabilityInfoMap[locationKeys[0]].unavailableOps == 2)
+}
 
+func TestReadServiceUnavailable(t *testing.T) {
+	// depends on length of preferred locations, if its write request has to be multi master
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	// Setting up responses for retrying and succeeding
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(200))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	// Request should retry twice and then succeed (2 preferred regions)
+	assert.NoError(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
+	fmt.Println("we here 1")
+
+	// Setting up responses for retrying and failing
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	// Request should retry twice and then fail (2 preferred regions)
+	assert.Error(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
+	fmt.Println("we here 2")
+
+	// Setting up multi master location cache to test same behavior
+	client.gem.locationCache = CreateMockLC(*defaultEndpoint, true)
+
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	// Request should retry twice and then fail (2 preferred regions)
+	assert.Error(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
+}
+
+func TestWriteServiceUnavailable(t *testing.T) {
+	// depends on length of preferred locations, if its write request has to be multi master
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetResponse(mock.WithStatusCode(200))
+
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       CreateMockLC(*defaultEndpoint, false),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	client := &Client{endpoint: srv.URL(), pipeline: pl, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+
+	item := map[string]interface{}{
+		"id":    "1",
+		"value": "2",
+	}
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Setting up responses for single master write failure
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+	// Assert we do not retry the request since we are not multi master
+	assert.Error(t, err)
+	assert.True(t, retryPolicy.retryCount == 0)
+
+	// Setting up multi master location cache to test same behavior
+	client.gem.locationCache = CreateMockLC(*defaultEndpoint, true)
+
+	// Setting up responses for retrying and succeeding, we still have one 503 saved in server responses
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(200))
+
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+	// Request should retry twice and then succeed (2 preferred regions)
+	assert.NoError(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
+
+	// Setting up responses for retrying and failing
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+	srv.AppendResponse(
+		mock.WithStatusCode(503))
+
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
+	// Request should retry twice and then fail (2 preferred regions)
+	assert.Error(t, err)
+	assert.True(t, retryPolicy.retryCount == 2)
 }
 
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {

@@ -13,6 +13,7 @@ import (
 
 type clientRetryPolicy struct {
 	gem                    *globalEndpointManager
+	useWriteEndpoint       bool
 	retryCount             int
 	sessionRetryCount      int
 	preferredLocationIndex int
@@ -26,28 +27,33 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if !req.OperationValue(&o) {
 		return nil, fmt.Errorf("Failed to obtain request options, please check request being sent: %s", req.Body())
 	}
-	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+	resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 	req.Raw().Host = resolvedEndpoint.Host
 	req.Raw().URL.Host = resolvedEndpoint.Host
 	response, err := req.Next() // err can happen in weird scenarios (connectivity, etc) - need to test
+	if err != nil {
+		fmt.Println("error found")
+	}
 	subStatus := response.Header.Get(cosmosHeaderSubstatus)
 	fmt.Println(response.StatusCode)
 	if p.shouldRetryStatus(response.StatusCode, subStatus) {
 		p.retryCount = 0
 		p.sessionRetryCount = 0
+		p.preferredLocationIndex = 0
 		for {
+			p.useWriteEndpoint = false
 			subStatus = response.Header.Get(cosmosHeaderSubstatus)
 			if p.shouldRetryStatus(response.StatusCode, subStatus) {
 				fmt.Println("Policy TIME")
-				if response.StatusCode == statusForbidden {
+				if response.StatusCode == http.StatusForbidden {
 					if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
 						break
 					}
-				} else if response.StatusCode == statusNotFound {
+				} else if response.StatusCode == http.StatusNotFound {
 					if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
 						break
 					}
-				} else if response.StatusCode == statusServiceUnavailable {
+				} else if response.StatusCode == http.StatusServiceUnavailable {
 					if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
 						break
 					}
@@ -61,10 +67,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if err != nil {
 				return response, err
 			}
-			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation)
+			resolvedEndpoint := p.gem.ResolveServiceEndpoint(p.retryCount, o.isWriteOperation, p.useWriteEndpoint)
 			req.Raw().Host = resolvedEndpoint.Host
 			req.Raw().URL.Host = resolvedEndpoint.Host
 			fmt.Println("retryngggg")
+			p.retryCount += 1
 			response, err = req.Next()
 			fmt.Println("should have retried")
 		}
@@ -74,9 +81,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (shouldRetry bool) {
-	if (status == statusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
-		(status == statusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
-		(status == statusServiceUnavailable) {
+	if (status == http.StatusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
+		(status == http.StatusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
+		(status == http.StatusServiceUnavailable) {
 		return true
 	}
 	return false
@@ -92,8 +99,6 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 		p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 	}
 	p.gem.Update(req.Raw().Context())
-
-	p.retryCount += 1
 	time.Sleep(defaultBackoff * time.Second)
 	return true
 }
@@ -113,30 +118,21 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(req *policy.Request
 		if p.sessionRetryCount > 0 {
 			return false
 		}
+		p.useWriteEndpoint = true
 	}
 	p.sessionRetryCount += 1
-	p.retryCount += 1
 	return true
 }
 
 func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(req *policy.Request, isWriteOperation bool) bool {
-	//On HTTP 503 response, if it's a read request and preferredRegions > 1,
-	//retry on the next preferredRegion. If it's a write request and account is multi master
-	//and preferredRegions > 1, retry on the next preferredRegion.
 	if !p.gem.locationCache.enableCrossRegionRetries || p.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false
 	}
-	if isWriteOperation {
-		if p.gem.CanUseMultipleWriteLocations() {
-			locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
-			req.Raw().URL = &locationalEndpoint
-		} else {
-			return false
-		}
-	} else {
-		locationalEndpoint := p.gem.GetPreferredLocationEndpoint(p.preferredLocationIndex, *req.Raw().URL)
-		req.Raw().URL = &locationalEndpoint
+	if isWriteOperation && !p.gem.CanUseMultipleWriteLocations() {
+		return false
 	}
 	p.preferredLocationIndex += 1
+	fmt.Println(p.preferredLocationIndex)
+	fmt.Println(len(p.gem.preferredLocations))
 	return true
 }

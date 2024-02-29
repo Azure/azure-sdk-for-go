@@ -102,8 +102,8 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 	return nil
 }
 
-func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation bool) url.URL {
-	if isWriteOperation && !lc.canUseMultipleWriteLocs() {
+func (lc *locationCache) resolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
+	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocs() {
 		if lc.enableCrossRegionRetries {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)
 			writeLocation := lc.locationInfo.availWriteLocations[locationIndex]

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strings"
 	"sync"
 	"time"
 
@@ -85,27 +84,8 @@ func (gem *globalEndpointManager) ShouldRefresh() bool {
 	return time.Since(gem.lastUpdateTime) > gem.refreshTimeInterval
 }
 
-func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation bool) url.URL {
-	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation)
-}
-
-func (gem *globalEndpointManager) GetPreferredLocationEndpoint(preferredLocationIndex int, currentUrl url.URL) url.URL {
-	endpointString := currentUrl.String()
-	location := gem.preferredLocations[preferredLocationIndex]
-	endpointParts := strings.Split(endpointString, ".")
-	if len(endpointParts) > 0 {
-		databaseAccountName := endpointParts[0]
-		locationalDatabaseAccountName := databaseAccountName + "-" + strings.ToLower(strings.ReplaceAll(location, " ", ""))
-		endpointParts[0] = locationalDatabaseAccountName
-		locationalString := strings.Join(endpointParts, ".")
-		locationalURL, err := url.Parse(locationalString)
-		if err != nil {
-			// error parsing the new url
-			return currentUrl
-		}
-		return *locationalURL
-	}
-	return currentUrl
+func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, isWriteOperation, useWriteEndpoint bool) url.URL {
+	return gem.locationCache.resolveServiceEndpoint(locationIndex, isWriteOperation, useWriteEndpoint)
 }
 
 func (gem *globalEndpointManager) Update(ctx context.Context) error {

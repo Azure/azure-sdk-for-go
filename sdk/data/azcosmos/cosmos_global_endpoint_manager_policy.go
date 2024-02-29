@@ -5,18 +5,25 @@ package azcosmos
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 type globalEndpointManagerPolicy struct {
-	gem *globalEndpointManager
+	gem  *globalEndpointManager
+	once sync.Once
 }
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
-	shouldRefresh := p.gem.ShouldRefresh()
-	if shouldRefresh {
+	p.once.Do(func() {
+		fmt.Println("initializing")
+		p.gem.Update(context.Background())
+	})
+	if p.gem.ShouldRefresh() {
+		fmt.Println("refreshing")
 		go func() {
 			_ = p.gem.Update(context.Background())
 		}()

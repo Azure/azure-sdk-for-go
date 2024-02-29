@@ -135,7 +135,7 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
+	return azruntime.NewPipeline("azcosmosgem", serviceLibVersion,
 		azruntime.PipelineOptions{
 			PerRetry: []policy.Policy{
 				authPolicy,

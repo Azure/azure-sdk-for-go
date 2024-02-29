@@ -47,7 +47,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ContainerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ContainerClient, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(shared.ContainerClient, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func (c *Client) URL() string {
 func (c *Client) NewBlobClient(blobName string) *blob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient().WithClientName(exported.ModuleName), c.credential(), c.getClientOptions()))
+	return (*blob.Client)(base.NewBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlobClient), c.credential(), c.getClientOptions()))
 }
 
 // NewAppendBlobClient creates a new appendblob.Client object by concatenating blobName to the end of
@@ -147,7 +147,7 @@ func (c *Client) NewBlobClient(blobName string) *blob.Client {
 func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().InternalClient().WithClientName(exported.ModuleName), c.sharedKey()))
+	return (*appendblob.Client)(base.NewAppendBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.AppendBlobClient), c.sharedKey()))
 }
 
 // NewBlockBlobClient creates a new blockblob.Client object by concatenating blobName to the end of
@@ -156,7 +156,7 @@ func (c *Client) NewAppendBlobClient(blobName string) *appendblob.Client {
 func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().InternalClient().WithClientName(exported.ModuleName), c.sharedKey()))
+	return (*blockblob.Client)(base.NewBlockBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.BlockBlobClient), c.sharedKey()))
 }
 
 // NewPageBlobClient creates a new pageblob.Client object by concatenating blobName to the end of
@@ -165,7 +165,7 @@ func (c *Client) NewBlockBlobClient(blobName string) *blockblob.Client {
 func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
 	blobName = url.PathEscape(blobName)
 	blobURL := runtime.JoinPaths(c.URL(), blobName)
-	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().InternalClient().WithClientName(exported.ModuleName), c.sharedKey()))
+	return (*pageblob.Client)(base.NewPageBlobClient(blobURL, c.generated().InternalClient().WithClientName(shared.PageBlobClient), c.sharedKey()))
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.

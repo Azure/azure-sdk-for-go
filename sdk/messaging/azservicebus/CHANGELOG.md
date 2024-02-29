@@ -1,25 +1,10 @@
 # Release History
 
-## 1.6.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.6.0 (2024-01-17)
+## 1.5.1 (2024-01-16)
 
 ### Features Added
 
 - ReceiverOptions.TimeAfterFirstMessage lets you configure the amount of time, after the first message in a batch is received, before we return messages. (PR#22154)
-
-### Bugs Fixed
-
-- Settling a message (using CompleteMessage, AbandonMessage, etc..) on a different Receiver instance than you received on no 
-  longer leaks memory. (PR#22253)
 
 ## 1.5.0 (2023-10-10)
 

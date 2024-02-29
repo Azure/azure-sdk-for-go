@@ -605,7 +605,7 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 		}
 	}
 
-	opts := &azappconfig.BeginCreateSnapshotOptions{
+	opts := &azappconfig.CreateSnapshotOptions{
 		RetentionPeriod: to.Ptr[int64](3600),
 	}
 

@@ -36,12 +36,9 @@ directive:
         replace(/if rowKey == "" \{\s*.*\s*\}\s*/g, ``);
   - from:
       - zz_time_rfc1123.go
-    where: $
-    transform: return $.replace(/UnmarshalText\(data\s+\[\]byte\)\s+error\s+\{\s/g, `UnmarshalText(data []byte) error {\n\tif len(data) == 0 {\n\t\treturn nil\n\t}\n`);
-  - from:
       - zz_time_rfc3339.go
     where: $
-    transform: return $.replace(/UnmarshalText\(data\s+\[\]byte\)\s+\(error\)\s+\{\s/g, `UnmarshalText(data []byte) error {\n\tif len(data) == 0 {\n\t\treturn nil\n\t}\n`);
+    transform: return $.replace(/UnmarshalText\(data\s+\[\]byte\)\s+(?:error|\(error\))\s+\{\s/g, `UnmarshalText(data []byte) error {\n\tif len(data) == 0 {\n\t\treturn nil\n\t}\n`);
 ```
 
 ### Go multi-api

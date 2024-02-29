@@ -287,9 +287,6 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 	}
 
 	appendDataOptions := &generated.PathClientAppendDataOptions{}
-	if o == nil {
-		return appendDataOptions, nil, nil, nil
-	}
 	httpRange := exported.FormatHTTPRange(HTTPRange{
 		Offset: offset,
 		Count:  count,

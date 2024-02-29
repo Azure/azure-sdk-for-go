@@ -3546,9 +3546,9 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	rsc, _ := testcommon.GenerateData(contentSize)
 
 	opts := &file.AppendDataOptions{
-		//LeaseAction:     &testcommon.TestLeaseActionRenew,
+		LeaseAction:           &testcommon.TestLeaseActionRenew,
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
-		//LeaseDuration:   to.Ptr(int64(-1)),
+		LeaseDuration:         to.Ptr(int64(-1)),
 	}
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
 	_require.NoError(err)
@@ -3588,9 +3588,9 @@ func (s *RecordedTestSuite) TestFileAppendDataWithReleaseLease() {
 	rsc, _ := testcommon.GenerateData(contentSize)
 
 	opts := &file.AppendDataOptions{
-		//LeaseAction:     &testcommon.TestLeaseActionRelease,
+		LeaseAction:           &testcommon.TestLeaseActionRelease,
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
-		//Flush: to.Ptr(true),
+		Flush:                 to.Ptr(true),
 	}
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
 	_require.NoError(err)

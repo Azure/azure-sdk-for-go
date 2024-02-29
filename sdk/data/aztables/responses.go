@@ -7,7 +7,11 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
 // AddEntityResponse contains response fields for Client.AddEntityResponse
 type AddEntityResponse struct {
+	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
+
+	// The OData properties of the table entity in JSON format.
+	Value []byte
 }
 
 // CreateTableResponse contains response fields for Client.Create and ServiceClient.CreateTable
@@ -36,7 +40,7 @@ type GetEntityResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag azcore.ETag
 
-	// The properties of the table entity.
+	// The OData properties of the table entity in JSON format.
 	Value []byte
 }
 

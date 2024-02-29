@@ -47,17 +47,7 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
-	t.
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  f("Running datalake Tests in %s mode\n", recordMode)
+	t.Logf("Running datalake Tests in %s mode\n", recordMode)
 	if recordMode == recording.LiveMode {
 		suite.Run(t, &RecordedTestSuite{})
 		suite.Run(t, &UnrecordedTestSuite{})

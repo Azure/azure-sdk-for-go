@@ -12,6 +12,7 @@
 
 ### Bugs Fixed
 * Fixed an issue that could cause `Client.NewListEntitiesPager` to skip pages in some cases.
+* Fixed an issue that could cause unmarshaling empty time values to fail.
 
 ### Other Changes
 

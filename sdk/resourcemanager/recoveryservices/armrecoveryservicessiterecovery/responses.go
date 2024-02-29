@@ -131,6 +131,11 @@ type ReplicationFabricsClientReassociateGatewayResponse struct {
 	Fabric
 }
 
+// ReplicationFabricsClientRemoveInfraResponse contains the response from method ReplicationFabricsClient.BeginRemoveInfra.
+type ReplicationFabricsClientRemoveInfraResponse struct {
+	// placeholder for future response values
+}
+
 // ReplicationFabricsClientRenewCertificateResponse contains the response from method ReplicationFabricsClient.BeginRenewCertificate.
 type ReplicationFabricsClientRenewCertificateResponse struct {
 	// Fabric definition.

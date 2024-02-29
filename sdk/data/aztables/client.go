@@ -164,21 +164,16 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListEntitiesResponse]{
 		More: func(page ListEntitiesResponse) bool {
-			if page.NextPartitionKey == nil || len(*page.NextPartitionKey) == 0 || page.NextRowKey == nil || len(*page.NextRowKey) == 0 {
-				return false
-			}
-			return true
+			// if there are no continuation header values, there are no more pages
+			// https://learn.microsoft.com/rest/api/storageservices/Query-Timeout-and-Pagination
+			return !((page.NextPartitionKey == nil || len(*page.NextPartitionKey) == 0) && (page.NextRowKey == nil || len(*page.NextRowKey) == 0))
 		},
 		Fetcher: func(ctx context.Context, page *ListEntitiesResponse) (ListEntitiesResponse, error) {
 			var partKey *string
 			var rowKey *string
 			if page != nil {
-				if page.NextPartitionKey != nil {
-					partKey = page.NextPartitionKey
-				}
-				if page.NextRowKey != nil {
-					rowKey = page.NextRowKey
-				}
+				partKey = page.NextPartitionKey
+				rowKey = page.NextRowKey
 			} else {
 				partKey = listOptions.NextPartitionKey
 				rowKey = listOptions.NextRowKey

@@ -19,8 +19,15 @@ import (
 
 // ServerFactory is a fake server for instances of the armapicenter.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer OperationsServer
-	ServicesServer   ServicesServer
+	APIDefinitionsServer  APIDefinitionsServer
+	APIVersionsServer     APIVersionsServer
+	ApisServer            ApisServer
+	DeploymentsServer     DeploymentsServer
+	EnvironmentsServer    EnvironmentsServer
+	MetadataSchemasServer MetadataSchemasServer
+	OperationsServer      OperationsServer
+	ServicesServer        ServicesServer
+	WorkspacesServer      WorkspacesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -35,10 +42,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armapicenter.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trOperationsServer *OperationsServerTransport
-	trServicesServer   *ServicesServerTransport
+	srv                     *ServerFactory
+	trMu                    sync.Mutex
+	trAPIDefinitionsServer  *APIDefinitionsServerTransport
+	trAPIVersionsServer     *APIVersionsServerTransport
+	trApisServer            *ApisServerTransport
+	trDeploymentsServer     *DeploymentsServerTransport
+	trEnvironmentsServer    *EnvironmentsServerTransport
+	trMetadataSchemasServer *MetadataSchemasServerTransport
+	trOperationsServer      *OperationsServerTransport
+	trServicesServer        *ServicesServerTransport
+	trWorkspacesServer      *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -54,12 +68,37 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "APIDefinitionsClient":
+		initServer(s, &s.trAPIDefinitionsServer, func() *APIDefinitionsServerTransport {
+			return NewAPIDefinitionsServerTransport(&s.srv.APIDefinitionsServer)
+		})
+		resp, err = s.trAPIDefinitionsServer.Do(req)
+	case "APIVersionsClient":
+		initServer(s, &s.trAPIVersionsServer, func() *APIVersionsServerTransport { return NewAPIVersionsServerTransport(&s.srv.APIVersionsServer) })
+		resp, err = s.trAPIVersionsServer.Do(req)
+	case "ApisClient":
+		initServer(s, &s.trApisServer, func() *ApisServerTransport { return NewApisServerTransport(&s.srv.ApisServer) })
+		resp, err = s.trApisServer.Do(req)
+	case "DeploymentsClient":
+		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
+		resp, err = s.trDeploymentsServer.Do(req)
+	case "EnvironmentsClient":
+		initServer(s, &s.trEnvironmentsServer, func() *EnvironmentsServerTransport { return NewEnvironmentsServerTransport(&s.srv.EnvironmentsServer) })
+		resp, err = s.trEnvironmentsServer.Do(req)
+	case "MetadataSchemasClient":
+		initServer(s, &s.trMetadataSchemasServer, func() *MetadataSchemasServerTransport {
+			return NewMetadataSchemasServerTransport(&s.srv.MetadataSchemasServer)
+		})
+		resp, err = s.trMetadataSchemasServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ServicesClient":
 		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
+	case "WorkspacesClient":
+		initServer(s, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
+		resp, err = s.trWorkspacesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

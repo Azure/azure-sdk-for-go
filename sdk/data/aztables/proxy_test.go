@@ -188,7 +188,7 @@ func initServiceTest(t *testing.T, service string, tp tracing.Provider) (*Servic
 	}
 }
 
-func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
+func getSharedKeyCredential() (*SharedKeyCredential, error) {
 	if recording.GetRecordMode() == "playback" {
 		return NewSharedKeyCredential("accountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	}
@@ -206,7 +206,7 @@ func createStorageClient(t *testing.T, tp tracing.Provider) (*Client, error) {
 	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
 
 	if recording.GetRecordMode() == "playback" {
-		cred, err = getSharedKeyCredential(t)
+		cred, err = getSharedKeyCredential()
 		require.NoError(t, err)
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
@@ -228,7 +228,7 @@ func createCosmosClient(t *testing.T, tp tracing.Provider) (*Client, error) {
 		accountName = "fakeaccount"
 	}
 
-	cred, err := getSharedKeyCredential(t)
+	cred, err := getSharedKeyCredential()
 	require.NoError(t, err)
 
 	serviceURL := cosmosURI(accountName)
@@ -246,7 +246,7 @@ func createStorageServiceClient(t *testing.T, tp tracing.Provider) (*ServiceClie
 	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeaccountkey")
 
 	if recording.GetRecordMode() == "playback" {
-		cred, err = getSharedKeyCredential(t)
+		cred, err = getSharedKeyCredential()
 		require.NoError(t, err)
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
@@ -265,7 +265,7 @@ func createCosmosServiceClient(t *testing.T, tp tracing.Provider) (*ServiceClien
 		accountName = "fakeaccount"
 	}
 
-	cred, err := getSharedKeyCredential(t)
+	cred, err := getSharedKeyCredential()
 	require.NoError(t, err)
 
 	serviceURL := cosmosURI(accountName)

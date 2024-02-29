@@ -121,12 +121,6 @@ func (t *ServiceClient) DeleteTable(ctx context.Context, name string, options *D
 	return DeleteTableResponse{}, err
 }
 
-// TableProperties contains the properties for a single Table
-type TableProperties struct {
-	// The name of the table.
-	Name *string `json:"TableName,omitempty"`
-}
-
 // NewListTablesPager queries the existing tables using the specified ListTablesOptions.
 // listOptions can specify the following properties to affect the query results returned:
 //
@@ -154,9 +148,7 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 		Fetcher: func(ctx context.Context, page *ListTablesResponse) (ListTablesResponse, error) {
 			var tableName *string
 			if page != nil {
-				if page.NextTableName != nil {
-					tableName = page.NextTableName
-				}
+				tableName = page.NextTableName
 			} else {
 				tableName = listOptions.NextTableName
 			}

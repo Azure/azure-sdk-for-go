@@ -24,30 +24,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-// TransactionType is the type for a specific transaction operation.
-type TransactionType string
-
-const (
-	TransactionTypeAdd           TransactionType = "add"
-	TransactionTypeUpdateMerge   TransactionType = "updatemerge"
-	TransactionTypeUpdateReplace TransactionType = "updatereplace"
-	TransactionTypeDelete        TransactionType = "delete"
-	TransactionTypeInsertMerge   TransactionType = "insertmerge"
-	TransactionTypeInsertReplace TransactionType = "insertreplace"
-)
-
-// PossibleTransactionTypeValues returns the possible values for the TransactionType const type.
-func PossibleTransactionTypeValues() []TransactionType {
-	return []TransactionType{
-		TransactionTypeAdd,
-		TransactionTypeUpdateMerge,
-		TransactionTypeUpdateReplace,
-		TransactionTypeDelete,
-		TransactionTypeInsertMerge,
-		TransactionTypeInsertReplace,
-	}
-}
-
 // TransactionAction represents a single action within a Transaction
 type TransactionAction struct {
 	ActionType TransactionType
@@ -78,7 +54,7 @@ func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []Tra
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions []TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {
+func (t *Client) submitTransactionInternal(ctx context.Context, transactionActions []TransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, _ *SubmitTransactionOptions) (TransactionResponse, error) {
 	if len(transactionActions) == 0 {
 		return TransactionResponse{}, errEmptyTransaction
 	}
@@ -128,11 +104,11 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 		return TransactionResponse{}, runtime.NewResponseError(resp)
 	}
 
-	return buildTransactionResponse(req, resp, len(transactionActions))
+	return buildTransactionResponse(req, resp)
 }
 
 // create the transaction response. This will read the inner responses
-func buildTransactionResponse(req *policy.Request, resp *http.Response, itemCount int) (TransactionResponse, error) {
+func buildTransactionResponse(req *policy.Request, resp *http.Response) (TransactionResponse, error) {
 	bytesBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return TransactionResponse{}, err

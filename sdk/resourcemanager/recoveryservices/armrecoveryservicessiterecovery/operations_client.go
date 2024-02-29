@@ -45,7 +45,7 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListPager - Operation to return the list of available operations.
 //
-// Generated from API version 2023-06-01
+// Generated from API version 2023-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(resourceGroupName string, options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
@@ -87,7 +87,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-06-01")
+	reqQP.Set("api-version", "2023-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

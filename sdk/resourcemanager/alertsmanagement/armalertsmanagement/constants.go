@@ -10,7 +10,7 @@ package armalertsmanagement
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement"
-	moduleVersion = "v0.9.0"
+	moduleVersion = "v0.10.0"
 )
 
 // ActionType - Action that should be applied.

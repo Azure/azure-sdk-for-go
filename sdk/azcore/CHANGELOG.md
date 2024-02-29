@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0 (Unreleased)
+## 1.10.0 (2024-02-29)
 
 ### Features Added
 
@@ -8,14 +8,14 @@
 * Added `runtime.NewResponseErrorWithErrorCode` for creating an `azcore.ResponseError` with a caller-supplied error code.
 * Added type `MatchConditions` for use in conditional requests.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 * Fixed a potential race condition between `NullValue` and `IsNullValue`.
 * `runtime.EncodeQueryParams` will escape semicolons before calling `url.ParseQuery`.
 
 ### Other Changes
+
+* Update dependencies.
 
 ## 1.9.2 (2024-02-06)
 

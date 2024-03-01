@@ -257,7 +257,7 @@ type AppendDataOptions struct {
 	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
-	// LeaseAction Describes actions that can be performed on a lease.
+	// LeaseAction describes actions that can be performed on a lease.
 	LeaseAction *LeaseAction
 	// LeaseDuration specifies the duration of the lease, in seconds, or negative one
 	// (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
@@ -546,6 +546,7 @@ type SetExpiryValues struct {
 // ACLFailedEntry contains the failed ACL entry (response model).
 type ACLFailedEntry = path.ACLFailedEntry
 
+// LeaseAction describes actions that can be performed on a lease.
 type LeaseAction = path.LeaseAction
 
 // SetAccessControlRecursiveResponse contains part of the response data returned by the []OP_AccessControl operations.

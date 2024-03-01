@@ -12,9 +12,9 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"hash/crc64"
 	"io"
 	"math/rand"
@@ -3464,7 +3464,6 @@ func (s *RecordedTestSuite) TestDownloadDataContentMD5() {
 }
 
 func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
-  
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3590,11 +3589,12 @@ func (s *RecordedTestSuite) TestFileAppendDataWithReleaseLease() {
 	contentSize := 1024 * 8 // 8KB
 	rsc, _ := testcommon.GenerateData(contentSize)
 
-	opts := &file.AppendDataOptions {
+	opts := &file.AppendDataOptions{
 		LeaseAction:           &testcommon.TestLeaseActionRelease,
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		Flush:                 to.Ptr(true),
 	}
+
 	_, err = srcFClient.AppendData(context.Background(), 0, rsc, opts)
 	_require.NoError(err)
 

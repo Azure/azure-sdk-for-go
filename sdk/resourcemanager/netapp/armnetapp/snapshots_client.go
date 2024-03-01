@@ -46,7 +46,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Create the specified snapshot within the given volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -75,7 +75,7 @@ func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Create the specified snapshot within the given volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SnapshotsClient.BeginCreate"
@@ -129,7 +129,7 @@ func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -141,7 +141,7 @@ func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resource
 // BeginDelete - Delete snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -169,7 +169,7 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Delete snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SnapshotsClient.BeginDelete"
@@ -223,15 +223,16 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get details of the specified snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -292,7 +293,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -309,7 +310,7 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 
 // NewListPager - List all snapshots associated with the volume
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -367,7 +368,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,7 +386,7 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 // BeginRestoreFiles - Restore the specified files from the specified snapshot to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -415,7 +416,7 @@ func (client *SnapshotsClient) BeginRestoreFiles(ctx context.Context, resourceGr
 // RestoreFiles - Restore the specified files from the specified snapshot to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 func (client *SnapshotsClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body SnapshotRestoreFiles, options *SnapshotsClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SnapshotsClient.BeginRestoreFiles"
@@ -469,8 +470,9 @@ func (client *SnapshotsClient) restoreFilesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
@@ -480,7 +482,7 @@ func (client *SnapshotsClient) restoreFilesCreateRequest(ctx context.Context, re
 // BeginUpdate - Patch a snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -509,7 +511,7 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Update - Patch a snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2023-07-01
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body any, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SnapshotsClient.BeginUpdate"
@@ -563,7 +565,7 @@ func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2023-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

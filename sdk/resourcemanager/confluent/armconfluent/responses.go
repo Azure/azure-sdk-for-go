@@ -8,6 +8,17 @@
 
 package armconfluent
 
+// AccessClientCreateRoleBindingResponse contains the response from method AccessClient.CreateRoleBinding.
+type AccessClientCreateRoleBindingResponse struct {
+	// Details on principal, role name and crn pattern of a role binding
+	RoleBindingRecord
+}
+
+// AccessClientDeleteRoleBindingResponse contains the response from method AccessClient.DeleteRoleBinding.
+type AccessClientDeleteRoleBindingResponse struct {
+	// placeholder for future response values
+}
+
 // AccessClientInviteUserResponse contains the response from method AccessClient.InviteUser.
 type AccessClientInviteUserResponse struct {
 	// Record of the invitation
@@ -16,13 +27,13 @@ type AccessClientInviteUserResponse struct {
 
 // AccessClientListClustersResponse contains the response from method AccessClient.ListClusters.
 type AccessClientListClustersResponse struct {
-	// List cluster success response
+	// Details of the clusters returned on successful response
 	AccessListClusterSuccessResponse
 }
 
 // AccessClientListEnvironmentsResponse contains the response from method AccessClient.ListEnvironments.
 type AccessClientListEnvironmentsResponse struct {
-	// List environments success response
+	// Details of the environments returned on successful response
 	AccessListEnvironmentsSuccessResponse
 }
 
@@ -32,9 +43,15 @@ type AccessClientListInvitationsResponse struct {
 	AccessListInvitationsSuccessResponse
 }
 
+// AccessClientListRoleBindingNameListResponse contains the response from method AccessClient.ListRoleBindingNameList.
+type AccessClientListRoleBindingNameListResponse struct {
+	// Details of the role binding names returned on successful response
+	AccessRoleBindingNameListSuccessResponse
+}
+
 // AccessClientListRoleBindingsResponse contains the response from method AccessClient.ListRoleBindings.
 type AccessClientListRoleBindingsResponse struct {
-	// List cluster success response
+	// Details of the role bindings returned on successful response
 	AccessListRoleBindingsSuccessResponse
 }
 
@@ -62,10 +79,21 @@ type MarketplaceAgreementsClientListResponse struct {
 	AgreementResourceListResponse
 }
 
+// OrganizationClientCreateAPIKeyResponse contains the response from method OrganizationClient.CreateAPIKey.
+type OrganizationClientCreateAPIKeyResponse struct {
+	// Details API key
+	APIKeyRecord
+}
+
 // OrganizationClientCreateResponse contains the response from method OrganizationClient.BeginCreate.
 type OrganizationClientCreateResponse struct {
 	// Organization resource.
 	OrganizationResource
+}
+
+// OrganizationClientDeleteClusterAPIKeyResponse contains the response from method OrganizationClient.DeleteClusterAPIKey.
+type OrganizationClientDeleteClusterAPIKeyResponse struct {
+	// placeholder for future response values
 }
 
 // OrganizationClientDeleteResponse contains the response from method OrganizationClient.BeginDelete.
@@ -73,10 +101,34 @@ type OrganizationClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// OrganizationClientGetClusterAPIKeyResponse contains the response from method OrganizationClient.GetClusterAPIKey.
+type OrganizationClientGetClusterAPIKeyResponse struct {
+	// Details API key
+	APIKeyRecord
+}
+
+// OrganizationClientGetClusterByIDResponse contains the response from method OrganizationClient.GetClusterByID.
+type OrganizationClientGetClusterByIDResponse struct {
+	// Details of cluster record
+	SCClusterRecord
+}
+
+// OrganizationClientGetEnvironmentByIDResponse contains the response from method OrganizationClient.GetEnvironmentByID.
+type OrganizationClientGetEnvironmentByIDResponse struct {
+	// Details about environment name, metadata and environment id of an environment
+	SCEnvironmentRecord
+}
+
 // OrganizationClientGetResponse contains the response from method OrganizationClient.Get.
 type OrganizationClientGetResponse struct {
 	// Organization resource.
 	OrganizationResource
+}
+
+// OrganizationClientGetSchemaRegistryClusterByIDResponse contains the response from method OrganizationClient.GetSchemaRegistryClusterByID.
+type OrganizationClientGetSchemaRegistryClusterByIDResponse struct {
+	// Details of schema registry cluster record
+	SchemaRegistryClusterRecord
 }
 
 // OrganizationClientListByResourceGroupResponse contains the response from method OrganizationClient.NewListByResourceGroupPager.
@@ -89,6 +141,30 @@ type OrganizationClientListByResourceGroupResponse struct {
 type OrganizationClientListBySubscriptionResponse struct {
 	// The response of a list operation.
 	OrganizationResourceListResult
+}
+
+// OrganizationClientListClustersResponse contains the response from method OrganizationClient.NewListClustersPager.
+type OrganizationClientListClustersResponse struct {
+	// Result of GET request to list clusters in the environment of a confluent organization
+	ListClustersSuccessResponse
+}
+
+// OrganizationClientListEnvironmentsResponse contains the response from method OrganizationClient.NewListEnvironmentsPager.
+type OrganizationClientListEnvironmentsResponse struct {
+	// Result of GET request to list Confluent operations.
+	GetEnvironmentsResponse
+}
+
+// OrganizationClientListRegionsResponse contains the response from method OrganizationClient.ListRegions.
+type OrganizationClientListRegionsResponse struct {
+	// Result of POST request to list regions supported by confluent
+	ListRegionsSuccessResponse
+}
+
+// OrganizationClientListSchemaRegistryClustersResponse contains the response from method OrganizationClient.NewListSchemaRegistryClustersPager.
+type OrganizationClientListSchemaRegistryClustersResponse struct {
+	// Result of GET request to list schema registry clusters in the environment of a confluent organization
+	ListSchemaRegistryClustersResponse
 }
 
 // OrganizationClientUpdateResponse contains the response from method OrganizationClient.Update.

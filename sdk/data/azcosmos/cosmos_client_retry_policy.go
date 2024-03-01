@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 type clientRetryPolicy struct {
@@ -47,15 +49,15 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				fmt.Println("Policy TIME")
 				if response.StatusCode == http.StatusForbidden {
 					if !p.attemptRetryOnEndpointFailure(req, o.isWriteOperation) {
-						break
+						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 					}
 				} else if response.StatusCode == http.StatusNotFound {
 					if !p.attemptRetryOnSessionUnavailable(req, o.isWriteOperation) {
-						break
+						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 					}
 				} else if response.StatusCode == http.StatusServiceUnavailable {
 					if !p.attemptRetryOnServiceUnavailable(req, o.isWriteOperation) {
-						break
+						return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 					}
 				}
 				fmt.Println("bout to retry this")

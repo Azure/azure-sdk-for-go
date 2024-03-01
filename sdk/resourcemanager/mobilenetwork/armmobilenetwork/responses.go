@@ -89,6 +89,12 @@ type DiagnosticsPackagesClientListByPacketCoreControlPlaneResponse struct {
 	DiagnosticsPackageListResult
 }
 
+// ExtendedUeInformationClientGetResponse contains the response from method ExtendedUeInformationClient.Get.
+type ExtendedUeInformationClientGetResponse struct {
+	// Extended User Equipment (UE) information.
+	ExtendedUeInfo
+}
+
 // MobileNetworksClientCreateOrUpdateResponse contains the response from method MobileNetworksClient.BeginCreateOrUpdate.
 type MobileNetworksClientCreateOrUpdateResponse struct {
 	// Mobile network resource.
@@ -460,4 +466,10 @@ type SlicesClientListByMobileNetworkResponse struct {
 type SlicesClientUpdateTagsResponse struct {
 	// Network slice resource. Must be created in the same location as its parent mobile network.
 	Slice
+}
+
+// UeInformationClientListResponse contains the response from method UeInformationClient.NewListPager.
+type UeInformationClientListResponse struct {
+	// Response for packet core list UEs API call.
+	UeInfoList
 }

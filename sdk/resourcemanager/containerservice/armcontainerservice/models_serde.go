@@ -50,7 +50,9 @@ func (a *AbsoluteMonthlySchedule) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AccessProfile.
 func (a AccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateByteArray(objectMap, "kubeConfig", a.KubeConfig, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "kubeConfig", a.KubeConfig, func() any {
+		return runtime.EncodeByteArray(a.KubeConfig, runtime.Base64StdFormat)
+	})
 	return json.Marshal(objectMap)
 }
 
@@ -64,7 +66,9 @@ func (a *AccessProfile) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "kubeConfig":
-			err = runtime.DecodeByteArray(string(val), &a.KubeConfig, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &a.KubeConfig, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -599,7 +603,9 @@ func (c *CreationData) UnmarshalJSON(data []byte) error {
 func (c CredentialResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", c.Name)
-	populateByteArray(objectMap, "value", c.Value, runtime.Base64StdFormat)
+	populateByteArray(objectMap, "value", c.Value, func() any {
+		return runtime.EncodeByteArray(c.Value, runtime.Base64StdFormat)
+	})
 	return json.Marshal(objectMap)
 }
 
@@ -616,7 +622,9 @@ func (c *CredentialResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &c.Name)
 			delete(rawMsg, key)
 		case "value":
-			err = runtime.DecodeByteArray(string(val), &c.Value, runtime.Base64StdFormat)
+			if val != nil && string(val) != "null" {
+				err = runtime.DecodeByteArray(string(val), &c.Value, runtime.Base64StdFormat)
+			}
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2367,6 +2375,68 @@ func (m *ManagedClusterIdentity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ManagedClusterIngressProfile.
+func (m ManagedClusterIngressProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "webAppRouting", m.WebAppRouting)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedClusterIngressProfile.
+func (m *ManagedClusterIngressProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "webAppRouting":
+			err = unpopulate(val, "WebAppRouting", &m.WebAppRouting)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ManagedClusterIngressProfileWebAppRouting.
+func (m ManagedClusterIngressProfileWebAppRouting) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dnsZoneResourceIds", m.DNSZoneResourceIDs)
+	populate(objectMap, "enabled", m.Enabled)
+	populate(objectMap, "identity", m.Identity)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ManagedClusterIngressProfileWebAppRouting.
+func (m *ManagedClusterIngressProfileWebAppRouting) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dnsZoneResourceIds":
+			err = unpopulate(val, "DNSZoneResourceIDs", &m.DNSZoneResourceIDs)
+			delete(rawMsg, key)
+		case "enabled":
+			err = unpopulate(val, "Enabled", &m.Enabled)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &m.Identity)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ManagedClusterListResult.
 func (m ManagedClusterListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2936,6 +3006,7 @@ func (m ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "fqdnSubdomain", m.FqdnSubdomain)
 	populate(objectMap, "httpProxyConfig", m.HTTPProxyConfig)
 	populate(objectMap, "identityProfile", m.IdentityProfile)
+	populate(objectMap, "ingressProfile", m.IngressProfile)
 	populate(objectMap, "kubernetesVersion", m.KubernetesVersion)
 	populate(objectMap, "linuxProfile", m.LinuxProfile)
 	populate(objectMap, "maxAgentPools", m.MaxAgentPools)
@@ -3022,6 +3093,9 @@ func (m *ManagedClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "identityProfile":
 			err = unpopulate(val, "IdentityProfile", &m.IdentityProfile)
+			delete(rawMsg, key)
+		case "ingressProfile":
+			err = unpopulate(val, "IngressProfile", &m.IngressProfile)
 			delete(rawMsg, key)
 		case "kubernetesVersion":
 			err = unpopulate(val, "KubernetesVersion", &m.KubernetesVersion)
@@ -5681,18 +5755,18 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateByteArray(m map[string]any, k string, b []byte, f runtime.Base64Encoding) {
+func populateByteArray[T any](m map[string]any, k string, b []T, convert func() any) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
 		return
 	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
+		m[k] = convert()
 	}
 }
 
 func unpopulate(data json.RawMessage, fn string, v any) error {
-	if data == nil {
+	if data == nil || string(data) == "null" {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {

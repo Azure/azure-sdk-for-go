@@ -1,5 +1,13 @@
 # Release History
 
+## 4.8.0 (2024-03-22)
+### Features Added
+
+- New struct `ManagedClusterIngressProfile`
+- New struct `ManagedClusterIngressProfileWebAppRouting`
+- New field `IngressProfile` in struct `ManagedClusterProperties`
+
+
 ## 4.7.0 (2024-01-26)
 ### Features Added
 

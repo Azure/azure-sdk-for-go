@@ -1073,6 +1073,31 @@ type ManagedClusterIdentity struct {
 	TenantID *string
 }
 
+// ManagedClusterIngressProfile - Ingress profile for the container service cluster.
+type ManagedClusterIngressProfile struct {
+	// App Routing settings for the ingress profile. You can find an overview and onboarding guide for this feature at
+	// https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
+	WebAppRouting *ManagedClusterIngressProfileWebAppRouting
+}
+
+// ManagedClusterIngressProfileWebAppRouting - Application Routing add-on settings for the ingress profile.
+type ManagedClusterIngressProfileWebAppRouting struct {
+	// Resource IDs of the DNS zones to be associated with the Application Routing add-on. Used only when Application Routing
+	// add-on is enabled. Public and private DNS zones can be in different resource
+	// groups, but all public DNS zones must be in the same resource group and all private DNS zones must be in the same resource
+	// group.
+	DNSZoneResourceIDs []*string
+
+	// Whether to enable the Application Routing add-on.
+	Enabled *bool
+
+	// READ-ONLY; Managed identity of the Application Routing add-on. This is the identity that should be granted permissions,
+	// for example, to manage the associated Azure DNS resource and get certificates from Azure
+	// Key Vault. See this overview of the add-on [https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm]
+	// for more instructions.
+	Identity *UserAssignedIdentity
+}
+
 // ManagedClusterListResult - The response from the List Managed Clusters operation.
 type ManagedClusterListResult struct {
 	// The list of managed clusters.
@@ -1316,6 +1341,9 @@ type ManagedClusterProperties struct {
 
 	// Identities associated with the cluster.
 	IdentityProfile map[string]*UserAssignedIdentity
+
+	// Ingress profile for the managed cluster.
+	IngressProfile *ManagedClusterIngressProfile
 
 	// Both patch version (e.g. 1.20.13) and (e.g. 1.20) are supported. When is specified, the latest supported GA patch version
 	// is chosen automatically. Updating the cluster with the same once it has been

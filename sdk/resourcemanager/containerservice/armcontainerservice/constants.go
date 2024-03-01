@@ -10,7 +10,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice"
-	moduleVersion = "v4.7.0"
+	moduleVersion = "v4.8.0"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent

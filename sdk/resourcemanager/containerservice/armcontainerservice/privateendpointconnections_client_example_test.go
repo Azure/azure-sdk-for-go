@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b5618d760532b69d6f7434f57172ea52e109c79/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/PrivateEndpointConnectionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/PrivateEndpointConnectionsList.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b5618d760532b69d6f7434f57172ea52e109c79/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/PrivateEndpointConnectionsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/PrivateEndpointConnectionsGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b5618d760532b69d6f7434f57172ea52e109c79/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/PrivateEndpointConnectionsUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/PrivateEndpointConnectionsUpdate.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b5618d760532b69d6f7434f57172ea52e109c79/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/PrivateEndpointConnectionsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-01-01/examples/PrivateEndpointConnectionsDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

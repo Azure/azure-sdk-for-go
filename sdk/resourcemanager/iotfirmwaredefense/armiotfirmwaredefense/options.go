@@ -8,120 +8,91 @@
 
 package armiotfirmwaredefense
 
-// FirmwareClientCreateOptions contains the optional parameters for the FirmwareClient.Create method.
-type FirmwareClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientDeleteOptions contains the optional parameters for the FirmwareClient.Delete method.
-type FirmwareClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientGenerateBinaryHardeningDetailsOptions contains the optional parameters for the FirmwareClient.GenerateBinaryHardeningDetails
+// BinaryHardeningClientListByFirmwareOptions contains the optional parameters for the BinaryHardeningClient.NewListByFirmwarePager
 // method.
-type FirmwareClientGenerateBinaryHardeningDetailsOptions struct {
+type BinaryHardeningClientListByFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateBinaryHardeningSummaryOptions contains the optional parameters for the FirmwareClient.GenerateBinaryHardeningSummary
+// CryptoCertificatesClientListByFirmwareOptions contains the optional parameters for the CryptoCertificatesClient.NewListByFirmwarePager
 // method.
-type FirmwareClientGenerateBinaryHardeningSummaryOptions struct {
+type CryptoCertificatesClientListByFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateComponentDetailsOptions contains the optional parameters for the FirmwareClient.GenerateComponentDetails
+// CryptoKeysClientListByFirmwareOptions contains the optional parameters for the CryptoKeysClient.NewListByFirmwarePager
 // method.
-type FirmwareClientGenerateComponentDetailsOptions struct {
+type CryptoKeysClientListByFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateCryptoCertificateSummaryOptions contains the optional parameters for the FirmwareClient.GenerateCryptoCertificateSummary
+// CvesClientListByFirmwareOptions contains the optional parameters for the CvesClient.NewListByFirmwarePager method.
+type CvesClientListByFirmwareOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirmwaresClientCreateOptions contains the optional parameters for the FirmwaresClient.Create method.
+type FirmwaresClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirmwaresClientDeleteOptions contains the optional parameters for the FirmwaresClient.Delete method.
+type FirmwaresClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirmwaresClientGenerateDownloadURLOptions contains the optional parameters for the FirmwaresClient.GenerateDownloadURL
 // method.
-type FirmwareClientGenerateCryptoCertificateSummaryOptions struct {
+type FirmwaresClientGenerateDownloadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateCryptoKeySummaryOptions contains the optional parameters for the FirmwareClient.GenerateCryptoKeySummary
+// FirmwaresClientGenerateFilesystemDownloadURLOptions contains the optional parameters for the FirmwaresClient.GenerateFilesystemDownloadURL
 // method.
-type FirmwareClientGenerateCryptoKeySummaryOptions struct {
+type FirmwaresClientGenerateFilesystemDownloadURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateCveSummaryOptions contains the optional parameters for the FirmwareClient.GenerateCveSummary method.
-type FirmwareClientGenerateCveSummaryOptions struct {
+// FirmwaresClientGetOptions contains the optional parameters for the FirmwaresClient.Get method.
+type FirmwaresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateDownloadURLOptions contains the optional parameters for the FirmwareClient.GenerateDownloadURL method.
-type FirmwareClientGenerateDownloadURLOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientGenerateFilesystemDownloadURLOptions contains the optional parameters for the FirmwareClient.GenerateFilesystemDownloadURL
+// FirmwaresClientListByWorkspaceOptions contains the optional parameters for the FirmwaresClient.NewListByWorkspacePager
 // method.
-type FirmwareClientGenerateFilesystemDownloadURLOptions struct {
+type FirmwaresClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirmwareClientGenerateSummaryOptions contains the optional parameters for the FirmwareClient.GenerateSummary method.
-type FirmwareClientGenerateSummaryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientGetOptions contains the optional parameters for the FirmwareClient.Get method.
-type FirmwareClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListByWorkspaceOptions contains the optional parameters for the FirmwareClient.NewListByWorkspacePager method.
-type FirmwareClientListByWorkspaceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGenerateBinaryHardeningListOptions contains the optional parameters for the FirmwareClient.NewListGenerateBinaryHardeningListPager
-// method.
-type FirmwareClientListGenerateBinaryHardeningListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGenerateComponentListOptions contains the optional parameters for the FirmwareClient.NewListGenerateComponentListPager
-// method.
-type FirmwareClientListGenerateComponentListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGenerateCryptoCertificateListOptions contains the optional parameters for the FirmwareClient.NewListGenerateCryptoCertificateListPager
-// method.
-type FirmwareClientListGenerateCryptoCertificateListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGenerateCryptoKeyListOptions contains the optional parameters for the FirmwareClient.NewListGenerateCryptoKeyListPager
-// method.
-type FirmwareClientListGenerateCryptoKeyListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGenerateCveListOptions contains the optional parameters for the FirmwareClient.NewListGenerateCveListPager
-// method.
-type FirmwareClientListGenerateCveListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientListGeneratePasswordHashListOptions contains the optional parameters for the FirmwareClient.NewListGeneratePasswordHashListPager
-// method.
-type FirmwareClientListGeneratePasswordHashListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// FirmwareClientUpdateOptions contains the optional parameters for the FirmwareClient.Update method.
-type FirmwareClientUpdateOptions struct {
+// FirmwaresClientUpdateOptions contains the optional parameters for the FirmwaresClient.Update method.
+type FirmwaresClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PasswordHashesClientListByFirmwareOptions contains the optional parameters for the PasswordHashesClient.NewListByFirmwarePager
+// method.
+type PasswordHashesClientListByFirmwareOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SbomComponentsClientListByFirmwareOptions contains the optional parameters for the SbomComponentsClient.NewListByFirmwarePager
+// method.
+type SbomComponentsClientListByFirmwareOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SummariesClientGetOptions contains the optional parameters for the SummariesClient.Get method.
+type SummariesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SummariesClientListByFirmwareOptions contains the optional parameters for the SummariesClient.NewListByFirmwarePager method.
+type SummariesClientListByFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 

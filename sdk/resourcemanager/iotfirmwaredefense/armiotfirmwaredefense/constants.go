@@ -10,7 +10,7 @@ package armiotfirmwaredefense
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotfirmwaredefense/armiotfirmwaredefense"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,22 +24,6 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
-	}
-}
-
-// CanaryFlag - Canary flag.
-type CanaryFlag string
-
-const (
-	CanaryFlagFalse CanaryFlag = "False"
-	CanaryFlagTrue  CanaryFlag = "True"
-)
-
-// PossibleCanaryFlagValues returns the possible values for the CanaryFlag const type.
-func PossibleCanaryFlagValues() []CanaryFlag {
-	return []CanaryFlag{
-		CanaryFlagFalse,
-		CanaryFlagTrue,
 	}
 }
 
@@ -63,102 +47,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// IsExpired - Indicates if the certificate is expired.
-type IsExpired string
-
-const (
-	IsExpiredFalse IsExpired = "False"
-	IsExpiredTrue  IsExpired = "True"
-)
-
-// PossibleIsExpiredValues returns the possible values for the IsExpired const type.
-func PossibleIsExpiredValues() []IsExpired {
-	return []IsExpired{
-		IsExpiredFalse,
-		IsExpiredTrue,
-	}
-}
-
-// IsSelfSigned - Indicates if the certificate was self-signed.
-type IsSelfSigned string
-
-const (
-	IsSelfSignedFalse IsSelfSigned = "False"
-	IsSelfSignedTrue  IsSelfSigned = "True"
-)
-
-// PossibleIsSelfSignedValues returns the possible values for the IsSelfSigned const type.
-func PossibleIsSelfSignedValues() []IsSelfSigned {
-	return []IsSelfSigned{
-		IsSelfSignedFalse,
-		IsSelfSignedTrue,
-	}
-}
-
-// IsShortKeySize - Indicates the key size is considered too small to be secure for the algorithm.
-type IsShortKeySize string
-
-const (
-	IsShortKeySizeFalse IsShortKeySize = "False"
-	IsShortKeySizeTrue  IsShortKeySize = "True"
-)
-
-// PossibleIsShortKeySizeValues returns the possible values for the IsShortKeySize const type.
-func PossibleIsShortKeySizeValues() []IsShortKeySize {
-	return []IsShortKeySize{
-		IsShortKeySizeFalse,
-		IsShortKeySizeTrue,
-	}
-}
-
-// IsUpdateAvailable - Flag if new update is available for the component.
-type IsUpdateAvailable string
-
-const (
-	IsUpdateAvailableFalse IsUpdateAvailable = "False"
-	IsUpdateAvailableTrue  IsUpdateAvailable = "True"
-)
-
-// PossibleIsUpdateAvailableValues returns the possible values for the IsUpdateAvailable const type.
-func PossibleIsUpdateAvailableValues() []IsUpdateAvailable {
-	return []IsUpdateAvailable{
-		IsUpdateAvailableFalse,
-		IsUpdateAvailableTrue,
-	}
-}
-
-// IsWeakSignature - Indicates the signature algorithm used is insecure.
-type IsWeakSignature string
-
-const (
-	IsWeakSignatureFalse IsWeakSignature = "False"
-	IsWeakSignatureTrue  IsWeakSignature = "True"
-)
-
-// PossibleIsWeakSignatureValues returns the possible values for the IsWeakSignature const type.
-func PossibleIsWeakSignatureValues() []IsWeakSignature {
-	return []IsWeakSignature{
-		IsWeakSignatureFalse,
-		IsWeakSignatureTrue,
-	}
-}
-
-// NxFlag - NX flag.
-type NxFlag string
-
-const (
-	NxFlagFalse NxFlag = "False"
-	NxFlagTrue  NxFlag = "True"
-)
-
-// PossibleNxFlagValues returns the possible values for the NxFlag const type.
-func PossibleNxFlagValues() []NxFlag {
-	return []NxFlag{
-		NxFlagFalse,
-		NxFlagTrue,
-	}
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -175,22 +63,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// PieFlag - PIE flag.
-type PieFlag string
-
-const (
-	PieFlagFalse PieFlag = "False"
-	PieFlagTrue  PieFlag = "True"
-)
-
-// PossiblePieFlagValues returns the possible values for the PieFlag const type.
-func PossiblePieFlagValues() []PieFlag {
-	return []PieFlag{
-		PieFlagFalse,
-		PieFlagTrue,
 	}
 }
 
@@ -211,22 +83,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
-	}
-}
-
-// RelroFlag - RELRO flag.
-type RelroFlag string
-
-const (
-	RelroFlagFalse RelroFlag = "False"
-	RelroFlagTrue  RelroFlag = "True"
-)
-
-// PossibleRelroFlagValues returns the possible values for the RelroFlag const type.
-func PossibleRelroFlagValues() []RelroFlag {
-	return []RelroFlag{
-		RelroFlagFalse,
-		RelroFlagTrue,
 	}
 }
 
@@ -252,18 +108,45 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// StrippedFlag - Stripped flag.
-type StrippedFlag string
+type SummaryName string
 
 const (
-	StrippedFlagFalse StrippedFlag = "False"
-	StrippedFlagTrue  StrippedFlag = "True"
+	SummaryNameBinaryHardening   SummaryName = "BinaryHardening"
+	SummaryNameCVE               SummaryName = "CVE"
+	SummaryNameCryptoCertificate SummaryName = "CryptoCertificate"
+	SummaryNameCryptoKey         SummaryName = "CryptoKey"
+	SummaryNameFirmware          SummaryName = "Firmware"
 )
 
-// PossibleStrippedFlagValues returns the possible values for the StrippedFlag const type.
-func PossibleStrippedFlagValues() []StrippedFlag {
-	return []StrippedFlag{
-		StrippedFlagFalse,
-		StrippedFlagTrue,
+// PossibleSummaryNameValues returns the possible values for the SummaryName const type.
+func PossibleSummaryNameValues() []SummaryName {
+	return []SummaryName{
+		SummaryNameBinaryHardening,
+		SummaryNameCVE,
+		SummaryNameCryptoCertificate,
+		SummaryNameCryptoKey,
+		SummaryNameFirmware,
+	}
+}
+
+// SummaryType - Describes the type of summary.
+type SummaryType string
+
+const (
+	SummaryTypeBinaryHardening   SummaryType = "BinaryHardening"
+	SummaryTypeCVE               SummaryType = "CVE"
+	SummaryTypeCryptoCertificate SummaryType = "CryptoCertificate"
+	SummaryTypeCryptoKey         SummaryType = "CryptoKey"
+	SummaryTypeFirmware          SummaryType = "Firmware"
+)
+
+// PossibleSummaryTypeValues returns the possible values for the SummaryType const type.
+func PossibleSummaryTypeValues() []SummaryType {
+	return []SummaryType{
+		SummaryTypeBinaryHardening,
+		SummaryTypeCVE,
+		SummaryTypeCryptoCertificate,
+		SummaryTypeCryptoKey,
+		SummaryTypeFirmware,
 	}
 }

@@ -19,9 +19,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armnotificationhubs.ClientFactory type.
 type ServerFactory struct {
-	Server           Server
-	NamespacesServer NamespacesServer
-	OperationsServer OperationsServer
+	Server                           Server
+	NamespacesServer                 NamespacesServer
+	OperationsServer                 OperationsServer
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,11 +37,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnotificationhubs.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trServer           *ServerTransport
-	trNamespacesServer *NamespacesServerTransport
-	trOperationsServer *OperationsServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trServer                           *ServerTransport
+	trNamespacesServer                 *NamespacesServerTransport
+	trOperationsServer                 *OperationsServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -65,6 +67,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

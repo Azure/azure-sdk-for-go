@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/CheckAvailability.json
 func ExampleClient_CheckNotificationHubAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,96 +41,13 @@ func ExampleClient_CheckNotificationHubAvailability() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.CheckAvailabilityResult = armnotificationhubs.CheckAvailabilityResult{
 	// 	Name: to.Ptr("sdktest"),
-	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/checkNotificationHubAvailability"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourcegroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/locp-newns/CheckNotificationHubAvailability"),
-	// 	Location: to.Ptr("West Europe"),
+	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/checkNamespaceAvailability"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/sdktest"),
 	// 	IsAvailiable: to.Ptr(true),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubCreate.json
-func ExampleClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().CreateOrUpdate(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", armnotificationhubs.NotificationHubCreateOrUpdateParameters{
-		Location:   to.Ptr("eastus"),
-		Properties: &armnotificationhubs.NotificationHubProperties{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.NotificationHubResource = armnotificationhubs.NotificationHubResource{
-	// 	Name: to.Ptr("nh-sdk-hub"),
-	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/sdkresourceGroup/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/nh-sdk-hub"),
-	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armnotificationhubs.NotificationHubProperties{
-	// 		AuthorizationRules: []*armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 		},
-	// 		RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubPatch.json
-func ExampleClient_Patch() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().Patch(ctx, "sdkresourceGroup", "nh-sdk-ns", "sdk-notificationHubs-8708", &armnotificationhubs.ClientPatchOptions{Parameters: &armnotificationhubs.NotificationHubPatchParameters{}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.NotificationHubResource = armnotificationhubs.NotificationHubResource{
-	// 	Name: to.Ptr("nh-sdk-hub"),
-	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/sdkresourceGroup/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/nh-sdk-hub"),
-	// 	Location: to.Ptr("South Central US"),
-	// 	Properties: &armnotificationhubs.NotificationHubProperties{
-	// 		AuthorizationRules: []*armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 		},
-	// 		RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubDelete.json
-func ExampleClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewClient().Delete(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,19 +66,168 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.NotificationHubResource = armnotificationhubs.NotificationHubResource{
-	// 	Name: to.Ptr("nh-sdk-hub"),
+	// 	Name: to.Ptr("test"),
 	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/sdkresourceGroup/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/nh-sdk-hub"),
-	// 	Location: to.Ptr("South Central US"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 		"hubTag1": to.Ptr("hubTagValue1"),
+	// 		"hubTag2": to.Ptr("hubTagValue2"),
+	// 	},
 	// 	Properties: &armnotificationhubs.NotificationHubProperties{
-	// 		AuthorizationRules: []*armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 		},
+	// 		Name: to.Ptr("test"),
+	// 		DailyMaxActiveDevices: to.Ptr[int64](0),
 	// 		RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubDebugSend.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/CreateOrUpdate.json
+func ExampleClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().CreateOrUpdate(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", armnotificationhubs.NotificationHubResource{
+		Location:   to.Ptr("eastus"),
+		Properties: &armnotificationhubs.NotificationHubProperties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NotificationHubResource = armnotificationhubs.NotificationHubResource{
+	// 	Name: to.Ptr("test"),
+	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 		"hubTag1": to.Ptr("hubTagValue1"),
+	// 		"hubTag2": to.Ptr("hubTagValue2"),
+	// 	},
+	// 	Properties: &armnotificationhubs.NotificationHubProperties{
+	// 		Name: to.Ptr("test"),
+	// 		DailyMaxActiveDevices: to.Ptr[int64](0),
+	// 		RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/Update.json
+func ExampleClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Update(ctx, "sdkresourceGroup", "nh-sdk-ns", "sdk-notificationHubs-8708", armnotificationhubs.NotificationHubPatchParameters{
+		Properties: &armnotificationhubs.NotificationHubProperties{
+			GCMCredential: &armnotificationhubs.GCMCredential{
+				Properties: &armnotificationhubs.GCMCredentialProperties{
+					GCMEndpoint:  to.Ptr("https://fcm.googleapis.com/fcm/send"),
+					GoogleAPIKey: to.Ptr("###################################"),
+				},
+			},
+			RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NotificationHubResource = armnotificationhubs.NotificationHubResource{
+	// 	Name: to.Ptr("test"),
+	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+	// 	Location: to.Ptr("East US"),
+	// 	Tags: map[string]*string{
+	// 		"hubTag1": to.Ptr("hubTagValue1"),
+	// 		"hubTag2": to.Ptr("hubTagValue2"),
+	// 	},
+	// 	Properties: &armnotificationhubs.NotificationHubProperties{
+	// 		Name: to.Ptr("test"),
+	// 		DailyMaxActiveDevices: to.Ptr[int64](0),
+	// 		RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/Delete.json
+func ExampleClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewClient().Delete(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/List.json
+func ExampleClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClient().NewListPager("5ktrial", "nh-sdk-ns", &armnotificationhubs.ClientListOptions{SkipToken: nil,
+		Top: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.NotificationHubListResult = armnotificationhubs.NotificationHubListResult{
+		// 	Value: []*armnotificationhubs.NotificationHubResource{
+		// 		{
+		// 			Name: to.Ptr("test"),
+		// 			Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
+		// 			ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+		// 			Location: to.Ptr("East US"),
+		// 			Tags: map[string]*string{
+		// 				"hubTag1": to.Ptr("hubTagValue1"),
+		// 				"hubTag2": to.Ptr("hubTagValue2"),
+		// 			},
+		// 			Properties: &armnotificationhubs.NotificationHubProperties{
+		// 				Name: to.Ptr("test"),
+		// 				DailyMaxActiveDevices: to.Ptr[int64](0),
+		// 				RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/DebugSend.json
 func ExampleClient_DebugSend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,18 +238,27 @@ func ExampleClient_DebugSend() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewClient().DebugSend(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", &armnotificationhubs.ClientDebugSendOptions{Parameters: map[string]any{
-		"data": map[string]any{
-			"message": "Hello",
-		},
-	},
-	})
+	res, err := clientFactory.NewClient().DebugSend(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DebugSendResponse = armnotificationhubs.DebugSendResponse{
+	// 	Name: to.Ptr("test"),
+	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/debugSend"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+	// 	Properties: &armnotificationhubs.DebugSendResult{
+	// 		Failure: to.Ptr[int64](0),
+	// 		Results: []*armnotificationhubs.RegistrationResult{
+	// 		},
+	// 		Success: to.Ptr[int64](0),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleCreateOrUpdate.json
 func ExampleClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +269,7 @@ func ExampleClient_CreateOrUpdateAuthorizationRule() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().CreateOrUpdateAuthorizationRule(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "DefaultListenSharedAccessSignature", armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
+	res, err := clientFactory.NewClient().CreateOrUpdateAuthorizationRule(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "MyManageSharedAccessKey", armnotificationhubs.SharedAccessAuthorizationRuleResource{
 		Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
 			Rights: []*armnotificationhubs.AccessRights{
 				to.Ptr(armnotificationhubs.AccessRightsListen),
@@ -208,25 +283,20 @@ func ExampleClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.SharedAccessAuthorizationRuleResource = armnotificationhubs.SharedAccessAuthorizationRuleResource{
-	// 	Name: to.Ptr("DefaultListenSharedAccessSignature"),
+	// 	Name: to.Ptr("MyManageSharedAccessKey"),
 	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/NotificationHubs/nh-sdk-hub/AuthorizationRules/DefaultListenSharedAccessSignature"),
-	// 	Location: to.Ptr("West Europe"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/MyManageSharedAccessKey"),
 	// 	Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 		ClaimType: to.Ptr("SharedAccessKey"),
-	// 		ClaimValue: to.Ptr("None"),
-	// 		CreatedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-	// 		KeyName: to.Ptr("DefaultListenSharedAccessSignature"),
-	// 		ModifiedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-	// 		PrimaryKey: to.Ptr("#################################"),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.586Z"); return t}()),
+	// 		ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.586Z"); return t}()),
 	// 		Rights: []*armnotificationhubs.AccessRights{
-	// 			to.Ptr(armnotificationhubs.AccessRightsListen)},
-	// 			SecondaryKey: to.Ptr("#################################"),
+	// 			to.Ptr(armnotificationhubs.AccessRightsListen),
+	// 			to.Ptr(armnotificationhubs.AccessRightsSend)},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleDelete.json
 func ExampleClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +313,7 @@ func ExampleClient_DeleteAuthorizationRule() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleGet.json
 func ExampleClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,62 +334,18 @@ func ExampleClient_GetAuthorizationRule() {
 	// res.SharedAccessAuthorizationRuleResource = armnotificationhubs.SharedAccessAuthorizationRuleResource{
 	// 	Name: to.Ptr("DefaultListenSharedAccessSignature"),
 	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/NotificationHubs/nh-sdk-hub/AuthorizationRules/DefaultListenSharedAccessSignature"),
-	// 	Location: to.Ptr("West Europe"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultListenSharedAccessSignature"),
 	// 	Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 		ClaimType: to.Ptr("SharedAccessKey"),
-	// 		ClaimValue: to.Ptr("None"),
-	// 		CreatedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-	// 		KeyName: to.Ptr("DefaultListenSharedAccessSignature"),
-	// 		ModifiedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-	// 		PrimaryKey: to.Ptr("#################################"),
+	// 		CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.586Z"); return t}()),
+	// 		ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.586Z"); return t}()),
 	// 		Rights: []*armnotificationhubs.AccessRights{
-	// 			to.Ptr(armnotificationhubs.AccessRightsListen)},
-	// 			SecondaryKey: to.Ptr("#################################"),
+	// 			to.Ptr(armnotificationhubs.AccessRightsListen),
+	// 			to.Ptr(armnotificationhubs.AccessRightsSend)},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubListByNameSpace.json
-func ExampleClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnotificationhubs.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClient().NewListPager("5ktrial", "nh-sdk-ns", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.NotificationHubListResult = armnotificationhubs.NotificationHubListResult{
-		// 	Value: []*armnotificationhubs.NotificationHubResource{
-		// 		{
-		// 			Name: to.Ptr("nh-sdk-hub"),
-		// 			Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
-		// 			ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/NotificationHubs/nh-sdk-hub"),
-		// 			Location: to.Ptr("South Central US"),
-		// 			Properties: &armnotificationhubs.NotificationHubProperties{
-		// 				AuthorizationRules: []*armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-		// 				},
-		// 				RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleList.json
 func ExampleClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,44 +372,32 @@ func ExampleClient_NewListAuthorizationRulesPager() {
 		// 		{
 		// 			Name: to.Ptr("DefaultListenSharedAccessSignature"),
 		// 			Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
-		// 			ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/NotificationHubs/nh-sdk-hub/AuthorizationRules/DefaultListenSharedAccessSignature"),
-		// 			Location: to.Ptr("West Europe"),
+		// 			ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultListenSharedAccessSignature"),
 		// 			Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-		// 				ClaimType: to.Ptr("SharedAccessKey"),
-		// 				ClaimValue: to.Ptr("None"),
-		// 				CreatedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-		// 				KeyName: to.Ptr("DefaultListenSharedAccessSignature"),
-		// 				ModifiedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-		// 				PrimaryKey: to.Ptr("#################################"),
+		// 				CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.532Z"); return t}()),
+		// 				ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.532Z"); return t}()),
 		// 				Rights: []*armnotificationhubs.AccessRights{
 		// 					to.Ptr(armnotificationhubs.AccessRightsListen)},
-		// 					SecondaryKey: to.Ptr("#################################"),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("DefaultFullSharedAccessSignature"),
 		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
-		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/NotificationHubs/nh-sdk-hub/AuthorizationRules/DefaultFullSharedAccessSignature"),
-		// 				Location: to.Ptr("West Europe"),
+		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultFullSharedAccessSignature"),
 		// 				Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-		// 					ClaimType: to.Ptr("SharedAccessKey"),
-		// 					ClaimValue: to.Ptr("None"),
-		// 					CreatedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-		// 					KeyName: to.Ptr("DefaultFullSharedAccessSignature"),
-		// 					ModifiedTime: to.Ptr("2018-05-02T00:45:22.0150024Z"),
-		// 					PrimaryKey: to.Ptr("#################################"),
+		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.532Z"); return t}()),
+		// 					ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.532Z"); return t}()),
 		// 					Rights: []*armnotificationhubs.AccessRights{
-		// 						to.Ptr(armnotificationhubs.AccessRightsListen),
 		// 						to.Ptr(armnotificationhubs.AccessRightsManage),
+		// 						to.Ptr(armnotificationhubs.AccessRightsListen),
 		// 						to.Ptr(armnotificationhubs.AccessRightsSend)},
-		// 						SecondaryKey: to.Ptr("#################################"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleListKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,14 +417,14 @@ func ExampleClient_ListKeys() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ResourceListKeys = armnotificationhubs.ResourceListKeys{
 	// 	KeyName: to.Ptr("sdk-AuthRules-5800"),
-	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
 	// 	PrimaryKey: to.Ptr("############################################"),
-	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
 	// 	SecondaryKey: to.Ptr("############################################"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleRegenrateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/AuthorizationRuleRegenerateKey.json
 func ExampleClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,8 +435,8 @@ func ExampleClient_RegenerateKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().RegenerateKeys(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "DefaultListenSharedAccessSignature", armnotificationhubs.PolicykeyResource{
-		PolicyKey: to.Ptr("PrimaryKey"),
+	res, err := clientFactory.NewClient().RegenerateKeys(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "DefaultListenSharedAccessSignature", armnotificationhubs.PolicyKeyResource{
+		PolicyKey: to.Ptr(armnotificationhubs.PolicyKeyTypePrimaryKey),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -432,14 +446,14 @@ func ExampleClient_RegenerateKeys() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ResourceListKeys = armnotificationhubs.ResourceListKeys{
 	// 	KeyName: to.Ptr("DefaultListenSharedAccessSignature"),
-	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=#################################"),
-	// 	PrimaryKey: to.Ptr("#################################"),
-	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=#################################"),
-	// 	SecondaryKey: to.Ptr("#################################"),
+	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 	PrimaryKey: to.Ptr("############################################"),
+	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 	SecondaryKey: to.Ptr("############################################"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubPnsCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/NotificationHubs/PnsCredentialsGet.json
 func ExampleClient_GetPnsCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,14 +472,14 @@ func ExampleClient_GetPnsCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.PnsCredentialsResource = armnotificationhubs.PnsCredentialsResource{
-	// 	Name: to.Ptr("nh-sdk-hub"),
+	// 	Name: to.Ptr("test"),
 	// 	Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/pnsCredentials"),
-	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/nh-sdk-hub/pnsCredentials"),
-	// 	Location: to.Ptr("West Europe"),
-	// 	Properties: &armnotificationhubs.PnsCredentialsProperties{
-	// 		MpnsCredential: &armnotificationhubs.MpnsCredential{
-	// 			Properties: &armnotificationhubs.MpnsCredentialProperties{
-	// 				Thumbprint: to.Ptr("#################################"),
+	// 	ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+	// 	Properties: &armnotificationhubs.PnsCredentials{
+	// 		GCMCredential: &armnotificationhubs.GCMCredential{
+	// 			Properties: &armnotificationhubs.GCMCredentialProperties{
+	// 				GCMEndpoint: to.Ptr("https://fcm.googleapis.com/fcm/send"),
+	// 				GoogleAPIKey: to.Ptr("###################################"),
 	// 			},
 	// 		},
 	// 	},

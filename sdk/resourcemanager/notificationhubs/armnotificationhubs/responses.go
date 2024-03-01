@@ -16,13 +16,13 @@ type ClientCheckNotificationHubAvailabilityResponse struct {
 
 // ClientCreateOrUpdateAuthorizationRuleResponse contains the response from method Client.CreateOrUpdateAuthorizationRule.
 type ClientCreateOrUpdateAuthorizationRuleResponse struct {
-	// Description of a Namespace AuthorizationRules.
+	// Response for POST requests that return single SharedAccessAuthorizationRule.
 	SharedAccessAuthorizationRuleResource
 }
 
 // ClientCreateOrUpdateResponse contains the response from method Client.CreateOrUpdate.
 type ClientCreateOrUpdateResponse struct {
-	// Description of a NotificationHub Resource.
+	// Notification Hub Resource.
 	NotificationHubResource
 }
 
@@ -44,19 +44,20 @@ type ClientDeleteResponse struct {
 
 // ClientGetAuthorizationRuleResponse contains the response from method Client.GetAuthorizationRule.
 type ClientGetAuthorizationRuleResponse struct {
-	// Description of a Namespace AuthorizationRules.
+	// Response for POST requests that return single SharedAccessAuthorizationRule.
 	SharedAccessAuthorizationRuleResource
 }
 
 // ClientGetPnsCredentialsResponse contains the response from method Client.GetPnsCredentials.
 type ClientGetPnsCredentialsResponse struct {
-	// Description of a NotificationHub PNS Credentials.
+	// Description of a NotificationHub PNS Credentials. This is a response of the POST requests that return namespace or hubs
+	// PNS credentials.
 	PnsCredentialsResource
 }
 
 // ClientGetResponse contains the response from method Client.Get.
 type ClientGetResponse struct {
-	// Description of a NotificationHub Resource.
+	// Notification Hub Resource.
 	NotificationHubResource
 }
 
@@ -68,7 +69,7 @@ type ClientListAuthorizationRulesResponse struct {
 
 // ClientListKeysResponse contains the response from method Client.ListKeys.
 type ClientListKeysResponse struct {
-	// Namespace/NotificationHub Connection String
+	// Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
 	ResourceListKeys
 }
 
@@ -78,16 +79,16 @@ type ClientListResponse struct {
 	NotificationHubListResult
 }
 
-// ClientPatchResponse contains the response from method Client.Patch.
-type ClientPatchResponse struct {
-	// Description of a NotificationHub Resource.
-	NotificationHubResource
-}
-
 // ClientRegenerateKeysResponse contains the response from method Client.RegenerateKeys.
 type ClientRegenerateKeysResponse struct {
-	// Namespace/NotificationHub Connection String
+	// Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
 	ResourceListKeys
+}
+
+// ClientUpdateResponse contains the response from method Client.Update.
+type ClientUpdateResponse struct {
+	// Notification Hub Resource.
+	NotificationHubResource
 }
 
 // NamespacesClientCheckAvailabilityResponse contains the response from method NamespacesClient.CheckAvailability.
@@ -98,13 +99,13 @@ type NamespacesClientCheckAvailabilityResponse struct {
 
 // NamespacesClientCreateOrUpdateAuthorizationRuleResponse contains the response from method NamespacesClient.CreateOrUpdateAuthorizationRule.
 type NamespacesClientCreateOrUpdateAuthorizationRuleResponse struct {
-	// Description of a Namespace AuthorizationRules.
+	// Response for POST requests that return single SharedAccessAuthorizationRule.
 	SharedAccessAuthorizationRuleResource
 }
 
-// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.CreateOrUpdate.
+// NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.BeginCreateOrUpdate.
 type NamespacesClientCreateOrUpdateResponse struct {
-	// Description of a Namespace resource.
+	// Notification Hubs Namespace Resource.
 	NamespaceResource
 }
 
@@ -113,20 +114,27 @@ type NamespacesClientDeleteAuthorizationRuleResponse struct {
 	// placeholder for future response values
 }
 
-// NamespacesClientDeleteResponse contains the response from method NamespacesClient.BeginDelete.
+// NamespacesClientDeleteResponse contains the response from method NamespacesClient.Delete.
 type NamespacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
 // NamespacesClientGetAuthorizationRuleResponse contains the response from method NamespacesClient.GetAuthorizationRule.
 type NamespacesClientGetAuthorizationRuleResponse struct {
-	// Description of a Namespace AuthorizationRules.
+	// Response for POST requests that return single SharedAccessAuthorizationRule.
 	SharedAccessAuthorizationRuleResource
+}
+
+// NamespacesClientGetPnsCredentialsResponse contains the response from method NamespacesClient.GetPnsCredentials.
+type NamespacesClientGetPnsCredentialsResponse struct {
+	// Description of a NotificationHub PNS Credentials. This is a response of the POST requests that return namespace or hubs
+	// PNS credentials.
+	PnsCredentialsResource
 }
 
 // NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
 type NamespacesClientGetResponse struct {
-	// Description of a Namespace resource.
+	// Notification Hubs Namespace Resource.
 	NamespaceResource
 }
 
@@ -144,7 +152,7 @@ type NamespacesClientListAuthorizationRulesResponse struct {
 
 // NamespacesClientListKeysResponse contains the response from method NamespacesClient.ListKeys.
 type NamespacesClientListKeysResponse struct {
-	// Namespace/NotificationHub Connection String
+	// Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
 	ResourceListKeys
 }
 
@@ -154,21 +162,56 @@ type NamespacesClientListResponse struct {
 	NamespaceListResult
 }
 
-// NamespacesClientPatchResponse contains the response from method NamespacesClient.Patch.
-type NamespacesClientPatchResponse struct {
-	// Description of a Namespace resource.
-	NamespaceResource
-}
-
 // NamespacesClientRegenerateKeysResponse contains the response from method NamespacesClient.RegenerateKeys.
 type NamespacesClientRegenerateKeysResponse struct {
-	// Namespace/NotificationHub Connection String
+	// Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
 	ResourceListKeys
+}
+
+// NamespacesClientUpdateResponse contains the response from method NamespacesClient.Update.
+type NamespacesClientUpdateResponse struct {
+	// Notification Hubs Namespace Resource.
+	NamespaceResource
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// Result of the request to list NotificationHubs operations. It contains a list of operations and a URL link to get the next
-	// set of results.
+	// Result of the request to list NotificationHubs operations. It contains
+	// a list of operations and a URL link to get the next set of results.
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetGroupIDResponse contains the response from method PrivateEndpointConnectionsClient.GetGroupID.
+type PrivateEndpointConnectionsClientGetGroupIDResponse struct {
+	// A Private Link Arm Resource.
+	PrivateLinkResource
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// Represents a Private Endpoint Connection ARM resource - a sub-resource of Notification Hubs namespace.
+	PrivateEndpointConnectionResource
+}
+
+// PrivateEndpointConnectionsClientListGroupIDsResponse contains the response from method PrivateEndpointConnectionsClient.NewListGroupIDsPager.
+type PrivateEndpointConnectionsClientListGroupIDsResponse struct {
+	// The response of the List Private Link Resources operation.
+	PrivateLinkResourceListResult
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
+type PrivateEndpointConnectionsClientListResponse struct {
+	// The response of the List Private Endpoint Connections operation.
+	PrivateEndpointConnectionResourceListResult
+}
+
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginUpdate.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	// Represents a Private Endpoint Connection ARM resource - a sub-resource of Notification Hubs namespace.
+	PrivateEndpointConnectionResource
 }

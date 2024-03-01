@@ -3488,7 +3488,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithAcquireLease() {
 	rsc, _ := testcommon.GenerateData(contentSize)
 
 	opts := &file.AppendDataOptions{
-		LeaseAction:     &testcommon.TestLeaseActionAcquire,
+		LeaseAction:     &file.LeaseActionAcquire,
 		LeaseDuration:   to.Ptr(int64(15)),
 		ProposedLeaseID: proposedLeaseIDs[1],
 	}
@@ -3548,7 +3548,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithRenewLease() {
 	rsc, _ := testcommon.GenerateData(contentSize)
 
 	opts := &file.AppendDataOptions{
-		LeaseAction:           &testcommon.TestLeaseActionRenew,
+		LeaseAction:           &file.LeaseActionRenew,
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		LeaseDuration:         to.Ptr(int64(-1)),
 	}
@@ -3590,7 +3590,7 @@ func (s *RecordedTestSuite) TestFileAppendDataWithReleaseLease() {
 	rsc, _ := testcommon.GenerateData(contentSize)
 
 	opts := &file.AppendDataOptions{
-		LeaseAction:           &testcommon.TestLeaseActionRelease,
+		LeaseAction:           &file.LeaseActionRelease,
 		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		Flush:                 to.Ptr(true),
 	}
@@ -3639,7 +3639,7 @@ func (s *RecordedTestSuite) TestFileAppendWithFlushReleaseLease() {
 	_require.NoError(err)
 
 	opts := &file.FlushDataOptions{
-		LeaseAction: &testcommon.TestLeaseActionRelease,
+		LeaseAction: &file.LeaseActionRelease,
 		AccessConditions: &path.AccessConditions{
 			LeaseAccessConditions: &path.LeaseAccessConditions{LeaseID: proposedLeaseIDs[0]},
 		},

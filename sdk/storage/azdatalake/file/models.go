@@ -546,9 +546,6 @@ type SetExpiryValues struct {
 // ACLFailedEntry contains the failed ACL entry (response model).
 type ACLFailedEntry = path.ACLFailedEntry
 
-// LeaseAction describes actions that can be performed on a lease.
-type LeaseAction = path.LeaseAction
-
 // SetAccessControlRecursiveResponse contains part of the response data returned by the []OP_AccessControl operations.
 type SetAccessControlRecursiveResponse = generated.SetAccessControlRecursiveResponse
 

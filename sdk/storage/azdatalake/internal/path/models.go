@@ -315,5 +315,3 @@ type CPKScopeInfo = blob.CPKScopeInfo
 
 // ACLFailedEntry contains the failed ACL entry (response model).
 type ACLFailedEntry = generated.ACLFailedEntry
-
-type LeaseAction = generated.LeaseAction

@@ -10,6 +10,21 @@ package armquantum
 
 import "time"
 
+// APIKey - Azure quantum workspace Api key details.
+type APIKey struct {
+	// The creation time of the api key.
+	CreatedAt *time.Time
+
+	// READ-ONLY; The Api key.
+	Key *string
+}
+
+// APIKeys - List of api keys to be generated.
+type APIKeys struct {
+	// A list of api key names.
+	Keys []*KeyType
+}
+
 // CheckNameAvailabilityParameters - Details of check name availability request body.
 type CheckNameAvailabilityParameters struct {
 	// Name for checking availability.
@@ -63,6 +78,24 @@ type ErrorDetail struct {
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// ListKeysResult - Result of list Api keys and connection strings.
+type ListKeysResult struct {
+	// Indicator of enablement of the Quantum workspace Api keys.
+	APIKeyEnabled *bool
+
+	// The quantum workspace primary api key.
+	PrimaryKey *APIKey
+
+	// The quantum workspace secondary api key.
+	SecondaryKey *APIKey
+
+	// READ-ONLY; The connection string of the primary api key.
+	PrimaryConnectionString *string
+
+	// READ-ONLY; The connection string of the secondary api key.
+	SecondaryConnectionString *string
 }
 
 // OfferingsListResult - The response of a list Providers operation.
@@ -155,7 +188,7 @@ type ProviderDescription struct {
 	// Unique provider's id.
 	ID *string
 
-	// A list of provider-specific properties.
+	// Provider properties.
 	Properties *ProviderProperties
 
 	// READ-ONLY; Provider's display name.
@@ -242,11 +275,14 @@ type QuotaDimension struct {
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -336,11 +372,14 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -360,13 +399,13 @@ type Workspace struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; System metadata
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -396,6 +435,9 @@ type WorkspaceListResult struct {
 
 // WorkspaceResourceProperties - Properties of a Workspace
 type WorkspaceResourceProperties struct {
+	// Indicator of enablement of the Quantum workspace Api keys.
+	APIKeyEnabled *bool
+
 	// List of Providers selected for this Workspace
 	Providers []*Provider
 

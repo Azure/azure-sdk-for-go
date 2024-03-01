@@ -14,6 +14,46 @@ type AccountsClientListResponse struct {
 	AccountsListResponse
 }
 
+// BillingInfoClientGetResponse contains the response from method BillingInfoClient.Get.
+type BillingInfoClientGetResponse struct {
+	// Marketplace Subscription and Organization details to which resource gets billed into.
+	BillingInfoResponse
+}
+
+// ConnectedPartnerResourcesClientListResponse contains the response from method ConnectedPartnerResourcesClient.NewListPager.
+type ConnectedPartnerResourcesClientListResponse struct {
+	// List of all active newrelic deployments.
+	ConnectedPartnerResourcesListResponse
+}
+
+// MonitoredSubscriptionsClientCreateorUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginCreateorUpdate.
+type MonitoredSubscriptionsClientCreateorUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientDeleteResponse contains the response from method MonitoredSubscriptionsClient.BeginDelete.
+type MonitoredSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MonitoredSubscriptionsClientGetResponse contains the response from method MonitoredSubscriptionsClient.Get.
+type MonitoredSubscriptionsClientGetResponse struct {
+	// The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientListResponse contains the response from method MonitoredSubscriptionsClient.NewListPager.
+type MonitoredSubscriptionsClientListResponse struct {
+	MonitoredSubscriptionPropertiesList
+}
+
+// MonitoredSubscriptionsClientUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginUpdate.
+type MonitoredSubscriptionsClientUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
 // MonitorsClientCreateOrUpdateResponse contains the response from method MonitorsClient.BeginCreateOrUpdate.
 type MonitorsClientCreateOrUpdateResponse struct {
 	// A Monitor Resource by NewRelic
@@ -65,6 +105,12 @@ type MonitorsClientListBySubscriptionResponse struct {
 type MonitorsClientListHostsResponse struct {
 	// Response of a list VM Host Operation.
 	VMHostsListResponse
+}
+
+// MonitorsClientListLinkedResourcesResponse contains the response from method MonitorsClient.NewListLinkedResourcesPager.
+type MonitorsClientListLinkedResourcesResponse struct {
+	// Response of a list operation.
+	LinkedResourceListResponse
 }
 
 // MonitorsClientListMonitoredResourcesResponse contains the response from method MonitorsClient.NewListMonitoredResourcesPager.

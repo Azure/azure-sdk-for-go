@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmosforpostgresql/armcosmosforpostgresql"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -383,6 +384,10 @@ func (c *ClustersServerTransport) dispatchBeginPromoteReadReplica(req *http.Requ
 		if matches == nil || len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmosforpostgresql.PromoteRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -391,7 +396,13 @@ func (c *ClustersServerTransport) dispatchBeginPromoteReadReplica(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := c.srv.BeginPromoteReadReplica(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		var options *armcosmosforpostgresql.ClustersClientBeginPromoteReadReplicaOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armcosmosforpostgresql.ClustersClientBeginPromoteReadReplicaOptions{
+				PromoteRequest: &body,
+			}
+		}
+		respr, errRespr := c.srv.BeginPromoteReadReplica(req.Context(), resourceGroupNameParam, clusterNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

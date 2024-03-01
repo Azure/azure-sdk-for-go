@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -104,9 +105,20 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", "404 Not Found", asError.ErrorCode)
 	}
 
+	// Verify error body
+	responseBody, err2 := io.ReadAll(asError.RawResponse.Body)
+	if err2 != nil {
+		t.Errorf("Error reading response body: %v\n", err)
+	}
+	stringBody := string(responseBody)
+	if !strings.Contains(stringBody, "SomeCode") {
+		t.Errorf("Expected %v to contain %v", stringBody, "SomeCode")
+	}
+
 	if err.Error() != asError.Error() {
 		t.Errorf("Expected %v, but got %v", err.Error(), asError.Error())
 	}
+	asError.RawResponse.Body.Close()
 }
 
 func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {

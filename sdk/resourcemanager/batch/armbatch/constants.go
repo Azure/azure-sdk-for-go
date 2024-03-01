@@ -10,7 +10,7 @@ package armbatch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -791,5 +791,34 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 		StorageAccountTypePremiumLRS,
 		StorageAccountTypeStandardLRS,
 		StorageAccountTypeStandardSSDLRS,
+	}
+}
+
+// UpgradeMode - Specifies the mode of an upgrade to virtual machines in the scale set.
+// Possible values are:
+// Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
+// action.
+// Automatic - All virtual machines in the scale set are automatically updated at the same time.
+// Rolling - Scale set performs updates in batches with an optional pause time in between.
+type UpgradeMode string
+
+const (
+	// UpgradeModeAutomatic - All virtual machines in the scale set are automatically updated at the same time.
+	UpgradeModeAutomatic UpgradeMode = "automatic"
+	// UpgradeModeManual - You control the application of updates to virtual machines in the scale set. You do this by using the
+	// manualUpgrade action.
+	UpgradeModeManual UpgradeMode = "manual"
+	// UpgradeModeRolling - The existing instances in a scale set are brought down in batches to be upgraded. Once the upgraded
+	// batch is complete, the instances will begin taking traffic again and the next batch will begin. This continues until all
+	// instances brought up-to-date.
+	UpgradeModeRolling UpgradeMode = "rolling"
+)
+
+// PossibleUpgradeModeValues returns the possible values for the UpgradeMode const type.
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return []UpgradeMode{
+		UpgradeModeAutomatic,
+		UpgradeModeManual,
+		UpgradeModeRolling,
 	}
 }

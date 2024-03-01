@@ -313,6 +313,12 @@ type DataTransferJobsClientCancelResponse struct {
 	DataTransferJobGetResults
 }
 
+// DataTransferJobsClientCompleteResponse contains the response from method DataTransferJobsClient.Complete.
+type DataTransferJobsClientCompleteResponse struct {
+	// A Cosmos DB Data Transfer Job
+	DataTransferJobGetResults
+}
+
 // DataTransferJobsClientCreateResponse contains the response from method DataTransferJobsClient.Create.
 type DataTransferJobsClientCreateResponse struct {
 	// A Cosmos DB Data Transfer Job

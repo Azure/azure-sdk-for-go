@@ -10,7 +10,7 @@ package armcommunication
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
-	moduleVersion = "v2.2.0-beta.1"
+	moduleVersion = "v2.2.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

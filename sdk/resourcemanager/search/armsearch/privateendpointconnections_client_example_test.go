@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/UpdatePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/UpdatePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Update(ctx, "rg1", "mysearchservice", "testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546", armsearch.PrivateEndpointConnection{
 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-				Description: to.Ptr("Rejected for some reason"),
+				Description: to.Ptr("Rejected for some reason."),
 				Status:      to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
 			},
 		},
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/testEndpoint"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-	// 			Description: to.Ptr("Rejected for some reason"),
+	// 			Description: to.Ptr("Rejected for some reason."),
 	// 			ActionsRequired: to.Ptr("None"),
 	// 			Status: to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
 	// 		},
@@ -60,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/GetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e29dd59eef13ef347d09e41a63f2585be77b3ca/specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/ListPrivateEndpointConnectionsByService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/cf5ad1932d00c7d15497705ad6b71171d3d68b1e/specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/ListPrivateEndpointConnectionsByService.json
 func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

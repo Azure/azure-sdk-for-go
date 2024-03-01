@@ -105,6 +105,9 @@ func (t *ServiceProperties) toGenerated() *generated.TableServiceProperties {
 type TableProperties struct {
 	// The name of the table.
 	Name *string `json:"TableName,omitempty"`
+
+	// The OData properties of the table in JSON format.
+	Value []byte
 }
 
 // RetentionPolicy - The retention policy.

@@ -5,6 +5,7 @@ package aztables
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -162,8 +163,26 @@ func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runt
 
 			tableProps := make([]*TableProperties, len(resp.Value))
 			for i := range resp.Value {
+				odataValues := map[string]any{}
+				if resp.Value[i].ODataEditLink != nil {
+					odataValues["odata.editLink"] = *resp.Value[i].ODataEditLink
+				}
+				if resp.Value[i].ODataID != nil {
+					odataValues["odata.id"] = *resp.Value[i].ODataID
+				}
+				if resp.Value[i].ODataType != nil {
+					odataValues["odata.type"] = *resp.Value[i].ODataType
+				}
+				var odataJSON []byte
+				if len(odataValues) > 0 {
+					odataJSON, err = json.Marshal(odataValues)
+					if err != nil {
+						return ListTablesResponse{}, err
+					}
+				}
 				tableProps[i] = &TableProperties{
-					Name: resp.Value[i].TableName,
+					Name:  resp.Value[i].TableName,
+					Value: odataJSON,
 				}
 			}
 

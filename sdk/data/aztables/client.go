@@ -13,7 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -220,8 +219,9 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 		options = &GetEntityOptions{}
 	}
 
-	genOptions, queryOptions := options.toGenerated()
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), genOptions, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, prepareKey(partitionKey), prepareKey(rowKey), nil, &generated.QueryOptions{
+		Format: options.Format,
+	})
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
@@ -254,9 +254,20 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: to.Ptr(generated.ResponseFormatReturnNoContent)}, nil)
+
+	if options == nil {
+		options = &AddEntityOptions{}
+	}
+
+	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableClientInsertEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{
+		Format: options.Format,
+	})
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
+		return AddEntityResponse{}, err
+	}
+	marshalledValue, err := json.Marshal(resp.Value)
+	if err != nil {
 		return AddEntityResponse{}, err
 	}
 
@@ -265,7 +276,8 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 		ETag = azcore.ETag(*resp.ETag)
 	}
 	return AddEntityResponse{
-		ETag: ETag,
+		ETag:  ETag,
+		Value: marshalledValue,
 	}, nil
 }
 

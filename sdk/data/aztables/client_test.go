@@ -54,6 +54,11 @@ func TestCreateTable(t *testing.T) {
 	}
 }
 
+type mdforAddGet struct {
+	Metadata string `json:"odata.metadata"`
+	Type     string `json:"odata.type"` // only for full metadata
+}
+
 func TestAddEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
@@ -66,8 +71,13 @@ func TestAddEntity(t *testing.T) {
 
 			marshalledEntity, err := json.Marshal(simpleEntity)
 			require.NoError(t, err)
-			_, err = client.AddEntity(ctx, marshalledEntity, nil)
+			resp, err := client.AddEntity(ctx, marshalledEntity, nil)
 			require.NoError(t, err)
+			require.NotEmpty(t, resp.Value)
+			var md mdforAddGet
+			require.NoError(t, json.Unmarshal(resp.Value, &md))
+			require.NotEmpty(t, md.Metadata)
+			require.Empty(t, md.Type)
 		})
 	}
 }
@@ -83,8 +93,18 @@ func TestAddComplexEntity(t *testing.T) {
 			marshalledEntity, err := json.Marshal(entity)
 			require.NoError(t, err)
 
-			_, err = client.AddEntity(ctx, marshalledEntity, nil)
+			resp, err := client.AddEntity(ctx, marshalledEntity, &AddEntityOptions{
+				Format: to.Ptr(MetadataFormatFull),
+			})
 			require.NoError(t, err)
+			require.NotEmpty(t, resp.Value)
+			var md mdforAddGet
+			require.NoError(t, json.Unmarshal(resp.Value, &md))
+			require.NotEmpty(t, md.Metadata)
+			if service == "storage" {
+				// cosmos doesn't send full metadata
+				require.NotEmpty(t, md.Type)
+			}
 		})
 	}
 }
@@ -165,6 +185,11 @@ func TestMergeEntity(t *testing.T) {
 
 			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
 			require.NoError(t, err)
+			require.NotEmpty(t, preMerge.Value)
+			var md mdforAddGet
+			require.NoError(t, json.Unmarshal(preMerge.Value, &md))
+			require.NotEmpty(t, md.Metadata)
+			require.Empty(t, md.Type)
 
 			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
@@ -245,8 +270,18 @@ func TestInsertEntity(t *testing.T) {
 			list := &ListEntitiesOptions{Filter: &filter}
 
 			// 2. Query for basic Entity
-			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, nil)
+			preMerge, err := client.GetEntity(ctx, entityToCreate.PartitionKey, entityToCreate.RowKey, &GetEntityOptions{
+				Format: to.Ptr(MetadataFormatFull),
+			})
 			require.NoError(t, err)
+			require.NotEmpty(t, preMerge.Value)
+			var md mdforAddGet
+			require.NoError(t, json.Unmarshal(preMerge.Value, &md))
+			require.NotEmpty(t, md.Metadata)
+			if service == "storage" {
+				// cosmos doesn't send full metadata
+				require.NotEmpty(t, md.Type)
+			}
 
 			var unMarshalledPreMerge map[string]any
 			err = json.Unmarshal(preMerge.Value, &unMarshalledPreMerge)
@@ -304,6 +339,11 @@ func TestInsertEntityTwice(t *testing.T) {
 	}
 }
 
+type mdForListEntities struct {
+	Timestamp time.Time `json:"Timestamp"`
+	ID        string    `json:"odata.id"` // only for full metadata
+}
+
 func TestQuerySimpleEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
@@ -328,7 +368,8 @@ func TestQuerySimpleEntity(t *testing.T) {
 			var resp ListEntitiesResponse
 			pager := client.NewListEntitiesPager(list)
 			for pager.More() {
-				resp, err := pager.NextPage(ctx)
+				var err error
+				resp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
 				require.Equal(t, len(resp.Entities), expectedCount)
 			}
@@ -353,6 +394,11 @@ func TestQuerySimpleEntity(t *testing.T) {
 				require.Equal(t, b.String, (*entitiesToCreate)[i].String)
 				require.Equal(t, b.Integer, (*entitiesToCreate)[i].Integer)
 				require.Equal(t, b.Bool, (*entitiesToCreate)[i].Bool)
+
+				var md mdForListEntities
+				require.NoError(t, json.Unmarshal(e, &md))
+				require.False(t, md.Timestamp.IsZero())
+				require.Empty(t, md.ID)
 			}
 		})
 	}
@@ -375,7 +421,10 @@ func TestQueryComplexEntity(t *testing.T) {
 
 			filter := "RowKey lt '5'"
 			expectedCount := 4
-			options := &ListEntitiesOptions{Filter: &filter}
+			options := &ListEntitiesOptions{
+				Filter: &filter,
+				Format: to.Ptr(MetadataFormatFull),
+			}
 
 			pager := client.NewListEntitiesPager(options)
 			for pager.More() {
@@ -396,6 +445,14 @@ func TestQueryComplexEntity(t *testing.T) {
 					require.Equal(t, model.Float, (entitiesToCreate)[idx].Float)
 					require.Equal(t, model.DateTime, (entitiesToCreate)[idx].DateTime)
 					require.Equal(t, model.Byte, (entitiesToCreate)[idx].Byte)
+
+					var md mdForListEntities
+					require.NoError(t, json.Unmarshal(entity, &md))
+					require.False(t, md.Timestamp.IsZero())
+					if service == "storage" {
+						// cosmos doesn't send full metadata
+						require.NotEmpty(t, md.ID)
+					}
 				}
 			}
 		})

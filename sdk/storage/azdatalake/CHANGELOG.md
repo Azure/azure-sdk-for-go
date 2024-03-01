@@ -1,10 +1,6 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.1 (2024-02-29)
 
 ### Bugs Fixed
 * Exposing x-ms-resource-type response header in GetProperties API for file and directory.

@@ -139,7 +139,7 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 		return properties, nil
 	}
 
-	return accountProperties{}, newCosmosError(azResponse)
+	return accountProperties{}, azruntime.NewResponseErrorWithErrorCode(azResponse, azResponse.Status)
 }
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {

@@ -34,6 +34,33 @@ You can create an Azure Cosmos account using:
 
 In order to interact with the Azure Cosmos DB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure Cosmos DB service.
 
+#### Logging
+
+The SDK can make use of `azcore`'s logging implementation to collect useful information for debugging your application. In order to make use of logs, one must set the environment variable `"AZURE_SDK_GO_LOGGING"` to `"all"` like outlined in this [public document](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore#hdr-Built_in_Logging).
+
+Once that is done, the SDK will begin to collect diagnostics. By default, it will output the logs to `stdout` - printing directly to your console - and will record all types of events (requests, responses, retries). If you'd like to configure a listener that acts differently, the small snippet below shows how you could do so.
+
+```go
+import (
+	"os"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+)
+
+f, err := os.Create("cosmos-log-file.txt")
+handle(err)
+defer f.Close()
+
+// Configure the listener to write to a file rather than to the console
+azlog.SetListener(func(event azlog.Event, s string) {
+	f.WriteString(s + "\n")
+})
+
+// Filter the types of events you'd like to log by removing the ones you're not interested in (if any)
+// We recommend using the default logging with no filters - but if filtering we recommend *always* including 
+// `azlog.EventResponseError` since this is the event type that will help with debugging errors
+azlog.SetEvents(azlog.EventRequest, azlog.EventResponse, azlog.EventRetryPolicy, azlog.EventResponseError) 
+```
+
 ## Examples
 
 The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:
